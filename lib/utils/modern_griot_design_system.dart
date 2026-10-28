@@ -591,21 +591,38 @@ class ModernGriotShadows {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// SPACING — reuse PanAfricanSpacing, re-exported above
+// SPACING — 4/8 grid (canonical; prefer over ad-hoc .h/.w literals)
 // ─────────────────────────────────────────────────────────────────────────────
-//
-// Spacing is provided by [PanAfricanSpacing] from pan_african_design_system.dart.
-//   PanAfricanSpacing.xxxs  → 2
-//   PanAfricanSpacing.xxs   → 4
-//   PanAfricanSpacing.xs    → 8
-//   PanAfricanSpacing.sm    → 12
-//   PanAfricanSpacing.md    → 16
-//   PanAfricanSpacing.lg    → 24
-//   PanAfricanSpacing.xl    → 32
-//   PanAfricanSpacing.xxl   → 48
-//   PanAfricanSpacing.xxxl  → 64
-//
-// Import this file and use PanAfricanSpacing directly.
+
+/// Spacing tokens on a strict 4/8 grid.
+///
+/// Apply with ScreenUtil at the call site: `ModernGriotSpacing.md.h` (vertical)
+/// or `ModernGriotSpacing.md.w` (horizontal). Do not invent off-grid values
+/// (6, 10, 14, 20, 28) in feature UI.
+class ModernGriotSpacing {
+  ModernGriotSpacing._();
+
+  static const double xxs = 4;
+  static const double xs = 8;
+  static const double sm = 12;
+  static const double md = 16;
+  static const double lg = 24;
+  static const double xl = 32;
+  static const double xxl = 48;
+  static const double xxxl = 64;
+}
+
+/// Layout constants that pair with [ModernGriotSpacing] / [ModernGriotRadius].
+class ModernGriotLayout {
+  ModernGriotLayout._();
+
+  /// Minimum tappable target (WCAG 2.5.5 / Material).
+  static const double minTouchTarget = 48;
+
+  /// Language / goal selection row height range (reference pack: 56–64).
+  static const double selectRowMin = 56;
+  static const double selectRowComfortable = 64;
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // RADIUS

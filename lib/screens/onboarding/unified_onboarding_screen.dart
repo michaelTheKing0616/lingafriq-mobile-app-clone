@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:async';
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
@@ -15,11 +16,10 @@ import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/auth/world_class_login_screen.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
-import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/utils/modern_griot_design_system.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
-import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/services/games_learning_language_preload.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
@@ -29,8 +29,16 @@ import 'placement_test_screen.dart';
 import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
 import 'package:lingafriq/services/connectivity_service.dart';
 import 'package:lingafriq/providers/onboarding_provider.dart';
+import 'package:lingafriq/providers/firebase_messaging_provider.dart';
+
+// ── Brand accents (kit Gold / Coral) on Modern Griot surfaces ───────────────
+const Color _kBrandGold = Color(0xFFFFC53D);
+const Color _kBrandCoral = Color(0xFFE5603B);
+const Color _kOnBrandGold = Color(0xFF322E25);
 
 /// Mirrors server `agePolicy` default thresholds (P1-020).
+/// Child threshold is configurable per country (default 13, DE 16).
+/// Do NOT hard-code Nigeria to 18 — NDPA under-18 remains a counsel question.
 String? computeRegistrationAgeBand(int birthYear, {String? countryCode}) {
   final nowYear = DateTime.now().year;
   if (birthYear < 1900 || birthYear > nowYear) return null;
@@ -43,25 +51,20 @@ String? computeRegistrationAgeBand(int birthYear, {String? countryCode}) {
   return 'adult';
 }
 
-/// Returns [Duration.zero] when the platform/OS has requested reduced
-/// motion (MediaQuery.disableAnimations), so every entrance animation in
-/// this flow snaps straight to its final state instead of animating.
 Duration _motionDuration(BuildContext context, Duration normal) {
   return MediaQuery.disableAnimationsOf(context) ? Duration.zero : normal;
 }
 
-/// Same reduced-motion guard for `flutter_animate`'s `delay:` parameter.
 Duration _motionDelay(BuildContext context, Duration normal) {
   return MediaQuery.disableAnimationsOf(context) ? Duration.zero : normal;
 }
 
-/// Unified Onboarding: "Kijiji cha Lugha" - The Language Village
+/// Unified Onboarding — reference-led flow (Finch + Speak + Duolingo + Opal + Headspace).
 ///
-/// Combines the best of both worlds:
-/// - Story-driven African narrative with cultural characters
-/// - Material 3 UI with Pan-African design system
-/// - Comprehensive personalization questions
-/// - Backend sync and offline-first data persistence
+/// Recipe order (second pass): Welcome → Language → Goal(+daily) → Level →
+/// First win → Account/age/sign-in → Notifications → remaining prefs → profile.
+/// All existing onboarding answer keys are preserved and wired through
+/// SharedPreferences + onboarding_provider + outbox sync.
 class UnifiedOnboardingScreen extends HookConsumerWidget {
   const UnifiedOnboardingScreen({super.key});
 
@@ -80,7 +83,6 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
         reask.isEmpty || keys.any(reask.contains);
     final isCompleting = useState(false);
 
-    // Animation controller for character entrances
     final animationController = useAnimationController(
       duration: const Duration(milliseconds: 800),
     );
@@ -90,45 +92,38 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
       return null;
     }, []);
 
-    // Village characters guide the journey
     final stepCount = <int>[0];
-    // Mirrors `steps`' own conditions exactly so `stepsLight[i]` always
-    // tells the floating progress bar/back/skip chrome (which overlays
-    // whichever step is currently showing through the `Stack` below)
-    // whether that step's background is one of the near-white
-    // `PanAfricanGradients.earth`/`sunset` tints - the only steps where the
-    // cream `colorScheme.onPrimary` this chrome used to hardcode would be
-    // close to invisible.
-    final stepsLight = <bool>[
-      if (reask.isEmpty) false, // _VillageWelcomeStep: dark primary green
-      if (ask(const ['proficiency_language'])) true, // _ElderStep: earth
-      if (ask(const ['learning_language'])) true, // _WeaverStep: sunset
-      if (ask(const ['age_category', 'learning_reasons']))
-        true, // _ElderQuestionStep: earth
-      if (ask(const ['primary_goal'])) false, // _PathChooserStep: forest
-      if (ask(const ['learning_style'])) true, // _RhythmMasterStep: sunset
-      if (ask(const [
-        'daily_duration_minutes',
-        'preferred_time_of_day',
-        'reminders_enabled',
-      ]))
-        true, // _TimekeeperStep: earth
-      if (ask(const ['app_tone', 'gamification_level']))
-        true, // _GriotStep: sunset
-      if (reask.isEmpty) false, // _NamingCeremonyStep: dark forest
-    ];
-    final steps = <Widget>[
-      if (reask.isEmpty)
-        _VillageWelcomeStep(
+    // All redesigned steps sit on warm parchment (Modern Griot surface) so
+    // chrome uses dark on-surface tokens for AA contrast.
+    final stepsLight = <bool>[];
+    final steps = <Widget>[];
+
+    void addStep(Widget step, {bool light = true}) {
+      stepsLight.add(light);
+      steps.add(step);
+    }
+
+    if (reask.isEmpty) {
+      addStep(
+        _WelcomeStep(
           onNext: () => _goToNext(
             context,
             pageController,
             currentStep,
             animationController,
           ),
+          onHaveAccount: () {
+            ref
+                .read(navigationProvider)
+                .navigateOffAll(const WorldClassLoginScreen());
+          },
         ),
-      if (ask(const ['proficiency_language']))
-        _ElderStep(
+      );
+    }
+
+    if (ask(const ['proficiency_language', 'learning_language'])) {
+      addStep(
+        _LanguagePickStep(
           onNext: (data) => _captureOnboardingAnswer(
             data,
             onboardingData,
@@ -141,8 +136,16 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
             ref: ref,
           ),
         ),
-      if (ask(const ['learning_language']))
-        _WeaverStep(
+      );
+    }
+
+    if (ask(const [
+      'primary_goal',
+      'learning_reasons',
+      'daily_duration_minutes',
+    ])) {
+      addStep(
+        _GoalStep(
           onNext: (data) => _captureOnboardingAnswer(
             data,
             onboardingData,
@@ -155,8 +158,14 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
             ref: ref,
           ),
         ),
-      if (ask(const ['age_category', 'learning_reasons']))
-        _ElderQuestionStep(
+      );
+    }
+
+    if (ask(const ['learning_style']) || reask.isEmpty) {
+      addStep(
+        _LevelPlacementStep(
+          learningLanguage:
+              onboardingData.value['learning_language'] as String? ?? 'yo',
           onNext: (data) => _captureOnboardingAnswer(
             data,
             onboardingData,
@@ -169,8 +178,14 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
             ref: ref,
           ),
         ),
-      if (ask(const ['primary_goal']))
-        _PathChooserStep(
+      );
+    }
+
+    if (reask.isEmpty) {
+      addStep(
+        _FirstWinStep(
+          learningLanguage:
+              onboardingData.value['learning_language'] as String? ?? 'yo',
           onNext: (data) => _captureOnboardingAnswer(
             data,
             onboardingData,
@@ -183,8 +198,46 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
             ref: ref,
           ),
         ),
-      if (ask(const ['learning_style']))
-        _RhythmMasterStep(
+      );
+    }
+
+    if (ask(const ['age_category', 'learning_reasons']) ||
+        ask(const ['age_category'])) {
+      addStep(
+        _AccountAgeStep(
+          existingReasons:
+              (onboardingData.value['learning_reasons'] as List?)
+                  ?.cast<String>() ??
+              const <String>[],
+          onNext: (data) => _captureOnboardingAnswer(
+            data,
+            onboardingData,
+            pageController,
+            currentStep,
+            animationController,
+            stepsLength: () => stepCount[0],
+            reask: reask,
+            context: context,
+            ref: ref,
+          ),
+          onSignIn: () {
+            ref
+                .read(navigationProvider)
+                .navigateOffAll(const WorldClassLoginScreen());
+          },
+        ),
+      );
+    }
+
+    if (ask(const [
+      'daily_duration_minutes',
+      'preferred_time_of_day',
+      'reminders_enabled',
+    ])) {
+      addStep(
+        _NotificationsStep(
+          dailyMinutes:
+              onboardingData.value['daily_duration_minutes'] as int? ?? 10,
           onNext: (data) => _captureOnboardingAnswer(
             data,
             onboardingData,
@@ -197,12 +250,13 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
             ref: ref,
           ),
         ),
-      if (ask(const [
-        'daily_duration_minutes',
-        'preferred_time_of_day',
-        'reminders_enabled',
-      ]))
-        _TimekeeperStep(
+      );
+    }
+
+    // Remaining prefs after first win + account + notifications (recipe order).
+    if (ask(const ['learning_style'])) {
+      addStep(
+        _LearningStyleStep(
           onNext: (data) => _captureOnboardingAnswer(
             data,
             onboardingData,
@@ -215,8 +269,12 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
             ref: ref,
           ),
         ),
-      if (ask(const ['app_tone', 'gamification_level']))
-        _GriotStep(
+      );
+    }
+
+    if (ask(const ['app_tone', 'gamification_level'])) {
+      addStep(
+        _ToneStep(
           onNext: (data) => _captureOnboardingAnswer(
             data,
             onboardingData,
@@ -229,8 +287,12 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
             ref: ref,
           ),
         ),
-      if (reask.isEmpty)
-        _NamingCeremonyStep(
+      );
+    }
+
+    if (reask.isEmpty) {
+      addStep(
+        _ProfileStep(
           onboardingData: onboardingData.value,
           onComplete: () async {
             if (isCompleting.value) return;
@@ -241,15 +303,26 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
               isCompleting.value = false;
             }
           },
+          onSkip: () async {
+            if (isCompleting.value) return;
+            isCompleting.value = true;
+            try {
+              await _completeOnboarding(onboardingData.value, context, ref);
+            } finally {
+              isCompleting.value = false;
+            }
+          },
         ),
-    ];
-    stepCount[0] = steps.length;
+      );
+    }
 
+    stepCount[0] = steps.length;
     final totalSteps = steps.length;
 
     return Scaffold(
+      backgroundColor: ModernGriotColors.surface,
       body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light,
+        value: SystemUiOverlayStyle.dark,
         child: Stack(
           children: [
             PageView.builder(
@@ -264,57 +337,53 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
               itemCount: totalSteps,
               itemBuilder: (context, index) => steps[index],
             ),
-            // Progress indicator
-            _buildProgressIndicator(
-              context,
-              ref,
-              currentStep.value,
-              totalSteps,
-              isLightBackground: stepsLight[currentStep.value],
-              onBack: (!isCompleting.value && currentStep.value > 0)
-                  ? () => _goToPrevious(
-                      context,
-                      pageController,
-                      currentStep,
-                      animationController,
-                    )
-                  : null,
-              onSkip: isCompleting.value
-                  ? null
-                  : () => _skipOnboarding(context, ref),
-            ),
-            // Completion loading state: shown while local save, backend
-            // sync queueing, and the placement-test offer are in flight so
-            // the learner never sees an unresponsive screen.
+            if (totalSteps > 0)
+              _buildProgressIndicator(
+                context,
+                ref,
+                currentStep.value,
+                totalSteps,
+                isLightBackground: stepsLight[currentStep.value],
+                onBack: (!isCompleting.value && currentStep.value > 0)
+                    ? () => _goToPrevious(
+                        context,
+                        pageController,
+                        currentStep,
+                        animationController,
+                      )
+                    : null,
+                onSkip: isCompleting.value
+                    ? null
+                    : () => _skipOnboarding(context, ref),
+              ),
             if (isCompleting.value)
               Positioned.fill(
                 child: Semantics(
                   liveRegion: true,
                   label: 'Setting up your language village, please wait',
                   child: Container(
-                    color: PanAfricanColors.neutralDarkest.withValues(
-                      alpha: 0.72,
-                    ),
+                    color: ModernGriotColors.onSurface.withValues(alpha: 0.72),
                     child: Center(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           SizedBox(
-                            width: 36.w,
-                            height: 36.w,
+                            width: ModernGriotSpacing.xl.w,
+                            height: ModernGriotSpacing.xl.w,
                             child: const CircularProgressIndicator(
                               strokeWidth: 3,
                               valueColor: AlwaysStoppedAnimation<Color>(
-                                PanAfricanColors.secondary,
+                                _kBrandGold,
                               ),
                             ),
                           ),
-                          SizedBox(height: PanAfricanSpacing.md.h),
+                          SizedBox(height: ModernGriotSpacing.md.h),
                           Text(
                             'Preparing your village...',
-                            style: PanAfricanTypography.bodyMedium(
-                              context,
-                            ).copyWith(color: Colors.white),
+                            style: ModernGriotTypography.bodyMedium(
+                              context: context,
+                              color: ModernGriotColors.surface,
+                            ),
                           ),
                         ],
                       ),
@@ -337,28 +406,18 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
     VoidCallback? onBack,
     VoidCallback? onSkip,
   }) {
-    // This chrome floats over whichever step is currently showing (see the
-    // `Stack` in `build`), so it can't rely on `colorScheme.onPrimary` -
-    // which is designed for the app's *dark* primary surfaces - whenever
-    // the step underneath is one of the near-white
-    // `PanAfricanGradients.earth`/`sunset` steps; see `isLightBackground` on
-    // `_CharacterStepTemplate` for the full contrast-math rationale.
     final Color foregroundColor = isLightBackground
-        ? PanAfricanColors.textPrimary
-        : Theme.of(context).colorScheme.onPrimary;
-    final Color progressFillColor = isLightBackground
-        ? PanAfricanColors.primary
-        : Theme.of(context).colorScheme.primaryContainer;
+        ? ModernGriotColors.onSurface
+        : ModernGriotColors.surface;
+    final Color progressFillColor = _kBrandCoral;
     return Positioned(
-      top: MediaQuery.of(context).padding.top + PanAfricanSpacing.xs.h,
+      top: MediaQuery.of(context).padding.top + ModernGriotSpacing.xxs.h,
       left: 0,
       right: 0,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md.w),
+        padding: EdgeInsets.symmetric(horizontal: ModernGriotSpacing.sm.w),
         child: Row(
           children: [
-            // Back button: BackButtonIcon auto-mirrors for RTL locales
-            // (Arabic, Darija) instead of a hardcoded LTR chevron.
             if (onBack != null)
               Semantics(
                 label: 'Go back to the previous step',
@@ -366,91 +425,56 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                 child: IconButton(
                   onPressed: onBack,
                   icon: IconTheme(
-                    data: IconThemeData(color: foregroundColor, size: 20.sp),
+                    data: IconThemeData(color: foregroundColor, size: ModernGriotSpacing.lg.sp),
                     child: const BackButtonIcon(),
                   ),
                   style: IconButton.styleFrom(
-                    backgroundColor: foregroundColor.withValues(alpha: 0.15),
+                    backgroundColor: foregroundColor.withValues(alpha: 0.08),
                     minimumSize: const Size(
-                      AdaptiveLayout.minTouchTarget,
-                      AdaptiveLayout.minTouchTarget,
+                      ModernGriotLayout.minTouchTarget,
+                      ModernGriotLayout.minTouchTarget,
                     ),
                   ),
                 ),
               )
             else
-              SizedBox(width: PanAfricanSpacing.xxl.w),
-
-            // Progress bar
+              SizedBox(width: ModernGriotLayout.minTouchTarget.w),
             Expanded(
               child: Semantics(
                 label: 'Onboarding progress',
                 value: 'Step ${current + 1} of $total',
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: PanAfricanSpacing.sm.w,
-                    vertical: PanAfricanSpacing.xs.h,
-                  ),
-                  decoration: BoxDecoration(
-                    color: foregroundColor.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(PanAfricanRadius.pill),
-                    border: Border.all(
-                      color: foregroundColor.withValues(alpha: 0.2),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: ModernGriotSpacing.xs.w),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(ModernGriotRadius.pill),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        final progress = total == 0
+                            ? 0.0
+                            : ((current + 1) / total).clamp(0.0, 1.0);
+                        return Stack(
+                          children: [
+                            Container(
+                              height: ModernGriotSpacing.xxs.h,
+                              color: foregroundColor.withValues(alpha: 0.12),
+                            ),
+                            AnimatedContainer(
+                              duration: _motionDuration(
+                                context,
+                                const Duration(milliseconds: 300),
+                              ),
+                              height: ModernGriotSpacing.xxs.h,
+                              width: constraints.maxWidth * progress,
+                              color: progressFillColor,
+                            ),
+                          ],
+                        );
+                      },
                     ),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(
-                            PanAfricanRadius.pill,
-                          ),
-                          child: LayoutBuilder(
-                            builder: (context, constraints) {
-                              final progress = total == 0
-                                  ? 0.0
-                                  : ((current + 1) / total).clamp(0.0, 1.0);
-                              return Stack(
-                                children: [
-                                  Container(
-                                    height: PanAfricanSpacing.xxs.h,
-                                    color: foregroundColor.withValues(
-                                      alpha: 0.2,
-                                    ),
-                                  ),
-                                  AnimatedContainer(
-                                    duration: _motionDuration(
-                                      context,
-                                      const Duration(milliseconds: 300),
-                                    ),
-                                    height: PanAfricanSpacing.xxs.h,
-                                    width: constraints.maxWidth * progress,
-                                    decoration: BoxDecoration(
-                                      color: progressFillColor,
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: PanAfricanSpacing.sm.w),
-                      Text(
-                        '${current + 1}/$total',
-                        style: TextStyle(
-                          color: foregroundColor.withValues(alpha: 0.9),
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
                   ),
                 ),
               ),
             ),
-
-            // Skip button (only on early steps)
             if (current < 3)
               Semantics(
                 label: 'Skip onboarding',
@@ -459,16 +483,15 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                   onPressed: onSkip,
                   child: Text(
                     'Skip',
-                    style: TextStyle(
+                    style: ModernGriotTypography.labelLarge(
+                      context: context,
                       color: foregroundColor.withValues(alpha: 0.9),
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
               )
             else
-              SizedBox(width: PanAfricanSpacing.xxl.w),
+              SizedBox(width: ModernGriotLayout.minTouchTarget.w),
           ],
         ),
       ),
@@ -483,9 +506,6 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
   ) {
     step.value++;
     controller.nextPage(
-      // Runs on every one of this flow's step transitions, so it's the
-      // single most frequent motion in onboarding - it must respect
-      // reduced-motion like every other animation here.
       duration: _motionDuration(context, 400.ms),
       curve: Curves.easeInOut,
     );
@@ -554,7 +574,6 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
   ) async {
     final prefs = ref.read(sharedPreferencesProvider).prefs;
 
-    // Save all onboarding data locally
     try {
       await prefs.setString('onboarding_complete', 'true');
       await prefs.setString(
@@ -570,8 +589,6 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
       logger.error('Error saving onboarding completion locally', error: e);
     }
 
-    // Queue backend sync: this always succeeds locally even offline,
-    // because PersistedOutboxService is a durable, offline-first queue.
     var isOnline = true;
     try {
       isOnline = await ConnectivityService.hasInternet();
@@ -586,13 +603,13 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
-          backgroundColor: PanAfricanColors.neutralDark,
+          backgroundColor: ModernGriotColors.onSurface,
           content: Text(
             "You're offline right now, but we've saved your answers and "
             'will sync them the moment you reconnect.',
-            style: PanAfricanTypography.bodyMedium(
-              context,
-              color: Colors.white,
+            style: ModernGriotTypography.bodyMedium(
+              context: context,
+              color: ModernGriotColors.surface,
             ),
           ),
           duration: const Duration(seconds: 4),
@@ -600,49 +617,64 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
       );
     }
 
-    // Offer placement test
     final learningLanguage = data['learning_language'] as String?;
-    if (learningLanguage != null && context.mounted) {
+    if (learningLanguage != null &&
+        context.mounted &&
+        data['self_reported_level'] == 'unsure') {
       try {
         final alreadyPrompted =
             prefs.getBool('placement_test_prompt_shown') ?? false;
         if (!alreadyPrompted) {
-          // Reuses the shared Pan-African dialog component instead of a
-          // one-off AlertDialog, so styling stays consistent with the rest
-          // of the design system.
-          final shouldTakeTest = await PanAfricanDialog.show<bool>(
+          final shouldTakeTest = await showDialog<bool>(
             context: context,
-            title: 'Take a quick placement test?',
-            subtitle:
-                "We'll ask a few short questions to find your starting "
-                'level in $learningLanguage. You can always take it later '
-                'from your profile.',
-            child: const SizedBox.shrink(),
-            actions: [
-              Expanded(
-                child: TextButton(
-                  onPressed: () => Navigator.pop(context, false),
-                  child: const Text(
-                    'Maybe later',
-                    style: TextStyle(color: PanAfricanColors.textSecondary),
+            builder: (dialogContext) {
+              return AlertDialog(
+                backgroundColor: ModernGriotColors.surfaceContainerLowest,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
+                ),
+                title: Text(
+                  'Take a quick placement test?',
+                  style: ModernGriotTypography.titleLarge(
+                    context: dialogContext,
+                    color: ModernGriotColors.onSurface,
                   ),
                 ),
-              ),
-              SizedBox(width: PanAfricanSpacing.sm.w),
-              Expanded(
-                child: FilledButton(
-                  onPressed: () => Navigator.pop(context, true),
-                  style: FilledButton.styleFrom(
-                    backgroundColor: PanAfricanColors.primary,
-                    minimumSize: const Size(
-                      double.infinity,
-                      AdaptiveLayout.minTouchTarget,
+                content: Text(
+                  "We'll ask a few short questions to find your starting "
+                  'level in $learningLanguage. You can always take it later '
+                  'from your profile.',
+                  style: ModernGriotTypography.bodyMedium(
+                    context: dialogContext,
+                    color: ModernGriotColors.onSurfaceVariant,
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(dialogContext, false),
+                    child: Text(
+                      'Maybe later',
+                      style: ModernGriotTypography.labelLarge(
+                        context: dialogContext,
+                        color: ModernGriotColors.onSurfaceVariant,
+                      ),
                     ),
                   ),
-                  child: const Text('Take the test'),
-                ),
-              ),
-            ],
+                  FilledButton(
+                    onPressed: () => Navigator.pop(dialogContext, true),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: _kBrandGold,
+                      foregroundColor: _kOnBrandGold,
+                      minimumSize: const Size(
+                        ModernGriotLayout.minTouchTarget,
+                        ModernGriotLayout.minTouchTarget,
+                      ),
+                    ),
+                    child: const Text('Take the test'),
+                  ),
+                ],
+              );
+            },
           );
 
           await prefs.setBool('placement_test_prompt_shown', true);
@@ -661,7 +693,6 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
       }
     }
 
-    // Navigate to appropriate screen
     if (context.mounted) {
       final currentUser = ref.read(userProvider);
       final token = ref.read(apiProvider.notifier).token;
@@ -679,184 +710,75 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
 }
 
 // =============================================================================
-// STEP 0: Village Welcome
+// Shared chrome
 // =============================================================================
-class _VillageWelcomeStep extends StatelessWidget {
-  final VoidCallback onNext;
 
-  const _VillageWelcomeStep({required this.onNext});
+/// Clips Polie to a fixed square so the avatar's internal column cannot
+/// overflow speech-bubble rows on phone-sized layouts.
+class _PolieBadge extends StatelessWidget {
+  const _PolieBadge({
+    required this.step,
+    this.size,
+  });
+
+  final OnboardingStep step;
+  final double? size;
+
+  @override
+  Widget build(BuildContext context) {
+    final side = size ?? ModernGriotSpacing.xxxl.w;
+    return SizedBox(
+      width: side,
+      height: side,
+      child: ClipRect(
+        child: OverflowBox(
+          maxHeight: double.infinity,
+          alignment: Alignment.topCenter,
+          child: OnboardingAvatarWidget(
+            step: step,
+            size: side,
+            animate: true,
+            showDialogue: false,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _StepScaffold extends StatelessWidget {
+  const _StepScaffold({
+    required this.child,
+    this.bottom,
+  });
+
+  final Widget child;
+  final Widget? bottom;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: PanAfricanColors.primary,
+      color: ModernGriotColors.surface,
       child: ResponsiveSafeArea(
         child: Column(
           children: [
-            SizedBox(height: 80.h),
+            SizedBox(height: ModernGriotSpacing.xxl.h),
             Expanded(
-              child: Center(
-                child: Semantics(
-                  // Group the welcome narrative into one readable block so a
-                  // screen reader announces it as a coherent sentence rather
-                  // than four separate fragments.
-                  label:
-                      'Welcome to Kijiji cha Lugha, The Language Village. '
-                      'Your journey to mastering African languages begins here.',
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ExcludeSemantics(
-                        child:
-                            // `OnboardingAvatarWidget` always renders a
-                            // name/title caption beneath the portrait, so it
-                            // needs more height than this hero's 200x200
-                            // footprint. `OverflowBox` lets it lay itself out
-                            // without tripping its own internal `RenderFlex`
-                            // overflow assertion, and the outer `SizedBox` +
-                            // `ClipRect` crop the result back down to exactly
-                            // the intended portrait size.
-                            SizedBox(
-                                  width: 200.w,
-                                  height: 200.w,
-                                  child: ClipRect(
-                                    child: OverflowBox(
-                                      maxHeight: double.infinity,
-                                      alignment: Alignment.topCenter,
-                                      child: OnboardingAvatarWidget(
-                                        step: OnboardingStep.welcome,
-                                        size: 200.w,
-                                        animate: true,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                                .animate()
-                                .scale(
-                                  delay: _motionDelay(context, 200.ms),
-                                  duration: _motionDuration(context, 700.ms),
-                                  curve: Curves.elasticOut,
-                                )
-                                .fadeIn(
-                                  duration: _motionDuration(context, 500.ms),
-                                ),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(horizontal: ModernGriotSpacing.lg.w),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight,
                       ),
-                      SizedBox(height: PanAfricanSpacing.xxl.h),
-                      ExcludeSemantics(
-                        child:
-                            Text(
-                              'Welcome to',
-                              style: PanAfricanTypography.titleMedium(context)
-                                  .copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onPrimary
-                                        .withValues(alpha: 0.9),
-                                    letterSpacing: 1,
-                                  ),
-                            ).animate().fadeIn(
-                              delay: _motionDelay(context, 400.ms),
-                              duration: _motionDuration(context, 300.ms),
-                            ),
-                      ),
-                      SizedBox(height: PanAfricanSpacing.xs.h),
-                      ExcludeSemantics(
-                        child:
-                            Text(
-                                  'Kijiji cha Lugha',
-                                  textAlign: TextAlign.center,
-                                  style: PanAfricanTypography.displaySmall(
-                                    context,
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.onPrimary,
-                                  ).copyWith(height: 1.1, letterSpacing: -1),
-                                )
-                                .animate()
-                                .fadeIn(
-                                  delay: _motionDelay(context, 500.ms),
-                                  duration: _motionDuration(context, 300.ms),
-                                )
-                                .slideY(
-                                  begin: 0.2,
-                                  end: 0,
-                                  duration: _motionDuration(context, 300.ms),
-                                ),
-                      ),
-                      SizedBox(height: PanAfricanSpacing.sm.h),
-                      ExcludeSemantics(
-                        child:
-                            Text(
-                              'The Language Village',
-                              textAlign: TextAlign.center,
-                              style: PanAfricanTypography.titleMedium(context)
-                                  .copyWith(
-                                    color: PanAfricanColors.secondary,
-                                    letterSpacing: 0.5,
-                                  ),
-                            ).animate().fadeIn(
-                              delay: _motionDelay(context, 600.ms),
-                              duration: _motionDuration(context, 300.ms),
-                            ),
-                      ),
-                      SizedBox(height: PanAfricanSpacing.lg.h),
-                      ExcludeSemantics(
-                        child:
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: PanAfricanSpacing.xxl.w,
-                              ),
-                              child: Text(
-                                'Your journey to mastering African languages begins here.',
-                                textAlign: TextAlign.center,
-                                style: PanAfricanTypography.bodyMedium(context)
-                                    .copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimary
-                                          .withValues(alpha: 0.85),
-                                    ),
-                              ),
-                            ).animate().fadeIn(
-                              delay: _motionDelay(context, 700.ms),
-                              duration: _motionDuration(context, 300.ms),
-                            ),
-                      ),
-                    ],
-                  ),
-                ),
+                      child: child,
+                    ),
+                  );
+                },
               ),
             ),
-            Padding(
-              padding: EdgeInsets.all(PanAfricanSpacing.lg.w),
-              child:
-                  SizedBox(
-                        width: double.infinity,
-                        child: PanAfricanButton(
-                          label: 'Begin Your Journey',
-                          onPressed: () {
-                            HapticFeedback.mediumImpact();
-                            onNext();
-                          },
-                          backgroundColor: PanAfricanColors.primary,
-                          foregroundColor: Theme.of(
-                            context,
-                          ).colorScheme.onPrimary,
-                          height: 56.h,
-                        ),
-                      )
-                      .animate()
-                      .fadeIn(
-                        delay: _motionDelay(context, 800.ms),
-                        duration: _motionDuration(context, 300.ms),
-                      )
-                      .slideY(
-                        begin: 0.3,
-                        end: 0,
-                        duration: _motionDuration(context, 300.ms),
-                      ),
-            ),
-            SizedBox(height: PanAfricanSpacing.md.h),
+            if (bottom != null) bottom!,
           ],
         ),
       ),
@@ -864,415 +786,668 @@ class _VillageWelcomeStep extends StatelessWidget {
   }
 }
 
-// =============================================================================
-// STEP 1: Meet the Elder (What language do you speak?)
-// =============================================================================
-class _ElderStep extends HookConsumerWidget {
-  final Function(Map<String, dynamic>) onNext;
+class _PrimaryCta extends StatelessWidget {
+  const _PrimaryCta({
+    required this.label,
+    required this.enabled,
+    required this.onPressed,
+    this.color = _kBrandGold,
+    this.foreground = _kOnBrandGold,
+  });
 
-  const _ElderStep({required this.onNext});
-
-  static const _languages = [
-    {'code': 'en', 'name': 'English', 'flag': '🇬🇧'},
-    {'code': 'fr', 'name': 'French', 'flag': '🇫🇷'},
-    {'code': 'pt', 'name': 'Portuguese', 'flag': '🇵🇹'},
-    {'code': 'es', 'name': 'Spanish', 'flag': '🇪🇸'},
-    {'code': 'ar', 'name': 'Arabic', 'flag': '🇸🇦'},
-    {'code': 'sw', 'name': 'Swahili', 'flag': '🇰🇪'},
-    {'code': 'yo', 'name': 'Yoruba', 'flag': '🇳🇬'},
-    {'code': 'ha', 'name': 'Hausa', 'flag': '🇳🇬'},
-    {'code': 'zu', 'name': 'Zulu', 'flag': '🇿🇦'},
-    {'code': 'am', 'name': 'Amharic', 'flag': '🇪🇹'},
-  ];
+  final String label;
+  final bool enabled;
+  final VoidCallback? onPressed;
+  final Color color;
+  final Color foreground;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final selectedLanguage = useState<String?>(null);
-
-    return _CharacterStepTemplate(
-      gradient: PanAfricanGradients.earth,
-      isLightBackground: true,
-      characterIcon: Icons.elderly_rounded,
-      characterName: 'Pa LingAfriq',
-      dialogue:
-          'Karibu, traveler! I am Pa LingAfriq,\nkeeper of the village memory.',
-      question: 'Tell me, what language flows from your tongue?',
-      avatarStep: OnboardingStep.welcome,
-      child: Column(
-        children: [
-          // `shrinkWrap` + `NeverScrollableScrollPhysics` sizes this grid to
-          // its own content instead of needing an `Expanded` ancestor to
-          // tell it how tall to be - `_CharacterStepTemplate` now owns the
-          // single scrollable that this whole step scrolls within.
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.all(PanAfricanSpacing.md.w),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 2.2,
-              crossAxisSpacing: PanAfricanSpacing.sm.w,
-              mainAxisSpacing: PanAfricanSpacing.sm.h,
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(ModernGriotSpacing.lg.w, ModernGriotSpacing.xs.h, ModernGriotSpacing.lg.w, ModernGriotSpacing.md.h),
+      child: SizedBox(
+        width: double.infinity,
+        height: math.max(ModernGriotLayout.minTouchTarget.h, ModernGriotLayout.minTouchTarget.toDouble()),
+        child: FilledButton(
+          onPressed: enabled
+              ? () {
+                  HapticFeedback.mediumImpact();
+                  onPressed?.call();
+                }
+              : null,
+          style: FilledButton.styleFrom(
+            backgroundColor: color,
+            foregroundColor: foreground,
+            disabledBackgroundColor: ModernGriotColors.surfaceContainerHighest,
+            disabledForegroundColor: ModernGriotColors.onSurfaceVariant
+                .withValues(alpha: 0.5),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
             ),
-            itemCount: _languages.length,
-            itemBuilder: (context, index) {
-              final lang = _languages[index];
-              final isSelected = selectedLanguage.value == lang['code'];
-              return _LanguageCard(
-                flag: lang['flag']!,
-                name: lang['name']!,
-                isSelected: isSelected,
-                onTap: () {
-                  HapticFeedback.selectionClick();
-                  selectedLanguage.value = lang['code'];
-                },
-              );
-            },
+            textStyle: ModernGriotTypography.titleMedium(context: context),
           ),
-          _ContinueButton(
-            enabled: selectedLanguage.value != null,
-            onPressed: () async {
-              // Set app language
-              try {
-                await DynamicLocalizationService.setLanguage(
-                  selectedLanguage.value!,
-                );
-              } catch (e) {
-                logger.error('Error setting language', error: e);
-              }
-              // Save to prefs
-              try {
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.setString(
-                  'proficiency_language',
-                  selectedLanguage.value!,
-                );
-              } catch (e) {
-                logger.error('Error saving language', error: e);
-              }
-              onNext({'proficiency_language': selectedLanguage.value});
-            },
+          child: Text(label),
+        ),
+      ),
+    );
+  }
+}
+
+class _SelectRow extends StatelessWidget {
+  const _SelectRow({
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+    this.leading,
+    this.subtitle,
+    this.height = ModernGriotLayout.selectRowMin,
+  });
+
+  final String label;
+  final String? subtitle;
+  final Widget? leading;
+  final bool isSelected;
+  final VoidCallback onTap;
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      selected: isSelected,
+      label: isSelected ? '$label, selected' : label,
+      excludeSemantics: true,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
+          child: AnimatedContainer(
+            duration: _motionDuration(context, 180.ms),
+            constraints: BoxConstraints(
+              minHeight: math.max(height.h, ModernGriotLayout.minTouchTarget.toDouble()),
+            ),
+            margin: EdgeInsets.only(bottom: ModernGriotSpacing.sm.h),
+            padding: EdgeInsets.symmetric(horizontal: ModernGriotSpacing.md.w, vertical: ModernGriotSpacing.sm.h),
+            decoration: BoxDecoration(
+              color: isSelected
+                  ? _kBrandGold.withValues(alpha: 0.18)
+                  : ModernGriotColors.surfaceContainerLowest,
+              borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
+              border: Border.all(
+                color: isSelected
+                    ? _kBrandCoral
+                    : ModernGriotColors.outlineVariant.withValues(alpha: 0.35),
+                width: isSelected ? 2 : 1,
+              ),
+            ),
+            child: Row(
+              children: [
+                if (leading != null) ...[
+                  leading!,
+                  SizedBox(width: ModernGriotSpacing.sm.w),
+                ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        label,
+                        style: ModernGriotTypography.titleMedium(
+                          context: context,
+                          color: ModernGriotColors.onSurface,
+                        ),
+                      ),
+                      if (subtitle != null)
+                        Text(
+                          subtitle!,
+                          style: ModernGriotTypography.bodySmall(
+                            context: context,
+                            color: ModernGriotColors.onSurfaceVariant,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                if (isSelected)
+                  Icon(
+                    Icons.check_circle_rounded,
+                    color: _kBrandCoral,
+                    size: ModernGriotSpacing.lg.sp,
+                  ),
+              ],
+            ),
           ),
-        ],
+        ),
       ),
     );
   }
 }
 
 // =============================================================================
-// STEP 2: The Weaver (What language to learn?)
+// 1. Welcome — Finch mascot + Speak promise
 // =============================================================================
-class _WeaverStep extends HookConsumerWidget {
+
+class _WelcomeStep extends StatelessWidget {
+  const _WelcomeStep({required this.onNext, required this.onHaveAccount});
+
+  final VoidCallback onNext;
+  final VoidCallback onHaveAccount;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            ModernGriotColors.tertiaryContainer,
+            ModernGriotColors.surface,
+            ModernGriotColors.surfaceContainer,
+          ],
+          stops: [0.0, 0.55, 1.0],
+        ),
+      ),
+      child: ResponsiveSafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: ModernGriotSpacing.lg.w),
+          child: Column(
+            children: [
+              SizedBox(height: ModernGriotSpacing.xxl.h),
+              // Finch: mascot fills remaining space (~55%+) and waves on load.
+              Expanded(
+                child: Center(
+                  child: Semantics(
+                    label:
+                        'LingAfriq. Speak African languages with confidence. '
+                        'Learn with Polie — works offline.',
+                    child: ExcludeSemantics(
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          final side = math.min(
+                            constraints.maxWidth,
+                            constraints.maxHeight,
+                          );
+                          return SizedBox(
+                            width: side,
+                            height: side,
+                            child: ClipRect(
+                              child: OverflowBox(
+                                maxHeight: double.infinity,
+                                alignment: Alignment.topCenter,
+                                child: OnboardingAvatarWidget(
+                                  step: OnboardingStep.welcome,
+                                  size: side,
+                                  animate: true,
+                                  showDialogue: false,
+                                ),
+                              ),
+                            ),
+                          )
+                              .animate()
+                              .scale(
+                                delay: _motionDelay(context, 200.ms),
+                                duration: _motionDuration(context, 600.ms),
+                                curve: Curves.easeOut,
+                              )
+                              .fadeIn(
+                                duration: _motionDuration(context, 500.ms),
+                              );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              // Speak: speaking-first promise, one CTA, one account link.
+              ExcludeSemantics(
+                child: Text(
+                  'Welcome to',
+                  textAlign: TextAlign.center,
+                  style: ModernGriotTypography.titleMedium(
+                    context: context,
+                    color: ModernGriotColors.onSurfaceVariant,
+                  ),
+                ).animate().fadeIn(
+                  delay: _motionDelay(context, 400.ms),
+                  duration: _motionDuration(context, 300.ms),
+                ),
+              ),
+              SizedBox(height: ModernGriotSpacing.xxs.h),
+              Text(
+                'LingAfriq',
+                textAlign: TextAlign.center,
+                style: ModernGriotTypography.displaySmall(
+                  context: context,
+                  color: ModernGriotColors.onSurface,
+                ).copyWith(height: 1.05),
+              ),
+              SizedBox(height: ModernGriotSpacing.xs.h),
+              Text(
+                'The language village that gets you speaking.',
+                textAlign: TextAlign.center,
+                style: ModernGriotTypography.headlineSmall(
+                  context: context,
+                  color: ModernGriotColors.onSurface,
+                ).copyWith(height: 1.2),
+              ),
+              SizedBox(height: ModernGriotSpacing.xxs.h),
+              Text(
+                'Short lessons with Polie — hear, tap, and say real phrases.',
+                textAlign: TextAlign.center,
+                style: ModernGriotTypography.bodyMedium(
+                  context: context,
+                  color: ModernGriotColors.onSurfaceVariant,
+                ),
+              ),
+              SizedBox(height: ModernGriotSpacing.sm.h),
+              Semantics(
+                label: 'Works offline, about 2 megabytes per unit',
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: ModernGriotSpacing.sm.w,
+                    vertical: ModernGriotSpacing.xxs.h,
+                  ),
+                  decoration: BoxDecoration(
+                    color: ModernGriotColors.surfaceContainerHigh,
+                    borderRadius: BorderRadius.circular(
+                      ModernGriotRadius.pill,
+                    ),
+                  ),
+                  child: Text(
+                    'Works offline · about 2 MB per unit',
+                    style: ModernGriotTypography.labelMedium(
+                      context: context,
+                      color: ModernGriotColors.onSurface,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: ModernGriotSpacing.md.h),
+              SizedBox(
+                width: double.infinity,
+                height: math.max(
+                  ModernGriotLayout.minTouchTarget.h,
+                  ModernGriotLayout.minTouchTarget.toDouble(),
+                ),
+                child: FilledButton(
+                  onPressed: () {
+                    HapticFeedback.mediumImpact();
+                    onNext();
+                  },
+                  style: FilledButton.styleFrom(
+                    backgroundColor: _kBrandGold,
+                    foregroundColor: _kOnBrandGold,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        ModernGriotRadius.xl,
+                      ),
+                    ),
+                  ),
+                  child: Text(
+                    'Get started',
+                    style: ModernGriotTypography.titleMedium(
+                      context: context,
+                      color: _kOnBrandGold,
+                    ),
+                  ),
+                ),
+              ).animate().fadeIn(
+                delay: _motionDelay(context, 800.ms),
+                duration: _motionDuration(context, 300.ms),
+              ),
+              TextButton(
+                onPressed: onHaveAccount,
+                style: TextButton.styleFrom(
+                  minimumSize: const Size(
+                    ModernGriotLayout.minTouchTarget,
+                    ModernGriotLayout.minTouchTarget,
+                  ),
+                ),
+                child: Text(
+                  'I already have an account',
+                  style: ModernGriotTypography.labelLarge(
+                    context: context,
+                    color: ModernGriotColors.onSurface,
+                  ),
+                ),
+              ),
+              SizedBox(height: ModernGriotSpacing.xs.h),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// =============================================================================
+// 2. Language pick — Duolingo grouped rows
+// =============================================================================
+
+class _LanguagePickStep extends HookConsumerWidget {
+  const _LanguagePickStep({required this.onNext});
+
   final Function(Map<String, dynamic>) onNext;
 
-  const _WeaverStep({required this.onNext});
+  static const _homeLanguages = [
+    {'code': 'en', 'name': 'English', 'script': 'English'},
+    {'code': 'fr', 'name': 'French', 'script': 'Français'},
+    {'code': 'pt', 'name': 'Portuguese', 'script': 'Português'},
+    {'code': 'ar', 'name': 'Arabic', 'script': 'العربية'},
+    {'code': 'sw', 'name': 'Swahili', 'script': 'Kiswahili'},
+  ];
 
-  static const _africanLanguages = [
-    {'code': 'sw', 'name': 'Swahili', 'flag': '🇰🇪', 'region': 'East Africa'},
-    {'code': 'yo', 'name': 'Yoruba', 'flag': '🇳🇬', 'region': 'West Africa'},
-    {'code': 'ha', 'name': 'Hausa', 'flag': '🇳🇬', 'region': 'West Africa'},
-    {'code': 'ig', 'name': 'Igbo', 'flag': '🇳🇬', 'region': 'West Africa'},
-    {'code': 'zu', 'name': 'Zulu', 'flag': '🇿🇦', 'region': 'Southern Africa'},
+  static const _learnLanguages = [
     {
-      'code': 'xh',
-      'name': 'Xhosa',
-      'flag': '🇿🇦',
-      'region': 'Southern Africa',
+      'code': 'yo',
+      'name': 'Yoruba',
+      'script': 'Èdè Yorùbá',
+      'region': 'West Africa',
+      'flag': '🇳🇬',
+      'learners': '120k learners',
     },
-    {'code': 'am', 'name': 'Amharic', 'flag': '🇪🇹', 'region': 'East Africa'},
+    {
+      'code': 'ha',
+      'name': 'Hausa',
+      'script': 'Hausa',
+      'region': 'West Africa',
+      'flag': '🇳🇬',
+      'learners': '95k learners',
+    },
+    {
+      'code': 'ig',
+      'name': 'Igbo',
+      'script': 'Asụsụ Igbo',
+      'region': 'West Africa',
+      'flag': '🇳🇬',
+      'learners': '70k learners',
+    },
+    {
+      'code': 'tw',
+      'name': 'Twi',
+      'script': 'Twi',
+      'region': 'West Africa',
+      'flag': '🇬🇭',
+      'learners': '40k learners',
+    },
+    {
+      'code': 'wo',
+      'name': 'Wolof',
+      'script': 'Wolof',
+      'region': 'West Africa',
+      'flag': '🇸🇳',
+      'learners': '25k learners',
+    },
     {
       'code': 'pcm',
       'name': 'Nigerian Pidgin',
-      'flag': '🇳🇬',
+      'script': 'Naijá',
       'region': 'West Africa',
+      'flag': '🇳🇬',
+      'learners': '80k learners',
     },
-    {'code': 'wo', 'name': 'Wolof', 'flag': '🇸🇳', 'region': 'West Africa'},
-    {'code': 'tw', 'name': 'Twi', 'flag': '🇬🇭', 'region': 'West Africa'},
+    {
+      'code': 'sw',
+      'name': 'Swahili',
+      'script': 'Kiswahili',
+      'region': 'East Africa',
+      'flag': '🇰🇪',
+      'learners': '200k learners',
+    },
+    {
+      'code': 'am',
+      'name': 'Amharic',
+      'script': 'አማርኛ',
+      'region': 'East Africa',
+      'flag': '🇪🇹',
+      'learners': '55k learners',
+    },
+    {
+      'code': 'zu',
+      'name': 'Zulu',
+      'script': 'isiZulu',
+      'region': 'Southern Africa',
+      'flag': '🇿🇦',
+      'learners': '45k learners',
+    },
+    {
+      'code': 'xh',
+      'name': 'Xhosa',
+      'script': 'isiXhosa',
+      'region': 'Southern Africa',
+      'flag': '🇿🇦',
+      'learners': '30k learners',
+    },
+    {
+      'code': 'ar-maghreb',
+      'name': 'Darija',
+      'script': 'الدارجة',
+      'region': 'North Africa',
+      'flag': '🇲🇦',
+      'learners': '35k learners',
+    },
+    {
+      'code': 'ber',
+      'name': 'Tamazight',
+      'script': 'ⵜⴰⵎⴰⵣⵉⵖⵜ',
+      'region': 'North Africa',
+      'flag': 'ⵣ',
+      'learners': '20k learners',
+    },
   ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedLanguage = useState<String?>(null);
+    final selectedLearn = useState<String?>(null);
+    final selectedHome = useState<String>('en');
+    final query = useState('');
+    final searchController = useTextEditingController();
 
-    return _CharacterStepTemplate(
-      gradient: PanAfricanGradients.sunset,
-      isLightBackground: true,
-      characterIcon: Icons.auto_fix_high_rounded,
-      characterName: 'Adisa the Weaver',
-      dialogue:
-          'I weave the threads of languages\ninto patterns of understanding.',
-      question: 'Which African tongue calls to your spirit?',
-      avatarStep: OnboardingStep.languageSelection,
-      child: Column(
-        children: [
-          // `shrinkWrap` + `NeverScrollableScrollPhysics` sizes this list to
-          // its own content instead of needing an `Expanded` ancestor -
-          // `_CharacterStepTemplate` now owns the single scrollable that
-          // this whole step scrolls within.
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md.w),
-            itemCount: _africanLanguages.length,
-            itemBuilder: (context, index) {
-              final lang = _africanLanguages[index];
-              final isSelected = selectedLanguage.value == lang['code'];
-              return Padding(
-                padding: EdgeInsets.only(bottom: PanAfricanSpacing.sm.h),
-                child: _LanguageListTile(
-                  flag: lang['flag']!,
-                  name: lang['name']!,
-                  region: lang['region']!,
-                  isSelected: isSelected,
-                  onTap: () {
-                    HapticFeedback.selectionClick();
-                    selectedLanguage.value = lang['code'];
-                  },
-                ),
-              );
-            },
-          ),
-          _ContinueButton(
-            enabled: selectedLanguage.value != null,
-            onPressed: () async {
-              try {
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.setString(
-                  'learning_language',
-                  selectedLanguage.value!,
-                );
-                scheduleGamesPreloadAfterLearningLanguageSaved(ref);
-              } catch (e) {
-                logger.error('Error saving learning language', error: e);
-              }
-              onNext({'learning_language': selectedLanguage.value});
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
+    final filtered = _learnLanguages.where((lang) {
+      final q = query.value.trim().toLowerCase();
+      if (q.isEmpty) return true;
+      return (lang['name'] as String).toLowerCase().contains(q) ||
+          (lang['script'] as String).toLowerCase().contains(q) ||
+          (lang['region'] as String).toLowerCase().contains(q);
+    }).toList();
 
-// =============================================================================
-// STEP 3: Elder's Question (Age & Why learning?)
-// =============================================================================
-class _ElderQuestionStep extends HookConsumerWidget {
-  final Function(Map<String, dynamic>) onNext;
-
-  const _ElderQuestionStep({required this.onNext});
-
-  static const _ageCategories = ['child', 'teen', 'adult', 'senior'];
-  static const _reasons = [
-    {
-      'id': 'heritage',
-      'icon': Icons.family_restroom_rounded,
-      'label': 'Heritage',
-    },
-    {'id': 'travel', 'icon': Icons.flight_rounded, 'label': 'Travel'},
-    {'id': 'school', 'icon': Icons.school_rounded, 'label': 'School'},
-    {
-      'id': 'business',
-      'icon': Icons.business_center_rounded,
-      'label': 'Business',
-    },
-    {'id': 'curiosity', 'icon': Icons.lightbulb_rounded, 'label': 'Curiosity'},
-    {'id': 'family', 'icon': Icons.favorite_rounded, 'label': 'Family'},
-    {'id': 'culture', 'icon': Icons.music_note_rounded, 'label': 'Culture'},
-  ];
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final birthYearController = useTextEditingController();
-    final selectedReasons = useState<Set<String>>({});
-    final computedBand = useState<String?>(null);
-    final birthYearError = useState<String?>(null);
-
-    void recomputeBand() {
-      final parsed = int.tryParse(birthYearController.text.trim());
-      if (parsed == null || birthYearController.text.trim().length != 4) {
-        computedBand.value = null;
-        birthYearError.value = 'Enter your birth year (four digits).';
-        return;
-      }
-      final band = computeRegistrationAgeBand(parsed);
-      if (band == null) {
-        computedBand.value = null;
-        birthYearError.value = 'That birth year does not look right.';
-        return;
-      }
-      birthYearError.value = null;
-      computedBand.value = band;
+    final regions = <String>[];
+    for (final lang in filtered) {
+      final r = lang['region'] as String;
+      if (!regions.contains(r)) regions.add(r);
     }
 
-    useEffect(() {
-      void listener() => recomputeBand();
-      birthYearController.addListener(listener);
-      return () => birthYearController.removeListener(listener);
-    }, [birthYearController]);
-
-    final isChildBlocked = computedBand.value == 'child';
-
-    return _CharacterStepTemplate(
-      gradient: PanAfricanGradients.earth,
-      isLightBackground: true,
-      characterIcon: Icons.elderly_rounded,
-      characterName: 'Pa LingAfriq',
-      dialogue: 'Every learner has a story.\nShare yours with me.',
-      question: 'When were you born, and why do you seek knowledge?',
-      avatarStep: OnboardingStep.welcome,
-      // The guardian note below only appears once a child age band is
-      // selected, growing this step's content on the fly; the reasons grid
-      // is already `shrinkWrap`-sized rather than `Expanded`, so it's safe
-      // to size this whole step naturally - `_CharacterStepTemplate` owns
-      // the single scrollable this step (and its header above) scrolls
-      // within.
+    return _StepScaffold(
+      bottom: _PrimaryCta(
+        label: 'Continue',
+        enabled: selectedLearn.value != null,
+        onPressed: () async {
+          try {
+            await DynamicLocalizationService.setLanguage(selectedHome.value);
+          } catch (e) {
+            logger.error('Error setting language', error: e);
+          }
+          try {
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setString('proficiency_language', selectedHome.value);
+            await prefs.setString('learning_language', selectedLearn.value!);
+            scheduleGamesPreloadAfterLearningLanguageSaved(ref);
+          } catch (e) {
+            logger.error('Error saving languages', error: e);
+          }
+          onNext({
+            'proficiency_language': selectedHome.value,
+            'learning_language': selectedLearn.value,
+          });
+        },
+      ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Age selection
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const _PolieBadge(step: OnboardingStep.languageSelection),
+              SizedBox(width: ModernGriotSpacing.sm.w),
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.all(ModernGriotSpacing.sm.w),
+                  decoration: BoxDecoration(
+                    color: ModernGriotColors.surfaceContainerLowest,
+                    borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
+                    border: Border.all(
+                      color: ModernGriotColors.outlineVariant.withValues(
+                        alpha: 0.35,
+                      ),
+                    ),
+                  ),
+                  child: Text(
+                    'What do you want to learn?',
+                    style: ModernGriotTypography.titleLarge(
+                      context: context,
+                      color: ModernGriotColors.onSurface,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: ModernGriotSpacing.md.h),
+          Text(
+            'I speak',
+            style: ModernGriotTypography.labelLarge(
+              context: context,
+              color: ModernGriotColors.onSurfaceVariant,
+            ),
+          ),
+          SizedBox(height: ModernGriotSpacing.xs.h),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
               children: [
-                Text(
-                  'Your birth year',
-                  style: TextStyle(
-                    color: PanAfricanColors.textPrimary.withValues(alpha: 0.9),
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                SizedBox(height: PanAfricanSpacing.sm.h),
-                Semantics(
-                  label: 'Birth year',
-                  child: TextField(
-                    controller: birthYearController,
-                    keyboardType: TextInputType.number,
-                    maxLength: 4,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    decoration: InputDecoration(
-                      counterText: '',
-                      hintText: 'e.g. 2008',
-                      errorText: birthYearError.value,
-                      filled: true,
-                      fillColor: PanAfricanColors.textPrimary.withValues(alpha: 0.08),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.r),
+                for (final home in _homeLanguages)
+                  Padding(
+                    padding: EdgeInsetsDirectional.only(end: ModernGriotSpacing.xs.w),
+                    child: FilterChip(
+                      selected: selectedHome.value == home['code'],
+                      label: Text(home['name']!),
+                      onSelected: (_) {
+                        HapticFeedback.selectionClick();
+                        selectedHome.value = home['code']!;
+                      },
+                      selectedColor: _kBrandGold.withValues(alpha: 0.35),
+                      checkmarkColor: _kBrandCoral,
+                      labelStyle: ModernGriotTypography.labelLarge(
+                        context: context,
+                        color: ModernGriotColors.onSurface,
                       ),
                     ),
                   ),
-                ),
-                if (isChildBlocked) ...[
-                  SizedBox(height: PanAfricanSpacing.xs.h),
-                  Semantics(
-                    liveRegion: true,
-                    child: Text(
-                      'We need a guardian to verify consent before creating an account. '
-                      'Ask a grown-up to help you finish sign-up.',
-                      style: TextStyle(
-                        color: PanAfricanColors.secondary,
-                        fontSize: 12.sp,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
-                  ),
-                ] else if (computedBand.value == 'teen') ...[
-                  SizedBox(height: PanAfricanSpacing.xs.h),
-                  Semantics(
-                    liveRegion: true,
-                    child: Text(
-                      'Your profile stays private, and adults cannot DM you until you connect in a circle.',
-                      style: TextStyle(
-                        color: PanAfricanColors.textPrimary.withValues(alpha: 0.75),
-                        fontSize: 12.sp,
-                      ),
-                    ),
-                  ),
-                ],
               ],
             ),
           ),
-          SizedBox(height: PanAfricanSpacing.lg.h),
-          // Reasons grid
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Why are you learning? (Select all that apply)',
-                  style: TextStyle(
-                    color: PanAfricanColors.textPrimary.withValues(alpha: 0.9),
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
+          SizedBox(height: ModernGriotSpacing.sm.h),
+          TextField(
+            controller: searchController,
+            onChanged: (v) => query.value = v,
+            style: ModernGriotTypography.bodyLarge(
+              context: context,
+              color: ModernGriotColors.onSurface,
+            ),
+            decoration: InputDecoration(
+              hintText: 'Search languages',
+              prefixIcon: const Icon(Icons.search_rounded),
+              filled: true,
+              fillColor: ModernGriotColors.surfaceContainerLowest,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
+                borderSide: BorderSide(
+                  color: ModernGriotColors.outlineVariant.withValues(
+                    alpha: 0.35,
                   ),
                 ),
-                SizedBox(height: PanAfricanSpacing.sm.h),
-              ],
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
+                borderSide: BorderSide(
+                  color: ModernGriotColors.outlineVariant.withValues(
+                    alpha: 0.35,
+                  ),
+                ),
+              ),
             ),
           ),
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md.w),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              childAspectRatio: 1.1,
-              crossAxisSpacing: PanAfricanSpacing.sm.w,
-              mainAxisSpacing: PanAfricanSpacing.sm.h,
-            ),
-            itemCount: _reasons.length,
-            itemBuilder: (context, index) {
-              final reason = _reasons[index];
-              final isSelected = selectedReasons.value.contains(reason['id']);
-              return _ReasonCard(
-                icon: reason['icon'] as IconData,
-                label: reason['label'] as String,
-                isSelected: isSelected,
-                onTap: () {
-                  HapticFeedback.selectionClick();
-                  final newSet = Set<String>.from(selectedReasons.value);
-                  if (isSelected) {
-                    newSet.remove(reason['id']);
-                  } else {
-                    newSet.add(reason['id'] as String);
-                  }
-                  selectedReasons.value = newSet;
-                },
-              );
-            },
-          ),
-          SizedBox(height: PanAfricanSpacing.md.h),
-          _ContinueButton(
-            enabled:
-                computedBand.value != null &&
-                !isChildBlocked &&
-                selectedReasons.value.isNotEmpty,
-            onPressed: () async {
-              final year = int.parse(birthYearController.text.trim());
-              final band = computedBand.value!;
-              try {
-                await ref
-                    .read(onboardingProvider.notifier)
-                    .persistRegistrationBirthYear(year, band);
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.setString('age_category', band);
-                await prefs.setStringList(
-                  'learning_reasons',
-                  selectedReasons.value.toList(),
-                );
-              } catch (e) {
-                logger.error('Error saving age/reasons', error: e);
-              }
-              onNext({
-                'birth_year': year,
-                'age_band': band,
-                'age_category': band,
-                'learning_reasons': selectedReasons.value.toList(),
-              });
-            },
-          ),
+          SizedBox(height: ModernGriotSpacing.md.h),
+          if (filtered.isEmpty)
+            Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: ModernGriotSpacing.xl.h,
+              ),
+              child: Semantics(
+                liveRegion: true,
+                label: 'No languages match your search',
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.search_off_rounded,
+                      size: ModernGriotSpacing.xl.sp,
+                      color: ModernGriotColors.onSurfaceVariant,
+                    ),
+                    SizedBox(height: ModernGriotSpacing.xs.h),
+                    Text(
+                      'No languages match that search.',
+                      textAlign: TextAlign.center,
+                      style: ModernGriotTypography.titleMedium(
+                        context: context,
+                        color: ModernGriotColors.onSurface,
+                      ),
+                    ),
+                    SizedBox(height: ModernGriotSpacing.xxs.h),
+                    Text(
+                      'Try a region, a script name, or clear the box.',
+                      textAlign: TextAlign.center,
+                      style: ModernGriotTypography.bodyMedium(
+                        context: context,
+                        color: ModernGriotColors.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          else
+            for (final region in regions) ...[
+              Text(
+                region,
+                style: ModernGriotTypography.titleSmall(
+                  context: context,
+                  color: ModernGriotColors.onSurfaceVariant,
+                ),
+              ),
+              SizedBox(height: ModernGriotSpacing.xs.h),
+              for (final lang in filtered.where((l) => l['region'] == region))
+                _SelectRow(
+                  height: ModernGriotLayout.selectRowComfortable,
+                  label: lang['name'] as String,
+                  subtitle: '${lang['script']} · ${lang['learners']}',
+                  isSelected: selectedLearn.value == lang['code'],
+                  leading: Text(
+                    lang['flag'] as String,
+                    style: ModernGriotTypography.headlineMedium(
+                      context: context,
+                    ).copyWith(height: 1),
+                  ),
+                  onTap: () {
+                    HapticFeedback.selectionClick();
+                    selectedLearn.value = lang['code'] as String;
+                  },
+                ),
+              SizedBox(height: ModernGriotSpacing.xs.h),
+            ],
+          SizedBox(height: ModernGriotSpacing.lg.h),
         ],
       ),
     );
@@ -1280,108 +1455,157 @@ class _ElderQuestionStep extends HookConsumerWidget {
 }
 
 // =============================================================================
-// STEP 4: Path Chooser (Primary goal)
+// 3. Goal + daily time — Finch cards + Headspace clarity
 // =============================================================================
-class _PathChooserStep extends HookConsumerWidget {
-  final Function(Map<String, dynamic>) onNext;
 
-  const _PathChooserStep({required this.onNext});
+class _GoalStep extends HookConsumerWidget {
+  const _GoalStep({required this.onNext});
+
+  final Function(Map<String, dynamic>) onNext;
 
   static const _goals = [
     {
+      'id': 'family',
+      'icon': Icons.favorite_rounded,
+      'title': 'Talk to family',
+      'reason': 'family',
+    },
+    {
       'id': 'travel',
-      'icon': Icons.explore_rounded,
+      'icon': Icons.flight_rounded,
       'title': 'Travel',
-      'desc': 'Navigate confidently',
+      'reason': 'travel',
     },
     {
       'id': 'heritage',
-      'icon': Icons.favorite_rounded,
-      'title': 'Heritage',
-      'desc': 'Connect with roots',
+      'icon': Icons.diversity_3_rounded,
+      'title': 'Heritage and culture',
+      'reason': 'heritage',
     },
     {
-      'id': 'business',
-      'icon': Icons.business_center_rounded,
-      'title': 'Business',
-      'desc': 'Professional growth',
+      'id': 'work',
+      'icon': Icons.work_rounded,
+      'title': 'Work',
+      'reason': 'business',
     },
-    {
-      'id': 'academic',
-      'icon': Icons.school_rounded,
-      'title': 'Academic',
-      'desc': 'Educational success',
-    },
-    {
-      'id': 'confidence',
-      'icon': Icons.mic_rounded,
-      'title': 'Confidence',
-      'desc': 'Speak boldly',
-    },
-    {
-      'id': 'brain',
-      'icon': Icons.psychology_rounded,
-      'title': 'Brain Training',
-      'desc': 'Sharpen your mind',
-    },
+  ];
+
+  static const _durations = [
+    {'min': 5, 'label': 'Casual'},
+    {'min': 10, 'label': 'Steady'},
+    {'min': 15, 'label': 'Serious'},
+    {'min': 20, 'label': 'Intense'},
   ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedGoal = useState<String?>(null);
+    final selected = useState<Set<String>>({});
+    final duration = useState(10);
 
-    return _CharacterStepTemplate(
-      gradient: PanAfricanGradients.forest,
-      characterIcon: Icons.fork_right_rounded,
-      characterName: 'Zuri the Pathfinder',
-      dialogue:
-          'Many paths lead through our village.\nEach offers different wisdom.',
-      question: 'Which path calls to you?',
-      avatarStep: OnboardingStep.goals,
+    return _StepScaffold(
+      bottom: _PrimaryCta(
+        label: 'Continue',
+        enabled: selected.value.isNotEmpty,
+        onPressed: () async {
+          final reasons = selected.value
+              .map(
+                (id) =>
+                    _goals.firstWhere((g) => g['id'] == id)['reason'] as String,
+              )
+              .toList();
+          final primary = selected.value.first;
+          try {
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setString('primary_goal', primary);
+            await prefs.setStringList('learning_reasons', reasons);
+            await prefs.setInt('daily_duration', duration.value);
+          } catch (e) {
+            logger.error('Error saving goals', error: e);
+          }
+          onNext({
+            'primary_goal': primary,
+            'learning_reasons': reasons,
+            'daily_duration_minutes': duration.value,
+          });
+        },
+      ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // `shrinkWrap` + `NeverScrollableScrollPhysics` sizes this grid to
-          // its own content instead of needing an `Expanded` ancestor -
-          // `_CharacterStepTemplate` now owns the single scrollable that
-          // this whole step scrolls within.
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.all(PanAfricanSpacing.md.w),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 1.2,
-              crossAxisSpacing: PanAfricanSpacing.sm.w,
-              mainAxisSpacing: PanAfricanSpacing.sm.h,
+          Text(
+            'Why are you learning?',
+            style: ModernGriotTypography.headlineSmall(
+              context: context,
+              color: ModernGriotColors.onSurface,
             ),
-            itemCount: _goals.length,
-            itemBuilder: (context, index) {
-              final goal = _goals[index];
-              final isSelected = selectedGoal.value == goal['id'];
-              return _GoalCard(
-                icon: goal['icon'] as IconData,
-                title: goal['title'] as String,
-                description: goal['desc'] as String,
-                isSelected: isSelected,
-                onTap: () {
-                  HapticFeedback.selectionClick();
-                  selectedGoal.value = goal['id'] as String;
-                },
-              );
-            },
           ),
-          _ContinueButton(
-            enabled: selectedGoal.value != null,
-            onPressed: () async {
-              try {
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.setString('primary_goal', selectedGoal.value!);
-              } catch (e) {
-                logger.error('Error saving goal', error: e);
-              }
-              onNext({'primary_goal': selectedGoal.value});
-            },
+          SizedBox(height: ModernGriotSpacing.xxs.h),
+          Text(
+            'Pick one or more. We will shape your first path around them.',
+            style: ModernGriotTypography.bodyMedium(
+              context: context,
+              color: ModernGriotColors.onSurfaceVariant,
+            ),
           ),
+          SizedBox(height: ModernGriotSpacing.md.h),
+          for (final goal in _goals)
+            _SelectRow(
+              height: ModernGriotLayout.selectRowComfortable,
+              label: goal['title'] as String,
+              isSelected: selected.value.contains(goal['id']),
+              leading: Icon(
+                goal['icon'] as IconData,
+                color: selected.value.contains(goal['id'])
+                    ? _kBrandCoral
+                    : ModernGriotColors.primary,
+              ),
+              onTap: () {
+                HapticFeedback.selectionClick();
+                final next = Set<String>.from(selected.value);
+                final id = goal['id'] as String;
+                if (next.contains(id)) {
+                  next.remove(id);
+                } else {
+                  next.add(id);
+                }
+                selected.value = next;
+              },
+            ),
+          SizedBox(height: ModernGriotSpacing.lg.h),
+          Text(
+            'Daily time',
+            style: ModernGriotTypography.titleMedium(
+              context: context,
+              color: ModernGriotColors.onSurface,
+            ),
+          ),
+          SizedBox(height: ModernGriotSpacing.sm.h),
+          Wrap(
+            spacing: ModernGriotSpacing.xs.w,
+            runSpacing: ModernGriotSpacing.xs.h,
+            children: [
+              for (final d in _durations)
+                Semantics(
+                  button: true,
+                  selected: duration.value == d['min'],
+                  label: '${d['min']} minutes, ${d['label']}',
+                  child: ChoiceChip(
+                    selected: duration.value == d['min'],
+                    label: Text('${d['min']} min · ${d['label']}'),
+                    onSelected: (_) {
+                      HapticFeedback.selectionClick();
+                      duration.value = d['min'] as int;
+                    },
+                    selectedColor: _kBrandGold.withValues(alpha: 0.4),
+                    labelStyle: ModernGriotTypography.labelLarge(
+                      context: context,
+                      color: ModernGriotColors.onSurface,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          SizedBox(height: ModernGriotSpacing.lg.h),
         ],
       ),
     );
@@ -1389,12 +1613,212 @@ class _PathChooserStep extends HookConsumerWidget {
 }
 
 // =============================================================================
-// STEP 5: Rhythm Master (Learning style)
+// 4. Level placement — Duolingo signal bars
 // =============================================================================
-class _RhythmMasterStep extends HookConsumerWidget {
-  final Function(Map<String, dynamic>) onNext;
 
-  const _RhythmMasterStep({required this.onNext});
+class _LevelPlacementStep extends HookConsumerWidget {
+  const _LevelPlacementStep({
+    required this.onNext,
+    required this.learningLanguage,
+  });
+
+  final Function(Map<String, dynamic>) onNext;
+  final String learningLanguage;
+
+  static const _levels = [
+    {'id': 'new', 'label': "I'm new", 'bars': 0},
+    {'id': 'words', 'label': 'I know some common words', 'bars': 1},
+    {'id': 'basic', 'label': 'I can have basic conversations', 'bars': 2},
+    {'id': 'topics', 'label': 'I can talk about various topics', 'bars': 3},
+    {'id': 'fluent', 'label': 'I can hold a conversation', 'bars': 4},
+  ];
+
+  String get _langName {
+    switch (learningLanguage) {
+      case 'yo':
+        return 'Yoruba';
+      case 'sw':
+        return 'Swahili';
+      case 'ha':
+        return 'Hausa';
+      case 'ig':
+        return 'Igbo';
+      case 'zu':
+        return 'Zulu';
+      case 'am':
+        return 'Amharic';
+      default:
+        return 'this language';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selected = useState<String?>(null);
+    final showQuickCheck = useState(false);
+    final quickAnswers = useState<int>(0);
+
+    return _StepScaffold(
+      bottom: _PrimaryCta(
+        label: 'Continue',
+        enabled: selected.value != null,
+        onPressed: () async {
+          final level = selected.value!;
+          // Map level loosely into a default learning style so reask keys
+          // that expect learning_style still receive a value when style
+          // step is skipped in reask flows that only ask level.
+          final styleHint = level == 'new' || level == 'words'
+              ? 'audio'
+              : 'mixed';
+          try {
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setString('self_reported_level', level);
+            if (prefs.getString('learning_style') == null) {
+              await prefs.setString('learning_style', styleHint);
+            }
+          } catch (e) {
+            logger.error('Error saving level', error: e);
+          }
+          onNext({
+            'self_reported_level': level,
+            'learning_style': styleHint,
+          });
+        },
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const _PolieBadge(step: OnboardingStep.goals),
+              SizedBox(width: ModernGriotSpacing.sm.w),
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.all(ModernGriotSpacing.sm.w),
+                  decoration: BoxDecoration(
+                    color: ModernGriotColors.surfaceContainerLowest,
+                    borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
+                    border: Border.all(
+                      color: ModernGriotColors.outlineVariant.withValues(
+                        alpha: 0.35,
+                      ),
+                    ),
+                  ),
+                  child: Text(
+                    'How much $_langName do you know?',
+                    style: ModernGriotTypography.titleLarge(
+                      context: context,
+                      color: ModernGriotColors.onSurface,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: ModernGriotSpacing.lg.h),
+          for (final level in _levels)
+            _SelectRow(
+              label: level['label'] as String,
+              isSelected: selected.value == level['id'],
+              leading: _SignalBars(filled: level['bars'] as int),
+              onTap: () {
+                HapticFeedback.selectionClick();
+                selected.value = level['id'] as String;
+              },
+            ),
+          SizedBox(height: ModernGriotSpacing.xs.h),
+          TextButton(
+            onPressed: () {
+              showQuickCheck.value = !showQuickCheck.value;
+              if (!showQuickCheck.value) return;
+              selected.value = 'unsure';
+            },
+            child: Text(
+              "Not sure? Take a 1-minute check",
+              style: ModernGriotTypography.labelLarge(
+                context: context,
+                color: _kBrandCoral,
+              ),
+            ),
+          ),
+          if (showQuickCheck.value) ...[
+            SizedBox(height: ModernGriotSpacing.xs.h),
+            Text(
+              'Quick check: tap each word you recognize.',
+              style: ModernGriotTypography.bodyMedium(
+                context: context,
+                color: ModernGriotColors.onSurfaceVariant,
+              ),
+            ),
+            SizedBox(height: ModernGriotSpacing.xs.h),
+            Wrap(
+              spacing: ModernGriotSpacing.xs.w,
+              children: [
+                for (final word in const ['Báwo', 'Ẹ káàárọ̀', 'Oúnjẹ'])
+                  FilterChip(
+                    label: Text(word),
+                    selected: quickAnswers.value > 0,
+                    onSelected: (_) {
+                      quickAnswers.value++;
+                      selected.value = quickAnswers.value >= 2
+                          ? 'words'
+                          : 'new';
+                    },
+                  ),
+              ],
+            ),
+          ],
+          SizedBox(height: ModernGriotSpacing.lg.h),
+        ],
+      ),
+    );
+  }
+}
+
+class _SignalBars extends StatelessWidget {
+  const _SignalBars({required this.filled});
+
+  final int filled;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: ModernGriotSpacing.xl.w,
+      height: ModernGriotSpacing.lg.h,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: List.generate(4, (i) {
+          final on = i < filled;
+          return Padding(
+            padding: EdgeInsetsDirectional.only(
+              end: i == 3 ? 0 : ModernGriotSpacing.xxs.w,
+            ),
+            child: Container(
+              width: ModernGriotSpacing.xxs.w,
+              height: (ModernGriotSpacing.xs + i * ModernGriotSpacing.xxs).h,
+              decoration: BoxDecoration(
+                color: on
+                    ? ModernGriotColors.primary
+                    : ModernGriotColors.outlineVariant.withValues(alpha: 0.45),
+                borderRadius: BorderRadius.circular(ModernGriotRadius.xs / 2),
+              ),
+            ),
+          );
+        }),
+      ),
+    );
+  }
+}
+
+// =============================================================================
+// Learning style (preserved feature)
+// =============================================================================
+
+class _LearningStyleStep extends HookConsumerWidget {
+  const _LearningStyleStep({required this.onNext});
+
+  final Function(Map<String, dynamic>) onNext;
 
   static const _styles = [
     {
@@ -1437,60 +1861,56 @@ class _RhythmMasterStep extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedStyle = useState<String?>(null);
+    final selected = useState<String?>(null);
 
-    return _CharacterStepTemplate(
-      gradient: PanAfricanGradients.sunset,
-      isLightBackground: true,
-      characterIcon: Icons.music_note_rounded,
-      characterName: 'Nuru the Rhythm Master',
-      dialogue: 'Language is music, traveler.\nEach soul dances differently.',
-      question: 'How does your spirit best receive knowledge?',
-      avatarStep: OnboardingStep.learningStyle,
+    return _StepScaffold(
+      bottom: _PrimaryCta(
+        label: 'Continue',
+        enabled: selected.value != null,
+        onPressed: () async {
+          try {
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setString('learning_style', selected.value!);
+          } catch (e) {
+            logger.error('Error saving learning style', error: e);
+          }
+          onNext({'learning_style': selected.value});
+        },
+      ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // `shrinkWrap` + `NeverScrollableScrollPhysics` sizes this grid to
-          // its own content instead of needing an `Expanded` ancestor -
-          // `_CharacterStepTemplate` now owns the single scrollable that
-          // this whole step scrolls within.
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.all(PanAfricanSpacing.md.w),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 1.3,
-              crossAxisSpacing: PanAfricanSpacing.sm.w,
-              mainAxisSpacing: PanAfricanSpacing.sm.h,
+          Text(
+            'How do you learn best?',
+            style: ModernGriotTypography.headlineSmall(
+              context: context,
+              color: ModernGriotColors.onSurface,
             ),
-            itemCount: _styles.length,
-            itemBuilder: (context, index) {
-              final style = _styles[index];
-              final isSelected = selectedStyle.value == style['id'];
-              return _StyleCard(
-                icon: style['icon'] as IconData,
-                title: style['title'] as String,
-                description: style['desc'] as String,
-                isSelected: isSelected,
-                onTap: () {
-                  HapticFeedback.selectionClick();
-                  selectedStyle.value = style['id'] as String;
-                },
-              );
-            },
           ),
-          _ContinueButton(
-            enabled: selectedStyle.value != null,
-            onPressed: () async {
-              try {
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.setString('learning_style', selectedStyle.value!);
-              } catch (e) {
-                logger.error('Error saving learning style', error: e);
-              }
-              onNext({'learning_style': selectedStyle.value});
-            },
+          SizedBox(height: ModernGriotSpacing.xxs.h),
+          Text(
+            'Pick the style that feels most natural.',
+            style: ModernGriotTypography.bodyMedium(
+              context: context,
+              color: ModernGriotColors.onSurfaceVariant,
+            ),
           ),
+          SizedBox(height: ModernGriotSpacing.md.h),
+          for (final style in _styles)
+            _SelectRow(
+              label: style['title'] as String,
+              subtitle: style['desc'] as String,
+              isSelected: selected.value == style['id'],
+              leading: Icon(
+                style['icon'] as IconData,
+                color: ModernGriotColors.primary,
+              ),
+              onTap: () {
+                HapticFeedback.selectionClick();
+                selected.value = style['id'] as String;
+              },
+            ),
+          SizedBox(height: ModernGriotSpacing.lg.h),
         ],
       ),
     );
@@ -1498,234 +1918,658 @@ class _RhythmMasterStep extends HookConsumerWidget {
 }
 
 // =============================================================================
-// STEP 6: Timekeeper (Schedule)
+// 5. First win — Speak/Finch celebration after micro-lesson
 // =============================================================================
-class _TimekeeperStep extends HookConsumerWidget {
-  final Function(Map<String, dynamic>) onNext;
 
-  const _TimekeeperStep({required this.onNext});
+class _FirstWinStep extends HookConsumerWidget {
+  const _FirstWinStep({
+    required this.onNext,
+    required this.learningLanguage,
+  });
+
+  final Function(Map<String, dynamic>) onNext;
+  final String learningLanguage;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final phase = useState(0); // 0-2 exercises, 3 celebration
+    final reduceMotion = MediaQuery.disableAnimationsOf(context);
+
+    final exercises = const [
+      {'prompt': 'Hear: Báwo', 'hint': 'Tap if you heard a greeting', 'xp': 5},
+      {'prompt': 'Tap the greeting', 'hint': 'Báwo ni', 'xp': 5},
+      {'prompt': 'Say it with Polie', 'hint': 'Báwo — Hello', 'xp': 10},
+    ];
+
+    if (phase.value >= 3) {
+      return _StepScaffold(
+        bottom: _PrimaryCta(
+          label: 'Keep going',
+          enabled: true,
+          color: _kBrandCoral,
+          foreground: Colors.white,
+          onPressed: () {
+            onNext({
+              'first_win_completed': true,
+              'first_win_xp': 20,
+              'first_win_words': 3,
+            });
+          },
+        ),
+        child: Column(
+          children: [
+            SizedBox(height: ModernGriotSpacing.lg.h),
+            if (!reduceMotion)
+              _PolieBadge(
+                    step: OnboardingStep.complete,
+                    size: (ModernGriotSpacing.xl * 6).w,
+                  )
+                  .animate()
+                  .scale(
+                    duration: _motionDuration(context, 1200.ms),
+                    curve: Curves.elasticOut,
+                  )
+                  .fadeIn(duration: _motionDuration(context, 400.ms))
+            else
+              _PolieBadge(
+                step: OnboardingStep.complete,
+                size: (ModernGriotSpacing.xl * 6).w,
+              ),
+            SizedBox(height: ModernGriotSpacing.md.h),
+            Text(
+              'You did it!',
+              style: ModernGriotTypography.headlineMedium(
+                context: context,
+                color: ModernGriotColors.onSurface,
+              ),
+            ),
+            SizedBox(height: ModernGriotSpacing.xs.h),
+            Text(
+              'Celebrate progress, not perfection.',
+              textAlign: TextAlign.center,
+              style: ModernGriotTypography.bodyLarge(
+                context: context,
+                color: ModernGriotColors.onSurfaceVariant,
+              ),
+            ),
+            SizedBox(height: ModernGriotSpacing.lg.h),
+            const Row(
+              children: [
+                Expanded(
+                  child: _StatTile(value: '3', label: 'Words'),
+                ),
+                // Spacing via padding inside tiles; row stays const-safe.
+                Expanded(
+                  child: _StatTile(value: '20', label: 'XP'),
+                ),
+                Expanded(
+                  child: _StatTile(value: '1', label: 'Day streak'),
+                ),
+              ],
+            ),
+            SizedBox(height: ModernGriotSpacing.lg.h),
+          ],
+        ),
+      );
+    }
+
+    final ex = exercises[phase.value];
+    return _StepScaffold(
+      bottom: _PrimaryCta(
+        label: phase.value == 2 ? 'Finish lesson' : 'Got it',
+        enabled: true,
+        onPressed: () {
+          phase.value++;
+        },
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Your first win',
+            style: ModernGriotTypography.headlineSmall(
+              context: context,
+              color: ModernGriotColors.onSurface,
+            ),
+          ),
+          SizedBox(height: ModernGriotSpacing.xxs.h),
+          Text(
+            'A 60-second taste — hear, tap, say.',
+            style: ModernGriotTypography.bodyMedium(
+              context: context,
+              color: ModernGriotColors.onSurfaceVariant,
+            ),
+          ),
+          SizedBox(height: ModernGriotSpacing.lg.h),
+          LinearProgressIndicator(
+            value: (phase.value + 1) / 3,
+            backgroundColor: ModernGriotColors.surfaceContainerHighest,
+            color: _kBrandGold,
+            minHeight: ModernGriotSpacing.xxs.h,
+            borderRadius: BorderRadius.circular(ModernGriotRadius.pill),
+          ),
+          SizedBox(height: ModernGriotSpacing.xl.h),
+          Center(
+            child: _PolieBadge(
+              step: OnboardingStep.story,
+              size: (ModernGriotSpacing.xxl * 2 + ModernGriotSpacing.lg).w,
+            ),
+          ),
+          SizedBox(height: ModernGriotSpacing.lg.h),
+          Center(
+            child: Text(
+              ex['prompt'] as String,
+              textAlign: TextAlign.center,
+              style: ModernGriotTypography.headlineMedium(
+                context: context,
+                color: ModernGriotColors.onSurface,
+              ),
+            ),
+          ),
+          SizedBox(height: ModernGriotSpacing.xs.h),
+          Center(
+            child: Text(
+              ex['hint'] as String,
+              textAlign: TextAlign.center,
+              style: ModernGriotTypography.bodyLarge(
+                context: context,
+                color: ModernGriotColors.onSurfaceVariant,
+              ),
+            ),
+          ),
+          SizedBox(height: ModernGriotSpacing.lg.h),
+        ],
+      ),
+    );
+  }
+}
+
+class _StatTile extends StatelessWidget {
+  const _StatTile({required this.value, required this.label});
+
+  final String value;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: ModernGriotSpacing.xxs.w),
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          vertical: ModernGriotSpacing.md.h,
+          horizontal: ModernGriotSpacing.xs.w,
+        ),
+        decoration: BoxDecoration(
+          color: ModernGriotColors.surfaceContainerLowest,
+          borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
+          border: Border.all(
+            color: ModernGriotColors.outlineVariant.withValues(alpha: 0.3),
+          ),
+        ),
+        child: Column(
+          children: [
+            Text(
+              value,
+              style: ModernGriotTypography.headlineMedium(
+                context: context,
+                color: _kBrandCoral,
+              ),
+            ),
+            SizedBox(height: ModernGriotSpacing.xxs.h),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              style: ModernGriotTypography.labelMedium(
+                context: context,
+                color: ModernGriotColors.onSurface,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// =============================================================================
+// 6. Account + age — birth-year wheel, Ask-a-parent, sign-in offer
+// =============================================================================
+
+class _AccountAgeStep extends HookConsumerWidget {
+  const _AccountAgeStep({
+    required this.onNext,
+    required this.onSignIn,
+    required this.existingReasons,
+  });
+
+  final Function(Map<String, dynamic>) onNext;
+  final VoidCallback onSignIn;
+  final List<String> existingReasons;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final nowYear = DateTime.now().year;
+    final years = [for (var y = nowYear; y >= 1900; y--) y];
+    final initialIndex = years.indexOf(nowYear - 18).clamp(0, years.length - 1);
+    final selectedYear = useState(years[initialIndex]);
+    final wheelController = useFixedExtentScrollController(
+      initialItem: initialIndex,
+    );
+    final parentEmail = useState('');
+    final band = computeRegistrationAgeBand(selectedYear.value);
+    final isChild = band == 'child';
+    final emailOk = !isChild ||
+        RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(parentEmail.value.trim());
+
+    return _StepScaffold(
+      bottom: _PrimaryCta(
+        label: isChild ? 'Ask a parent to continue' : 'Continue',
+        enabled: band != null && emailOk,
+        onPressed: () async {
+          final year = selectedYear.value;
+          final ageBand = band!;
+          try {
+            await ref
+                .read(onboardingProvider.notifier)
+                .persistRegistrationBirthYear(year, ageBand);
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setString('age_category', ageBand);
+            if (existingReasons.isNotEmpty) {
+              await prefs.setStringList('learning_reasons', existingReasons);
+            }
+            if (isChild) {
+              await prefs.setString(
+                'guardian_email',
+                parentEmail.value.trim(),
+              );
+            }
+          } catch (e) {
+            logger.error('Error saving age', error: e);
+          }
+          onNext({
+            'birth_year': year,
+            'age_band': ageBand,
+            'age_category': ageBand,
+            if (existingReasons.isNotEmpty)
+              'learning_reasons': existingReasons,
+            if (isChild) 'guardian_email': parentEmail.value.trim(),
+            if (isChild) 'needs_guardian_consent': true,
+          });
+        },
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'When were you born?',
+            style: ModernGriotTypography.headlineSmall(
+              context: context,
+              color: ModernGriotColors.onSurface,
+            ),
+          ),
+          SizedBox(height: ModernGriotSpacing.xxs.h),
+          Text(
+            'This helps us keep LingAfriq right for you.',
+            style: ModernGriotTypography.bodyMedium(
+              context: context,
+              color: ModernGriotColors.onSurfaceVariant,
+            ),
+          ),
+          SizedBox(height: ModernGriotSpacing.md.h),
+          Semantics(
+            label: 'Birth year scroll wheel',
+            value: '${selectedYear.value}',
+            child: SizedBox(
+              height: (ModernGriotSpacing.xxxl * 2 + ModernGriotSpacing.xl).h,
+              child: ListWheelScrollView.useDelegate(
+                controller: wheelController,
+                itemExtent: ModernGriotLayout.minTouchTarget.h,
+                physics: const FixedExtentScrollPhysics(),
+                onSelectedItemChanged: (i) {
+                  HapticFeedback.selectionClick();
+                  selectedYear.value = years[i];
+                },
+                childDelegate: ListWheelChildBuilderDelegate(
+                  childCount: years.length,
+                  builder: (context, index) {
+                    final y = years[index];
+                    final selected = y == selectedYear.value;
+                    return Center(
+                      child: Text(
+                        '$y',
+                        style: selected
+                            ? ModernGriotTypography.headlineMedium(
+                                context: context,
+                                color: ModernGriotColors.onSurface,
+                              )
+                            : ModernGriotTypography.titleLarge(
+                                context: context,
+                                color: ModernGriotColors.onSurfaceVariant,
+                              ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+          // Accessible fallback for tests / screen readers that prefer
+          // typed input over a wheel.
+          SizedBox(height: ModernGriotSpacing.xs.h),
+          Semantics(
+            label: 'Birth year',
+            textField: true,
+            child: TextField(
+              keyboardType: TextInputType.number,
+              maxLength: 4,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              style: ModernGriotTypography.bodyLarge(
+                context: context,
+                color: ModernGriotColors.onSurface,
+              ),
+              decoration: InputDecoration(
+                counterText: '',
+                hintText: 'Or type year, e.g. 2008',
+                filled: true,
+                fillColor: ModernGriotColors.surfaceContainerLowest,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
+                ),
+              ),
+              onChanged: (v) {
+                if (v.length != 4) return;
+                final parsed = int.tryParse(v);
+                if (parsed == null) return;
+                final idx = years.indexOf(parsed);
+                if (idx < 0) return;
+                selectedYear.value = parsed;
+                wheelController.jumpToItem(idx);
+              },
+            ),
+          ),
+          if (isChild) ...[
+            SizedBox(height: ModernGriotSpacing.md.h),
+            Semantics(
+              liveRegion: true,
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(ModernGriotSpacing.md.w),
+                decoration: BoxDecoration(
+                  color: ModernGriotColors.primaryContainer.withValues(alpha: 0.45),
+                  borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Ask a parent',
+                      style: ModernGriotTypography.titleMedium(
+                        context: context,
+                        color: ModernGriotColors.onSurface,
+                      ),
+                    ),
+                    SizedBox(height: ModernGriotSpacing.xxs.h),
+                    Text(
+                      'A guardian can help finish set-up. Share their email '
+                      'and we will send a kind invite — no dead ends.',
+                      style: ModernGriotTypography.bodyMedium(
+                        context: context,
+                        color: ModernGriotColors.onSurface,
+                      ),
+                    ),
+                    SizedBox(height: ModernGriotSpacing.sm.h),
+                    TextField(
+                      keyboardType: TextInputType.emailAddress,
+                      onChanged: (v) => parentEmail.value = v,
+                      style: ModernGriotTypography.bodyLarge(
+                        context: context,
+                        color: ModernGriotColors.onSurface,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: 'Parent email',
+                        filled: true,
+                        fillColor: ModernGriotColors.surfaceContainerLowest,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(
+                            ModernGriotRadius.lg,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ] else if (band == 'teen') ...[
+            SizedBox(height: ModernGriotSpacing.sm.h),
+            Semantics(
+              liveRegion: true,
+              child: Text(
+                'Your profile stays private, and adults cannot DM you until '
+                'you connect in a circle.',
+                style: ModernGriotTypography.bodyMedium(
+                  context: context,
+                  color: ModernGriotColors.onSurfaceVariant,
+                ),
+              ),
+            ),
+          ],
+          SizedBox(height: ModernGriotSpacing.lg.h),
+          Text(
+            'Save progress with an account',
+            style: ModernGriotTypography.titleMedium(
+              context: context,
+              color: ModernGriotColors.onSurface,
+            ),
+          ),
+          SizedBox(height: ModernGriotSpacing.xs.h),
+          Wrap(
+            spacing: ModernGriotSpacing.xs.w,
+            children: [
+              OutlinedButton(
+                onPressed: onSignIn,
+                child: const Text('Google'),
+              ),
+              OutlinedButton(
+                onPressed: onSignIn,
+                child: const Text('Apple'),
+              ),
+              OutlinedButton(
+                onPressed: onSignIn,
+                child: const Text('Email'),
+              ),
+            ],
+          ),
+          TextButton(
+            onPressed: () {
+              // Skip account — progress already saved on device via prefs
+              // when Continue is pressed; this link is informational.
+            },
+            child: Text(
+              'Skip for now — progress stays on this device',
+              style: ModernGriotTypography.labelMedium(
+                context: context,
+                color: ModernGriotColors.onSurfaceVariant,
+              ),
+            ),
+          ),
+          SizedBox(height: ModernGriotSpacing.lg.h),
+        ],
+      ),
+    );
+  }
+}
+
+// =============================================================================
+// 7. Notifications — Opal value-first pre-prompt
+// =============================================================================
+
+class _NotificationsStep extends HookConsumerWidget {
+  const _NotificationsStep({
+    required this.onNext,
+    required this.dailyMinutes,
+  });
+
+  final Function(Map<String, dynamic>) onNext;
+  final int dailyMinutes;
 
   static const _times = [
-    {
-      'id': 'sunrise',
-      'icon': Icons.wb_twilight_rounded,
-      'label': 'Sunrise',
-      'time': '6-9 AM',
-    },
-    {
-      'id': 'midday',
-      'icon': Icons.wb_sunny_rounded,
-      'label': 'Midday',
-      'time': '12-2 PM',
-    },
-    {
-      'id': 'sunset',
-      'icon': Icons.nights_stay_rounded,
-      'label': 'Sunset',
-      'time': '5-7 PM',
-    },
-    {
-      'id': 'night',
-      'icon': Icons.bedtime_rounded,
-      'label': 'Night',
-      'time': '8-10 PM',
-    },
+    {'id': 'sunrise', 'label': 'Sunrise', 'time': '6–9 AM'},
+    {'id': 'midday', 'label': 'Midday', 'time': '12–2 PM'},
+    {'id': 'sunset', 'label': 'Sunset', 'time': '5–7 PM'},
+    {'id': 'night', 'label': 'Night', 'time': '8–10 PM'},
   ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final duration = useState(15);
-    final selectedTime = useState<String?>(null);
-    final remindersEnabled = useState(true);
+    final selectedTime = useState<String?>('sunrise');
 
-    return _CharacterStepTemplate(
-      gradient: PanAfricanGradients.earth,
-      isLightBackground: true,
-      characterIcon: Icons.schedule_rounded,
-      characterName: 'Kofi the Timekeeper',
-      dialogue:
-          'Time is the gift we give ourselves.\nHow much will you invest?',
-      question: 'When and how long shall we train?',
-      avatarStep: OnboardingStep.schedule,
-      // `_CharacterStepTemplate` now owns the single scrollable this step
-      // (and its header above) scrolls within, so this no longer needs its
-      // own nested `SingleChildScrollView`; the time grid below is already
-      // `shrinkWrap`-sized rather than `Expanded`.
-      child: Column(
+    Future<void> finish({required bool enable}) async {
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setInt('daily_duration', dailyMinutes);
+        await prefs.setString('preferred_time', selectedTime.value ?? 'sunrise');
+        await prefs.setBool('reminders_enabled', enable);
+        if (enable) {
+          try {
+            await ref
+                .read(firebaseMessagingProvider)
+                .messaging
+                .requestPermission();
+          } catch (e) {
+            logger.warn('Notification permission request failed', error: e);
+          }
+        }
+      } catch (e) {
+        logger.error('Error saving reminders', error: e);
+      }
+      onNext({
+        'daily_duration_minutes': dailyMinutes,
+        'preferred_time_of_day': selectedTime.value ?? 'sunrise',
+        'reminders_enabled': enable,
+      });
+    }
+
+    return _StepScaffold(
+      bottom: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Padding(
-            padding: EdgeInsets.all(PanAfricanSpacing.md.w),
+          _PrimaryCta(
+            label: 'Turn on reminders',
+            enabled: selectedTime.value != null,
+            onPressed: () => finish(enable: true),
+          ),
+          TextButton(
+            onPressed: () => finish(enable: false),
+            child: Text(
+              'Not now',
+              style: ModernGriotTypography.labelLarge(
+                context: context,
+                color: ModernGriotColors.onSurfaceVariant,
+              ),
+            ),
+          ),
+          SizedBox(height: ModernGriotSpacing.xs.h),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'A soft nudge when it matters',
+            style: ModernGriotTypography.headlineSmall(
+              context: context,
+              color: ModernGriotColors.onSurface,
+            ),
+          ),
+          SizedBox(height: ModernGriotSpacing.xxs.h),
+          Text(
+            'See the reminder below. Turn it on only if it helps you '
+            'keep your streak — you pick the time.',
+            style: ModernGriotTypography.bodyMedium(
+              context: context,
+              color: ModernGriotColors.onSurfaceVariant,
+            ),
+          ),
+          SizedBox(height: ModernGriotSpacing.lg.h),
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(ModernGriotSpacing.md.w),
+            decoration: BoxDecoration(
+              color: ModernGriotColors.surfaceContainerLowest,
+              borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
+              border: Border.all(
+                color: _kBrandGold.withValues(alpha: 0.55),
+                width: 2,
+              ),
+            ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Duration slider
+                Row(
+                  children: [
+                    _PolieBadge(
+                      step: OnboardingStep.schedule,
+                      size: ModernGriotLayout.selectRowMin.w,
+                    ),
+                    SizedBox(width: ModernGriotSpacing.sm.w),
+                    Expanded(
+                      child: Text(
+                        'Ẹ kú àárọ̀! $dailyMinutes minutes of Yoruba?',
+                        style: ModernGriotTypography.titleMedium(
+                          context: context,
+                          color: ModernGriotColors.onSurface,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: ModernGriotSpacing.sm.h),
                 Container(
-                  padding: EdgeInsets.all(20.w),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: ModernGriotSpacing.sm.w,
+                    vertical: ModernGriotSpacing.xxs.h,
+                  ),
                   decoration: BoxDecoration(
-                    color: PanAfricanColors.textPrimary.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+                    color: _kBrandGold.withValues(alpha: 0.35),
+                    borderRadius: BorderRadius.circular(ModernGriotRadius.pill),
                   ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // `Flexible` + ellipsis keeps this label from
-                          // forcing a `RenderFlex` overflow in this fixed-
-                          // width row at larger text scales or on
-                          // narrower devices; the minutes value (the
-                          // slider's actual live readout) keeps its full,
-                          // unclipped width since it's the more important
-                          // of the two to always show in full.
-                          Flexible(
-                            child: Text(
-                              'Daily Goal',
-                              style: TextStyle(
-                                color: PanAfricanColors.textPrimary.withValues(
-                                  alpha: 0.9,
-                                ),
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          SizedBox(width: PanAfricanSpacing.sm.w),
-                          Text(
-                            '${duration.value} minutes',
-                            style: TextStyle(
-                              color: PanAfricanColors.secondary,
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: PanAfricanSpacing.sm.h),
-                      SliderTheme(
-                        data: SliderTheme.of(context).copyWith(
-                          activeTrackColor: PanAfricanColors.secondary,
-                          inactiveTrackColor: PanAfricanColors.textPrimary
-                              .withValues(alpha: 0.2),
-                          thumbColor: PanAfricanColors.secondary,
-                          overlayColor: PanAfricanColors.secondary.withValues(
-                            alpha: 0.2,
-                          ),
-                        ),
-                        child: Slider(
-                          value: duration.value.toDouble(),
-                          min: 5,
-                          max: 60,
-                          divisions: 11,
-                          label: '${duration.value} min',
-                          onChanged: (v) => duration.value = v.toInt(),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '5 min',
-                            style: TextStyle(
-                              color: PanAfricanColors.textPrimary.withValues(
-                                alpha: 0.54,
-                              ),
-                              fontSize: 12.sp,
-                            ),
-                          ),
-                          Text(
-                            '60 min',
-                            style: TextStyle(
-                              color: PanAfricanColors.textPrimary.withValues(
-                                alpha: 0.54,
-                              ),
-                              fontSize: 12.sp,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                  child: Text(
+                    _times
+                        .firstWhere(
+                          (t) => t['id'] == selectedTime.value,
+                          orElse: () => _times.first,
+                        )['time']
+                        as String,
+                    style: ModernGriotTypography.labelLarge(
+                      context: context,
+                      color: ModernGriotColors.onSurface,
+                    ),
                   ),
                 ),
-                SizedBox(height: 20.h),
-                // Time of day
-                Text(
-                  'Best Time to Learn',
-                  style: TextStyle(
-                    color: PanAfricanColors.textPrimary.withValues(alpha: 0.9),
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                SizedBox(height: PanAfricanSpacing.sm.h),
               ],
             ),
           ),
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md.w),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 1.8,
-              crossAxisSpacing: PanAfricanSpacing.sm.w,
-              mainAxisSpacing: PanAfricanSpacing.sm.h,
-            ),
-            itemCount: _times.length,
-            itemBuilder: (context, index) {
-              final time = _times[index];
-              final isSelected = selectedTime.value == time['id'];
-              return _TimeCard(
-                icon: time['icon'] as IconData,
-                label: time['label'] as String,
-                time: time['time'] as String,
-                isSelected: isSelected,
-                onTap: () {
-                  HapticFeedback.selectionClick();
-                  selectedTime.value = time['id'] as String;
-                },
-              );
-            },
-          ),
-          SizedBox(height: PanAfricanSpacing.xs.h),
-          // Reminders toggle
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md.w),
-            child: SwitchListTile(
-              title: Text(
-                'Enable Daily Reminders',
-                style: TextStyle(
-                  color: PanAfricanColors.textPrimary,
-                  fontSize: 14.sp,
-                ),
-              ),
-              value: remindersEnabled.value,
-              onChanged: (v) => remindersEnabled.value = v,
-              activeThumbColor: PanAfricanColors.secondary,
-              contentPadding: EdgeInsets.zero,
+          SizedBox(height: ModernGriotSpacing.lg.h),
+          Text(
+            'Best time',
+            style: ModernGriotTypography.titleMedium(
+              context: context,
+              color: ModernGriotColors.onSurface,
             ),
           ),
-          _ContinueButton(
-            enabled: selectedTime.value != null,
-            onPressed: () async {
-              try {
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.setInt('daily_duration', duration.value);
-                await prefs.setString('preferred_time', selectedTime.value!);
-                await prefs.setBool(
-                  'reminders_enabled',
-                  remindersEnabled.value,
-                );
-              } catch (e) {
-                logger.error('Error saving schedule', error: e);
-              }
-              onNext({
-                'daily_duration_minutes': duration.value,
-                'preferred_time_of_day': selectedTime.value,
-                'reminders_enabled': remindersEnabled.value,
-              });
-            },
-          ),
-          SizedBox(height: PanAfricanSpacing.md.h),
+          SizedBox(height: ModernGriotSpacing.xs.h),
+          for (final t in _times)
+            _SelectRow(
+              label: t['label'] as String,
+              subtitle: t['time'] as String,
+              isSelected: selectedTime.value == t['id'],
+              onTap: () {
+                HapticFeedback.selectionClick();
+                selectedTime.value = t['id'] as String;
+              },
+            ),
+          SizedBox(height: ModernGriotSpacing.lg.h),
         ],
       ),
     );
@@ -1733,12 +2577,13 @@ class _TimekeeperStep extends HookConsumerWidget {
 }
 
 // =============================================================================
-// STEP 7: The Griot (Tone & gamification)
+// Tone + gamification (preserved)
 // =============================================================================
-class _GriotStep extends HookConsumerWidget {
-  final Function(Map<String, dynamic>) onNext;
 
-  const _GriotStep({required this.onNext});
+class _ToneStep extends HookConsumerWidget {
+  const _ToneStep({required this.onNext});
+
+  final Function(Map<String, dynamic>) onNext;
 
   static const _tones = [
     {
@@ -1778,211 +2623,80 @@ class _GriotStep extends HookConsumerWidget {
     final selectedTone = useState<String?>(null);
     final selectedGamification = useState<String?>('full');
 
-    return _CharacterStepTemplate(
-      gradient: PanAfricanGradients.sunset,
-      isLightBackground: true,
-      characterIcon: Icons.campaign_rounded,
-      characterName: 'Amara the Griot',
-      dialogue: 'I am the storyteller, the voice\nthat guides your journey.',
-      question: 'How shall I speak to you?',
-      avatarStep: OnboardingStep.story,
-      // `_CharacterStepTemplate` now owns the single scrollable this step
-      // (and its header above) scrolls within, so this no longer needs its
-      // own nested `SingleChildScrollView`. The horizontal tone-row
-      // `SingleChildScrollView` below is unrelated (it scrolls sideways).
+    return _StepScaffold(
+      bottom: _PrimaryCta(
+        label: 'Continue',
+        enabled: selectedTone.value != null,
+        onPressed: () async {
+          try {
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setString('app_tone', selectedTone.value!);
+            await prefs.setString(
+              'gamification_level',
+              selectedGamification.value!,
+            );
+          } catch (e) {
+            logger.error('Error saving tone/gamification', error: e);
+          }
+          onNext({
+            'app_tone': selectedTone.value,
+            'gamification_level': selectedGamification.value,
+          });
+        },
+      ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Tone selection
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Communication Style',
-                  style: TextStyle(
-                    color: PanAfricanColors.textPrimary.withValues(alpha: 0.9),
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                SizedBox(height: PanAfricanSpacing.sm.h),
-              ],
+          Text(
+            'Communication Style',
+            style: ModernGriotTypography.headlineSmall(
+              context: context,
+              color: ModernGriotColors.onSurface,
             ),
           ),
-          // `_ToneCard` is an icon plus two lines of text with no slack
-          // budget, so a fixed `SizedBox` height (tuned for 1.0x text
-          // scale) overflows once a learner's OS text-scale setting grows
-          // the label/description lines. `SingleChildScrollView` + `Row`
-          // (there are only 4 tones, so no list virtualization is needed)
-          // sizes this row to its own content's height instead, so it
-          // never clips or overflows at any text scale.
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md.w),
-            child: Row(
-              children: [
-                for (final tone in _tones)
-                  Padding(
-                    padding: EdgeInsetsDirectional.only(
-                      end: PanAfricanSpacing.sm.w,
-                    ),
-                    child: _ToneCard(
-                      icon: tone['icon'] as IconData,
-                      label: tone['label'] as String,
-                      description: tone['desc'] as String,
-                      isSelected: selectedTone.value == tone['id'],
-                      onTap: () {
-                        HapticFeedback.selectionClick();
-                        selectedTone.value = tone['id'] as String;
-                      },
-                    ),
-                  ),
-              ],
+          SizedBox(height: ModernGriotSpacing.xxs.h),
+          Text(
+            'How should Polie speak with you?',
+            style: ModernGriotTypography.bodyMedium(
+              context: context,
+              color: ModernGriotColors.onSurfaceVariant,
             ),
           ),
-          SizedBox(height: PanAfricanSpacing.lg.h),
-          // Gamification level
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Gamification Level',
-                  style: TextStyle(
-                    color: PanAfricanColors.textPrimary.withValues(alpha: 0.9),
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                SizedBox(height: PanAfricanSpacing.sm.h),
-                ..._gamificationLevels.map((level) {
-                  final isSelected = selectedGamification.value == level['id'];
-                  final levelLabel = level['label'] as String;
-                  final levelDesc = level['desc'] as String;
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: PanAfricanSpacing.sm.h),
-                    child: Semantics(
-                      button: true,
-                      selected: isSelected,
-                      label: isSelected
-                          ? '$levelLabel, $levelDesc, selected'
-                          : '$levelLabel, $levelDesc',
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () {
-                            HapticFeedback.selectionClick();
-                            selectedGamification.value = level['id'] as String;
-                          },
-                          borderRadius: BorderRadius.circular(
-                            PanAfricanRadius.md,
-                          ),
-                          child: Container(
-                            constraints: const BoxConstraints(
-                              minHeight: AdaptiveLayout.minTouchTarget,
-                            ),
-                            padding: EdgeInsets.all(PanAfricanSpacing.md.w),
-                            decoration: BoxDecoration(
-                              color: isSelected
-                                  ? PanAfricanColors.secondary.withValues(
-                                      alpha: 0.2,
-                                    )
-                                  : PanAfricanColors.textPrimary.withValues(
-                                      alpha: 0.1,
-                                    ),
-                              borderRadius: BorderRadius.circular(
-                                PanAfricanRadius.md,
-                              ),
-                              // `PanAfricanColors.secondary` (gold) is
-                              // ~1.5:1 against this row's light background -
-                              // below WCAG 1.4.11's 3:1 non-text minimum for
-                              // a selection border/icon; the brand's dark
-                              // green stays ~5.5:1 here instead - same fix
-                              // as the `_LanguageCard`/`_ReasonCard`/etc.
-                              // selection cards above.
-                              border: Border.all(
-                                color: isSelected
-                                    ? PanAfricanColors.primary
-                                    : PanAfricanColors.textPrimary.withValues(
-                                        alpha: 0.2,
-                                      ),
-                                width: isSelected ? 2 : 1,
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        level['label'] as String,
-                                        style: TextStyle(
-                                          color: PanAfricanColors.textPrimary,
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      Text(
-                                        level['desc'] as String,
-                                        // This step is a light `sunset`
-                                        // gradient (`isLightBackground:
-                                        // true` above); `colorScheme.
-                                        // onPrimary` is for the app's *dark*
-                                        // primary surfaces and was missed in
-                                        // the earlier contrast pass - fixed
-                                        // to the same fixed dark text token
-                                        // used by every other label here.
-                                        style: TextStyle(
-                                          color: PanAfricanColors.textPrimary
-                                              .withValues(alpha: 0.7),
-                                          fontSize: 13.sp,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                if (isSelected)
-                                  Icon(
-                                    Icons.check_circle_rounded,
-                                    color: PanAfricanColors.primary,
-                                    size: 24.sp,
-                                  ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                }),
-              ],
+          SizedBox(height: ModernGriotSpacing.md.h),
+          for (final tone in _tones)
+            _SelectRow(
+              label: tone['label'] as String,
+              subtitle: tone['desc'] as String,
+              isSelected: selectedTone.value == tone['id'],
+              leading: Icon(
+                tone['icon'] as IconData,
+                color: ModernGriotColors.primary,
+              ),
+              onTap: () {
+                HapticFeedback.selectionClick();
+                selectedTone.value = tone['id'] as String;
+              },
+            ),
+          SizedBox(height: ModernGriotSpacing.md.h),
+          Text(
+            'Gamification Level',
+            style: ModernGriotTypography.titleMedium(
+              context: context,
+              color: ModernGriotColors.onSurface,
             ),
           ),
-          SizedBox(height: PanAfricanSpacing.lg.h),
-          _ContinueButton(
-            enabled: selectedTone.value != null,
-            onPressed: () async {
-              try {
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.setString('app_tone', selectedTone.value!);
-                await prefs.setString(
-                  'gamification_level',
-                  selectedGamification.value!,
-                );
-              } catch (e) {
-                logger.error('Error saving tone/gamification', error: e);
-              }
-              onNext({
-                'app_tone': selectedTone.value,
-                'gamification_level': selectedGamification.value,
-              });
-            },
-          ),
-          SizedBox(height: PanAfricanSpacing.md.h),
+          SizedBox(height: ModernGriotSpacing.xs.h),
+          for (final level in _gamificationLevels)
+            _SelectRow(
+              label: level['label'] as String,
+              subtitle: level['desc'] as String,
+              isSelected: selectedGamification.value == level['id'],
+              onTap: () {
+                HapticFeedback.selectionClick();
+                selectedGamification.value = level['id'] as String;
+              },
+            ),
+          SizedBox(height: ModernGriotSpacing.lg.h),
         ],
       ),
     );
@@ -1990,16 +2704,19 @@ class _GriotStep extends HookConsumerWidget {
 }
 
 // =============================================================================
-// STEP 8: Naming Ceremony (Profile)
+// Profile / naming (preserved)
 // =============================================================================
-class _NamingCeremonyStep extends HookConsumerWidget {
-  final Map<String, dynamic> onboardingData;
-  final VoidCallback onComplete;
 
-  const _NamingCeremonyStep({
+class _ProfileStep extends HookConsumerWidget {
+  const _ProfileStep({
     required this.onboardingData,
     required this.onComplete,
+    required this.onSkip,
   });
+
+  final Map<String, dynamic> onboardingData;
+  final VoidCallback onComplete;
+  final VoidCallback onSkip;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -2010,7 +2727,6 @@ class _NamingCeremonyStep extends HookConsumerWidget {
     final avatarPath = useState<String?>(null);
     Timer? debounceTimer;
 
-    // Listen to username changes
     useEffect(() {
       void listener() {
         final text = usernameController.text.trim();
@@ -2022,17 +2738,14 @@ class _NamingCeremonyStep extends HookConsumerWidget {
           isChecking.value = false;
           return;
         }
-
         if (text.length < 3) {
           usernameStatus.value = _UsernameStatus.tooShort;
           return;
         }
-
         if (text.length > 30) {
           usernameStatus.value = _UsernameStatus.tooLong;
           return;
         }
-
         if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(text)) {
           usernameStatus.value = _UsernameStatus.invalidFormat;
           return;
@@ -2091,146 +2804,11 @@ class _NamingCeremonyStep extends HookConsumerWidget {
         (usernameStatus.value == _UsernameStatus.available ||
             usernameStatus.value == _UsernameStatus.error);
 
-    return _CharacterStepTemplate(
-      gradient: PanAfricanGradients.forest,
-      characterIcon: Icons.celebration_rounded,
-      characterName: 'The Naming Ceremony',
-      dialogue: 'A learner without a name is a\ndrum without a rhythm!',
-      question: 'Tell us what you wish to be called.',
-      avatarStep: OnboardingStep.profile,
-      child: Column(
+    return _StepScaffold(
+      bottom: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(height: PanAfricanSpacing.md.h),
-          // Avatar
-          GestureDetector(
-            onTap: pickAvatar,
-            child: Stack(
-              children: [
-                CircleAvatar(
-                  radius: 55.r,
-                  backgroundColor: PanAfricanColors.secondary.withValues(
-                    alpha: 0.3,
-                  ),
-                  backgroundImage: avatarPath.value != null
-                      ? FileImage(File(avatarPath.value!))
-                      : null,
-                  child: avatarPath.value == null
-                      ? Icon(
-                          Icons.person_rounded,
-                          size: 50.sp,
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        )
-                      : null,
-                ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: Container(
-                    padding: EdgeInsets.all(PanAfricanSpacing.xs.w),
-                    decoration: const BoxDecoration(
-                      color: PanAfricanColors.secondary,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.camera_alt_rounded,
-                      size: 16.sp,
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: PanAfricanSpacing.xs.h),
-          Text(
-            'Tap to add photo (optional)',
-            style: TextStyle(
-              color: Theme.of(
-                context,
-              ).colorScheme.onPrimary.withValues(alpha: 0.7),
-              fontSize: 12.sp,
-            ),
-          ),
-          SizedBox(height: PanAfricanSpacing.lg.h),
-          // Username field
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.lg.w),
-            child: TextField(
-              controller: usernameController,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary,
-                fontSize: 18.sp,
-              ),
-              decoration: InputDecoration(
-                labelText: 'Username',
-                labelStyle: TextStyle(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onPrimary.withValues(alpha: 0.7),
-                ),
-                hintText: 'Enter your username',
-                hintStyle: TextStyle(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onPrimary.withValues(alpha: 0.38),
-                ),
-                filled: true,
-                fillColor: Theme.of(
-                  context,
-                ).colorScheme.onPrimary.withValues(alpha: 0.1),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                  borderSide: BorderSide(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onPrimary.withValues(alpha: 0.3),
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                  borderSide: BorderSide(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onPrimary.withValues(alpha: 0.3),
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                  borderSide: const BorderSide(
-                    color: PanAfricanColors.secondary,
-                    width: 2,
-                  ),
-                ),
-                suffixIcon: isChecking.value
-                    ? SizedBox(
-                        width: 20.w,
-                        height: 20.h,
-                        child: Padding(
-                          padding: EdgeInsets.all(PanAfricanSpacing.sm.w),
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onPrimary.withValues(alpha: 0.7),
-                          ),
-                        ),
-                      )
-                    : _getUsernameIcon(usernameStatus.value),
-                helperText: _getUsernameHelperText(usernameStatus.value),
-                helperStyle: TextStyle(
-                  color: _getUsernameHelperColor(context, usernameStatus.value),
-                  fontSize: 12.sp,
-                ),
-              ),
-            ),
-          ),
-          // `Spacer()` required a bounded-height `Column` to push this
-          // button to the bottom of the screen; `_CharacterStepTemplate`'s
-          // header+content now scroll together as one unbounded-height
-          // unit, which `Spacer`/`Expanded` can't live inside. A fixed gap
-          // keeps the button directly below the form instead.
-          SizedBox(height: PanAfricanSpacing.xl.h),
-          _ContinueButton(
+          _PrimaryCta(
             label: 'Complete Setup',
             enabled: canComplete,
             onPressed: () async {
@@ -2246,33 +2824,113 @@ class _NamingCeremonyStep extends HookConsumerWidget {
               onComplete();
             },
           ),
+          TextButton(
+            onPressed: onSkip,
+            child: Text(
+              'Skip for now',
+              style: ModernGriotTypography.labelLarge(
+                context: context,
+                color: ModernGriotColors.onSurfaceVariant,
+              ),
+            ),
+          ),
+          SizedBox(height: ModernGriotSpacing.xs.h),
+        ],
+      ),
+      child: Column(
+        children: [
+          Text(
+            'Pick a name',
+            style: ModernGriotTypography.headlineSmall(
+              context: context,
+              color: ModernGriotColors.onSurface,
+            ),
+          ),
+          SizedBox(height: ModernGriotSpacing.xxs.h),
+          Text(
+            'A learner without a name is a drum without a rhythm.',
+            textAlign: TextAlign.center,
+            style: ModernGriotTypography.bodyMedium(
+              context: context,
+              color: ModernGriotColors.onSurfaceVariant,
+            ),
+          ),
+          SizedBox(height: ModernGriotSpacing.lg.h),
+          GestureDetector(
+            onTap: pickAvatar,
+            child: CircleAvatar(
+              radius: ModernGriotSpacing.xxl.r,
+              backgroundColor: _kBrandGold.withValues(alpha: 0.35),
+              backgroundImage: avatarPath.value != null
+                  ? FileImage(File(avatarPath.value!))
+                  : null,
+              child: avatarPath.value == null
+                  ? Icon(
+                      Icons.person_rounded,
+                      size: ModernGriotSpacing.xl.sp,
+                      color: ModernGriotColors.onSurface,
+                    )
+                  : null,
+            ),
+          ),
+          SizedBox(height: ModernGriotSpacing.xs.h),
+          Text(
+            'Tap to add photo (optional)',
+            style: ModernGriotTypography.labelMedium(
+              context: context,
+              color: ModernGriotColors.onSurfaceVariant,
+            ),
+          ),
+          SizedBox(height: ModernGriotSpacing.md.h),
+          TextField(
+            controller: usernameController,
+            style: ModernGriotTypography.bodyLarge(
+              context: context,
+              color: ModernGriotColors.onSurface,
+            ),
+            decoration: InputDecoration(
+              labelText: 'Username',
+              hintText: 'Enter your username',
+              filled: true,
+              fillColor: ModernGriotColors.surfaceContainerLowest,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
+              ),
+              suffixIcon: isChecking.value
+                  ? Padding(
+                      padding: EdgeInsets.all(ModernGriotSpacing.sm.w),
+                      child: SizedBox(
+                        width: ModernGriotSpacing.md.w,
+                        height: ModernGriotSpacing.md.w,
+                        child: const CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                    )
+                  : _usernameIcon(usernameStatus.value),
+              helperText: _usernameHelper(usernameStatus.value),
+            ),
+          ),
+          SizedBox(height: ModernGriotSpacing.lg.h),
         ],
       ),
     );
   }
 
-  Widget? _getUsernameIcon(_UsernameStatus status) {
+  Widget? _usernameIcon(_UsernameStatus status) {
     switch (status) {
       case _UsernameStatus.available:
-        return const Icon(
-          Icons.check_circle_rounded,
-          color: PanAfricanColors.success,
-        );
+        return const Icon(Icons.check_circle_rounded, color: ModernGriotColors.secondary);
       case _UsernameStatus.taken:
-        return const Icon(Icons.cancel_rounded, color: PanAfricanColors.error);
+        return const Icon(Icons.cancel_rounded, color: ModernGriotColors.error);
       case _UsernameStatus.tooShort:
       case _UsernameStatus.tooLong:
       case _UsernameStatus.invalidFormat:
-        return const Icon(
-          Icons.warning_rounded,
-          color: PanAfricanColors.warning,
-        );
+        return const Icon(Icons.warning_rounded, color: ModernGriotColors.tertiary);
       default:
         return null;
     }
   }
 
-  String? _getUsernameHelperText(_UsernameStatus status) {
+  String? _usernameHelper(_UsernameStatus status) {
     switch (status) {
       case _UsernameStatus.initial:
         return 'Use 3 to 30 letters, numbers, or underscores';
@@ -2292,21 +2950,6 @@ class _NamingCeremonyStep extends HookConsumerWidget {
         return "We couldn't check that just now, but you can still continue";
     }
   }
-
-  Color _getUsernameHelperColor(BuildContext context, _UsernameStatus status) {
-    switch (status) {
-      case _UsernameStatus.available:
-        return PanAfricanColors.success;
-      case _UsernameStatus.taken:
-        return PanAfricanColors.error;
-      case _UsernameStatus.tooShort:
-      case _UsernameStatus.tooLong:
-      case _UsernameStatus.invalidFormat:
-        return PanAfricanColors.warning;
-      default:
-        return Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.7);
-    }
-  }
 }
 
 enum _UsernameStatus {
@@ -2318,909 +2961,4 @@ enum _UsernameStatus {
   tooLong,
   invalidFormat,
   error,
-}
-
-// =============================================================================
-// REUSABLE COMPONENTS
-// =============================================================================
-
-/// Template for character-guided steps
-class _CharacterStepTemplate extends StatelessWidget {
-  final Gradient gradient;
-  final IconData characterIcon;
-  final String characterName;
-  final String dialogue;
-  final String question;
-  final Widget child;
-  final OnboardingStep? avatarStep;
-
-  /// `PanAfricanGradients.earth`/`sunset` are fixed, theme-independent
-  /// near-white tints (they don't darken in dark mode). Pairing them with
-  /// `colorScheme.onPrimary` - meant for the app's *dark* primary surfaces -
-  /// produces ~1.05:1 text contrast (needs 4.5:1), making dialogue
-  /// effectively invisible. Steps on a light/pale [gradient] must set this
-  /// to `true` so text/icons use a fixed dark color instead; steps on a
-  /// genuinely dark gradient (e.g. `forest`) leave this `false` and keep
-  /// using the theme's `onPrimary`, which is designed for dark surfaces.
-  final bool isLightBackground;
-
-  const _CharacterStepTemplate({
-    required this.gradient,
-    required this.characterIcon,
-    required this.characterName,
-    required this.dialogue,
-    required this.question,
-    required this.child,
-    this.avatarStep,
-    this.isLightBackground = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    // PanAfricanColors.textPrimary/textSecondary are the same file's fixed
-    // dark text tokens (not theme-aware), matching the fixed, theme-aware
-    // gradients they pair with here: textPrimary vs earth/sunset computes to
-    // ~16-17:1 contrast and textSecondary to ~6.5-6.8:1, both comfortably
-    // above the 4.5:1 WCAG AA body-text threshold.
-    final Color foregroundColor = isLightBackground
-        ? PanAfricanColors.textPrimary
-        : Theme.of(context).colorScheme.onPrimary;
-    final Color mutedForegroundColor = isLightBackground
-        ? PanAfricanColors.textSecondary
-        : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.85);
-    return Container(
-      decoration: BoxDecoration(gradient: gradient),
-      child: ResponsiveSafeArea(
-        // This avatar+dialogue header is fixed, non-collapsing chrome sitting
-        // above `child`. At large system text-scale settings (e.g. the
-        // ~200% Android/iOS accessibility maximum - a real, reachable
-        // setting, not a hypothetical edge case) the dialogue/question text
-        // grows uncapped, and the header's own natural height alone can
-        // exceed the full screen height before `child` even starts. An
-        // `Expanded` sibling can't claim negative space, so a plain `Column`
-        // here overflowed instead of letting the learner scroll to see the
-        // rest - on every one of this template's 8 steps, not just one.
-        // Scrolling the *whole* header+content column as a single unit
-        // (the same approach already used for this step's own body - see
-        // `_ElderQuestionStep`) fixes this for every device size and every
-        // text scale. Every step's `child` was updated to match: a plain,
-        // non-expanding `Column` (shrink-wrapped grids/lists instead of
-        // `Expanded` + their own separate scrollable), since only one
-        // scrollable should own the vertical axis here.
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: PanAfricanSpacing.xl.h),
-              // Character avatar: use OnboardingAvatarWidget when step is provided
-              Semantics(
-                label: '$characterName, your guide for this step',
-                image: true,
-                child: ExcludeSemantics(
-                  child: avatarStep != null
-                      ? SizedBox(
-                          // OnboardingAvatarWidget always renders a name/title
-                          // caption beneath the portrait, needing far more
-                          // height than this compact per-step header can
-                          // spare (the language/goal/schedule content below
-                          // needs that room instead). `OverflowBox` gives the
-                          // widget the extra height it wants to lay itself out
-                          // without tripping its own internal RenderFlex
-                          // overflow assertion, and `ClipRect` then crops the
-                          // result back down to exactly the portrait — instead
-                          // of the pre-existing behaviour, where a plain
-                          // `SizedBox` here produced a debug-only overflow
-                          // warning while still painting the caption text
-                          // bleeding into the dialogue panel below in release
-                          // builds.
-                          width: 100.w,
-                          height: 100.w,
-                          child: ClipRect(
-                            child: OverflowBox(
-                              maxHeight: double.infinity,
-                              alignment: Alignment.topCenter,
-                              child: OnboardingAvatarWidget(
-                                step: avatarStep!,
-                                size: 100.w,
-                                animate: true,
-                              ),
-                            ),
-                          ),
-                        ).animate().scale(
-                          duration: _motionDuration(context, 400.ms),
-                          curve: Curves.easeOut,
-                        )
-                      : Container(
-                          width: 100.w,
-                          height: 100.w,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: foregroundColor.withValues(alpha: 0.15),
-                            border: Border.all(
-                              color: foregroundColor.withValues(alpha: 0.3),
-                              width: 2,
-                            ),
-                          ),
-                          child: Icon(
-                            characterIcon,
-                            size: 50.sp,
-                            color: foregroundColor,
-                          ),
-                        ).animate().scale(
-                          duration: _motionDuration(context, 400.ms),
-                          curve: Curves.easeOut,
-                        ),
-                ),
-              ),
-              SizedBox(height: PanAfricanSpacing.sm.h),
-              // Dialogue + Question panel
-              Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: PanAfricanSpacing.lg.w,
-                    ),
-                    child: Semantics(
-                      label: '$characterName says: $dialogue $question',
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 20.w,
-                          vertical: 18.h,
-                        ),
-                        decoration: BoxDecoration(
-                          color: foregroundColor.withValues(alpha: 0.12),
-                          borderRadius: BorderRadius.circular(
-                            PanAfricanRadius.lg,
-                          ),
-                          border: Border.all(
-                            color: foregroundColor.withValues(alpha: 0.2),
-                            width: 1,
-                          ),
-                        ),
-                        child: ExcludeSemantics(
-                          child: Column(
-                            children: [
-                              Text(
-                                dialogue,
-                                textAlign: TextAlign.center,
-                                style: PanAfricanTypography.headlineSmall(
-                                  context,
-                                  color: foregroundColor,
-                                ).copyWith(height: 1.3),
-                              ),
-                              SizedBox(height: PanAfricanSpacing.sm.h),
-                              Text(
-                                question,
-                                textAlign: TextAlign.center,
-                                style: PanAfricanTypography.bodyMedium(
-                                  context,
-                                  color: mutedForegroundColor,
-                                ).copyWith(fontStyle: FontStyle.italic),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                  .animate()
-                  .fadeIn(
-                    delay: _motionDelay(context, 300.ms),
-                    duration: _motionDuration(context, 300.ms),
-                  )
-                  .slideY(
-                    begin: 0.08,
-                    end: 0,
-                    duration: _motionDuration(context, 300.ms),
-                  ),
-              SizedBox(height: PanAfricanSpacing.md.h),
-              // Content
-              child,
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Continue button
-class _ContinueButton extends StatelessWidget {
-  final bool enabled;
-  final VoidCallback onPressed;
-  final String label;
-
-  const _ContinueButton({
-    required this.enabled,
-    required this.onPressed,
-    this.label = 'Continue',
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(20.w),
-      child: SizedBox(
-        width: double.infinity,
-        child: Opacity(
-          opacity: enabled ? 1 : 0.5,
-          child: PanAfricanButton(
-            label: label,
-            onPressed: enabled
-                ? () {
-                    HapticFeedback.mediumImpact();
-                    onPressed();
-                  }
-                : null,
-            backgroundColor: PanAfricanColors.secondary,
-            foregroundColor: PanAfricanColors.neutralDarkest,
-            width: double.infinity,
-            height: 52.h,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Language card for grid selection
-class _LanguageCard extends StatelessWidget {
-  final String flag;
-  final String name;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const _LanguageCard({
-    required this.flag,
-    required this.name,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      button: true,
-      selected: isSelected,
-      label: isSelected ? '$name, selected' : name,
-      // Without this, the explicit label above merges with the child
-      // Row's own flag-emoji and name `Text` semantics into one messy,
-      // duplicated node instead of the clean label set here.
-      excludeSemantics: true,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-          child: Container(
-            constraints: const BoxConstraints(
-              minHeight: AdaptiveLayout.minTouchTarget,
-            ),
-            decoration: BoxDecoration(
-              color: isSelected
-                  ? PanAfricanColors.secondary.withValues(alpha: 0.25)
-                  : PanAfricanColors.textPrimary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-              // `PanAfricanColors.secondary` (gold) is ~1.5:1 against this
-              // card's light background - below WCAG 1.4.11's 3:1 non-text
-              // minimum for a selection border/icon. The brand's dark green
-              // stays ~5.5:1 here instead; see `_GoalCard.selectedAccent`
-              // for the equivalent fix on a shared light/dark card.
-              border: Border.all(
-                color: isSelected
-                    ? PanAfricanColors.primary
-                    : PanAfricanColors.textPrimary.withValues(alpha: 0.2),
-                width: isSelected ? 2 : 1,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(
-                    alpha: isSelected ? 0.2 : 0.12,
-                  ),
-                  blurRadius: isSelected ? 16 : 10,
-                  offset: const Offset(0, 6),
-                ),
-              ],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(flag, style: TextStyle(fontSize: 28.sp)),
-                SizedBox(width: PanAfricanSpacing.sm.w),
-                Flexible(
-                  child: Text(
-                    name,
-                    style: TextStyle(
-                      color: PanAfricanColors.textPrimary,
-                      fontSize: 14.sp,
-                      fontWeight: isSelected
-                          ? FontWeight.w700
-                          : FontWeight.w500,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                if (isSelected) ...[
-                  SizedBox(width: PanAfricanSpacing.xs.w),
-                  Icon(
-                    Icons.check_circle_rounded,
-                    color: PanAfricanColors.primary,
-                    size: 18.sp,
-                  ),
-                ],
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Language list tile for learning language selection
-class _LanguageListTile extends StatelessWidget {
-  final String flag;
-  final String name;
-  final String region;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const _LanguageListTile({
-    required this.flag,
-    required this.name,
-    required this.region,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      button: true,
-      selected: isSelected,
-      label: isSelected ? '$name, $region, selected' : '$name, $region',
-      excludeSemantics: true,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-          child: Container(
-            constraints: const BoxConstraints(
-              minHeight: AdaptiveLayout.minTouchTarget,
-            ),
-            padding: EdgeInsets.symmetric(
-              horizontal: PanAfricanSpacing.md.w,
-              vertical: 14.h,
-            ),
-            decoration: BoxDecoration(
-              color: isSelected
-                  ? PanAfricanColors.secondary.withValues(alpha: 0.2)
-                  : PanAfricanColors.textPrimary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-              // `PanAfricanColors.secondary` (gold) is ~1.5:1 against this
-              // tile's light background - below WCAG 1.4.11's 3:1 non-text
-              // minimum for a selection border/icon; the brand's dark green
-              // stays ~5.5:1 here instead.
-              border: Border.all(
-                color: isSelected
-                    ? PanAfricanColors.primary
-                    : Colors.transparent,
-                width: 2,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(
-                    alpha: isSelected ? 0.18 : 0.12,
-                  ),
-                  blurRadius: isSelected ? 18 : 12,
-                  offset: const Offset(0, 6),
-                ),
-              ],
-            ),
-            child: Row(
-              children: [
-                Text(flag, style: TextStyle(fontSize: 32.sp)),
-                SizedBox(width: PanAfricanSpacing.md.w),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        name,
-                        style: TextStyle(
-                          color: PanAfricanColors.textPrimary,
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        region,
-                        style: TextStyle(
-                          color: PanAfricanColors.textPrimary.withValues(
-                            alpha: 0.6,
-                          ),
-                          fontSize: 12.sp,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Icon(
-                  isSelected
-                      ? Icons.check_circle_rounded
-                      : Icons.radio_button_unchecked_rounded,
-                  color: isSelected
-                      ? PanAfricanColors.primary
-                      : PanAfricanColors.textPrimary.withValues(alpha: 0.54),
-                  size: 24.sp,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Reason card for multi-select
-class _ReasonCard extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const _ReasonCard({
-    required this.icon,
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      button: true,
-      selected: isSelected,
-      label: isSelected ? '$label, selected' : label,
-      excludeSemantics: true,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-          child: Container(
-            constraints: const BoxConstraints(
-              minHeight: AdaptiveLayout.minTouchTarget,
-              minWidth: AdaptiveLayout.minTouchTarget,
-            ),
-            decoration: BoxDecoration(
-              color: isSelected
-                  ? PanAfricanColors.secondary.withValues(alpha: 0.25)
-                  : PanAfricanColors.textPrimary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-              // `PanAfricanColors.secondary` (gold) is ~1.5:1 against this
-              // card's light background - below WCAG 1.4.11's 3:1 non-text
-              // minimum for a selection border/icon; the brand's dark green
-              // stays ~5.5:1 here instead.
-              border: Border.all(
-                color: isSelected
-                    ? PanAfricanColors.primary
-                    : PanAfricanColors.textPrimary.withValues(alpha: 0.2),
-                width: isSelected ? 2 : 1,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(
-                    alpha: isSelected ? 0.2 : 0.12,
-                  ),
-                  blurRadius: isSelected ? 16 : 10,
-                  offset: const Offset(0, 6),
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 44.w,
-                  height: 44.w,
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? PanAfricanColors.secondary.withValues(alpha: 0.2)
-                        : PanAfricanColors.textPrimary.withValues(alpha: 0.08),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    icon,
-                    color: isSelected
-                        ? PanAfricanColors.primary
-                        : PanAfricanColors.textPrimary,
-                    size: 24.sp,
-                  ),
-                ),
-                SizedBox(height: PanAfricanSpacing.xxs.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: PanAfricanSpacing.xxs.w,
-                  ),
-                  child: Text(
-                    label,
-                    style: TextStyle(
-                      color: PanAfricanColors.textPrimary,
-                      fontSize: 11.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Goal card
-class _GoalCard extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String description;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  /// `_GoalCard` is reused by `_PathChooserStep` (dark `forest` gradient)
-  /// directly and, via `_StyleCard`, by `_RhythmMasterStep` (near-white
-  /// `sunset` gradient). It can't hardcode either `colorScheme.onPrimary`
-  /// (invisible on the light gradient) or a fixed dark color (invisible on
-  /// the dark one) - callers on a light background must set this `true`.
-  final bool isLightBackground;
-
-  const _GoalCard({
-    required this.icon,
-    required this.title,
-    required this.description,
-    required this.isSelected,
-    required this.onTap,
-    this.isLightBackground = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final Color baseColor = isLightBackground
-        ? PanAfricanColors.textPrimary
-        : Theme.of(context).colorScheme.onPrimary;
-    // `PanAfricanColors.secondary` (gold) is ~1.5:1 against the light
-    // gradients - swap the selected-state accent for the brand's dark
-    // green on light backgrounds instead, which stays ~5.5:1.
-    final Color selectedAccent = isLightBackground
-        ? PanAfricanColors.primary
-        : PanAfricanColors.secondary;
-    return Semantics(
-      button: true,
-      selected: isSelected,
-      label: isSelected
-          ? '$title, $description, selected'
-          : '$title, $description',
-      excludeSemantics: true,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-          child: Container(
-            constraints: const BoxConstraints(
-              minHeight: AdaptiveLayout.minTouchTarget,
-            ),
-            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xxs.w),
-            decoration: BoxDecoration(
-              color: isSelected
-                  ? PanAfricanColors.secondary.withValues(alpha: 0.2)
-                  : baseColor.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-              border: Border.all(
-                color: isSelected
-                    ? selectedAccent
-                    : baseColor.withValues(alpha: 0.2),
-                width: isSelected ? 2 : 1,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(
-                    alpha: isSelected ? 0.2 : 0.12,
-                  ),
-                  blurRadius: isSelected ? 18 : 12,
-                  offset: const Offset(0, 8),
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 56.w,
-                  height: 56.w,
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? PanAfricanColors.secondary.withValues(alpha: 0.2)
-                        : baseColor.withValues(alpha: 0.08),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    icon,
-                    color: isSelected ? selectedAccent : baseColor,
-                    size: 28.sp,
-                  ),
-                ),
-                SizedBox(height: PanAfricanSpacing.xs.h),
-                Text(
-                  title,
-                  style: TextStyle(
-                    color: baseColor,
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w700,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                SizedBox(height: PanAfricanSpacing.xxxs.h),
-                Text(
-                  description,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: baseColor.withValues(alpha: 0.6),
-                    fontSize: 11.sp,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Style card (same as goal card but different proportions)
-class _StyleCard extends _GoalCard {
-  const _StyleCard({
-    required super.icon,
-    required super.title,
-    required super.description,
-    required super.isSelected,
-    required super.onTap,
-  }) : super(isLightBackground: true);
-}
-
-/// Time selection card
-class _TimeCard extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final String time;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const _TimeCard({
-    required this.icon,
-    required this.label,
-    required this.time,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      button: true,
-      selected: isSelected,
-      label: isSelected ? '$label, $time, selected' : '$label, $time',
-      excludeSemantics: true,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-          child: Container(
-            constraints: const BoxConstraints(
-              minHeight: AdaptiveLayout.minTouchTarget,
-            ),
-            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xs.w),
-            decoration: BoxDecoration(
-              color: isSelected
-                  ? PanAfricanColors.secondary.withValues(alpha: 0.2)
-                  : PanAfricanColors.textPrimary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-              // `PanAfricanColors.secondary` (gold) is ~1.5:1 against this
-              // card's light background - below WCAG 1.4.11's 3:1 non-text
-              // minimum for a selection border/icon; the brand's dark green
-              // stays ~5.5:1 here instead.
-              border: Border.all(
-                color: isSelected
-                    ? PanAfricanColors.primary
-                    : PanAfricanColors.textPrimary.withValues(alpha: 0.2),
-                width: isSelected ? 2 : 1,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(
-                    alpha: isSelected ? 0.2 : 0.12,
-                  ),
-                  blurRadius: isSelected ? 16 : 10,
-                  offset: const Offset(0, 6),
-                ),
-              ],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 40.w,
-                  height: 40.w,
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? PanAfricanColors.secondary.withValues(alpha: 0.2)
-                        : PanAfricanColors.textPrimary.withValues(alpha: 0.08),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    icon,
-                    color: isSelected
-                        ? PanAfricanColors.primary
-                        : PanAfricanColors.textPrimary,
-                    size: 20.sp,
-                  ),
-                ),
-                SizedBox(width: PanAfricanSpacing.sm.w),
-                Flexible(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        label,
-                        style: TextStyle(
-                          color: PanAfricanColors.textPrimary,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        time,
-                        style: TextStyle(
-                          color: PanAfricanColors.textPrimary.withValues(
-                            alpha: 0.54,
-                          ),
-                          fontSize: 11.sp,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Tone selection card (horizontal scroll)
-class _ToneCard extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final String description;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const _ToneCard({
-    required this.icon,
-    required this.label,
-    required this.description,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      button: true,
-      selected: isSelected,
-      label: isSelected
-          ? '$label, $description, selected'
-          : '$label, $description',
-      excludeSemantics: true,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-          child: Container(
-            width: 100.w,
-            constraints: const BoxConstraints(
-              minHeight: AdaptiveLayout.minTouchTarget,
-            ),
-            padding: EdgeInsets.all(PanAfricanSpacing.sm.w),
-            decoration: BoxDecoration(
-              color: isSelected
-                  ? PanAfricanColors.secondary.withValues(alpha: 0.2)
-                  : PanAfricanColors.textPrimary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-              // `PanAfricanColors.secondary` (gold) is ~1.5:1 against this
-              // card's light background - below WCAG 1.4.11's 3:1 non-text
-              // minimum for a selection border/icon; the brand's dark green
-              // stays ~5.5:1 here instead.
-              border: Border.all(
-                color: isSelected
-                    ? PanAfricanColors.primary
-                    : PanAfricanColors.textPrimary.withValues(alpha: 0.2),
-                width: isSelected ? 2 : 1,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(
-                    alpha: isSelected ? 0.2 : 0.12,
-                  ),
-                  blurRadius: isSelected ? 16 : 10,
-                  offset: const Offset(0, 6),
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 44.w,
-                  height: 44.w,
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? PanAfricanColors.secondary.withValues(alpha: 0.2)
-                        : PanAfricanColors.textPrimary.withValues(alpha: 0.08),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    icon,
-                    color: isSelected
-                        ? PanAfricanColors.primary
-                        : PanAfricanColors.textPrimary,
-                    size: 24.sp,
-                  ),
-                ),
-                SizedBox(height: PanAfricanSpacing.xxs.h),
-                Text(
-                  label,
-                  style: TextStyle(
-                    color: PanAfricanColors.textPrimary,
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Text(
-                  description,
-                  style: TextStyle(
-                    color: PanAfricanColors.textPrimary.withValues(alpha: 0.54),
-                    fontSize: 10.sp,
-                  ),
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 }

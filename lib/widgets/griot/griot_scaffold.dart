@@ -20,6 +20,7 @@ class GriotScaffold extends StatelessWidget {
     this.bottomNavigationBar,
     this.floatingActionButton,
     this.drawer,
+    this.backgroundColor,
     this.extendBody = false,
     this.extendBodyBehindAppBar = false,
     this.resizeToAvoidBottomInset = true,
@@ -30,6 +31,7 @@ class GriotScaffold extends StatelessWidget {
   final Widget? bottomNavigationBar;
   final Widget? floatingActionButton;
   final Widget? drawer;
+  final Color? backgroundColor;
   final bool extendBody;
   final bool extendBodyBehindAppBar;
   final bool resizeToAvoidBottomInset;
@@ -37,7 +39,8 @@ class GriotScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor:
+          backgroundColor ?? Theme.of(context).colorScheme.surface,
       appBar: appBar,
       body: body,
       bottomNavigationBar: bottomNavigationBar,
