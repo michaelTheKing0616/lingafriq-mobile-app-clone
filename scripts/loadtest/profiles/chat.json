@@ -1,0 +1,11 @@
+{
+  "p95_limit_ms": 500,
+  "concurrency": 8,
+  "duration_seconds": 30,
+  "warmup_seconds": 5,
+  "delivery_timeout_ms": 5000,
+  "room": "global",
+  "chat_type": "global",
+  "socket_path": "/socket.io",
+  "message_prefix": "loadtest-delivery"
+}
