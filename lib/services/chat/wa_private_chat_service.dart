@@ -184,6 +184,7 @@ class WaPrivateChatService {
     required String recipientId,
     required String message,
     String? clientMessageId,
+    bool firstDmIntro = false,
   }) async {
     final res = await ApiService.post(
       Api.waMessages,
@@ -191,6 +192,7 @@ class WaPrivateChatService {
         'recipientId': recipientId,
         'message': message,
         'message_type': 'text',
+        if (firstDmIntro) 'first_dm_intro': true,
         if (clientMessageId != null && clientMessageId.isNotEmpty)
           'client_message_id': clientMessageId,
       },
@@ -201,6 +203,32 @@ class WaPrivateChatService {
     }
     if (raw is Map) return Map<String, dynamic>.from(raw);
     return null;
+  }
+
+  /// P9-929: `GET /api/v2/first-dm/state` → kind string from server payload.
+  static Future<Map<String, dynamic>> fetchFirstDmState(int peerUserId) async {
+    final res = await ApiService.get(
+      'api/v2/first-dm/state',
+      queryParameters: {'peer_user_id': peerUserId},
+    );
+    final raw = res.data;
+    if (raw is Map && raw['state'] is Map) {
+      return Map<String, dynamic>.from(raw['state'] as Map);
+    }
+    return const {'kind': 'none'};
+  }
+
+  static Future<void> respondFirstDmRequest({
+    required int initiatorUserId,
+    required String decision,
+  }) async {
+    await ApiService.post(
+      'api/v2/first-dm/respond',
+      data: {
+        'initiator_user_id': initiatorUserId,
+        'decision': decision,
+      },
+    );
   }
 
   /// Durable log catch-up for one device (`GET /api/wa/messages/sync`).

@@ -22,6 +22,8 @@ import '../../utils/transport_error_policy.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import 'package:dio/dio.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
+import 'first_dm_prompt_sheet.dart';
+import 'report_block_sheet.dart';
 
 /// Private DM thread — loads history from `GET /chat/private/:otherUserId` and
 /// sends via `POST /api/wa/messages`.
@@ -64,6 +66,8 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
   bool _socketConnecting = false;
   String? _myMongoId;
   bool _typingListenerAttached = false;
+  bool _inboundRequestSheetShown = false;
+  String _firstDmKind = 'accepted';
 
   static String _socketOriginFromBaseUrl(String baseUrl) {
     final raw = baseUrl.trim();
@@ -197,6 +201,7 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
         });
         _scrollToBottom();
         _ensureTypingPresence();
+        unawaited(_refreshFirstDmState(showInboundSheet: true));
       }
     } catch (e) {
       if (!mounted) return;
@@ -398,10 +403,131 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
     super.dispose();
   }
 
+  Future<void> _refreshFirstDmState({bool showInboundSheet = false}) async {
+    final peer = _peerNumericId;
+    if (peer == null || !mounted) return;
+    try {
+      final state = await WaPrivateChatService.fetchFirstDmState(peer);
+      final kind = state['kind']?.toString() ?? 'none';
+      setState(() => _firstDmKind = kind);
+      if (kind == 'pending_inbound' && showInboundSheet && !_inboundRequestSheetShown) {
+        _inboundRequestSheetShown = true;
+        await _showInboundFirstDmSheet(
+          intro: state['intro_message']?.toString(),
+          initiatorId: peer,
+        );
+      }
+    } catch (_) {
+      // Offline: keep last known state.
+    }
+  }
+
+  Future<void> _showInboundFirstDmSheet({
+    required int initiatorId,
+    String? intro,
+  }) async {
+    if (!mounted) return;
+    await showFirstDmPromptSheet<void>(
+      context: context,
+      sheet: FirstDmPromptSheet(
+        mode: FirstDmSheetMode.inboundRequest,
+        peerDisplayName: _contactName,
+        inboundIntro: intro,
+        onAccept: () async {
+          await WaPrivateChatService.respondFirstDmRequest(
+            initiatorUserId: initiatorId,
+            decision: 'accept',
+          );
+          if (mounted) Navigator.of(context).pop();
+          await _refreshFirstDmState();
+        },
+        onDecline: () async {
+          await WaPrivateChatService.respondFirstDmRequest(
+            initiatorUserId: initiatorId,
+            decision: 'decline',
+          );
+          if (mounted) Navigator.of(context).pop();
+          if (mounted) Navigator.of(context).pop();
+        },
+        onReport: () async {
+          if (!mounted) return;
+          await showModalBottomSheet<void>(
+            context: context,
+            builder: (ctx) => ReportBlockSheet(
+              onReport: (_) async => 'first-dm-report',
+              onBlock: () async {},
+            ),
+          );
+        },
+        onBlock: () async {
+          if (!mounted) return;
+          await showModalBottomSheet<void>(
+            context: context,
+            builder: (ctx) => ReportBlockSheet(
+              onReport: (_) async => 'first-dm-report',
+              onBlock: () async {},
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Future<bool> _promptOutboundIntroIfNeeded() async {
+    if (_firstDmKind != 'none') return true;
+    if (!mounted) return false;
+    final peer = _peerNumericId;
+    if (peer == null) return false;
+    final text = _messageController.text.trim();
+    if (text.isEmpty) return false;
+
+    var sent = false;
+    await showFirstDmPromptSheet<void>(
+      context: context,
+      sheet: FirstDmPromptSheet(
+        mode: FirstDmSheetMode.outboundIntro,
+        peerDisplayName: _contactName,
+        onSendIntro: () async {
+          await WaPrivateChatService.sendTextMessage(
+            recipientId: peer.toString(),
+            message: text,
+            firstDmIntro: true,
+          );
+          sent = true;
+          _messageController.clear();
+          if (mounted) Navigator.of(context).pop();
+          await _loadMessages();
+          await _refreshFirstDmState();
+        },
+      ),
+    );
+    return sent;
+  }
+
   Future<void> _sendMessage() async {
     final text = _messageController.text.trim();
     final peer = _peerNumericId;
     if (text.isEmpty || _sending || peer == null) return;
+
+    if (_firstDmKind == 'none') {
+      setState(() => _sending = true);
+      try {
+        final sent = await _promptOutboundIntroIfNeeded();
+        if (!sent) return;
+      } finally {
+        if (mounted) setState(() => _sending = false);
+      }
+      return;
+    }
+    if (_firstDmKind == 'pending_outbound' || _firstDmKind == 'pending_inbound') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Wait for the message request to be accepted.'),
+        ),
+      );
+      return;
+    }
+
     HapticFeedback.lightImpact();
     setState(() => _sending = true);
     final room = _dmRoomId;
@@ -419,15 +545,36 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
       await _appendPolieIfMentioned(text);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              e is DioException
-                  ? TransportErrorPolicy.toUserMessage(e)
-                  : 'Message could not be sent.',
+        final code = e is DioException
+            ? (e.response?.data is Map
+                ? (e.response!.data as Map)['code']?.toString()
+                : null)
+            : null;
+        if (code == 'NEW_ACCOUNT_LIMIT') {
+          final reset = e is DioException && e.response?.data is Map
+              ? (e.response!.data as Map)['reset_at']?.toString()
+              : null;
+          showFirstDmPromptSheet<void>(
+            context: context,
+            sheet: FirstDmPromptSheet(
+              mode: FirstDmSheetMode.limited,
+              peerDisplayName: _contactName,
+              limitedResetLabel: reset != null
+                  ? 'Try again after $reset.'
+                  : null,
             ),
-          ),
-        );
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                e is DioException
+                    ? TransportErrorPolicy.toUserMessage(e)
+                    : 'Message could not be sent.',
+              ),
+            ),
+          );
+        }
       }
     } finally {
       if (mounted) setState(() => _sending = false);
