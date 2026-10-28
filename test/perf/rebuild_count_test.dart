@@ -70,7 +70,8 @@ void main() {
           home: Consumer(
             builder: (context, ref, _) {
               ref.watch(_testCowriesSlice);
-              return const _RebuildCounter(child: SizedBox());
+              // ignore: prefer_const_constructors
+              return _RebuildCounter(child: const SizedBox());
             },
           ),
         ),
@@ -101,7 +102,8 @@ void main() {
           home: Consumer(
             builder: (context, ref, _) {
               ref.watch(_testStreakSlice);
-              return const _RebuildCounter(child: SizedBox());
+              // ignore: prefer_const_constructors
+              return _RebuildCounter(child: const SizedBox());
             },
           ),
         ),
