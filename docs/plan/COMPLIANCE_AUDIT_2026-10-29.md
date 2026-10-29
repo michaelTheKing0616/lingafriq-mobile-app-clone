@@ -20,3 +20,33 @@ Trigger: viral X post on "6 laws" vibe-coded apps break. Live checks done 2026-1
 | 14 | Model licences | Tope commercial-only rule | NLLB-200 (CC-BY-NC) still referenced in `node-backend/src/controllers/hybrid-polie.controller.ts`, `telemetry.controller.ts`, `routes/hybrid-polie.route.ts` | High | Remove/replace NLLB callers | builder |
 | 15 | Font licences | OFL | Dosis bundled (OFL, OK); Google Fonts families OFL/Apache OK once bundled | Low | Keep licence files | builder |
 | 16 | Age 16 jurisdictions | GDPR Art 8 (13–16 by state)*; NDPA (minor <18?)* | Default 13; NDPA child threshold open question | Medium | Lawyer confirms per-country thresholds | lawyer |
+
+## Addendum A — remaining post items (live checks 2026-10-29)
+
+| # | Risk | Law / source (date) | Finding | Severity | Fix | Owner |
+|---|---|---|---|---|---|---|
+| 17 | Session replay / keystroke capture (re-check) | Cal. Penal Code §631/§638.51 (CIPA)* | grep of all 4 repos (excluding node_modules/build): no rrweb, LogRocket, FullStory, Hotjar, Clarity, Smartlook, UXCam, PostHog, Sentry Replay or Firebase Analytics. Only `sentry_flutter` (crash) remains; replay not enabled. | Low | Keep Sentry `sendDefaultPii=false`, no screenshots/view hierarchy; CI lint banning replay SDKs | builder |
+| 18 | Marketing email | CAN-SPAM 15 USC 7704; FTC max $53,088/email (2026 unchanged, FR 2026-18853) | `node-backend/src/services/emailService.ts` (nodemailer) sends transactional mail (verify, reset). No "unsubscribe"/List-Unsubscribe or postal address anywhere in backend/admin templates. Transactional mail is exempt; any marketing, reminder or streak email is not. | Medium (High once marketing starts) | Shared footer: unsubscribe link + List-Unsubscribe header + postal address; suppression list; honour opt-out within 10 business days | builder + Tope (postal address) |
+| 19 | Subscription disclosure | Cal. BPC §17602 as amended by AB 2863 (contracts from 2025-07-01); FTC click-to-cancel vacated 2025-07-08, removed 2026-02-12 (FR 2026-02866), ANPRM only (2026-03-13); Apple 3.1.2 / Play subscriptions policy* | `lib/screens/subscription/subscription_screen.dart` (RevenueCat): restore present; zero mentions of renew, cancel, trial or terms/privacy → no renewal terms, trial-end price or cancel method beside the button | High | Beside the CTA: price/period, "renews automatically until cancelled", post-trial price & date, how to cancel (store settings link), Terms + Privacy links; consent record; annual reminder | builder |
+| 20 | User uploads, DMCA | 17 USC 512(c) agent; copyright.gov $6, renew every 3 yrs (FAQ checked 2026-10-29) | Uploads (snaps, avatars, clips, chat media, STT audio) via `fileUploadSecurity.ts`; report/block + appeals tests exist (P1-024, P9-932); CSAM hash (P9-927). No DMCA/copyright notice route, takedown policy or repeat-infringer policy found. No agent registered. | Medium | Copyright report type + counter-notice in report flow; repeat-infringer strike policy in Terms; register agent | builder + Tope (register) + lawyer (policy) |
+
+## Addendum B — does it apply to LingAfriq? (operator in Lagos, Nigeria)
+
+Principle: build one global baseline to the strictest cheap standard; geo-fence only where compliance is costly. None of the fixes below restricts features.
+
+| Item | Trigger | Applies to LingAfriq? | Local equivalent | Recommendation (no over-restriction) |
+|---|---|---|---|---|
+| COPPA (#3) | Online service directed to US children <13, or actual knowledge of collecting from US <13, wherever the operator is (16 CFR 312.2) | Applies if we accept US users (app is on the US stores, so yes once launched there) | NDPA 2023 s.31 (child consent; under-18 = child per Child Rights Act, lawyer to confirm); POPIA s.35 (child <18); Kenya DPA s.33; Ghana Act 843 | Global: birth-year gate + parental consent for under-13 everywhere (already Tope policy). Cheap and also meets NDPA/POPIA. No geo-fence. |
+| Google Fonts (#5) | GDPR when EU users are served (Art 3(2)); LG München 2022 | Applies if we accept EU/UK users | NDPA s.41 (cross-border transfer of IP to Google) | Bundle fonts once, for everyone. Zero cost, also faster offline. |
+| CIPA replay (#17) | Recording California users' communications without consent | Not applicable now (no replay tool) | NDPA consent / Cybercrimes Act 2015 interception | Keep it banned globally. |
+| CAN-SPAM (#18) | Any commercial email; FTC applies it to any recipient, and suits come from US recipients | Applies when marketing email starts (US recipients) | NDPA s.36 (right to object to direct marketing); POPIA s.69 (opt-in for e-marketing, stricter); Kenya DPA s.37 | One global rule: opt-in (POPIA standard) + unsubscribe + address. |
+| California ARL (#19) | Auto-renew offers to California consumers | Applies if California users can subscribe | Nigeria FCCPA 2018 s.114–125 (fair disclosure); POPIA/CPA SA s.14 (fixed-term cancellation) | One paywall with full disclosure for everyone; store-billed cancel already exists. No geo-fence. |
+| FTC click-to-cancel | Rule vacated; only 1973 rule + FTC Act s.5/ROSCA | Not applicable as a rule (ROSCA still applies to US sales) | as above | Disclosures in #19 cover ROSCA. |
+| DMCA (#20) | US law; safe harbor only matters if sued in the US (US hosting/users/rights-holders) | Applies if we accept US users or host in the US (Firebase/GCP likely US) | Nigeria Copyright Act 2022 s.54–58 (notice and takedown for ISPs); Cybercrimes Act; SA ECTA s.77 | Register agent ($6), one global takedown + repeat-infringer policy; also satisfies Copyright Act 2022. |
+| Secrets (#1–2) | Security | Applies now | NDPA s.39 (security), breach notice 72h s.40 | Rotate now. |
+| AI disclosure (#6) | EU AI Act Art 50 if offered in the EU (applies since 2026-08-02) | Applies if we accept EU users; app-store AI policies apply everywhere | NDPC GAID 2025 (AI guidance)* | Global AI label — cheap and trust-positive. |
+| Voice (#7), deletion (#8), privacy policy (#11) | App Store / Play (all regions) + GDPR | Applies now (store rules) | NDPA s.34–38 (access, erasure, portability); POPIA s.23–24 | Global. |
+| Age 16 (#16) | GDPR Art 8 member-state ages | Applies if EU users | NDPA child age (lawyer) | Country table in backend config, default 13. |
+| Teen DMs (#4), CORS (#13), licences (#14–15) | Product safety, contract | Applies now | NDPA; Child Rights Act | Global. |
+
+*Re-verify with counsel. Not legal advice.
