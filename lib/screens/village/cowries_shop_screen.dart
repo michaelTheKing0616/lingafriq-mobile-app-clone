@@ -164,57 +164,69 @@ class _CowriesShopScreenState extends ConsumerState<CowriesShopScreen> {
                         child: Card(
                           elevation: 0,
                           color: Theme.of(context).colorScheme.surfaceContainerLow,
-                          child: ListTile(
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: PanAfricanSpacing.md,
-                              vertical: PanAfricanSpacing.xs,
-                            ),
-                            title: Text(
-                              item.title,
-                              style: PanAfricanTypography.bodyLarge(context),
-                            ),
-                            subtitle: Column(
+                          child: Padding(
+                            padding: EdgeInsets.all(PanAfricanSpacing.md),
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Text(
+                                  item.title,
+                                  style: PanAfricanTypography.bodyLarge(context),
+                                ),
                                 SizedBox(height: PanAfricanSpacing.xs),
                                 Text(item.does, style: PanAfricanTypography.bodySmall(context)),
-                                SizedBox(height: PanAfricanSpacing.xs),
-                                Text(
-                                  '${item.cost} Cowries',
-                                  style: PanAfricanTypography.labelLarge(context),
+                                SizedBox(height: PanAfricanSpacing.sm),
+                                Wrap(
+                                  spacing: PanAfricanSpacing.sm,
+                                  runSpacing: PanAfricanSpacing.xs,
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  alignment: WrapAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '${item.cost} Cowries',
+                                          style: PanAfricanTypography.labelLarge(context),
+                                        ),
+                                        if (owned)
+                                          Text(
+                                            'Owned',
+                                            style: PanAfricanTypography.labelMedium(context),
+                                          ),
+                                        if (!owned && insufficient)
+                                          Text(
+                                            'Not enough Cowries',
+                                            style: PanAfricanTypography.labelMedium(context),
+                                          ),
+                                      ],
+                                    ),
+                                    owned
+                                        ? const Icon(Icons.check_circle, color: PanAfricanColors.primary)
+                                        : FilledButton(
+                                            onPressed: disabled
+                                                ? null
+                                                : () {
+                                                    HapticFeedback.mediumImpact();
+                                                    _confirmPurchase(item);
+                                                  },
+                                            style: FilledButton.styleFrom(
+                                              minimumSize: Size(96.w, 48.h),
+                                              maximumSize: Size(200.w, double.infinity),
+                                            ),
+                                            child: _pendingItemId == item.id
+                                                ? SizedBox(
+                                                    width: 20.w,
+                                                    height: 20.w,
+                                                    child: const CircularProgressIndicator(strokeWidth: 2),
+                                                  )
+                                                : const Text('Buy'),
+                                          ),
+                                  ],
                                 ),
-                                if (owned)
-                                  Text(
-                                    'Owned',
-                                    style: PanAfricanTypography.labelMedium(context),
-                                  ),
-                                if (!owned && insufficient)
-                                  Text(
-                                    'Not enough Cowries',
-                                    style: PanAfricanTypography.labelMedium(context),
-                                  ),
                               ],
                             ),
-                            trailing: owned
-                                ? const Icon(Icons.check_circle, color: PanAfricanColors.primary)
-                                : FilledButton(
-                                    onPressed: disabled
-                                        ? null
-                                        : () {
-                                            HapticFeedback.mediumImpact();
-                                            _confirmPurchase(item);
-                                          },
-                                    style: FilledButton.styleFrom(
-                                      minimumSize: Size(96.w, 48.h),
-                                    ),
-                                    child: _pendingItemId == item.id
-                                        ? SizedBox(
-                                            width: 20.w,
-                                            height: 20.w,
-                                            child: const CircularProgressIndicator(strokeWidth: 2),
-                                          )
-                                        : const Text('Buy'),
-                                  ),
                           ),
                         ),
                       ),
