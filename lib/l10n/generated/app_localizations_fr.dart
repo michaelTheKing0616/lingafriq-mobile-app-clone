@@ -1332,4 +1332,22 @@ class AppLocalizationsFr extends AppLocalizations {
   String homeContinueLabel(String name, int percent) {
     return 'Continuer : $name, $percent % terminé';
   }
+
+  @override
+  String get homeErrorTitle => 'Impossible de charger tes langues';
+
+  @override
+  String get homeErrorBody =>
+      'Le problème vient de nous. Ta progression est sauvegardée : réessaie dans un instant.';
+
+  @override
+  String get homeKidsTitle => 'Mode enfant activé';
+
+  @override
+  String get homeKidsBody =>
+      'Toutes les leçons sont ouvertes. Le chat, le Village et les achats sont désactivés.';
+
+  @override
+  String get homeKidsLabel =>
+      'Mode enfant activé. Toutes les leçons sont ouvertes. Le chat, le Village et les achats sont désactivés.';
 }

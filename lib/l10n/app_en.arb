@@ -1700,5 +1700,25 @@
         "type": "int"
       }
     }
+  },
+  "homeErrorTitle": "We couldn't load your languages",
+  "@homeErrorTitle": {
+    "description": "homeErrorTitle"
+  },
+  "homeErrorBody": "That one's on us. Your progress is safe, so try again in a moment.",
+  "@homeErrorBody": {
+    "description": "homeErrorBody"
+  },
+  "homeKidsTitle": "Kids mode is on",
+  "@homeKidsTitle": {
+    "description": "homeKidsTitle"
+  },
+  "homeKidsBody": "Every lesson is open. Chat, Village and purchases are switched off.",
+  "@homeKidsBody": {
+    "description": "homeKidsBody"
+  },
+  "homeKidsLabel": "Kids mode is on. Every lesson is open. Chat, Village and purchases are switched off.",
+  "@homeKidsLabel": {
+    "description": "homeKidsLabel"
   }
 }

@@ -2417,6 +2417,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Continue {name}, {percent}% complete'**
   String homeContinueLabel(String name, int percent);
+
+  /// homeErrorTitle
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t load your languages'**
+  String get homeErrorTitle;
+
+  /// homeErrorBody
+  ///
+  /// In en, this message translates to:
+  /// **'That one\'s on us. Your progress is safe, so try again in a moment.'**
+  String get homeErrorBody;
+
+  /// homeKidsTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Kids mode is on'**
+  String get homeKidsTitle;
+
+  /// homeKidsBody
+  ///
+  /// In en, this message translates to:
+  /// **'Every lesson is open. Chat, Village and purchases are switched off.'**
+  String get homeKidsBody;
+
+  /// homeKidsLabel
+  ///
+  /// In en, this message translates to:
+  /// **'Kids mode is on. Every lesson is open. Chat, Village and purchases are switched off.'**
+  String get homeKidsLabel;
 }
 
 class _AppLocalizationsDelegate

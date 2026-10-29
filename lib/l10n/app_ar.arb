@@ -247,5 +247,10 @@
   "homeLangZulu": "الزولو",
   "homeLangIgbo": "الإيغبو",
   "homeContinueTitle": "تابع {name}",
-  "homeContinueLabel": "تابع {name}، اكتمل {percent}%"
+  "homeContinueLabel": "تابع {name}، اكتمل {percent}%",
+  "homeErrorTitle": "تعذّر تحميل لغاتك",
+  "homeErrorBody": "المشكلة من جهتنا. تقدّمك محفوظ، فحاول مجددًا بعد قليل.",
+  "homeKidsTitle": "وضع الأطفال مفعّل",
+  "homeKidsBody": "كل الدروس متاحة. الدردشة والقرية والمشتريات متوقفة.",
+  "homeKidsLabel": "وضع الأطفال مفعّل. كل الدروس متاحة. الدردشة والقرية والمشتريات متوقفة."
 }

@@ -1327,4 +1327,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String homeContinueLabel(String name, int percent) {
     return 'تابع $name، اكتمل $percent%';
   }
+
+  @override
+  String get homeErrorTitle => 'تعذّر تحميل لغاتك';
+
+  @override
+  String get homeErrorBody =>
+      'المشكلة من جهتنا. تقدّمك محفوظ، فحاول مجددًا بعد قليل.';
+
+  @override
+  String get homeKidsTitle => 'وضع الأطفال مفعّل';
+
+  @override
+  String get homeKidsBody =>
+      'كل الدروس متاحة. الدردشة والقرية والمشتريات متوقفة.';
+
+  @override
+  String get homeKidsLabel =>
+      'وضع الأطفال مفعّل. كل الدروس متاحة. الدردشة والقرية والمشتريات متوقفة.';
 }

@@ -247,5 +247,10 @@
   "homeLangZulu": "zoulou",
   "homeLangIgbo": "igbo",
   "homeContinueTitle": "Continuer : {name}",
-  "homeContinueLabel": "Continuer : {name}, {percent} % terminé"
+  "homeContinueLabel": "Continuer : {name}, {percent} % terminé",
+  "homeErrorTitle": "Impossible de charger tes langues",
+  "homeErrorBody": "Le problème vient de nous. Ta progression est sauvegardée : réessaie dans un instant.",
+  "homeKidsTitle": "Mode enfant activé",
+  "homeKidsBody": "Toutes les leçons sont ouvertes. Le chat, le Village et les achats sont désactivés.",
+  "homeKidsLabel": "Mode enfant activé. Toutes les leçons sont ouvertes. Le chat, le Village et les achats sont désactivés."
 }

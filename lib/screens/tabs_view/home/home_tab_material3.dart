@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -14,17 +13,19 @@ import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/models/daily_goal_model.dart';
 import 'package:lingafriq/services/age_tier_service.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/widgets/adaptive_progress_indicator.dart';
-import 'package:lingafriq/widgets/error_widet.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/pan_african_app_bar.dart';
 import 'package:lingafriq/screens/tabs_view/home/language_detail_screen.dart';
 import 'package:lingafriq/screens/language/search_languages_page.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
+import 'package:lingafriq/screens/tabs_view/home/home_parts.dart';
 
-final languagesProvider = FutureProvider.autoDispose((ref) {
-  return ref.read(apiProvider.notifier).getLanguages();
-});
+/// No silent auto-retry: a failed fetch shows the offline/error state at
+/// once, with a Try Again button, instead of a skeleton that never ends.
+final languagesProvider = FutureProvider.autoDispose(
+  (ref) => ref.read(apiProvider.notifier).getLanguages(),
+  retry: (_, __) => null,
+);
 
 /// Read-only check against the existing server-owned age-tier status (see
 /// [AgeTierService]) so a minor account that is still waiting on guardian
@@ -160,6 +161,12 @@ class HomeTabMaterial3 extends HookConsumerWidget {
       data: _isPendingGuardianMinor,
       orElse: () => false,
     );
+    final isKidsMode =
+        !isPendingGuardianMinor &&
+        ageTierStatusAsync.maybeWhen(
+          data: (s) => s?.tier?.toLowerCase() == 'child',
+          orElse: () => false,
+        );
     final side = PanAfricanSpacing.md;
 
     Widget pad(Widget child, {double top = 0}) => SliverPadding(
@@ -172,11 +179,14 @@ class HomeTabMaterial3 extends HookConsumerWidget {
         if (languages.results.isEmpty) {
           return [
             SliverToBoxAdapter(
-              child: PanAfricanEmptyState(
-                icon: Icons.language_outlined,
+              child: HomeStatePanel(
+                key: const Key('home-state-empty'),
+                icon: Icons.travel_explore_rounded,
+                tint: PanAfricanColors.primary,
                 title: l.homeNoLanguagesTitle,
-                description: l.homeNoLanguagesBody,
+                body: l.homeNoLanguagesBody,
                 actionLabel: l.homeSearchLanguagesAction,
+                actionIcon: Icons.search_rounded,
                 onAction: () => _openSearch(context),
               ),
             ),
@@ -248,10 +258,12 @@ class HomeTabMaterial3 extends HookConsumerWidget {
           // failures into the generic server-error panel below.
           return [
             SliverToBoxAdapter(
-              child: PanAfricanEmptyState(
+              child: HomeStatePanel(
+                key: const Key('home-state-offline'),
                 icon: Icons.wifi_off_rounded,
+                tint: PanAfricanColors.onTertiaryContainer,
                 title: l.homeOfflineTitle,
-                description: l.homeOfflineBody,
+                body: l.homeOfflineBody,
                 actionLabel: l.homeTryAgain,
                 onAction: () => ref.invalidate(languagesProvider),
               ),
@@ -260,19 +272,21 @@ class HomeTabMaterial3 extends HookConsumerWidget {
         }
         return [
           SliverToBoxAdapter(
-            child: Center(
-              child: StreamErrorWidget(
-                error: e,
-                onTryAgain: () => ref.invalidate(languagesProvider),
-              ),
+            child: HomeStatePanel(
+              key: const Key('home-state-error'),
+              icon: Icons.cloud_off_rounded,
+              tint: PanAfricanColors.kenteRed,
+              title: l.homeErrorTitle,
+              body: l.homeErrorBody,
+              actionLabel: l.homeTryAgain,
+              onAction: () => ref.invalidate(languagesProvider),
             ),
           ),
         ];
       },
       loading: () => [
-        SliverFillRemaining(
-          hasScrollBody: false,
-          child: AdaptiveProgressIndicator(message: l.homeLoadingLanguages),
+        SliverToBoxAdapter(
+          child: HomeSkeleton(caption: l.homeLoadingLanguages),
         ),
       ],
     );
@@ -337,7 +351,26 @@ class HomeTabMaterial3 extends HookConsumerWidget {
                     slivers: [
                       if (isPendingGuardianMinor)
                         pad(
-                          _GuardianPendingBanner(reduceMotion: reduceMotion),
+                          _NoticeBanner(
+                            key: const Key('home-guardian-banner'),
+                            icon: Icons.family_restroom_rounded,
+                            title: l.homeGuardianTitle,
+                            body: l.homeGuardianBody,
+                            label: l.homeGuardianLabel,
+                            reduceMotion: reduceMotion,
+                          ),
+                          top: PanAfricanSpacing.lg,
+                        )
+                      else if (isKidsMode)
+                        pad(
+                          _NoticeBanner(
+                            key: const Key('home-kids-banner'),
+                            icon: Icons.child_care_rounded,
+                            title: l.homeKidsTitle,
+                            body: l.homeKidsBody,
+                            label: l.homeKidsLabel,
+                            reduceMotion: reduceMotion,
+                          ),
                           top: PanAfricanSpacing.lg,
                         ),
                       pad(
@@ -514,22 +547,9 @@ class _LanguageCard extends StatelessWidget {
                       excludeSemantics: true,
                       child: Opacity(
                         opacity: isLocked ? 0.5 : 1.0,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(
-                            PanAfricanRadius.md,
-                          ),
-                          child: (language.background ?? '').isEmpty
-                              ? _flagFallback()
-                              : CachedNetworkImage(
-                                  imageUrl: language.background!,
-                                  width: 56.w,
-                                  height: 56.w,
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) =>
-                                      _flagFallback(),
-                                  errorWidget: (context, url, error) =>
-                                      _flagFallback(),
-                                ),
+                        child: LanguageArt(
+                          name: language.name,
+                          imageUrl: language.background,
                         ),
                       ),
                     ),
@@ -602,30 +622,33 @@ class _LanguageCard extends StatelessWidget {
       ),
     );
   }
-
-  Widget _flagFallback() => Container(
-    width: 56.w,
-    height: 56.w,
-    color: PanAfricanColors.neutralLight,
-    child: const Icon(Icons.language, color: PanAfricanColors.neutralMedium),
-  );
 }
 
 /// A small, honest status banner for a minor account still waiting on
 /// guardian consent (see [AgeTierService]). Home stays fully usable for
 /// lessons; this explains why social/chat/purchase features are paused.
-class _GuardianPendingBanner extends StatelessWidget {
-  const _GuardianPendingBanner({required this.reduceMotion});
+class _NoticeBanner extends StatelessWidget {
+  const _NoticeBanner({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.body,
+    required this.label,
+    required this.reduceMotion,
+  });
 
+  final IconData icon;
+  final String title;
+  final String body;
+  final String label;
   final bool reduceMotion;
 
   @override
   Widget build(BuildContext context) {
-    final l = l10nOf(context);
     final banner = Semantics(
       container: true,
       liveRegion: true,
-      label: l.homeGuardianLabel,
+      label: label,
       excludeSemantics: true,
       child: Container(
         padding: EdgeInsets.all(PanAfricanSpacing.md),
@@ -636,24 +659,21 @@ class _GuardianPendingBanner extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Icon(
-              Icons.family_restroom_rounded,
-              color: PanAfricanColors.onSecondaryContainer,
-            ),
+            Icon(icon, color: PanAfricanColors.onSecondaryContainer),
             SizedBox(width: PanAfricanSpacing.sm),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    l.homeGuardianTitle,
+                    title,
                     style: PanAfricanTypography.titleSmall(
                       context,
                     ).copyWith(color: PanAfricanColors.onSecondaryContainer),
                   ),
                   SizedBox(height: PanAfricanSpacing.xxs),
                   Text(
-                    l.homeGuardianBody,
+                    body,
                     style: PanAfricanTypography.bodySmall(
                       context,
                     ).copyWith(color: PanAfricanColors.onSecondaryContainer),

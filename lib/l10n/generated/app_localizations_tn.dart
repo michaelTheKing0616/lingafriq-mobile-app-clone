@@ -1321,4 +1321,22 @@ class AppLocalizationsTn extends AppLocalizations {
   String homeContinueLabel(String name, int percent) {
     return 'Continue $name, $percent% complete';
   }
+
+  @override
+  String get homeErrorTitle => 'We couldn\'t load your languages';
+
+  @override
+  String get homeErrorBody =>
+      'That one\'s on us. Your progress is safe, so try again in a moment.';
+
+  @override
+  String get homeKidsTitle => 'Kids mode is on';
+
+  @override
+  String get homeKidsBody =>
+      'Every lesson is open. Chat, Village and purchases are switched off.';
+
+  @override
+  String get homeKidsLabel =>
+      'Kids mode is on. Every lesson is open. Chat, Village and purchases are switched off.';
 }
