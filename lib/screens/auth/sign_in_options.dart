@@ -19,6 +19,41 @@ enum SignInOptionsState { options, sending, linkSent, error }
 /// (for example onboarding's "Continue with Google").
 enum SignInAutoStart { none, google, apple }
 
+const Map<String, String> _signInAr = {
+  'Sign in': 'تسجيل الدخول',
+  'Choose how to sign in': 'اختر طريقة تسجيل الدخول',
+  'Check your email for a sign-in link':
+      'تحقق من بريدك الإلكتروني للعثور على رابط الدخول',
+  'The link expires in 15 minutes and works once.':
+      'تنتهي صلاحية الرابط بعد ١٥ دقيقة ويعمل مرة واحدة.',
+  'Your answers and first win are saved to this account.':
+      'تُحفظ إجاباتك وأول إنجاز لك في هذا الحساب.',
+  'Continue with Google': 'المتابعة باستخدام Google',
+  'Continue with Apple': 'المتابعة باستخدام Apple',
+  'or': 'أو',
+  'Email for a sign-in link': 'البريد الإلكتروني لرابط الدخول',
+  'you@example.com': 'you@example.com',
+  'Email me a link': 'أرسل لي رابطًا',
+  'Paste the link token': 'الصق رمز الرابط',
+  'Sign in with the link': 'سجّل الدخول بالرابط',
+  'Error': 'خطأ',
+  'Go back': 'رجوع',
+};
+
+final RegExp _arabicChars = RegExp(r'[\u0590-\u08FF]');
+
+/// Arabic copy for `ar`; other text inside RTL stays an LTR isolate.
+String signInText(BuildContext context, String en) {
+  if (Localizations.maybeLocaleOf(context)?.languageCode == 'ar') {
+    final ar = _signInAr[en];
+    if (ar != null) return ar;
+  }
+  return Directionality.of(context) == TextDirection.rtl &&
+          !_arabicChars.hasMatch(en)
+      ? '\u2066$en\u2069'
+      : en;
+}
+
 class SignInOptionsView extends StatelessWidget {
   const SignInOptionsView({
     super.key,
@@ -30,7 +65,11 @@ class SignInOptionsView extends StatelessWidget {
     required this.tokenController,
     required this.onUseToken,
     this.errorCode,
+    this.hero,
   });
+
+  /// Replaces the default Polie still (onboarding passes its own moment).
+  final Widget? hero;
 
   final SignInOptionsState state;
   final VoidCallback onGoogle;
@@ -48,25 +87,26 @@ class SignInOptionsView extends StatelessWidget {
     final linkSent = state == SignInOptionsState.linkSent;
     final lang = Localizations.maybeLocaleOf(context)?.languageCode;
     final title = linkSent
-        ? 'Check your email for a sign-in link'
-        : 'Choose how to sign in';
+        ? signInText(context, 'Check your email for a sign-in link')
+        : signInText(context, 'Choose how to sign in');
     return Semantics(
       label: linkSent ? 'signin.link_sent' : 'signin.options',
       child: Material(
         color: ModernGriotColors.surface,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
+        child: _FadeScroll(
+          padding: const EdgeInsets.fromLTRB(24, 8, 24, 64),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Center(
-                child: Image.asset(
-                  'assets/images/cast_still_PaLingAfriq.png',
-                  height: 112,
-                  excludeFromSemantics: true,
-                  errorBuilder: (_, _, _) => const SizedBox(height: 112),
-                ),
-              ),
+              hero ??
+                  Center(
+                    child: Image.asset(
+                      'assets/images/cast_still_PaLingAfriq.png',
+                      height: 112,
+                      excludeFromSemantics: true,
+                      errorBuilder: (_, _, _) => const SizedBox(height: 112),
+                    ),
+                  ),
               const SizedBox(height: 16),
               Semantics(
                 header: true,
@@ -82,9 +122,12 @@ class SignInOptionsView extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                linkSent
-                    ? 'The link expires in 15 minutes and works once.'
-                    : 'Your answers and first win are saved to this account.',
+                signInText(
+                  context,
+                  linkSent
+                      ? 'The link expires in 15 minutes and works once.'
+                      : 'Your answers and first win are saved to this account.',
+                ),
                 textAlign: TextAlign.center,
                 style: ModernGriotTypography.bodyMedium(
                   context: context,
@@ -101,14 +144,17 @@ class SignInOptionsView extends StatelessWidget {
                 ),
               if (state == SignInOptionsState.error) ...[
                 _SignInError(
-                  text: signInErrorText(errorCode ?? 'unknown', lang),
+                  text: signInText(
+                    context,
+                    signInErrorText(errorCode ?? 'unknown', lang),
+                  ),
                 ),
                 const SizedBox(height: 16),
               ],
               if (state == SignInOptionsState.options ||
                   state == SignInOptionsState.error) ...[
                 _ProviderButton(
-                  label: 'Continue with Google',
+                  label: signInText(context, 'Continue with Google'),
                   icon: Icons.account_circle_outlined,
                   background: ModernGriotColors.surfaceContainerLowest,
                   foreground: ModernGriotColors.onSurface,
@@ -117,7 +163,7 @@ class SignInOptionsView extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 _ProviderButton(
-                  label: 'Continue with Apple',
+                  label: signInText(context, 'Continue with Apple'),
                   icon: Icons.apple,
                   background: ModernGriotColors.onSurface,
                   foreground: ModernGriotColors.surfaceContainerLowest,
@@ -129,20 +175,25 @@ class SignInOptionsView extends StatelessWidget {
                 const SizedBox(height: 24),
                 _GriotField(
                   controller: emailController,
-                  label: 'Email for a sign-in link',
+                  label: signInText(context, 'Email for a sign-in link'),
                   keyboardType: TextInputType.emailAddress,
+                  hint: 'you@example.com',
                 ),
                 const SizedBox(height: 12),
-                _GoldButton(label: 'Email me a link', onPressed: onSendLink),
+                _GoldButton(
+                  label: signInText(context, 'Email me a link'),
+                  onPressed: onSendLink,
+                ),
               ],
               if (linkSent) ...[
                 _GriotField(
                   controller: tokenController,
-                  label: 'Paste the link token',
+                  label: signInText(context, 'Paste the link token'),
+                  hint: 'abc123…',
                 ),
                 const SizedBox(height: 12),
                 _GoldButton(
-                  label: 'Sign in with the link',
+                  label: signInText(context, 'Sign in with the link'),
                   onPressed: onUseToken,
                 ),
               ],
@@ -174,10 +225,11 @@ class _SignInError extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Icon(
+            Icon(
               Icons.info_outline,
               color: ModernGriotColors.primary,
               size: 22,
+              semanticLabel: signInText(context, 'Error'),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -271,15 +323,93 @@ class _GoldButton extends StatelessWidget {
   }
 }
 
+/// Scroll body with a cream fade at the bottom edge while more content is
+/// below, the same cue the onboarding steps use.
+class _FadeScroll extends StatefulWidget {
+  const _FadeScroll({required this.padding, required this.child});
+  final EdgeInsetsGeometry padding;
+  final Widget child;
+
+  @override
+  State<_FadeScroll> createState() => _FadeScrollState();
+}
+
+class _FadeScrollState extends State<_FadeScroll> {
+  bool _moreBelow = false;
+  final _controller = ScrollController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  // The first layout sends no metrics notification; read it after the frame.
+  void _checkAfterFrame() => WidgetsBinding.instance.addPostFrameCallback((_) {
+    if (mounted && _controller.hasClients) _onMetrics(_controller.position);
+  });
+
+  bool _onMetrics(ScrollMetrics m) {
+    if (m.axis != Axis.vertical) return false;
+    final more = m.extentAfter > 1;
+    if (more != _moreBelow) setState(() => _moreBelow = more);
+    return false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _checkAfterFrame();
+    return Stack(
+      children: [
+        NotificationListener<ScrollMetricsNotification>(
+          onNotification: (n) => n.depth == 0 && _onMetrics(n.metrics),
+          child: NotificationListener<ScrollUpdateNotification>(
+            onNotification: (n) => n.depth == 0 && _onMetrics(n.metrics),
+            child: SingleChildScrollView(
+              key: const Key('signin-body'),
+              controller: _controller,
+              padding: widget.padding,
+              child: widget.child,
+            ),
+          ),
+        ),
+        if (_moreBelow)
+          const Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: IgnorePointer(
+              key: Key('signin-scroll-fade'),
+              child: SizedBox(
+                height: 64,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Color(0x00FEF6E7), ModernGriotColors.surface],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
 class _GriotField extends StatelessWidget {
   const _GriotField({
     required this.controller,
     required this.label,
     this.keyboardType,
+    this.hint,
   });
 
   final TextEditingController controller;
   final String label;
+  final String? hint;
   final TextInputType? keyboardType;
 
   @override
@@ -298,6 +428,8 @@ class _GriotField extends StatelessWidget {
       ),
       decoration: InputDecoration(
         labelText: label,
+        hintText: hint,
+        hintTextDirection: TextDirection.ltr,
         labelStyle: ModernGriotTypography.bodyMedium(
           context: context,
           color: ModernGriotColors.onSurfaceVariant,
@@ -327,7 +459,7 @@ class _OrDivider extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Text(
-            'or',
+            signInText(context, 'or'),
             style: ModernGriotTypography.bodyMedium(
               context: context,
               color: ModernGriotColors.onSurfaceVariant,
@@ -346,7 +478,15 @@ class SignInOptionsScreen extends ConsumerStatefulWidget {
     this.googleIdToken,
     this.appleIdToken,
     this.autoStart = SignInAutoStart.none,
+    this.topBar,
+    this.hero,
   });
+
+  /// Onboarding chrome (back + bead progress) replacing the app bar.
+  final Widget? topBar;
+
+  /// Onboarding identity moment shown above the title.
+  final Widget? hero;
 
   final Future<String?> Function()? googleIdToken;
   final Future<String?> Function()? appleIdToken;
@@ -506,6 +646,30 @@ class _SignInOptionsScreenState extends ConsumerState<SignInOptionsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final view = SignInOptionsView(
+      state: _state,
+      emailController: _email,
+      tokenController: _token,
+      errorCode: _error,
+      hero: widget.hero,
+      onGoogle: _google,
+      onApple: _apple,
+      onSendLink: _sendLink,
+      onUseToken: _useToken,
+    );
+    if (widget.topBar != null) {
+      return Scaffold(
+        backgroundColor: ModernGriotColors.surface,
+        body: SafeArea(
+          child: Column(
+            children: [
+              widget.topBar!,
+              Expanded(child: view),
+            ],
+          ),
+        ),
+      );
+    }
     return Scaffold(
       backgroundColor: ModernGriotColors.surface,
       appBar: AppBar(
@@ -514,23 +678,14 @@ class _SignInOptionsScreenState extends ConsumerState<SignInOptionsScreen> {
         foregroundColor: ModernGriotColors.onSurface,
         elevation: 0,
         title: Text(
-          'Sign in',
+          signInText(context, 'Sign in'),
           style: ModernGriotTypography.titleMedium(
             context: context,
             color: ModernGriotColors.onSurface,
           ),
         ),
       ),
-      body: SignInOptionsView(
-        state: _state,
-        emailController: _email,
-        tokenController: _token,
-        errorCode: _error,
-        onGoogle: _google,
-        onApple: _apple,
-        onSendLink: _sendLink,
-        onUseToken: _useToken,
-      ),
+      body: view,
     );
   }
 }
