@@ -3531,7 +3531,7 @@ abstract class AppLocalizations {
   /// CTA
   ///
   /// In en, this message translates to:
-  /// **'Start {days}-day free trial'**
+  /// **'{days, plural, other{Start {days}-day free trial}}'**
   String subStartTrial(int days);
 
   /// CTA
@@ -3555,7 +3555,7 @@ abstract class AppLocalizations {
   /// Fine print
   ///
   /// In en, this message translates to:
-  /// **'Free for {days} days, then {price}/month. Cancel anytime in your store settings.'**
+  /// **'{days, plural, =1{Free for 1 day, then {price}/month. Cancel anytime in your store settings.} other{Free for {days} days, then {price}/month. Cancel anytime in your store settings.}}'**
   String subFineTrial(int days, String price);
 
   /// Fine print
@@ -3843,19 +3843,19 @@ abstract class AppLocalizations {
   /// lbStreak
   ///
   /// In en, this message translates to:
-  /// **'{days}-day streak'**
+  /// **'{days, plural, =1{1-day streak} other{{days}-day streak}}'**
   String lbStreak(int days);
 
   /// lbUp
   ///
   /// In en, this message translates to:
-  /// **'Up {n} places'**
+  /// **'{n, plural, =1{Up 1 place} other{Up {n} places}}'**
   String lbUp(int n);
 
   /// lbDown
   ///
   /// In en, this message translates to:
-  /// **'Down {n} places'**
+  /// **'{n, plural, =1{Down 1 place} other{Down {n} places}}'**
   String lbDown(int n);
 
   /// lbRankN
@@ -4479,7 +4479,7 @@ abstract class AppLocalizations {
   /// dgStreak
   ///
   /// In en, this message translates to:
-  /// **'{n}-day streak'**
+  /// **'{n, plural, =1{1-day streak} other{{n}-day streak}}'**
   String dgStreak(int n);
 
   /// dgStreakOn
@@ -4497,7 +4497,7 @@ abstract class AppLocalizations {
   /// dgRing
   ///
   /// In en, this message translates to:
-  /// **'{done} of {total} goals done'**
+  /// **'{total, plural, =1{{done} of 1 goal done} other{{done} of {total} goals done}}'**
   String dgRing(int done, int total);
 
   /// dgToday
@@ -4551,7 +4551,7 @@ abstract class AppLocalizations {
   /// dgMinutes
   ///
   /// In en, this message translates to:
-  /// **'{current} of {target} min'**
+  /// **'{target, plural, =1{{current} of 1 min} other{{current} of {target} min}}'**
   String dgMinutes(int current, int target);
 
   /// dgDone

@@ -14,6 +14,9 @@ import 'package:lingafriq/lessons/screens/lessons_list_screen.dart';
 import 'package:lingafriq/screens/vocabulary/vocabulary_screen.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 
+/// Header colour shared with leaderboard, games hub and settings subscreens.
+const _navy = Color(0xFF2E3A87);
+
 /// Snapshot of today's goals. The notifier keeps goals in private fields, so
 /// this watches its state (bumped on refresh) and reads the getters.
 class DailyGoalsView {
@@ -101,7 +104,20 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
     return Scaffold(
       backgroundColor: cs.surface,
       appBar: AppBar(
-        title: Text(l.dgTitle, maxLines: 2),
+        backgroundColor: _navy,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          key: const Key('dg-back'),
+          tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+          icon: const BackButtonIcon(),
+          onPressed: () => Navigator.maybePop(context),
+        ),
+        title: Text(
+          l.dgTitle,
+          maxLines: 2,
+          style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
+        ),
         toolbarHeight: compact ? 72 : null,
         actions: [
           IconButton(
@@ -116,6 +132,8 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
                 preferredSize: const Size.fromHeight(4),
                 child: LinearProgressIndicator(
                   key: const Key('dg-syncing'),
+                  color: PanAfricanColors.secondary,
+                  backgroundColor: Colors.white24,
                   semanticsLabel: l.dgSyncing,
                 ),
               )
@@ -250,42 +268,49 @@ class _Hero extends StatelessWidget {
     final l = l10nOf(context);
     final compact = MediaQuery.textScalerOf(context).scale(10) > 15;
     const on = Colors.white;
-    final ring = Semantics(
-      label: l.dgRing(done, total),
-      excludeSemantics: true,
-      child: SizedBox(
-        key: const Key('dg-ring'),
-        width: 76,
-        height: 76,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            SizedBox.expand(
-              child: CircularProgressIndicator(
-                value: total == 0 ? 0 : done / total,
-                strokeWidth: 8,
-                backgroundColor: on.withValues(alpha: 0.25),
-                valueColor: const AlwaysStoppedAnimation(
-                  PanAfricanColors.secondary,
-                ),
+    final ring = total == 0
+        ? CircleAvatar(
+            key: const Key('dg-ring-empty'),
+            radius: 38,
+            backgroundColor: on.withValues(alpha: 0.18),
+            child: const Icon(Icons.flag_rounded, color: on, size: 34),
+          )
+        : Semantics(
+            label: l.dgRing(done, total),
+            excludeSemantics: true,
+            child: SizedBox(
+              key: const Key('dg-ring'),
+              width: 76,
+              height: 76,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  SizedBox.expand(
+                    child: CircularProgressIndicator(
+                      value: total == 0 ? 0 : done / total,
+                      strokeWidth: 8,
+                      backgroundColor: on.withValues(alpha: 0.25),
+                      valueColor: const AlwaysStoppedAnimation(
+                        PanAfricanColors.secondary,
+                      ),
+                    ),
+                  ),
+                  Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: Text(
+                      '$done/$total',
+                      textScaler: TextScaler.noScaling,
+                      style: const TextStyle(
+                        color: on,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            Directionality(
-              textDirection: TextDirection.ltr,
-              child: Text(
-                '$done/$total',
-                textScaler: TextScaler.noScaling,
-                style: const TextStyle(
-                  color: on,
-                  fontWeight: FontWeight.w800,
-                  fontSize: 18,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+          );
     final text = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -314,11 +339,12 @@ class _Hero extends StatelessWidget {
           streak > 0 ? l.dgStreakOn : l.dgStreakZero,
           style: TextStyle(color: on.withValues(alpha: 0.92)),
         ),
-        const SizedBox(height: 6),
-        Text(
-          l.dgRing(done, total),
-          style: const TextStyle(color: on, fontWeight: FontWeight.w600),
-        ),
+        if (total > 0) const SizedBox(height: 6),
+        if (total > 0)
+          Text(
+            l.dgRing(done, total),
+            style: const TextStyle(color: on, fontWeight: FontWeight.w600),
+          ),
       ],
     );
     return Container(

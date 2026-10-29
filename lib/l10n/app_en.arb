@@ -2668,7 +2668,7 @@
       }
     }
   },
-  "subStartTrial": "Start {days}-day free trial",
+  "subStartTrial": "{days, plural, other{Start {days}-day free trial}}",
   "@subStartTrial": {
     "description": "CTA",
     "placeholders": {
@@ -2689,7 +2689,7 @@
   "@subGetLifetime": {
     "description": "CTA"
   },
-  "subFineTrial": "Free for {days} days, then {price}/month. Cancel anytime in your store settings.",
+  "subFineTrial": "{days, plural, =1{Free for 1 day, then {price}/month. Cancel anytime in your store settings.} other{Free for {days} days, then {price}/month. Cancel anytime in your store settings.}}",
   "@subFineTrial": {
     "description": "Fine print",
     "placeholders": {
@@ -2922,7 +2922,7 @@
       }
     }
   },
-  "lbStreak": "{days}-day streak",
+  "lbStreak": "{days, plural, =1{1-day streak} other{{days}-day streak}}",
   "@lbStreak": {
     "description": "lbStreak",
     "placeholders": {
@@ -2931,7 +2931,7 @@
       }
     }
   },
-  "lbUp": "Up {n} places",
+  "lbUp": "{n, plural, =1{Up 1 place} other{Up {n} places}}",
   "@lbUp": {
     "description": "lbUp",
     "placeholders": {
@@ -2940,7 +2940,7 @@
       }
     }
   },
-  "lbDown": "Down {n} places",
+  "lbDown": "{n, plural, =1{Down 1 place} other{Down {n} places}}",
   "@lbDown": {
     "description": "lbDown",
     "placeholders": {
@@ -3415,7 +3415,7 @@
   "@dgTitle": {
     "description": "dgTitle"
   },
-  "dgStreak": "{n}-day streak",
+  "dgStreak": "{n, plural, =1{1-day streak} other{{n}-day streak}}",
   "@dgStreak": {
     "description": "dgStreak",
     "placeholders": {
@@ -3432,7 +3432,7 @@
   "@dgStreakZero": {
     "description": "dgStreakZero"
   },
-  "dgRing": "{done} of {total} goals done",
+  "dgRing": "{total, plural, =1{{done} of 1 goal done} other{{done} of {total} goals done}}",
   "@dgRing": {
     "description": "dgRing",
     "placeholders": {
@@ -3484,7 +3484,7 @@
       }
     }
   },
-  "dgMinutes": "{current} of {target} min",
+  "dgMinutes": "{target, plural, =1{{current} of 1 min} other{{current} of {target} min}}",
   "@dgMinutes": {
     "description": "dgMinutes",
     "placeholders": {

@@ -1996,7 +1996,12 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String subStartTrial(int days) {
-    return 'Start $days-day free trial';
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'Start $days-day free trial',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -2010,7 +2015,15 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String subFineTrial(int days, String price) {
-    return 'Free for $days days, then $price/month. Cancel anytime in your store settings.';
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other:
+          'Free for $days days, then $price/month. Cancel anytime in your store settings.',
+      one:
+          'Free for 1 day, then $price/month. Cancel anytime in your store settings.',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -2170,17 +2183,35 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String lbStreak(int days) {
-    return '$days-day streak';
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days-day streak',
+      one: '1-day streak',
+    );
+    return '$_temp0';
   }
 
   @override
   String lbUp(int n) {
-    return 'Up $n places';
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: 'Up $n places',
+      one: 'Up 1 place',
+    );
+    return '$_temp0';
   }
 
   @override
   String lbDown(int n) {
-    return 'Down $n places';
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: 'Down $n places',
+      one: 'Down 1 place',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -2536,7 +2567,13 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String dgStreak(int n) {
-    return '$n-day streak';
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n-day streak',
+      one: '1-day streak',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -2547,7 +2584,13 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String dgRing(int done, int total) {
-    return '$done of $total goals done';
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$done of $total goals done',
+      one: '$done of 1 goal done',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -2578,7 +2621,13 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String dgMinutes(int current, int target) {
-    return '$current of $target min';
+    String _temp0 = intl.Intl.pluralLogic(
+      target,
+      locale: localeName,
+      other: '$current of $target min',
+      one: '$current of 1 min',
+    );
+    return '$_temp0';
   }
 
   @override

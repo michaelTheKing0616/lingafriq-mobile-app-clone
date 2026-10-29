@@ -125,6 +125,10 @@ void main() {
     var calls = 0;
     await _pump(t, base, _o(goals: [], refresh: () async => calls++));
     expect(find.byKey(const Key('dg-empty')), findsOneWidget);
+    expect(find.text('0/0'), findsNothing, reason: 'no empty ring');
+    expect(find.byKey(const Key('dg-ring')), findsNothing);
+    expect(find.byKey(const Key('dg-ring-empty')), findsOneWidget);
+    expect(find.textContaining('goals done'), findsNothing);
     final before = calls;
     await t.tap(find.text('Refresh').last);
     await t.pumpAndSettle();
@@ -262,5 +266,42 @@ void main() {
       expect(all.contains(w), isFalse, reason: w);
     }
     expect(find.byIcon(Icons.favorite), findsNothing);
+  });
+
+  testWidgets('navy header with a back arrow that pops', (t) async {
+    await pumpVariant(
+      t,
+      base,
+      Scaffold(
+        body: Builder(
+          builder: (c) => TextButton(
+            onPressed: () => Navigator.of(
+              c,
+            ).push(MaterialPageRoute(builder: (_) => const DailyGoalsScreen())),
+            child: const Text('open'),
+          ),
+        ),
+      ),
+      overrides: _o(),
+    );
+    await t.tap(find.text('open'));
+    await t.pumpAndSettle();
+    final bar = t.widget<AppBar>(find.byType(AppBar));
+    expect(bar.backgroundColor, const Color(0xFF2E3A87));
+    expect(bar.foregroundColor, Colors.white);
+    await t.tap(find.byKey(const Key('dg-back')));
+    await t.pumpAndSettle();
+    expect(find.byType(DailyGoalsScreen), findsNothing);
+  });
+
+  testWidgets('French and Arabic counts agree in number', (t) async {
+    await _pump(
+      t,
+      const GoldenVariant('fr', Size(390, 844), locale: Locale('fr')),
+      _o(streak: 1),
+    );
+    expect(find.text('Série de 1 jour'), findsOneWidget);
+    await _pump(t, rtl, _o(streak: 2));
+    expect(find.text('سلسلة يومين'), findsOneWidget);
   });
 }

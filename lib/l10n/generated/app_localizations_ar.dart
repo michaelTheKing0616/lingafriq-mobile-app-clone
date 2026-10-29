@@ -2005,7 +2005,17 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String subStartTrial(int days) {
-    return 'ابدأ تجربة مجانية لمدة $days أيام';
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'ابدأ تجربة مجانية لمدة $days يوم',
+      many: 'ابدأ تجربة مجانية لمدة $days يومًا',
+      few: 'ابدأ تجربة مجانية لمدة $days أيام',
+      two: 'ابدأ تجربة مجانية لمدة يومين',
+      one: 'ابدأ تجربة مجانية لمدة يوم واحد',
+      zero: 'ابدأ تجربة مجانية لمدة 0 أيام',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -2019,7 +2029,23 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String subFineTrial(int days, String price) {
-    return 'مجانًا لمدة $days أيام، ثم $price شهريًا. ألغِ في أي وقت من إعدادات المتجر.';
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other:
+          'مجانًا لمدة $days يوم، ثم $price شهريًا. ألغِ في أي وقت من إعدادات المتجر.',
+      many:
+          'مجانًا لمدة $days يومًا، ثم $price شهريًا. ألغِ في أي وقت من إعدادات المتجر.',
+      few:
+          'مجانًا لمدة $days أيام، ثم $price شهريًا. ألغِ في أي وقت من إعدادات المتجر.',
+      two:
+          'مجانًا لمدة يومين، ثم $price شهريًا. ألغِ في أي وقت من إعدادات المتجر.',
+      one:
+          'مجانًا لمدة يوم واحد، ثم $price شهريًا. ألغِ في أي وقت من إعدادات المتجر.',
+      zero:
+          'مجانًا لمدة 0 أيام، ثم $price شهريًا. ألغِ في أي وقت من إعدادات المتجر.',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -2178,17 +2204,45 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String lbStreak(int days) {
-    return 'سلسلة $days يوم';
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'سلسلة $days يوم',
+      many: 'سلسلة $days يومًا',
+      few: 'سلسلة $days أيام',
+      two: 'سلسلة يومين',
+      one: 'سلسلة يوم واحد',
+      zero: 'سلسلة 0 أيام',
+    );
+    return '$_temp0';
   }
 
   @override
   String lbUp(int n) {
-    return 'صعد $n مراكز';
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: 'صعد $n مركز',
+      many: 'صعد $n مركزًا',
+      few: 'صعد $n مراكز',
+      two: 'صعد مركزين',
+      one: 'صعد مركزًا واحدًا',
+    );
+    return '$_temp0';
   }
 
   @override
   String lbDown(int n) {
-    return 'نزل $n مراكز';
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: 'نزل $n مركز',
+      many: 'نزل $n مركزًا',
+      few: 'نزل $n مراكز',
+      two: 'نزل مركزين',
+      one: 'نزل مركزًا واحدًا',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -2539,7 +2593,17 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String dgStreak(int n) {
-    return 'سلسلة $n يوم';
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: 'سلسلة $n يوم',
+      many: 'سلسلة $n يومًا',
+      few: 'سلسلة $n أيام',
+      two: 'سلسلة يومين',
+      one: 'سلسلة يوم واحد',
+      zero: 'سلسلة 0 أيام',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -2550,7 +2614,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String dgRing(int done, int total) {
-    return 'تم $done من $total أهداف';
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'تم $done من $total هدف',
+      many: 'تم $done من $total هدفًا',
+      few: 'تم $done من $total أهداف',
+      two: 'تم $done من هدفين',
+      one: 'تم $done من هدف واحد',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -2581,7 +2654,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String dgMinutes(int current, int target) {
-    return '$current من $target دقيقة';
+    String _temp0 = intl.Intl.pluralLogic(
+      target,
+      locale: localeName,
+      other: '$current من $target دقيقة',
+      many: '$current من $target دقيقة',
+      few: '$current من $target دقائق',
+      two: '$current من دقيقتين',
+      one: '$current من دقيقة واحدة',
+    );
+    return '$_temp0';
   }
 
   @override
