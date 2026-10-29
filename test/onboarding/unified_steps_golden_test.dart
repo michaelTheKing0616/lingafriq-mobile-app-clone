@@ -79,11 +79,6 @@ void main() {
     await settleOnce(tester);
     await _shot(tester, '01_welcome$suffix');
     await next(tester, 'Get started');
-    if (textDirection == TextDirection.rtl) {
-      // A real Arabic string on screen, not only mirrored English.
-      await tapVisible(tester, label('العربية'));
-      await _shot(tester, '02a_language_arabic$suffix');
-    }
     await tapVisible(tester, label('Yoruba'));
     await _shot(tester, '02_language$suffix');
     await next(tester);
@@ -139,6 +134,28 @@ void main() {
     );
   }
 
+  testWidgets('Arabic locale: welcome and language in Arabic, mirrored', (
+    tester,
+  ) async {
+    await pumpOnboarding(
+      tester,
+      reducedMotion: true,
+      textDirection: TextDirection.rtl,
+      locale: const Locale('ar'),
+    );
+    await settleOnce(tester);
+    expect(find.text('ابدأ الآن'), findsOneWidget);
+    await _shot(tester, '01a_welcome_arabic_rtl');
+    await tapVisible(tester, find.text('ابدأ الآن'));
+    await settleOnce(tester);
+    await tapVisible(tester, find.text('العربية'));
+    await tapVisible(tester, find.text('اليوروبا'));
+    expect(find.text('ماذا تريد أن تتعلم؟'), findsOneWidget);
+    // Top bar mirrors: back sits at the start (right) edge in RTL.
+    final back = tester.getCenter(find.byType(BackButtonIcon));
+    expect(back.dx, greaterThan(390 / 2));
+    await _shot(tester, '02a_language_arabic_rtl');
+  });
   testWidgets('every step, default', (tester) => walk(tester, suffix: ''));
   testWidgets(
     'every step, RTL',

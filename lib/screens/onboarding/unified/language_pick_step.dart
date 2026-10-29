@@ -20,7 +20,6 @@ class _LanguagePickStep extends HookConsumerWidget {
       'script': 'Èdè Yorùbá',
       'region': 'West Africa',
       'glyph': 'Y',
-      'learners': '120k learners',
     },
     {
       'code': 'ha',
@@ -28,7 +27,6 @@ class _LanguagePickStep extends HookConsumerWidget {
       'script': 'Hausa',
       'region': 'West Africa',
       'glyph': 'H',
-      'learners': '95k learners',
     },
     {
       'code': 'ig',
@@ -36,7 +34,6 @@ class _LanguagePickStep extends HookConsumerWidget {
       'script': 'Asụsụ Igbo',
       'region': 'West Africa',
       'glyph': 'Ị',
-      'learners': '70k learners',
     },
     {
       'code': 'tw',
@@ -44,7 +41,6 @@ class _LanguagePickStep extends HookConsumerWidget {
       'script': 'Twi',
       'region': 'West Africa',
       'glyph': 'T',
-      'learners': '40k learners',
     },
     {
       'code': 'wo',
@@ -52,7 +48,6 @@ class _LanguagePickStep extends HookConsumerWidget {
       'script': 'Wolof',
       'region': 'West Africa',
       'glyph': 'W',
-      'learners': '25k learners',
     },
     {
       'code': 'pcm',
@@ -60,7 +55,6 @@ class _LanguagePickStep extends HookConsumerWidget {
       'script': 'Naijá',
       'region': 'West Africa',
       'glyph': 'N',
-      'learners': '80k learners',
     },
     {
       'code': 'sw',
@@ -68,7 +62,6 @@ class _LanguagePickStep extends HookConsumerWidget {
       'script': 'Kiswahili',
       'region': 'East Africa',
       'glyph': 'S',
-      'learners': '200k learners',
     },
     {
       'code': 'am',
@@ -76,7 +69,6 @@ class _LanguagePickStep extends HookConsumerWidget {
       'script': 'አማርኛ',
       'region': 'East Africa',
       'glyph': 'አ',
-      'learners': '55k learners',
     },
     {
       'code': 'zu',
@@ -84,7 +76,6 @@ class _LanguagePickStep extends HookConsumerWidget {
       'script': 'isiZulu',
       'region': 'Southern Africa',
       'glyph': 'Z',
-      'learners': '45k learners',
     },
     {
       'code': 'xh',
@@ -92,7 +83,6 @@ class _LanguagePickStep extends HookConsumerWidget {
       'script': 'isiXhosa',
       'region': 'Southern Africa',
       'glyph': 'X',
-      'learners': '30k learners',
     },
     {
       'code': 'ar-maghreb',
@@ -100,7 +90,6 @@ class _LanguagePickStep extends HookConsumerWidget {
       'script': 'الدارجة',
       'region': 'North Africa',
       'glyph': 'د',
-      'learners': '35k learners',
     },
     {
       'code': 'ber',
@@ -108,7 +97,6 @@ class _LanguagePickStep extends HookConsumerWidget {
       'script': 'ⵜⴰⵎⴰⵣⵉⵖⵜ',
       'region': 'North Africa',
       'glyph': 'ⵣ',
-      'learners': '20k learners',
     },
   ];
 
@@ -196,7 +184,7 @@ class _LanguagePickStep extends HookConsumerWidget {
         children: [
           SizedBox(height: ModernGriotSpacing.md.h),
           Text(
-            'I speak',
+            _bidi(context, 'I speak'),
             style: ModernGriotTypography.labelLarge(
               context: context,
               color: ModernGriotColors.onSurfaceVariant,
@@ -251,7 +239,7 @@ class _LanguagePickStep extends HookConsumerWidget {
               color: ModernGriotColors.onSurface,
             ),
             decoration: InputDecoration(
-              hintText: 'Search languages',
+              hintText: _bidi(context, 'Search languages'),
               prefixIcon: const Icon(Icons.search_rounded),
               filled: true,
               fillColor: ModernGriotColors.surfaceContainerLowest,
@@ -289,7 +277,7 @@ class _LanguagePickStep extends HookConsumerWidget {
                     ),
                     SizedBox(height: ModernGriotSpacing.xs.h),
                     Text(
-                      'No languages match that search.',
+                      _bidi(context, 'No languages match that search.'),
                       textAlign: TextAlign.center,
                       style: ModernGriotTypography.titleMedium(
                         context: context,
@@ -298,7 +286,7 @@ class _LanguagePickStep extends HookConsumerWidget {
                     ),
                     SizedBox(height: ModernGriotSpacing.xxs.h),
                     Text(
-                      'Try a region, a script name, or clear the box.',
+                      _bidi(context, 'Try a region, a script name, or clear the box.'),
                       textAlign: TextAlign.center,
                       style: ModernGriotTypography.bodyMedium(
                         context: context,
@@ -312,7 +300,7 @@ class _LanguagePickStep extends HookConsumerWidget {
           else
             for (final region in regions) ...[
               Text(
-                region,
+                _bidi(context, region),
                 style: ModernGriotTypography.titleSmall(
                   context: context,
                   color: ModernGriotColors.onSurfaceVariant,
@@ -323,9 +311,9 @@ class _LanguagePickStep extends HookConsumerWidget {
                 _SelectRow(
                   height: ModernGriotLayout.selectRowComfortable,
                   label: lang['name'] as String,
-                  subtitle:
-                      '${_greetings[lang['code']] ?? lang['script']} · '
-                      '${lang['script']} · ${lang['learners']}',
+                  subtitle: _greetings[lang['code']] == null
+                      ? lang['script'] as String
+                      : '${_greetings[lang['code']]} · ${lang['script']}',
                   isSelected: selectedLearn.value == lang['code'],
                   leading: _ScriptGlyphBadge(
                     glyph: lang['glyph'] as String,

@@ -50,6 +50,7 @@ part 'unified/tone_step.dart';
 part 'unified/profile_step.dart';
 part 'unified/save_progress_step.dart';
 part 'unified/identity.dart';
+part 'unified/copy_ar.dart';
 
 /// Documented Modern Griot opacity roles — never invent ad-hoc alphas in UI.
 abstract final class _GriotAlpha {
@@ -512,7 +513,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                     ),
                   ),
                   child: Text(
-                    'Skip',
+                    _bidi(context, 'Skip'),
                     style: ModernGriotTypography.labelLarge(
                       context: context,
                       color: foregroundColor,

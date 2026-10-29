@@ -35,10 +35,15 @@ final _rtlChars = RegExp(r'[\u0590-\u08FF\uFB1D-\uFEFC]');
 /// Onboarding copy is English today. In an RTL layout an English string must
 /// still read LTR, or its punctuation flips ("?Not sure"). Wrap it in a
 /// left-to-right isolate; real RTL strings pass through untouched.
-String _bidi(BuildContext context, String text) =>
-    Directionality.of(context) == TextDirection.rtl && !_rtlChars.hasMatch(text)
-    ? '\u2066$text\u2069'
-    : text;
+String _bidi(BuildContext context, String text) {
+  final locale = Localizations.maybeLocaleOf(context);
+  final ar = locale?.languageCode == 'ar' ? _arCopy[text] : null;
+  if (ar != null) return ar;
+  return Directionality.of(context) == TextDirection.rtl &&
+          !_rtlChars.hasMatch(text)
+      ? '\u2066$text\u2069'
+      : text;
+}
 
 class _StepScaffold extends ConsumerWidget {
   const _StepScaffold({required this.child, this.bottom, this.header});

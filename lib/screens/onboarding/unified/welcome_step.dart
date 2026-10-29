@@ -54,7 +54,7 @@ class _WelcomeStep extends StatelessWidget {
               const _WovenStrip(color: ModernGriotColors.brandCoral),
               SizedBox(height: ModernGriotSpacing.xxs.h),
               Text(
-                'Ẹ kú àbọ̀ · Sannu · Nnọọ · Karibu · Akwaaba',
+                _bidi(context, 'Ẹ kú àbọ̀ · Sannu · Nnọọ · Karibu · Akwaaba'),
                 key: const ValueKey('welcome-greetings'),
                 textAlign: TextAlign.center,
                 style: ModernGriotTypography.titleSmall(
@@ -71,7 +71,7 @@ class _WelcomeStep extends StatelessWidget {
       ),
       SizedBox(height: ModernGriotSpacing.xs.h),
       Text(
-        'Welcome to',
+        _bidi(context, 'Welcome to'),
         textAlign: TextAlign.center,
         style: ModernGriotTypography.titleMedium(
           context: context,
@@ -83,7 +83,7 @@ class _WelcomeStep extends StatelessWidget {
       ),
       SizedBox(height: ModernGriotSpacing.xxs.h),
       Text(
-        'LingAfriq',
+        _bidi(context, 'LingAfriq'),
         textAlign: TextAlign.center,
         style: ModernGriotTypography.displaySmall(
           context: context,
@@ -92,7 +92,7 @@ class _WelcomeStep extends StatelessWidget {
       ),
       SizedBox(height: ModernGriotSpacing.xs.h),
       Text(
-        'The language village that gets you speaking.',
+        _bidi(context, 'The language village that gets you speaking.'),
         textAlign: TextAlign.center,
         style: ModernGriotTypography.headlineSmall(
           context: context,
@@ -101,7 +101,7 @@ class _WelcomeStep extends StatelessWidget {
       ),
       SizedBox(height: ModernGriotSpacing.xxs.h),
       Text(
-        'Short lessons with Polie. Hear, tap, and say real phrases.',
+        _bidi(context, 'Short lessons with Polie. Hear, tap, and say real phrases.'),
         textAlign: TextAlign.center,
         style: ModernGriotTypography.bodyMedium(
           context: context,
@@ -122,7 +122,7 @@ class _WelcomeStep extends StatelessWidget {
             borderRadius: BorderRadius.circular(ModernGriotRadius.pill),
           ),
           child: Text(
-            'Works offline · about 2 MB per unit',
+            _bidi(context, 'Works offline · about 2 MB per unit'),
             textAlign: TextAlign.center,
             style: ModernGriotTypography.labelMedium(
               context: context,
@@ -153,7 +153,7 @@ class _WelcomeStep extends StatelessWidget {
             ),
           ),
           child: Text(
-            'Get started',
+            _bidi(context, 'Get started'),
             style: ModernGriotTypography.titleMedium(
               context: context,
               color: ModernGriotColors.onBrandGold,
@@ -173,7 +173,7 @@ class _WelcomeStep extends StatelessWidget {
           ),
         ),
         child: Text(
-          'I already have an account',
+          _bidi(context, 'I already have an account'),
           textAlign: TextAlign.center,
           style: ModernGriotTypography.labelLarge(
             context: context,

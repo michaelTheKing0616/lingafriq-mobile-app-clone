@@ -9,7 +9,7 @@ class _DailyGoalStep extends HookConsumerWidget {
 
   static const _goals = [
     (min: 5, label: 'Casual', note: 'A greeting a day'),
-    (min: 10, label: 'Steady', note: 'Most learners start here'),
+    (min: 10, label: 'Steady', note: 'A good daily start'),
     (min: 15, label: 'Serious', note: 'Hold a short chat in weeks'),
     (min: 20, label: 'Intense', note: 'For a trip or a big day soon'),
   ];

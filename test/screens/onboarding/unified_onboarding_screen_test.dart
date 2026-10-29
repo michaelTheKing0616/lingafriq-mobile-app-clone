@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -15,6 +16,7 @@ Future<Widget> wrap(
   TextScaler textScaler = TextScaler.noScaling,
   bool online = true,
   TextDirection textDirection = TextDirection.ltr,
+  Locale locale = const Locale('en'),
 }) async {
   SharedPreferences.setMockInitialValues({});
   final prefs = await SharedPreferences.getInstance();
@@ -34,6 +36,9 @@ Future<Widget> wrap(
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
+          locale: locale,
+          supportedLocales: const [Locale('en'), Locale('ar')],
+          localizationsDelegates: GlobalMaterialLocalizations.delegates,
           home: Directionality(textDirection: textDirection, child: child),
         ),
       ),
@@ -53,6 +58,7 @@ Future<void> pumpOnboarding(
   TextScaler textScaler = TextScaler.noScaling,
   bool online = true,
   TextDirection textDirection = TextDirection.ltr,
+  Locale locale = const Locale('en'),
 }) async {
   tester.view.physicalSize = const Size(390, 844);
   tester.view.devicePixelRatio = 1.0;
@@ -66,6 +72,7 @@ Future<void> pumpOnboarding(
       textScaler: textScaler,
       online: online,
       textDirection: textDirection,
+      locale: locale,
     ),
   );
 }
