@@ -1535,4 +1535,116 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get lcHeroA11y => 'Amara et Kofi applaudissent';
+
+  @override
+  String get profOverview => 'Aperçu';
+
+  @override
+  String get profAccount => 'Compte';
+
+  @override
+  String get profWallet => 'Portefeuille';
+
+  @override
+  String profStreakDays(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count jours',
+      one: '1 jour',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get profStreakLabel => 'Série de jours';
+
+  @override
+  String get profStreakZero => 'Commence aujourd\'hui';
+
+  @override
+  String profXpValue(int count) {
+    return '$count XP';
+  }
+
+  @override
+  String get profXpLabel => 'XP au total';
+
+  @override
+  String profRankValue(int rank) {
+    return 'n° $rank';
+  }
+
+  @override
+  String get profRankLabel => 'Classement mondial';
+
+  @override
+  String get profRankNone => 'Pas encore classé';
+
+  @override
+  String get profLevelLabel => 'Niveau';
+
+  @override
+  String get profLevelNone => 'Débutant';
+
+  @override
+  String get profPrivateValue => 'Privé';
+
+  @override
+  String get profPrivateHint =>
+      'Ton profil est privé : ton classement reste caché aux autres.';
+
+  @override
+  String profLearning(String language) {
+    return 'Apprend le $language';
+  }
+
+  @override
+  String get profEdit => 'Modifier le profil';
+
+  @override
+  String get profChangePassword => 'Changer le mot de passe';
+
+  @override
+  String get profFeedback => 'Donne-nous ton avis';
+
+  @override
+  String get profAbout => 'Qui sommes-nous';
+
+  @override
+  String get profPolicy => 'Confidentialité et conditions';
+
+  @override
+  String get profDelete => 'Supprimer ton compte';
+
+  @override
+  String get profDeleted => 'Compte supprimé';
+
+  @override
+  String get profLoading => 'Chargement de ton profil…';
+
+  @override
+  String get profErrorTitle => 'Impossible de charger ton profil';
+
+  @override
+  String get profErrorBody =>
+      'Vérifie ta connexion et réessaie. Rien de ce que tu as appris n\'est perdu.';
+
+  @override
+  String get profRetry => 'Réessayer';
+
+  @override
+  String get profOffline => 'Tu es hors ligne. Voici ton profil enregistré.';
+
+  @override
+  String get profNgwenya => 'Ngwenya';
+
+  @override
+  String get profCowries => 'Cauris';
+
+  @override
+  String get profBeads => 'Perles';
+
+  @override
+  String get profOpenLeaderboard => 'Ouvrir le classement';
 }

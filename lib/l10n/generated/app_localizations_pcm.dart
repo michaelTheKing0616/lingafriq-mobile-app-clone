@@ -1523,4 +1523,116 @@ class AppLocalizationsPcm extends AppLocalizations {
 
   @override
   String get lcHeroA11y => 'Amara and Kofi cheering';
+
+  @override
+  String get profOverview => 'Overview';
+
+  @override
+  String get profAccount => 'Account';
+
+  @override
+  String get profWallet => 'Wallet';
+
+  @override
+  String profStreakDays(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days',
+      one: '1 day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get profStreakLabel => 'Day streak';
+
+  @override
+  String get profStreakZero => 'Start today';
+
+  @override
+  String profXpValue(int count) {
+    return '$count XP';
+  }
+
+  @override
+  String get profXpLabel => 'Total XP';
+
+  @override
+  String profRankValue(int rank) {
+    return '#$rank';
+  }
+
+  @override
+  String get profRankLabel => 'Global rank';
+
+  @override
+  String get profRankNone => 'Not ranked yet';
+
+  @override
+  String get profLevelLabel => 'Level';
+
+  @override
+  String get profLevelNone => 'Just starting';
+
+  @override
+  String get profPrivateValue => 'Private';
+
+  @override
+  String get profPrivateHint =>
+      'Your profile is private, so your rank stays hidden from others.';
+
+  @override
+  String profLearning(String language) {
+    return 'Learning $language';
+  }
+
+  @override
+  String get profEdit => 'Edit profile';
+
+  @override
+  String get profChangePassword => 'Change password';
+
+  @override
+  String get profFeedback => 'Give us feedback';
+
+  @override
+  String get profAbout => 'Who we are';
+
+  @override
+  String get profPolicy => 'Privacy and user policy';
+
+  @override
+  String get profDelete => 'Delete your account';
+
+  @override
+  String get profDeleted => 'Account deleted';
+
+  @override
+  String get profLoading => 'Loading your profile…';
+
+  @override
+  String get profErrorTitle => 'We couldn\'t load your profile';
+
+  @override
+  String get profErrorBody =>
+      'Check your connection and try again. Nothing you\'ve learned is lost.';
+
+  @override
+  String get profRetry => 'Try again';
+
+  @override
+  String get profOffline => 'You\'re offline. Showing your saved profile.';
+
+  @override
+  String get profNgwenya => 'Ngwenya';
+
+  @override
+  String get profCowries => 'Cowries';
+
+  @override
+  String get profBeads => 'Beads';
+
+  @override
+  String get profOpenLeaderboard => 'Open the leaderboard';
 }

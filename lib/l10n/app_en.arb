@@ -2010,5 +2010,153 @@
   "lcHeroA11y": "Amara and Kofi cheering",
   "@lcHeroA11y": {
     "description": "lcHeroA11y"
+  },
+  "profOverview": "Overview",
+  "@profOverview": {
+    "description": "profOverview"
+  },
+  "profAccount": "Account",
+  "@profAccount": {
+    "description": "profAccount"
+  },
+  "profWallet": "Wallet",
+  "@profWallet": {
+    "description": "profWallet"
+  },
+  "profStreakDays": "{count, plural, =1{1 day} other{{count} days}}",
+  "@profStreakDays": {
+    "description": "profStreakDays",
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "profStreakLabel": "Day streak",
+  "@profStreakLabel": {
+    "description": "profStreakLabel"
+  },
+  "profStreakZero": "Start today",
+  "@profStreakZero": {
+    "description": "profStreakZero"
+  },
+  "profXpValue": "{count} XP",
+  "@profXpValue": {
+    "description": "profXpValue",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "profXpLabel": "Total XP",
+  "@profXpLabel": {
+    "description": "profXpLabel"
+  },
+  "profRankValue": "#{rank}",
+  "@profRankValue": {
+    "description": "profRankValue",
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "profRankLabel": "Global rank",
+  "@profRankLabel": {
+    "description": "profRankLabel"
+  },
+  "profRankNone": "Not ranked yet",
+  "@profRankNone": {
+    "description": "profRankNone"
+  },
+  "profLevelLabel": "Level",
+  "@profLevelLabel": {
+    "description": "profLevelLabel"
+  },
+  "profLevelNone": "Just starting",
+  "@profLevelNone": {
+    "description": "profLevelNone"
+  },
+  "profPrivateValue": "Private",
+  "@profPrivateValue": {
+    "description": "profPrivateValue"
+  },
+  "profPrivateHint": "Your profile is private, so your rank stays hidden from others.",
+  "@profPrivateHint": {
+    "description": "profPrivateHint"
+  },
+  "profLearning": "Learning {language}",
+  "@profLearning": {
+    "description": "profLearning",
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "profEdit": "Edit profile",
+  "@profEdit": {
+    "description": "profEdit"
+  },
+  "profChangePassword": "Change password",
+  "@profChangePassword": {
+    "description": "profChangePassword"
+  },
+  "profFeedback": "Give us feedback",
+  "@profFeedback": {
+    "description": "profFeedback"
+  },
+  "profAbout": "Who we are",
+  "@profAbout": {
+    "description": "profAbout"
+  },
+  "profPolicy": "Privacy and user policy",
+  "@profPolicy": {
+    "description": "profPolicy"
+  },
+  "profDelete": "Delete your account",
+  "@profDelete": {
+    "description": "profDelete"
+  },
+  "profDeleted": "Account deleted",
+  "@profDeleted": {
+    "description": "profDeleted"
+  },
+  "profLoading": "Loading your profile…",
+  "@profLoading": {
+    "description": "profLoading"
+  },
+  "profErrorTitle": "We couldn't load your profile",
+  "@profErrorTitle": {
+    "description": "profErrorTitle"
+  },
+  "profErrorBody": "Check your connection and try again. Nothing you've learned is lost.",
+  "@profErrorBody": {
+    "description": "profErrorBody"
+  },
+  "profRetry": "Try again",
+  "@profRetry": {
+    "description": "profRetry"
+  },
+  "profOffline": "You're offline. Showing your saved profile.",
+  "@profOffline": {
+    "description": "profOffline"
+  },
+  "profNgwenya": "Ngwenya",
+  "@profNgwenya": {
+    "description": "profNgwenya"
+  },
+  "profCowries": "Cowries",
+  "@profCowries": {
+    "description": "profCowries"
+  },
+  "profBeads": "Beads",
+  "@profBeads": {
+    "description": "profBeads"
+  },
+  "profOpenLeaderboard": "Open the leaderboard",
+  "@profOpenLeaderboard": {
+    "description": "profOpenLeaderboard"
   }
 }

@@ -2753,6 +2753,198 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Amara and Kofi cheering'**
   String get lcHeroA11y;
+
+  /// profOverview
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get profOverview;
+
+  /// profAccount
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get profAccount;
+
+  /// profWallet
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet'**
+  String get profWallet;
+
+  /// profStreakDays
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day} other{{count} days}}'**
+  String profStreakDays(num count);
+
+  /// profStreakLabel
+  ///
+  /// In en, this message translates to:
+  /// **'Day streak'**
+  String get profStreakLabel;
+
+  /// profStreakZero
+  ///
+  /// In en, this message translates to:
+  /// **'Start today'**
+  String get profStreakZero;
+
+  /// profXpValue
+  ///
+  /// In en, this message translates to:
+  /// **'{count} XP'**
+  String profXpValue(int count);
+
+  /// profXpLabel
+  ///
+  /// In en, this message translates to:
+  /// **'Total XP'**
+  String get profXpLabel;
+
+  /// profRankValue
+  ///
+  /// In en, this message translates to:
+  /// **'#{rank}'**
+  String profRankValue(int rank);
+
+  /// profRankLabel
+  ///
+  /// In en, this message translates to:
+  /// **'Global rank'**
+  String get profRankLabel;
+
+  /// profRankNone
+  ///
+  /// In en, this message translates to:
+  /// **'Not ranked yet'**
+  String get profRankNone;
+
+  /// profLevelLabel
+  ///
+  /// In en, this message translates to:
+  /// **'Level'**
+  String get profLevelLabel;
+
+  /// profLevelNone
+  ///
+  /// In en, this message translates to:
+  /// **'Just starting'**
+  String get profLevelNone;
+
+  /// profPrivateValue
+  ///
+  /// In en, this message translates to:
+  /// **'Private'**
+  String get profPrivateValue;
+
+  /// profPrivateHint
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile is private, so your rank stays hidden from others.'**
+  String get profPrivateHint;
+
+  /// profLearning
+  ///
+  /// In en, this message translates to:
+  /// **'Learning {language}'**
+  String profLearning(String language);
+
+  /// profEdit
+  ///
+  /// In en, this message translates to:
+  /// **'Edit profile'**
+  String get profEdit;
+
+  /// profChangePassword
+  ///
+  /// In en, this message translates to:
+  /// **'Change password'**
+  String get profChangePassword;
+
+  /// profFeedback
+  ///
+  /// In en, this message translates to:
+  /// **'Give us feedback'**
+  String get profFeedback;
+
+  /// profAbout
+  ///
+  /// In en, this message translates to:
+  /// **'Who we are'**
+  String get profAbout;
+
+  /// profPolicy
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy and user policy'**
+  String get profPolicy;
+
+  /// profDelete
+  ///
+  /// In en, this message translates to:
+  /// **'Delete your account'**
+  String get profDelete;
+
+  /// profDeleted
+  ///
+  /// In en, this message translates to:
+  /// **'Account deleted'**
+  String get profDeleted;
+
+  /// profLoading
+  ///
+  /// In en, this message translates to:
+  /// **'Loading your profile…'**
+  String get profLoading;
+
+  /// profErrorTitle
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t load your profile'**
+  String get profErrorTitle;
+
+  /// profErrorBody
+  ///
+  /// In en, this message translates to:
+  /// **'Check your connection and try again. Nothing you\'ve learned is lost.'**
+  String get profErrorBody;
+
+  /// profRetry
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get profRetry;
+
+  /// profOffline
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline. Showing your saved profile.'**
+  String get profOffline;
+
+  /// profNgwenya
+  ///
+  /// In en, this message translates to:
+  /// **'Ngwenya'**
+  String get profNgwenya;
+
+  /// profCowries
+  ///
+  /// In en, this message translates to:
+  /// **'Cowries'**
+  String get profCowries;
+
+  /// profBeads
+  ///
+  /// In en, this message translates to:
+  /// **'Beads'**
+  String get profBeads;
+
+  /// profOpenLeaderboard
+  ///
+  /// In en, this message translates to:
+  /// **'Open the leaderboard'**
+  String get profOpenLeaderboard;
 }
 
 class _AppLocalizationsDelegate

@@ -154,3 +154,11 @@ Language languageNormalizedForGamesHub(
     level_language: slug,
   );
 }
+
+/// Lowercase language slug (`yoruba`) for a profile's `learning_language`,
+/// which may be an ISO code (`yo`) or a verbose name ("Nigerian Pidgin").
+String? learningLanguageSlug(String? raw) {
+  final s = raw?.trim().toLowerCase();
+  if (s == null || s.isEmpty) return null;
+  return _isoCodeToGamesSlug[s] ?? _normalizeVerboseLanguage(s);
+}

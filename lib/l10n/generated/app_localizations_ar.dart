@@ -1527,4 +1527,117 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get lcHeroA11y => 'أمارا وكوفي يهتفان فرحًا';
+
+  @override
+  String get profOverview => 'نظرة عامة';
+
+  @override
+  String get profAccount => 'الحساب';
+
+  @override
+  String get profWallet => 'المحفظة';
+
+  @override
+  String profStreakDays(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count يومًا',
+      few: '$count أيام',
+      two: 'يومان',
+      one: 'يوم واحد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get profStreakLabel => 'سلسلة الأيام';
+
+  @override
+  String get profStreakZero => 'ابدأ اليوم';
+
+  @override
+  String profXpValue(int count) {
+    return '$count XP';
+  }
+
+  @override
+  String get profXpLabel => 'مجموع نقاط الخبرة';
+
+  @override
+  String profRankValue(int rank) {
+    return '#$rank';
+  }
+
+  @override
+  String get profRankLabel => 'الترتيب العالمي';
+
+  @override
+  String get profRankNone => 'بلا ترتيب بعد';
+
+  @override
+  String get profLevelLabel => 'المستوى';
+
+  @override
+  String get profLevelNone => 'في البداية';
+
+  @override
+  String get profPrivateValue => 'خاص';
+
+  @override
+  String get profPrivateHint => 'ملفك خاص، لذلك يبقى ترتيبك مخفيًا عن الآخرين.';
+
+  @override
+  String profLearning(String language) {
+    return 'تتعلّم $language';
+  }
+
+  @override
+  String get profEdit => 'تعديل الملف الشخصي';
+
+  @override
+  String get profChangePassword => 'تغيير كلمة المرور';
+
+  @override
+  String get profFeedback => 'شاركنا رأيك';
+
+  @override
+  String get profAbout => 'من نحن';
+
+  @override
+  String get profPolicy => 'الخصوصية وسياسة الاستخدام';
+
+  @override
+  String get profDelete => 'حذف حسابك';
+
+  @override
+  String get profDeleted => 'تم حذف الحساب';
+
+  @override
+  String get profLoading => 'جارٍ تحميل ملفك…';
+
+  @override
+  String get profErrorTitle => 'تعذّر تحميل ملفك';
+
+  @override
+  String get profErrorBody =>
+      'تحقّق من اتصالك وحاول مجددًا. لن يضيع شيء مما تعلّمته.';
+
+  @override
+  String get profRetry => 'حاول مجددًا';
+
+  @override
+  String get profOffline => 'أنت غير متصل. نعرض ملفك المحفوظ.';
+
+  @override
+  String get profNgwenya => 'نغوينيا';
+
+  @override
+  String get profCowries => 'الودع';
+
+  @override
+  String get profBeads => 'الخرز';
+
+  @override
+  String get profOpenLeaderboard => 'افتح لوحة المتصدّرين';
 }
