@@ -80,7 +80,9 @@ void main() {
       // Check immediately after pumpWidget — before the deferred init
       // (postFrameCallback + microtask) triggers a rebuild with populated state.
       // The extra pump() would process the deferred init and remove the indicator.
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      // Lesson-shaped skeleton (not a bare spinner) with a visible caption.
+      expect(find.byKey(const Key('lesson-skeleton')), findsOneWidget);
+      expect(find.text('Preparing your lesson'), findsOneWidget);
     });
 
     testWidgets('should navigate between sections', (WidgetTester tester) async {

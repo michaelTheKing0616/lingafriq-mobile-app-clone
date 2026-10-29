@@ -1720,5 +1720,172 @@
   "homeKidsLabel": "Kids mode is on. Every lesson is open. Chat, Village and purchases are switched off.",
   "@homeKidsLabel": {
     "description": "homeKidsLabel"
+  },
+  "lessonNewPhrase": "New phrase",
+  "@lessonNewPhrase": {
+    "description": "lessonNewPhrase"
+  },
+  "lessonExampleLabel": "Example",
+  "@lessonExampleLabel": {
+    "description": "lessonExampleLabel"
+  },
+  "lessonListen": "Listen",
+  "@lessonListen": {
+    "description": "lessonListen"
+  },
+  "lessonListenSlowly": "Listen slowly",
+  "@lessonListenSlowly": {
+    "description": "lessonListenSlowly"
+  },
+  "lessonTutorialAudio": "Tutorial audio",
+  "@lessonTutorialAudio": {
+    "description": "lessonTutorialAudio"
+  },
+  "lessonTutorialVideo": "Tutorial video",
+  "@lessonTutorialVideo": {
+    "description": "lessonTutorialVideo"
+  },
+  "lessonQuestionOf": "Question {current} of {total}",
+  "@lessonQuestionOf": {
+    "description": "lessonQuestionOf",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "lessonQuestionProgress": "Question {current} of {total}. {percent} percent complete.",
+  "@lessonQuestionProgress": {
+    "description": "lessonQuestionProgress",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "lessonPrevious": "Previous",
+  "@lessonPrevious": {
+    "description": "lessonPrevious"
+  },
+  "lessonPreviousQuestion": "Previous question",
+  "@lessonPreviousQuestion": {
+    "description": "lessonPreviousQuestion"
+  },
+  "lessonCheck": "Check",
+  "@lessonCheck": {
+    "description": "lessonCheck"
+  },
+  "lessonCheckAnswer": "Check answer",
+  "@lessonCheckAnswer": {
+    "description": "lessonCheckAnswer"
+  },
+  "lessonNext": "Next",
+  "@lessonNext": {
+    "description": "lessonNext"
+  },
+  "lessonNextQuestion": "Next question",
+  "@lessonNextQuestion": {
+    "description": "lessonNextQuestion"
+  },
+  "lessonFinish": "Finish",
+  "@lessonFinish": {
+    "description": "lessonFinish"
+  },
+  "lessonFinishQuiz": "Finish quiz",
+  "@lessonFinishQuiz": {
+    "description": "lessonFinishQuiz"
+  },
+  "lessonPickFirst": "Pick an answer first, then we'll check it together.",
+  "@lessonPickFirst": {
+    "description": "lessonPickFirst"
+  },
+  "lessonCorrectTitle": "Nice work!",
+  "@lessonCorrectTitle": {
+    "description": "lessonCorrectTitle"
+  },
+  "lessonCorrectBody": "That's right. Keep the streak going.",
+  "@lessonCorrectBody": {
+    "description": "lessonCorrectBody"
+  },
+  "lessonIncorrectTitle": "Not quite",
+  "@lessonIncorrectTitle": {
+    "description": "lessonIncorrectTitle"
+  },
+  "lessonCorrectAnswer": "Correct answer: {answer}",
+  "@lessonCorrectAnswer": {
+    "description": "lessonCorrectAnswer",
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "lessonOptionLabel": "Answer option {letter}: {text}.",
+  "@lessonOptionLabel": {
+    "description": "lessonOptionLabel",
+    "placeholders": {
+      "letter": {
+        "type": "String"
+      },
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "lessonOptionSelected": "Selected",
+  "@lessonOptionSelected": {
+    "description": "lessonOptionSelected"
+  },
+  "lessonQuestionLabel": "Question. {question}",
+  "@lessonQuestionLabel": {
+    "description": "lessonQuestionLabel",
+    "placeholders": {
+      "question": {
+        "type": "String"
+      }
+    }
+  },
+  "lessonHintLabel": "Hint: {hint}",
+  "@lessonHintLabel": {
+    "description": "lessonHintLabel",
+    "placeholders": {
+      "hint": {
+        "type": "String"
+      }
+    }
+  },
+  "lessonFunFact": "Fun fact",
+  "@lessonFunFact": {
+    "description": "lessonFunFact"
+  },
+  "lessonNotReadyTitle": "This part isn't ready yet",
+  "@lessonNotReadyTitle": {
+    "description": "lessonNotReadyTitle"
+  },
+  "lessonNotReadyBody": "We're still preparing these questions. Please check back in a moment.",
+  "@lessonNotReadyBody": {
+    "description": "lessonNotReadyBody"
+  },
+  "lessonLoadFailedBody": "Check your connection and try again. Your progress is saved.",
+  "@lessonLoadFailedBody": {
+    "description": "lessonLoadFailedBody"
+  },
+  "lessonAvatarLabel": "Your profile, {points}",
+  "@lessonAvatarLabel": {
+    "description": "lessonAvatarLabel",
+    "placeholders": {
+      "points": {
+        "type": "String"
+      }
+    }
   }
 }

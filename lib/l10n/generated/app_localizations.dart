@@ -2447,6 +2447,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Kids mode is on. Every lesson is open. Chat, Village and purchases are switched off.'**
   String get homeKidsLabel;
+
+  /// lessonNewPhrase
+  ///
+  /// In en, this message translates to:
+  /// **'New phrase'**
+  String get lessonNewPhrase;
+
+  /// lessonExampleLabel
+  ///
+  /// In en, this message translates to:
+  /// **'Example'**
+  String get lessonExampleLabel;
+
+  /// lessonListen
+  ///
+  /// In en, this message translates to:
+  /// **'Listen'**
+  String get lessonListen;
+
+  /// lessonListenSlowly
+  ///
+  /// In en, this message translates to:
+  /// **'Listen slowly'**
+  String get lessonListenSlowly;
+
+  /// lessonTutorialAudio
+  ///
+  /// In en, this message translates to:
+  /// **'Tutorial audio'**
+  String get lessonTutorialAudio;
+
+  /// lessonTutorialVideo
+  ///
+  /// In en, this message translates to:
+  /// **'Tutorial video'**
+  String get lessonTutorialVideo;
+
+  /// lessonQuestionOf
+  ///
+  /// In en, this message translates to:
+  /// **'Question {current} of {total}'**
+  String lessonQuestionOf(int current, int total);
+
+  /// lessonQuestionProgress
+  ///
+  /// In en, this message translates to:
+  /// **'Question {current} of {total}. {percent} percent complete.'**
+  String lessonQuestionProgress(int current, int total, int percent);
+
+  /// lessonPrevious
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get lessonPrevious;
+
+  /// lessonPreviousQuestion
+  ///
+  /// In en, this message translates to:
+  /// **'Previous question'**
+  String get lessonPreviousQuestion;
+
+  /// lessonCheck
+  ///
+  /// In en, this message translates to:
+  /// **'Check'**
+  String get lessonCheck;
+
+  /// lessonCheckAnswer
+  ///
+  /// In en, this message translates to:
+  /// **'Check answer'**
+  String get lessonCheckAnswer;
+
+  /// lessonNext
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get lessonNext;
+
+  /// lessonNextQuestion
+  ///
+  /// In en, this message translates to:
+  /// **'Next question'**
+  String get lessonNextQuestion;
+
+  /// lessonFinish
+  ///
+  /// In en, this message translates to:
+  /// **'Finish'**
+  String get lessonFinish;
+
+  /// lessonFinishQuiz
+  ///
+  /// In en, this message translates to:
+  /// **'Finish quiz'**
+  String get lessonFinishQuiz;
+
+  /// lessonPickFirst
+  ///
+  /// In en, this message translates to:
+  /// **'Pick an answer first, then we\'ll check it together.'**
+  String get lessonPickFirst;
+
+  /// lessonCorrectTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Nice work!'**
+  String get lessonCorrectTitle;
+
+  /// lessonCorrectBody
+  ///
+  /// In en, this message translates to:
+  /// **'That\'s right. Keep the streak going.'**
+  String get lessonCorrectBody;
+
+  /// lessonIncorrectTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Not quite'**
+  String get lessonIncorrectTitle;
+
+  /// lessonCorrectAnswer
+  ///
+  /// In en, this message translates to:
+  /// **'Correct answer: {answer}'**
+  String lessonCorrectAnswer(String answer);
+
+  /// lessonOptionLabel
+  ///
+  /// In en, this message translates to:
+  /// **'Answer option {letter}: {text}.'**
+  String lessonOptionLabel(String letter, String text);
+
+  /// lessonOptionSelected
+  ///
+  /// In en, this message translates to:
+  /// **'Selected'**
+  String get lessonOptionSelected;
+
+  /// lessonQuestionLabel
+  ///
+  /// In en, this message translates to:
+  /// **'Question. {question}'**
+  String lessonQuestionLabel(String question);
+
+  /// lessonHintLabel
+  ///
+  /// In en, this message translates to:
+  /// **'Hint: {hint}'**
+  String lessonHintLabel(String hint);
+
+  /// lessonFunFact
+  ///
+  /// In en, this message translates to:
+  /// **'Fun fact'**
+  String get lessonFunFact;
+
+  /// lessonNotReadyTitle
+  ///
+  /// In en, this message translates to:
+  /// **'This part isn\'t ready yet'**
+  String get lessonNotReadyTitle;
+
+  /// lessonNotReadyBody
+  ///
+  /// In en, this message translates to:
+  /// **'We\'re still preparing these questions. Please check back in a moment.'**
+  String get lessonNotReadyBody;
+
+  /// lessonLoadFailedBody
+  ///
+  /// In en, this message translates to:
+  /// **'Check your connection and try again. Your progress is saved.'**
+  String get lessonLoadFailedBody;
+
+  /// lessonAvatarLabel
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile, {points}'**
+  String lessonAvatarLabel(String points);
 }
 
 class _AppLocalizationsDelegate

@@ -23,7 +23,12 @@ class LessonMcqItem {
 
 List<LessonMcqItem> mcqsFromUnitQuiz(List<CurriculumMcqItem> unitQuiz) {
   return unitQuiz
-      .where((q) => q.question.isNotEmpty && q.options.length >= 2 && q.answer.isNotEmpty)
+      .where(
+        (q) =>
+            q.question.isNotEmpty &&
+            q.options.length >= 2 &&
+            q.answer.isNotEmpty,
+      )
       .map(
         (q) => LessonMcqItem(
           prompt: q.question,
@@ -45,13 +50,17 @@ List<LessonMcqItem> buildLessonMcqs(
   }
 
   final rng = Random(lesson.id.hashCode);
-  final meanings = lesson.vocabObjects.map((v) => v.meaning).where((m) => m.isNotEmpty).toList();
+  final meanings = lesson.vocabObjects
+      .map((v) => v.meaning)
+      .where((m) => m.isNotEmpty)
+      .toList();
   final items = <LessonMcqItem>[];
 
-  for (final raw in lesson.exercises
-      .where((e) => e.type == 'flashcards')
-      .expand((e) => e.items)
-      .take(max)) {
+  for (final raw
+      in lesson.exercises
+          .where((e) => e.type == 'flashcards')
+          .expand((e) => e.items)
+          .take(max)) {
     final parts = raw.split(' — ');
     if (parts.length < 2) continue;
     final word = parts.first.trim();
@@ -63,7 +72,13 @@ List<LessonMcqItem> buildLessonMcqs(
       distractors.add('—');
     }
     final options = [meaning, ...distractors]..shuffle(rng);
-    items.add(LessonMcqItem(prompt: 'What does "$word" mean?', correct: meaning, options: options));
+    items.add(
+      LessonMcqItem(
+        prompt: 'What does "$word" mean?',
+        correct: meaning,
+        options: options,
+      ),
+    );
   }
 
   if (items.isEmpty && lesson.vocabObjects.isNotEmpty) {
@@ -100,7 +115,8 @@ class LessonGuidedPracticeStage extends StatefulWidget {
   final List<CurriculumMcqItem> unitQuiz;
 
   @override
-  State<LessonGuidedPracticeStage> createState() => _LessonGuidedPracticeStageState();
+  State<LessonGuidedPracticeStage> createState() =>
+      _LessonGuidedPracticeStageState();
 }
 
 class _LessonGuidedPracticeStageState extends State<LessonGuidedPracticeStage> {
@@ -156,7 +172,10 @@ class _LessonGuidedPracticeStageState extends State<LessonGuidedPracticeStage> {
         ),
         SizedBox(height: 12.h),
         PanAfricanCard(
-          child: Text(item.prompt, style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600)),
+          child: Text(
+            item.prompt,
+            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+          ),
         ),
         SizedBox(height: 12.h),
         ...item.options.map((opt) {
@@ -221,7 +240,12 @@ class _LessonRetentionStageState extends State<LessonRetentionStage> {
   @override
   Widget build(BuildContext context) {
     if (_cards.isEmpty) {
-      return Center(child: Text('Review your vocabulary in the next session.', style: TextStyle(fontSize: 15.sp)));
+      return Center(
+        child: Text(
+          'Review your vocabulary in the next session.',
+          style: TextStyle(fontSize: 15.sp),
+        ),
+      );
     }
     return ListView.builder(
       padding: EdgeInsets.all(16.w),
@@ -230,15 +254,24 @@ class _LessonRetentionStageState extends State<LessonRetentionStage> {
         final raw = _cards[i];
         final parts = raw.split(' — ');
         final word = parts.isNotEmpty ? parts.first.trim() : raw;
-        final meaning = parts.length > 1 ? parts.sublist(1).join(' — ').trim() : '';
+        final meaning = parts.length > 1
+            ? parts.sublist(1).join(' — ').trim()
+            : '';
         final show = _revealed.contains(i);
         return Card(
           margin: EdgeInsets.only(bottom: 10.h),
           child: ListTile(
-            title: Text(show ? meaning : word, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp)),
+            title: Text(
+              show ? meaning : word,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
+            ),
             subtitle: show ? Text(word) : const Text('Tap to reveal meaning'),
             trailing: show
-                ? VocabAudioControls(language: widget.language, text: word, compact: true)
+                ? VocabAudioControls(
+                    language: widget.language,
+                    text: word,
+                    compact: true,
+                  )
                 : const Icon(Icons.quiz_outlined),
             onTap: () => setState(() => _revealed.add(i)),
           ),

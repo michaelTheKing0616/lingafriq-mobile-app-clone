@@ -17,7 +17,8 @@ import 'models/lesson_content.dart';
 class LessonFlowState {
   final List<LessonContent> sections;
   final int currentSectionIndex;
-  final Map<int, Map<int, String?>> quizAnswers; // sectionId -> questionId -> answer
+  final Map<int, Map<int, String?>>
+  quizAnswers; // sectionId -> questionId -> answer
   final Map<int, List<String?>> wordQuizAnswers; // sectionId -> list of answers
   final bool isLoading;
   final String? error;
@@ -42,10 +43,12 @@ class LessonFlowState {
   });
 
   /// Computed accuracy percentage (0-100)
-  double get accuracy => totalQuestions > 0 ? (correctAnswers / totalQuestions * 100) : 0;
+  double get accuracy =>
+      totalQuestions > 0 ? (correctAnswers / totalQuestions * 100) : 0;
 
   /// Computed time taken since lesson start
-  Duration get timeTaken => startTime != null ? DateTime.now().difference(startTime!) : Duration.zero;
+  Duration get timeTaken =>
+      startTime != null ? DateTime.now().difference(startTime!) : Duration.zero;
 
   LessonFlowState copyWith({
     List<LessonContent>? sections,
@@ -85,7 +88,8 @@ class LessonFlowState {
   bool get isLastSection => currentSectionIndex >= sections.length - 1;
   bool get hasMoreSections => currentSectionIndex < sections.length - 1;
   int get completedSections => sections.where((s) => s.isCompleted).length;
-  double get progress => sections.isEmpty ? 0.0 : completedSections / sections.length;
+  double get progress =>
+      sections.isEmpty ? 0.0 : completedSections / sections.length;
 }
 
 /// Provider for lesson flow state management
@@ -110,7 +114,9 @@ class LessonFlowNotifier extends StateNotifier<LessonFlowState> {
 
       if (sectionLessons.isEmpty) {
         final isOnline = await ConnectivityService.hasInternet();
-        final isDownloaded = ref.read(offlineDownloadProvider.notifier).isDownloaded(lessonId.toString());
+        final isDownloaded = ref
+            .read(offlineDownloadProvider.notifier)
+            .isDownloaded(lessonId.toString());
         if (!isOnline && isDownloaded) {
           final local = LocalDatabaseService().getLesson(lessonId.toString());
           if (local != null) {
@@ -124,8 +130,12 @@ class LessonFlowNotifier extends StateNotifier<LessonFlowState> {
               isCompleted: local.isComplete,
               dateTime: local.lastAccessedAt,
               text: local.content,
-              audioUrl: local.audioPaths.isNotEmpty ? local.audioPaths.first : null,
-              imageUrl: local.imagePaths.isNotEmpty ? local.imagePaths.first : null,
+              audioUrl: local.audioPaths.isNotEmpty
+                  ? local.audioPaths.first
+                  : null,
+              imageUrl: local.imagePaths.isNotEmpty
+                  ? local.imagePaths.first
+                  : null,
             );
             state = state.copyWith(
               sections: [content],
@@ -163,10 +173,7 @@ class LessonFlowNotifier extends StateNotifier<LessonFlowState> {
         startTime: DateTime.now(),
       );
     } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        error: e.toString(),
-      );
+      state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
 
@@ -184,7 +191,9 @@ class LessonFlowNotifier extends StateNotifier<LessonFlowState> {
   void setWordQuizAnswer(int sectionId, int blankIndex, String? answer) {
     final currentAnswers = Map<int, List<String?>>.from(state.wordQuizAnswers);
     if (!currentAnswers.containsKey(sectionId)) {
-      final section = state.sections.firstWhere((s) => s.sectionId == sectionId);
+      final section = state.sections.firstWhere(
+        (s) => s.sectionId == sectionId,
+      );
       currentAnswers[sectionId] = List.filled(
         section.wordQuestions?.length ?? 0,
         null,
@@ -199,7 +208,11 @@ class LessonFlowNotifier extends StateNotifier<LessonFlowState> {
   }
 
   /// Check quiz answer and award XP
-  Future<bool> checkQuizAnswer(int sectionId, int questionId, String selectedAnswer) async {
+  Future<bool> checkQuizAnswer(
+    int sectionId,
+    int questionId,
+    String selectedAnswer,
+  ) async {
     final section = state.sections.firstWhere((s) => s.sectionId == sectionId);
     final question = section.questions?.firstWhere((q) => q.id == questionId);
     if (question == null) return false;
@@ -214,14 +227,16 @@ class LessonFlowNotifier extends StateNotifier<LessonFlowState> {
     if (isCorrect) {
       await soundEffects.playCorrect();
       comboTracker.recordCorrect();
-      
+
       // Award XP with combo multiplier
       final multiplier = comboTracker.currentMultiplier;
-      final xpGain = await ref.read(gamificationProvider.notifier).awardXP(
-        'quiz_answer',
-        multiplier: multiplier,
-        sourceId: 'quiz_${sectionId}_$questionId',
-      );
+      final xpGain = await ref
+          .read(gamificationProvider.notifier)
+          .awardXP(
+            'quiz_answer',
+            multiplier: multiplier,
+            sourceId: 'quiz_${sectionId}_$questionId',
+          );
 
       state = state.copyWith(
         correctAnswers: state.correctAnswers + 1,
@@ -232,9 +247,7 @@ class LessonFlowNotifier extends StateNotifier<LessonFlowState> {
     } else {
       await soundEffects.playIncorrect();
       comboTracker.recordIncorrect();
-      state = state.copyWith(
-        totalQuestions: newTotalQuestions,
-      );
+      state = state.copyWith(totalQuestions: newTotalQuestions);
     }
 
     return isCorrect;
@@ -253,11 +266,11 @@ class LessonFlowNotifier extends StateNotifier<LessonFlowState> {
     for (int i = 0; i < questions.length; i++) {
       // Extract correct answer from question format: "question/answer"
       final questionParts = questions[i].question.split('/');
-      final expectedAnswer = questionParts.length > 1 
+      final expectedAnswer = questionParts.length > 1
           ? questionParts.last.trim().toLowerCase()
           : questions[i].question.trim().toLowerCase();
       final userAnswer = answers[i]?.trim().toLowerCase() ?? '';
-      
+
       if (userAnswer != expectedAnswer) {
         allCorrect = false;
         break;
@@ -272,11 +285,13 @@ class LessonFlowNotifier extends StateNotifier<LessonFlowState> {
       comboTracker.recordCorrect();
 
       final multiplier = comboTracker.currentMultiplier;
-      final xpGain = await ref.read(gamificationProvider.notifier).awardXP(
-        'word_quiz_complete',
-        multiplier: multiplier,
-        sourceId: 'word_quiz_$sectionId',
-      );
+      final xpGain = await ref
+          .read(gamificationProvider.notifier)
+          .awardXP(
+            'word_quiz_complete',
+            multiplier: multiplier,
+            sourceId: 'word_quiz_$sectionId',
+          );
 
       state = state.copyWith(
         correctAnswers: state.correctAnswers + questions.length,
@@ -287,9 +302,7 @@ class LessonFlowNotifier extends StateNotifier<LessonFlowState> {
     } else {
       await soundEffects.playIncorrect();
       comboTracker.recordIncorrect();
-      state = state.copyWith(
-        totalQuestions: newTotalQuestions,
-      );
+      state = state.copyWith(totalQuestions: newTotalQuestions);
     }
 
     return allCorrect;
@@ -300,10 +313,14 @@ class LessonFlowNotifier extends StateNotifier<LessonFlowState> {
     try {
       state = state.copyWith(isLoading: true);
 
-      final section = state.sections.firstWhere((s) => s.sectionId == sectionId);
+      final section = state.sections.firstWhere(
+        (s) => s.sectionId == sectionId,
+      );
       final endpoint = _resolveCompletionEndpoint(section);
 
-      final success = await ref.read(apiProvider.notifier).markAsComplete(endpoint);
+      final success = await ref
+          .read(apiProvider.notifier)
+          .markAsComplete(endpoint);
 
       if (success) {
         final updatedSections = state.sections.map((s) {
@@ -313,18 +330,17 @@ class LessonFlowNotifier extends StateNotifier<LessonFlowState> {
           return s;
         }).toList();
 
-        state = state.copyWith(
-          sections: updatedSections,
-          isLoading: false,
-        );
+        state = state.copyWith(sections: updatedSections, isLoading: false);
 
         // Award XP for section completion
         final multiplier = comboTracker.currentMultiplier;
-        final xpGain = await ref.read(gamificationProvider.notifier).awardXP(
-          section.type.isTutorial ? 'tutorial_complete' : 'quiz_complete',
-          multiplier: multiplier,
-          sourceId: 'section_$sectionId',
-        );
+        final xpGain = await ref
+            .read(gamificationProvider.notifier)
+            .awardXP(
+              section.type.isTutorial ? 'tutorial_complete' : 'quiz_complete',
+              multiplier: multiplier,
+              sourceId: 'section_$sectionId',
+            );
 
         state = state.copyWith(
           totalXPEarned: state.totalXPEarned + xpGain,
@@ -337,10 +353,7 @@ class LessonFlowNotifier extends StateNotifier<LessonFlowState> {
         return false;
       }
     } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        error: e.toString(),
-      );
+      state = state.copyWith(isLoading: false, error: e.toString());
       return false;
     }
   }
@@ -366,14 +379,18 @@ class LessonFlowNotifier extends StateNotifier<LessonFlowState> {
   /// Move to next section
   void nextSection() {
     if (state.hasMoreSections) {
-      state = state.copyWith(currentSectionIndex: state.currentSectionIndex + 1);
+      state = state.copyWith(
+        currentSectionIndex: state.currentSectionIndex + 1,
+      );
     }
   }
 
   /// Move to previous section
   void previousSection() {
     if (state.currentSectionIndex > 0) {
-      state = state.copyWith(currentSectionIndex: state.currentSectionIndex - 1);
+      state = state.copyWith(
+        currentSectionIndex: state.currentSectionIndex - 1,
+      );
     }
   }
 
@@ -393,7 +410,7 @@ class LessonFlowNotifier extends StateNotifier<LessonFlowState> {
 /// Provider for lesson flow
 final lessonFlowProvider = StateNotifierProvider.autoDispose
     .family<LessonFlowNotifier, LessonFlowState, int>((ref, lessonId) {
-  final comboTracker = ComboTracker();
-  final soundEffects = ref.read(soundEffectsProvider);
-  return LessonFlowNotifier(ref, lessonId, comboTracker, soundEffects);
-});
+      final comboTracker = ComboTracker();
+      final soundEffects = ref.read(soundEffectsProvider);
+      return LessonFlowNotifier(ref, lessonId, comboTracker, soundEffects);
+    });

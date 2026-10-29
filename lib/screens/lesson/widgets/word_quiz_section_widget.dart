@@ -101,7 +101,9 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
     if (_answers.values.any((a) => a == null)) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('A few blanks are still empty — fill them in and try again.'),
+          content: Text(
+            'A few blanks are still empty — fill them in and try again.',
+          ),
           backgroundColor: PanAfricanColors.error,
         ),
       );
@@ -129,7 +131,9 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
       }
     }
 
-    final reducedMotion = mounted ? MediaQuery.disableAnimationsOf(context) : false;
+    final reducedMotion = mounted
+        ? MediaQuery.disableAnimationsOf(context)
+        : false;
     if (!allCorrect && !reducedMotion) {
       _shakeController.forward(from: 0);
       await Future.delayed(const Duration(milliseconds: 500));
@@ -186,7 +190,10 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
                 return Transform.translate(
                   offset: isIncorrect && !reducedMotion
                       ? Offset(
-                          10 * _shakeController.value * (1 - _shakeController.value) * 2,
+                          10 *
+                              _shakeController.value *
+                              (1 - _shakeController.value) *
+                              2,
                           0,
                         )
                       : Offset.zero,
@@ -196,21 +203,24 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
                       minHeight: AdaptiveLayout.minTouchTarget.h,
                     ),
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12.w,
+                        vertical: 8.h,
+                      ),
                       margin: EdgeInsets.symmetric(horizontal: 4.w),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: isCorrect
                             ? PanAfricanColors.success.withValues(alpha: 0.15)
                             : isIncorrect
-                                ? PanAfricanColors.error.withValues(alpha: 0.15)
-                                : PanAfricanColors.cardDark,
+                            ? PanAfricanColors.error.withValues(alpha: 0.15)
+                            : PanAfricanColors.cardDark,
                         border: Border.all(
                           color: isCorrect
                               ? PanAfricanColors.success
                               : isIncorrect
-                                  ? PanAfricanColors.error
-                                  : PanAfricanColors.borderLight,
+                              ? PanAfricanColors.error
+                              : PanAfricanColors.borderLight,
                           width: 2,
                         ),
                         borderRadius: BorderRadius.circular(8.r),
@@ -223,8 +233,8 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
                           color: isCorrect
                               ? Theme.of(context).colorScheme.primary
                               : isIncorrect
-                                  ? Theme.of(context).colorScheme.onErrorContainer
-                                  : null,
+                              ? Theme.of(context).colorScheme.onErrorContainer
+                              : null,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -240,7 +250,9 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
 
     // Get unused choices
     final usedChoices = _answers.values.whereType<String>().toSet();
-    final unusedChoices = _availableChoices.where((c) => !usedChoices.contains(c)).toList();
+    final unusedChoices = _availableChoices
+        .where((c) => !usedChoices.contains(c))
+        .toList();
 
     final audioPhrase = _primaryAudioPhrase(questions);
     final lang = widget.audioLanguage?.trim();
@@ -304,9 +316,9 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
             children: [
               Text(
                 'Word Bank',
-                style: PanAfricanTypography.labelLarge(context).copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: PanAfricanTypography.labelLarge(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 12.h),
               Wrap(
@@ -323,15 +335,21 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
                           minHeight: AdaptiveLayout.minTouchTarget.h,
                         ),
                         child: PanAfricanCard(
-                          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                          backgroundColor: PanAfricanColors.primary.withValues(alpha: 0.1),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: 12.h,
+                          ),
+                          backgroundColor: PanAfricanColors.primary.withValues(
+                            alpha: 0.1,
+                          ),
                           child: Center(
                             child: Text(
                               choice,
-                              style: PanAfricanTypography.bodyMedium(context).copyWith(
-                                color: PanAfricanColors.primary,
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style: PanAfricanTypography.bodyMedium(context)
+                                  .copyWith(
+                                    color: PanAfricanColors.primary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                             ),
                           ),
                         ),
@@ -356,7 +374,9 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
                 width: double.infinity,
                 onPressed: _isChecked ? null : _checkAnswers,
                 label: _isChecked ? 'All Correct!' : 'Check',
-                icon: _isChecked ? Icons.check_circle_rounded : Icons.check_rounded,
+                icon: _isChecked
+                    ? Icons.check_circle_rounded
+                    : Icons.check_rounded,
                 // Brand primary (not flat "success") so the white label text
                 // clears WCAG AA against the fill.
                 backgroundColor: PanAfricanColors.primary,

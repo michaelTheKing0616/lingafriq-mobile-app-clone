@@ -6,6 +6,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/lessons/models/section_lesson_model.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/screens/lesson/lesson_flow_screen.dart';
+import 'package:lingafriq/screens/lesson/widgets/tutorial_section_widget.dart';
+import 'package:lingafriq/screens/tabs_view/profile/profile_tab.dart';
+import 'package:lingafriq/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../compliance/golden_kit.dart';
@@ -30,7 +33,19 @@ Widget _screen() => LessonFlowScreen(
   lessonId: 77,
   sectionLessons: _sections,
   lessonTitle: 'Greetings',
+  audioLanguage: 'yoruba',
 );
+
+/// Decodes the tutorial cast stills so goldens show the real art.
+Future<void> precacheLessonArt(WidgetTester t) async {
+  final ctx = t.element(find.byType(LessonFlowScreen));
+  await t.runAsync(() async {
+    for (final a in [...kTutorialSpeakers, kAvatarsList.values.first]) {
+      await precacheImage(AssetImage(a), ctx);
+    }
+  });
+  await t.pumpAndSettle();
+}
 
 void main() {
   setUpAll(() async {
@@ -62,7 +77,21 @@ void main() {
       t,
     ) async {
       await pumpVariant(t, v, _screen());
+      await precacheLessonArt(t);
       expectNoLayoutErrors(t);
+      // Tutorial: speaker art, phrase bubble, audio and a pinned action.
+      expect(find.byKey(const Key('tutorial-speaker')), findsOneWidget);
+      expect(find.byKey(const Key('tutorial-play')), findsOneWidget);
+      expect(find.byKey(const Key('tutorial-play-slow')), findsOneWidget);
+      // The avatar shows the decoded portrait, not an empty ring.
+      expect(find.byKey(const Key('avatar-initial')), findsNothing);
+      expect(
+        find.descendant(
+          of: find.byType(ProfileImageBuilder),
+          matching: find.byType(RawImage),
+        ),
+        findsOneWidget,
+      );
       final close = find.byKey(const Key('lesson-close'));
       expect(close, findsOneWidget);
       expect(t.getSize(close).width, greaterThanOrEqualTo(48));
@@ -101,6 +130,65 @@ void main() {
       );
     });
   }
+
+  testWidgets('avatar shows the learner initial until the art decodes', (
+    t,
+  ) async {
+    // Earlier goldens decoded the avatar; start from a cold cache.
+    imageCache
+      ..clear()
+      ..clearLiveImages();
+    await t.pumpWidget(
+      ProviderScope(
+        child: ScreenUtilInit(
+          designSize: const Size(390, 844),
+          builder: (_, __) => const MaterialApp(
+            home: Center(
+              child: ProfileImageBuilder(
+                size: Size(64, 64),
+                showEditIcon: false,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    final initial = find.byKey(const Key('avatar-initial'));
+    expect(initial, findsOneWidget);
+    expect(t.getSize(initial).width, greaterThan(30));
+  });
+
+  testWidgets('French tutorial golden', (t) async {
+    await pumpVariant(
+      t,
+      const GoldenVariant('fr_390', Size(390, 844), locale: Locale('fr')),
+      _screen(),
+    );
+    await precacheLessonArt(t);
+    expectNoLayoutErrors(t);
+    expect(find.text('NOUVELLE EXPRESSION'), findsOneWidget);
+    await expectLater(
+      find.byType(LessonFlowScreen),
+      matchesGoldenFile('goldens/lesson_flow_fr_390.png'),
+    );
+  });
+
+  testWidgets('tablet tutorial uses the space without stretching', (t) async {
+    await pumpVariant(
+      t,
+      const GoldenVariant('tablet', Size(820, 1180)),
+      _screen(),
+    );
+    await precacheLessonArt(t);
+    expectNoLayoutErrors(t);
+    final bubble = t.getRect(find.byKey(const Key('tutorial-phrase')));
+    expect(bubble.width, lessThanOrEqualTo(560));
+    expect((bubble.center.dx - 410).abs(), lessThan(2));
+    await expectLater(
+      find.byType(LessonFlowScreen),
+      matchesGoldenFile('goldens/lesson_flow_tablet_820.png'),
+    );
+  });
 
   testWidgets('French quit sheet copy is genuine French', (t) async {
     await pumpVariant(

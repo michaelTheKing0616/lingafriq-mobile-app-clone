@@ -5,6 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:lingafriq/l10n/l10n_of.dart';
+import 'package:lingafriq/widgets/bidi_text.dart';
+import 'package:lingafriq/screens/lesson/widgets/lesson_skeleton.dart';
 import 'package:lingafriq/lessons/models/section_lesson_model.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/content/lingafriq_ux_voice.dart';
@@ -336,12 +338,12 @@ class _LessonFlowBody extends HookConsumerWidget {
         child: LingafriqScaffold(
           body: Semantics(
             liveRegion: true,
-            label:
-                "${l.lessonLoadFailedTitle}. ${LingAfriqUxVoice.connectionError}",
+            label: "${l.lessonLoadFailedTitle}. ${l.lessonLoadFailedBody}",
             child: PanAfricanErrorState(
               title: l.lessonLoadFailedTitle,
-              description: LingAfriqUxVoice.connectionError,
+              description: l.lessonLoadFailedBody,
               onRetry: retryLoad,
+              retryLabel: l.lessonRetry,
             ),
           ),
         ),
@@ -356,13 +358,7 @@ class _LessonFlowBody extends HookConsumerWidget {
           ref.read(navigationProvider).pop();
         },
         child: LingafriqScaffold(
-          body: Semantics(
-            liveRegion: true,
-            label: l.lessonPreparing,
-            child: PanAfricanLoadingState(
-              message: LingAfriqUxVoice.loadingHints.first,
-            ),
-          ),
+          body: LessonSkeleton(caption: l.lessonPreparing),
         ),
       );
     }
@@ -410,7 +406,7 @@ class _LessonFlowBody extends HookConsumerWidget {
                                     start: 16.w,
                                     bottom: 8.h,
                                   ),
-                                  child: Text(
+                                  child: BidiText(
                                     lessonTitle,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,

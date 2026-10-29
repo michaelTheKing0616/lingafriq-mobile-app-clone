@@ -65,10 +65,11 @@ class AuthenticLessonFlowScreen extends HookConsumerWidget {
             .map((v) => v.word.trim())
             .where((t) => t.isNotEmpty)
             .toList();
-        final dialogueTexts = (dialogue?.script ?? const <Map<String, String>>[])
-            .map((d) => (d['text'] ?? '').toString().trim())
-            .where((t) => t.isNotEmpty)
-            .toList();
+        final dialogueTexts =
+            (dialogue?.script ?? const <Map<String, String>>[])
+                .map((d) => (d['text'] ?? '').toString().trim())
+                .where((t) => t.isNotEmpty)
+                .toList();
         await TtsPrefetchService().prefetchLessonContent(
           language: language,
           vocab: vocabTexts,
@@ -81,7 +82,9 @@ class AuthenticLessonFlowScreen extends HookConsumerWidget {
 
     void next() {
       if (isVictory) {
-        ref.read(curriculumProvider.notifier).markLessonComplete(language, level, lesson.id);
+        ref
+            .read(curriculumProvider.notifier)
+            .markLessonComplete(language, level, lesson.id);
         Navigator.pop(context, true);
         return;
       }
@@ -105,13 +108,18 @@ class AuthenticLessonFlowScreen extends HookConsumerWidget {
               children: [
                 Text(
                   'Stage ${stageIndex.value + 1}/${_stages.length}: ${_stages[stageIndex.value]}',
-                  style: TextStyle(fontSize: 12.sp, color: PanAfricanColors.primary),
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: PanAfricanColors.primary,
+                  ),
                 ),
                 SizedBox(height: 6.h),
                 LinearProgressIndicator(
                   value: (stageIndex.value + 1) / _stages.length,
                   backgroundColor: isDark ? Colors.grey[800] : Colors.grey[300],
-                  valueColor: const AlwaysStoppedAnimation(PanAfricanColors.primary),
+                  valueColor: const AlwaysStoppedAnimation(
+                    PanAfricanColors.primary,
+                  ),
                 ),
               ],
             ),
@@ -122,7 +130,11 @@ class AuthenticLessonFlowScreen extends HookConsumerWidget {
           ? LessonCompleteWidget(
               totalXP: 100,
               accuracy: practiceScore.value,
-              timeTaken: ((lesson.durationMin ?? 0) > 0 ? (lesson.durationMin ?? 12) : 12) * 60,
+              timeTaken:
+                  ((lesson.durationMin ?? 0) > 0
+                      ? (lesson.durationMin ?? 12)
+                      : 12) *
+                  60,
               onContinue: next,
             )
           : PageView(
@@ -148,7 +160,10 @@ class AuthenticLessonFlowScreen extends HookConsumerWidget {
                   _stages[4],
                   lesson.objective ?? 'Grammar in context',
                   grammar.isEmpty
-                      ? (bundled?['grammar_explanations'] as List?)?.join('\n') ?? 'Patterns from the dialogue.'
+                      ? (bundled?['grammar_explanations'] as List?)?.join(
+                              '\n',
+                            ) ??
+                            'Patterns from the dialogue.'
                       : grammar.join('\n'),
                 ),
                 LessonGuidedPracticeStage(
@@ -173,7 +188,11 @@ class AuthenticLessonFlowScreen extends HookConsumerWidget {
                     backgroundColor: PanAfricanColors.primary,
                     minimumSize: Size(double.infinity, 48.h),
                   ),
-                  child: Text(stageIndex.value >= _stages.length - 2 ? 'Finish lesson' : 'Continue'),
+                  child: Text(
+                    stageIndex.value >= _stages.length - 2
+                        ? 'Finish lesson'
+                        : 'Continue',
+                  ),
                 ),
               ),
             ),
@@ -187,9 +206,15 @@ class AuthenticLessonFlowScreen extends HookConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold)),
+            Text(
+              title,
+              style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold),
+            ),
             SizedBox(height: 12.h),
-            Text(headline, style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600)),
+            Text(
+              headline,
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+            ),
             SizedBox(height: 12.h),
             Text(body, style: TextStyle(fontSize: 15.sp, height: 1.4)),
           ],
@@ -219,16 +244,26 @@ class AuthenticLessonFlowScreen extends HookConsumerWidget {
         return Card(
           margin: EdgeInsets.only(bottom: 10.h),
           child: ListTile(
-            title: Text(v.word, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.sp)),
+            title: Text(
+              v.word,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.sp),
+            ),
             subtitle: Text(v.meaning),
-            trailing: VocabAudioControls(language: language, text: v.word, compact: true),
+            trailing: VocabAudioControls(
+              language: language,
+              text: v.word,
+              compact: true,
+            ),
           ),
         );
       },
     );
   }
 
-  Widget _pronunciationStage(BuildContext context, List<CurriculumVocab> vocab) {
+  Widget _pronunciationStage(
+    BuildContext context,
+    List<CurriculumVocab> vocab,
+  ) {
     final word = vocab.isNotEmpty ? vocab.first.word : lesson.title;
     return Center(
       child: Padding(
@@ -238,7 +273,10 @@ class AuthenticLessonFlowScreen extends HookConsumerWidget {
           children: [
             Text('Repeat after Polie', style: TextStyle(fontSize: 18.sp)),
             SizedBox(height: 16.h),
-            Text(word, style: TextStyle(fontSize: 28.sp, fontWeight: FontWeight.bold)),
+            Text(
+              word,
+              style: TextStyle(fontSize: 28.sp, fontWeight: FontWeight.bold),
+            ),
             SizedBox(height: 16.h),
             VocabAudioControls(language: language, text: word),
             SizedBox(height: 24.h),
@@ -269,7 +307,8 @@ class AuthenticLessonFlowScreen extends HookConsumerWidget {
     Map<String, dynamic>? bundled,
     CurriculumDialogue? dialogue,
   ) {
-    final body = lesson.culturalNotes ??
+    final body =
+        lesson.culturalNotes ??
         bundled?['cultural_notes']?.toString() ??
         dialogue?.culturalContext ??
         'Respect and context matter as much as words.';
@@ -283,7 +322,9 @@ class AuthenticLessonFlowScreen extends HookConsumerWidget {
             style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 12.h),
-          PanAfricanCard(child: Text(body, style: TextStyle(fontSize: 15.sp, height: 1.4))),
+          PanAfricanCard(
+            child: Text(body, style: TextStyle(fontSize: 15.sp, height: 1.4)),
+          ),
           SizedBox(height: 16.h),
           OutlinedButton.icon(
             onPressed: () {
@@ -322,7 +363,8 @@ class AuthenticLessonFlowScreen extends HookConsumerWidget {
                       sourceLanguage: 'English',
                       targetLanguage: language,
                       initialMode: PolieMode.roleplay,
-                      initialRoleplayScene: lesson.polieRoleplayPrompt ?? lesson.objective,
+                      initialRoleplayScene:
+                          lesson.polieRoleplayPrompt ?? lesson.objective,
                       conversationOnly: false,
                     ),
                   ),

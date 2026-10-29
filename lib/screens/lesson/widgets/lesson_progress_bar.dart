@@ -47,9 +47,7 @@ class LessonProgressBar extends StatelessWidget {
             return Expanded(
               child: Padding(
                 padding: EdgeInsetsDirectional.only(
-                  end: index == sections.length - 1
-                      ? 0
-                      : PanAfricanSpacing.xxs,
+                  end: index == sections.length - 1 ? 0 : PanAfricanSpacing.xxs,
                 ),
                 child: AnimatedContainer(
                   duration: reducedMotion
@@ -73,8 +71,8 @@ class LessonProgressBar extends StatelessWidget {
                     color: isCurrent
                         ? null
                         : isPastOrDone
-                            ? PanAfricanColors.primary
-                            : Colors.transparent,
+                        ? PanAfricanColors.primary
+                        : Colors.transparent,
                     border: isCurrent || isPastOrDone
                         ? null
                         : Border.all(

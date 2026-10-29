@@ -136,7 +136,7 @@ void main() {
         await tester.tap(find.text('Option A'));
         await tester.pump();
         await tester.tap(find.text('Check'));
-        await tester.pump(); // show the correct-answer feedback SnackBar
+        await tester.pump(); // show the correct-answer verdict panel
 
         // Dismiss that first SnackBar deterministically instead of racing
         // its 3-second auto-dismiss timer -- otherwise it can still be

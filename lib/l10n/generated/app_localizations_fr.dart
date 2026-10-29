@@ -1350,4 +1350,111 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get homeKidsLabel =>
       'Mode enfant activé. Toutes les leçons sont ouvertes. Le chat, le Village et les achats sont désactivés.';
+
+  @override
+  String get lessonNewPhrase => 'Nouvelle expression';
+
+  @override
+  String get lessonExampleLabel => 'Exemple';
+
+  @override
+  String get lessonListen => 'Écouter';
+
+  @override
+  String get lessonListenSlowly => 'Écouter lentement';
+
+  @override
+  String get lessonTutorialAudio => 'Audio de la leçon';
+
+  @override
+  String get lessonTutorialVideo => 'Vidéo de la leçon';
+
+  @override
+  String lessonQuestionOf(int current, int total) {
+    return 'Question $current sur $total';
+  }
+
+  @override
+  String lessonQuestionProgress(int current, int total, int percent) {
+    return 'Question $current sur $total. $percent pour cent terminé.';
+  }
+
+  @override
+  String get lessonPrevious => 'Précédent';
+
+  @override
+  String get lessonPreviousQuestion => 'Question précédente';
+
+  @override
+  String get lessonCheck => 'Vérifier';
+
+  @override
+  String get lessonCheckAnswer => 'Vérifier la réponse';
+
+  @override
+  String get lessonNext => 'Suivant';
+
+  @override
+  String get lessonNextQuestion => 'Question suivante';
+
+  @override
+  String get lessonFinish => 'Terminer';
+
+  @override
+  String get lessonFinishQuiz => 'Terminer le quiz';
+
+  @override
+  String get lessonPickFirst =>
+      'Choisis d\'abord une réponse, puis on vérifie ensemble.';
+
+  @override
+  String get lessonCorrectTitle => 'Bravo !';
+
+  @override
+  String get lessonCorrectBody => 'C\'est juste. Continue comme ça.';
+
+  @override
+  String get lessonIncorrectTitle => 'Pas tout à fait';
+
+  @override
+  String lessonCorrectAnswer(String answer) {
+    return 'Bonne réponse : $answer';
+  }
+
+  @override
+  String lessonOptionLabel(String letter, String text) {
+    return 'Réponse $letter : $text.';
+  }
+
+  @override
+  String get lessonOptionSelected => 'Sélectionnée';
+
+  @override
+  String lessonQuestionLabel(String question) {
+    return 'Question. $question';
+  }
+
+  @override
+  String lessonHintLabel(String hint) {
+    return 'Indice : $hint';
+  }
+
+  @override
+  String get lessonFunFact => 'Le saviez-vous ?';
+
+  @override
+  String get lessonNotReadyTitle => 'Cette partie n\'est pas encore prête';
+
+  @override
+  String get lessonNotReadyBody =>
+      'Nous préparons encore ces questions. Reviens dans un instant.';
+
+  @override
+  String get lessonLoadFailedBody =>
+      'Vérifie ta connexion et réessaie. Ta progression est sauvegardée.';
+
+  @override
+  String lessonAvatarLabel(String points) {
+    return 'Ton profil, $points';
+  }
 }

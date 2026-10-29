@@ -23,9 +23,7 @@ Widget _wrap(
         locale: locale,
         supportedLocales: const [Locale('en'), Locale('ar')],
         localizationsDelegates: GlobalMaterialLocalizations.delegates,
-        home: Scaffold(
-          body: child,
-        ),
+        home: Scaffold(body: child),
       ),
     ),
   );
@@ -65,139 +63,159 @@ LessonContent _singleQuestionContent() {
 
 void main() {
   group('QuizSectionWidget states', () {
-    testWidgets('renders an empty state with no placeholder-y copy when there are no questions', (
+    testWidgets(
+      'renders an empty state with no placeholder-y copy when there are no questions',
+      (tester) async {
+        await _setPhoneSurface(tester);
+        addTearDown(() => tester.view.resetPhysicalSize());
+        addTearDown(() => tester.view.resetDevicePixelRatio());
+        final content = LessonContent(
+          id: 1,
+          sectionId: 1,
+          title: 'Quiz',
+          type: LessonSectionType.instantQuiz,
+          score: 10,
+          isCompleted: false,
+        );
+
+        await tester.pumpWidget(
+          _wrap(
+            QuizSectionWidget(
+              content: content,
+              onAnswerSelected: (_, __) {},
+              onCheckAnswer: (_, __) async {},
+              onFinish: () {},
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Uses the shared design-system empty state, not a bare Text widget.
+        expect(find.text("This part isn't ready yet"), findsOneWidget);
+        expect(find.text('No questions available'), findsNothing);
+      },
+    );
+
+    testWidgets(
+      'shows warm correct-answer feedback and accessible option semantics',
+      (tester) async {
+        await _setPhoneSurface(tester);
+        addTearDown(() => tester.view.resetPhysicalSize());
+        addTearDown(() => tester.view.resetDevicePixelRatio());
+        final handle = tester.ensureSemantics();
+        await tester.pumpWidget(
+          _wrap(
+            QuizSectionWidget(
+              content: _singleQuestionContent(),
+              onAnswerSelected: (_, __) {},
+              onCheckAnswer: (_, __) async {},
+              onFinish: () {},
+              isAnswerCorrect: (questionId, option) => option == 'Correct',
+            ),
+          ),
+        );
+
+        // Every option must expose a screen-reader-friendly label.
+        expect(
+          find.bySemanticsLabel(RegExp(r'^Answer option A: Correct\.')),
+          findsOneWidget,
+        );
+
+        await tester.tap(find.text('Correct'));
+        await tester.pump();
+        await tester.tap(find.text('Check'));
+        await tester.pumpAndSettle();
+
+        // The verdict sits in a green banner with the next action inside it.
+        expect(
+          find.byKey(const Key('lesson-feedback-correct')),
+          findsOneWidget,
+        );
+        expect(find.text('Nice work!'), findsOneWidget);
+        expect(find.text('Please select an answer'), findsNothing);
+
+        handle.dispose();
+      },
+    );
+
+    testWidgets(
+      'shows feedback for an incorrect answer and reveals the hint/fun-fact cards',
+      (tester) async {
+        await _setPhoneSurface(tester);
+        addTearDown(() => tester.view.resetPhysicalSize());
+        addTearDown(() => tester.view.resetDevicePixelRatio());
+        await tester.pumpWidget(
+          _wrap(
+            QuizSectionWidget(
+              content: _singleQuestionContent(),
+              onAnswerSelected: (_, __) {},
+              onCheckAnswer: (_, __) async {},
+              onFinish: () {},
+              isAnswerCorrect: (questionId, option) => option == 'Correct',
+            ),
+          ),
+        );
+
+        // Hint is visible before checking.
+        expect(find.textContaining('Think carefully'), findsOneWidget);
+
+        await tester.tap(find.text('Wrong'));
+        await tester.pump();
+        await tester.tap(find.text('Check'));
+        await tester.pumpAndSettle();
+
+        expect(
+          find.byKey(const Key('lesson-feedback-incorrect')),
+          findsOneWidget,
+        );
+        expect(find.text('Correct answer: Correct'), findsOneWidget);
+        // Fun fact only appears once the answer has been checked.
+        expect(
+          find.textContaining('A fun fact appears after checking.'),
+          findsOneWidget,
+        );
+      },
+    );
+
+    testWidgets(
+      'does not crash and skips the shake delay when reduced motion is requested',
+      (tester) async {
+        await _setPhoneSurface(tester);
+        addTearDown(() => tester.view.resetPhysicalSize());
+        addTearDown(() => tester.view.resetDevicePixelRatio());
+        await tester.pumpWidget(
+          _wrap(
+            QuizSectionWidget(
+              content: _singleQuestionContent(),
+              onAnswerSelected: (_, __) {},
+              onCheckAnswer: (_, __) async {},
+              onFinish: () {},
+              isAnswerCorrect: (questionId, option) => option == 'Correct',
+            ),
+            reducedMotion: true,
+          ),
+        );
+
+        await tester.tap(find.text('Wrong'));
+        await tester.pump();
+        await tester.tap(find.text('Check'));
+
+        // With reduced motion the 500ms shake delay is skipped entirely, so a
+        // single short pump (well under 500ms) is enough to settle.
+        await tester.pump(const Duration(milliseconds: 50));
+        await tester.pumpAndSettle();
+
+        expect(tester.takeException(), isNull);
+        expect(
+          find.byKey(const Key('lesson-feedback-incorrect')),
+          findsOneWidget,
+        );
+      },
+    );
+
+    testWidgets('mirrors the Next/Previous icons for RTL directionality', (
       tester,
     ) async {
-      await _setPhoneSurface(tester);
-      addTearDown(() => tester.view.resetPhysicalSize());
-      addTearDown(() => tester.view.resetDevicePixelRatio());
-      final content = LessonContent(
-        id: 1,
-        sectionId: 1,
-        title: 'Quiz',
-        type: LessonSectionType.instantQuiz,
-        score: 10,
-        isCompleted: false,
-      );
-
-      await tester.pumpWidget(
-        _wrap(
-          QuizSectionWidget(
-            content: content,
-            onAnswerSelected: (_, __) {},
-            onCheckAnswer: (_, __) async {},
-            onFinish: () {},
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      // Uses the shared design-system empty state, not a bare Text widget.
-      expect(find.text("This part isn't ready yet"), findsOneWidget);
-      expect(find.text('No questions available'), findsNothing);
-    });
-
-    testWidgets('shows warm correct-answer feedback and accessible option semantics', (
-      tester,
-    ) async {
-      await _setPhoneSurface(tester);
-      addTearDown(() => tester.view.resetPhysicalSize());
-      addTearDown(() => tester.view.resetDevicePixelRatio());
-      final handle = tester.ensureSemantics();
-      await tester.pumpWidget(
-        _wrap(
-          QuizSectionWidget(
-            content: _singleQuestionContent(),
-            onAnswerSelected: (_, __) {},
-            onCheckAnswer: (_, __) async {},
-            onFinish: () {},
-            isAnswerCorrect: (questionId, option) => option == 'Correct',
-          ),
-        ),
-      );
-
-      // Every option must expose a screen-reader-friendly label.
-      expect(
-        find.bySemanticsLabel(RegExp(r'^Answer option A: Correct\.')),
-        findsOneWidget,
-      );
-
-      await tester.tap(find.text('Correct'));
-      await tester.pump();
-      await tester.tap(find.text('Check'));
-      await tester.pumpAndSettle();
-
-      // Feedback comes from the warm, non-robotic copy bank.
-      expect(find.byType(SnackBar), findsOneWidget);
-      expect(find.text('Please select an answer'), findsNothing);
-
-      handle.dispose();
-    });
-
-    testWidgets('shows feedback for an incorrect answer and reveals the hint/fun-fact cards', (
-      tester,
-    ) async {
-      await _setPhoneSurface(tester);
-      addTearDown(() => tester.view.resetPhysicalSize());
-      addTearDown(() => tester.view.resetDevicePixelRatio());
-      await tester.pumpWidget(
-        _wrap(
-          QuizSectionWidget(
-            content: _singleQuestionContent(),
-            onAnswerSelected: (_, __) {},
-            onCheckAnswer: (_, __) async {},
-            onFinish: () {},
-            isAnswerCorrect: (questionId, option) => option == 'Correct',
-          ),
-        ),
-      );
-
-      // Hint is visible before checking.
-      expect(find.textContaining('Think carefully'), findsOneWidget);
-
-      await tester.tap(find.text('Wrong'));
-      await tester.pump();
-      await tester.tap(find.text('Check'));
-      await tester.pumpAndSettle();
-
-      expect(find.byType(SnackBar), findsOneWidget);
-      // Fun fact only appears once the answer has been checked.
-      expect(find.textContaining('A fun fact appears after checking.'), findsOneWidget);
-    });
-
-    testWidgets('does not crash and skips the shake delay when reduced motion is requested', (
-      tester,
-    ) async {
-      await _setPhoneSurface(tester);
-      addTearDown(() => tester.view.resetPhysicalSize());
-      addTearDown(() => tester.view.resetDevicePixelRatio());
-      await tester.pumpWidget(
-        _wrap(
-          QuizSectionWidget(
-            content: _singleQuestionContent(),
-            onAnswerSelected: (_, __) {},
-            onCheckAnswer: (_, __) async {},
-            onFinish: () {},
-            isAnswerCorrect: (questionId, option) => option == 'Correct',
-          ),
-          reducedMotion: true,
-        ),
-      );
-
-      await tester.tap(find.text('Wrong'));
-      await tester.pump();
-      await tester.tap(find.text('Check'));
-
-      // With reduced motion the 500ms shake delay is skipped entirely, so a
-      // single short pump (well under 500ms) is enough to settle.
-      await tester.pump(const Duration(milliseconds: 50));
-      await tester.pumpAndSettle();
-
-      expect(tester.takeException(), isNull);
-      expect(find.byType(SnackBar), findsOneWidget);
-    });
-
-    testWidgets('mirrors the Next/Previous icons for RTL directionality', (tester) async {
       await _setPhoneSurface(tester);
       addTearDown(() => tester.view.resetPhysicalSize());
       addTearDown(() => tester.view.resetDevicePixelRatio());
@@ -235,7 +253,8 @@ void main() {
             onAnswerSelected: (_, __) {},
             onCheckAnswer: (_, __) async {},
             onFinish: () {},
-            isAnswerCorrect: (qid, option) => qid == 1 ? option == 'Yes' : option == 'A',
+            isAnswerCorrect: (qid, option) =>
+                qid == 1 ? option == 'Yes' : option == 'A',
           ),
           textDirection: TextDirection.rtl,
         ),

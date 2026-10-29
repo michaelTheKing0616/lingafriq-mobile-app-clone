@@ -3,7 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lingafriq/content/lingafriq_ux_voice.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
+import 'package:lingafriq/widgets/bidi_text.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/audio_player_widget.dart';
 import 'package:lingafriq/widgets/content/vocab_audio_controls.dart';
@@ -87,8 +88,10 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
               hint: question.hint,
               funFact: question.funFact,
               refs: [
-                if (question.audioUrl != null && question.audioUrl!.isNotEmpty) question.audioUrl!,
-                if (question.imageUrl != null && question.imageUrl!.isNotEmpty) question.imageUrl!,
+                if (question.audioUrl != null && question.audioUrl!.isNotEmpty)
+                  question.audioUrl!,
+                if (question.imageUrl != null && question.imageUrl!.isNotEmpty)
+                  question.imageUrl!,
               ],
             ) !=
             null)
@@ -106,8 +109,8 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
   Future<void> _checkAnswer(int questionId, String answer) async {
     if (_selectedAnswers[questionId] == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Pick an answer first, then we'll check it together."),
+        SnackBar(
+          content: Text(l10nOf(context).lessonPickFirst),
           backgroundColor: PanAfricanColors.error,
         ),
       );
@@ -119,7 +122,9 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
     });
 
     final isCorrect = widget.isAnswerCorrect?.call(questionId, answer) ?? false;
-    final reducedMotion = mounted ? MediaQuery.disableAnimationsOf(context) : false;
+    final reducedMotion = mounted
+        ? MediaQuery.disableAnimationsOf(context)
+        : false;
     if (!isCorrect && !reducedMotion) {
       _shakeController.forward(from: 0);
       await Future.delayed(const Duration(milliseconds: 500));
@@ -128,21 +133,6 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
     }
 
     if (!mounted) return;
-    final feedback = LingAfriqUxVoice.quizFeedback(isCorrect: isCorrect);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          feedback,
-          // Both the success-green and secondary-gold backgrounds are too
-          // bright for default/white SnackBar text (~2.1:1 and ~1.4:1).
-          // neutralDarkest clears AA on both (~9.6:1 and much higher).
-          style: const TextStyle(color: PanAfricanColors.neutralDarkest),
-        ),
-        backgroundColor: isCorrect ? PanAfricanColors.success : PanAfricanColors.secondary,
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 3),
-      ),
-    );
     widget.onCheckAnswer(questionId, answer);
   }
 
@@ -167,19 +157,23 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
 
   /// Mirrors forward/back iconography for RTL locales (Arabic, Darija) so
   /// "next" visually points the way text actually flows.
-  IconData _directionalIcon(BuildContext context, {required IconData ltr, required IconData rtl}) {
+  IconData _directionalIcon(
+    BuildContext context, {
+    required IconData ltr,
+    required IconData rtl,
+  }) {
     return Directionality.of(context) == TextDirection.rtl ? rtl : ltr;
   }
 
   @override
   Widget build(BuildContext context) {
+    final l = l10nOf(context);
     final questions = _bankQuestions;
     if (questions.isEmpty) {
-      return const PanAfricanEmptyState(
+      return PanAfricanEmptyState(
         icon: Icons.quiz_outlined,
-        title: "This part isn't ready yet",
-        description:
-            "We're still preparing these questions. Please check back in a moment.",
+        title: l.lessonNotReadyTitle,
+        description: l.lessonNotReadyBody,
       );
     }
 
@@ -193,14 +187,22 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
         // Progress indicator
         if (questions.length > 1)
           Semantics(
-            label: 'Question ${_currentQuestionIndex + 1} of ${questions.length}. ${((_currentQuestionIndex + 1) / questions.length * 100).toInt()} percent complete.',
-            value: '${((_currentQuestionIndex + 1) / questions.length * 100).toInt()}%',
+            label: l.lessonQuestionProgress(
+              _currentQuestionIndex + 1,
+              questions.length,
+              ((_currentQuestionIndex + 1) / questions.length * 100).toInt(),
+            ),
+            value:
+                '${((_currentQuestionIndex + 1) / questions.length * 100).toInt()}%',
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
               child: Row(
                 children: [
                   Text(
-                    'Question ${_currentQuestionIndex + 1} of ${questions.length}',
+                    l.lessonQuestionOf(
+                      _currentQuestionIndex + 1,
+                      questions.length,
+                    ),
                     style: PanAfricanTypography.labelMedium(context),
                   ),
                   const Spacer(),
@@ -229,83 +231,107 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
             },
             itemCount: questions.length,
             itemBuilder: (context, index) {
-              return _buildQuestionCard(questions[index], index == _currentQuestionIndex);
+              return _buildQuestionCard(
+                questions[index],
+                index == _currentQuestionIndex,
+              );
             },
           ),
         ),
 
-        // Navigation buttons
-        SafeArea(
-          top: false,
-          child: Padding(
-            padding: EdgeInsets.all(16.w),
-            child: Row(
-              children: [
-                if (_currentQuestionIndex > 0)
-                  Expanded(
-                    child: Semantics(
-                      label: 'Previous question',
-                      button: true,
-                      child: PanAfricanButton(
-                        onPressed: () async {
-                          await _pageController.previousPage(
-                            duration: _pageTransitionDuration(),
-                            curve: Curves.easeInOut,
-                          );
-                        },
-                        label: 'Previous',
-                        icon: _directionalIcon(
-                          context,
-                          ltr: Icons.arrow_back_rounded,
-                          rtl: Icons.arrow_forward_rounded,
+        // Navigation buttons, inside the answer feedback panel once checked
+        // (lesson-flow pack: tinted bottom banner with the verdict).
+        LessonFeedbackPanel(
+          checked: isChecked,
+          correct:
+              isChecked &&
+              selectedAnswer != null &&
+              (widget.isAnswerCorrect?.call(questionId, selectedAnswer) ??
+                  false),
+          correctAnswer: currentQuestion.options
+              .where((o) => o.isCorrect)
+              .map((o) => o.text)
+              .firstOrNull,
+          child: SafeArea(
+            top: false,
+            child: Padding(
+              padding: EdgeInsets.all(16.w),
+              child: Row(
+                children: [
+                  if (_currentQuestionIndex > 0)
+                    Expanded(
+                      child: Semantics(
+                        label: l.lessonPreviousQuestion,
+                        button: true,
+                        child: PanAfricanButton(
+                          onPressed: () async {
+                            await _pageController.previousPage(
+                              duration: _pageTransitionDuration(),
+                              curve: Curves.easeInOut,
+                            );
+                          },
+                          label: l.lessonPrevious,
+                          icon: _directionalIcon(
+                            context,
+                            ltr: Icons.arrow_back_rounded,
+                            rtl: Icons.arrow_forward_rounded,
+                          ),
+                          backgroundColor: PanAfricanColors.cardDark,
+                          foregroundColor: Theme.of(
+                            context,
+                          ).colorScheme.onSurface,
                         ),
-                        backgroundColor: PanAfricanColors.cardDark,
-                        foregroundColor: Theme.of(context).colorScheme.onSurface,
+                      ),
+                    ),
+                  if (_currentQuestionIndex > 0) SizedBox(width: 12.w),
+                  Expanded(
+                    flex: 2,
+                    child: Semantics(
+                      label: isChecked
+                          ? (_currentQuestionIndex == questions.length - 1
+                                ? l.lessonFinishQuiz
+                                : l.lessonNextQuestion)
+                          : l.lessonCheckAnswer,
+                      button: true,
+                      enabled: isChecked || selectedAnswer != null,
+                      child: PanAfricanButton(
+                        onPressed: isChecked
+                            ? () async {
+                                if (_currentQuestionIndex ==
+                                    questions.length - 1) {
+                                  if (!mounted) return;
+                                  widget.onFinish();
+                                } else {
+                                  await _goToNextPage(questions.length);
+                                }
+                              }
+                            : (selectedAnswer != null
+                                  ? () =>
+                                        _checkAnswer(questionId, selectedAnswer)
+                                  : null),
+                        label: isChecked
+                            ? (_currentQuestionIndex == questions.length - 1
+                                  ? l.lessonFinish
+                                  : l.lessonNext)
+                            : l.lessonCheck,
+                        icon:
+                            isChecked &&
+                                _currentQuestionIndex < questions.length - 1
+                            ? _directionalIcon(
+                                context,
+                                ltr: Icons.arrow_forward_rounded,
+                                rtl: Icons.arrow_back_rounded,
+                              )
+                            : Icons.check_rounded,
+                        backgroundColor: PanAfricanColors.primary,
+                        foregroundColor: Theme.of(
+                          context,
+                        ).colorScheme.onPrimary,
                       ),
                     ),
                   ),
-                if (_currentQuestionIndex > 0) SizedBox(width: 12.w),
-                Expanded(
-                  flex: 2,
-                  child: Semantics(
-                    label: isChecked
-                        ? (_currentQuestionIndex == questions.length - 1
-                            ? 'Finish quiz'
-                            : 'Next question')
-                        : 'Check answer',
-                    button: true,
-                    enabled: isChecked || selectedAnswer != null,
-                    child: PanAfricanButton(
-                      onPressed: isChecked
-                          ? () async {
-                              if (_currentQuestionIndex == questions.length - 1) {
-                                if (!mounted) return;
-                                widget.onFinish();
-                              } else {
-                                await _goToNextPage(questions.length);
-                              }
-                            }
-                          : (selectedAnswer != null
-                              ? () => _checkAnswer(questionId, selectedAnswer)
-                              : null),
-                      label: isChecked
-                          ? (_currentQuestionIndex == questions.length - 1
-                              ? 'Finish'
-                              : 'Next')
-                          : 'Check',
-                      icon: isChecked && _currentQuestionIndex < questions.length - 1
-                          ? _directionalIcon(
-                              context,
-                              ltr: Icons.arrow_forward_rounded,
-                              rtl: Icons.arrow_back_rounded,
-                            )
-                          : Icons.check_rounded,
-                      backgroundColor: PanAfricanColors.primary,
-                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -320,6 +346,7 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
     final selectedAnswer = _selectedAnswers[questionId];
     final isChecked = _checkedAnswers[questionId] ?? false;
 
+    final l = l10nOf(context);
     return SingleChildScrollView(
       padding: EdgeInsets.all(16.w),
       child: Column(
@@ -337,13 +364,18 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
                     height: 200.h,
                     color: PanAfricanColors.cardDark,
                     child: const Center(
-                      child: CircularProgressIndicator(color: PanAfricanColors.primary),
+                      child: CircularProgressIndicator(
+                        color: PanAfricanColors.primary,
+                      ),
                     ),
                   ),
                   errorWidget: (context, url, error) => Container(
                     height: 200.h,
                     color: PanAfricanColors.cardDark,
-                    child: const Icon(Icons.error_outline, color: PanAfricanColors.error),
+                    child: const Icon(
+                      Icons.error_outline,
+                      color: PanAfricanColors.error,
+                    ),
                   ),
                   fit: BoxFit.cover,
                 ),
@@ -376,7 +408,7 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
 
           // Question text
           Semantics(
-            label: 'Question. ${question.question}',
+            label: l.lessonQuestionLabel(question.question),
             header: true,
             child: PanAfricanCard(
               hasGradientBorder: true,
@@ -386,7 +418,7 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  BidiText(
                     question.question,
                     style: PanAfricanTypography.headlineSmall(context),
                   ),
@@ -424,12 +456,18 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
                   return Transform.translate(
                     offset: showIncorrect && !reducedMotion
                         ? Offset(
-                            10 * _shakeController.value * (1 - _shakeController.value) * 2,
+                            10 *
+                                _shakeController.value *
+                                (1 - _shakeController.value) *
+                                2,
                             0,
                           )
                         : Offset.zero,
                     child: Semantics(
-                      label: 'Answer option $optionLabel: ${option.text}. ${isSelected ? 'Selected' : ''}',
+                      label: [
+                        l.lessonOptionLabel(optionLabel, option.text),
+                        if (isSelected) l.lessonOptionSelected,
+                      ].join(' '),
                       button: true,
                       selected: isSelected,
                       child: PanAfricanCard(
@@ -440,83 +478,93 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
                                 _selectAnswer(questionId, option.text);
                               },
                         backgroundColor: showCorrect
-                          ? PanAfricanColors.success.withValues(alpha: 0.15)
-                          : showIncorrect
-                              ? PanAfricanColors.error.withValues(alpha: 0.15)
-                              : isSelected
-                                  ? PanAfricanColors.primary.withValues(alpha: 0.15)
-                                  : null,
-                      padding: EdgeInsets.all(16.w),
-                      child: Row(
-                        children: [
-                          // Option label
-                          Container(
-                            width: 32.w,
-                            height: 32.w,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              // White-on-fill lettering needs a solid enough
-                              // background to clear WCAG AA; the flat
-                              // "success" green is too light for that, so the
-                              // correct state reuses our (darker) brand
-                              // primary green instead.
-                              color: showCorrect
-                                  ? Theme.of(context).colorScheme.primary
-                                  : showIncorrect
-                                      ? PanAfricanColors.error
-                                      : isSelected
-                                          ? PanAfricanColors.primary
-                                          : PanAfricanColors.borderLight,
-                            ),
-                            child: Center(
-                              child: Text(
-                                optionLabel,
-                                style: PanAfricanTypography.labelLarge(context).copyWith(
-                                  color: (showCorrect || showIncorrect || isSelected)
-                                      ? Colors.white
-                                      : null,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 12.w),
-                          // Option text
-                          Expanded(
-                            child: Text(
-                              option.text,
-                              style: PanAfricanTypography.bodyLarge(context).copyWith(
-                                // AA-safe text colors: the flat success/error
-                                // tokens are too light for WCAG body text, so
-                                // we use their high-contrast theme analogues.
+                            ? PanAfricanColors.success.withValues(alpha: 0.15)
+                            : showIncorrect
+                            ? PanAfricanColors.error.withValues(alpha: 0.15)
+                            : isSelected
+                            ? PanAfricanColors.primary.withValues(alpha: 0.15)
+                            : null,
+                        padding: EdgeInsets.all(16.w),
+                        child: Row(
+                          children: [
+                            // Option label
+                            Container(
+                              width: 32.w,
+                              height: 32.w,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                // White-on-fill lettering needs a solid enough
+                                // background to clear WCAG AA; the flat
+                                // "success" green is too light for that, so the
+                                // correct state reuses our (darker) brand
+                                // primary green instead.
                                 color: showCorrect
                                     ? Theme.of(context).colorScheme.primary
                                     : showIncorrect
-                                        ? Theme.of(context).colorScheme.onErrorContainer
-                                        : null,
-                                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                                    ? PanAfricanColors.error
+                                    : isSelected
+                                    ? PanAfricanColors.primary
+                                    : PanAfricanColors.borderLight,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  optionLabel,
+                                  style:
+                                      PanAfricanTypography.labelLarge(
+                                        context,
+                                      ).copyWith(
+                                        color:
+                                            (showCorrect ||
+                                                showIncorrect ||
+                                                isSelected)
+                                            ? Colors.white
+                                            : null,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                ),
                               ),
                             ),
-                          ),
-                          // Status icon
-                          if (isChecked)
-                            Icon(
-                              showCorrect
-                                  ? Icons.check_circle_rounded
-                                  : showIncorrect
-                                      ? Icons.cancel_rounded
+                            SizedBox(width: 12.w),
+                            // Option text
+                            Expanded(
+                              child: BidiText(
+                                option.text,
+                                style: PanAfricanTypography.bodyLarge(context).copyWith(
+                                  // AA-safe text colors: the flat success/error
+                                  // tokens are too light for WCAG body text, so
+                                  // we use their high-contrast theme analogues.
+                                  color: showCorrect
+                                      ? Theme.of(context).colorScheme.primary
+                                      : showIncorrect
+                                      ? Theme.of(
+                                          context,
+                                        ).colorScheme.onErrorContainer
                                       : null,
-                              color: showCorrect
-                                  ? PanAfricanColors.success
-                                  : showIncorrect
-                                      ? PanAfricanColors.error
-                                      : null,
-                              size: 24.sp,
+                                  fontWeight: isSelected
+                                      ? FontWeight.w600
+                                      : FontWeight.w500,
+                                ),
+                              ),
                             ),
-                        ],
+                            // Status icon
+                            if (isChecked)
+                              Icon(
+                                showCorrect
+                                    ? Icons.check_circle_rounded
+                                    : showIncorrect
+                                    ? Icons.cancel_rounded
+                                    : null,
+                                color: showCorrect
+                                    ? PanAfricanColors.success
+                                    : showIncorrect
+                                    ? PanAfricanColors.error
+                                    : null,
+                                size: 24.sp,
+                              ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
                   );
                 },
               ),
@@ -524,27 +572,35 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
           }),
 
           // Hint (if available and not checked)
-          if (question.hint != null && question.hint!.isNotEmpty && !isChecked) ...[
+          if (question.hint != null &&
+              question.hint!.isNotEmpty &&
+              !isChecked) ...[
             SizedBox(height: 16.h),
             Semantics(
-              label: 'Hint: ${question.hint!}',
+              label: l.lessonHintLabel(question.hint!),
               child: PanAfricanCard(
                 padding: EdgeInsets.all(16.w),
-                backgroundColor: PanAfricanColors.secondary.withValues(alpha: 0.1),
+                backgroundColor: PanAfricanColors.secondary.withValues(
+                  alpha: 0.1,
+                ),
                 child: Row(
                   children: [
-                    const Icon(Icons.lightbulb_outline, color: PanAfricanColors.secondary),
+                    const Icon(
+                      Icons.lightbulb_outline,
+                      color: PanAfricanColors.secondary,
+                    ),
                     SizedBox(width: 12.w),
                     Expanded(
-                      child: Text(
+                      child: BidiText(
                         question.hint!,
-                        style: PanAfricanTypography.bodyMedium(context).copyWith(
-                          // "secondary" (gold) is too light to read as body
-                          // text on a near-white card — this on-container
-                          // token keeps the warm gold feel at AA contrast.
-                          color: PanAfricanColors.onSecondaryContainer,
-                          fontStyle: FontStyle.italic,
-                        ),
+                        style: PanAfricanTypography.bodyMedium(context)
+                            .copyWith(
+                              // "secondary" (gold) is too light to read as body
+                              // text on a near-white card — this on-container
+                              // token keeps the warm gold feel at AA contrast.
+                              color: PanAfricanColors.onSecondaryContainer,
+                              fontStyle: FontStyle.italic,
+                            ),
                       ),
                     ),
                   ],
@@ -559,31 +615,37 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
               isChecked) ...[
             SizedBox(height: 16.h),
             Semantics(
-              label: 'Fun fact: ${question.funFact!}',
+              label: '${l.lessonFunFact}: ${question.funFact!}',
               child: PanAfricanCard(
                 padding: EdgeInsets.all(16.w),
-                backgroundColor: PanAfricanColors.tertiary.withValues(alpha: 0.1),
+                backgroundColor: PanAfricanColors.tertiary.withValues(
+                  alpha: 0.1,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
-                        const Icon(Icons.auto_awesome, color: PanAfricanColors.tertiary),
+                        const Icon(
+                          Icons.auto_awesome,
+                          color: PanAfricanColors.tertiary,
+                        ),
                         SizedBox(width: 12.w),
                         Text(
-                          'Fun Fact',
-                          style: PanAfricanTypography.labelLarge(context).copyWith(
-                            // "tertiary" (sunset orange) fails AA on a light
-                            // card; the on-container token keeps the warm
-                            // tone readable.
-                            color: PanAfricanColors.onTertiaryContainer,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          l.lessonFunFact,
+                          style: PanAfricanTypography.labelLarge(context)
+                              .copyWith(
+                                // "tertiary" (sunset orange) fails AA on a light
+                                // card; the on-container token keeps the warm
+                                // tone readable.
+                                color: PanAfricanColors.onTertiaryContainer,
+                                fontWeight: FontWeight.bold,
+                              ),
                         ),
                       ],
                     ),
                     SizedBox(height: 8.h),
-                    Text(
+                    BidiText(
                       question.funFact!,
                       style: PanAfricanTypography.bodyMedium(context),
                     ),
@@ -594,6 +656,119 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
           ],
         ],
       ),
+    );
+  }
+}
+
+/// Verdict banner under a checked answer: green for correct, coral for
+/// incorrect with the right answer spelled out. Wraps the action button so
+/// the next step sits inside the verdict, as in the reference pack.
+class LessonFeedbackPanel extends StatelessWidget {
+  const LessonFeedbackPanel({
+    super.key,
+    required this.checked,
+    required this.correct,
+    required this.child,
+    this.correctAnswer,
+  });
+
+  final bool checked;
+  final bool correct;
+  final String? correctAnswer;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!checked) return child;
+    final l = l10nOf(context);
+    final bg = correct
+        ? PanAfricanColors.primaryContainer
+        : PanAfricanColors.tertiaryContainer;
+    final fg = correct
+        ? PanAfricanColors.onPrimaryContainer
+        : PanAfricanColors.onTertiaryContainer;
+    final accent = correct
+        ? PanAfricanColors.primary
+        : PanAfricanColors.kenteRed;
+    final title = correct ? l.lessonCorrectTitle : l.lessonIncorrectTitle;
+    final body = correct
+        ? l.lessonCorrectBody
+        : (correctAnswer == null
+              ? null
+              : l.lessonCorrectAnswer(correctAnswer!));
+    final panel = Container(
+      key: Key(
+        correct ? 'lesson-feedback-correct' : 'lesson-feedback-incorrect',
+      ),
+      decoration: BoxDecoration(
+        color: bg,
+        border: Border(top: BorderSide(color: accent, width: 3)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Semantics(
+            liveRegion: true,
+            container: true,
+            label: [title, ?body].join('. '),
+            excludeSemantics: true,
+            child: Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(16.w, 16.w, 16.w, 0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: accent,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      correct ? Icons.check_rounded : Icons.close_rounded,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(width: 12.w),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: PanAfricanTypography.titleLarge(
+                            context,
+                          ).copyWith(color: fg, fontWeight: FontWeight.w800),
+                        ),
+                        if (body != null) ...[
+                          SizedBox(height: 2.w),
+                          Text(
+                            body,
+                            style: PanAfricanTypography.bodyMedium(
+                              context,
+                            ).copyWith(color: fg),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          child,
+        ],
+      ),
+    );
+    if (MediaQuery.disableAnimationsOf(context)) return panel;
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 1, end: 0),
+      duration: const Duration(milliseconds: 220),
+      curve: Curves.easeOutCubic,
+      builder: (_, t, c) =>
+          FractionalTranslation(translation: Offset(0, t * 0.3), child: c),
+      child: panel,
     );
   }
 }

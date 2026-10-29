@@ -102,9 +102,9 @@ class LessonCompleteWidget extends StatelessWidget {
             Text(
               'Lesson Complete!',
               textAlign: TextAlign.center,
-              style: PanAfricanTypography.headlineSmall(context).copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: PanAfricanTypography.headlineSmall(
+                context,
+              ).copyWith(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: PanAfricanSpacing.xs),
             Text(
@@ -160,9 +160,9 @@ class LessonCompleteWidget extends StatelessWidget {
                   // Title
                   Text(
                     'Lesson Complete!',
-                    style: PanAfricanTypography.headlineSmall(context).copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: PanAfricanTypography.headlineSmall(
+                      context,
+                    ).copyWith(fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 24.h),
 
@@ -185,11 +185,12 @@ class LessonCompleteWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-          // Stats grid
-          Semantics(
-            label: 'Lesson complete. XP earned: $totalXP. Accuracy: ${accuracy.toStringAsFixed(0)} percent. Time: ${_formatTime(timeTaken)}.',
-            child: Row(
-              children: [
+        // Stats grid
+        Semantics(
+          label:
+              'Lesson complete. XP earned: $totalXP. Accuracy: ${accuracy.toStringAsFixed(0)} percent. Time: ${_formatTime(timeTaken)}.',
+          child: Row(
+            children: [
               Expanded(
                 child: _buildStatCard(
                   context,
@@ -212,109 +213,112 @@ class LessonCompleteWidget extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+        ),
+        SizedBox(height: 12.h),
+
+        Row(
+          children: [
+            Expanded(
+              child: _buildStatCard(
+                context,
+                icon: Icons.timer_rounded,
+                label: 'Time',
+                value: _formatTime(timeTaken),
+                // Flat gold "secondary" fails AA on a light card; its
+                // on-container token keeps the warm gold family readable.
+                color: PanAfricanColors.onSecondaryContainer,
+              ),
             ),
-          ),
-          SizedBox(height: 12.h),
-
-          Row(
-            children: [
-              Expanded(
-                child: _buildStatCard(
-                  context,
-                  icon: Icons.timer_rounded,
-                  label: 'Time',
-                  value: _formatTime(timeTaken),
-                  // Flat gold "secondary" fails AA on a light card; its
-                  // on-container token keeps the warm gold family readable.
-                  color: PanAfricanColors.onSecondaryContainer,
-                ),
-              ),
-              SizedBox(width: 12.w),
-              Expanded(
-                child: _buildStatCard(
-                  context,
-                  icon: Icons.local_fire_department,
-                  label: 'Best Combo',
-                  value: '$bestCombo',
-                  // tertiaryDark only clears the 3:1 "large text" floor
-                  // (~3.96:1) here; onTertiaryContainer clears normal-text
-                  // AA (~12.6:1) while staying in the warm orange family.
-                  color: PanAfricanColors.onTertiaryContainer,
-                ),
-              ),
-            ],
-          ),
-
-          if (comboBonus > 0) ...[
-            SizedBox(height: 16.h),
-            PanAfricanCard(
-              padding: EdgeInsets.all(16.w),
-              backgroundColor: Colors.orange.withValues(alpha: 0.1),
-              child: Row(
-                children: [
-                  const Icon(Icons.local_fire_department, color: Colors.orange),
-                  SizedBox(width: 12.w),
-                  Expanded(
-                    child: Text(
-                      'Combo Bonus: +$comboBonus XP',
-                      style: PanAfricanTypography.bodyMedium(context).copyWith(
-                        // tertiaryDark only clears the 3:1 "large text"
-                        // floor (~3.96:1) here, which is too risky for
-                        // 14sp body text. onTertiaryContainer clears
-                        // normal-text AA (~12.6:1) in the same warm family.
-                        color: PanAfricanColors.onTertiaryContainer,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
+            SizedBox(width: 12.w),
+            Expanded(
+              child: _buildStatCard(
+                context,
+                icon: Icons.local_fire_department,
+                label: 'Best Combo',
+                value: '$bestCombo',
+                // tertiaryDark only clears the 3:1 "large text" floor
+                // (~3.96:1) here; onTertiaryContainer clears normal-text
+                // AA (~12.6:1) while staying in the warm orange family.
+                color: PanAfricanColors.onTertiaryContainer,
               ),
             ),
           ],
+        ),
 
-          SizedBox(height: 24.h),
-
-          // Action buttons
-          Row(
-            children: [
-              if (onShare != null) ...[
+        if (comboBonus > 0) ...[
+          SizedBox(height: 16.h),
+          PanAfricanCard(
+            padding: EdgeInsets.all(16.w),
+            backgroundColor: Colors.orange.withValues(alpha: 0.1),
+            child: Row(
+              children: [
+                const Icon(Icons.local_fire_department, color: Colors.orange),
+                SizedBox(width: 12.w),
                 Expanded(
-                  child: Semantics(
-                    label: 'Share your result',
-                    button: true,
-                    child: OutlinedButton.icon(
-                      onPressed: onShare,
-                      icon: const Icon(Icons.share_rounded, semanticLabel: 'Share'),
-                      label: const Text('Share'),
-                      style: OutlinedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 16.h),
-                      ),
+                  child: Text(
+                    'Combo Bonus: +$comboBonus XP',
+                    style: PanAfricanTypography.bodyMedium(context).copyWith(
+                      // tertiaryDark only clears the 3:1 "large text"
+                      // floor (~3.96:1) here, which is too risky for
+                      // 14sp body text. onTertiaryContainer clears
+                      // normal-text AA (~12.6:1) in the same warm family.
+                      color: PanAfricanColors.onTertiaryContainer,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                SizedBox(width: 12.w),
               ],
+            ),
+          ),
+        ],
+
+        SizedBox(height: 24.h),
+
+        // Action buttons
+        Row(
+          children: [
+            if (onShare != null) ...[
               Expanded(
-                flex: 2,
                 child: Semantics(
-                  label: 'Continue to next lesson',
+                  label: 'Share your result',
                   button: true,
-                  child: PanAfricanButton(
-                    onPressed: onContinue,
-                    label: 'Continue',
-                    // Mirror the arrow for RTL locales (Arabic, Darija).
-                    icon: Directionality.of(context) == TextDirection.rtl
-                        ? Icons.arrow_back_rounded
-                        : Icons.arrow_forward_rounded,
-                    backgroundColor: PanAfricanColors.primary,
-                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                  child: OutlinedButton.icon(
+                    onPressed: onShare,
+                    icon: const Icon(
+                      Icons.share_rounded,
+                      semanticLabel: 'Share',
+                    ),
+                    label: const Text('Share'),
+                    style: OutlinedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(vertical: 16.h),
+                    ),
                   ),
                 ),
               ),
+              SizedBox(width: 12.w),
             ],
-          ),
-        ],
-      );
+            Expanded(
+              flex: 2,
+              child: Semantics(
+                label: 'Continue to next lesson',
+                button: true,
+                child: PanAfricanButton(
+                  onPressed: onContinue,
+                  label: 'Continue',
+                  // Mirror the arrow for RTL locales (Arabic, Darija).
+                  icon: Directionality.of(context) == TextDirection.rtl
+                      ? Icons.arrow_back_rounded
+                      : Icons.arrow_forward_rounded,
+                  backgroundColor: PanAfricanColors.primary,
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 
   Widget _buildStatCard(
@@ -332,10 +336,9 @@ class LessonCompleteWidget extends StatelessWidget {
           SizedBox(height: 8.h),
           Text(
             value,
-            style: PanAfricanTypography.titleLarge(context).copyWith(
-              color: color,
-              fontWeight: FontWeight.bold,
-            ),
+            style: PanAfricanTypography.titleLarge(
+              context,
+            ).copyWith(color: color, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 4.h),
           Text(

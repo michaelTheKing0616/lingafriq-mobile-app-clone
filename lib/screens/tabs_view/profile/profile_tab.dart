@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
+import 'package:lingafriq/models/profile_model.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/tabs_view/profile/change_password_screen.dart';
 import 'package:lingafriq/screens/tabs_view/profile/profile_edit_screen.dart';
@@ -210,6 +211,11 @@ class ProfileImageBuilder extends ConsumerWidget {
               current,
               width: 0.3.sw,
               height: 0.3.sw,
+              // Until the avatar decodes (or if it fails) show the learner's
+              // initial instead of an empty ring.
+              frameBuilder: (context, child, frame, sync) =>
+                  sync || frame != null ? child : _initial(context, user),
+              errorBuilder: (context, _, __) => _initial(context, user),
             ),
           ).p8(),
           if (showEditIcon)
@@ -235,6 +241,32 @@ class ProfileImageBuilder extends ConsumerWidget {
       ),
     );
   }
+}
+
+Widget _initial(BuildContext context, ProfileModel? user) {
+  final first = (user?.first_name ?? '').trim();
+  final name = first.isNotEmpty ? first : (user?.username ?? '').trim();
+  return Container(
+    key: const Key('avatar-initial'),
+    alignment: Alignment.center,
+    decoration: const BoxDecoration(
+      shape: BoxShape.circle,
+      color: PanAfricanColors.secondary,
+    ),
+    child: FittedBox(
+      child: Padding(
+        padding: const EdgeInsets.all(6),
+        child: Text(
+          name.isEmpty ? '?' : name.characters.first.toUpperCase(),
+          style: const TextStyle(
+            fontWeight: FontWeight.w900,
+            fontSize: 28,
+            color: PanAfricanColors.neutralDarkest,
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
 class _ProfileItem extends StatelessWidget {

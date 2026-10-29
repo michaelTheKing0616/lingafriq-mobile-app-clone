@@ -1345,4 +1345,109 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get homeKidsLabel =>
       'وضع الأطفال مفعّل. كل الدروس متاحة. الدردشة والقرية والمشتريات متوقفة.';
+
+  @override
+  String get lessonNewPhrase => 'عبارة جديدة';
+
+  @override
+  String get lessonExampleLabel => 'مثال';
+
+  @override
+  String get lessonListen => 'استمع';
+
+  @override
+  String get lessonListenSlowly => 'استمع ببطء';
+
+  @override
+  String get lessonTutorialAudio => 'صوت الدرس';
+
+  @override
+  String get lessonTutorialVideo => 'فيديو الدرس';
+
+  @override
+  String lessonQuestionOf(int current, int total) {
+    return 'السؤال $current من $total';
+  }
+
+  @override
+  String lessonQuestionProgress(int current, int total, int percent) {
+    return 'السؤال $current من $total. اكتمل $percent بالمئة.';
+  }
+
+  @override
+  String get lessonPrevious => 'السابق';
+
+  @override
+  String get lessonPreviousQuestion => 'السؤال السابق';
+
+  @override
+  String get lessonCheck => 'تحقّق';
+
+  @override
+  String get lessonCheckAnswer => 'تحقّق من الإجابة';
+
+  @override
+  String get lessonNext => 'التالي';
+
+  @override
+  String get lessonNextQuestion => 'السؤال التالي';
+
+  @override
+  String get lessonFinish => 'إنهاء';
+
+  @override
+  String get lessonFinishQuiz => 'إنهاء الاختبار';
+
+  @override
+  String get lessonPickFirst => 'اختر إجابة أولًا، ثم نتحقق منها معًا.';
+
+  @override
+  String get lessonCorrectTitle => 'أحسنت!';
+
+  @override
+  String get lessonCorrectBody => 'إجابة صحيحة. واصل التقدّم.';
+
+  @override
+  String get lessonIncorrectTitle => 'ليس تمامًا';
+
+  @override
+  String lessonCorrectAnswer(String answer) {
+    return 'الإجابة الصحيحة: $answer';
+  }
+
+  @override
+  String lessonOptionLabel(String letter, String text) {
+    return 'خيار الإجابة $letter: $text.';
+  }
+
+  @override
+  String get lessonOptionSelected => 'محدّد';
+
+  @override
+  String lessonQuestionLabel(String question) {
+    return 'السؤال. $question';
+  }
+
+  @override
+  String lessonHintLabel(String hint) {
+    return 'تلميح: $hint';
+  }
+
+  @override
+  String get lessonFunFact => 'معلومة طريفة';
+
+  @override
+  String get lessonNotReadyTitle => 'هذا الجزء غير جاهز بعد';
+
+  @override
+  String get lessonNotReadyBody => 'ما زلنا نُعدّ هذه الأسئلة. عُد بعد قليل.';
+
+  @override
+  String get lessonLoadFailedBody =>
+      'تحقّق من اتصالك وحاول مجددًا. تقدّمك محفوظ.';
+
+  @override
+  String lessonAvatarLabel(String points) {
+    return 'ملفك الشخصي، $points';
+  }
 }

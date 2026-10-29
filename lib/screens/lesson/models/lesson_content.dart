@@ -108,10 +108,13 @@ class LessonContent {
     required dynamic otherData,
   }) {
     final type = LessonSectionType.fromString(types);
-    final otherDataMap = otherData is Map<String, dynamic> ? otherData : <String, dynamic>{};
+    final otherDataMap = otherData is Map<String, dynamic>
+        ? otherData
+        : <String, dynamic>{};
 
     // Parse tutorial fields
-    String? text = otherDataMap['text']?.toString() ?? otherDataMap['title']?.toString();
+    String? text =
+        otherDataMap['text']?.toString() ?? otherDataMap['title']?.toString();
     final audioUrl = _resolveMediaFromMap(otherDataMap, const [
       'audio_url',
       'audioUrl',
@@ -159,84 +162,91 @@ class LessonContent {
       final rawQuestions = otherDataMap['question'];
       if (rawQuestions is List) {
         questions = rawQuestions
-            .where((e) => e is Map && e['question'] is Map && e['choices'] is List)
+            .where(
+              (e) => e is Map && e['question'] is Map && e['choices'] is List,
+            )
             .map((e) {
-          try {
-            final questionMap = e['question'] as Map;
-            final questionText = questionMap['question']?.toString() ?? '';
-            final choices = (e['choices'] as List)
-                .map((c) => c is Map ? c['text']?.toString() ?? '' : c.toString())
-                .where((t) => t.isNotEmpty)
-                .toList();
+              try {
+                final questionMap = e['question'] as Map;
+                final questionText = questionMap['question']?.toString() ?? '';
+                final choices = (e['choices'] as List)
+                    .map(
+                      (c) =>
+                          c is Map ? c['text']?.toString() ?? '' : c.toString(),
+                    )
+                    .where((t) => t.isNotEmpty)
+                    .toList();
 
-            final correctAnswers = choices
-                .where((c) {
+                final correctAnswers = choices.where((c) {
                   final choiceIndex = (e['choices'] as List).indexWhere(
                     (ch) => ch is Map && (ch['text']?.toString() ?? '') == c,
                   );
                   if (choiceIndex >= 0) {
                     return (e['choices'] as List)[choiceIndex] is Map &&
-                        ((e['choices'] as List)[choiceIndex] as Map)['correct_answer'] == true;
+                        ((e['choices'] as List)[choiceIndex]
+                                as Map)['correct_answer'] ==
+                            true;
                   }
                   return false;
-                })
-                .toList();
+                }).toList();
 
-            if (correctAnswers.isEmpty || choices.isEmpty) return null;
+                if (correctAnswers.isEmpty || choices.isEmpty) return null;
 
-            return QuizQuestion(
-              id: e['id'] is int ? e['id'] : 0,
-              question: questionText,
-              text: questionMap['text']?.toString(),
-              hint: questionMap['hint']?.toString(),
-              funFact: questionMap['fun_fact']?.toString(),
-              imageUrl: _resolveMediaFromMap(questionMap, const [
-                'image_url',
-                'imageUrl',
-                'image',
-                'thumbnail_url',
-                'thumbnailUrl',
-                'poster_url',
-                'posterUrl',
-              ]),
-              audioUrl: _resolveMediaFromMap(questionMap, const [
-                'audio_url',
-                'audioUrl',
-                'audio',
-                'audio_native_url',
-                'audioNativeUrl',
-                'audio_urls',
-                'audioUrls',
-                'media_audio_url',
-                'mediaAudioUrl',
-                'file_url',
-                'url',
-              ]),
-              videoUrl: _resolveMediaFromMap(questionMap, const [
-                'video_url',
-                'videoUrl',
-                'video',
-                'video_native_url',
-                'videoNativeUrl',
-                'video_urls',
-                'videoUrls',
-                'media_video_url',
-                'mediaVideoUrl',
-              ]),
-              options: choices.asMap().entries.map((e) {
-                return QuizOption(
-                  id: e.key,
-                  text: e.value,
-                  imageUrl: null,
-                  isCorrect: correctAnswers.contains(e.value),
+                return QuizQuestion(
+                  id: e['id'] is int ? e['id'] : 0,
+                  question: questionText,
+                  text: questionMap['text']?.toString(),
+                  hint: questionMap['hint']?.toString(),
+                  funFact: questionMap['fun_fact']?.toString(),
+                  imageUrl: _resolveMediaFromMap(questionMap, const [
+                    'image_url',
+                    'imageUrl',
+                    'image',
+                    'thumbnail_url',
+                    'thumbnailUrl',
+                    'poster_url',
+                    'posterUrl',
+                  ]),
+                  audioUrl: _resolveMediaFromMap(questionMap, const [
+                    'audio_url',
+                    'audioUrl',
+                    'audio',
+                    'audio_native_url',
+                    'audioNativeUrl',
+                    'audio_urls',
+                    'audioUrls',
+                    'media_audio_url',
+                    'mediaAudioUrl',
+                    'file_url',
+                    'url',
+                  ]),
+                  videoUrl: _resolveMediaFromMap(questionMap, const [
+                    'video_url',
+                    'videoUrl',
+                    'video',
+                    'video_native_url',
+                    'videoNativeUrl',
+                    'video_urls',
+                    'videoUrls',
+                    'media_video_url',
+                    'mediaVideoUrl',
+                  ]),
+                  options: choices.asMap().entries.map((e) {
+                    return QuizOption(
+                      id: e.key,
+                      text: e.value,
+                      imageUrl: null,
+                      isCorrect: correctAnswers.contains(e.value),
+                    );
+                  }).toList(),
                 );
-              }).toList(),
-            );
-          } catch (e) {
-            debugPrint('Error parsing quiz question: $e');
-            return null;
-          }
-        }).whereType<QuizQuestion>().toList();
+              } catch (e) {
+                debugPrint('Error parsing quiz question: $e');
+                return null;
+              }
+            })
+            .whereType<QuizQuestion>()
+            .toList();
       }
     }
 
@@ -250,12 +260,17 @@ class LessonContent {
             final textWithBrackets = '$questionText[]';
             final regex = RegExp(r'\[(.*?)\]');
             final brackets = <String>[];
-            textWithBrackets.splitMapJoin(regex, onMatch: (match) {
-              brackets.add(match[1].toString());
-              return '';
-            });
+            textWithBrackets.splitMapJoin(
+              regex,
+              onMatch: (match) {
+                brackets.add(match[1].toString());
+                return '';
+              },
+            );
             final splittedText = textWithBrackets.split(regex);
-            final choiceQuestions = brackets.map((e) => e.split('/').first.trim()).toList();
+            final choiceQuestions = brackets
+                .map((e) => e.split('/').first.trim())
+                .toList();
 
             wordQuestions = choiceQuestions.asMap().entries.map((entry) {
               final index = entry.key;
@@ -319,7 +334,8 @@ class LessonContent {
     // language-specific maps (e.g. audio_by_language / media_by_language).
     for (final entry in source.entries) {
       final rawKey = entry.key?.toString().toLowerCase() ?? '';
-      final relatesToMedia = keys.any((k) => rawKey.contains(k.toLowerCase())) ||
+      final relatesToMedia =
+          keys.any((k) => rawKey.contains(k.toLowerCase())) ||
           rawKey.contains('media') ||
           rawKey.contains('audio') ||
           rawKey.contains('video') ||

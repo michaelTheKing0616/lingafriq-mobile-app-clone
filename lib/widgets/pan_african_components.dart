@@ -191,7 +191,11 @@ class _PanAfricanButtonState extends State<PanAfricanButton>
                 : const SizedBox.shrink(),
         label: Text(
           widget.label,
-          style: PanAfricanTypography.labelLarge(context),
+          // labelLarge carries its own (dark) colour, which would beat the
+          // button's foregroundColor and fail contrast on the green fill.
+          style: PanAfricanTypography.labelLarge(context).copyWith(
+            color: fgColor,
+          ),
         ),
         style: ElevatedButton.styleFrom(
           backgroundColor: bgColor,
@@ -930,6 +934,9 @@ class PanAfricanEmptyState extends StatelessWidget {
                 PanAfricanButton(
                   label: actionLabel!,
                   onPressed: onAction,
+                  // Deep brand green fill: white keeps the label above 4.5:1
+                  // whatever the theme's onPrimary resolves to.
+                  foregroundColor: Colors.white,
                 ),
               ],
             ],
@@ -945,12 +952,14 @@ class PanAfricanErrorState extends StatelessWidget {
   final String title;
   final String description;
   final VoidCallback? onRetry;
+  final String? retryLabel;
 
   const PanAfricanErrorState({
     super.key,
     required this.title,
     required this.description,
     this.onRetry,
+    this.retryLabel,
   });
 
   @override
@@ -959,7 +968,7 @@ class PanAfricanErrorState extends StatelessWidget {
       icon: PanAfricanIcons.error,
       title: title,
       description: description,
-      actionLabel: onRetry != null ? 'Retry' : null,
+      actionLabel: onRetry != null ? (retryLabel ?? 'Retry') : null,
       onAction: onRetry,
     );
   }
