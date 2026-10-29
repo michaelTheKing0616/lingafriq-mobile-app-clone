@@ -49,8 +49,86 @@ List<Color> _composite(List<List<Color>> layers) {
   return result;
 }
 
+/// Visible on-screen rect of [e]: its box clipped by every clipping ancestor.
+Rect? _visibleRect(Element e) {
+  final box = e.renderObject;
+  if (box is! RenderBox || !box.attached || !box.hasSize) return null;
+  var r = MatrixUtils.transformRect(
+    box.getTransformTo(null),
+    Offset.zero & box.size,
+  );
+  var hidden = false;
+  e.visitAncestorElements((a) {
+    final ro = a.renderObject;
+    if ((ro is RenderOpacity && ro.opacity == 0) ||
+        (ro is RenderAnimatedOpacity && ro.opacity.value == 0)) {
+      hidden = true;
+      return false;
+    }
+    if (ro is RenderBox &&
+        ro.hasSize &&
+        (ro is RenderViewportBase ||
+            ro is RenderClipRect ||
+            ro is RenderClipRRect)) {
+      r = r.intersect(
+        MatrixUtils.transformRect(
+          ro.getTransformTo(null),
+          Offset.zero & ro.size,
+        ),
+      );
+    }
+    return true;
+  });
+  return hidden || r.width <= 0.5 || r.height <= 0.5 ? null : r;
+}
+
+bool _inside(Element e, Key key) {
+  var found = false;
+  e.visitAncestorElements((a) {
+    if (a.widget.key == key) found = true;
+    return !found;
+  });
+  return found;
+}
+
+/// No exception (RenderFlex overflow), nothing visible under the pinned CTA
+/// area, no two visible texts overlapping.
+void layoutAudit(WidgetTester tester, String step) {
+  expect(tester.takeException(), isNull, reason: '[$step] layout exception');
+  const bottomKey = ValueKey('step-bottom');
+  final bottom = find.byKey(bottomKey);
+  final b = bottom.evaluate().isEmpty ? null : tester.getRect(bottom.first);
+  final texts = <(String, Rect)>[];
+  for (final e in find.byType(RichText).evaluate()) {
+    final t = (e.widget as RichText).text.toPlainText().trim();
+    if (t.isEmpty) continue;
+    final r = _visibleRect(e);
+    if (r == null) continue;
+    if (b != null && !_inside(e, bottomKey)) {
+      final o = r.intersect(b);
+      expect(
+        o.width > 1 && o.height > 1,
+        isFalse,
+        reason: '[$step] "$t" overlaps the CTA area ($r vs $b)',
+      );
+    }
+    texts.add((t, r));
+  }
+  for (var i = 0; i < texts.length; i++) {
+    for (var j = i + 1; j < texts.length; j++) {
+      final o = texts[i].$2.intersect(texts[j].$2);
+      expect(
+        o.width > 2 && o.height > 2,
+        isFalse,
+        reason: '[$step] "${texts[i].$1}" overlaps "${texts[j].$1}"',
+      );
+    }
+  }
+}
+
 Future<void> audit(WidgetTester tester, String step) async {
   await tester.pump(const Duration(milliseconds: 400));
+  layoutAudit(tester, step);
   // 1. Every text/background pair meets 4.5:1 (3:1 for large text).
   var checked = 0;
   for (final e in find.byType(RichText).evaluate()) {
@@ -80,7 +158,15 @@ Future<void> audit(WidgetTester tester, String step) async {
     }
   }
   expect(checked, greaterThan(3), reason: '[$step] audit saw no text');
-  // 2. Every tap target is labelled and at least 48dp.
+  // 2. Every tap target is labelled and at least 48dp. Measure from the top
+  // of each scroll body so a half-scrolled row is not counted as tiny.
+  for (final e in find.byType(Scrollable).evaluate()) {
+    final st = (e as StatefulElement).state as ScrollableState;
+    if (st.position.axis == Axis.vertical && st.position.pixels != 0) {
+      st.position.jumpTo(0);
+    }
+  }
+  await tester.pump();
   await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
   await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
   // 3. Decorative paint and icons are excluded or carry a label.
@@ -128,6 +214,8 @@ void main() {
     (true, false, 1.0),
     (false, false, 1.0),
     (true, true, 2.0),
+    (true, false, 2.0),
+    (false, true, 2.0),
   ]) {
     testWidgets('every step: contrast + semantics audit '
         '(online=$online, rtl=$rtl, text=${scale}x)', (tester) async {
