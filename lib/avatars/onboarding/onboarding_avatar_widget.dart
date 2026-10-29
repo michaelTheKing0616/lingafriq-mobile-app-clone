@@ -52,14 +52,32 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
     _floatController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 2500),
-    )..repeat(reverse: true);
+    );
 
     _pulseController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1800),
-    )..repeat(reverse: true);
+    );
 
     _loadAvatar();
+  }
+
+  bool get _reduceMotion =>
+      MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Honour the OS reduce-motion setting: idle loops stay still.
+    if (_reduceMotion) {
+      _floatController.stop();
+      _pulseController.stop();
+      _floatController.value = 0.5;
+      _pulseController.value = 0;
+    } else if (!_floatController.isAnimating) {
+      _floatController.repeat(reverse: true);
+      _pulseController.repeat(reverse: true);
+    }
   }
 
   Future<void> _loadAvatar() async {
@@ -67,7 +85,11 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
       _controller = await AvatarEngine().getOnboardingAvatar(widget.step);
       if (mounted) {
         setState(() => _hasRiveArtboard = _controller != null);
-        _controller?.wave();
+        if (!_reduceMotion) {
+          widget.step == OnboardingStep.complete
+              ? _controller?.celebrate()
+              : _controller?.wave();
+        }
         if (widget.showDialogue && widget.dialogue != null) {
           Future.delayed(const Duration(milliseconds: 500), () {
             if (mounted) _controller?.startSpeaking(text: widget.dialogue);
@@ -80,7 +102,9 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
 
     // CRITICAL: Always fire entrance animation so widget is never invisible
     if (mounted && widget.animate) {
-      _entranceController.forward();
+      _reduceMotion
+          ? _entranceController.value = 1
+          : _entranceController.forward();
     }
   }
 
@@ -293,8 +317,12 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
                 borderRadius: BorderRadius.circular(100),
                 gradient: LinearGradient(
                   colors: [
-                    Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.45),
-                    Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.0),
+                    Theme.of(
+                      context,
+                    ).colorScheme.onPrimary.withValues(alpha: 0.45),
+                    Theme.of(
+                      context,
+                    ).colorScheme.onPrimary.withValues(alpha: 0.0),
                   ],
                 ),
               ),
@@ -343,7 +371,10 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: info.primaryColor.withValues(alpha: 0.3), width: 2),
+        border: Border.all(
+          color: info.primaryColor.withValues(alpha: 0.3),
+          width: 2,
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.1),
