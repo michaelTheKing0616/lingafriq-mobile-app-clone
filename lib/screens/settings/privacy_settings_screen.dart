@@ -312,7 +312,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
         } finally {
           voiceWithdrawing.value = false;
         }
-        if (trainingContributionEnabled.value) {
+        if (trainingContributionEnabled.value && context.mounted) {
           await updateTrainingContribution(false, context);
         }
         return;
@@ -327,6 +327,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
             prefs.getBool(_prefGuardianVoiceStorage) ?? false,
       );
       if (privacyCtx.isMinor) {
+        if (!context.mounted) return;
         final ok = await guardianVoiceStorageApproved(context);
         if (!ok) return;
       }
@@ -1017,7 +1018,7 @@ class _PrivacySwitchTile extends StatelessWidget {
             child: Switch.adaptive(
               value: value,
               onChanged: onChanged,
-              activeColor: PanAfricanColors.primary,
+              activeThumbColor: PanAfricanColors.primary,
             ),
           ),
         ],
@@ -1092,11 +1093,13 @@ class _PrivacyRadioTile extends StatelessWidget {
                 ],
               ),
             ),
-            Radio<String>(
-              value: value,
+            RadioGroup<String>(
               groupValue: groupValue,
               onChanged: (v) => onChanged(v!),
-              activeColor: PanAfricanColors.primary,
+              child: Radio<String>(
+                value: value,
+                activeColor: PanAfricanColors.primary,
+              ),
             ),
           ],
         ),

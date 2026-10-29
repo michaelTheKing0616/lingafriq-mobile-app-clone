@@ -6,7 +6,12 @@ import 'package:lingafriq/services/voice/voice_recording_retention.dart';
 import 'package:lingafriq/widgets/privacy/voice_retention_tile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'golden_kit.dart';
+
 void main() {
+  setUpAll(
+    () => loadComplianceFonts('test/compliance/voice_retention_test.dart'),
+  );
   late Directory dir;
   late VoiceRecordingRetention r;
 
@@ -52,28 +57,82 @@ void main() {
     },
   );
 
-  testWidgets('tile shows disclosure, retention choice and delete-now', (
+  Widget home() => Scaffold(
+    body: ListView(children: [VoiceRetentionTile(retention: r)]),
+  );
+
+  for (final v in goldenVariants) {
+    testWidgets('tile layout holds: ${v.name}', (tester) async {
+      await pumpVariant(tester, v, home());
+      expectNoLayoutErrors(tester);
+      // Title keeps (nearly) full width: never squeezed by the selector.
+      final title = find.text(
+        v.locale.languageCode == 'ar'
+            ? 'التسجيلات على هذا الجهاز'
+            : 'Recordings on this device',
+      );
+      expect(tester.getSize(title).width, greaterThan(v.size.width * 0.4));
+      expect(
+        tester.getSize(find.byKey(const ValueKey('voice-delete-now'))).height,
+        greaterThanOrEqualTo(48),
+      );
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('goldens/voice_retention_${v.name}.png'),
+      );
+    });
+  }
+
+  testWidgets('delete-now asks for confirmation; cancel keeps files', (
     tester,
   ) async {
-    await tester.runAsync(
+    final f = await tester.runAsync(
       () async => make('voice_recording_9.wav', const Duration(minutes: 1)),
     );
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(body: VoiceRetentionTile(retention: r)),
-      ),
-    );
-    await tester.pump();
-    expect(
-      find.byKey(const ValueKey('voice-retention-disclosure')),
-      findsOneWidget,
-    );
+    await pumpVariant(tester, goldenVariants.first, home());
     expect(find.text('After 24 hours'), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('voice-delete-now')));
+    await tester.pumpAndSettle();
+    expect(find.text('Delete recordings on this device?'), findsOneWidget);
+    await expectLater(
+      find.byType(MaterialApp),
+      matchesGoldenFile('goldens/voice_retention_confirm_ltr_390.png'),
+    );
+    await tester.tap(find.text('Cancel'));
+    await tester.pumpAndSettle();
+    expect(f!.existsSync(), isTrue);
+
+    await tester.tap(find.byKey(const ValueKey('voice-delete-now')));
+    await tester.pumpAndSettle();
     await tester.runAsync(() async {
-      await tester.tap(find.byKey(const ValueKey('voice-delete-now')));
+      await tester.tap(find.byKey(const ValueKey('voice-delete-confirm')));
       await Future<void>.delayed(const Duration(milliseconds: 50));
     });
-    await tester.pump();
-    expect(find.textContaining('Deleted 1 recording'), findsOneWidget);
+    await tester.pumpAndSettle();
+    expect(f.existsSync(), isFalse);
+    expect(find.text('1 recording deleted from this device.'), findsOneWidget);
+  });
+
+  testWidgets('choosing a period persists it', (tester) async {
+    await pumpVariant(tester, goldenVariants.first, home());
+    await tester.tap(find.text('After 24 hours'));
+    await tester.pumpAndSettle();
+    await tester.runAsync(() async {
+      await tester.tap(find.text('After 7 days').last);
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+    });
+    await tester.pumpAndSettle();
+    expect(await VoiceRecordingRetention.hours(), 168);
+  });
+
+  test('privacy settings radios use RadioGroup (no deprecated onChanged)', () {
+    final src = File(
+      'lib/screens/settings/privacy_settings_screen.dart',
+    ).readAsStringSync();
+    expect(src, contains('RadioGroup<String>('));
+    expect(
+      src,
+      isNot(matches(RegExp(r'Radio<String>\(\s*value: value,\s*groupValue'))),
+    );
   });
 }

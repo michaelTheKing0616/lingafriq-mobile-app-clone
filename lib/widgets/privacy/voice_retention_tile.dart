@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/services/voice/voice_recording_retention.dart';
 
-/// Disclosure + retention choice + delete-now for on-device voice recordings.
+/// Disclosure, auto-delete choice and "delete now" for on-device recordings.
+///
+/// Stacked layout (title, description, full-width selector, full-width
+/// action) so nothing competes for width at large text sizes.
 class VoiceRetentionTile extends StatefulWidget {
   const VoiceRetentionTile({super.key, this.retention});
 
   final VoiceRecordingRetention? retention;
 
-  static String labelFor(int h) => switch (h) {
-    0 => 'Right after scoring',
-    24 => 'After 24 hours',
-    168 => 'After 7 days',
-    _ => 'After 30 days',
+  static String labelFor(AppLocalizations l, int hours) => switch (hours) {
+    0 => l.voiceRetentionImmediate,
+    24 => l.voiceRetention24h,
+    168 => l.voiceRetention7d,
+    _ => l.voiceRetention30d,
   };
 
   @override
@@ -20,6 +24,7 @@ class VoiceRetentionTile extends StatefulWidget {
 
 class _VoiceRetentionTileState extends State<VoiceRetentionTile> {
   int _hours = VoiceRecordingRetention.defaultHours;
+  bool _deleting = false;
   late final VoiceRecordingRetention _r =
       widget.retention ?? VoiceRecordingRetention();
 
@@ -31,63 +36,114 @@ class _VoiceRetentionTileState extends State<VoiceRetentionTile> {
     });
   }
 
-  Future<void> _deleteNow() async {
-    final n = await _r.deleteAll();
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'Deleted $n recording${n == 1 ? '' : 's'} from this device.',
-        ),
+  Future<void> _confirmAndDelete(AppLocalizations l) async {
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        icon: const Icon(Icons.delete_outline),
+        title: Text(l.voiceRetentionConfirmTitle),
+        content: Text(l.voiceRetentionConfirmBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: Text(MaterialLocalizations.of(ctx).cancelButtonLabel),
+          ),
+          FilledButton(
+            key: const ValueKey('voice-delete-confirm'),
+            style: FilledButton.styleFrom(
+              backgroundColor: Theme.of(ctx).colorScheme.error,
+              foregroundColor: Theme.of(ctx).colorScheme.onError,
+            ),
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: Text(l.voiceRetentionConfirmDelete),
+          ),
+        ],
       ),
     );
+    if (ok != true || !mounted) return;
+    setState(() => _deleting = true);
+    final n = await _r.deleteAll();
+    if (!mounted) return;
+    setState(() => _deleting = false);
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(l.voiceRetentionDeleted(n))));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(16, 8, 16, 4),
-          child: Text(
-            'Your voice is recorded only while you practise, to score '
-            'pronunciation and transcribe speech. Recordings on this device '
-            'are deleted automatically.',
-            key: ValueKey('voice-retention-disclosure'),
+    final l = AppLocalizations.of(context)!;
+    final t = Theme.of(context).textTheme;
+    final scheme = Theme.of(context).colorScheme;
+    return Padding(
+      padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Semantics(
+            header: true,
+            child: Text(
+              l.voiceRetentionTitle,
+              style: t.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+            ),
           ),
-        ),
-        ListTile(
-          leading: const Icon(Icons.auto_delete_outlined),
-          title: const Text('Delete device recordings'),
-          trailing: DropdownButton<int>(
-            key: const ValueKey('voice-retention-dropdown'),
-            value: _hours,
-            items: [
-              for (final h in VoiceRecordingRetention.options)
-                DropdownMenuItem(
-                  value: h,
-                  child: Text(VoiceRetentionTile.labelFor(h)),
+          const SizedBox(height: 4),
+          Text(
+            l.voiceRetentionBody,
+            key: const ValueKey('voice-retention-disclosure'),
+            style: t.bodyMedium?.copyWith(color: scheme.onSurfaceVariant),
+          ),
+          const SizedBox(height: 16),
+          Text(l.voiceRetentionSelectLabel, style: t.labelLarge),
+          const SizedBox(height: 6),
+          KeyedSubtree(
+            key: ValueKey('retention-$_hours'),
+            child: Semantics(
+              label: l.voiceRetentionSelectLabel,
+              child: DropdownButtonFormField<int>(
+                key: const ValueKey('voice-retention-dropdown'),
+                initialValue: _hours,
+                isExpanded: true,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.auto_delete_outlined),
+                  border: OutlineInputBorder(),
                 ),
-            ],
-            onChanged: (h) async {
-              if (h == null) return;
-              await VoiceRecordingRetention.setHours(h);
-              if (mounted) setState(() => _hours = h);
-              await _r.sweep();
-            },
+                items: [
+                  for (final h in VoiceRecordingRetention.options)
+                    DropdownMenuItem(
+                      value: h,
+                      child: Text(VoiceRetentionTile.labelFor(l, h)),
+                    ),
+                ],
+                onChanged: (h) async {
+                  if (h == null) return;
+                  await VoiceRecordingRetention.setHours(h);
+                  if (mounted) setState(() => _hours = h);
+                  await _r.sweep();
+                },
+              ),
+            ),
           ),
-        ),
-        Align(
-          alignment: AlignmentDirectional.centerStart,
-          child: TextButton.icon(
+          const SizedBox(height: 12),
+          OutlinedButton.icon(
             key: const ValueKey('voice-delete-now'),
-            onPressed: _deleteNow,
-            icon: const Icon(Icons.delete_outline),
-            label: const Text('Delete my recordings now'),
+            style: OutlinedButton.styleFrom(
+              minimumSize: const Size.fromHeight(48),
+              foregroundColor: scheme.error,
+              side: BorderSide(color: scheme.error.withValues(alpha: 0.6)),
+            ),
+            onPressed: _deleting ? null : () => _confirmAndDelete(l),
+            icon: _deleting
+                ? const SizedBox.square(
+                    dimension: 18,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Icon(Icons.delete_outline),
+            label: Text(l.voiceRetentionDeleteNow, textAlign: TextAlign.center),
           ),
-        ),
-      ],
+          const SizedBox(height: 4),
+        ],
+      ),
     );
   }
 }
