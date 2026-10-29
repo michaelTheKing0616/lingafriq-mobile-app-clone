@@ -68,8 +68,9 @@ class FirebaseMessagingProvider {
       final notification = message.notification;
       final android = message.notification?.android;
       if (notification != null && android != null) {
-        final localHour = DateTime.now().hour;
-        if (ReminderPolicy.inQuietHours(localHour) &&
+        final nowLocal = DateTime.now();
+        final localHour = nowLocal.hour;
+        if (ReminderPolicy.inQuietAt(nowLocal) &&
             (message.data['kind'] == 'reminder' || message.data['type'] == 'study_reminder')) {
           return;
         }

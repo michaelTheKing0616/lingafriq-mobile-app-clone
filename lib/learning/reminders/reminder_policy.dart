@@ -10,7 +10,46 @@ class ReminderPolicy {
     caseSensitive: false,
   );
 
-  static bool inQuietHours(int hour) => hour >= quietHourStart || hour < quietHourEnd;
+  static const int minutesPerDay = 24 * 60;
+
+  /// Whether [minuteOfDay] (0..1439) is inside the quiet window
+  /// [startMinute, endMinute). Handles windows that cross midnight
+  /// (22:00-07:00) as well as same-day ones; equal bounds mean no quiet time.
+  static bool inQuietWindow(
+    int minuteOfDay, {
+    int startMinute = quietHourStart * 60,
+    int endMinute = quietHourEnd * 60,
+  }) {
+    final m = minuteOfDay % minutesPerDay;
+    if (startMinute == endMinute) return false;
+    if (startMinute < endMinute) return m >= startMinute && m < endMinute;
+    return m >= startMinute || m < endMinute;
+  }
+
+  /// Quiet check for a wall-clock time, at minute precision.
+  static bool inQuietAt(DateTime t) => inQuietWindow(t.hour * 60 + t.minute);
+
+  static bool inQuietHours(int hour) => inQuietWindow(hour * 60);
+
+  /// Next slot to fire a daily reminder chosen for [reminderMinute], given the
+  /// local time now ([nowMinute]). Returns the day offset (0 today, 1 tomorrow)
+  /// and the minute of day. A slot that falls in quiet hours moves to the end
+  /// of the quiet window, on the next day when the window crosses midnight.
+  /// The decision depends on when the reminder fires, never on the current hour.
+  static ({int dayOffset, int minuteOfDay}) nextReminderSlot({
+    required int nowMinute,
+    required int reminderMinute,
+    int startMinute = quietHourStart * 60,
+    int endMinute = quietHourEnd * 60,
+  }) {
+    var day = reminderMinute > nowMinute ? 0 : 1;
+    var minute = reminderMinute % minutesPerDay;
+    if (inQuietWindow(minute, startMinute: startMinute, endMinute: endMinute)) {
+      if (startMinute > endMinute && minute >= startMinute) day += 1;
+      minute = endMinute;
+    }
+    return (dayOffset: day, minuteOfDay: minute);
+  }
 
   static bool inReminderWindow(int hour, int reminderHour) {
     final diff = (hour - reminderHour).abs();
@@ -30,7 +69,9 @@ class ReminderPolicy {
     if (!remindersEnabled) return false;
     if (lastSentLocalDate == todayLocalDate) return false;
     if (inQuietHours(localHour)) return false;
-    if (hasCustomWindow && !inReminderWindow(localHour, reminderHour)) return false;
+    if (hasCustomWindow && !inReminderWindow(localHour, reminderHour)) {
+      return false;
+    }
     if (!hasCustomWindow && !inReminderWindow(localHour, reminderHour)) {
       // Default: nudge near chosen time, still outside quiet hours.
       return false;
@@ -56,11 +97,13 @@ class ReminderPolicy {
           'You are on a $streakDays-day streak. A few minutes today keeps the momentum you have built.';
     } else {
       title = 'Ready when you are';
-      body = 'A short lesson today is a gentle way to begin your practice rhythm.';
+      body =
+          'A short lesson today is a gentle way to begin your practice rhythm.';
     }
 
     if (inQuietHours(localHour) && containsLossAversion('$title $body')) {
-      body = 'Whenever you are ready, a short lesson fits nicely into your day.';
+      body =
+          'Whenever you are ready, a short lesson fits nicely into your day.';
     }
 
     return (title: title, body: body);
@@ -72,7 +115,9 @@ class ReminderPolicy {
     required int localHour,
   }) {
     if (!inQuietHours(localHour)) return (title: title, body: body);
-    if (!containsLossAversion('$title $body')) return (title: title, body: body);
+    if (!containsLossAversion('$title $body')) {
+      return (title: title, body: body);
+    }
     return (
       title: 'LingAfriq',
       body: 'Whenever you are ready, a short lesson fits nicely into your day.',

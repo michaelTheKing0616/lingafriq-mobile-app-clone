@@ -170,25 +170,25 @@ class NotificationNotifier extends Notifier<NotificationState> {
 
     if (!_anyReminderChannelEnabled) return;
 
-    final localHour = _localHourNow();
-    if (ReminderPolicy.inQuietHours(localHour)) return;
-
+    // Quiet hours are judged at the time the reminder fires (minute precision,
+    // across midnight), not at the moment settings change: changing the time
+    // at 23:00 must still schedule tomorrow's reminder.
     final time = state.reminderTime;
-    final streak = _getCurrentStreak();
-    final copy = ReminderPolicy.composeStudyReminder(streakDays: streak, localHour: localHour);
-
     tz.Location location;
     try {
       location = tz.getLocation(state.timezone);
     } catch (_) {
       location = tz.local;
     }
+    final fireAt = _nextInstanceOfTime(time, location);
+    final streak = _getCurrentStreak();
+    final copy = ReminderPolicy.composeStudyReminder(streakDays: streak, localHour: fireAt.hour);
 
     await _notifications.zonedSchedule(
       _studyReminderNotificationId,
       copy.title,
       copy.body,
-      _nextInstanceOfTime(time, location),
+      fireAt,
       const NotificationDetails(
         android: AndroidNotificationDetails(
           'study_reminder',
@@ -229,22 +229,19 @@ class NotificationNotifier extends Notifier<NotificationState> {
 
   tz.TZDateTime _nextInstanceOfTime(Time time, tz.Location location) {
     final now = tz.TZDateTime.now(location);
-    var scheduledDate = tz.TZDateTime(
+    final slot = ReminderPolicy.nextReminderSlot(
+      nowMinute: now.hour * 60 + now.minute,
+      reminderMinute: time.hour * 60 + time.minute,
+    );
+    // Calendar-day arithmetic so DST changes do not shift the wall-clock time.
+    return tz.TZDateTime(
       location,
       now.year,
       now.month,
-      now.day,
-      time.hour,
-      time.minute,
-      time.second,
+      now.day + slot.dayOffset,
+      slot.minuteOfDay ~/ 60,
+      slot.minuteOfDay % 60,
     );
-    if (scheduledDate.isBefore(now)) {
-      scheduledDate = scheduledDate.add(const Duration(days: 1));
-    }
-    while (ReminderPolicy.inQuietHours(scheduledDate.hour)) {
-      scheduledDate = scheduledDate.add(const Duration(hours: 1));
-    }
-    return scheduledDate;
   }
 
   int _getCurrentStreak() {
