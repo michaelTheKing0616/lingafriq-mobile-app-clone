@@ -1,3 +1,4 @@
+import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/api_provider.dart';
@@ -153,7 +154,15 @@ class _SignInOptionsScreenState extends ConsumerState<SignInOptionsScreen> {
   }
 
   Future<void> _google() async {
-    final token = await widget.googleIdToken?.call();
+    String? token;
+    try {
+      token = await widget.googleIdToken?.call();
+    } catch (e) {
+      // Cancelled sheet or provider unavailable: show the honest retry
+      // state instead of an unhandled error.
+      logger.warn('google sign-in did not return a token', error: e);
+    }
+    if (!mounted) return;
     if (token == null) {
       _show('provider_invalid');
       return;
@@ -162,7 +171,15 @@ class _SignInOptionsScreenState extends ConsumerState<SignInOptionsScreen> {
   }
 
   Future<void> _apple() async {
-    final token = await widget.appleIdToken?.call();
+    String? token;
+    try {
+      token = await widget.appleIdToken?.call();
+    } catch (e) {
+      // Cancelled sheet or provider unavailable: show the honest retry
+      // state instead of an unhandled error.
+      logger.warn('apple sign-in did not return a token', error: e);
+    }
+    if (!mounted) return;
     if (token == null) {
       _show('provider_invalid');
       return;

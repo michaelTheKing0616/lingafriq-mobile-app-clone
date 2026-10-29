@@ -734,8 +734,10 @@ class WorldClassLoginScreen extends HookConsumerWidget {
   }
 
   Widget _buildSignUpLink(BuildContext context, WidgetRef ref) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    // Wrap, not Row: large text or narrow screens must not overflow.
+    return Wrap(
+      alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         Text(
           "Don't have an account? ",

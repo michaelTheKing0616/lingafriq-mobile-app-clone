@@ -48,6 +48,13 @@ void main() {
     await (FontLoader(
       'MaterialIcons',
     )..addFont(sdkFont('MaterialIcons-Regular.otf'))).load();
+    // Real Arabic glyphs for the RTL run (OFL, test-only asset).
+    await (FontLoader('Noto Sans Arabic')..addFont(
+          io.File(
+            'test/fonts/NotoSansArabic.ttf',
+          ).readAsBytes().then(ByteData.sublistView),
+        ))
+        .load();
     await (FontLoader('Roboto')
           ..addFont(sdkFont('Roboto-Regular.ttf'))
           ..addFont(sdkFont('Roboto-Medium.ttf'))
@@ -72,6 +79,11 @@ void main() {
     await settleOnce(tester);
     await _shot(tester, '01_welcome$suffix');
     await next(tester, 'Get started');
+    if (textDirection == TextDirection.rtl) {
+      // A real Arabic string on screen, not only mirrored English.
+      await tapVisible(tester, label('العربية'));
+      await _shot(tester, '02a_language_arabic$suffix');
+    }
     await tapVisible(tester, label('Yoruba'));
     await _shot(tester, '02_language$suffix');
     await next(tester);
@@ -100,7 +112,10 @@ void main() {
     await _shot(tester, '10_birth_year_child$suffix');
     await enterBirthYear(tester, 25);
     await _shot(tester, '11_birth_year_adult$suffix');
-    await next(tester);
+    // Submit state: Continue disables while the year saves.
+    await tapVisible(tester, label('Continue').first);
+    await _shot(tester, '11b_birth_year_submit$suffix');
+    await settleOnce(tester);
     await _shot(tester, '12_reminders$suffix');
     await next(tester, 'Not now');
     await tapVisible(tester, label('Listening'));
@@ -112,6 +127,16 @@ void main() {
     await _shot(tester, '15_profile$suffix');
     await next(tester, 'Skip for now');
     await _shot(tester, '16_save_progress$suffix');
+    // Loading: tapping an account choice shows the saving overlay first.
+    await tapVisible(tester, label('Continue with Google'));
+    await _shot(tester, '17_save_progress_loading$suffix');
+    for (var i = 0; i < 10; i++) {
+      await tester.pump(const Duration(milliseconds: 500));
+    }
+    await expectLater(
+      find.byType(MaterialApp),
+      matchesGoldenFile('goldens/unified/18_signin_google$suffix.png'),
+    );
   }
 
   testWidgets('every step, default', (tester) => walk(tester, suffix: ''));
@@ -127,10 +152,24 @@ void main() {
       textScaler: const TextScaler.linear(2.0),
     ),
   );
-  testWidgets('offline notice', (tester) async {
+  testWidgets(
+    'every step, offline',
+    (tester) => walk(tester, suffix: '_offline', online: false),
+  );
+  testWidgets('error: offline finish keeps answers (snackbar)', (tester) async {
     await pumpOnboarding(tester, reducedMotion: true, online: false);
     await settleOnce(tester);
-    await next(tester, 'Get started');
-    await _shot(tester, '02_language_offline');
+    await advanceToFirstWin(tester);
+    await completeFirstWin(tester);
+    await advanceToSaveProgress(tester);
+    await tapVisible(tester, label('Later. My answers stay on this phone'));
+    await tester.pump(const Duration(milliseconds: 300));
+    await expectLater(
+      find.byType(MaterialApp),
+      matchesGoldenFile('goldens/unified/19_offline_finish_error.png'),
+    );
+    for (var i = 0; i < 12; i++) {
+      await tester.pump(const Duration(milliseconds: 500));
+    }
   });
 }

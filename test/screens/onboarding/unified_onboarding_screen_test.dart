@@ -141,8 +141,10 @@ Future<void> completeFirstWin(WidgetTester tester, {bool speak = true}) async {
 }
 
 Future<void> enterBirthYear(WidgetTester tester, int age) async {
-  await tapVisible(tester, label('Type it instead'));
-  await tester.pump();
+  if (label('Type it instead').evaluate().isNotEmpty) {
+    await tapVisible(tester, label('Type it instead'));
+    await tester.pump();
+  }
   await tester.enterText(
     find.byType(TextField).first,
     '${DateTime.now().year - age}',

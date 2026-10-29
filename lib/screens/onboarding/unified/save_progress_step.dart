@@ -32,7 +32,7 @@ class _SaveProgressStep extends StatelessWidget {
             ),
           ),
           child: Text(
-            'Later. My answers stay on this phone',
+            _bidi(context, 'Later. My answers stay on this phone'),
             textAlign: TextAlign.center,
             style: ModernGriotTypography.labelLarge(
               context: context,
@@ -88,7 +88,7 @@ class _SaveProgressStep extends StatelessWidget {
                 ),
               ),
               child: Text(
-                'I already have an account',
+                _bidi(context, 'I already have an account'),
                 style: ModernGriotTypography.labelLarge(
                   context: context,
                   color: ModernGriotColors.primary,
@@ -134,7 +134,7 @@ class _AuthProviderButton extends StatelessWidget {
           onPressed: onPressed,
           icon: Icon(icon, color: foreground),
           label: Text(
-            label,
+            _bidi(context, label),
             style: ModernGriotTypography.labelLarge(
               context: context,
               color: foreground,

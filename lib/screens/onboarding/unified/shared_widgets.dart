@@ -55,45 +55,50 @@ class _StepScaffold extends ConsumerWidget {
     return Container(
       color: ModernGriotColors.surface,
       child: ResponsiveSafeArea(
-        child: Column(
-          children: [
-            SizedBox(height: ModernGriotSpacing.xxl.h),
-            if (offline)
-              _OfflineNotice(
-                onRetry: () => ref.invalidate(onboardingOnlineProvider),
-              ),
-            if (header != null)
-              ConstrainedBox(
-                // At 200% text the header may not starve the options.
-                constraints: BoxConstraints(
-                  maxHeight: MediaQuery.sizeOf(context).height * 0.35,
+        child: LayoutBuilder(
+          builder: (context, viewport) => Column(
+            children: [
+              SizedBox(height: ModernGriotSpacing.xxl.h),
+              if (offline)
+                _OfflineNotice(
+                  onRetry: () => ref.invalidate(onboardingOnlineProvider),
                 ),
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: ModernGriotSpacing.lg.w,
+              if (header != null)
+                ConstrainedBox(
+                  // At 200% text the header may not starve the options.
+                  constraints: BoxConstraints(
+                    maxHeight: viewport.maxHeight * 0.35,
                   ),
-                  child: header,
-                ),
-              ),
-            Expanded(
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  return SingleChildScrollView(
+                  child: SingleChildScrollView(
+                    // Own position: must not share the body's primary
+                    // controller, or scrolling options drags the header away.
+                    primary: false,
                     padding: EdgeInsets.symmetric(
                       horizontal: ModernGriotSpacing.lg.w,
                     ),
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minHeight: constraints.maxHeight,
+                    child: header,
+                  ),
+                ),
+              Expanded(
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return SingleChildScrollView(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: ModernGriotSpacing.lg.w,
                       ),
-                      child: child,
-                    ),
-                  );
-                },
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: constraints.maxHeight,
+                        ),
+                        child: child,
+                      ),
+                    );
+                  },
+                ),
               ),
-            ),
-            if (bottom != null) bottom!,
-          ],
+              if (bottom != null) bottom!,
+            ],
+          ),
         ),
       ),
     );
