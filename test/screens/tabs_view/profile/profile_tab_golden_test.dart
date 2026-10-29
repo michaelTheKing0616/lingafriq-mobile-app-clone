@@ -2,10 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lingafriq/models/achievement_model.dart';
+import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/models/profile_model.dart';
+import 'package:lingafriq/screens/progress/progress_dashboard_data.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lingafriq/screens/tabs_view/tabs_view.dart' show tabIndexProvider;
+import 'package:lingafriq/screens/tabs_view/tabs_view.dart'
+    show tabIndexProvider;
 import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart';
 import 'package:lingafriq/screens/tabs_view/profile/profile_tab.dart';
 import 'package:lingafriq/services/age_tier_service.dart';
@@ -58,6 +62,33 @@ class _Failing extends UserProvider {
   }
 }
 
+Language _lang(int id, String name, int score, String level) => Language(
+  id: id,
+  total_score: score,
+  total_count: 10,
+  completed: 0,
+  name: name,
+  background: '',
+  Inrtoduction: '',
+  is_published: true,
+  is_featured: false,
+  level_language: level,
+);
+
+Achievement _badge(String id, String name, AchievementType t, bool on) =>
+    Achievement(
+      id: id,
+      name: name,
+      description: '',
+      type: t,
+      rarity: AchievementRarity.common,
+      icon: '',
+      xpReward: 10,
+      isUnlocked: on,
+    );
+
+final shared = <String>[];
+
 List<Override> _o({
   UserProvider Function()? user,
   String? tier,
@@ -71,6 +102,22 @@ List<Override> _o({
   ),
   profileOnlineProvider.overrideWith((ref) async => online),
   profileWalletProvider.overrideWithValue((120, 45, 3)),
+  profileWeekProvider.overrideWithValue([10, 0, 25, 12, 0, 30, 18]),
+  progressClockProvider.overrideWithValue(() => DateTime(2026, 10, 29, 18)),
+  profileLanguagesProvider.overrideWith(
+    (ref) async => [
+      _lang(1, 'Yoruba', 42, 'A2'),
+      _lang(2, 'Swahili', 15, 'A1'),
+      _lang(3, 'Zulu', 0, 'A1'),
+    ],
+  ),
+  profileBadgesProvider.overrideWithValue([
+    _badge('a', 'Week Warrior', AchievementType.streak, true),
+    _badge('b', 'First Steps', AchievementType.milestone, true),
+    _badge('c', 'Monthly Master', AchievementType.streak, false),
+    _badge('d', 'XP Hunter', AchievementType.xp, false),
+  ]),
+  profileShareProvider.overrideWithValue(shared.add),
 ];
 
 Future<void> _pump(
@@ -82,6 +129,15 @@ Future<void> _pump(
   t.view.devicePixelRatio = 1;
   await pumpVariant(t, v, const ProfileTab(), overrides: o);
   if (settle) {
+    await t.pumpAndSettle();
+    // Decode the avatar art off the fake clock so every golden shows it.
+    final ctx = t.element(find.byType(ProfileTab));
+    final images = t.widgetList<Image>(find.byType(Image)).toList();
+    await t.runAsync(() async {
+      for (final i in images) {
+        await precacheImage(i.image, ctx);
+      }
+    });
     await t.pumpAndSettle();
   } else {
     await t.pump(const Duration(milliseconds: 50));
@@ -116,6 +172,7 @@ void main() {
     ('error', _o(user: _Failing.new), true, () {}),
     ('offline', _o(online: false), true, () {}),
     ('child', _o(tier: 'child'), true, () {}),
+    ('teen', _o(tier: 'teen'), true, () {}),
     ('empty', _o(), true, () => _profile = _ada(streak: 0, xp: 0, rank: null)),
   ]) {
     testWidgets('profile state golden $name', (t) async {
@@ -134,7 +191,10 @@ void main() {
   ) async {
     await _pump(t, base, _o());
     expect(find.text('Adaobi Okafor'), findsOneWidget);
-    expect(find.text('\u2066@ADAOBI\u2069 · LEARNING YORÙBÁ'), findsOneWidget);
+    expect(
+      find.text('\u2066@ADAOBI\u2069 · LEARNING \u2068YORÙBÁ\u2069'),
+      findsOneWidget,
+    );
     expect(find.text('12 days'), findsOneWidget);
     expect(find.text('1840 XP'), findsOneWidget);
     expect(find.text('#37'), findsOneWidget);
@@ -149,7 +209,7 @@ void main() {
       'Edit profile',
       'Change password',
       'Give us feedback',
-      'Who we are',
+      'About LingAfriq',
       'Privacy and user policy',
       'Delete your account',
     ]) {
@@ -237,5 +297,85 @@ void main() {
       _o(),
     );
     expect(find.text('1 jour'), findsOneWidget);
+  });
+
+  testWidgets('pack sections: week strip, languages with level, badges', (
+    t,
+  ) async {
+    await _pump(t, base, _o());
+    expect(find.byKey(const Key('profile-week')), findsOneWidget);
+    await t.scrollUntilVisible(find.byKey(const Key('profile-badges')), 100);
+    expect(find.text('Level A2 · 42%'), findsOneWidget);
+    expect(find.text('Kiswahili'), findsOneWidget);
+    expect(
+      find.text('Zulu'),
+      findsNothing,
+      reason: 'not started, not learning',
+    );
+    expect(find.text('2 of 4 unlocked'), findsOneWidget);
+    expect(find.text('Week Warrior'), findsOneWidget);
+  });
+
+  testWidgets('week strip speaks each day', (t) async {
+    final h = t.ensureSemantics();
+    await _pump(t, base, _o());
+    expect(find.bySemanticsLabel('Thursday: practised'), findsOneWidget);
+    expect(find.bySemanticsLabel('Saturday: no practice'), findsOneWidget);
+    h.dispose();
+  });
+
+  testWidgets('share card shares streak and XP', (t) async {
+    shared.clear();
+    await _pump(t, base, _o());
+    final btn = find.byKey(const Key('profile-share-button'));
+    await t.ensureVisible(btn);
+    await t.pumpAndSettle();
+    await t.tap(btn);
+    expect(shared, [
+      "I'm learning Yorùbá on LingAfriq: 12-day streak and 1840 XP!",
+    ]);
+  });
+
+  testWidgets('share card hidden for child, teen and offline', (t) async {
+    for (final o in [_o(tier: 'child'), _o(tier: 'teen'), _o(online: false)]) {
+      await t.pumpWidget(const SizedBox());
+      await _pump(t, base, o);
+      await t.scrollUntilVisible(find.text('Delete your account'), 150);
+      expect(find.byKey(const Key('profile-share')), findsNothing);
+    }
+  });
+
+  testWidgets('error state has a header with a working close', (t) async {
+    await _pump(t, base, _o(user: _Failing.new));
+    expect(find.text('Profile'), findsOneWidget);
+    final c = ProviderScope.containerOf(t.element(find.byType(ProfileTab)));
+    final sub = c.listen(tabIndexProvider, (_, _) {});
+    sub.read();
+    c.read(tabIndexProvider.notifier).setIndex(4);
+    await t.tap(find.byKey(const Key('profile-close')));
+    await t.pump();
+    expect(sub.read(), 0);
+    sub.close();
+  });
+
+  testWidgets('loading skeleton mirrors header and stats layout', (t) async {
+    await _pump(t, base, _o(user: _Pending.new), settle: false);
+    final skel = find.byKey(const Key('profile-loading'));
+    expect(skel, findsOneWidget);
+    final circles = t
+        .widgetList<Container>(
+          find.descendant(of: skel, matching: find.byType(Container)),
+        )
+        .where(
+          (c) => (c.decoration as BoxDecoration?)?.shape == BoxShape.circle,
+        );
+    expect(circles.length, 1, reason: 'avatar placeholder');
+  });
+
+  testWidgets('RTL handle isolates Latin runs', (t) async {
+    await _pump(t, goldenVariants[1], _o());
+    final txt = t.widget<Text>(find.byKey(const Key('profile-handle'))).data!;
+    expect(txt, startsWith('\u2066@ADAOBI\u2069'));
+    expect(txt, contains('\u2068YORÙBÁ\u2069'));
   });
 }
