@@ -2615,10 +2615,10 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String dgRing(int done, int total) {
     String _temp0 = intl.Intl.pluralLogic(
-      total,
+      done,
       locale: localeName,
-      other: '$done objectifs sur $total atteints',
-      one: '$done objectif sur 1 atteint',
+      other: '$done objectifs atteints sur $total',
+      one: '$done objectif atteint sur $total',
     );
     return '$_temp0';
   }

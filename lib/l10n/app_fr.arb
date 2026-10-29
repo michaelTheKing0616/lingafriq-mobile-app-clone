@@ -594,7 +594,7 @@
   "dgStreak": "{n, plural, =0{Série de 0 jour} =1{Série de 1 jour} other{Série de {n} jours}}",
   "dgStreakOn": "Continuez — pratiquez aujourd'hui pour ajouter un jour.",
   "dgStreakZero": "Terminez un objectif aujourd'hui pour lancer une série.",
-  "dgRing": "{total, plural, =1{{done} objectif sur 1 atteint} other{{done} objectifs sur {total} atteints}}",
+  "dgRing": "{done, plural, one{{done} objectif atteint sur {total}} other{{done} objectifs atteints sur {total}}}",
   "dgToday": "Aujourd'hui",
   "dgLessons": "Terminer des leçons",
   "dgQuizzes": "Faire des quiz",

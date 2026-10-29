@@ -21,7 +21,12 @@ void main() {
   test('goal ring, minutes, rank moves and trial days pluralise', () {
     expect(_l('en').dgRing(0, 1), '0 of 1 goal done');
     expect(_l('en').dgRing(1, 4), '1 of 4 goals done');
-    expect(_l('fr').dgRing(1, 1), '1 objectif sur 1 atteint');
+    // French agrees with the number achieved, not the total.
+    expect(_l('fr').dgRing(0, 4), '0 objectif atteint sur 4');
+    expect(_l('fr').dgRing(1, 4), '1 objectif atteint sur 4');
+    expect(_l('fr').dgRing(2, 4), '2 objectifs atteints sur 4');
+    expect(_l('fr').dgRing(4, 4), '4 objectifs atteints sur 4');
+    expect(_l('fr').dgRing(1, 1), '1 objectif atteint sur 1');
     expect(_l('ar').dgRing(1, 2), 'تم 1 من هدفين');
     expect(_l('ar').dgMinutes(4, 10), '4 من 10 دقائق');
     expect(_l('en').lbUp(1), 'Up 1 place');
