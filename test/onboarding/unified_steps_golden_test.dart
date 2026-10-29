@@ -48,6 +48,24 @@ final _signInBack = find.descendant(
   matching: find.byType(BackButtonIcon),
 );
 
+/// RTL back: top-right (start edge) and the arrow resolves rightward
+/// (Icons.arrow_back matches text direction, so RTL paints it mirrored).
+void _expectRtlBack(WidgetTester tester, Finder back, String where) {
+  expect(back, findsOneWidget, reason: where);
+  final width = tester.view.physicalSize.width / tester.view.devicePixelRatio;
+  final r = tester.getRect(back);
+  expect(r.center.dx, greaterThan(width / 2), reason: '$where back at right');
+  expect(r.top, lessThan(120), reason: '$where back at top');
+  final icon = find.descendant(of: back, matching: find.byType(Icon));
+  final el = tester.element(icon);
+  expect(Directionality.of(el), TextDirection.rtl, reason: where);
+  expect(
+    tester.widget<Icon>(icon).icon!.matchTextDirection,
+    isTrue,
+    reason: '$where arrow points right in RTL',
+  );
+}
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   CastFileCache.instance.renderer = Factory.flutter;
@@ -200,6 +218,9 @@ void main() {
     }
     expect(_signInBack, findsOneWidget);
     expect(find.byKey(const ValueKey('signin-hero')), findsOneWidget);
+    if (textDirection == TextDirection.rtl) {
+      _expectRtlBack(tester, _signInBack, 'sign-in');
+    }
     await expectLastButtonReachable(
       tester,
       'sign-in$suffix',
@@ -212,6 +233,9 @@ void main() {
     }
     expect(find.byKey(const ValueKey('save-basket')), findsOneWidget);
     await expectLastButtonReachable(tester, 'save progress$suffix');
+    if (textDirection == TextDirection.rtl) {
+      _expectRtlBack(tester, find.byType(BackButtonIcon), 'save progress');
+    }
   }
 
   testWidgets('Arabic locale: save progress and sign-in in Arabic, mirrored', (
@@ -239,6 +263,7 @@ void main() {
     for (final en in ['Save your', 'Continue with', 'Sign up', 'Later.']) {
       expect(find.textContaining(en), findsNothing, reason: en);
     }
+    _expectRtlBack(tester, find.byType(BackButtonIcon), 'save progress ar');
     await _shot(tester, '16a_save_progress_arabic_rtl');
     await tapVisible(tester, find.text('المتابعة باستخدام Google'));
     await _untilSignIn(tester);
@@ -249,7 +274,7 @@ void main() {
       expect(find.textContaining(en), findsNothing, reason: en);
     }
     // Mirrored: back at the right (start) edge.
-    expect(tester.getCenter(_signInBack).dx, greaterThan(195));
+    _expectRtlBack(tester, _signInBack, 'sign-in ar');
     expect(
       find.descendant(
         of: find.byType(SignInOptionsScreen),
