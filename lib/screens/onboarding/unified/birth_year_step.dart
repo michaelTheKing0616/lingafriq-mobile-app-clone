@@ -74,7 +74,8 @@ class _BirthYearStep extends HookConsumerWidget {
     return _StepScaffold(
       bottom: _PrimaryCta(
         label: 'Continue',
-        enabled: ctaEnabled && !saving.value,
+        enabled: ctaEnabled,
+        busy: saving.value,
         onPressed: () => submit(withParentEmail: isChild),
       ),
       header: const _QuestionHeader(

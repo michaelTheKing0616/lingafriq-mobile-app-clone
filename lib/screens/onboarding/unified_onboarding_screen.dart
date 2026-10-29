@@ -72,7 +72,6 @@ abstract final class _GriotAlpha {
   static const double goldBorder = 0.55;
 
   /// Completing overlay scrim on onSurface.
-  static const double completingScrim = 0.72;
 
   /// Signal-bar empty segment.
   static const double signalEmpty = 0.45;
@@ -200,6 +199,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
         reask.isEmpty || keys.any(reask.contains);
     final isCompleting = useState(false);
     final failedChoice = useState<_AccountChoice?>(null);
+    final pendingChoice = useState<_AccountChoice?>(null);
 
     final animationController = useAnimationController(
       duration: const Duration(milliseconds: 800),
@@ -304,6 +304,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
       addStep(
         _SaveProgressStep(
           busy: isCompleting.value,
+          busyChoice: isCompleting.value ? pendingChoice.value : null,
           wordsLearned: onboardingData.value['first_win_words'] as int? ?? 0,
           failedChoice: failedChoice.value,
           onChoose: (choice) async {
@@ -321,6 +322,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
             }
             if (!context.mounted) return;
             failedChoice.value = null;
+            pendingChoice.value = choice;
             isCompleting.value = true;
             try {
               await _completeOnboarding(
@@ -383,45 +385,6 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                 onSkip: isCompleting.value
                     ? null
                     : () => _skipOnboarding(context, ref),
-              ),
-            // Never stack the saving scrim over the offline banner.
-            if (isCompleting.value &&
-                ref.watch(onboardingOnlineProvider).value != false)
-              Positioned.fill(
-                child: Semantics(
-                  liveRegion: true,
-                  label: 'Setting up your language village, please wait',
-                  child: Container(
-                    color: ModernGriotColors.onSurface.withValues(
-                      alpha: _GriotAlpha.completingScrim,
-                    ),
-                    child: Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(
-                            width: ModernGriotSpacing.xl.w,
-                            height: ModernGriotSpacing.xl.w,
-                            child: const CircularProgressIndicator(
-                              strokeWidth: 3,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                ModernGriotColors.brandGold,
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: ModernGriotSpacing.md.h),
-                          Text(
-                            'Preparing your village…',
-                            style: ModernGriotTypography.bodyMedium(
-                              context: context,
-                              color: ModernGriotColors.surface,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
               ),
           ],
         ),

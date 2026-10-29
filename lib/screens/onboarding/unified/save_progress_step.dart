@@ -11,7 +11,11 @@ class _SaveProgressStep extends StatelessWidget {
     required this.wordsLearned,
     required this.busy,
     this.failedChoice,
+    this.busyChoice,
   });
+
+  /// The choice whose button shows in-button progress while saving.
+  final _AccountChoice? busyChoice;
 
   /// Set when an account choice failed (offline); shows message + Retry.
   final _AccountChoice? failedChoice;
@@ -25,6 +29,7 @@ class _SaveProgressStep extends StatelessWidget {
     VoidCallback? go(_AccountChoice c) => busy ? null : () => onChoose(c);
     final words = wordsLearned == 1 ? '1 word' : '$wordsLearned words';
     return _StepScaffold(
+      showOfflineNotice: failedChoice == null,
       bottom: Padding(
         padding: EdgeInsets.only(bottom: ModernGriotSpacing.xs.h),
         child: TextButton(
@@ -61,11 +66,12 @@ class _SaveProgressStep extends StatelessWidget {
           ],
           _AuthProviderButton(
             label: 'Continue with Google',
-            icon: Icons.g_mobiledata_rounded,
+            icon: Icons.account_circle_outlined,
             background: ModernGriotColors.surfaceContainerLowest,
             foreground: ModernGriotColors.onSurface,
             border: ModernGriotColors.outline,
             onPressed: go(_AccountChoice.google),
+            busy: busyChoice == _AccountChoice.google,
           ),
           SizedBox(height: ModernGriotSpacing.sm.h),
           _AuthProviderButton(
@@ -75,6 +81,7 @@ class _SaveProgressStep extends StatelessWidget {
             foreground: ModernGriotColors.onInverseSurface,
             border: ModernGriotColors.inverseSurface,
             onPressed: go(_AccountChoice.apple),
+            busy: busyChoice == _AccountChoice.apple,
           ),
           SizedBox(height: ModernGriotSpacing.sm.h),
           _AuthProviderButton(
@@ -84,6 +91,7 @@ class _SaveProgressStep extends StatelessWidget {
             foreground: ModernGriotColors.onBrandGold,
             border: ModernGriotColors.brandGold,
             onPressed: go(_AccountChoice.email),
+            busy: busyChoice == _AccountChoice.email,
           ),
           SizedBox(height: ModernGriotSpacing.md.h),
           Center(
@@ -118,8 +126,10 @@ class _AuthProviderButton extends StatelessWidget {
     required this.foreground,
     required this.border,
     required this.onPressed,
+    this.busy = false,
   });
 
+  final bool busy;
   final String label;
   final IconData icon;
   final Color background;
@@ -129,28 +139,41 @@ class _AuthProviderButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: math.max(
-        ModernGriotLayout.minTouchTarget.h,
-        ModernGriotLayout.minTouchTarget.toDouble(),
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        minWidth: double.infinity,
+        minHeight: math.max(
+          ModernGriotLayout.minTouchTarget.h,
+          ModernGriotLayout.minTouchTarget.toDouble(),
+        ),
       ),
       child: Semantics(
         button: true,
-        label: label,
+        label: busy ? 'Saving your progress' : label,
+        excludeSemantics: true,
         child: OutlinedButton.icon(
           onPressed: onPressed,
-          icon: Icon(icon, color: foreground),
-          label: Text(
-            _bidi(context, label),
-            style: ModernGriotTypography.labelLarge(
-              context: context,
-              color: foreground,
-            ),
-          ),
+          icon: busy
+              ? const SizedBox.shrink()
+              : Icon(icon, color: foreground, size: 24),
+          label: busy
+              ? _BusyLabel(label: _bidi(context, 'Saving…'))
+              : Text(
+                  _bidi(context, label),
+                  textAlign: TextAlign.center,
+                  style: ModernGriotTypography.labelLarge(
+                    context: context,
+                    color: foreground,
+                  ),
+                ),
           style: OutlinedButton.styleFrom(
             backgroundColor: background,
             foregroundColor: foreground,
+            disabledBackgroundColor: background,
+            disabledForegroundColor: foreground,
+            minimumSize: const Size.fromHeight(
+              ModernGriotLayout.minTouchTarget,
+            ),
             side: BorderSide(color: border, width: 1.5),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(ModernGriotRadius.xl),

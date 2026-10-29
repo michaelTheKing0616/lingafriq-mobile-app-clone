@@ -107,9 +107,9 @@ void main() {
     await _shot(tester, '10_birth_year_child$suffix');
     await enterBirthYear(tester, 25);
     await _shot(tester, '11_birth_year_adult$suffix');
-    // Submit state: Continue disables while the year saves.
+    // The save is instant with mocked storage, so no submit frame exists to
+    // capture; the in-button 'Saving…' state is covered by golden 17.
     await tapVisible(tester, label('Continue').first);
-    await _shot(tester, '11b_birth_year_submit$suffix');
     await settleOnce(tester);
     await _shot(tester, '12_reminders$suffix');
     await next(tester, 'Not now');
@@ -149,8 +149,19 @@ void main() {
     await tapVisible(tester, find.text('ابدأ الآن'));
     await settleOnce(tester);
     await tapVisible(tester, find.text('العربية'));
-    await tapVisible(tester, find.text('اليوروبا'));
     expect(find.text('ماذا تريد أن تتعلم؟'), findsOneWidget);
+    expect(find.text('غرب أفريقيا'), findsOneWidget);
+    // No untranslated English left in the Arabic chrome.
+    for (final en in [
+      'West Africa',
+      'What do you want to learn?',
+      'Skip',
+      'Continue',
+      'Search languages',
+      'I speak',
+    ]) {
+      expect(find.textContaining(en), findsNothing, reason: en);
+    }
     // Top bar mirrors: back sits at the start (right) edge in RTL.
     final back = tester.getCenter(find.byType(BackButtonIcon));
     expect(back.dx, greaterThan(390 / 2));

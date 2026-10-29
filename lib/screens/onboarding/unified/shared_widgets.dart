@@ -47,7 +47,15 @@ String _bidi(BuildContext context, String text) {
 }
 
 class _StepScaffold extends ConsumerWidget {
-  const _StepScaffold({required this.child, this.bottom, this.header});
+  const _StepScaffold({
+    required this.child,
+    this.bottom,
+    this.header,
+    this.showOfflineNotice = true,
+  });
+
+  /// Off where the step shows its own offline error (one Retry only).
+  final bool showOfflineNotice;
 
   final Widget child;
 
@@ -57,7 +65,11 @@ class _StepScaffold extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final offline = ref.watch(onboardingOnlineProvider).value == false;
+    final offline =
+        showOfflineNotice && ref.watch(onboardingOnlineProvider).value == false;
+    // At large text a pinned header starves the body: scroll it with the
+    // body instead, above the pinned CTA.
+    final pinHeader = MediaQuery.textScalerOf(context).scale(1) < 1.5;
     return Container(
       color: ModernGriotColors.surface,
       child: ResponsiveSafeArea(
@@ -69,7 +81,7 @@ class _StepScaffold extends ConsumerWidget {
                 _OfflineNotice(
                   onRetry: () => ref.invalidate(onboardingOnlineProvider),
                 ),
-              if (header != null)
+              if (header != null && pinHeader)
                 ConstrainedBox(
                   // At 200% text the header may not starve the options.
                   constraints: BoxConstraints(
@@ -96,13 +108,30 @@ class _StepScaffold extends ConsumerWidget {
                         constraints: BoxConstraints(
                           minHeight: constraints.maxHeight,
                         ),
-                        child: child,
+                        child: header != null && !pinHeader
+                            ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [header!, child],
+                              )
+                            : child,
                       ),
                     );
                   },
                 ),
               ),
-              if (bottom != null) bottom!,
+              if (bottom != null)
+                DecoratedBox(
+                  key: const ValueKey('step-bottom'),
+                  // A hairline marks where the scroll body ends, so content
+                  // that continues below reads as scrollable, not clipped.
+                  decoration: const BoxDecoration(
+                    color: ModernGriotColors.surface,
+                    border: Border(
+                      top: BorderSide(color: ModernGriotColors.outlineVariant),
+                    ),
+                  ),
+                  child: bottom!,
+                ),
             ],
           ),
         ),
@@ -116,11 +145,15 @@ class _PrimaryCta extends StatelessWidget {
     required this.label,
     required this.enabled,
     required this.onPressed,
+    this.busy = false,
   });
 
   final String label;
   final bool enabled;
   final VoidCallback? onPressed;
+
+  /// In-button progress while the step saves (no full-screen scrim).
+  final bool busy;
   static const Color color = ModernGriotColors.brandGold;
   static const Color foreground = ModernGriotColors.onBrandGold;
 
@@ -133,14 +166,16 @@ class _PrimaryCta extends StatelessWidget {
         ModernGriotSpacing.lg.w,
         ModernGriotSpacing.md.h,
       ),
-      child: SizedBox(
-        width: double.infinity,
-        height: math.max(
-          ModernGriotLayout.minTouchTarget.h,
-          ModernGriotLayout.minTouchTarget.toDouble(),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minWidth: double.infinity,
+          minHeight: math.max(
+            ModernGriotLayout.minTouchTarget.h,
+            ModernGriotLayout.minTouchTarget.toDouble(),
+          ),
         ),
         child: FilledButton(
-          onPressed: enabled
+          onPressed: enabled && !busy
               ? () {
                   HapticFeedback.mediumImpact();
                   onPressed?.call();
@@ -156,11 +191,39 @@ class _PrimaryCta extends StatelessWidget {
             ),
             textStyle: ModernGriotTypography.titleMedium(context: context),
           ),
-          child: Text(_bidi(context, label)),
+          child: busy
+              ? _BusyLabel(label: _bidi(context, 'Saving…'))
+              : Text(_bidi(context, label), textAlign: TextAlign.center),
         ),
       ),
     );
   }
+}
+
+class _BusyLabel extends StatelessWidget {
+  const _BusyLabel({required this.label});
+  final String label;
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+    liveRegion: true,
+    label: label,
+    excludeSemantics: true,
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox.square(
+          dimension: 18,
+          child: CircularProgressIndicator(
+            strokeWidth: 2.5,
+            color: DefaultTextStyle.of(context).style.color,
+          ),
+        ),
+        const SizedBox(width: 10),
+        Flexible(child: Text(label)),
+      ],
+    ),
+  );
 }
 
 class _SelectRow extends StatelessWidget {
@@ -377,14 +440,15 @@ class _OfflineNotice extends StatelessWidget {
           bottom: ModernGriotSpacing.xs.h,
         ),
         decoration: BoxDecoration(
-          color: ModernGriotColors.secondaryContainer,
+          color: ModernGriotColors.surfaceContainerLowest,
           borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
+          border: Border.all(color: ModernGriotColors.outline),
         ),
         child: Row(
           children: [
             const Icon(
               Icons.cloud_off_rounded,
-              color: ModernGriotColors.onSecondaryContainer,
+              color: ModernGriotColors.onSurface,
             ),
             SizedBox(width: ModernGriotSpacing.sm.w),
             Expanded(
@@ -392,7 +456,7 @@ class _OfflineNotice extends StatelessWidget {
                 message,
                 style: ModernGriotTypography.bodySmall(
                   context: context,
-                  color: ModernGriotColors.onSecondaryContainer,
+                  color: ModernGriotColors.onSurface,
                 ),
               ),
             ),
@@ -405,10 +469,10 @@ class _OfflineNotice extends StatelessWidget {
                 ),
               ),
               child: Text(
-                'Retry',
+                _bidi(context, 'Retry'),
                 style: ModernGriotTypography.labelLarge(
                   context: context,
-                  color: ModernGriotColors.onSecondaryContainer,
+                  color: ModernGriotColors.onSurface,
                 ),
               ),
             ),
