@@ -249,7 +249,7 @@ mobile	lib/screens/story/story_mode_screen.dart	todo
 mobile	lib/screens/subscription/family_dashboard_screen.dart	todo			
 mobile	lib/screens/subscription/subscription_screen.dart	ready-for-review C5 fix: SubscriptionTermsDisclosure: labelled rows Price/Renews/Free trial/Cancel (side-by-side, stacked at 200%/narrow), bodyMedium size, prices+trial from RevenueCat offerings (storePricesProvider, per-field fallback), bidi-isolated prices, full-width Manage button, Terms/Privacy as whole 48dp buttons (no orphan wrap); l10n en/ar/fr; goldens paywall_terms_* (prev: 8/8/9/8/8/8/8/9/7/8 avg 8.1)			2026-10-29
 mobile	lib/screens/tabs_view/home/home_tab.dart	todo			
-mobile	lib/screens/tabs_view/home/home_tab_material3.dart	pass	9/9/9/9/9/9/9/9/9/9 avg9.0 (self, after indep review fixes: designed loading/error/offline/empty/kids states + goldens, per-language art tiles)	Duolingo (home pack)	2026-10-29
+mobile	lib/screens/tabs_view/home/home_tab_material3.dart	pass	9/9/9/9/9/9/9/9/9/9 avg9.0 (re-review fix: per-language identity tiles: palette, code-drawn motif, native name + greeting)	Duolingo (home pack)	2026-10-29
 mobile	lib/screens/tabs_view/home/language_detail_screen.dart	todo			
 mobile	lib/screens/tabs_view/home/search_languages_page.dart	todo			
 mobile	lib/screens/tabs_view/home/take_quiz_screen.dart	todo			

@@ -1,3 +1,4 @@
+import 'package:lingafriq/widgets/bidi_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -564,6 +565,27 @@ class _LanguageCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: PanAfricanTypography.titleMedium(context),
                           ),
+                          if (_nativeLine(language.name) case final line?)
+                            Padding(
+                              padding: const EdgeInsetsDirectional.only(top: 2),
+                              child: Text(
+                                line,
+                                key: const ValueKey('lang-native'),
+                                // In-language text keeps its own direction
+                                // inside an Arabic UI.
+                                textDirection: contentDirectionOf(
+                                  line,
+                                  Directionality.of(context),
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: PanAfricanTypography.bodySmall(context)
+                                    .copyWith(
+                                      color: mutedIconTextColor,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                              ),
+                            ),
                           SizedBox(height: PanAfricanSpacing.xs),
                           if (isLocked)
                             Text(
@@ -901,4 +923,16 @@ class _GoalRing extends StatelessWidget {
       ),
     );
   }
+}
+
+/// "Kiswahili · Habari": the language's own name and a greeting in it.
+/// Omitted when it would only repeat the English name.
+String? _nativeLine(String name) {
+  final id = languageIdentity(name);
+  final parts = [
+    if (id.native != null && id.native!.toLowerCase() != name.toLowerCase())
+      id.native!,
+    if (id.greeting != null) '“${id.greeting}”',
+  ];
+  return parts.isEmpty ? null : parts.join(' · ');
 }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lingafriq/models/language_response.dart';
@@ -300,7 +302,7 @@ void main() {
   ) async {
     await pumpVariant(
       tester,
-      goldenVariants.first,
+      const GoldenVariant('tall', Size(390, 1400)),
       const HomeTabMaterial3(),
       overrides: _overrides(_langs),
     );
@@ -313,11 +315,52 @@ void main() {
     );
     expect(find.byKey(const ValueKey('lang-art-monogram')), findsNWidgets(3));
     expect(languageTileColor('Swahili'), languageTileColor('Swahili'));
-    expect(
-      languageTileColor('Swahili') == languageTileColor('Yoruba') &&
-          languageTileColor('Yoruba') == languageTileColor('Zulu'),
-      isFalse,
-    );
+    // Each monogram tile has its own motif, and the card shows the
+    // language's own name and a greeting in it.
+    for (final m in ['waves', 'circles', 'triangles']) {
+      expect(find.byKey(ValueKey('motif-$m')), findsOneWidget);
+    }
+    expect(find.text('Kiswahili · “Habari”'), findsOneWidget);
+    expect(find.text('Yorùbá · “Ẹ káàbọ̀”'), findsOneWidget);
+    expect(find.text('isiZulu · “Sawubona”'), findsOneWidget);
+    expect(languageMonogram('Zulu'), 'Z');
+  });
+
+  test('language identities: AA contrast and distinct hues', () {
+    double ratio(Color a, Color b) {
+      final x = a.computeLuminance(), y = b.computeLuminance();
+      return (max(x, y) + 0.05) / (min(x, y) + 0.05);
+    }
+
+    final names = [
+      ...kLanguageIdentities.keys,
+      'Fulfulde',
+      'Kanuri',
+      'Oromo',
+      'Ewe',
+    ];
+    for (final n in names) {
+      final id = languageIdentity(n);
+      expect(
+        ratio(Colors.white, id.base),
+        greaterThanOrEqualTo(4.5),
+        reason: '$n monogram on its tile',
+      );
+    }
+    // Curated neighbours in the default list differ clearly in hue.
+    final hues = [
+      'swahili',
+      'yoruba',
+      'hausa',
+      'zulu',
+      'igbo',
+    ].map((k) => HSLColor.fromColor(kLanguageIdentities[k]!.base).hue).toList();
+    for (var i = 0; i < hues.length; i++) {
+      for (var j = i + 1; j < hues.length; j++) {
+        final d = (hues[i] - hues[j]).abs();
+        expect(min(d, 360 - d), greaterThan(20), reason: '$i vs $j');
+      }
+    }
     expect(languageMonogram('Ẹdo'), 'Ẹ');
   });
 }
