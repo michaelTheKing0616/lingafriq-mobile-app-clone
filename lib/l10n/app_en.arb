@@ -4220,5 +4220,66 @@
         "type": "String"
       }
     }
+  },
+  "rbReasons": "Report reasons",
+  "@rbReasons": {
+    "description": "rbReasons"
+  },
+  "rbSendReport": "Send report",
+  "@rbSendReport": {
+    "description": "rbSendReport"
+  },
+  "rbSending": "Sending report",
+  "@rbSending": {
+    "description": "rbSending"
+  },
+  "rbReceived": "Report received. Reference {ref}",
+  "@rbReceived": {
+    "description": "rbReceived",
+    "placeholders": {
+      "ref": {
+        "type": "String"
+      }
+    }
+  },
+  "rbSendFailed": "Could not send that. Try again.",
+  "@rbSendFailed": {
+    "description": "rbSendFailed"
+  },
+  "rbBlockConfirm": "Block this person? You will not see their new messages or snaps.",
+  "@rbBlockConfirm": {
+    "description": "rbBlockConfirm"
+  },
+  "rbConfirmBlock": "Confirm block",
+  "@rbConfirmBlock": {
+    "description": "rbConfirmBlock"
+  },
+  "rbBlockUser": "Block user",
+  "@rbBlockUser": {
+    "description": "rbBlockUser"
+  },
+  "rbBlockedNote": "Blocked. You will not see their new messages.",
+  "@rbBlockedNote": {
+    "description": "rbBlockedNote"
+  },
+  "rbBlockFailed": "Could not block this person. Try again.",
+  "@rbBlockFailed": {
+    "description": "rbBlockFailed"
+  },
+  "rbBlockedPeople": "Blocked people",
+  "@rbBlockedPeople": {
+    "description": "rbBlockedPeople"
+  },
+  "rbNoBlocked": "No blocked people",
+  "@rbNoBlocked": {
+    "description": "rbNoBlocked"
+  },
+  "rbHate": "Hate",
+  "@rbHate": {
+    "description": "rbHate"
+  },
+  "rbOther": "Other",
+  "@rbOther": {
+    "description": "rbOther"
   }
 }

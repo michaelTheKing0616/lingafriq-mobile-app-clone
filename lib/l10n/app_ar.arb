@@ -769,5 +769,19 @@
   "gcPracticePolie": "تدرّب مع ⁦Polie⁩",
   "gcChecking": "جارٍ التحقق من الوصول…",
   "gcMessagesLabel": "{n, plural, =0{لا رسائل} =1{رسالة واحدة} =2{رسالتان} few{{n} رسائل} many{{n} رسالة} other{{n} رسالة}}",
-  "gcOpenProfile": "فتح ملف {name}"
+  "gcOpenProfile": "فتح ملف {name}",
+  "rbReasons": "أسباب الإبلاغ",
+  "rbSendReport": "إرسال البلاغ",
+  "rbSending": "جارٍ إرسال البلاغ",
+  "rbReceived": "تم استلام البلاغ. المرجع {ref}",
+  "rbSendFailed": "تعذّر الإرسال. حاول مرة أخرى.",
+  "rbBlockConfirm": "هل تريد حظر هذا الشخص؟ لن ترى رسائله أو لقطاته الجديدة.",
+  "rbConfirmBlock": "تأكيد الحظر",
+  "rbBlockUser": "حظر المستخدم",
+  "rbBlockedNote": "تم الحظر. لن ترى رسائله الجديدة.",
+  "rbBlockFailed": "تعذّر حظر هذا الشخص. حاول مرة أخرى.",
+  "rbBlockedPeople": "الأشخاص المحظورون",
+  "rbNoBlocked": "لا يوجد أشخاص محظورون",
+  "rbHate": "كراهية",
+  "rbOther": "أخرى"
 }

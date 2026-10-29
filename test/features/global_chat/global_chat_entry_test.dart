@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lingafriq/features/global_chat/global_chat_policy.dart';
+import 'package:lingafriq/screens/help/stitch_navigation_hub_screen.dart';
 import 'package:lingafriq/widgets/pan_african_drawer.dart';
 
 import '../../compliance/golden_kit.dart';
@@ -35,4 +36,24 @@ void main() {
     await _pump(t, true);
     expect(find.text('Global Chat'), findsOneWidget);
   });
+
+  for (final visible in [false, true]) {
+    testWidgets('Stitch hub lists Global chat only when allowed ($visible)', (
+      t,
+    ) async {
+      await pumpVariant(
+        t,
+        const GoldenVariant('tall', Size(400, 3000)),
+        const StitchNavigationHubScreen(),
+        overrides: [globalChatEntryVisibleProvider.overrideWithValue(visible)],
+      );
+      await t.tap(find.text('Community · chat · classroom'));
+      await t.pumpAndSettle();
+      expect(find.text('Private chat inbox'), findsOneWidget);
+      expect(
+        find.text('/global_chat'),
+        visible ? findsOneWidget : findsNothing,
+      );
+    });
+  }
 }

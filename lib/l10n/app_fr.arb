@@ -769,5 +769,19 @@
   "gcPracticePolie": "Pratiquer avec Polie",
   "gcChecking": "Vérification de l’accès…",
   "gcMessagesLabel": "{n, plural, =0{Aucun message} one{{n} message} other{{n} messages}}",
-  "gcOpenProfile": "Ouvrir le profil de {name}"
+  "gcOpenProfile": "Ouvrir le profil de {name}",
+  "rbReasons": "Motifs du signalement",
+  "rbSendReport": "Envoyer le signalement",
+  "rbSending": "Envoi du signalement",
+  "rbReceived": "Signalement reçu. Référence {ref}",
+  "rbSendFailed": "Échec de l’envoi. Réessayez.",
+  "rbBlockConfirm": "Bloquer cette personne ? Vous ne verrez plus ses nouveaux messages ni ses snaps.",
+  "rbConfirmBlock": "Confirmer le blocage",
+  "rbBlockUser": "Bloquer l’utilisateur",
+  "rbBlockedNote": "Bloqué. Vous ne verrez plus ses nouveaux messages.",
+  "rbBlockFailed": "Impossible de bloquer cette personne. Réessayez.",
+  "rbBlockedPeople": "Personnes bloquées",
+  "rbNoBlocked": "Aucune personne bloquée",
+  "rbHate": "Haine",
+  "rbOther": "Autre"
 }

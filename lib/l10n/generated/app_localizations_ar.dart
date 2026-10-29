@@ -3228,4 +3228,49 @@ class AppLocalizationsAr extends AppLocalizations {
   String gcOpenProfile(String name) {
     return 'فتح ملف $name';
   }
+
+  @override
+  String get rbReasons => 'أسباب الإبلاغ';
+
+  @override
+  String get rbSendReport => 'إرسال البلاغ';
+
+  @override
+  String get rbSending => 'جارٍ إرسال البلاغ';
+
+  @override
+  String rbReceived(String ref) {
+    return 'تم استلام البلاغ. المرجع $ref';
+  }
+
+  @override
+  String get rbSendFailed => 'تعذّر الإرسال. حاول مرة أخرى.';
+
+  @override
+  String get rbBlockConfirm =>
+      'هل تريد حظر هذا الشخص؟ لن ترى رسائله أو لقطاته الجديدة.';
+
+  @override
+  String get rbConfirmBlock => 'تأكيد الحظر';
+
+  @override
+  String get rbBlockUser => 'حظر المستخدم';
+
+  @override
+  String get rbBlockedNote => 'تم الحظر. لن ترى رسائله الجديدة.';
+
+  @override
+  String get rbBlockFailed => 'تعذّر حظر هذا الشخص. حاول مرة أخرى.';
+
+  @override
+  String get rbBlockedPeople => 'الأشخاص المحظورون';
+
+  @override
+  String get rbNoBlocked => 'لا يوجد أشخاص محظورون';
+
+  @override
+  String get rbHate => 'كراهية';
+
+  @override
+  String get rbOther => 'أخرى';
 }

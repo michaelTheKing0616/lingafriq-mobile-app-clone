@@ -3176,4 +3176,49 @@ class AppLocalizationsTn extends AppLocalizations {
   String gcOpenProfile(String name) {
     return 'Open $name’s profile';
   }
+
+  @override
+  String get rbReasons => 'Report reasons';
+
+  @override
+  String get rbSendReport => 'Send report';
+
+  @override
+  String get rbSending => 'Sending report';
+
+  @override
+  String rbReceived(String ref) {
+    return 'Report received. Reference $ref';
+  }
+
+  @override
+  String get rbSendFailed => 'Could not send that. Try again.';
+
+  @override
+  String get rbBlockConfirm =>
+      'Block this person? You will not see their new messages or snaps.';
+
+  @override
+  String get rbConfirmBlock => 'Confirm block';
+
+  @override
+  String get rbBlockUser => 'Block user';
+
+  @override
+  String get rbBlockedNote => 'Blocked. You will not see their new messages.';
+
+  @override
+  String get rbBlockFailed => 'Could not block this person. Try again.';
+
+  @override
+  String get rbBlockedPeople => 'Blocked people';
+
+  @override
+  String get rbNoBlocked => 'No blocked people';
+
+  @override
+  String get rbHate => 'Hate';
+
+  @override
+  String get rbOther => 'Other';
 }

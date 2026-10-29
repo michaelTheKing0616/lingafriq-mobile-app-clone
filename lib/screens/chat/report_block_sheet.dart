@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/screens/safety/community_guidelines_screen.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 
@@ -15,6 +16,18 @@ abstract final class ReportCopy {
   static const blockConfirm =
       'Block this person? You will not see their new messages or snaps.';
 }
+
+/// Localised strings; falls back to English where no delegate is installed.
+AppLocalizations _l(BuildContext c) =>
+    Localizations.of<AppLocalizations>(c, AppLocalizations) ??
+    lookupAppLocalizations(const Locale('en'));
+
+String _reasonLabel(AppLocalizations l, String r) => switch (r) {
+  'harassment' => l.gcReasonHarassment,
+  'spam' => l.gcReasonSpam,
+  'hate' => l.rbHate,
+  _ => l.rbOther,
+};
 
 class BlockedPerson {
   const BlockedPerson({required this.id, required this.name});
@@ -65,7 +78,7 @@ class _ReportBlockSheetState extends State<ReportBlockSheet> {
       if (!mounted) return;
       setState(() {
         _submitting = false;
-        _error = 'Could not send that. Try again.';
+        _error = _l(context).rbSendFailed;
       });
     }
   }
@@ -81,13 +94,13 @@ class _ReportBlockSheetState extends State<ReportBlockSheet> {
       setState(() {
         _submitting = false;
         _confirmingBlock = false;
-        _blockNote = 'Blocked. You will not see their new messages.';
+        _blockNote = _l(context).rbBlockedNote;
       });
     } catch (_) {
       if (!mounted) return;
       setState(() {
         _submitting = false;
-        _error = 'Could not block this person. Try again.';
+        _error = _l(context).rbBlockFailed;
       });
     }
   }
@@ -100,47 +113,56 @@ class _ReportBlockSheetState extends State<ReportBlockSheet> {
     if (!mounted) return;
     await showModalBottomSheet<void>(
       context: context,
-      builder: (context) => BlockedUsersSheet(people: people, onUnblock: unblock),
+      builder: (context) =>
+          BlockedUsersSheet(people: people, onUnblock: unblock),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final l = _l(context);
     return SafeArea(
       child: Semantics(
         namesRoute: true,
-        label: ReportCopy.title,
+        label: l.gcReport,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(ReportCopy.title, style: Theme.of(context).textTheme.titleLarge),
+              Text(l.gcReport, style: Theme.of(context).textTheme.titleLarge),
               const SizedBox(height: 8),
               if (_referenceId != null)
-                Text('Report received. Reference $_referenceId')
+                Text(l.rbReceived('\u2068$_referenceId\u2069'))
               else ...[
                 Semantics(
                   container: true,
-                  label: 'Report reasons',
-                  child: Column(
-                    children: [
-                      for (final reason in ReportCopy.reasons)
-                        RadioListTile<String>(
-                          value: reason,
-                          groupValue: _reason,
-                          onChanged: _submitting
-                              ? null
-                              : (value) => setState(() => _reason = value ?? _reason),
-                          title: Text(ReportCopy.reasonLabels[reason] ?? reason),
-                        ),
-                    ],
+                  label: l.rbReasons,
+                  child: RadioGroup<String>(
+                    groupValue: _reason,
+                    onChanged: (value) {
+                      if (!_submitting)
+                        setState(() => _reason = value ?? _reason);
+                    },
+                    child: Column(
+                      children: [
+                        for (final reason in ReportCopy.reasons)
+                          RadioListTile<String>(
+                            value: reason,
+                            enabled: !_submitting,
+                            title: Text(_reasonLabel(l, reason)),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
                 Builder(
                   builder: (context) {
-                    final clauseId = CommunityGuidelinesCatalog.socialReportClauseId(_reason);
+                    final clauseId =
+                        CommunityGuidelinesCatalog.socialReportClauseId(
+                          _reason,
+                        );
                     if (clauseId == null) {
                       return const SizedBox.shrink();
                     }
@@ -150,14 +172,17 @@ class _ReportBlockSheetState extends State<ReportBlockSheet> {
                 const SizedBox(height: 8),
                 FilledButton(
                   onPressed: _submitting ? null : _submitReport,
-                  child: Text(_submitting ? 'Sending report' : 'Send report'),
+                  child: Text(_submitting ? l.rbSending : l.rbSendReport),
                 ),
               ],
               if (_submitting) const LinearProgressIndicator(),
               if (_error != null)
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
-                  child: Text(_error!, style: const TextStyle(color: PanAfricanColors.error)),
+                  child: Text(
+                    _error!,
+                    style: const TextStyle(color: PanAfricanColors.error),
+                  ),
                 ),
               if (_blockNote != null)
                 Padding(
@@ -168,28 +193,30 @@ class _ReportBlockSheetState extends State<ReportBlockSheet> {
               if (_confirmingBlock)
                 Semantics(
                   container: true,
-                  label: ReportCopy.blockConfirm,
+                  label: l.rbBlockConfirm,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const Text(ReportCopy.blockConfirm),
+                      Text(l.rbBlockConfirm),
                       const SizedBox(height: 8),
                       FilledButton(
                         onPressed: _submitting ? null : _confirmBlock,
-                        child: const Text('Confirm block'),
+                        child: Text(l.rbConfirmBlock),
                       ),
                     ],
                   ),
                 )
               else
                 OutlinedButton(
-                  onPressed: _submitting ? null : () => setState(() => _confirmingBlock = true),
-                  child: const Text('Block user'),
+                  onPressed: _submitting
+                      ? null
+                      : () => setState(() => _confirmingBlock = true),
+                  child: Text(l.rbBlockUser),
                 ),
               if (widget.onLoadBlocked != null)
                 TextButton(
                   onPressed: _openBlocked,
-                  child: const Text('Blocked people'),
+                  child: Text(l.rbBlockedPeople),
                 ),
             ],
           ),
@@ -211,26 +238,27 @@ class BlockedUsersSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = _l(context);
     return SafeArea(
       child: Semantics(
         namesRoute: true,
-        label: 'Blocked people',
+        label: l.rbBlockedPeople,
         child: ListView.builder(
           shrinkWrap: true,
           itemCount: 1 + (people.isEmpty ? 1 : people.length),
           itemBuilder: (context, index) {
             if (index == 0) {
-              return const ListTile(title: Text('Blocked people'));
+              return ListTile(title: Text(l.rbBlockedPeople));
             }
             if (people.isEmpty) {
-              return const ListTile(title: Text('No blocked people'));
+              return ListTile(title: Text(l.rbNoBlocked));
             }
             final person = people[index - 1];
             return ListTile(
-              title: Text(person.name),
+              title: Text('\u2068${person.name}\u2069'),
               trailing: TextButton(
                 onPressed: () => onUnblock(person.id),
-                child: const Text('Unblock'),
+                child: Text(l.gcUnblock),
               ),
             );
           },

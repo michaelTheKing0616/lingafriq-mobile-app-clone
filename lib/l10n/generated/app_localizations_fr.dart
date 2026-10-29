@@ -3211,4 +3211,51 @@ class AppLocalizationsFr extends AppLocalizations {
   String gcOpenProfile(String name) {
     return 'Ouvrir le profil de $name';
   }
+
+  @override
+  String get rbReasons => 'Motifs du signalement';
+
+  @override
+  String get rbSendReport => 'Envoyer le signalement';
+
+  @override
+  String get rbSending => 'Envoi du signalement';
+
+  @override
+  String rbReceived(String ref) {
+    return 'Signalement reçu. Référence $ref';
+  }
+
+  @override
+  String get rbSendFailed => 'Échec de l’envoi. Réessayez.';
+
+  @override
+  String get rbBlockConfirm =>
+      'Bloquer cette personne ? Vous ne verrez plus ses nouveaux messages ni ses snaps.';
+
+  @override
+  String get rbConfirmBlock => 'Confirmer le blocage';
+
+  @override
+  String get rbBlockUser => 'Bloquer l’utilisateur';
+
+  @override
+  String get rbBlockedNote =>
+      'Bloqué. Vous ne verrez plus ses nouveaux messages.';
+
+  @override
+  String get rbBlockFailed =>
+      'Impossible de bloquer cette personne. Réessayez.';
+
+  @override
+  String get rbBlockedPeople => 'Personnes bloquées';
+
+  @override
+  String get rbNoBlocked => 'Aucune personne bloquée';
+
+  @override
+  String get rbHate => 'Haine';
+
+  @override
+  String get rbOther => 'Autre';
 }

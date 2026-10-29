@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/screens/chat/report_block_sheet.dart';
 
 void main() {
-  testWidgets('P1-024 report sheet stores a reference and confirms a block', (tester) async {
+  testWidgets('P1-024 report sheet stores a reference and confirms a block', (
+    tester,
+  ) async {
     String? reported;
     var blocked = false;
     await tester.pumpWidget(
@@ -27,7 +30,10 @@ void main() {
     await tester.tap(find.text('Send report'));
     await tester.pumpAndSettle();
     expect(reported, 'harassment');
-    expect(find.text('Report received. Reference ref-24'), findsOneWidget);
+    expect(
+      find.text('Report received. Reference \u2068ref-24\u2069'),
+      findsOneWidget,
+    );
 
     await tester.tap(find.text('Block user'));
     await tester.pumpAndSettle();
@@ -35,7 +41,10 @@ void main() {
     await tester.tap(find.text('Confirm block'));
     await tester.pumpAndSettle();
     expect(blocked, isTrue);
-    expect(find.text('Blocked. You will not see their new messages.'), findsOneWidget);
+    expect(
+      find.text('Blocked. You will not see their new messages.'),
+      findsOneWidget,
+    );
   });
 
   testWidgets('P1-024 report failure stays on the sheet', (tester) async {
@@ -55,7 +64,9 @@ void main() {
     expect(find.text('Send report'), findsOneWidget);
   });
 
-  testWidgets('P1-024 unblock is available from the blocked list', (tester) async {
+  testWidgets('P1-024 unblock is available from the blocked list', (
+    tester,
+  ) async {
     String? unblocked;
     await tester.pumpWidget(
       MaterialApp(
@@ -63,7 +74,9 @@ void main() {
           body: ReportBlockSheet(
             onReport: (_) async => 'ref',
             onBlock: () async {},
-            onLoadBlocked: () async => const [BlockedPerson(id: 'user-b', name: 'Bayo')],
+            onLoadBlocked: () async => const [
+              BlockedPerson(id: 'user-b', name: 'Bayo'),
+            ],
             onUnblock: (id) async {
               unblocked = id;
             },
@@ -73,9 +86,34 @@ void main() {
     );
     await tester.tap(find.text('Blocked people'));
     await tester.pumpAndSettle();
-    expect(find.text('Bayo'), findsOneWidget);
+    expect(find.text('\u2068Bayo\u2069'), findsOneWidget);
     await tester.tap(find.text('Unblock'));
     await tester.pumpAndSettle();
     expect(unblocked, 'user-b');
   });
+
+  for (final (loc, send, hate) in [
+    ('fr', 'Envoyer le signalement', 'Haine'),
+    ('ar', 'إرسال البلاغ', 'كراهية'),
+  ]) {
+    testWidgets('sheet is localised ($loc)', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          locale: Locale(loc),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(
+            body: ReportBlockSheet(
+              onReport: (_) async => 'r1',
+              onBlock: () async {},
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text(send), findsOneWidget);
+      expect(find.text(hate), findsOneWidget);
+      expect(find.text('Send report'), findsNothing);
+    });
+  }
 }

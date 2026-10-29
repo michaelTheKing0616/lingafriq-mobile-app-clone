@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/features/global_chat/global_chat_policy.dart';
 
 /// One-tap access to **named routes** that map Stitch mockup journeys (Phase 0–4 program).
 /// Deep links: `Navigator.pushNamed(context, '/stitch-hub')` or route name `stitch-hub`.
-class StitchNavigationHubScreen extends StatelessWidget {
+class StitchNavigationHubScreen extends ConsumerWidget {
   const StitchNavigationHubScreen({super.key});
 
   static const _sections = <_HubSection>[
@@ -22,31 +24,39 @@ class StitchNavigationHubScreen extends StatelessWidget {
     _HubSection(
       title: 'Learning v2 · speak engine & trainers',
       routes: [
-        _HubRoute('Speak engine API lab (code-switch · register coach)', 'speak-engine-lab'),
+        _HubRoute(
+          'Speak engine API lab (code-switch · register coach)',
+          'speak-engine-lab',
+        ),
         _HubRoute(
           'Conversation practice (speak missions)',
           'conversation-scenarios',
           {'language': 'sw', 'languageName': 'Swahili'},
         ),
-        _HubRoute('Tone & rhythm trainer', 'tone-rhythm-trainer', {'language': 'yoruba'}),
-        _HubRoute('Phrase DNA (templates)', 'phrase-dna-templates', {'language': 'yo'}),
-        _HubRoute('Synthetic voice styles', 'synthetic-voice-styles', {'language': 'yoruba'}),
+        _HubRoute('Tone & rhythm trainer', 'tone-rhythm-trainer', {
+          'language': 'yoruba',
+        }),
+        _HubRoute('Phrase DNA (templates)', 'phrase-dna-templates', {
+          'language': 'yo',
+        }),
+        _HubRoute('Synthetic voice styles', 'synthetic-voice-styles', {
+          'language': 'yoruba',
+        }),
         _HubRoute('Point & say (AR)', 'point-and-say', {'language': 'yoruba'}),
       ],
     ),
     _HubSection(
       title: 'Passport · micro-mentors',
       routes: [
-        _HubRoute(
-          'Passport proctored session',
-          'passport-proctored',
-          {'language': 'yoruba', 'proctorMode': 'device_rules'},
-        ),
-        _HubRoute(
-          'Passport credential (verify demo)',
-          'passport-credential',
-          {'verifyToken': 'demo-token', 'level': 'L2', 'score': 88},
-        ),
+        _HubRoute('Passport proctored session', 'passport-proctored', {
+          'language': 'yoruba',
+          'proctorMode': 'device_rules',
+        }),
+        _HubRoute('Passport credential (verify demo)', 'passport-credential', {
+          'verifyToken': 'demo-token',
+          'level': 'L2',
+          'score': 88,
+        }),
         _HubRoute('Micro-mentor hub', 'micro-mentor-hub'),
         _HubRoute('Staff mentor reports', 'staff-micro-mentor-reports'),
       ],
@@ -58,28 +68,29 @@ class StitchNavigationHubScreen extends StatelessWidget {
         _HubRoute('Explore community', 'explore-community'),
         _HubRoute('Search community', 'search-community'),
         _HubRoute('Community profile', 'community-profile'),
-        _HubRoute('Global chat', 'global_chat'),
+        _HubRoute('Global chat', 'global_chat', null, true),
         _HubRoute('Private chat inbox', 'private-chat-inbox'),
         _HubRoute('Call history', 'call-history'),
         _HubRoute('Live classroom', 'live-classroom'),
         _HubRoute('Classroom lobby (tribes)', 'classroom-lobby'),
         _HubRoute('Classroom notes', 'classroom-notes'),
         _HubRoute('Speaker queue', 'speaker-queue'),
-        _HubRoute(
-          'Classroom roster (v2 API)',
-          'classroom-roster-v2',
-          {'tribeId': '507f1f77bcf86cd799439011', 'tribeName': 'Demo classroom'},
-        ),
+        _HubRoute('Classroom roster (v2 API)', 'classroom-roster-v2', {
+          'tribeId': '507f1f77bcf86cd799439011',
+          'tribeName': 'Demo classroom',
+        }),
         _HubRoute(
           'Classroom assignments (v2 API)',
           'classroom-assignments-v2',
-          {'tribeId': '507f1f77bcf86cd799439011', 'tribeName': 'Demo classroom'},
+          {
+            'tribeId': '507f1f77bcf86cd799439011',
+            'tribeName': 'Demo classroom',
+          },
         ),
-        _HubRoute(
-          'Classroom privacy (v2 API)',
-          'classroom-privacy-v2',
-          {'tribeId': '507f1f77bcf86cd799439011', 'tribeName': 'Demo classroom'},
-        ),
+        _HubRoute('Classroom privacy (v2 API)', 'classroom-privacy-v2', {
+          'tribeId': '507f1f77bcf86cd799439011',
+          'tribeName': 'Demo classroom',
+        }),
       ],
     ),
     _HubSection(
@@ -114,11 +125,11 @@ class StitchNavigationHubScreen extends StatelessWidget {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Same age gate as the drawers: adult-only routes are not listed for minors.
+    final chatVisible = ref.watch(globalChatEntryVisibleProvider);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Stitch feature map'),
-      ),
+      appBar: AppBar(title: const Text('Stitch feature map')),
       body: ListView.builder(
         padding: const EdgeInsets.all(16),
         itemCount: _sections.length,
@@ -127,19 +138,25 @@ class StitchNavigationHubScreen extends StatelessWidget {
           return Card(
             margin: const EdgeInsets.only(bottom: 12),
             child: ExpansionTile(
-              title: Text(s.title, style: const TextStyle(fontWeight: FontWeight.w700)),
+              title: Text(
+                s.title,
+                style: const TextStyle(fontWeight: FontWeight.w700),
+              ),
               initiallyExpanded: i == 0,
               children: s.routes
+                  .where((r) => !r.adultOnly || chatVisible)
                   .map(
                     (r) => ListTile(
                       title: Text(r.label),
-                      subtitle: Text('/${r.name}', style: const TextStyle(fontSize: 12)),
+                      subtitle: Text(
+                        '/${r.name}',
+                        style: const TextStyle(fontSize: 12),
+                      ),
                       trailing: const Icon(Icons.chevron_right_rounded),
                       onTap: () {
-                        Navigator.of(context).pushNamed(
-                          '/${r.name}',
-                          arguments: r.arguments,
-                        );
+                        Navigator.of(
+                          context,
+                        ).pushNamed('/${r.name}', arguments: r.arguments);
                       },
                     ),
                   )
@@ -160,8 +177,14 @@ class _HubSection {
 
 class _HubRoute {
   /// Optional [arguments] for routes that need `tribeId` / `roomName` / etc.
-  const _HubRoute(this.label, this.name, [this.arguments]);
+  const _HubRoute(
+    this.label,
+    this.name, [
+    this.arguments,
+    this.adultOnly = false,
+  ]);
   final String label;
+  final bool adultOnly;
   final String name;
   final Object? arguments;
 }

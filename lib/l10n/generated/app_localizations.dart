@@ -5549,6 +5549,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open {name}’s profile'**
   String gcOpenProfile(String name);
+
+  /// rbReasons
+  ///
+  /// In en, this message translates to:
+  /// **'Report reasons'**
+  String get rbReasons;
+
+  /// rbSendReport
+  ///
+  /// In en, this message translates to:
+  /// **'Send report'**
+  String get rbSendReport;
+
+  /// rbSending
+  ///
+  /// In en, this message translates to:
+  /// **'Sending report'**
+  String get rbSending;
+
+  /// rbReceived
+  ///
+  /// In en, this message translates to:
+  /// **'Report received. Reference {ref}'**
+  String rbReceived(String ref);
+
+  /// rbSendFailed
+  ///
+  /// In en, this message translates to:
+  /// **'Could not send that. Try again.'**
+  String get rbSendFailed;
+
+  /// rbBlockConfirm
+  ///
+  /// In en, this message translates to:
+  /// **'Block this person? You will not see their new messages or snaps.'**
+  String get rbBlockConfirm;
+
+  /// rbConfirmBlock
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm block'**
+  String get rbConfirmBlock;
+
+  /// rbBlockUser
+  ///
+  /// In en, this message translates to:
+  /// **'Block user'**
+  String get rbBlockUser;
+
+  /// rbBlockedNote
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked. You will not see their new messages.'**
+  String get rbBlockedNote;
+
+  /// rbBlockFailed
+  ///
+  /// In en, this message translates to:
+  /// **'Could not block this person. Try again.'**
+  String get rbBlockFailed;
+
+  /// rbBlockedPeople
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked people'**
+  String get rbBlockedPeople;
+
+  /// rbNoBlocked
+  ///
+  /// In en, this message translates to:
+  /// **'No blocked people'**
+  String get rbNoBlocked;
+
+  /// rbHate
+  ///
+  /// In en, this message translates to:
+  /// **'Hate'**
+  String get rbHate;
+
+  /// rbOther
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get rbOther;
 }
 
 class _AppLocalizationsDelegate
