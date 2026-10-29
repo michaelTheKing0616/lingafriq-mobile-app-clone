@@ -309,4 +309,26 @@ void main() {
       expect(t.getSize(find.byKey(Key(k))).height, greaterThanOrEqualTo(48));
     }
   });
+
+  for (final v in [goldenVariants[2], goldenVariants[4]]) {
+    testWidgets('scope chips fully visible at 200% text (${v.name})', (
+      t,
+    ) async {
+      await _pump(t, v, _o());
+      final w = v.size.width;
+      for (final k in ['global', 'tribe', 'country']) {
+        final r = t.getRect(find.byKey(Key('lb-tab-$k')));
+        expect(r.left, greaterThanOrEqualTo(0), reason: k);
+        expect(r.right, lessThanOrEqualTo(w), reason: k);
+      }
+      expect(
+        find.ancestor(
+          of: find.byKey(const Key('lb-tab-global')),
+          matching: find.byType(Scrollable),
+        ),
+        findsNothing,
+        reason: 'no hidden horizontal overflow',
+      );
+    });
+  }
 }

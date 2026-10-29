@@ -344,36 +344,35 @@ class _Scopes extends StatelessWidget {
       color: _navy,
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            for (final (i, t) in _types.indexed)
-              Padding(
-                padding: const EdgeInsetsDirectional.only(end: 8),
-                child: Semantics(
-                  selected: t == type,
-                  button: true,
-                  child: ChoiceChip(
-                    key: Key('lb-tab-${t.name}'),
-                    label: Text(labels[i]),
-                    selected: t == type,
-                    showCheckmark: false,
-                    onSelected: (_) => onSelect(t),
-                    materialTapTargetSize: MaterialTapTargetSize.padded,
-                    labelStyle: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      color: t == type ? _navyDeep : Colors.white,
-                    ),
-                    backgroundColor: _navy,
-                    selectedColor: _gold,
-                    side: BorderSide(color: t == type ? _gold : Colors.white70),
-                    shape: const StadiumBorder(),
-                  ),
+      // Wrap, not a scroller: at 200% text every scope stays visible
+      // instead of being clipped off the edge.
+      child: Wrap(
+        key: const Key('lb-scopes'),
+        spacing: 8,
+        runSpacing: 4,
+        children: [
+          for (final (i, t) in _types.indexed)
+            Semantics(
+              selected: t == type,
+              button: true,
+              child: ChoiceChip(
+                key: Key('lb-tab-${t.name}'),
+                label: Text(labels[i]),
+                selected: t == type,
+                showCheckmark: false,
+                onSelected: (_) => onSelect(t),
+                materialTapTargetSize: MaterialTapTargetSize.padded,
+                labelStyle: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: t == type ? _navyDeep : Colors.white,
                 ),
+                backgroundColor: _navy,
+                selectedColor: _gold,
+                side: BorderSide(color: t == type ? _gold : Colors.white70),
+                shape: const StadiumBorder(),
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }
