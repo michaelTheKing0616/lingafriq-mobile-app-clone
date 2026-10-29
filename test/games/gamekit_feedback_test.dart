@@ -101,10 +101,16 @@ void main() {
         ),
       );
 
-      final boxes = tester
-          .widgetList<SizedBox>(find.byType(SizedBox))
-          .where((s) => s.height == GameKitFeedbackBudget.verdictSlotHeight);
-      expect(boxes.length, greaterThanOrEqualTo(1));
+      // Both phases render the exact same slot height: no layout shift.
+      final slots = find.byType(GameKitVerdictSlot);
+      expect(slots, findsNWidgets(2));
+      for (final e in slots.evaluate()) {
+        expect(
+          tester.getSize(find.byWidget(e.widget)).height,
+          GameKitFeedbackBudget.verdictSlotHeight,
+        );
+      }
+      expect(tester.takeException(), isNull);
     });
   });
 }

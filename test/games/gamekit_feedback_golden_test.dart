@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lingafriq/games/gamekit/game_feedback.dart';
 
+import '../compliance/golden_kit.dart';
+
 void main() {
+  setUpAll(
+    () => loadComplianceFonts('test/games/gamekit_feedback_golden_test.dart'),
+  );
+
   testWidgets('gamekit_feedback_playing golden', (tester) async {
     await tester.binding.setSurfaceSize(const Size(390, 200));
     await tester.pumpWidget(

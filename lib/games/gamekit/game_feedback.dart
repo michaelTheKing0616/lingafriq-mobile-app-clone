@@ -167,7 +167,9 @@ class GameKitVerdictSlot extends StatelessWidget {
           color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
           borderRadius: BorderRadius.circular(16),
         ),
-        child: child,
+        // The slot height is fixed (no layout shift); long or scaled-up text
+        // shrinks to fit instead of overflowing it.
+        child: FittedBox(fit: BoxFit.scaleDown, child: child),
       ),
     );
   }
