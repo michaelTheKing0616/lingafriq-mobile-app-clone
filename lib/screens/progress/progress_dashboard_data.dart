@@ -72,15 +72,17 @@ final progressOnlineProvider = FutureProvider.autoDispose<bool>(
   (ref) => ConnectivityService.hasInternet(),
 );
 
-final progressSnapshotProvider = FutureProvider.autoDispose<ProgressSnapshot>((
-  ref,
-) async {
-  ref.watch(progressTrackingProvider);
-  final n = ref.read(progressTrackingProvider.notifier);
-  await n.loaded;
-  return ProgressSnapshot(
-    metrics: n.metrics,
-    history: n.history,
-    today: ref.read(progressClockProvider)(),
-  );
-});
+/// Local reads either work or show the error state; no silent auto-retry.
+final progressSnapshotProvider = FutureProvider.autoDispose<ProgressSnapshot>(
+  retry: (_, _) => null,
+  (ref) async {
+    ref.watch(progressTrackingProvider);
+    final n = ref.read(progressTrackingProvider.notifier);
+    await n.loaded;
+    return ProgressSnapshot(
+      metrics: n.metrics,
+      history: n.history,
+      today: ref.read(progressClockProvider)(),
+    );
+  },
+);

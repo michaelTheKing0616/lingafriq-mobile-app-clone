@@ -27,7 +27,12 @@ class ProgressDashboardScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: Text(l.pgTitle),
+        title: Text(
+          l.pgTitle,
+          style: PanAfricanTypography.titleLarge(
+            context,
+          ).copyWith(fontWeight: FontWeight.w800),
+        ),
         backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -268,6 +273,7 @@ class _WeekHero extends StatelessWidget {
                         final name = DateFormat.E(locale).format(day);
                         return Semantics(
                           label: l.pgDayA11y(name, v),
+                          container: true,
                           excludeSemantics: true,
                           child: Column(
                             children: [
@@ -337,6 +343,7 @@ class _Calendar extends StatelessWidget {
     final days = snap.dailyMinutes;
     return Semantics(
       key: const Key('pg-calendar'),
+      container: true,
       label: l.pgCalA11y(l.pgActiveDays(snap.activeDays)),
       excludeSemantics: true,
       child: Container(
@@ -657,9 +664,10 @@ class _Skeleton extends StatelessWidget {
       label: label,
       liveRegion: true,
       child: ExcludeSemantics(
-        child: Padding(
+        child: ListView(
+          physics: const NeverScrollableScrollPhysics(),
           padding: EdgeInsets.all(PanAfricanSpacing.md),
-          child: Column(children: [box(200), box(150), box(72), box(72)]),
+          children: [box(200), box(150), box(72), box(72)],
         ),
       ),
     );
