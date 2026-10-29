@@ -172,7 +172,7 @@ mobile	lib/screens/learning/tone_rhythm/tone_rhythm_trainer_screen.dart	todo
 mobile	lib/screens/lens/lens_collection_screen.dart	todo			
 mobile	lib/screens/lens/lens_screen.dart	todo			
 mobile	lib/screens/lesson/authentic_lesson_flow_screen.dart	todo			
-mobile	lib/screens/lesson/lesson_flow_screen.dart	pass	9/9/9/9/9/9/9/9/9/9 avg9.0	Duolingo (lesson-flow pack 14-23)	2026-10-29
+mobile	lib/screens/lesson/lesson_flow_screen.dart	below-bar	8/9/9/9/8/9/8/9/8/8 avg8.5 (indep review 2026-10-29: RTL bidi period, blank avatar, empty body, generic)	Duolingo (lesson-flow pack)	2026-10-29
 mobile	lib/screens/lessons/lessons_map_entry_screen.dart	todo			
 mobile	lib/screens/live_translate/live_translate_screen.dart	todo			
 mobile	lib/screens/loading/dynamic_loading_screen.dart	todo			
@@ -249,7 +249,7 @@ mobile	lib/screens/story/story_mode_screen.dart	todo
 mobile	lib/screens/subscription/family_dashboard_screen.dart	todo			
 mobile	lib/screens/subscription/subscription_screen.dart	ready-for-review C5 fix: SubscriptionTermsDisclosure: labelled rows Price/Renews/Free trial/Cancel (side-by-side, stacked at 200%/narrow), bodyMedium size, prices+trial from RevenueCat offerings (storePricesProvider, per-field fallback), bidi-isolated prices, full-width Manage button, Terms/Privacy as whole 48dp buttons (no orphan wrap); l10n en/ar/fr; goldens paywall_terms_* (prev: 8/8/9/8/8/8/8/9/7/8 avg 8.1)			2026-10-29
 mobile	lib/screens/tabs_view/home/home_tab.dart	todo			
-mobile	lib/screens/tabs_view/home/home_tab_material3.dart	pass	9/9/9/9/9/9/9/9/9/9 avg9.0	Duolingo (home pack)	2026-10-29
+mobile	lib/screens/tabs_view/home/home_tab_material3.dart	below-bar	9/9/9/9/8/9/9/9/8/9 avg8.8 (indep review 2026-10-29: globe placeholder icons, no loading/error/empty goldens)	Duolingo (home pack)	2026-10-29
 mobile	lib/screens/tabs_view/home/language_detail_screen.dart	todo			
 mobile	lib/screens/tabs_view/home/search_languages_page.dart	todo			
 mobile	lib/screens/tabs_view/home/take_quiz_screen.dart	todo			
