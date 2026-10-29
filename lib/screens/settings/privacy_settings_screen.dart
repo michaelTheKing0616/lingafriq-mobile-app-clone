@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/widgets/privacy/voice_retention_tile.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -693,6 +694,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                       semanticsLabel:
                           'Save my practice recordings. ${voiceStorageEnabled.value ? 'On' : 'Off'}.',
                     ),
+                    const VoiceRetentionTile(),
                   ],
                 ),
                 if (trainingOffered.value && voiceStorageEnabled.value) ...[
