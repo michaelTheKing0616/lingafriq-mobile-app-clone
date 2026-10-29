@@ -1640,4 +1640,134 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get profOpenLeaderboard => 'افتح لوحة المتصدّرين';
+
+  @override
+  String get pgTitle => 'تقدّمك';
+
+  @override
+  String get pgThisWeek => 'هذا الأسبوع';
+
+  @override
+  String pgMinutes(int count) {
+    return '$count د';
+  }
+
+  @override
+  String pgVsUp(int count) {
+    return '$count د أكثر من الأسبوع الماضي';
+  }
+
+  @override
+  String pgVsDown(int count) {
+    return '$count د أقل من الأسبوع الماضي';
+  }
+
+  @override
+  String get pgVsSame => 'مثل الأسبوع الماضي';
+
+  @override
+  String get pgWordsLearned => 'كلمات تعلّمتها';
+
+  @override
+  String get pgKnownWords => 'كلمات تعرفها';
+
+  @override
+  String get pgListening => 'الاستماع';
+
+  @override
+  String get pgSpeaking => 'التحدّث';
+
+  @override
+  String pgHours(String value) {
+    return '$value س';
+  }
+
+  @override
+  String get pgDaily => 'الدقائق في اليوم';
+
+  @override
+  String get pgCalendar => 'آخر 4 أسابيع';
+
+  @override
+  String pgActiveDays(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count يومًا نشطًا',
+      few: '$count أيام نشطة',
+      two: 'يومان نشطان',
+      one: 'يوم نشط واحد',
+      zero: 'لا أيام نشطة بعد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get pgActivities => 'الوقت حسب النشاط';
+
+  @override
+  String get pgActLessons => 'الدروس';
+
+  @override
+  String get pgActQuizzes => 'الاختبارات';
+
+  @override
+  String get pgActGames => 'الألعاب';
+
+  @override
+  String get pgActChat => 'تمرين المحادثة';
+
+  @override
+  String get pgActStories => 'القصص';
+
+  @override
+  String get pgActReading => 'القراءة';
+
+  @override
+  String get pgActWriting => 'الكتابة';
+
+  @override
+  String get pgActOther => 'تمارين أخرى';
+
+  @override
+  String get pgOfflineCount => 'الأيام دون اتصال تُحتسب أيضًا.';
+
+  @override
+  String get pgOffline => 'أنت غير متصل. نعرض التقدّم المحفوظ على هذا الجهاز.';
+
+  @override
+  String get pgEmptyTitle => 'تقدّمك يبدأ من هنا';
+
+  @override
+  String get pgEmptyBody =>
+      'أنهِ درسًا وستظهر هنا دقائقك وكلماتك وأيامك النشطة.';
+
+  @override
+  String get pgLoading => 'جارٍ تحميل تقدّمك…';
+
+  @override
+  String get pgErrorTitle => 'تعذّر تحميل تقدّمك';
+
+  @override
+  String get pgErrorBody =>
+      'تقدّمك محفوظ على هذا الجهاز. حاول مجددًا بعد قليل.';
+
+  @override
+  String get pgRetry => 'حاول مجددًا';
+
+  @override
+  String get pgPrivate => 'تقدّمك خاص. أنت وحدك من يراه.';
+
+  @override
+  String pgDayA11y(String day, int count) {
+    return '$day: $count دقيقة';
+  }
+
+  @override
+  String pgCalA11y(String summary) {
+    return 'تقويم النشاط: $summary';
+  }
+
+  @override
+  String get pgOverviewTitle => 'المجاميع';
 }

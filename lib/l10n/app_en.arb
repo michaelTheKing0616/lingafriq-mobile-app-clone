@@ -2158,5 +2158,183 @@
   "profOpenLeaderboard": "Open the leaderboard",
   "@profOpenLeaderboard": {
     "description": "profOpenLeaderboard"
+  },
+  "pgTitle": "Your progress",
+  "@pgTitle": {
+    "description": "pgTitle"
+  },
+  "pgThisWeek": "This week",
+  "@pgThisWeek": {
+    "description": "pgThisWeek"
+  },
+  "pgMinutes": "{count} min",
+  "@pgMinutes": {
+    "description": "pgMinutes",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pgVsUp": "{count} min more than last week",
+  "@pgVsUp": {
+    "description": "pgVsUp",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pgVsDown": "{count} min less than last week",
+  "@pgVsDown": {
+    "description": "pgVsDown",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pgVsSame": "Same as last week",
+  "@pgVsSame": {
+    "description": "pgVsSame"
+  },
+  "pgWordsLearned": "Words learned",
+  "@pgWordsLearned": {
+    "description": "pgWordsLearned"
+  },
+  "pgKnownWords": "Words you know",
+  "@pgKnownWords": {
+    "description": "pgKnownWords"
+  },
+  "pgListening": "Listening",
+  "@pgListening": {
+    "description": "pgListening"
+  },
+  "pgSpeaking": "Speaking",
+  "@pgSpeaking": {
+    "description": "pgSpeaking"
+  },
+  "pgHours": "{value} h",
+  "@pgHours": {
+    "description": "pgHours",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "pgDaily": "Minutes per day",
+  "@pgDaily": {
+    "description": "pgDaily"
+  },
+  "pgCalendar": "Last 4 weeks",
+  "@pgCalendar": {
+    "description": "pgCalendar"
+  },
+  "pgActiveDays": "{count, plural, =0{No active days yet} =1{1 active day} other{{count} active days}}",
+  "@pgActiveDays": {
+    "description": "pgActiveDays",
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "pgActivities": "Time by activity",
+  "@pgActivities": {
+    "description": "pgActivities"
+  },
+  "pgActLessons": "Lessons",
+  "@pgActLessons": {
+    "description": "pgActLessons"
+  },
+  "pgActQuizzes": "Quizzes",
+  "@pgActQuizzes": {
+    "description": "pgActQuizzes"
+  },
+  "pgActGames": "Games",
+  "@pgActGames": {
+    "description": "pgActGames"
+  },
+  "pgActChat": "Chat practice",
+  "@pgActChat": {
+    "description": "pgActChat"
+  },
+  "pgActStories": "Stories",
+  "@pgActStories": {
+    "description": "pgActStories"
+  },
+  "pgActReading": "Reading",
+  "@pgActReading": {
+    "description": "pgActReading"
+  },
+  "pgActWriting": "Writing",
+  "@pgActWriting": {
+    "description": "pgActWriting"
+  },
+  "pgActOther": "Other practice",
+  "@pgActOther": {
+    "description": "pgActOther"
+  },
+  "pgOfflineCount": "Offline days count too.",
+  "@pgOfflineCount": {
+    "description": "pgOfflineCount"
+  },
+  "pgOffline": "You're offline. Showing progress saved on this device.",
+  "@pgOffline": {
+    "description": "pgOffline"
+  },
+  "pgEmptyTitle": "Your progress starts here",
+  "@pgEmptyTitle": {
+    "description": "pgEmptyTitle"
+  },
+  "pgEmptyBody": "Finish a lesson and your minutes, words and active days will appear here.",
+  "@pgEmptyBody": {
+    "description": "pgEmptyBody"
+  },
+  "pgLoading": "Loading your progress…",
+  "@pgLoading": {
+    "description": "pgLoading"
+  },
+  "pgErrorTitle": "We couldn't load your progress",
+  "@pgErrorTitle": {
+    "description": "pgErrorTitle"
+  },
+  "pgErrorBody": "Your progress is safe on this device. Try again in a moment.",
+  "@pgErrorBody": {
+    "description": "pgErrorBody"
+  },
+  "pgRetry": "Try again",
+  "@pgRetry": {
+    "description": "pgRetry"
+  },
+  "pgPrivate": "Your progress is private. Only you can see it.",
+  "@pgPrivate": {
+    "description": "pgPrivate"
+  },
+  "pgDayA11y": "{day}: {count} minutes",
+  "@pgDayA11y": {
+    "description": "pgDayA11y",
+    "placeholders": {
+      "day": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pgCalA11y": "Activity calendar: {summary}",
+  "@pgCalA11y": {
+    "description": "pgCalA11y",
+    "placeholders": {
+      "summary": {
+        "type": "String"
+      }
+    }
+  },
+  "pgOverviewTitle": "Totals",
+  "@pgOverviewTitle": {
+    "description": "pgOverviewTitle"
   }
 }

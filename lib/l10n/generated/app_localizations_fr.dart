@@ -1647,4 +1647,133 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get profOpenLeaderboard => 'Ouvrir le classement';
+
+  @override
+  String get pgTitle => 'Ta progression';
+
+  @override
+  String get pgThisWeek => 'Cette semaine';
+
+  @override
+  String pgMinutes(int count) {
+    return '$count min';
+  }
+
+  @override
+  String pgVsUp(int count) {
+    return '$count min de plus que la semaine dernière';
+  }
+
+  @override
+  String pgVsDown(int count) {
+    return '$count min de moins que la semaine dernière';
+  }
+
+  @override
+  String get pgVsSame => 'Comme la semaine dernière';
+
+  @override
+  String get pgWordsLearned => 'Mots appris';
+
+  @override
+  String get pgKnownWords => 'Mots connus';
+
+  @override
+  String get pgListening => 'Écoute';
+
+  @override
+  String get pgSpeaking => 'Expression orale';
+
+  @override
+  String pgHours(String value) {
+    return '$value h';
+  }
+
+  @override
+  String get pgDaily => 'Minutes par jour';
+
+  @override
+  String get pgCalendar => '4 dernières semaines';
+
+  @override
+  String pgActiveDays(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count jours actifs',
+      one: '1 jour actif',
+      zero: 'Aucun jour actif pour l\'instant',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get pgActivities => 'Temps par activité';
+
+  @override
+  String get pgActLessons => 'Leçons';
+
+  @override
+  String get pgActQuizzes => 'Quiz';
+
+  @override
+  String get pgActGames => 'Jeux';
+
+  @override
+  String get pgActChat => 'Conversation';
+
+  @override
+  String get pgActStories => 'Histoires';
+
+  @override
+  String get pgActReading => 'Lecture';
+
+  @override
+  String get pgActWriting => 'Écriture';
+
+  @override
+  String get pgActOther => 'Autres exercices';
+
+  @override
+  String get pgOfflineCount => 'Les jours hors ligne comptent aussi.';
+
+  @override
+  String get pgOffline =>
+      'Tu es hors ligne. Voici la progression enregistrée sur cet appareil.';
+
+  @override
+  String get pgEmptyTitle => 'Ta progression commence ici';
+
+  @override
+  String get pgEmptyBody =>
+      'Termine une leçon : tes minutes, tes mots et tes jours actifs s\'afficheront ici.';
+
+  @override
+  String get pgLoading => 'Chargement de ta progression…';
+
+  @override
+  String get pgErrorTitle => 'Impossible de charger ta progression';
+
+  @override
+  String get pgErrorBody =>
+      'Ta progression est en sécurité sur cet appareil. Réessaie dans un instant.';
+
+  @override
+  String get pgRetry => 'Réessayer';
+
+  @override
+  String get pgPrivate => 'Ta progression est privée. Toi seul peux la voir.';
+
+  @override
+  String pgDayA11y(String day, int count) {
+    return '$day : $count minutes';
+  }
+
+  @override
+  String pgCalA11y(String summary) {
+    return 'Calendrier d\'activité : $summary';
+  }
+
+  @override
+  String get pgOverviewTitle => 'Totaux';
 }

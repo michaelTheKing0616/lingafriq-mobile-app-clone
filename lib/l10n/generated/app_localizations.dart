@@ -2945,6 +2945,216 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open the leaderboard'**
   String get profOpenLeaderboard;
+
+  /// pgTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Your progress'**
+  String get pgTitle;
+
+  /// pgThisWeek
+  ///
+  /// In en, this message translates to:
+  /// **'This week'**
+  String get pgThisWeek;
+
+  /// pgMinutes
+  ///
+  /// In en, this message translates to:
+  /// **'{count} min'**
+  String pgMinutes(int count);
+
+  /// pgVsUp
+  ///
+  /// In en, this message translates to:
+  /// **'{count} min more than last week'**
+  String pgVsUp(int count);
+
+  /// pgVsDown
+  ///
+  /// In en, this message translates to:
+  /// **'{count} min less than last week'**
+  String pgVsDown(int count);
+
+  /// pgVsSame
+  ///
+  /// In en, this message translates to:
+  /// **'Same as last week'**
+  String get pgVsSame;
+
+  /// pgWordsLearned
+  ///
+  /// In en, this message translates to:
+  /// **'Words learned'**
+  String get pgWordsLearned;
+
+  /// pgKnownWords
+  ///
+  /// In en, this message translates to:
+  /// **'Words you know'**
+  String get pgKnownWords;
+
+  /// pgListening
+  ///
+  /// In en, this message translates to:
+  /// **'Listening'**
+  String get pgListening;
+
+  /// pgSpeaking
+  ///
+  /// In en, this message translates to:
+  /// **'Speaking'**
+  String get pgSpeaking;
+
+  /// pgHours
+  ///
+  /// In en, this message translates to:
+  /// **'{value} h'**
+  String pgHours(String value);
+
+  /// pgDaily
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes per day'**
+  String get pgDaily;
+
+  /// pgCalendar
+  ///
+  /// In en, this message translates to:
+  /// **'Last 4 weeks'**
+  String get pgCalendar;
+
+  /// pgActiveDays
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No active days yet} =1{1 active day} other{{count} active days}}'**
+  String pgActiveDays(num count);
+
+  /// pgActivities
+  ///
+  /// In en, this message translates to:
+  /// **'Time by activity'**
+  String get pgActivities;
+
+  /// pgActLessons
+  ///
+  /// In en, this message translates to:
+  /// **'Lessons'**
+  String get pgActLessons;
+
+  /// pgActQuizzes
+  ///
+  /// In en, this message translates to:
+  /// **'Quizzes'**
+  String get pgActQuizzes;
+
+  /// pgActGames
+  ///
+  /// In en, this message translates to:
+  /// **'Games'**
+  String get pgActGames;
+
+  /// pgActChat
+  ///
+  /// In en, this message translates to:
+  /// **'Chat practice'**
+  String get pgActChat;
+
+  /// pgActStories
+  ///
+  /// In en, this message translates to:
+  /// **'Stories'**
+  String get pgActStories;
+
+  /// pgActReading
+  ///
+  /// In en, this message translates to:
+  /// **'Reading'**
+  String get pgActReading;
+
+  /// pgActWriting
+  ///
+  /// In en, this message translates to:
+  /// **'Writing'**
+  String get pgActWriting;
+
+  /// pgActOther
+  ///
+  /// In en, this message translates to:
+  /// **'Other practice'**
+  String get pgActOther;
+
+  /// pgOfflineCount
+  ///
+  /// In en, this message translates to:
+  /// **'Offline days count too.'**
+  String get pgOfflineCount;
+
+  /// pgOffline
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline. Showing progress saved on this device.'**
+  String get pgOffline;
+
+  /// pgEmptyTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Your progress starts here'**
+  String get pgEmptyTitle;
+
+  /// pgEmptyBody
+  ///
+  /// In en, this message translates to:
+  /// **'Finish a lesson and your minutes, words and active days will appear here.'**
+  String get pgEmptyBody;
+
+  /// pgLoading
+  ///
+  /// In en, this message translates to:
+  /// **'Loading your progress…'**
+  String get pgLoading;
+
+  /// pgErrorTitle
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t load your progress'**
+  String get pgErrorTitle;
+
+  /// pgErrorBody
+  ///
+  /// In en, this message translates to:
+  /// **'Your progress is safe on this device. Try again in a moment.'**
+  String get pgErrorBody;
+
+  /// pgRetry
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get pgRetry;
+
+  /// pgPrivate
+  ///
+  /// In en, this message translates to:
+  /// **'Your progress is private. Only you can see it.'**
+  String get pgPrivate;
+
+  /// pgDayA11y
+  ///
+  /// In en, this message translates to:
+  /// **'{day}: {count} minutes'**
+  String pgDayA11y(String day, int count);
+
+  /// pgCalA11y
+  ///
+  /// In en, this message translates to:
+  /// **'Activity calendar: {summary}'**
+  String pgCalA11y(String summary);
+
+  /// pgOverviewTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Totals'**
+  String get pgOverviewTitle;
 }
 
 class _AppLocalizationsDelegate

@@ -1635,4 +1635,133 @@ class AppLocalizationsZu extends AppLocalizations {
 
   @override
   String get profOpenLeaderboard => 'Open the leaderboard';
+
+  @override
+  String get pgTitle => 'Your progress';
+
+  @override
+  String get pgThisWeek => 'This week';
+
+  @override
+  String pgMinutes(int count) {
+    return '$count min';
+  }
+
+  @override
+  String pgVsUp(int count) {
+    return '$count min more than last week';
+  }
+
+  @override
+  String pgVsDown(int count) {
+    return '$count min less than last week';
+  }
+
+  @override
+  String get pgVsSame => 'Same as last week';
+
+  @override
+  String get pgWordsLearned => 'Words learned';
+
+  @override
+  String get pgKnownWords => 'Words you know';
+
+  @override
+  String get pgListening => 'Listening';
+
+  @override
+  String get pgSpeaking => 'Speaking';
+
+  @override
+  String pgHours(String value) {
+    return '$value h';
+  }
+
+  @override
+  String get pgDaily => 'Minutes per day';
+
+  @override
+  String get pgCalendar => 'Last 4 weeks';
+
+  @override
+  String pgActiveDays(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count active days',
+      one: '1 active day',
+      zero: 'No active days yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get pgActivities => 'Time by activity';
+
+  @override
+  String get pgActLessons => 'Lessons';
+
+  @override
+  String get pgActQuizzes => 'Quizzes';
+
+  @override
+  String get pgActGames => 'Games';
+
+  @override
+  String get pgActChat => 'Chat practice';
+
+  @override
+  String get pgActStories => 'Stories';
+
+  @override
+  String get pgActReading => 'Reading';
+
+  @override
+  String get pgActWriting => 'Writing';
+
+  @override
+  String get pgActOther => 'Other practice';
+
+  @override
+  String get pgOfflineCount => 'Offline days count too.';
+
+  @override
+  String get pgOffline =>
+      'You\'re offline. Showing progress saved on this device.';
+
+  @override
+  String get pgEmptyTitle => 'Your progress starts here';
+
+  @override
+  String get pgEmptyBody =>
+      'Finish a lesson and your minutes, words and active days will appear here.';
+
+  @override
+  String get pgLoading => 'Loading your progress…';
+
+  @override
+  String get pgErrorTitle => 'We couldn\'t load your progress';
+
+  @override
+  String get pgErrorBody =>
+      'Your progress is safe on this device. Try again in a moment.';
+
+  @override
+  String get pgRetry => 'Try again';
+
+  @override
+  String get pgPrivate => 'Your progress is private. Only you can see it.';
+
+  @override
+  String pgDayA11y(String day, int count) {
+    return '$day: $count minutes';
+  }
+
+  @override
+  String pgCalA11y(String summary) {
+    return 'Activity calendar: $summary';
+  }
+
+  @override
+  String get pgOverviewTitle => 'Totals';
 }
