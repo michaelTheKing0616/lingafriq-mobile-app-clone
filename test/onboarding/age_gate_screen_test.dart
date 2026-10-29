@@ -134,14 +134,15 @@ void main() {
         wrap(const AgeGateScreen(deviceKeyOverride: 'test-device')),
       );
       await tester.pumpAndSettle();
-      tester
-          .widget<InkWell>(
-            find.ancestor(
-              of: find.text('Select birth year'),
-              matching: find.byType(InkWell),
-            ),
-          )
-          .onTap!();
+      // A real tap: the year field must be hit-testable, not covered.
+      final field = find.ancestor(
+        of: find.text('Select birth year'),
+        matching: find.byType(InkWell),
+      );
+      expect(tester.getSize(field).height, greaterThanOrEqualTo(48));
+      await tester.ensureVisible(field);
+      await tester.pumpAndSettle();
+      await tester.tap(field);
       await tester.pumpAndSettle();
       expect(find.byType(YearPicker), findsOneWidget);
       expect(find.byType(CalendarDatePicker), findsNothing);
