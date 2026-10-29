@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lingafriq/avatars/cast/cast_contract.dart';
 import 'package:lingafriq/avatars/cast/cast_file_cache.dart';
 import 'package:lingafriq/avatars/cast/cast_session.dart';
 import 'package:lingafriq/avatars/cast/cast_stage.dart';
@@ -21,12 +21,14 @@ void main() {
   ];
   const sizes = <double>[32, 48, 64];
 
+  // rootBundle caches string futures; one settled in an earlier test's
+  // zone never resumes under this test's fake clock, so start fresh.
+  setUp(rootBundle.clear);
+
   setUpAll(() async {
     await RiveNative.init();
     CastFileCache.instance.renderer = Factory.flutter;
-    // Warm both caches in real time so each chip binds within a frame.
-    await CastFileCache.instance.load();
-    await CastContract.loadPartCatalog();
+    await CastFileCache.instance.load(); // warm the decoded .riv in real time
     goldenFileComparator = ThresholdGoldenComparator(
       Uri.parse('test/avatars/goldens/chip_golden_test.dart'),
     );
