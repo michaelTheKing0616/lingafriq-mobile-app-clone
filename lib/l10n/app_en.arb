@@ -1457,5 +1457,248 @@
         "type": "int"
       }
     }
+  },
+  "homeSearchLanguagesLabel": "Search languages",
+  "@homeSearchLanguagesLabel": {
+    "description": "Home tab"
+  },
+  "homeSearchLanguagesAction": "Search Languages",
+  "@homeSearchLanguagesAction": {
+    "description": "Home tab"
+  },
+  "homeOpenMenu": "Open menu",
+  "@homeOpenMenu": {
+    "description": "Home tab"
+  },
+  "homeMenu": "Menu",
+  "@homeMenu": {
+    "description": "Home tab"
+  },
+  "homeFeaturedLanguages": "Featured Languages",
+  "@homeFeaturedLanguages": {
+    "description": "Home tab"
+  },
+  "homeNoLanguagesTitle": "No languages yet",
+  "@homeNoLanguagesTitle": {
+    "description": "Home tab"
+  },
+  "homeNoLanguagesBody": "We're still adding languages for your region. Search to see what's available, or check back soon.",
+  "@homeNoLanguagesBody": {
+    "description": "Home tab"
+  },
+  "homeComingSoonSnack": "{name} is coming soon. We're putting the finishing touches on it.",
+  "@homeComingSoonSnack": {
+    "description": "Home tab",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeOfflineTitle": "You're offline",
+  "@homeOfflineTitle": {
+    "description": "Home tab"
+  },
+  "homeOfflineBody": "Check your connection. We'll reload your languages as soon as you're back online.",
+  "@homeOfflineBody": {
+    "description": "Home tab"
+  },
+  "homeTryAgain": "Try Again",
+  "@homeTryAgain": {
+    "description": "Home tab"
+  },
+  "homeLoadingLanguages": "Loading your languages...",
+  "@homeLoadingLanguages": {
+    "description": "Home tab"
+  },
+  "homeComingSoon": "Coming soon",
+  "@homeComingSoon": {
+    "description": "Home tab"
+  },
+  "homePercentComplete": "{percent}% Complete",
+  "@homePercentComplete": {
+    "description": "Home tab",
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "homeStartLearning": "Start Learning",
+  "@homeStartLearning": {
+    "description": "Home tab"
+  },
+  "homeCardLocked": "{name} language card, coming soon, not available yet",
+  "@homeCardLocked": {
+    "description": "Home tab",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeCardProgress": "{name} language card, {percent}% complete",
+  "@homeCardProgress": {
+    "description": "Home tab",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "homeCardStart": "{name} language card, start learning",
+  "@homeCardStart": {
+    "description": "Home tab",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeFlag": "{name} picture",
+  "@homeFlag": {
+    "description": "Home tab",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeGuardianTitle": "Waiting for a guardian",
+  "@homeGuardianTitle": {
+    "description": "Home tab"
+  },
+  "homeGuardianBody": "Lessons are open. Chat, Village, and purchases stay paused until a guardian approves.",
+  "@homeGuardianBody": {
+    "description": "Home tab"
+  },
+  "homeGuardianLabel": "Waiting for a guardian. Lessons are open, but chat, Village, and purchases stay paused until a guardian approves.",
+  "@homeGuardianLabel": {
+    "description": "Home tab"
+  },
+  "homeWelcomeBack": "Welcome back, {name}",
+  "@homeWelcomeBack": {
+    "description": "Home tab",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeLearner": "Learner",
+  "@homeLearner": {
+    "description": "Home tab"
+  },
+  "homeStreakNone": "Pick a language and start your streak today.",
+  "@homeStreakNone": {
+    "description": "Home tab"
+  },
+  "homeStreakOne": "You're one day in, keep your streak alive today.",
+  "@homeStreakOne": {
+    "description": "Home tab"
+  },
+  "homeStreakMany": "You're on a {count}-day streak, keep it going!",
+  "@homeStreakMany": {
+    "description": "Home tab",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeStreakBadge": "{count, plural, =1{1 day} other{{count} days}}",
+  "@homeStreakBadge": {
+    "description": "Home tab",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeStreakSemantics": "{count, plural, =1{1 day streak} other{{count} days streak}}",
+  "@homeStreakSemantics": {
+    "description": "Home tab",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeDailyGoals": "Daily goals",
+  "@homeDailyGoals": {
+    "description": "Home tab"
+  },
+  "homeGoalRing": "Today's goal progress: {percent}%",
+  "@homeGoalRing": {
+    "description": "Home tab",
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "homeGoalCaption": "today",
+  "@homeGoalCaption": {
+    "description": "Home tab"
+  },
+  "homeWordOfDay": "Today's word: {word}, “welcome” in {language}",
+  "@homeWordOfDay": {
+    "description": "Home tab",
+    "placeholders": {
+      "word": {
+        "type": "String"
+      },
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "homeLangHausa": "Hausa",
+  "@homeLangHausa": {
+    "description": "Home tab"
+  },
+  "homeLangPidgin": "Pidgin",
+  "@homeLangPidgin": {
+    "description": "Home tab"
+  },
+  "homeLangSwahili": "Swahili",
+  "@homeLangSwahili": {
+    "description": "Home tab"
+  },
+  "homeLangYoruba": "Yorùbá",
+  "@homeLangYoruba": {
+    "description": "Home tab"
+  },
+  "homeLangZulu": "Zulu",
+  "@homeLangZulu": {
+    "description": "Home tab"
+  },
+  "homeLangIgbo": "Igbo",
+  "@homeLangIgbo": {
+    "description": "Home tab"
+  },
+  "homeContinueTitle": "Continue {name}",
+  "@homeContinueTitle": {
+    "description": "Home tab",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeContinueLabel": "Continue {name}, {percent}% complete",
+  "@homeContinueLabel": {
+    "description": "Home tab",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "int"
+      }
+    }
   }
 }

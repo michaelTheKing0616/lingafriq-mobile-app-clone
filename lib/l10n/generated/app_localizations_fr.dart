@@ -1163,4 +1163,173 @@ class AppLocalizationsFr extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get homeSearchLanguagesLabel => 'Rechercher des langues';
+
+  @override
+  String get homeSearchLanguagesAction => 'Rechercher des langues';
+
+  @override
+  String get homeOpenMenu => 'Ouvrir le menu';
+
+  @override
+  String get homeMenu => 'Menu';
+
+  @override
+  String get homeFeaturedLanguages => 'Langues à la une';
+
+  @override
+  String get homeNoLanguagesTitle => 'Pas encore de langues';
+
+  @override
+  String get homeNoLanguagesBody =>
+      'Nous ajoutons encore des langues pour ta région. Fais une recherche pour voir ce qui est disponible, ou reviens bientôt.';
+
+  @override
+  String homeComingSoonSnack(String name) {
+    return '$name arrive bientôt. On peaufine les derniers détails.';
+  }
+
+  @override
+  String get homeOfflineTitle => 'Tu es hors ligne';
+
+  @override
+  String get homeOfflineBody =>
+      'Vérifie ta connexion. Nous rechargerons tes langues dès ton retour en ligne.';
+
+  @override
+  String get homeTryAgain => 'Réessayer';
+
+  @override
+  String get homeLoadingLanguages => 'Chargement de tes langues...';
+
+  @override
+  String get homeComingSoon => 'Bientôt disponible';
+
+  @override
+  String homePercentComplete(int percent) {
+    return '$percent % terminé';
+  }
+
+  @override
+  String get homeStartLearning => 'Commencer';
+
+  @override
+  String homeCardLocked(String name) {
+    return 'Carte de langue $name, bientôt disponible, pas encore accessible';
+  }
+
+  @override
+  String homeCardProgress(String name, int percent) {
+    return 'Carte de langue $name, $percent % terminé';
+  }
+
+  @override
+  String homeCardStart(String name) {
+    return 'Carte de langue $name, commencer';
+  }
+
+  @override
+  String homeFlag(String name) {
+    return 'Image $name';
+  }
+
+  @override
+  String get homeGuardianTitle => 'En attente d\'un tuteur';
+
+  @override
+  String get homeGuardianBody =>
+      'Les leçons sont ouvertes. Le chat, le Village et les achats restent en pause jusqu\'à l\'accord d\'un tuteur.';
+
+  @override
+  String get homeGuardianLabel =>
+      'En attente d\'un tuteur. Les leçons sont ouvertes, mais le chat, le Village et les achats restent en pause jusqu\'à son accord.';
+
+  @override
+  String homeWelcomeBack(String name) {
+    return 'Bon retour, $name';
+  }
+
+  @override
+  String get homeLearner => 'Apprenant';
+
+  @override
+  String get homeStreakNone =>
+      'Choisis une langue et lance ta série aujourd\'hui.';
+
+  @override
+  String get homeStreakOne =>
+      'Premier jour : garde ta série en vie aujourd\'hui.';
+
+  @override
+  String homeStreakMany(int count) {
+    return 'Tu es sur une série de $count jours, continue !';
+  }
+
+  @override
+  String homeStreakBadge(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count jours',
+      one: '1 jour',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeStreakSemantics(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Série de $count jours',
+      one: 'Série de 1 jour',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeDailyGoals => 'Objectifs du jour';
+
+  @override
+  String homeGoalRing(int percent) {
+    return 'Objectif du jour : $percent %';
+  }
+
+  @override
+  String get homeGoalCaption => 'aujourd\'hui';
+
+  @override
+  String homeWordOfDay(String word, String language) {
+    return 'Mot du jour : $word, « bienvenue » en $language';
+  }
+
+  @override
+  String get homeLangHausa => 'haoussa';
+
+  @override
+  String get homeLangPidgin => 'pidgin';
+
+  @override
+  String get homeLangSwahili => 'swahili';
+
+  @override
+  String get homeLangYoruba => 'yoruba';
+
+  @override
+  String get homeLangZulu => 'zoulou';
+
+  @override
+  String get homeLangIgbo => 'igbo';
+
+  @override
+  String homeContinueTitle(String name) {
+    return 'Continuer : $name';
+  }
+
+  @override
+  String homeContinueLabel(String name, int percent) {
+    return 'Continuer : $name, $percent % terminé';
+  }
 }

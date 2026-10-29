@@ -2171,6 +2171,252 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =1{1 section left} other{{count} sections left}}'**
   String lessonQuitRemaining(int count);
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Search languages'**
+  String get homeSearchLanguagesLabel;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Search Languages'**
+  String get homeSearchLanguagesAction;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Open menu'**
+  String get homeOpenMenu;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Menu'**
+  String get homeMenu;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Featured Languages'**
+  String get homeFeaturedLanguages;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'No languages yet'**
+  String get homeNoLanguagesTitle;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'We\'re still adding languages for your region. Search to see what\'s available, or check back soon.'**
+  String get homeNoLanguagesBody;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is coming soon. We\'re putting the finishing touches on it.'**
+  String homeComingSoonSnack(String name);
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline'**
+  String get homeOfflineTitle;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Check your connection. We\'ll reload your languages as soon as you\'re back online.'**
+  String get homeOfflineBody;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get homeTryAgain;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Loading your languages...'**
+  String get homeLoadingLanguages;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get homeComingSoon;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% Complete'**
+  String homePercentComplete(int percent);
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Start Learning'**
+  String get homeStartLearning;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'{name} language card, coming soon, not available yet'**
+  String homeCardLocked(String name);
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'{name} language card, {percent}% complete'**
+  String homeCardProgress(String name, int percent);
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'{name} language card, start learning'**
+  String homeCardStart(String name);
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'{name} picture'**
+  String homeFlag(String name);
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for a guardian'**
+  String get homeGuardianTitle;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Lessons are open. Chat, Village, and purchases stay paused until a guardian approves.'**
+  String get homeGuardianBody;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for a guardian. Lessons are open, but chat, Village, and purchases stay paused until a guardian approves.'**
+  String get homeGuardianLabel;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back, {name}'**
+  String homeWelcomeBack(String name);
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Learner'**
+  String get homeLearner;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a language and start your streak today.'**
+  String get homeStreakNone;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re one day in, keep your streak alive today.'**
+  String get homeStreakOne;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re on a {count}-day streak, keep it going!'**
+  String homeStreakMany(int count);
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day} other{{count} days}}'**
+  String homeStreakBadge(int count);
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day streak} other{{count} days streak}}'**
+  String homeStreakSemantics(int count);
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Daily goals'**
+  String get homeDailyGoals;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s goal progress: {percent}%'**
+  String homeGoalRing(int percent);
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'today'**
+  String get homeGoalCaption;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s word: {word}, “welcome” in {language}'**
+  String homeWordOfDay(String word, String language);
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Hausa'**
+  String get homeLangHausa;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Pidgin'**
+  String get homeLangPidgin;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Swahili'**
+  String get homeLangSwahili;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Yorùbá'**
+  String get homeLangYoruba;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Zulu'**
+  String get homeLangZulu;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Igbo'**
+  String get homeLangIgbo;
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Continue {name}'**
+  String homeContinueTitle(String name);
+
+  /// Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Continue {name}, {percent}% complete'**
+  String homeContinueLabel(String name, int percent);
 }
 
 class _AppLocalizationsDelegate

@@ -1156,4 +1156,175 @@ class AppLocalizationsAr extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get homeSearchLanguagesLabel => 'ابحث عن اللغات';
+
+  @override
+  String get homeSearchLanguagesAction => 'ابحث عن اللغات';
+
+  @override
+  String get homeOpenMenu => 'فتح القائمة';
+
+  @override
+  String get homeMenu => 'القائمة';
+
+  @override
+  String get homeFeaturedLanguages => 'لغات مميّزة';
+
+  @override
+  String get homeNoLanguagesTitle => 'لا توجد لغات بعد';
+
+  @override
+  String get homeNoLanguagesBody =>
+      'ما زلنا نضيف لغات لمنطقتك. ابحث لترى المتاح، أو عد قريبًا.';
+
+  @override
+  String homeComingSoonSnack(String name) {
+    return '$name قادمة قريبًا. نضع عليها اللمسات الأخيرة.';
+  }
+
+  @override
+  String get homeOfflineTitle => 'أنت غير متصل';
+
+  @override
+  String get homeOfflineBody =>
+      'تحقّق من اتصالك. سنعيد تحميل لغاتك فور عودتك إلى الإنترنت.';
+
+  @override
+  String get homeTryAgain => 'حاول مجددًا';
+
+  @override
+  String get homeLoadingLanguages => 'جارٍ تحميل لغاتك...';
+
+  @override
+  String get homeComingSoon => 'قريبًا';
+
+  @override
+  String homePercentComplete(int percent) {
+    return 'اكتمل $percent%';
+  }
+
+  @override
+  String get homeStartLearning => 'ابدأ التعلّم';
+
+  @override
+  String homeCardLocked(String name) {
+    return 'بطاقة لغة $name، قريبًا، غير متاحة بعد';
+  }
+
+  @override
+  String homeCardProgress(String name, int percent) {
+    return 'بطاقة لغة $name، اكتمل $percent%';
+  }
+
+  @override
+  String homeCardStart(String name) {
+    return 'بطاقة لغة $name، ابدأ التعلّم';
+  }
+
+  @override
+  String homeFlag(String name) {
+    return 'صورة $name';
+  }
+
+  @override
+  String get homeGuardianTitle => 'بانتظار وليّ الأمر';
+
+  @override
+  String get homeGuardianBody =>
+      'الدروس متاحة. تبقى الدردشة والقرية والمشتريات متوقفة حتى يوافق وليّ الأمر.';
+
+  @override
+  String get homeGuardianLabel =>
+      'بانتظار وليّ الأمر. الدروس متاحة، لكن الدردشة والقرية والمشتريات تبقى متوقفة حتى يوافق وليّ الأمر.';
+
+  @override
+  String homeWelcomeBack(String name) {
+    return 'مرحبًا بعودتك، $name';
+  }
+
+  @override
+  String get homeLearner => 'متعلّم';
+
+  @override
+  String get homeStreakNone => 'اختر لغة وابدأ سلسلتك اليوم.';
+
+  @override
+  String get homeStreakOne => 'هذا يومك الأول، حافظ على سلسلتك اليوم.';
+
+  @override
+  String homeStreakMany(int count) {
+    return 'سلسلتك $count يومًا، واصل!';
+  }
+
+  @override
+  String homeStreakBadge(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count يومًا',
+      few: '$count أيام',
+      two: 'يومان',
+      one: 'يوم واحد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeStreakSemantics(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'سلسلة $count يومًا',
+      few: 'سلسلة $count أيام',
+      two: 'سلسلة يومين',
+      one: 'سلسلة يوم واحد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeDailyGoals => 'الأهداف اليومية';
+
+  @override
+  String homeGoalRing(int percent) {
+    return 'تقدّم هدف اليوم: $percent%';
+  }
+
+  @override
+  String get homeGoalCaption => 'اليوم';
+
+  @override
+  String homeWordOfDay(String word, String language) {
+    return 'كلمة اليوم: $word، وتعني «مرحبًا» في $language';
+  }
+
+  @override
+  String get homeLangHausa => 'الهوسا';
+
+  @override
+  String get homeLangPidgin => 'البيدجن';
+
+  @override
+  String get homeLangSwahili => 'السواحيلية';
+
+  @override
+  String get homeLangYoruba => 'اليوروبا';
+
+  @override
+  String get homeLangZulu => 'الزولو';
+
+  @override
+  String get homeLangIgbo => 'الإيغبو';
+
+  @override
+  String homeContinueTitle(String name) {
+    return 'تابع $name';
+  }
+
+  @override
+  String homeContinueLabel(String name, int percent) {
+    return 'تابع $name، اكتمل $percent%';
+  }
 }

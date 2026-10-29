@@ -1153,4 +1153,172 @@ class AppLocalizationsRw extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get homeSearchLanguagesLabel => 'Search languages';
+
+  @override
+  String get homeSearchLanguagesAction => 'Search Languages';
+
+  @override
+  String get homeOpenMenu => 'Open menu';
+
+  @override
+  String get homeMenu => 'Menu';
+
+  @override
+  String get homeFeaturedLanguages => 'Featured Languages';
+
+  @override
+  String get homeNoLanguagesTitle => 'No languages yet';
+
+  @override
+  String get homeNoLanguagesBody =>
+      'We\'re still adding languages for your region. Search to see what\'s available, or check back soon.';
+
+  @override
+  String homeComingSoonSnack(String name) {
+    return '$name is coming soon. We\'re putting the finishing touches on it.';
+  }
+
+  @override
+  String get homeOfflineTitle => 'You\'re offline';
+
+  @override
+  String get homeOfflineBody =>
+      'Check your connection. We\'ll reload your languages as soon as you\'re back online.';
+
+  @override
+  String get homeTryAgain => 'Try Again';
+
+  @override
+  String get homeLoadingLanguages => 'Loading your languages...';
+
+  @override
+  String get homeComingSoon => 'Coming soon';
+
+  @override
+  String homePercentComplete(int percent) {
+    return '$percent% Complete';
+  }
+
+  @override
+  String get homeStartLearning => 'Start Learning';
+
+  @override
+  String homeCardLocked(String name) {
+    return '$name language card, coming soon, not available yet';
+  }
+
+  @override
+  String homeCardProgress(String name, int percent) {
+    return '$name language card, $percent% complete';
+  }
+
+  @override
+  String homeCardStart(String name) {
+    return '$name language card, start learning';
+  }
+
+  @override
+  String homeFlag(String name) {
+    return '$name picture';
+  }
+
+  @override
+  String get homeGuardianTitle => 'Waiting for a guardian';
+
+  @override
+  String get homeGuardianBody =>
+      'Lessons are open. Chat, Village, and purchases stay paused until a guardian approves.';
+
+  @override
+  String get homeGuardianLabel =>
+      'Waiting for a guardian. Lessons are open, but chat, Village, and purchases stay paused until a guardian approves.';
+
+  @override
+  String homeWelcomeBack(String name) {
+    return 'Welcome back, $name';
+  }
+
+  @override
+  String get homeLearner => 'Learner';
+
+  @override
+  String get homeStreakNone => 'Pick a language and start your streak today.';
+
+  @override
+  String get homeStreakOne =>
+      'You\'re one day in, keep your streak alive today.';
+
+  @override
+  String homeStreakMany(int count) {
+    return 'You\'re on a $count-day streak, keep it going!';
+  }
+
+  @override
+  String homeStreakBadge(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days',
+      one: '1 day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeStreakSemantics(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days streak',
+      one: '1 day streak',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeDailyGoals => 'Daily goals';
+
+  @override
+  String homeGoalRing(int percent) {
+    return 'Today\'s goal progress: $percent%';
+  }
+
+  @override
+  String get homeGoalCaption => 'today';
+
+  @override
+  String homeWordOfDay(String word, String language) {
+    return 'Today\'s word: $word, “welcome” in $language';
+  }
+
+  @override
+  String get homeLangHausa => 'Hausa';
+
+  @override
+  String get homeLangPidgin => 'Pidgin';
+
+  @override
+  String get homeLangSwahili => 'Swahili';
+
+  @override
+  String get homeLangYoruba => 'Yorùbá';
+
+  @override
+  String get homeLangZulu => 'Zulu';
+
+  @override
+  String get homeLangIgbo => 'Igbo';
+
+  @override
+  String homeContinueTitle(String name) {
+    return 'Continue $name';
+  }
+
+  @override
+  String homeContinueLabel(String name, int percent) {
+    return 'Continue $name, $percent% complete';
+  }
 }
