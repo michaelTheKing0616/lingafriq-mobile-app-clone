@@ -40,6 +40,12 @@ Future<Widget> wrap(
   );
 }
 
+/// Text finder that also matches copy wrapped in an LTR isolate (RTL runs).
+Finder label(String text) => find.byWidgetPredicate(
+  (w) => w is Text && (w.data == text || w.data == '\u2066$text\u2069'),
+  description: 'text "$text"',
+);
+
 Future<void> pumpOnboarding(
   WidgetTester tester, {
   bool reducedMotion = false,
@@ -87,7 +93,7 @@ Future<void> settleOnce(WidgetTester tester) async {
 
 Finder continueButtonFinder() {
   return find.ancestor(
-    of: find.text('Continue'),
+    of: label('Continue'),
     matching: find.byType(FilledButton),
   );
 }
@@ -99,8 +105,8 @@ Future<void> tapVisible(WidgetTester tester, Finder finder) async {
   await tester.pump();
 }
 
-Future<void> next(WidgetTester tester, [String label = 'Continue']) async {
-  await tapVisible(tester, find.text(label).first);
+Future<void> next(WidgetTester tester, [String text = 'Continue']) async {
+  await tapVisible(tester, label(text).first);
   await settleOnce(tester);
 }
 
@@ -110,24 +116,24 @@ Future<void> advanceToFirstWin(
   String language = 'Yoruba',
 }) async {
   await next(tester, 'Get started');
-  await tapVisible(tester, find.text(language));
+  await tapVisible(tester, label(language));
   await next(tester);
-  await tapVisible(tester, find.text('Talk to family'));
+  await tapVisible(tester, label('Talk to family'));
   await next(tester);
-  await tapVisible(tester, find.text("I'm new"));
+  await tapVisible(tester, label("I'm new"));
   await next(tester);
-  await tapVisible(tester, find.text('Steady'));
+  await tapVisible(tester, label('Steady'));
   await next(tester);
 }
 
 Future<void> completeFirstWin(WidgetTester tester, {bool speak = true}) async {
-  await tapVisible(tester, find.text('Play greeting'));
+  await tapVisible(tester, label('Play greeting'));
   await tester.pump(const Duration(milliseconds: 50));
   await next(tester);
-  await tapVisible(tester, find.text('Báwo ni'));
+  await tapVisible(tester, label('Báwo ni'));
   await next(tester);
   if (speak) {
-    await tapVisible(tester, find.text('I said it'));
+    await tapVisible(tester, label('I said it'));
     await next(tester, 'Finish lesson');
   } else {
     await next(tester, "Can't speak now");
@@ -135,7 +141,7 @@ Future<void> completeFirstWin(WidgetTester tester, {bool speak = true}) async {
 }
 
 Future<void> enterBirthYear(WidgetTester tester, int age) async {
-  await tapVisible(tester, find.text('Type it instead'));
+  await tapVisible(tester, label('Type it instead'));
   await tester.pump();
   await tester.enterText(
     find.byType(TextField).first,
@@ -152,9 +158,9 @@ Future<void> advanceToSaveProgress(WidgetTester tester, {int age = 25}) async {
   await enterBirthYear(tester, age);
   await next(tester);
   await next(tester, 'Not now');
-  await tapVisible(tester, find.text('Listening'));
+  await tapVisible(tester, label('Listening'));
   await next(tester);
-  await tapVisible(tester, find.text('Friendly'));
+  await tapVisible(tester, label('Friendly'));
   await next(tester);
   await next(tester, 'Skip for now');
 }
@@ -190,12 +196,12 @@ void main() {
       await pumpOnboarding(tester);
       await settleOnce(tester);
 
-      expect(find.text('LingAfriq'), findsOneWidget);
+      expect(label('LingAfriq'), findsOneWidget);
       expect(find.textContaining('gets you speaking'), findsOneWidget);
-      expect(find.text('Works offline · about 2 MB per unit'), findsOneWidget);
-      expect(find.text('Get started'), findsOneWidget);
-      expect(find.text('I already have an account'), findsOneWidget);
-      expect(find.text('Skip'), findsNothing);
+      expect(label('Works offline · about 2 MB per unit'), findsOneWidget);
+      expect(label('Get started'), findsOneWidget);
+      expect(label('I already have an account'), findsOneWidget);
+      expect(label('Skip'), findsNothing);
     });
 
     testWidgets(
@@ -204,12 +210,12 @@ void main() {
         await pumpOnboarding(tester);
         await settleOnce(tester);
 
-        await tapVisible(tester, find.text('Get started'));
+        await tapVisible(tester, label('Get started'));
         await settleOnce(tester);
 
-        expect(find.text('What do you want to learn?'), findsOneWidget);
-        expect(find.text('Yoruba'), findsOneWidget);
-        expect(find.text('West Africa'), findsOneWidget);
+        expect(label('What do you want to learn?'), findsOneWidget);
+        expect(label('Yoruba'), findsOneWidget);
+        expect(label('West Africa'), findsOneWidget);
 
         final continueButton = tester.widget<FilledButton>(
           continueButtonFinder(),
@@ -221,13 +227,13 @@ void main() {
     testWidgets('selecting a language enables Continue', (tester) async {
       await pumpOnboarding(tester);
       await settleOnce(tester);
-      await tapVisible(tester, find.text('Get started'));
+      await tapVisible(tester, label('Get started'));
       await settleOnce(tester);
 
       var continueButton = tester.widget<FilledButton>(continueButtonFinder());
       expect(continueButton.onPressed, isNull);
 
-      await tapVisible(tester, find.text('Yoruba'));
+      await tapVisible(tester, label('Yoruba'));
 
       continueButton = tester.widget<FilledButton>(continueButtonFinder());
       expect(continueButton.onPressed, isNotNull);
@@ -236,24 +242,24 @@ void main() {
     testWidgets('language search empty state is announced', (tester) async {
       await pumpOnboarding(tester);
       await settleOnce(tester);
-      await tapVisible(tester, find.text('Get started'));
+      await tapVisible(tester, label('Get started'));
       await settleOnce(tester);
 
       await tester.enterText(find.byType(TextField).first, 'zzzz-not-a-lang');
       await tester.pump();
 
-      expect(find.text('No languages match that search.'), findsOneWidget);
+      expect(label('No languages match that search.'), findsOneWidget);
     });
 
     testWidgets('selected language exposes selected semantics', (tester) async {
       final handle = tester.ensureSemantics();
       await pumpOnboarding(tester);
       await settleOnce(tester);
-      await tapVisible(tester, find.text('Get started'));
+      await tapVisible(tester, label('Get started'));
       await settleOnce(tester);
 
       expect(find.bySemanticsLabel(RegExp(r'^Yoruba,')), findsOneWidget);
-      await tapVisible(tester, find.text('Yoruba'));
+      await tapVisible(tester, label('Yoruba'));
       expect(
         tester.getSemantics(find.bySemanticsLabel(RegExp(r'^Yoruba,'))),
         containsSemantics(isSelected: true),
@@ -267,7 +273,7 @@ void main() {
       final handle = tester.ensureSemantics();
       await pumpOnboarding(tester);
       await settleOnce(tester);
-      await tapVisible(tester, find.text('Get started'));
+      await tapVisible(tester, label('Get started'));
       await settleOnce(tester);
 
       expect(
@@ -288,7 +294,7 @@ void main() {
         final fadeTransition = tester.widget<FadeTransition>(
           find
               .ancestor(
-                of: find.text('Welcome to'),
+                of: label('Welcome to'),
                 matching: find.byType(FadeTransition),
               )
               .first,
@@ -307,7 +313,7 @@ void main() {
         final fadeTransition = tester.widget<FadeTransition>(
           find
               .ancestor(
-                of: find.text('Welcome to'),
+                of: label('Welcome to'),
                 matching: find.byType(FadeTransition),
               )
               .first,
@@ -322,16 +328,16 @@ void main() {
       await pumpOnboarding(tester);
       await settleOnce(tester);
       await next(tester, 'Get started');
-      await tapVisible(tester, find.text('Yoruba'));
+      await tapVisible(tester, label('Yoruba'));
       await next(tester);
 
-      expect(find.text('Why are you learning Yoruba?'), findsOneWidget);
+      expect(label('Why are you learning Yoruba?'), findsOneWidget);
       expect(
         tester.widget<FilledButton>(continueButtonFinder()).onPressed,
         isNull,
       );
-      await tapVisible(tester, find.text('Talk to family'));
-      await tapVisible(tester, find.text('Travel'));
+      await tapVisible(tester, label('Talk to family'));
+      await tapVisible(tester, label('Travel'));
       expect(
         tester.widget<FilledButton>(continueButtonFinder()).onPressed,
         isNotNull,
@@ -342,19 +348,19 @@ void main() {
       await pumpOnboarding(tester);
       await settleOnce(tester);
       await next(tester, 'Get started');
-      await tapVisible(tester, find.text('Yoruba'));
+      await tapVisible(tester, label('Yoruba'));
       await next(tester);
-      await tapVisible(tester, find.text('Talk to family'));
+      await tapVisible(tester, label('Talk to family'));
       await next(tester);
-      await tapVisible(tester, find.text("I'm new"));
+      await tapVisible(tester, label("I'm new"));
       await next(tester);
 
-      expect(find.text('How much time a day feels right?'), findsOneWidget);
+      expect(label('How much time a day feels right?'), findsOneWidget);
       expect(
         tester.widget<FilledButton>(continueButtonFinder()).onPressed,
         isNull,
       );
-      await tapVisible(tester, find.text('Steady'));
+      await tapVisible(tester, label('Steady'));
       expect(
         tester.widget<FilledButton>(continueButtonFinder()).onPressed,
         isNotNull,
@@ -369,9 +375,9 @@ void main() {
       await advanceToFirstWin(tester);
       await completeFirstWin(tester);
 
-      expect(find.text('You did it!'), findsOneWidget);
-      expect(find.text('15'), findsOneWidget);
-      expect(find.text('New word'), findsOneWidget);
+      expect(label('You did it!'), findsOneWidget);
+      expect(label('15'), findsOneWidget);
+      expect(label('New word'), findsOneWidget);
     });
 
     testWidgets("Can't speak now finishes the lesson without penalty", (
@@ -382,8 +388,8 @@ void main() {
       await advanceToFirstWin(tester);
       await completeFirstWin(tester, speak: false);
 
-      expect(find.text('You did it!'), findsOneWidget);
-      expect(find.text('10'), findsOneWidget);
+      expect(label('You did it!'), findsOneWidget);
+      expect(label('10'), findsOneWidget);
     });
 
     testWidgets('birth-year: wheel or typed field, never both', (tester) async {
@@ -395,13 +401,13 @@ void main() {
 
       expect(find.byType(ListWheelScrollView), findsOneWidget);
       expect(find.byType(TextField), findsNothing);
-      await tapVisible(tester, find.text('Type it instead'));
+      await tapVisible(tester, label('Type it instead'));
       await tester.pump();
       expect(find.byType(ListWheelScrollView), findsNothing);
       expect(find.byType(TextField), findsOneWidget);
       // The typed field is hit-testable, not covered by the wheel.
       await tester.tap(find.byType(TextField), warnIfMissed: true);
-      await tapVisible(tester, find.text('Use the year wheel'));
+      await tapVisible(tester, label('Use the year wheel'));
       await tester.pump();
       expect(find.byType(ListWheelScrollView), findsOneWidget);
       expect(find.byType(TextField), findsNothing);
@@ -417,17 +423,17 @@ void main() {
         await completeFirstWin(tester);
         await next(tester, 'Keep going');
 
-        expect(find.text('What year were you born?'), findsOneWidget);
+        expect(label('What year were you born?'), findsOneWidget);
         expect(
           tester.widget<FilledButton>(continueButtonFinder()).onPressed,
           isNull,
         );
-        expect(find.text('Ask a parent'), findsNothing);
+        expect(label('Ask a parent'), findsNothing);
 
         await enterBirthYear(tester, 10);
-        expect(find.text('Ask a parent'), findsOneWidget);
+        expect(label('Ask a parent'), findsOneWidget);
         expect(
-          find.text('Keep learning. My parent will add it later'),
+          label('Keep learning. My parent will add it later'),
           findsOneWidget,
         );
       },
@@ -459,11 +465,11 @@ void main() {
       await completeFirstWin(tester);
       await advanceToSaveProgress(tester);
 
-      expect(find.text('Save your progress?'), findsOneWidget);
-      expect(find.text('Continue with Google'), findsOneWidget);
-      expect(find.text('Continue with Apple'), findsOneWidget);
-      expect(find.text('Sign up with email'), findsOneWidget);
-      expect(find.text('I already have an account'), findsOneWidget);
+      expect(label('Save your progress?'), findsOneWidget);
+      expect(label('Continue with Google'), findsOneWidget);
+      expect(label('Continue with Apple'), findsOneWidget);
+      expect(label('Sign up with email'), findsOneWidget);
+      expect(label('I already have an account'), findsOneWidget);
 
       await next(tester, 'Later. My answers stay on this phone');
       final prefs = await SharedPreferences.getInstance();
@@ -482,8 +488,8 @@ void main() {
       await next(tester, 'Get started');
 
       expect(find.textContaining("You're offline"), findsOneWidget);
-      expect(find.text('Retry'), findsOneWidget);
-      await tapVisible(tester, find.text('Yoruba'));
+      expect(label('Retry'), findsOneWidget);
+      await tapVisible(tester, label('Yoruba'));
       expect(
         tester.widget<FilledButton>(continueButtonFinder()).onPressed,
         isNotNull,
@@ -507,7 +513,7 @@ void main() {
         expect(tester.takeException(), isNull);
         await advanceToSaveProgress(tester);
         expect(tester.takeException(), isNull);
-        expect(find.text('Save your progress?'), findsOneWidget);
+        expect(label('Save your progress?'), findsOneWidget);
       });
     }
 
@@ -518,9 +524,9 @@ void main() {
       await settleOnce(tester);
 
       expect(tester.takeException(), isNull);
-      expect(find.text('Get started'), findsOneWidget);
-      expect(find.text('LingAfriq'), findsOneWidget);
-      expect(find.text('Works offline · about 2 MB per unit'), findsOneWidget);
+      expect(label('Get started'), findsOneWidget);
+      expect(label('LingAfriq'), findsOneWidget);
+      expect(label('Works offline · about 2 MB per unit'), findsOneWidget);
     });
 
     testWidgets('first-win Continue stays disabled until hear action', (
@@ -530,7 +536,7 @@ void main() {
       await settleOnce(tester);
       await advanceToFirstWin(tester);
 
-      expect(find.text('Play greeting'), findsOneWidget);
+      expect(label('Play greeting'), findsOneWidget);
       final continueBtn = tester.widget<FilledButton>(continueButtonFinder());
       expect(continueBtn.onPressed, isNull);
     });
@@ -542,12 +548,12 @@ void main() {
       await settleOnce(tester);
       await advanceToFirstWin(tester);
 
-      await tester.tap(find.text('Play greeting'));
+      await tester.tap(label('Play greeting'));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 50));
 
       // In tests the audio pipeline is unavailable — must disclose that.
-      expect(find.text('Audio unavailable'), findsOneWidget);
+      expect(label('Audio unavailable'), findsOneWidget);
       expect(find.textContaining('could not play sound'), findsOneWidget);
 
       final continueBtn = tester.widget<FilledButton>(continueButtonFinder());
