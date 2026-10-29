@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/screens/onboarding/age_gate_screen.dart';
@@ -9,6 +11,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   setUpAll(() async {
+    GoogleFonts.config.allowRuntimeFetching = false;
     goldenFileComparator = ThresholdGoldenComparator(
       Uri.parse('test/onboarding/age_gate_golden_test.dart'),
     );
@@ -20,9 +23,12 @@ void main() {
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
     await tester.pumpWidget(
-      const ProviderScope(
-        child: MaterialApp(
-          home: AgeGateScreen(deviceKeyOverride: 'golden-device'),
+      ScreenUtilInit(
+        designSize: const Size(390, 844),
+        builder: (_, __) => const ProviderScope(
+          child: MaterialApp(
+            home: AgeGateScreen(deviceKeyOverride: 'golden-device'),
+          ),
         ),
       ),
     );

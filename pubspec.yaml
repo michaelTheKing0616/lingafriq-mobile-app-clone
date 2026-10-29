@@ -200,6 +200,7 @@ flutter:
     - assets/images/
     - assets/alphabets/
     - assets/fonts/
+    - assets/google_fonts/
     - assets/data/audio_manifest.json
     - assets/data/sound/clicks_vowels.json
     - assets/data/tone/minimal_pairs.json
