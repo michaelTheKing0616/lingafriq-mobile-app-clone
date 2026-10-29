@@ -1,126 +1,201 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/screens/lesson/widgets/lesson_complete_widget.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 
-Widget _wrap(Widget child, {bool reducedMotion = false}) {
-  return ScreenUtilInit(
-    designSize: const Size(390, 844),
-    builder: (_, __) => MediaQuery(
-      data: MediaQueryData(disableAnimations: reducedMotion),
-      child: MaterialApp(home: Scaffold(body: child)),
-    ),
-  );
+import '../../compliance/golden_kit.dart';
+
+double _contrast(Color a, Color b) {
+  final la = a.computeLuminance(), lb = b.computeLuminance();
+  final hi = la > lb ? la : lb, lo = la > lb ? lb : la;
+  return (hi + 0.05) / (lo + 0.05);
 }
 
-Future<void> _setPhoneSurface(WidgetTester tester) async {
-  await tester.binding.setSurfaceSize(const Size(390, 1600));
-  tester.view.physicalSize = const Size(390, 1600);
-  tester.view.devicePixelRatio = 1.0;
+Widget _screen({
+  int xp = 42,
+  double accuracy = 90,
+  int questions = 6,
+  bool online = true,
+  bool child = false,
+  int bestCombo = 5,
+  int comboBonus = 10,
+  VoidCallback? onContinue,
+  VoidCallback? onShare,
+}) => Scaffold(
+  backgroundColor: PanAfricanColors.backgroundLight,
+  body: LessonCompleteWidget(
+    totalXP: xp,
+    accuracy: accuracy,
+    timeTaken: 125,
+    bestCombo: bestCombo,
+    comboBonus: comboBonus,
+    totalQuestions: questions,
+    online: online,
+    childMode: child,
+    onContinue: onContinue ?? () {},
+    onShare: onShare ?? () {},
+  ),
+);
+
+Future<void> _pump(WidgetTester t, GoldenVariant v, Widget w) async {
+  await pumpVariant(t, v, w);
+  await t.runAsync(() async {
+    for (final a in kLessonCompleteCast) {
+      await precacheImage(AssetImage(a), t.element(find.byType(Scaffold)));
+    }
+  });
+  await t.pumpAndSettle();
 }
 
 void main() {
-  group('LessonCompleteWidget', () {
-    testWidgets('animated path shows the celebration and XP, then reveals full stats on tap', (
-      tester,
-    ) async {
-      await _setPhoneSurface(tester);
-      addTearDown(() => tester.view.resetPhysicalSize());
-      addTearDown(() => tester.view.resetDevicePixelRatio());
+  setUpAll(
+    () => loadComplianceFonts(
+      'test/screens/lesson/lesson_complete_widget_test.dart',
+    ),
+  );
 
-      var continued = false;
-      await tester.pumpWidget(
-        _wrap(
-          LessonCompleteWidget(
-            totalXP: 42,
-            accuracy: 90,
-            timeTaken: 125,
-            bestCombo: 5,
-            comboBonus: 10,
-            onContinue: () => continued = true,
-          ),
-        ),
+  for (final v in goldenVariants) {
+    testWidgets('golden ${v.name}', (t) async {
+      await _pump(t, v, _screen());
+      expectNoLayoutErrors(t);
+      await expectLater(
+        find.byType(Scaffold),
+        matchesGoldenFile('goldens/lesson_complete_${v.name}.png'),
       );
-      await tester.pump(const Duration(milliseconds: 500));
-
-      expect(find.textContaining('Lesson Complete!'), findsOneWidget);
-      expect(find.textContaining('+42'), findsOneWidget);
-
-      // Let the entrance animations (pops) play out. The confetti layer
-      // loops forever by design, so we deliberately avoid pumpAndSettle()
-      // here -- it would never terminate while confetti is still ticking.
-      await tester.pump(const Duration(seconds: 2));
-      await tester.tap(find.text('Continue'));
-      await tester.pump(); // Start the bottom-sheet route transition.
-      await tester.pump(const Duration(milliseconds: 500)); // Let it settle.
-
-      expect(find.textContaining('XP Earned'), findsOneWidget);
-      expect(find.textContaining('Accuracy'), findsOneWidget);
-      expect(continued, isFalse); // Tapping "Continue" opens the sheet first.
-
-      // Two "Continue" buttons now exist in the tree (the celebration layer
-      // behind, and the stats sheet on top) -- target the sheet's.
-      await tester.tap(find.text('Continue').last);
-      await tester.pump();
-      expect(continued, isTrue);
     });
+  }
 
-    testWidgets('reduced-motion path renders the full summary statically, with no tap required', (
-      tester,
-    ) async {
-      await _setPhoneSurface(tester);
-      addTearDown(() => tester.view.resetPhysicalSize());
-      addTearDown(() => tester.view.resetDevicePixelRatio());
+  testWidgets('golden fr + tablet + states', (t) async {
+    await _pump(
+      t,
+      const GoldenVariant('fr_390', Size(390, 844), locale: Locale('fr')),
+      _screen(),
+    );
+    expect(find.text('Leçon terminée !'), findsOneWidget);
+    await expectLater(
+      find.byType(Scaffold),
+      matchesGoldenFile('goldens/lesson_complete_fr_390.png'),
+    );
+    await _pump(t, const GoldenVariant('tablet', Size(820, 1180)), _screen());
+    expectNoLayoutErrors(t);
+    expect(
+      t.getSize(find.byKey(const Key('lc-continue'))).width,
+      lessThan(520),
+    );
+    await expectLater(
+      find.byType(Scaffold),
+      matchesGoldenFile('goldens/lesson_complete_tablet_820.png'),
+    );
+    await _pump(t, goldenVariants[0], _screen(online: false, child: true));
+    await expectLater(
+      find.byType(Scaffold),
+      matchesGoldenFile('goldens/lesson_complete_offline_child.png'),
+    );
+    await _pump(
+      t,
+      goldenVariants[3],
+      _screen(questions: 0, accuracy: 0, bestCombo: 0, comboBonus: 0),
+    );
+    expectNoLayoutErrors(t);
+    await expectLater(
+      find.byType(Scaffold),
+      matchesGoldenFile('goldens/lesson_complete_teach_only_320.png'),
+    );
+  });
 
-      await tester.pumpWidget(
-        _wrap(
-          LessonCompleteWidget(
-            totalXP: 42,
-            accuracy: 90,
-            timeTaken: 125,
-            bestCombo: 5,
-            comboBonus: 10,
-            onContinue: () {},
-          ),
-          reducedMotion: true,
-        ),
+  testWidgets('Continue fires straight away (no extra sheet step)', (t) async {
+    var continued = 0;
+    await _pump(t, goldenVariants[0], _screen(onContinue: () => continued++));
+    await t.tap(find.byKey(const Key('lc-continue')));
+    await t.pump();
+    expect(continued, 1);
+  });
+
+  testWidgets('stats, run chip and combo bonus are all shown', (t) async {
+    await _pump(t, goldenVariants[0], _screen());
+    expect(find.text('Lesson Complete!'), findsOneWidget);
+    expect(find.text('+42'), findsOneWidget);
+    expect(find.text('90%'), findsOneWidget);
+    expect(find.text('2m 5s'), findsOneWidget);
+    expect(find.text('Best run: 5 in a row'), findsOneWidget);
+    expect(find.text('Combo bonus +10 XP'), findsOneWidget);
+    expect(
+      find.text("You're building real conversational confidence."),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('teach-only lesson says "Not quizzed", never 0%', (t) async {
+    await _pump(t, goldenVariants[0], _screen(questions: 0, accuracy: 0));
+    expect(find.text('NOT QUIZZED'), findsNothing);
+    expect(find.text('Not quizzed'), findsOneWidget);
+    expect(find.text('0%'), findsNothing);
+  });
+
+  testWidgets('child mode hides Share; offline pauses it and says why', (
+    t,
+  ) async {
+    var shared = 0;
+    await _pump(t, goldenVariants[0], _screen(child: true));
+    expect(find.byKey(const Key('lc-share')), findsNothing);
+    expect(find.byKey(const Key('lc-continue')), findsOneWidget);
+
+    await _pump(
+      t,
+      goldenVariants[0],
+      _screen(online: false, onShare: () => shared++),
+    );
+    expect(find.byKey(const Key('lc-offline')), findsOneWidget);
+    await t.tap(find.byKey(const Key('lc-share')));
+    await t.pump();
+    expect(shared, 0);
+
+    await _pump(t, goldenVariants[0], _screen(onShare: () => shared++));
+    expect(find.byKey(const Key('lc-offline')), findsNothing);
+    await t.tap(find.byKey(const Key('lc-share')));
+    expect(shared, 1);
+  });
+
+  testWidgets('a11y: labels, 48dp targets, one summary, RTL arrow', (t) async {
+    final h = t.ensureSemantics();
+    await _pump(t, goldenVariants[1], _screen());
+    expect(find.bySemanticsLabel('المتابعة إلى الدرس التالي'), findsOneWidget);
+    expect(find.bySemanticsLabel('شارك نتيجتك'), findsOneWidget);
+    expect(find.bySemanticsLabel(RegExp('^اكتمل الدرس\\. 42')), findsOneWidget);
+    expect(find.byIcon(Icons.arrow_back_rounded), findsOneWidget);
+    for (final k in ['lc-continue', 'lc-share']) {
+      expect(t.getSize(find.byKey(Key(k))).height, greaterThanOrEqualTo(48));
+    }
+    await expectLater(t, meetsGuideline(androidTapTargetGuideline));
+    await expectLater(t, meetsGuideline(textContrastGuideline));
+    h.dispose();
+  });
+
+  test('tile header bands carry white labels at AA', () {
+    for (final c in [
+      kLessonResultXp,
+      kLessonResultAccuracy,
+      kLessonResultTime,
+    ]) {
+      expect(
+        _contrast(c, Colors.white),
+        greaterThanOrEqualTo(4.5),
+        reason: '$c',
       );
-      await tester.pumpAndSettle();
+    }
+  });
 
-      // No celebration confetti/elastic pops, but the same information is
-      // immediately visible without an extra tap.
-      expect(find.textContaining('Lesson Complete!'), findsOneWidget);
-      expect(find.textContaining('XP Earned'), findsOneWidget);
-      expect(find.textContaining('Accuracy'), findsOneWidget);
-      expect(find.text('Combo Bonus: +10 XP'), findsOneWidget);
-    });
-
-    testWidgets('Continue and Share actions are accessible and Continue mirrors for RTL', (
-      tester,
-    ) async {
-      await _setPhoneSurface(tester);
-      addTearDown(() => tester.view.resetPhysicalSize());
-      addTearDown(() => tester.view.resetDevicePixelRatio());
-      final handle = tester.ensureSemantics();
-
-      await tester.pumpWidget(
-        _wrap(
-          LessonCompleteWidget(
-            totalXP: 10,
-            accuracy: 80,
-            timeTaken: 60,
-            onContinue: () {},
-            onShare: () {},
-          ),
-          reducedMotion: true,
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      expect(find.bySemanticsLabel('Continue to next lesson'), findsOneWidget);
-      expect(find.bySemanticsLabel('Share your result'), findsOneWidget);
-
-      handle.dispose();
-    });
+  testWidgets('reduced motion renders everything with no animation', (t) async {
+    await pumpVariant(
+      t,
+      goldenVariants[0],
+      MediaQuery(
+        data: const MediaQueryData(disableAnimations: true),
+        child: _screen(),
+      ),
+    );
+    await t.pump();
+    expect(find.byKey(const Key('lc-tile-2')), findsOneWidget);
+    expect(t.binding.hasScheduledFrame, isFalse);
   });
 }

@@ -1,3 +1,5 @@
+import 'package:lingafriq/providers/age_policy_provider.dart';
+import 'package:lingafriq/services/connectivity_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,6 +35,12 @@ const List<Color> kLessonHeaderGradient = [
   Color(0xFFA3322B),
   Color(0xFF8C5A00),
 ];
+
+/// Connectivity for the completion screen's offline note (overridable in
+/// tests). Never blocks: progress is already saved locally.
+final lessonOnlineProvider = FutureProvider.autoDispose<bool>(
+  (ref) => ConnectivityService.hasInternet(),
+);
 
 class LessonFlowScreen extends HookConsumerWidget {
   final int lessonId;
@@ -311,6 +319,11 @@ class _LessonFlowBody extends HookConsumerWidget {
             accuracy: lessonState.accuracy,
             timeTaken: lessonState.timeTaken.inSeconds,
             bestCombo: comboTracker.maxCombo,
+            totalQuestions: lessonState.totalQuestions,
+            online: ref.watch(lessonOnlineProvider).value ?? true,
+            childMode:
+                ref.watch(agePolicyProvider).value?.socialSurfacesBlocked ??
+                false,
             onContinue: exitLesson,
             onShare: () {
               Share.share(

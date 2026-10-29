@@ -1446,4 +1446,81 @@ class AppLocalizationsSw extends AppLocalizations {
   String lessonAvatarLabel(String points) {
     return 'Your profile, $points';
   }
+
+  @override
+  String get lcMsgGreat => 'You\'re building real conversational confidence.';
+
+  @override
+  String get lcMsgGood => 'That lesson moved you forward. Well done.';
+
+  @override
+  String get lcMsgSteady => 'Every session strengthens memory. Keep going.';
+
+  @override
+  String get lcMsgReview => 'A short review next time will lock these in.';
+
+  @override
+  String get lcMsgNoQuiz =>
+      'You met new phrases today. They\'ll come back in your next quiz.';
+
+  @override
+  String get lcStatXp => 'XP earned';
+
+  @override
+  String get lcStatAccuracy => 'Accuracy';
+
+  @override
+  String get lcStatTime => 'Time';
+
+  @override
+  String get lcNoQuizValue => 'Not quizzed';
+
+  @override
+  String lcPercent(int value) {
+    return '$value%';
+  }
+
+  @override
+  String lcTimeMinSec(int m, int s) {
+    return '${m}m ${s}s';
+  }
+
+  @override
+  String lcTimeSec(int s) {
+    return '${s}s';
+  }
+
+  @override
+  String lcBestRun(int count) {
+    return 'Best run: $count in a row';
+  }
+
+  @override
+  String lcComboBonus(int xp) {
+    return 'Combo bonus +$xp XP';
+  }
+
+  @override
+  String get lcContinue => 'Continue';
+
+  @override
+  String get lcShare => 'Share';
+
+  @override
+  String get lcContinueA11y => 'Continue to next lesson';
+
+  @override
+  String get lcShareA11y => 'Share your result';
+
+  @override
+  String get lcOffline =>
+      'You\'re offline. Your progress is saved on this phone, and sharing will be back when you reconnect.';
+
+  @override
+  String lcSummaryA11y(int xp, String accuracy, String time) {
+    return 'Lesson complete. $xp XP earned. Accuracy $accuracy. Time $time.';
+  }
+
+  @override
+  String get lcHeroA11y => 'Amara and Kofi cheering';
 }

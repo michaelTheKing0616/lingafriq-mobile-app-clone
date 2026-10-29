@@ -1887,5 +1887,128 @@
         "type": "String"
       }
     }
+  },
+  "lcMsgGreat": "You're building real conversational confidence.",
+  "@lcMsgGreat": {
+    "description": "lcMsgGreat"
+  },
+  "lcMsgGood": "That lesson moved you forward. Well done.",
+  "@lcMsgGood": {
+    "description": "lcMsgGood"
+  },
+  "lcMsgSteady": "Every session strengthens memory. Keep going.",
+  "@lcMsgSteady": {
+    "description": "lcMsgSteady"
+  },
+  "lcMsgReview": "A short review next time will lock these in.",
+  "@lcMsgReview": {
+    "description": "lcMsgReview"
+  },
+  "lcMsgNoQuiz": "You met new phrases today. They'll come back in your next quiz.",
+  "@lcMsgNoQuiz": {
+    "description": "lcMsgNoQuiz"
+  },
+  "lcStatXp": "XP earned",
+  "@lcStatXp": {
+    "description": "lcStatXp"
+  },
+  "lcStatAccuracy": "Accuracy",
+  "@lcStatAccuracy": {
+    "description": "lcStatAccuracy"
+  },
+  "lcStatTime": "Time",
+  "@lcStatTime": {
+    "description": "lcStatTime"
+  },
+  "lcNoQuizValue": "Not quizzed",
+  "@lcNoQuizValue": {
+    "description": "lcNoQuizValue"
+  },
+  "lcPercent": "{value}%",
+  "@lcPercent": {
+    "description": "lcPercent",
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "lcTimeMinSec": "{m}m {s}s",
+  "@lcTimeMinSec": {
+    "description": "lcTimeMinSec",
+    "placeholders": {
+      "m": {
+        "type": "int"
+      },
+      "s": {
+        "type": "int"
+      }
+    }
+  },
+  "lcTimeSec": "{s}s",
+  "@lcTimeSec": {
+    "description": "lcTimeSec",
+    "placeholders": {
+      "s": {
+        "type": "int"
+      }
+    }
+  },
+  "lcBestRun": "Best run: {count} in a row",
+  "@lcBestRun": {
+    "description": "lcBestRun",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "lcComboBonus": "Combo bonus +{xp} XP",
+  "@lcComboBonus": {
+    "description": "lcComboBonus",
+    "placeholders": {
+      "xp": {
+        "type": "int"
+      }
+    }
+  },
+  "lcContinue": "Continue",
+  "@lcContinue": {
+    "description": "lcContinue"
+  },
+  "lcShare": "Share",
+  "@lcShare": {
+    "description": "lcShare"
+  },
+  "lcContinueA11y": "Continue to next lesson",
+  "@lcContinueA11y": {
+    "description": "lcContinueA11y"
+  },
+  "lcShareA11y": "Share your result",
+  "@lcShareA11y": {
+    "description": "lcShareA11y"
+  },
+  "lcOffline": "You're offline. Your progress is saved on this phone, and sharing will be back when you reconnect.",
+  "@lcOffline": {
+    "description": "lcOffline"
+  },
+  "lcSummaryA11y": "Lesson complete. {xp} XP earned. Accuracy {accuracy}. Time {time}.",
+  "@lcSummaryA11y": {
+    "description": "lcSummaryA11y",
+    "placeholders": {
+      "xp": {
+        "type": "int"
+      },
+      "accuracy": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "lcHeroA11y": "Amara and Kofi cheering",
+  "@lcHeroA11y": {
+    "description": "lcHeroA11y"
   }
 }

@@ -2627,6 +2627,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your profile, {points}'**
   String lessonAvatarLabel(String points);
+
+  /// lcMsgGreat
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re building real conversational confidence.'**
+  String get lcMsgGreat;
+
+  /// lcMsgGood
+  ///
+  /// In en, this message translates to:
+  /// **'That lesson moved you forward. Well done.'**
+  String get lcMsgGood;
+
+  /// lcMsgSteady
+  ///
+  /// In en, this message translates to:
+  /// **'Every session strengthens memory. Keep going.'**
+  String get lcMsgSteady;
+
+  /// lcMsgReview
+  ///
+  /// In en, this message translates to:
+  /// **'A short review next time will lock these in.'**
+  String get lcMsgReview;
+
+  /// lcMsgNoQuiz
+  ///
+  /// In en, this message translates to:
+  /// **'You met new phrases today. They\'ll come back in your next quiz.'**
+  String get lcMsgNoQuiz;
+
+  /// lcStatXp
+  ///
+  /// In en, this message translates to:
+  /// **'XP earned'**
+  String get lcStatXp;
+
+  /// lcStatAccuracy
+  ///
+  /// In en, this message translates to:
+  /// **'Accuracy'**
+  String get lcStatAccuracy;
+
+  /// lcStatTime
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get lcStatTime;
+
+  /// lcNoQuizValue
+  ///
+  /// In en, this message translates to:
+  /// **'Not quizzed'**
+  String get lcNoQuizValue;
+
+  /// lcPercent
+  ///
+  /// In en, this message translates to:
+  /// **'{value}%'**
+  String lcPercent(int value);
+
+  /// lcTimeMinSec
+  ///
+  /// In en, this message translates to:
+  /// **'{m}m {s}s'**
+  String lcTimeMinSec(int m, int s);
+
+  /// lcTimeSec
+  ///
+  /// In en, this message translates to:
+  /// **'{s}s'**
+  String lcTimeSec(int s);
+
+  /// lcBestRun
+  ///
+  /// In en, this message translates to:
+  /// **'Best run: {count} in a row'**
+  String lcBestRun(int count);
+
+  /// lcComboBonus
+  ///
+  /// In en, this message translates to:
+  /// **'Combo bonus +{xp} XP'**
+  String lcComboBonus(int xp);
+
+  /// lcContinue
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get lcContinue;
+
+  /// lcShare
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get lcShare;
+
+  /// lcContinueA11y
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to next lesson'**
+  String get lcContinueA11y;
+
+  /// lcShareA11y
+  ///
+  /// In en, this message translates to:
+  /// **'Share your result'**
+  String get lcShareA11y;
+
+  /// lcOffline
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline. Your progress is saved on this phone, and sharing will be back when you reconnect.'**
+  String get lcOffline;
+
+  /// lcSummaryA11y
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson complete. {xp} XP earned. Accuracy {accuracy}. Time {time}.'**
+  String lcSummaryA11y(int xp, String accuracy, String time);
+
+  /// lcHeroA11y
+  ///
+  /// In en, this message translates to:
+  /// **'Amara and Kofi cheering'**
+  String get lcHeroA11y;
 }
 
 class _AppLocalizationsDelegate

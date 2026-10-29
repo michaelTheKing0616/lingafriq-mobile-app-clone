@@ -1450,4 +1450,81 @@ class AppLocalizationsAr extends AppLocalizations {
   String lessonAvatarLabel(String points) {
     return 'ملفك الشخصي، $points';
   }
+
+  @override
+  String get lcMsgGreat => 'ثقتك في المحادثة تكبر فعلًا.';
+
+  @override
+  String get lcMsgGood => 'هذا الدرس دفعك إلى الأمام. أحسنت.';
+
+  @override
+  String get lcMsgSteady => 'كل جلسة تقوّي ذاكرتك. واصل.';
+
+  @override
+  String get lcMsgReview => 'مراجعة قصيرة في المرة القادمة ستثبّت ما تعلمته.';
+
+  @override
+  String get lcMsgNoQuiz =>
+      'تعرّفت اليوم على عبارات جديدة، وستعود في اختبارك القادم.';
+
+  @override
+  String get lcStatXp => 'نقاط الخبرة';
+
+  @override
+  String get lcStatAccuracy => 'الدقة';
+
+  @override
+  String get lcStatTime => 'الوقت';
+
+  @override
+  String get lcNoQuizValue => 'بلا اختبار';
+
+  @override
+  String lcPercent(int value) {
+    return '$value٪';
+  }
+
+  @override
+  String lcTimeMinSec(int m, int s) {
+    return '$m د $s ث';
+  }
+
+  @override
+  String lcTimeSec(int s) {
+    return '$s ث';
+  }
+
+  @override
+  String lcBestRun(int count) {
+    return 'أفضل سلسلة: $count متتالية';
+  }
+
+  @override
+  String lcComboBonus(int xp) {
+    return 'مكافأة السلسلة +$xp XP';
+  }
+
+  @override
+  String get lcContinue => 'متابعة';
+
+  @override
+  String get lcShare => 'مشاركة';
+
+  @override
+  String get lcContinueA11y => 'المتابعة إلى الدرس التالي';
+
+  @override
+  String get lcShareA11y => 'شارك نتيجتك';
+
+  @override
+  String get lcOffline =>
+      'أنت غير متصل. تقدّمك محفوظ على هذا الهاتف، وستعود المشاركة عند عودة الاتصال.';
+
+  @override
+  String lcSummaryA11y(int xp, String accuracy, String time) {
+    return 'اكتمل الدرس. $xp نقطة خبرة. الدقة $accuracy. الوقت $time.';
+  }
+
+  @override
+  String get lcHeroA11y => 'أمارا وكوفي يهتفان فرحًا';
 }

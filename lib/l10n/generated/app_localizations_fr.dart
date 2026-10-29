@@ -142,7 +142,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get congratulations => 'Felicitations!';
 
   @override
-  String get lessonComplete => 'Lecon Terminee!';
+  String get lessonComplete => 'Leçon terminée !';
 
   @override
   String get quizComplete => 'Quiz Termine!';
@@ -1457,4 +1457,82 @@ class AppLocalizationsFr extends AppLocalizations {
   String lessonAvatarLabel(String points) {
     return 'Ton profil, $points';
   }
+
+  @override
+  String get lcMsgGreat => 'Ta confiance à l\'oral grandit vraiment.';
+
+  @override
+  String get lcMsgGood => 'Cette leçon t\'a fait avancer. Bravo.';
+
+  @override
+  String get lcMsgSteady => 'Chaque séance renforce ta mémoire. Continue.';
+
+  @override
+  String get lcMsgReview =>
+      'Une petite révision la prochaine fois va tout ancrer.';
+
+  @override
+  String get lcMsgNoQuiz =>
+      'Tu as découvert de nouvelles phrases. Elles reviendront dans ton prochain quiz.';
+
+  @override
+  String get lcStatXp => 'XP gagnés';
+
+  @override
+  String get lcStatAccuracy => 'Précision';
+
+  @override
+  String get lcStatTime => 'Temps';
+
+  @override
+  String get lcNoQuizValue => 'Sans quiz';
+
+  @override
+  String lcPercent(int value) {
+    return '$value %';
+  }
+
+  @override
+  String lcTimeMinSec(int m, int s) {
+    return '$m min $s s';
+  }
+
+  @override
+  String lcTimeSec(int s) {
+    return '$s s';
+  }
+
+  @override
+  String lcBestRun(int count) {
+    return 'Meilleure série : $count d\'affilée';
+  }
+
+  @override
+  String lcComboBonus(int xp) {
+    return 'Bonus combo +$xp XP';
+  }
+
+  @override
+  String get lcContinue => 'Continuer';
+
+  @override
+  String get lcShare => 'Partager';
+
+  @override
+  String get lcContinueA11y => 'Passer à la leçon suivante';
+
+  @override
+  String get lcShareA11y => 'Partager ton résultat';
+
+  @override
+  String get lcOffline =>
+      'Tu es hors ligne. Ta progression est enregistrée sur ce téléphone ; le partage reviendra à la reconnexion.';
+
+  @override
+  String lcSummaryA11y(int xp, String accuracy, String time) {
+    return 'Leçon terminée. $xp XP gagnés. Précision $accuracy. Temps $time.';
+  }
+
+  @override
+  String get lcHeroA11y => 'Amara et Kofi applaudissent';
 }
