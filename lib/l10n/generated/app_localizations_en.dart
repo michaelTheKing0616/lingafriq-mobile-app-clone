@@ -748,7 +748,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String paywallPriceValue(String premium, String family, String lifetime) {
-    return 'Premium $premium/month\nFamily $family/month\nLifetime $lifetime, paid once';
+    return 'Plus Monthly $premium/month\nPlus Family $family/month\nPlus Lifetime $lifetime, paid once';
   }
 
   @override
@@ -758,7 +758,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get paywallRenewsAuto =>
-      'Monthly plans renew automatically at the same price until you cancel. Lifetime does not renew.';
+      'Plus Monthly and Plus Family renew automatically at the same price until you cancel. Plus Lifetime does not renew.';
 
   @override
   String paywallRenewsOn(String date) {
@@ -767,7 +767,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String paywallTrialOffered(int days, String price) {
-    return '$days-day free trial, then $price/month unless you cancel at least 24 hours before it ends.';
+    return '$days-day free trial of Plus Monthly, then $price/month unless you cancel at least 24 hours before it ends.';
   }
 
   @override

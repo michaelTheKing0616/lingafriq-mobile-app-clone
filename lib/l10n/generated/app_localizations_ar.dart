@@ -747,7 +747,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String paywallPriceValue(String premium, String family, String lifetime) {
-    return 'بريميوم $premium شهريًا\nالعائلة $family شهريًا\nمدى الحياة $lifetime تُدفع مرة واحدة';
+    return 'بلس الشهري $premium شهريًا\nبلس العائلي $family شهريًا\nبلس مدى الحياة $lifetime تُدفع مرة واحدة';
   }
 
   @override
@@ -757,7 +757,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get paywallRenewsAuto =>
-      'تتجدد الخطط الشهرية تلقائيًا بالسعر نفسه حتى تلغيها. خطة مدى الحياة لا تتجدد.';
+      'يتجدد بلس الشهري وبلس العائلي تلقائيًا بالسعر نفسه حتى تلغيهما. بلس مدى الحياة لا يتجدد.';
 
   @override
   String paywallRenewsOn(String date) {
@@ -766,7 +766,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String paywallTrialOffered(int days, String price) {
-    return 'تجربة مجانية لمدة $days يومًا، ثم $price شهريًا ما لم تلغِ قبل انتهائها بـ 24 ساعة على الأقل.';
+    return 'تجربة مجانية لـ بلس الشهري لمدة $days يومًا، ثم $price شهريًا ما لم تلغِ قبل انتهائها بـ 24 ساعة على الأقل.';
   }
 
   @override

@@ -1443,7 +1443,7 @@ abstract class AppLocalizations {
   /// Compliance batch 1 UI
   ///
   /// In en, this message translates to:
-  /// **'Premium {premium}/month\nFamily {family}/month\nLifetime {lifetime}, paid once'**
+  /// **'Plus Monthly {premium}/month\nPlus Family {family}/month\nPlus Lifetime {lifetime}, paid once'**
   String paywallPriceValue(String premium, String family, String lifetime);
 
   /// Compliance batch 1 UI
@@ -1455,7 +1455,7 @@ abstract class AppLocalizations {
   /// Compliance batch 1 UI
   ///
   /// In en, this message translates to:
-  /// **'Monthly plans renew automatically at the same price until you cancel. Lifetime does not renew.'**
+  /// **'Plus Monthly and Plus Family renew automatically at the same price until you cancel. Plus Lifetime does not renew.'**
   String get paywallRenewsAuto;
 
   /// Compliance batch 1 UI
@@ -1467,7 +1467,7 @@ abstract class AppLocalizations {
   /// Compliance batch 1 UI
   ///
   /// In en, this message translates to:
-  /// **'{days}-day free trial, then {price}/month unless you cancel at least 24 hours before it ends.'**
+  /// **'{days}-day free trial of Plus Monthly, then {price}/month unless you cancel at least 24 hours before it ends.'**
   String paywallTrialOffered(int days, String price);
 
   /// Compliance batch 1 UI

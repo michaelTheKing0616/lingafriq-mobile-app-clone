@@ -247,7 +247,7 @@ mobile	lib/screens/splash/splash_screen_material3.dart	todo
 mobile	lib/screens/staff/micro_mentor_reports_screen.dart	todo			
 mobile	lib/screens/story/story_mode_screen.dart	todo			
 mobile	lib/screens/subscription/family_dashboard_screen.dart	todo			
-mobile	lib/screens/subscription/subscription_screen.dart	ready-for-review	9/9/9/9/9/9 avg 9.1 (self)	paywall pack 02,03,05 + REFERENCE recipe	2026-10-29
+mobile	lib/screens/subscription/subscription_screen.dart	ready-for-review	R2 self 9/9/9/9/9/9/9/9/9/9 avg 9.0: unified Plus naming incl. terms block, price placeholders while loading	paywall pack	2026-10-29
 mobile	lib/screens/tabs_view/home/home_tab.dart	todo			
 mobile	lib/screens/tabs_view/home/home_tab_material3.dart	pass	9/9/9/9/9/9/9/9/9/9 avg9.0 (re-review fix: per-language identity tiles: palette, code-drawn motif, native name + greeting)	Duolingo (home pack)	2026-10-29
 mobile	lib/screens/tabs_view/home/language_detail_screen.dart	todo			

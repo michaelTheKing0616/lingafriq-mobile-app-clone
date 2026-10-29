@@ -907,7 +907,7 @@
   "@paywallRowCancel": {
     "description": "Compliance batch 1 UI"
   },
-  "paywallPriceValue": "Premium {premium}/month\nFamily {family}/month\nLifetime {lifetime}, paid once",
+  "paywallPriceValue": "Plus Monthly {premium}/month\nPlus Family {family}/month\nPlus Lifetime {lifetime}, paid once",
   "@paywallPriceValue": {
     "description": "Compliance batch 1 UI",
     "placeholders": {
@@ -931,7 +931,7 @@
       }
     }
   },
-  "paywallRenewsAuto": "Monthly plans renew automatically at the same price until you cancel. Lifetime does not renew.",
+  "paywallRenewsAuto": "Plus Monthly and Plus Family renew automatically at the same price until you cancel. Plus Lifetime does not renew.",
   "@paywallRenewsAuto": {
     "description": "Compliance batch 1 UI"
   },
@@ -944,7 +944,7 @@
       }
     }
   },
-  "paywallTrialOffered": "{days}-day free trial, then {price}/month unless you cancel at least 24 hours before it ends.",
+  "paywallTrialOffered": "{days}-day free trial of Plus Monthly, then {price}/month unless you cancel at least 24 hours before it ends.",
   "@paywallTrialOffered": {
     "description": "Compliance batch 1 UI",
     "placeholders": {

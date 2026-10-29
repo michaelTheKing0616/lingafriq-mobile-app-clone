@@ -106,7 +106,12 @@ class SubscriptionTermsDisclosure extends ConsumerWidget {
     final l = l10nOf(context);
     final theme = Theme.of(context);
     final apple = isApple ?? defaultTargetPlatform == TargetPlatform.iOS;
-    final prices = ref.watch(storePricesProvider).value ?? StorePrices.fallback;
+    final pricesAsync = ref.watch(storePricesProvider);
+    final prices = pricesAsync.value ?? StorePrices.fallback;
+    // Never show fallback numbers as if they were the store's: placeholder
+    // bars until real prices resolve.
+    final loading =
+        pricesAsync.isLoading && !pricesAsync.hasValue && !pricesAsync.hasError;
     final locale = Localizations.localeOf(context).toLanguageTag();
     final body = theme.textTheme.bodyMedium;
 
@@ -134,6 +139,7 @@ class SubscriptionTermsDisclosure extends ConsumerWidget {
           _TermRow(
             key: const ValueKey('row-price'),
             label: l.paywallRowPrice,
+            loading: loading,
             values: [
               l.paywallPriceValue(
                 ltr(prices.premium),
@@ -156,6 +162,7 @@ class SubscriptionTermsDisclosure extends ConsumerWidget {
           _TermRow(
             key: const ValueKey('row-trial'),
             label: l.paywallRowTrial,
+            loading: loading,
             values: [
               prices.trialDays != null
                   ? l.paywallTrialOffered(
@@ -219,8 +226,10 @@ class _TermRow extends StatelessWidget {
     required this.values,
     this.emphasiseFirst = false,
     this.divider = true,
+    this.loading = false,
   });
 
+  final bool loading;
   final String label;
   final List<String> values;
   final bool emphasiseFirst;
@@ -236,23 +245,48 @@ class _TermRow extends StatelessWidget {
         fontWeight: FontWeight.w700,
       ),
     );
-    final valueText = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        for (final (i, v) in values.indexed)
-          Padding(
-            padding: EdgeInsets.only(top: i == 0 ? 0 : 4),
-            child: Text(
-              Directionality.of(context).name == 'rtl'
-                  ? SubscriptionTermsDisclosure.isolateBrands(v)
-                  : v,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: i == 0 && emphasiseFirst ? FontWeight.w700 : null,
-              ),
+    final bar = theme.colorScheme.outlineVariant;
+    final valueText = loading
+        ? Semantics(
+            key: ValueKey('${(key as ValueKey?)?.value}-loading'),
+            label: l10nOf(context).subLoading,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                for (final w in [0.9, 0.6])
+                  FractionallySizedBox(
+                    widthFactor: w,
+                    child: Container(
+                      height: 12,
+                      margin: const EdgeInsets.symmetric(vertical: 4),
+                      decoration: BoxDecoration(
+                        color: bar,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                    ),
+                  ),
+              ],
             ),
-          ),
-      ],
-    );
+          )
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (final (i, v) in values.indexed)
+                Padding(
+                  padding: EdgeInsets.only(top: i == 0 ? 0 : 4),
+                  child: Text(
+                    Directionality.of(context).name == 'rtl'
+                        ? SubscriptionTermsDisclosure.isolateBrands(v)
+                        : v,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: i == 0 && emphasiseFirst
+                          ? FontWeight.w700
+                          : null,
+                    ),
+                  ),
+                ),
+            ],
+          );
     return Semantics(
       container: true,
       child: Container(

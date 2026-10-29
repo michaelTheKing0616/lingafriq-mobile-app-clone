@@ -268,4 +268,50 @@ void main() {
     await expectLater(t, meetsGuideline(labeledTapTargetGuideline));
     h.dispose();
   });
+
+  testWidgets('loading shows no prices anywhere, only placeholders', (t) async {
+    await _pump(
+      t,
+      base,
+      _o(prices: () => Completer<StorePrices>().future),
+      settle: false,
+    );
+    final texts = t
+        .widgetList<Text>(find.byType(Text))
+        .map((w) => w.data ?? w.textSpan?.toPlainText() ?? '')
+        .join('\n');
+    expect(texts, isNot(contains(r'$')));
+    expect(texts, isNot(contains('Free for')));
+    expect(find.byKey(const ValueKey('row-price-loading')), findsOneWidget);
+    expect(find.byKey(const ValueKey('row-trial-loading')), findsOneWidget);
+  });
+
+  for (final loc in ['en', 'ar', 'fr']) {
+    testWidgets('one tier naming across plans and terms ($loc)', (t) async {
+      await _pump(
+        t,
+        GoldenVariant('n', const Size(390, 844), locale: Locale(loc)),
+        _o(
+          state: SubscriptionState(
+            tier: SubscriptionTier.premium,
+            isActive: true,
+            expiresAt: DateTime(2026, 11, 29),
+          ),
+        ),
+      );
+      final texts = t
+          .widgetList<Text>(find.byType(Text))
+          .map((w) => w.data ?? w.textSpan?.toPlainText() ?? '')
+          .join('\n');
+      for (final bad in ['Premium', 'بريميوم']) {
+        expect(texts, isNot(contains(bad)));
+      }
+      final plus = {
+        'en': 'Plus Monthly',
+        'ar': 'بلس الشهري',
+        'fr': 'Plus mensuel',
+      };
+      expect(texts, contains(plus[loc]));
+    });
+  }
 }

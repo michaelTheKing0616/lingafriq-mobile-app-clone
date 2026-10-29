@@ -119,7 +119,7 @@ void main() {
       ],
     );
     expect(find.text('Your plan renews on Nov 29, 2026.'), findsOneWidget);
-    expect(_plain(r'Premium $4.99/month'), findsOneWidget);
+    expect(_plain(r'Plus Monthly $4.99/month'), findsOneWidget);
     expect(
       find.textContaining('Settings › your name › Subscriptions'),
       findsOneWidget,
@@ -136,9 +136,9 @@ void main() {
       _host(const SubscriptionTermsDisclosure(isApple: false)),
       overrides: [storePricesProvider.overrideWith((ref) async => _euro)],
     );
-    expect(_plain('Premium €5,49/month'), findsOneWidget);
-    expect(_plain('Lifetime €109,99'), findsOneWidget);
-    expect(_plain('7-day free trial, then €5,49/month'), findsOneWidget);
+    expect(_plain('Plus Monthly €5,49/month'), findsOneWidget);
+    expect(_plain('Plus Lifetime €109,99'), findsOneWidget);
+    expect(_plain('7-day free trial of Plus Monthly, then €5,49/month'), findsOneWidget);
     expect(find.textContaining('Google Play › Payments'), findsOneWidget);
     expect(find.textContaining('Your plan renews on'), findsNothing);
     await expectLater(
