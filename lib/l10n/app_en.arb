@@ -3309,5 +3309,106 @@
         "type": "String"
       }
     }
+  },
+  "peTitle": "Edit profile",
+  "@peTitle": {
+    "description": "peTitle"
+  },
+  "peBack": "Back",
+  "@peBack": {
+    "description": "peBack"
+  },
+  "peAvatarEdit": "Edit avatar",
+  "@peAvatarEdit": {
+    "description": "peAvatarEdit"
+  },
+  "peAvatarHint": "Make your avatar look like you, or not at all.",
+  "@peAvatarHint": {
+    "description": "peAvatarHint"
+  },
+  "peAbout": "About you",
+  "@peAbout": {
+    "description": "peAbout"
+  },
+  "peFirst": "First name",
+  "@peFirst": {
+    "description": "peFirst"
+  },
+  "peLast": "Last name",
+  "@peLast": {
+    "description": "peLast"
+  },
+  "peRequired": "Please add your {field}.",
+  "@peRequired": {
+    "description": "peRequired",
+    "placeholders": {
+      "field": {
+        "type": "String"
+      }
+    }
+  },
+  "peHandle": "Handle",
+  "@peHandle": {
+    "description": "peHandle"
+  },
+  "peHandleNone": "Pick a handle so friends can find you",
+  "@peHandleNone": {
+    "description": "peHandleNone"
+  },
+  "peHandleEdit": "Change handle",
+  "@peHandleEdit": {
+    "description": "peHandleEdit"
+  },
+  "peCountry": "Country",
+  "@peCountry": {
+    "description": "peCountry"
+  },
+  "peCountryLocked": "Set when you signed up. Contact support to change it.",
+  "@peCountryLocked": {
+    "description": "peCountryLocked"
+  },
+  "peEmail": "Email",
+  "@peEmail": {
+    "description": "peEmail"
+  },
+  "peSave": "Save changes",
+  "@peSave": {
+    "description": "peSave"
+  },
+  "peSaving": "Saving…",
+  "@peSaving": {
+    "description": "peSaving"
+  },
+  "peSaved": "Profile saved",
+  "@peSaved": {
+    "description": "peSaved"
+  },
+  "peSaveError": "We couldn't save. Your changes are still here, so try again.",
+  "@peSaveError": {
+    "description": "peSaveError"
+  },
+  "peMinorTip": "Tip: use a nickname for your handle, not your full name.",
+  "@peMinorTip": {
+    "description": "peMinorTip"
+  },
+  "peDanger": "Account",
+  "@peDanger": {
+    "description": "peDanger"
+  },
+  "peDelete": "Delete account",
+  "@peDelete": {
+    "description": "peDelete"
+  },
+  "peDeleteSub": "Permanently removes your progress. This can't be undone.",
+  "@peDeleteSub": {
+    "description": "peDeleteSub"
+  },
+  "peDeleteError": "We couldn't delete your account. Please try again.",
+  "@peDeleteError": {
+    "description": "peDeleteError"
+  },
+  "peLoading": "Loading your profile",
+  "@peLoading": {
+    "description": "peLoading"
   }
 }

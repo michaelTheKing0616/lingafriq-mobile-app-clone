@@ -2477,4 +2477,82 @@ class AppLocalizationsFr extends AppLocalizations {
   String gmPlayA11y(String name, String category, String description) {
     return '$name, $category. $description';
   }
+
+  @override
+  String get peTitle => 'Modifier le profil';
+
+  @override
+  String get peBack => 'Retour';
+
+  @override
+  String get peAvatarEdit => 'Modifier l\'avatar';
+
+  @override
+  String get peAvatarHint => 'Fais un avatar qui te ressemble, ou pas du tout.';
+
+  @override
+  String get peAbout => 'À propos de toi';
+
+  @override
+  String get peFirst => 'Prénom';
+
+  @override
+  String get peLast => 'Nom';
+
+  @override
+  String peRequired(String field) {
+    return 'Merci d\'indiquer ton $field.';
+  }
+
+  @override
+  String get peHandle => 'Pseudo';
+
+  @override
+  String get peHandleNone => 'Choisis un pseudo pour que tes amis te trouvent';
+
+  @override
+  String get peHandleEdit => 'Changer de pseudo';
+
+  @override
+  String get peCountry => 'Pays';
+
+  @override
+  String get peCountryLocked =>
+      'Défini à l\'inscription. Contacte le support pour le changer.';
+
+  @override
+  String get peEmail => 'E-mail';
+
+  @override
+  String get peSave => 'Enregistrer';
+
+  @override
+  String get peSaving => 'Enregistrement…';
+
+  @override
+  String get peSaved => 'Profil enregistré';
+
+  @override
+  String get peSaveError =>
+      'Échec de l\'enregistrement. Tes changements sont conservés : réessaie.';
+
+  @override
+  String get peMinorTip =>
+      'Astuce : choisis un surnom comme pseudo, pas ton nom complet.';
+
+  @override
+  String get peDanger => 'Compte';
+
+  @override
+  String get peDelete => 'Supprimer le compte';
+
+  @override
+  String get peDeleteSub =>
+      'Supprime définitivement ta progression. Irréversible.';
+
+  @override
+  String get peDeleteError => 'Impossible de supprimer ton compte. Réessaie.';
+
+  @override
+  String get peLoading => 'Chargement du profil';
 }

@@ -122,7 +122,7 @@ mobile	lib/screens/games/game_mastery_results_screen.dart	todo
 mobile	lib/screens/games/game_start_guide_screen.dart	todo			
 mobile	lib/screens/games/games_screen.dart	todo			
 mobile	lib/screens/games/games_screen_enhanced_with_all_games.dart	todo			
-mobile	lib/screens/games/games_screen_material3.dart	ready	self 9.1	games-duels/05	2026-10-29
+mobile	lib/screens/games/games_screen_material3.dart	ready-for-review	self 9.1	games-duels/05	2026-10-29
 mobile	lib/screens/games/grammar_jam_screen.dart	todo			
 mobile	lib/screens/games/greeting_diplomacy_screen.dart	todo			
 mobile	lib/screens/games/language_games_screen.dart	todo			
@@ -214,7 +214,7 @@ mobile	lib/screens/settings/downloads_screen.dart	todo
 mobile	lib/screens/settings/edit_profile_screen.dart	todo			
 mobile	lib/screens/settings/privacy_policy_screen.dart	todo			
 mobile	lib/screens/settings/privacy_settings_screen.dart	ready-for-review C4 fix: VoiceRetentionTile stacked (title, description, label, full-width selector, 48dp delete) + confirm dialog; l10n en/ar/fr; RadioGroup + context.mounted fixes; goldens test/compliance/goldens/voice_retention_* (prev: 7/7/8/7/7/8/5/8/7/5 avg 6.9)			2026-10-29
-mobile	lib/screens/settings/reminder_settings_screen.dart	ready	self 9.1	onboarding/14	2026-10-29
+mobile	lib/screens/settings/reminder_settings_screen.dart	ready-for-review	self 9.1	onboarding/14	2026-10-29
 mobile	lib/screens/settings/settings_screen.dart	todo | fixed e8af60f59: runtime brand isolates, l10n fallback, fr golden; awaiting re-review
 mobile	lib/screens/settings/settings_screen_material3.dart	todo			
 mobile	lib/screens/settings/synthetic_voice_styles_screen.dart	todo			
@@ -256,7 +256,7 @@ mobile	lib/screens/tabs_view/home/take_quiz_screen.dart	todo
 mobile	lib/screens/tabs_view/profile/about_us_screen.dart	todo			
 mobile	lib/screens/tabs_view/profile/app_policy_screen.dart	todo			
 mobile	lib/screens/tabs_view/profile/change_password_screen.dart	todo			
-mobile	lib/screens/tabs_view/profile/profile_edit_screen.dart	todo			
+mobile	lib/screens/tabs_view/profile/profile_edit_screen.dart	ready-for-review	self 9.0	profile-progress/09	2026-10-29
 mobile	lib/screens/tabs_view/profile/suggest_language_screen.dart	todo			
 mobile	lib/screens/translate/live_translate_screen.dart	todo			
 mobile	lib/screens/tutor/curriculum_viewer_screen.dart	todo			

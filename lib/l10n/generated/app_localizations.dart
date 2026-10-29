@@ -4325,6 +4325,150 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{name}, {category}. {description}'**
   String gmPlayA11y(String name, String category, String description);
+
+  /// peTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Edit profile'**
+  String get peTitle;
+
+  /// peBack
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get peBack;
+
+  /// peAvatarEdit
+  ///
+  /// In en, this message translates to:
+  /// **'Edit avatar'**
+  String get peAvatarEdit;
+
+  /// peAvatarHint
+  ///
+  /// In en, this message translates to:
+  /// **'Make your avatar look like you, or not at all.'**
+  String get peAvatarHint;
+
+  /// peAbout
+  ///
+  /// In en, this message translates to:
+  /// **'About you'**
+  String get peAbout;
+
+  /// peFirst
+  ///
+  /// In en, this message translates to:
+  /// **'First name'**
+  String get peFirst;
+
+  /// peLast
+  ///
+  /// In en, this message translates to:
+  /// **'Last name'**
+  String get peLast;
+
+  /// peRequired
+  ///
+  /// In en, this message translates to:
+  /// **'Please add your {field}.'**
+  String peRequired(String field);
+
+  /// peHandle
+  ///
+  /// In en, this message translates to:
+  /// **'Handle'**
+  String get peHandle;
+
+  /// peHandleNone
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a handle so friends can find you'**
+  String get peHandleNone;
+
+  /// peHandleEdit
+  ///
+  /// In en, this message translates to:
+  /// **'Change handle'**
+  String get peHandleEdit;
+
+  /// peCountry
+  ///
+  /// In en, this message translates to:
+  /// **'Country'**
+  String get peCountry;
+
+  /// peCountryLocked
+  ///
+  /// In en, this message translates to:
+  /// **'Set when you signed up. Contact support to change it.'**
+  String get peCountryLocked;
+
+  /// peEmail
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get peEmail;
+
+  /// peSave
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get peSave;
+
+  /// peSaving
+  ///
+  /// In en, this message translates to:
+  /// **'Saving…'**
+  String get peSaving;
+
+  /// peSaved
+  ///
+  /// In en, this message translates to:
+  /// **'Profile saved'**
+  String get peSaved;
+
+  /// peSaveError
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t save. Your changes are still here, so try again.'**
+  String get peSaveError;
+
+  /// peMinorTip
+  ///
+  /// In en, this message translates to:
+  /// **'Tip: use a nickname for your handle, not your full name.'**
+  String get peMinorTip;
+
+  /// peDanger
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get peDanger;
+
+  /// peDelete
+  ///
+  /// In en, this message translates to:
+  /// **'Delete account'**
+  String get peDelete;
+
+  /// peDeleteSub
+  ///
+  /// In en, this message translates to:
+  /// **'Permanently removes your progress. This can\'t be undone.'**
+  String get peDeleteSub;
+
+  /// peDeleteError
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t delete your account. Please try again.'**
+  String get peDeleteError;
+
+  /// peLoading
+  ///
+  /// In en, this message translates to:
+  /// **'Loading your profile'**
+  String get peLoading;
 }
 
 class _AppLocalizationsDelegate

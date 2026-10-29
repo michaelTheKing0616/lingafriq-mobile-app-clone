@@ -2459,4 +2459,78 @@ class AppLocalizationsAr extends AppLocalizations {
   String gmPlayA11y(String name, String category, String description) {
     return '$name، $category. $description';
   }
+
+  @override
+  String get peTitle => 'تعديل الملف الشخصي';
+
+  @override
+  String get peBack => 'رجوع';
+
+  @override
+  String get peAvatarEdit => 'تعديل الصورة الرمزية';
+
+  @override
+  String get peAvatarHint => 'اجعل صورتك الرمزية تشبهك، أو لا تشبهك أبدًا.';
+
+  @override
+  String get peAbout => 'عنك';
+
+  @override
+  String get peFirst => 'الاسم الأول';
+
+  @override
+  String get peLast => 'اسم العائلة';
+
+  @override
+  String peRequired(String field) {
+    return 'يرجى إضافة $field.';
+  }
+
+  @override
+  String get peHandle => 'المعرّف';
+
+  @override
+  String get peHandleNone => 'اختر معرّفًا ليجدك أصدقاؤك';
+
+  @override
+  String get peHandleEdit => 'تغيير المعرّف';
+
+  @override
+  String get peCountry => 'البلد';
+
+  @override
+  String get peCountryLocked => 'حُدّد عند التسجيل. تواصل مع الدعم لتغييره.';
+
+  @override
+  String get peEmail => 'البريد الإلكتروني';
+
+  @override
+  String get peSave => 'احفظ التغييرات';
+
+  @override
+  String get peSaving => 'جارٍ الحفظ…';
+
+  @override
+  String get peSaved => 'تم حفظ الملف الشخصي';
+
+  @override
+  String get peSaveError => 'تعذّر الحفظ. تغييراتك ما زالت هنا، فحاول مجددًا.';
+
+  @override
+  String get peMinorTip => 'نصيحة: استخدم لقبًا كمعرّف، لا اسمك الكامل.';
+
+  @override
+  String get peDanger => 'الحساب';
+
+  @override
+  String get peDelete => 'حذف الحساب';
+
+  @override
+  String get peDeleteSub => 'يحذف تقدّمك نهائيًا. لا يمكن التراجع عن ذلك.';
+
+  @override
+  String get peDeleteError => 'تعذّر حذف حسابك. يرجى المحاولة مجددًا.';
+
+  @override
+  String get peLoading => 'جارٍ تحميل ملفك الشخصي';
 }

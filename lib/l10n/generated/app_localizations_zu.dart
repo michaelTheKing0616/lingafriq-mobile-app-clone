@@ -2451,4 +2451,83 @@ class AppLocalizationsZu extends AppLocalizations {
   String gmPlayA11y(String name, String category, String description) {
     return '$name, $category. $description';
   }
+
+  @override
+  String get peTitle => 'Edit profile';
+
+  @override
+  String get peBack => 'Back';
+
+  @override
+  String get peAvatarEdit => 'Edit avatar';
+
+  @override
+  String get peAvatarHint => 'Make your avatar look like you, or not at all.';
+
+  @override
+  String get peAbout => 'About you';
+
+  @override
+  String get peFirst => 'First name';
+
+  @override
+  String get peLast => 'Last name';
+
+  @override
+  String peRequired(String field) {
+    return 'Please add your $field.';
+  }
+
+  @override
+  String get peHandle => 'Handle';
+
+  @override
+  String get peHandleNone => 'Pick a handle so friends can find you';
+
+  @override
+  String get peHandleEdit => 'Change handle';
+
+  @override
+  String get peCountry => 'Country';
+
+  @override
+  String get peCountryLocked =>
+      'Set when you signed up. Contact support to change it.';
+
+  @override
+  String get peEmail => 'Email';
+
+  @override
+  String get peSave => 'Save changes';
+
+  @override
+  String get peSaving => 'Saving…';
+
+  @override
+  String get peSaved => 'Profile saved';
+
+  @override
+  String get peSaveError =>
+      'We couldn\'t save. Your changes are still here, so try again.';
+
+  @override
+  String get peMinorTip =>
+      'Tip: use a nickname for your handle, not your full name.';
+
+  @override
+  String get peDanger => 'Account';
+
+  @override
+  String get peDelete => 'Delete account';
+
+  @override
+  String get peDeleteSub =>
+      'Permanently removes your progress. This can\'t be undone.';
+
+  @override
+  String get peDeleteError =>
+      'We couldn\'t delete your account. Please try again.';
+
+  @override
+  String get peLoading => 'Loading your profile';
 }
