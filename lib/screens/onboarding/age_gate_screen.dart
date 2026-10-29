@@ -2,32 +2,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/screens/onboarding/unified_onboarding_screen.dart'
+    show childThresholdFor, computeRegistrationAgeBand;
 import 'package:lingafriq/services/age_tier_service.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Copy keys: age_gate.title, age_gate.body, age_gate.blocked (P9-912).
+///
+/// Birth year only (LingAfriq age-gate policy): never asks for a month or
+/// day. The child threshold is 13 by default and 16 where law requires,
+/// configured per country in [kChildThresholdByCountry]; the server
+/// re-verifies the band.
 class AgeGateScreen extends HookConsumerWidget {
   const AgeGateScreen({
     super.key,
     this.onCompleted,
     this.ageTierService,
     this.deviceKeyOverride,
-    this.debugPrefilledBirthDate,
+    this.debugPrefilledBirthYear,
+    this.countryCode,
   });
 
   final VoidCallback? onCompleted;
   final AgeTierService? ageTierService;
   final String? deviceKeyOverride;
-  final DateTime? debugPrefilledBirthDate;
+  final int? debugPrefilledBirthYear;
 
-  static const String ageGateTitle = 'When were you born?';
+  /// ISO country used for the child threshold; defaults to the device locale.
+  final String? countryCode;
+
+  static const String ageGateTitle = 'What year were you born?';
   static const String ageGateBody =
       'We use this to keep learners safe and unlock the right features for your age. '
-      'We store your age group, not your full birthday, after you continue.';
+      'We only ask for the year, and we store your age group, not the year itself.';
   static const String ageGateBlocked =
-      'You already entered a birth date on this device. If something looks wrong, ask a guardian to help from their account.';
+      'You already entered a birth year on this device. If something looks wrong, ask a guardian to help from their account.';
   static const String ageGatePendingGuardianTitle = 'We need a guardian';
   static const String ageGatePendingGuardianBody =
       'Your account is ready for lessons, but chat, Village, and purchases stay paused until a guardian approves.';
@@ -35,7 +46,7 @@ class AgeGateScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final service = ageTierService ?? AgeTierService();
-    final selectedDate = useState<DateTime?>(debugPrefilledBirthDate);
+    final selectedDate = useState<int?>(debugPrefilledBirthYear);
     final submitting = useState(false);
     final errorText = useState<String?>(null);
     final blockedRetry = useState(false);
@@ -55,9 +66,12 @@ class AgeGateScreen extends HookConsumerWidget {
     }
 
     Future<void> submit() async {
-      final dob = selectedDate.value;
-      if (dob == null) {
-        errorText.value = 'Choose your date of birth to continue.';
+      final year = selectedDate.value;
+      final country =
+          countryCode ?? Localizations.maybeLocaleOf(context)?.countryCode;
+      if (year == null ||
+          computeRegistrationAgeBand(year, countryCode: country) == null) {
+        errorText.value = 'Choose the year you were born to continue.';
         return;
       }
       submitting.value = true;
@@ -66,9 +80,7 @@ class AgeGateScreen extends HookConsumerWidget {
       pendingGuardian.value = false;
       try {
         final result = await service.assignBirthDate(
-          birthYear: dob.year,
-          birthMonth: dob.month,
-          birthDay: dob.day,
+          birthYear: year,
           deviceKey: await deviceKey(),
         );
         if (!result.ok) {
@@ -77,7 +89,7 @@ class AgeGateScreen extends HookConsumerWidget {
             errorText.value = ageGateBlocked;
           } else {
             errorText.value =
-                result.message ?? 'We could not save that date. Try again.';
+                result.message ?? 'We could not save that year. Try again.';
           }
           return;
         }
@@ -93,14 +105,22 @@ class AgeGateScreen extends HookConsumerWidget {
 
     Future<void> pickDate() async {
       final now = DateTime.now();
-      final initial =
-          selectedDate.value ?? DateTime(now.year - 18, now.month, now.day);
-      final picked = await showDatePicker(
+      final initialYear = selectedDate.value ?? now.year - 18;
+      final picked = await showDialog<int>(
         context: context,
-        initialDate: initial,
-        firstDate: DateTime(1920),
-        lastDate: now,
-        helpText: ageGateTitle,
+        builder: (dialogContext) => AlertDialog(
+          title: const Text(ageGateTitle),
+          content: SizedBox(
+            width: 300,
+            height: 320,
+            child: YearPicker(
+              firstDate: DateTime(1900),
+              lastDate: now,
+              selectedDate: DateTime(initialYear),
+              onChanged: (d) => Navigator.of(dialogContext).pop(d.year),
+            ),
+          ),
+        ),
       );
       if (picked != null) {
         selectedDate.value = picked;
@@ -154,7 +174,7 @@ class AgeGateScreen extends HookConsumerWidget {
                   Semantics(
                     button: true,
                     label:
-                        'Date of birth, ${selectedDate.value != null ? _formatDob(selectedDate.value!) : 'not selected'}',
+                        'Birth year, ${selectedDate.value?.toString() ?? 'not selected'}',
                     child: Material(
                       color: colorScheme.surfaceContainerHighest,
                       borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
@@ -178,16 +198,15 @@ class AgeGateScreen extends HookConsumerWidget {
                               SizedBox(width: PanAfricanSpacing.md.w),
                               Expanded(
                                 child: Text(
-                                  selectedDate.value != null
-                                      ? _formatDob(selectedDate.value!)
-                                      : 'Select date of birth',
+                                  selectedDate.value?.toString() ??
+                                      'Select birth year',
                                   style: PanAfricanTypography.titleMedium(
                                     context,
                                   ),
                                 ),
                               ),
                               Icon(
-                                Icons.calendar_month,
+                                Icons.expand_more_rounded,
                                 color: colorScheme.outline,
                               ),
                             ],
@@ -247,8 +266,8 @@ class AgeGateScreen extends HookConsumerWidget {
     );
   }
 
-  static String _formatDob(DateTime d) =>
-      '${d.day.toString().padLeft(2, '0')} / ${d.month.toString().padLeft(2, '0')} / ${d.year}';
+  /// Child threshold for [country]: 13 by default, 16 where law requires.
+  static int childThreshold(String? country) => childThresholdFor(country);
 }
 
 class _AgeGateShell extends StatelessWidget {

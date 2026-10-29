@@ -22,17 +22,21 @@ void main() {
     final service = AgeTierService(
       post: (path, {data}) async {
         captured = data;
-        return <String, dynamic>{'ok': true, 'tier': '13_15', 'status': 'active'};
+        return <String, dynamic>{
+          'ok': true,
+          'tier': '13_15',
+          'status': 'active',
+        };
       },
     );
     await service.assignBirthDate(
       birthYear: 2011,
-      birthMonth: 2,
-      birthDay: 3,
       deviceKey: 'dev-1',
       nationality: 'NG',
     );
     expect(captured!['birth_year'], 2011);
     expect(captured!['device_key'], 'dev-1');
+    expect(captured!.containsKey('birth_month'), isFalse);
+    expect(captured!.containsKey('birth_day'), isFalse);
   });
 }

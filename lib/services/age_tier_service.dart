@@ -64,17 +64,18 @@ class AgeTierStatus {
   }
 }
 
-typedef AgeTierPost = Future<Map<String, dynamic>> Function(
-  String path, {
-  Map<String, Object?>? data,
-});
+typedef AgeTierPost =
+    Future<Map<String, dynamic>> Function(
+      String path, {
+      Map<String, Object?>? data,
+    });
 
 typedef AgeTierGet = Future<Map<String, dynamic>> Function(String path);
 
 class AgeTierService {
   AgeTierService({AgeTierPost? post, AgeTierGet? get})
-      : _post = post ?? _defaultPost,
-        _get = get ?? _defaultGet;
+    : _post = post ?? _defaultPost,
+      _get = get ?? _defaultGet;
 
   final AgeTierPost _post;
   final AgeTierGet _get;
@@ -105,8 +106,6 @@ class AgeTierService {
 
   Future<AgeTierAssignmentResult> assignBirthDate({
     required int birthYear,
-    required int birthMonth,
-    required int birthDay,
     required String deviceKey,
     String? nationality,
   }) async {
@@ -114,8 +113,6 @@ class AgeTierService {
       '$ageAssuranceBasePath/assign',
       data: <String, Object?>{
         'birth_year': birthYear,
-        'birth_month': birthMonth,
-        'birth_day': birthDay,
         'device_key': deviceKey,
         if (nationality != null) 'nationality': nationality,
       },
