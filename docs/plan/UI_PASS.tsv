@@ -214,7 +214,7 @@ mobile	lib/screens/settings/downloads_screen.dart	todo
 mobile	lib/screens/settings/edit_profile_screen.dart	todo			
 mobile	lib/screens/settings/privacy_policy_screen.dart	todo			
 mobile	lib/screens/settings/privacy_settings_screen.dart	ready-for-review C4 fix: VoiceRetentionTile stacked (title, description, label, full-width selector, 48dp delete) + confirm dialog; l10n en/ar/fr; RadioGroup + context.mounted fixes; goldens test/compliance/goldens/voice_retention_* (prev: 7/7/8/7/7/8/5/8/7/5 avg 6.9)			2026-10-29
-mobile	lib/screens/settings/reminder_settings_screen.dart	todo			
+mobile	lib/screens/settings/reminder_settings_screen.dart	ready	self 9.1	onboarding/14	2026-10-29
 mobile	lib/screens/settings/settings_screen.dart	todo | fixed e8af60f59: runtime brand isolates, l10n fallback, fr golden; awaiting re-review
 mobile	lib/screens/settings/settings_screen_material3.dart	todo			
 mobile	lib/screens/settings/synthetic_voice_styles_screen.dart	todo			

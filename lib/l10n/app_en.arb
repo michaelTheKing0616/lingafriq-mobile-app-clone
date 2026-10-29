@@ -3051,5 +3051,142 @@
   "lbMore": "Loading more",
   "@lbMore": {
     "description": "lbMore"
+  },
+  "rmTitle": "Study reminders",
+  "@rmTitle": {
+    "description": "rmTitle"
+  },
+  "rmBack": "Back",
+  "@rmBack": {
+    "description": "rmBack"
+  },
+  "rmPreviewApp": "LingAfriq · now",
+  "@rmPreviewApp": {
+    "description": "rmPreviewApp"
+  },
+  "rmPreviewBody": "Ẹ kú àárọ̀! 5 minutes of Yoruba?",
+  "@rmPreviewBody": {
+    "description": "rmPreviewBody"
+  },
+  "rmPreviewOff": "Reminders are off. Turn them on to get one gentle nudge a day.",
+  "@rmPreviewOff": {
+    "description": "rmPreviewOff"
+  },
+  "rmMaster": "Daily practice nudge",
+  "@rmMaster": {
+    "description": "rmMaster"
+  },
+  "rmMasterSub": "At most one a day, never at night.",
+  "@rmMasterSub": {
+    "description": "rmMasterSub"
+  },
+  "rmWhen": "When should we remind you?",
+  "@rmWhen": {
+    "description": "rmWhen"
+  },
+  "rmMorning": "Morning",
+  "@rmMorning": {
+    "description": "rmMorning"
+  },
+  "rmLunch": "Lunch",
+  "@rmLunch": {
+    "description": "rmLunch"
+  },
+  "rmEvening": "Evening",
+  "@rmEvening": {
+    "description": "rmEvening"
+  },
+  "rmCustom": "Other time",
+  "@rmCustom": {
+    "description": "rmCustom"
+  },
+  "rmQuiet": "We never send anything in quiet hours ({start}–{end}).",
+  "@rmQuiet": {
+    "description": "rmQuiet",
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "rmQuietClash": "That's in quiet hours, so we set it to {time}.",
+  "@rmQuietClash": {
+    "description": "rmQuietClash",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "rmTimezone": "Timezone",
+  "@rmTimezone": {
+    "description": "rmTimezone"
+  },
+  "rmUseDevice": "Use this phone's",
+  "@rmUseDevice": {
+    "description": "rmUseDevice"
+  },
+  "rmAbout": "What we remind you about",
+  "@rmAbout": {
+    "description": "rmAbout"
+  },
+  "rmGoal": "Daily goal",
+  "@rmGoal": {
+    "description": "rmGoal"
+  },
+  "rmGoalSub": "A warm nudge to finish today's goal.",
+  "@rmGoalSub": {
+    "description": "rmGoalSub"
+  },
+  "rmRhythm": "Practice milestones",
+  "@rmRhythm": {
+    "description": "rmRhythm"
+  },
+  "rmRhythmSub": "We celebrate milestones. We never guilt you.",
+  "@rmRhythmSub": {
+    "description": "rmRhythmSub"
+  },
+  "rmSync": "Saved to your account, so it comes back after reinstalling.",
+  "@rmSync": {
+    "description": "rmSync"
+  },
+  "rmBlockedTitle": "Notifications are blocked",
+  "@rmBlockedTitle": {
+    "description": "rmBlockedTitle"
+  },
+  "rmBlockedBody": "Your phone is blocking LingAfriq. Allow notifications in Settings to get reminders.",
+  "@rmBlockedBody": {
+    "description": "rmBlockedBody"
+  },
+  "rmOpenSettings": "Open Settings",
+  "@rmOpenSettings": {
+    "description": "rmOpenSettings"
+  },
+  "rmOffline": "You're offline. Changes are saved on this phone and sync later.",
+  "@rmOffline": {
+    "description": "rmOffline"
+  },
+  "rmCheckError": "We couldn't check notification permission.",
+  "@rmCheckError": {
+    "description": "rmCheckError"
+  },
+  "rmRetry": "Try again",
+  "@rmRetry": {
+    "description": "rmRetry"
+  },
+  "rmLoading": "Checking notification settings",
+  "@rmLoading": {
+    "description": "rmLoading"
+  },
+  "rmChild": "Reminders for young learners never arrive at night, and a grown-up can turn them off any time.",
+  "@rmChild": {
+    "description": "rmChild"
+  },
+  "rmMasterA11y": "Study reminders master switch",
+  "@rmMasterA11y": {
+    "description": "rmMasterA11y"
   }
 }

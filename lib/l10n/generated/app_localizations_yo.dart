@@ -2261,4 +2261,106 @@ class AppLocalizationsYo extends AppLocalizations {
 
   @override
   String get lbMore => 'Loading more';
+
+  @override
+  String get rmTitle => 'Study reminders';
+
+  @override
+  String get rmBack => 'Back';
+
+  @override
+  String get rmPreviewApp => 'LingAfriq · now';
+
+  @override
+  String get rmPreviewBody => 'Ẹ kú àárọ̀! 5 minutes of Yoruba?';
+
+  @override
+  String get rmPreviewOff =>
+      'Reminders are off. Turn them on to get one gentle nudge a day.';
+
+  @override
+  String get rmMaster => 'Daily practice nudge';
+
+  @override
+  String get rmMasterSub => 'At most one a day, never at night.';
+
+  @override
+  String get rmWhen => 'When should we remind you?';
+
+  @override
+  String get rmMorning => 'Morning';
+
+  @override
+  String get rmLunch => 'Lunch';
+
+  @override
+  String get rmEvening => 'Evening';
+
+  @override
+  String get rmCustom => 'Other time';
+
+  @override
+  String rmQuiet(String start, String end) {
+    return 'We never send anything in quiet hours ($start–$end).';
+  }
+
+  @override
+  String rmQuietClash(String time) {
+    return 'That\'s in quiet hours, so we set it to $time.';
+  }
+
+  @override
+  String get rmTimezone => 'Timezone';
+
+  @override
+  String get rmUseDevice => 'Use this phone\'s';
+
+  @override
+  String get rmAbout => 'What we remind you about';
+
+  @override
+  String get rmGoal => 'Daily goal';
+
+  @override
+  String get rmGoalSub => 'A warm nudge to finish today\'s goal.';
+
+  @override
+  String get rmRhythm => 'Practice milestones';
+
+  @override
+  String get rmRhythmSub => 'We celebrate milestones. We never guilt you.';
+
+  @override
+  String get rmSync =>
+      'Saved to your account, so it comes back after reinstalling.';
+
+  @override
+  String get rmBlockedTitle => 'Notifications are blocked';
+
+  @override
+  String get rmBlockedBody =>
+      'Your phone is blocking LingAfriq. Allow notifications in Settings to get reminders.';
+
+  @override
+  String get rmOpenSettings => 'Open Settings';
+
+  @override
+  String get rmOffline =>
+      'You\'re offline. Changes are saved on this phone and sync later.';
+
+  @override
+  String get rmCheckError => 'We couldn\'t check notification permission.';
+
+  @override
+  String get rmRetry => 'Try again';
+
+  @override
+  String get rmLoading => 'Checking notification settings';
+
+  @override
+  String get rmChild =>
+      'Reminders for young learners never arrive at night, and a grown-up can turn them off any time.';
+
+  @override
+  String get rmMasterA11y => 'Study reminders master switch';
 }

@@ -4,6 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/notification_provider.dart';
 import 'package:lingafriq/screens/settings/reminder_settings_screen.dart';
+import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart'
+    show ageTierStatusProvider;
 import 'package:timezone/data/latest.dart' as tz_data;
 
 class _StubNotificationNotifier extends NotificationNotifier {
@@ -36,6 +38,9 @@ void main() {
       ProviderScope(
         overrides: [
           notificationProvider.overrideWith(() => _StubNotificationNotifier()),
+          // Network/plugin-backed lookups the screen makes; stubbed offline.
+          ageTierStatusProvider.overrideWith((ref) async => null),
+          reminderPermissionProvider.overrideWith((ref) async => true),
         ],
         child: ScreenUtilInit(
           designSize: const Size(390, 844),

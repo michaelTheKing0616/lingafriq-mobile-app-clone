@@ -2286,4 +2286,107 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get lbMore => 'Chargement';
+
+  @override
+  String get rmTitle => 'Rappels d\'étude';
+
+  @override
+  String get rmBack => 'Retour';
+
+  @override
+  String get rmPreviewApp => 'LingAfriq · maintenant';
+
+  @override
+  String get rmPreviewBody => 'Ẹ kú àárọ̀ ! 5 minutes de yoruba ?';
+
+  @override
+  String get rmPreviewOff =>
+      'Les rappels sont coupés. Active-les pour un petit rappel par jour.';
+
+  @override
+  String get rmMaster => 'Rappel quotidien';
+
+  @override
+  String get rmMasterSub => 'Un par jour maximum, jamais la nuit.';
+
+  @override
+  String get rmWhen => 'Quand te le rappeler ?';
+
+  @override
+  String get rmMorning => 'Matin';
+
+  @override
+  String get rmLunch => 'Midi';
+
+  @override
+  String get rmEvening => 'Soir';
+
+  @override
+  String get rmCustom => 'Autre heure';
+
+  @override
+  String rmQuiet(String start, String end) {
+    return 'Rien n\'est envoyé pendant les heures calmes ($start–$end).';
+  }
+
+  @override
+  String rmQuietClash(String time) {
+    return 'C\'est pendant les heures calmes, donc on l\'a réglé sur $time.';
+  }
+
+  @override
+  String get rmTimezone => 'Fuseau horaire';
+
+  @override
+  String get rmUseDevice => 'Celui du téléphone';
+
+  @override
+  String get rmAbout => 'Ce qu\'on te rappelle';
+
+  @override
+  String get rmGoal => 'Objectif du jour';
+
+  @override
+  String get rmGoalSub =>
+      'Un petit coup de pouce pour finir l\'objectif du jour.';
+
+  @override
+  String get rmRhythm => 'Étapes de pratique';
+
+  @override
+  String get rmRhythmSub => 'On fête tes étapes. Jamais de culpabilisation.';
+
+  @override
+  String get rmSync => 'Enregistré sur ton compte, même après réinstallation.';
+
+  @override
+  String get rmBlockedTitle => 'Notifications bloquées';
+
+  @override
+  String get rmBlockedBody =>
+      'Ton téléphone bloque LingAfriq. Autorise les notifications dans Réglages.';
+
+  @override
+  String get rmOpenSettings => 'Ouvrir Réglages';
+
+  @override
+  String get rmOffline =>
+      'Hors ligne. Les changements sont gardés sur ce téléphone et synchronisés plus tard.';
+
+  @override
+  String get rmCheckError =>
+      'Impossible de vérifier l\'autorisation des notifications.';
+
+  @override
+  String get rmRetry => 'Réessayer';
+
+  @override
+  String get rmLoading => 'Vérification des notifications';
+
+  @override
+  String get rmChild =>
+      'Les rappels des jeunes n\'arrivent jamais la nuit, et un adulte peut les couper à tout moment.';
+
+  @override
+  String get rmMasterA11y => 'Interrupteur principal des rappels d\'étude';
 }

@@ -2267,4 +2267,105 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get lbMore => 'جارٍ تحميل المزيد';
+
+  @override
+  String get rmTitle => 'تذكيرات الدراسة';
+
+  @override
+  String get rmBack => 'رجوع';
+
+  @override
+  String get rmPreviewApp => '⁦LingAfriq⁩ · الآن';
+
+  @override
+  String get rmPreviewBody => '⁦Ẹ kú àárọ̀!⁩ خمس دقائق من اليوروبا؟';
+
+  @override
+  String get rmPreviewOff =>
+      'التذكيرات متوقفة. شغّلها لتصلك دفعة لطيفة واحدة يوميًا.';
+
+  @override
+  String get rmMaster => 'تذكير التدرّب اليومي';
+
+  @override
+  String get rmMasterSub => 'مرة واحدة يوميًا على الأكثر، ولا يصل ليلًا أبدًا.';
+
+  @override
+  String get rmWhen => 'متى نذكّرك؟';
+
+  @override
+  String get rmMorning => 'صباحًا';
+
+  @override
+  String get rmLunch => 'الظهر';
+
+  @override
+  String get rmEvening => 'مساءً';
+
+  @override
+  String get rmCustom => 'وقت آخر';
+
+  @override
+  String rmQuiet(String start, String end) {
+    return 'ساعات الهدوء ⁦$start–$end⁩: لا نرسل شيئًا خلالها.';
+  }
+
+  @override
+  String rmQuietClash(String time) {
+    return 'هذا الوقت ضمن ساعات الهدوء، لذا ضبطناه على ⁦$time⁩.';
+  }
+
+  @override
+  String get rmTimezone => 'المنطقة الزمنية';
+
+  @override
+  String get rmUseDevice => 'استخدم منطقة الهاتف';
+
+  @override
+  String get rmAbout => 'ما نذكّرك به';
+
+  @override
+  String get rmGoal => 'الهدف اليومي';
+
+  @override
+  String get rmGoalSub => 'دفعة لطيفة لإكمال هدف اليوم.';
+
+  @override
+  String get rmRhythm => 'محطات التدرّب';
+
+  @override
+  String get rmRhythmSub => 'نحتفل بإنجازاتك ولا نُشعرك بالذنب أبدًا.';
+
+  @override
+  String get rmSync => 'محفوظة في حسابك، فتعود بعد إعادة التثبيت.';
+
+  @override
+  String get rmBlockedTitle => 'الإشعارات محظورة';
+
+  @override
+  String get rmBlockedBody =>
+      'هاتفك يحظر ⁦LingAfriq⁩. اسمح بالإشعارات من الإعدادات لتصلك التذكيرات.';
+
+  @override
+  String get rmOpenSettings => 'افتح الإعدادات';
+
+  @override
+  String get rmOffline =>
+      'أنت غير متصل. التغييرات محفوظة على هذا الهاتف وتُزامن لاحقًا.';
+
+  @override
+  String get rmCheckError => 'تعذّر التحقق من إذن الإشعارات.';
+
+  @override
+  String get rmRetry => 'حاول مجددًا';
+
+  @override
+  String get rmLoading => 'جارٍ التحقق من إعدادات الإشعارات';
+
+  @override
+  String get rmChild =>
+      'لا تصل تذكيرات المتعلّمين الصغار ليلًا أبدًا، ويمكن لأحد الكبار إيقافها في أي وقت.';
+
+  @override
+  String get rmMasterA11y => 'المفتاح الرئيسي لتذكيرات الدراسة';
 }

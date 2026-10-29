@@ -3989,6 +3989,192 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Loading more'**
   String get lbMore;
+
+  /// rmTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Study reminders'**
+  String get rmTitle;
+
+  /// rmBack
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get rmBack;
+
+  /// rmPreviewApp
+  ///
+  /// In en, this message translates to:
+  /// **'LingAfriq · now'**
+  String get rmPreviewApp;
+
+  /// rmPreviewBody
+  ///
+  /// In en, this message translates to:
+  /// **'Ẹ kú àárọ̀! 5 minutes of Yoruba?'**
+  String get rmPreviewBody;
+
+  /// rmPreviewOff
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders are off. Turn them on to get one gentle nudge a day.'**
+  String get rmPreviewOff;
+
+  /// rmMaster
+  ///
+  /// In en, this message translates to:
+  /// **'Daily practice nudge'**
+  String get rmMaster;
+
+  /// rmMasterSub
+  ///
+  /// In en, this message translates to:
+  /// **'At most one a day, never at night.'**
+  String get rmMasterSub;
+
+  /// rmWhen
+  ///
+  /// In en, this message translates to:
+  /// **'When should we remind you?'**
+  String get rmWhen;
+
+  /// rmMorning
+  ///
+  /// In en, this message translates to:
+  /// **'Morning'**
+  String get rmMorning;
+
+  /// rmLunch
+  ///
+  /// In en, this message translates to:
+  /// **'Lunch'**
+  String get rmLunch;
+
+  /// rmEvening
+  ///
+  /// In en, this message translates to:
+  /// **'Evening'**
+  String get rmEvening;
+
+  /// rmCustom
+  ///
+  /// In en, this message translates to:
+  /// **'Other time'**
+  String get rmCustom;
+
+  /// rmQuiet
+  ///
+  /// In en, this message translates to:
+  /// **'We never send anything in quiet hours ({start}–{end}).'**
+  String rmQuiet(String start, String end);
+
+  /// rmQuietClash
+  ///
+  /// In en, this message translates to:
+  /// **'That\'s in quiet hours, so we set it to {time}.'**
+  String rmQuietClash(String time);
+
+  /// rmTimezone
+  ///
+  /// In en, this message translates to:
+  /// **'Timezone'**
+  String get rmTimezone;
+
+  /// rmUseDevice
+  ///
+  /// In en, this message translates to:
+  /// **'Use this phone\'s'**
+  String get rmUseDevice;
+
+  /// rmAbout
+  ///
+  /// In en, this message translates to:
+  /// **'What we remind you about'**
+  String get rmAbout;
+
+  /// rmGoal
+  ///
+  /// In en, this message translates to:
+  /// **'Daily goal'**
+  String get rmGoal;
+
+  /// rmGoalSub
+  ///
+  /// In en, this message translates to:
+  /// **'A warm nudge to finish today\'s goal.'**
+  String get rmGoalSub;
+
+  /// rmRhythm
+  ///
+  /// In en, this message translates to:
+  /// **'Practice milestones'**
+  String get rmRhythm;
+
+  /// rmRhythmSub
+  ///
+  /// In en, this message translates to:
+  /// **'We celebrate milestones. We never guilt you.'**
+  String get rmRhythmSub;
+
+  /// rmSync
+  ///
+  /// In en, this message translates to:
+  /// **'Saved to your account, so it comes back after reinstalling.'**
+  String get rmSync;
+
+  /// rmBlockedTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are blocked'**
+  String get rmBlockedTitle;
+
+  /// rmBlockedBody
+  ///
+  /// In en, this message translates to:
+  /// **'Your phone is blocking LingAfriq. Allow notifications in Settings to get reminders.'**
+  String get rmBlockedBody;
+
+  /// rmOpenSettings
+  ///
+  /// In en, this message translates to:
+  /// **'Open Settings'**
+  String get rmOpenSettings;
+
+  /// rmOffline
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline. Changes are saved on this phone and sync later.'**
+  String get rmOffline;
+
+  /// rmCheckError
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t check notification permission.'**
+  String get rmCheckError;
+
+  /// rmRetry
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get rmRetry;
+
+  /// rmLoading
+  ///
+  /// In en, this message translates to:
+  /// **'Checking notification settings'**
+  String get rmLoading;
+
+  /// rmChild
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders for young learners never arrive at night, and a grown-up can turn them off any time.'**
+  String get rmChild;
+
+  /// rmMasterA11y
+  ///
+  /// In en, this message translates to:
+  /// **'Study reminders master switch'**
+  String get rmMasterA11y;
 }
 
 class _AppLocalizationsDelegate
