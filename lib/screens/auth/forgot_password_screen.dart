@@ -175,7 +175,7 @@ class ForgotPasswordScreen extends HookConsumerWidget {
                               content: Text(
                                 "An email with instructions to reset your password has been sent to ${emailController.text.trim()}",
                               ));
-                          Navigator.of(context).pop();
+                          if (context.mounted) Navigator.of(context).pop();
                         }
                       } catch (e) {
                         if (context.mounted) {

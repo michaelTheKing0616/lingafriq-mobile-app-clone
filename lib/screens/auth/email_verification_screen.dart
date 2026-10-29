@@ -467,7 +467,9 @@ class EmailVerificationScreen extends HookConsumerWidget {
         }
 
         // Navigate back or to home.
-        Navigator.of(context).popUntil((route) => route.isFirst);
+        if (context.mounted) {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+        }
       }
     } catch (e) {
       errorMessage.value = e.toString().replaceAll('Exception: ', '');
