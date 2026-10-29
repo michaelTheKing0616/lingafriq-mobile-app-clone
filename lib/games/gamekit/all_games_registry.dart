@@ -133,6 +133,17 @@ class AllGamesRegistry {
   static const String minimalPairDuelGameId = 'minimal_pair_duel';
   static const String wordForgeGameId = 'word_forge';
   static const String echoKaraokeGameId = 'pronunciation_karaoke';
+  static const String scriptSprintGameId = 'script_sprint';
+
+  /// Flagship games with their own screens rather than a [GameCatalog] entry
+  /// (P8-914 Tone Forge, P8-920 Talking Drum, P8-921 Minimal Pair Duel,
+  /// P8-927 Script Sprint). Each must still sit on exactly one shelf.
+  static const Set<String> standaloneFlagshipIds = {
+    toneForgeGameId,
+    talkingDrumGameId,
+    minimalPairDuelGameId,
+    scriptSprintGameId,
+  };
 
   static bool headlinerElevationShipped(String elevationCardId) {
     return kArcadeHeadlinerShippedElevationCards.contains(elevationCardId);
@@ -374,8 +385,8 @@ class AllGamesRegistry {
         problems.add('missing_shelf:${entry.type.name}');
       }
     }
-    if (!_arcadeListings.containsKey(toneForgeGameId)) {
-      problems.add('missing_shelf:$toneForgeGameId');
+    for (final id in standaloneFlagshipIds) {
+      if (!_arcadeListings.containsKey(id)) problems.add('missing_shelf:$id');
     }
     final shelfByGame = <String, String>{};
     for (final listing in _arcadeListings.values) {
@@ -387,7 +398,7 @@ class AllGamesRegistry {
       }
     }
     for (final id in _arcadeListings.keys) {
-      if (id == toneForgeGameId || id == talkingDrumGameId) continue;
+      if (standaloneFlagshipIds.contains(id)) continue;
       final inCatalog =
           GameCatalog.entries.any((e) => e.type.name == id);
       if (!inCatalog) {

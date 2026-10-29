@@ -13,10 +13,22 @@ void main() {
       expect(AllGamesRegistry.validateArcadeShelfCoverage(), isEmpty);
     });
 
-    test('listing count matches catalog plus tone_forge', () {
+    test('listing count matches catalog plus standalone flagships', () {
+      expect(
+        AllGamesRegistry.standaloneFlagshipIds,
+        {'tone_forge', 'talking_drum', 'minimal_pair_duel', 'script_sprint'},
+      );
+      for (final id in AllGamesRegistry.standaloneFlagshipIds) {
+        expect(
+          GameCatalog.entries.any((e) => e.type.name == id),
+          isFalse,
+          reason: '$id must not be double-listed via the catalog',
+        );
+      }
       expect(
         AllGamesRegistry.totalArcadeListingCount(),
-        GameCatalog.entries.length + 1,
+        GameCatalog.entries.length +
+            AllGamesRegistry.standaloneFlagshipIds.length,
       );
     });
 

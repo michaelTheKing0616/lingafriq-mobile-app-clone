@@ -513,6 +513,7 @@ class _PronPracticeBanner extends StatelessWidget {
 
   static const _copy = <String, String>{
     'pron.practice_mode': 'Practice mode',
+    'pron.scoring_soon': 'Scoring coming soon',
     'pron.shadowing_hint':
         'Listen, record, and compare your pitch to the model line.',
     'pron.unavailable':
@@ -528,13 +529,14 @@ class _PronPracticeBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final practiceMode = _copy['pron.practice_mode']!;
+    final scoringSoon = _copy['pron.scoring_soon']!;
     final subtitle = _isUnavailable
         ? _copy['pron.unavailable']!
         : _copy['pron.shadowing_hint']!;
     return Semantics(
       liveRegion: true,
       excludeSemantics: true,
-      label: '$practiceMode. $subtitle',
+      label: '$practiceMode. $scoringSoon. $subtitle',
       child: PolieGlassCard(
         padding: EdgeInsets.all(PolieSpacing.md),
         child: Column(
@@ -544,6 +546,14 @@ class _PronPracticeBanner extends StatelessWidget {
               style: PolieTypography.label(
                 context,
               ).copyWith(color: PolieColors.electricTeal),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: PolieSpacing.xs),
+            Text(
+              scoringSoon,
+              style: PolieTypography.bodySmall(
+                context,
+              ).copyWith(color: PolieColors.textPrimary),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: PolieSpacing.xs),
