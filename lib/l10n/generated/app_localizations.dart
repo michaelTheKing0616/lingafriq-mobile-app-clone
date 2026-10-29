@@ -4631,6 +4631,510 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{title}, {progress}, {status}'**
   String dgGoalA11y(String title, String progress, String status);
+
+  /// gmNameWordMatchAudio
+  ///
+  /// In en, this message translates to:
+  /// **'Word Match Audio'**
+  String get gmNameWordMatchAudio;
+
+  /// gmDescWordMatchAudio
+  ///
+  /// In en, this message translates to:
+  /// **'Match words with audio'**
+  String get gmDescWordMatchAudio;
+
+  /// gmNamePronunciationDuel
+  ///
+  /// In en, this message translates to:
+  /// **'Pronunciation Duel'**
+  String get gmNamePronunciationDuel;
+
+  /// gmDescPronunciationDuel
+  ///
+  /// In en, this message translates to:
+  /// **'Master pronunciation'**
+  String get gmDescPronunciationDuel;
+
+  /// gmNameSpeedRoundRemix
+  ///
+  /// In en, this message translates to:
+  /// **'Speed Round'**
+  String get gmNameSpeedRoundRemix;
+
+  /// gmDescSpeedRoundRemix
+  ///
+  /// In en, this message translates to:
+  /// **'Fast-paced vocabulary'**
+  String get gmDescSpeedRoundRemix;
+
+  /// gmNameStoryBuilder
+  ///
+  /// In en, this message translates to:
+  /// **'Story Builder'**
+  String get gmNameStoryBuilder;
+
+  /// gmDescStoryBuilder
+  ///
+  /// In en, this message translates to:
+  /// **'Build stories'**
+  String get gmDescStoryBuilder;
+
+  /// gmNameRoleplayAdventure
+  ///
+  /// In en, this message translates to:
+  /// **'Roleplay Adventure'**
+  String get gmNameRoleplayAdventure;
+
+  /// gmDescRoleplayAdventure
+  ///
+  /// In en, this message translates to:
+  /// **'Interactive conversations'**
+  String get gmDescRoleplayAdventure;
+
+  /// gmNameGrammarDetective
+  ///
+  /// In en, this message translates to:
+  /// **'Grammar Detective'**
+  String get gmNameGrammarDetective;
+
+  /// gmDescGrammarDetective
+  ///
+  /// In en, this message translates to:
+  /// **'Solve grammar mysteries'**
+  String get gmDescGrammarDetective;
+
+  /// gmNameListenAndSketch
+  ///
+  /// In en, this message translates to:
+  /// **'Listen & Sketch'**
+  String get gmNameListenAndSketch;
+
+  /// gmDescListenAndSketch
+  ///
+  /// In en, this message translates to:
+  /// **'Draw what you hear'**
+  String get gmDescListenAndSketch;
+
+  /// gmNamePictureWordAssociation
+  ///
+  /// In en, this message translates to:
+  /// **'Picture Word Match'**
+  String get gmNamePictureWordAssociation;
+
+  /// gmDescPictureWordAssociation
+  ///
+  /// In en, this message translates to:
+  /// **'Match words with images'**
+  String get gmDescPictureWordAssociation;
+
+  /// gmNameMemoryMap
+  ///
+  /// In en, this message translates to:
+  /// **'Memory Map'**
+  String get gmNameMemoryMap;
+
+  /// gmDescMemoryMap
+  ///
+  /// In en, this message translates to:
+  /// **'Memory challenge'**
+  String get gmDescMemoryMap;
+
+  /// gmNameConversationRelay
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation Relay'**
+  String get gmNameConversationRelay;
+
+  /// gmDescConversationRelay
+  ///
+  /// In en, this message translates to:
+  /// **'Chain conversations'**
+  String get gmDescConversationRelay;
+
+  /// gmNameGrammarJam
+  ///
+  /// In en, this message translates to:
+  /// **'Grammar Jam'**
+  String get gmNameGrammarJam;
+
+  /// gmDescGrammarJam
+  ///
+  /// In en, this message translates to:
+  /// **'Grammar rhythm game'**
+  String get gmDescGrammarJam;
+
+  /// gmNamePronunciationKaraoke
+  ///
+  /// In en, this message translates to:
+  /// **'Pronunciation Karaoke'**
+  String get gmNamePronunciationKaraoke;
+
+  /// gmDescPronunciationKaraoke
+  ///
+  /// In en, this message translates to:
+  /// **'Sing and pronounce'**
+  String get gmDescPronunciationKaraoke;
+
+  /// gmNameQuizChef
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz Chef'**
+  String get gmNameQuizChef;
+
+  /// gmDescQuizChef
+  ///
+  /// In en, this message translates to:
+  /// **'Cook up answers'**
+  String get gmDescQuizChef;
+
+  /// gmNameToneTrainer
+  ///
+  /// In en, this message translates to:
+  /// **'Tone Trainer'**
+  String get gmNameToneTrainer;
+
+  /// gmDescToneTrainer
+  ///
+  /// In en, this message translates to:
+  /// **'Master tonal pronunciation'**
+  String get gmDescToneTrainer;
+
+  /// gmNameScrabbleSprintArena
+  ///
+  /// In en, this message translates to:
+  /// **'Scrabble Sprint'**
+  String get gmNameScrabbleSprintArena;
+
+  /// gmDescScrabbleSprintArena
+  ///
+  /// In en, this message translates to:
+  /// **'Build words under pressure'**
+  String get gmDescScrabbleSprintArena;
+
+  /// gmNameProverbUnlocker
+  ///
+  /// In en, this message translates to:
+  /// **'Proverb Unlocker'**
+  String get gmNameProverbUnlocker;
+
+  /// gmDescProverbUnlocker
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock wisdom'**
+  String get gmDescProverbUnlocker;
+
+  /// gmNameDrumRhythmShadowing
+  ///
+  /// In en, this message translates to:
+  /// **'Drum Rhythm'**
+  String get gmNameDrumRhythmShadowing;
+
+  /// gmDescDrumRhythmShadowing
+  ///
+  /// In en, this message translates to:
+  /// **'Follow the rhythm'**
+  String get gmDescDrumRhythmShadowing;
+
+  /// gmNameClanLineageStoryBuilder
+  ///
+  /// In en, this message translates to:
+  /// **'Clan Story Builder'**
+  String get gmNameClanLineageStoryBuilder;
+
+  /// gmDescClanLineageStoryBuilder
+  ///
+  /// In en, this message translates to:
+  /// **'Build clan stories'**
+  String get gmDescClanLineageStoryBuilder;
+
+  /// gmNameMarketBargainingSimulator
+  ///
+  /// In en, this message translates to:
+  /// **'Market Bargaining'**
+  String get gmNameMarketBargainingSimulator;
+
+  /// gmDescMarketBargainingSimulator
+  ///
+  /// In en, this message translates to:
+  /// **'Practice bargaining'**
+  String get gmDescMarketBargainingSimulator;
+
+  /// gmNameTaxiBusStopSurvival
+  ///
+  /// In en, this message translates to:
+  /// **'Taxi Survival'**
+  String get gmNameTaxiBusStopSurvival;
+
+  /// gmDescTaxiBusStopSurvival
+  ///
+  /// In en, this message translates to:
+  /// **'Navigate transportation'**
+  String get gmDescTaxiBusStopSurvival;
+
+  /// gmNameFoodQuest
+  ///
+  /// In en, this message translates to:
+  /// **'Food Quest'**
+  String get gmNameFoodQuest;
+
+  /// gmDescFoodQuest
+  ///
+  /// In en, this message translates to:
+  /// **'Explore cuisine'**
+  String get gmDescFoodQuest;
+
+  /// gmNameCallAndResponse
+  ///
+  /// In en, this message translates to:
+  /// **'Call & Response'**
+  String get gmNameCallAndResponse;
+
+  /// gmDescCallAndResponse
+  ///
+  /// In en, this message translates to:
+  /// **'Traditional patterns'**
+  String get gmDescCallAndResponse;
+
+  /// gmNameGreetingDiplomacyChallenge
+  ///
+  /// In en, this message translates to:
+  /// **'Greeting Diplomacy'**
+  String get gmNameGreetingDiplomacyChallenge;
+
+  /// gmDescGreetingDiplomacyChallenge
+  ///
+  /// In en, this message translates to:
+  /// **'Master greetings'**
+  String get gmDescGreetingDiplomacyChallenge;
+
+  /// gmNameFolktaleReconstruction
+  ///
+  /// In en, this message translates to:
+  /// **'Folktale Builder'**
+  String get gmNameFolktaleReconstruction;
+
+  /// gmDescFolktaleReconstruction
+  ///
+  /// In en, this message translates to:
+  /// **'Rebuild stories'**
+  String get gmDescFolktaleReconstruction;
+
+  /// gmNamePhraseSniper
+  ///
+  /// In en, this message translates to:
+  /// **'Phrase Sniper'**
+  String get gmNamePhraseSniper;
+
+  /// gmDescPhraseSniper
+  ///
+  /// In en, this message translates to:
+  /// **'Target phrases'**
+  String get gmDescPhraseSniper;
+
+  /// gmNameLiarLiar
+  ///
+  /// In en, this message translates to:
+  /// **'Liar Liar'**
+  String get gmNameLiarLiar;
+
+  /// gmDescLiarLiar
+  ///
+  /// In en, this message translates to:
+  /// **'Detect truth'**
+  String get gmDescLiarLiar;
+
+  /// gmNameVillageQuest
+  ///
+  /// In en, this message translates to:
+  /// **'Village Quest'**
+  String get gmNameVillageQuest;
+
+  /// gmDescVillageQuest
+  ///
+  /// In en, this message translates to:
+  /// **'Adventure quest'**
+  String get gmDescVillageQuest;
+
+  /// gmNameAccentDecodingPuzzle
+  ///
+  /// In en, this message translates to:
+  /// **'Accent Puzzle'**
+  String get gmNameAccentDecodingPuzzle;
+
+  /// gmDescAccentDecodingPuzzle
+  ///
+  /// In en, this message translates to:
+  /// **'Decode accents'**
+  String get gmDescAccentDecodingPuzzle;
+
+  /// gmNameFlashcardSafari
+  ///
+  /// In en, this message translates to:
+  /// **'Flashcard Safari'**
+  String get gmNameFlashcardSafari;
+
+  /// gmDescFlashcardSafari
+  ///
+  /// In en, this message translates to:
+  /// **'Safari vocabulary'**
+  String get gmDescFlashcardSafari;
+
+  /// gmNameRapidTongueTwisterRace
+  ///
+  /// In en, this message translates to:
+  /// **'Tongue Twister'**
+  String get gmNameRapidTongueTwisterRace;
+
+  /// gmDescRapidTongueTwisterRace
+  ///
+  /// In en, this message translates to:
+  /// **'Master twisters'**
+  String get gmDescRapidTongueTwisterRace;
+
+  /// gmNameEmojiTranslator
+  ///
+  /// In en, this message translates to:
+  /// **'Emoji Translator'**
+  String get gmNameEmojiTranslator;
+
+  /// gmDescEmojiTranslator
+  ///
+  /// In en, this message translates to:
+  /// **'Translate emojis'**
+  String get gmDescEmojiTranslator;
+
+  /// gmNameRhythmTyping
+  ///
+  /// In en, this message translates to:
+  /// **'Rhythm Typing'**
+  String get gmNameRhythmTyping;
+
+  /// gmDescRhythmTyping
+  ///
+  /// In en, this message translates to:
+  /// **'Type to rhythm'**
+  String get gmDescRhythmTyping;
+
+  /// gmNameEldersBlessingsChallenge
+  ///
+  /// In en, this message translates to:
+  /// **'Elders Blessings'**
+  String get gmNameEldersBlessingsChallenge;
+
+  /// gmDescEldersBlessingsChallenge
+  ///
+  /// In en, this message translates to:
+  /// **'Learn blessings'**
+  String get gmDescEldersBlessingsChallenge;
+
+  /// gmNameMultilingualRelayRace
+  ///
+  /// In en, this message translates to:
+  /// **'Multilingual Relay'**
+  String get gmNameMultilingualRelayRace;
+
+  /// gmDescMultilingualRelayRace
+  ///
+  /// In en, this message translates to:
+  /// **'Language relay'**
+  String get gmDescMultilingualRelayRace;
+
+  /// gmNameCulturalEtiquetteScenarios
+  ///
+  /// In en, this message translates to:
+  /// **'Cultural Etiquette'**
+  String get gmNameCulturalEtiquetteScenarios;
+
+  /// gmDescCulturalEtiquetteScenarios
+  ///
+  /// In en, this message translates to:
+  /// **'Learn etiquette'**
+  String get gmDescCulturalEtiquetteScenarios;
+
+  /// gmNameDrumToWordMatching
+  ///
+  /// In en, this message translates to:
+  /// **'Drum Word Match'**
+  String get gmNameDrumToWordMatching;
+
+  /// gmDescDrumToWordMatching
+  ///
+  /// In en, this message translates to:
+  /// **'Match drum patterns'**
+  String get gmDescDrumToWordMatching;
+
+  /// gmNameMarketMonopolyChallenge
+  ///
+  /// In en, this message translates to:
+  /// **'Market Monopoly'**
+  String get gmNameMarketMonopolyChallenge;
+
+  /// gmDescMarketMonopolyChallenge
+  ///
+  /// In en, this message translates to:
+  /// **'Strategic market negotiations'**
+  String get gmDescMarketMonopolyChallenge;
+
+  /// gmNameAyoMancala
+  ///
+  /// In en, this message translates to:
+  /// **'Ayo (Mancala)'**
+  String get gmNameAyoMancala;
+
+  /// gmDescAyoMancala
+  ///
+  /// In en, this message translates to:
+  /// **'Traditional board game with vocab triggers'**
+  String get gmDescAyoMancala;
+
+  /// gmNameSuweHopscotch
+  ///
+  /// In en, this message translates to:
+  /// **'Suwe (Hopscotch)'**
+  String get gmNameSuweHopscotch;
+
+  /// gmDescSuweHopscotch
+  ///
+  /// In en, this message translates to:
+  /// **'Stone toss and tone patterns on the grid'**
+  String get gmDescSuweHopscotch;
+
+  /// gmNameLudoLanguage
+  ///
+  /// In en, this message translates to:
+  /// **'Language Ludo'**
+  String get gmNameLudoLanguage;
+
+  /// gmDescLudoLanguage
+  ///
+  /// In en, this message translates to:
+  /// **'African Ludo with MCQ-gated moves'**
+  String get gmDescLudoLanguage;
+
+  /// gmNameSnakesAndLaddersCultural
+  ///
+  /// In en, this message translates to:
+  /// **'Snakes & Ladders (Cultural)'**
+  String get gmNameSnakesAndLaddersCultural;
+
+  /// gmDescSnakesAndLaddersCultural
+  ///
+  /// In en, this message translates to:
+  /// **'Proverb ladders and mistake-correction snakes'**
+  String get gmDescSnakesAndLaddersCultural;
+
+  /// gmNameWhotCardGame
+  ///
+  /// In en, this message translates to:
+  /// **'Whot (Nigerian Cards)'**
+  String get gmNameWhotCardGame;
+
+  /// gmDescWhotCardGame
+  ///
+  /// In en, this message translates to:
+  /// **'Full Whot rules with vocab per card'**
+  String get gmDescWhotCardGame;
 }
 
 class _AppLocalizationsDelegate

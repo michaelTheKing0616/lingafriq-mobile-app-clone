@@ -14,6 +14,7 @@ import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'game_catalog.dart';
+import 'game_catalog_l10n.dart';
 import 'game_onboarding_overlay.dart';
 
 /// Server catalog merged over the bundled one; throws when offline.
@@ -66,6 +67,13 @@ String _catLabel(AppLocalizations l, String c) => switch (c) {
 String _langName(String slug) =>
     slug.isEmpty ? slug : slug[0].toUpperCase() + slug.substring(1);
 
+/// Game names/descriptions come from l10n keys by game id (see
+/// game_catalog_l10n.dart), so they are already in the UI language.
+String _gName(BuildContext c, GameCatalogEntry g) =>
+    localizedGameName(l10nOf(c), g.type);
+String _gDesc(BuildContext c, GameCatalogEntry g) =>
+    localizedGameDescription(l10nOf(c), g.type);
+
 /// Catalog text is English content (bundled + server rows); keep it LTR
 /// and isolated inside Arabic UI.
 String _iso(BuildContext c, String s) =>
@@ -115,7 +123,7 @@ class _GamesScreenMaterial3State extends ConsumerState<GamesScreenMaterial3> {
           context: context,
           builder: (ctx) => GameOnboardingOverlay(
             gameType: game.type.name,
-            title: game.name,
+            title: _gName(context, game),
             rules: game.rules.isNotEmpty ? game.rules : [l.gmRule1, l.gmRule2],
             onDismiss: () async {
               await prefs.setBool(key, true);
@@ -464,7 +472,11 @@ class _Featured extends StatelessWidget {
     );
     return Semantics(
       button: true,
-      label: l.gmPlayA11y(game.name, category, game.description),
+      label: l.gmPlayA11y(
+        _gName(context, game),
+        category,
+        _gDesc(context, game),
+      ),
       excludeSemantics: true,
       child: Material(
         key: const Key('gm-featured'),
@@ -496,7 +508,7 @@ class _Featured extends StatelessWidget {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            _iso(context, game.name),
+                            _gName(context, game),
                             style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w900,
@@ -505,7 +517,7 @@ class _Featured extends StatelessWidget {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            _iso(context, game.description),
+                            _gDesc(context, game),
                             style: const TextStyle(fontSize: 15, color: _ink),
                           ),
                         ],
@@ -566,7 +578,11 @@ class _Tile extends StatelessWidget {
     final l = l10nOf(context);
     return Semantics(
       button: true,
-      label: l.gmPlayA11y(game.name, category, game.description),
+      label: l.gmPlayA11y(
+        _gName(context, game),
+        category,
+        _gDesc(context, game),
+      ),
       excludeSemantics: true,
       child: Material(
         key: Key('gm-game-${game.type.name}'),
@@ -585,7 +601,7 @@ class _Tile extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        _iso(context, game.name),
+                        _gName(context, game),
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w900,
@@ -599,7 +615,7 @@ class _Tile extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  _iso(context, game.description),
+                  _gDesc(context, game),
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(fontSize: 13, color: _ink),

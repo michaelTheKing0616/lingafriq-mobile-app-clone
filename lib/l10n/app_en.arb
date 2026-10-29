@@ -3558,5 +3558,341 @@
         "type": "String"
       }
     }
+  },
+  "gmNameWordMatchAudio": "Word Match Audio",
+  "@gmNameWordMatchAudio": {
+    "description": "gmNameWordMatchAudio"
+  },
+  "gmDescWordMatchAudio": "Match words with audio",
+  "@gmDescWordMatchAudio": {
+    "description": "gmDescWordMatchAudio"
+  },
+  "gmNamePronunciationDuel": "Pronunciation Duel",
+  "@gmNamePronunciationDuel": {
+    "description": "gmNamePronunciationDuel"
+  },
+  "gmDescPronunciationDuel": "Master pronunciation",
+  "@gmDescPronunciationDuel": {
+    "description": "gmDescPronunciationDuel"
+  },
+  "gmNameSpeedRoundRemix": "Speed Round",
+  "@gmNameSpeedRoundRemix": {
+    "description": "gmNameSpeedRoundRemix"
+  },
+  "gmDescSpeedRoundRemix": "Fast-paced vocabulary",
+  "@gmDescSpeedRoundRemix": {
+    "description": "gmDescSpeedRoundRemix"
+  },
+  "gmNameStoryBuilder": "Story Builder",
+  "@gmNameStoryBuilder": {
+    "description": "gmNameStoryBuilder"
+  },
+  "gmDescStoryBuilder": "Build stories",
+  "@gmDescStoryBuilder": {
+    "description": "gmDescStoryBuilder"
+  },
+  "gmNameRoleplayAdventure": "Roleplay Adventure",
+  "@gmNameRoleplayAdventure": {
+    "description": "gmNameRoleplayAdventure"
+  },
+  "gmDescRoleplayAdventure": "Interactive conversations",
+  "@gmDescRoleplayAdventure": {
+    "description": "gmDescRoleplayAdventure"
+  },
+  "gmNameGrammarDetective": "Grammar Detective",
+  "@gmNameGrammarDetective": {
+    "description": "gmNameGrammarDetective"
+  },
+  "gmDescGrammarDetective": "Solve grammar mysteries",
+  "@gmDescGrammarDetective": {
+    "description": "gmDescGrammarDetective"
+  },
+  "gmNameListenAndSketch": "Listen & Sketch",
+  "@gmNameListenAndSketch": {
+    "description": "gmNameListenAndSketch"
+  },
+  "gmDescListenAndSketch": "Draw what you hear",
+  "@gmDescListenAndSketch": {
+    "description": "gmDescListenAndSketch"
+  },
+  "gmNamePictureWordAssociation": "Picture Word Match",
+  "@gmNamePictureWordAssociation": {
+    "description": "gmNamePictureWordAssociation"
+  },
+  "gmDescPictureWordAssociation": "Match words with images",
+  "@gmDescPictureWordAssociation": {
+    "description": "gmDescPictureWordAssociation"
+  },
+  "gmNameMemoryMap": "Memory Map",
+  "@gmNameMemoryMap": {
+    "description": "gmNameMemoryMap"
+  },
+  "gmDescMemoryMap": "Memory challenge",
+  "@gmDescMemoryMap": {
+    "description": "gmDescMemoryMap"
+  },
+  "gmNameConversationRelay": "Conversation Relay",
+  "@gmNameConversationRelay": {
+    "description": "gmNameConversationRelay"
+  },
+  "gmDescConversationRelay": "Chain conversations",
+  "@gmDescConversationRelay": {
+    "description": "gmDescConversationRelay"
+  },
+  "gmNameGrammarJam": "Grammar Jam",
+  "@gmNameGrammarJam": {
+    "description": "gmNameGrammarJam"
+  },
+  "gmDescGrammarJam": "Grammar rhythm game",
+  "@gmDescGrammarJam": {
+    "description": "gmDescGrammarJam"
+  },
+  "gmNamePronunciationKaraoke": "Pronunciation Karaoke",
+  "@gmNamePronunciationKaraoke": {
+    "description": "gmNamePronunciationKaraoke"
+  },
+  "gmDescPronunciationKaraoke": "Sing and pronounce",
+  "@gmDescPronunciationKaraoke": {
+    "description": "gmDescPronunciationKaraoke"
+  },
+  "gmNameQuizChef": "Quiz Chef",
+  "@gmNameQuizChef": {
+    "description": "gmNameQuizChef"
+  },
+  "gmDescQuizChef": "Cook up answers",
+  "@gmDescQuizChef": {
+    "description": "gmDescQuizChef"
+  },
+  "gmNameToneTrainer": "Tone Trainer",
+  "@gmNameToneTrainer": {
+    "description": "gmNameToneTrainer"
+  },
+  "gmDescToneTrainer": "Master tonal pronunciation",
+  "@gmDescToneTrainer": {
+    "description": "gmDescToneTrainer"
+  },
+  "gmNameScrabbleSprintArena": "Scrabble Sprint",
+  "@gmNameScrabbleSprintArena": {
+    "description": "gmNameScrabbleSprintArena"
+  },
+  "gmDescScrabbleSprintArena": "Build words under pressure",
+  "@gmDescScrabbleSprintArena": {
+    "description": "gmDescScrabbleSprintArena"
+  },
+  "gmNameProverbUnlocker": "Proverb Unlocker",
+  "@gmNameProverbUnlocker": {
+    "description": "gmNameProverbUnlocker"
+  },
+  "gmDescProverbUnlocker": "Unlock wisdom",
+  "@gmDescProverbUnlocker": {
+    "description": "gmDescProverbUnlocker"
+  },
+  "gmNameDrumRhythmShadowing": "Drum Rhythm",
+  "@gmNameDrumRhythmShadowing": {
+    "description": "gmNameDrumRhythmShadowing"
+  },
+  "gmDescDrumRhythmShadowing": "Follow the rhythm",
+  "@gmDescDrumRhythmShadowing": {
+    "description": "gmDescDrumRhythmShadowing"
+  },
+  "gmNameClanLineageStoryBuilder": "Clan Story Builder",
+  "@gmNameClanLineageStoryBuilder": {
+    "description": "gmNameClanLineageStoryBuilder"
+  },
+  "gmDescClanLineageStoryBuilder": "Build clan stories",
+  "@gmDescClanLineageStoryBuilder": {
+    "description": "gmDescClanLineageStoryBuilder"
+  },
+  "gmNameMarketBargainingSimulator": "Market Bargaining",
+  "@gmNameMarketBargainingSimulator": {
+    "description": "gmNameMarketBargainingSimulator"
+  },
+  "gmDescMarketBargainingSimulator": "Practice bargaining",
+  "@gmDescMarketBargainingSimulator": {
+    "description": "gmDescMarketBargainingSimulator"
+  },
+  "gmNameTaxiBusStopSurvival": "Taxi Survival",
+  "@gmNameTaxiBusStopSurvival": {
+    "description": "gmNameTaxiBusStopSurvival"
+  },
+  "gmDescTaxiBusStopSurvival": "Navigate transportation",
+  "@gmDescTaxiBusStopSurvival": {
+    "description": "gmDescTaxiBusStopSurvival"
+  },
+  "gmNameFoodQuest": "Food Quest",
+  "@gmNameFoodQuest": {
+    "description": "gmNameFoodQuest"
+  },
+  "gmDescFoodQuest": "Explore cuisine",
+  "@gmDescFoodQuest": {
+    "description": "gmDescFoodQuest"
+  },
+  "gmNameCallAndResponse": "Call & Response",
+  "@gmNameCallAndResponse": {
+    "description": "gmNameCallAndResponse"
+  },
+  "gmDescCallAndResponse": "Traditional patterns",
+  "@gmDescCallAndResponse": {
+    "description": "gmDescCallAndResponse"
+  },
+  "gmNameGreetingDiplomacyChallenge": "Greeting Diplomacy",
+  "@gmNameGreetingDiplomacyChallenge": {
+    "description": "gmNameGreetingDiplomacyChallenge"
+  },
+  "gmDescGreetingDiplomacyChallenge": "Master greetings",
+  "@gmDescGreetingDiplomacyChallenge": {
+    "description": "gmDescGreetingDiplomacyChallenge"
+  },
+  "gmNameFolktaleReconstruction": "Folktale Builder",
+  "@gmNameFolktaleReconstruction": {
+    "description": "gmNameFolktaleReconstruction"
+  },
+  "gmDescFolktaleReconstruction": "Rebuild stories",
+  "@gmDescFolktaleReconstruction": {
+    "description": "gmDescFolktaleReconstruction"
+  },
+  "gmNamePhraseSniper": "Phrase Sniper",
+  "@gmNamePhraseSniper": {
+    "description": "gmNamePhraseSniper"
+  },
+  "gmDescPhraseSniper": "Target phrases",
+  "@gmDescPhraseSniper": {
+    "description": "gmDescPhraseSniper"
+  },
+  "gmNameLiarLiar": "Liar Liar",
+  "@gmNameLiarLiar": {
+    "description": "gmNameLiarLiar"
+  },
+  "gmDescLiarLiar": "Detect truth",
+  "@gmDescLiarLiar": {
+    "description": "gmDescLiarLiar"
+  },
+  "gmNameVillageQuest": "Village Quest",
+  "@gmNameVillageQuest": {
+    "description": "gmNameVillageQuest"
+  },
+  "gmDescVillageQuest": "Adventure quest",
+  "@gmDescVillageQuest": {
+    "description": "gmDescVillageQuest"
+  },
+  "gmNameAccentDecodingPuzzle": "Accent Puzzle",
+  "@gmNameAccentDecodingPuzzle": {
+    "description": "gmNameAccentDecodingPuzzle"
+  },
+  "gmDescAccentDecodingPuzzle": "Decode accents",
+  "@gmDescAccentDecodingPuzzle": {
+    "description": "gmDescAccentDecodingPuzzle"
+  },
+  "gmNameFlashcardSafari": "Flashcard Safari",
+  "@gmNameFlashcardSafari": {
+    "description": "gmNameFlashcardSafari"
+  },
+  "gmDescFlashcardSafari": "Safari vocabulary",
+  "@gmDescFlashcardSafari": {
+    "description": "gmDescFlashcardSafari"
+  },
+  "gmNameRapidTongueTwisterRace": "Tongue Twister",
+  "@gmNameRapidTongueTwisterRace": {
+    "description": "gmNameRapidTongueTwisterRace"
+  },
+  "gmDescRapidTongueTwisterRace": "Master twisters",
+  "@gmDescRapidTongueTwisterRace": {
+    "description": "gmDescRapidTongueTwisterRace"
+  },
+  "gmNameEmojiTranslator": "Emoji Translator",
+  "@gmNameEmojiTranslator": {
+    "description": "gmNameEmojiTranslator"
+  },
+  "gmDescEmojiTranslator": "Translate emojis",
+  "@gmDescEmojiTranslator": {
+    "description": "gmDescEmojiTranslator"
+  },
+  "gmNameRhythmTyping": "Rhythm Typing",
+  "@gmNameRhythmTyping": {
+    "description": "gmNameRhythmTyping"
+  },
+  "gmDescRhythmTyping": "Type to rhythm",
+  "@gmDescRhythmTyping": {
+    "description": "gmDescRhythmTyping"
+  },
+  "gmNameEldersBlessingsChallenge": "Elders Blessings",
+  "@gmNameEldersBlessingsChallenge": {
+    "description": "gmNameEldersBlessingsChallenge"
+  },
+  "gmDescEldersBlessingsChallenge": "Learn blessings",
+  "@gmDescEldersBlessingsChallenge": {
+    "description": "gmDescEldersBlessingsChallenge"
+  },
+  "gmNameMultilingualRelayRace": "Multilingual Relay",
+  "@gmNameMultilingualRelayRace": {
+    "description": "gmNameMultilingualRelayRace"
+  },
+  "gmDescMultilingualRelayRace": "Language relay",
+  "@gmDescMultilingualRelayRace": {
+    "description": "gmDescMultilingualRelayRace"
+  },
+  "gmNameCulturalEtiquetteScenarios": "Cultural Etiquette",
+  "@gmNameCulturalEtiquetteScenarios": {
+    "description": "gmNameCulturalEtiquetteScenarios"
+  },
+  "gmDescCulturalEtiquetteScenarios": "Learn etiquette",
+  "@gmDescCulturalEtiquetteScenarios": {
+    "description": "gmDescCulturalEtiquetteScenarios"
+  },
+  "gmNameDrumToWordMatching": "Drum Word Match",
+  "@gmNameDrumToWordMatching": {
+    "description": "gmNameDrumToWordMatching"
+  },
+  "gmDescDrumToWordMatching": "Match drum patterns",
+  "@gmDescDrumToWordMatching": {
+    "description": "gmDescDrumToWordMatching"
+  },
+  "gmNameMarketMonopolyChallenge": "Market Monopoly",
+  "@gmNameMarketMonopolyChallenge": {
+    "description": "gmNameMarketMonopolyChallenge"
+  },
+  "gmDescMarketMonopolyChallenge": "Strategic market negotiations",
+  "@gmDescMarketMonopolyChallenge": {
+    "description": "gmDescMarketMonopolyChallenge"
+  },
+  "gmNameAyoMancala": "Ayo (Mancala)",
+  "@gmNameAyoMancala": {
+    "description": "gmNameAyoMancala"
+  },
+  "gmDescAyoMancala": "Traditional board game with vocab triggers",
+  "@gmDescAyoMancala": {
+    "description": "gmDescAyoMancala"
+  },
+  "gmNameSuweHopscotch": "Suwe (Hopscotch)",
+  "@gmNameSuweHopscotch": {
+    "description": "gmNameSuweHopscotch"
+  },
+  "gmDescSuweHopscotch": "Stone toss and tone patterns on the grid",
+  "@gmDescSuweHopscotch": {
+    "description": "gmDescSuweHopscotch"
+  },
+  "gmNameLudoLanguage": "Language Ludo",
+  "@gmNameLudoLanguage": {
+    "description": "gmNameLudoLanguage"
+  },
+  "gmDescLudoLanguage": "African Ludo with MCQ-gated moves",
+  "@gmDescLudoLanguage": {
+    "description": "gmDescLudoLanguage"
+  },
+  "gmNameSnakesAndLaddersCultural": "Snakes & Ladders (Cultural)",
+  "@gmNameSnakesAndLaddersCultural": {
+    "description": "gmNameSnakesAndLaddersCultural"
+  },
+  "gmDescSnakesAndLaddersCultural": "Proverb ladders and mistake-correction snakes",
+  "@gmDescSnakesAndLaddersCultural": {
+    "description": "gmDescSnakesAndLaddersCultural"
+  },
+  "gmNameWhotCardGame": "Whot (Nigerian Cards)",
+  "@gmNameWhotCardGame": {
+    "description": "gmNameWhotCardGame"
+  },
+  "gmDescWhotCardGame": "Full Whot rules with vocab per card",
+  "@gmDescWhotCardGame": {
+    "description": "gmDescWhotCardGame"
   }
 }

@@ -2702,4 +2702,260 @@ class AppLocalizationsFr extends AppLocalizations {
   String dgGoalA11y(String title, String progress, String status) {
     return '$title, $progress, $status';
   }
+
+  @override
+  String get gmNameWordMatchAudio => 'Mots à l\'écoute';
+
+  @override
+  String get gmDescWordMatchAudio => 'Associe les mots à l\'audio';
+
+  @override
+  String get gmNamePronunciationDuel => 'Duel de prononciation';
+
+  @override
+  String get gmDescPronunciationDuel => 'Maîtrise la prononciation';
+
+  @override
+  String get gmNameSpeedRoundRemix => 'Course éclair';
+
+  @override
+  String get gmDescSpeedRoundRemix => 'Vocabulaire à toute vitesse';
+
+  @override
+  String get gmNameStoryBuilder => 'Atelier d\'histoires';
+
+  @override
+  String get gmDescStoryBuilder => 'Construis des histoires';
+
+  @override
+  String get gmNameRoleplayAdventure => 'Aventure jeu de rôle';
+
+  @override
+  String get gmDescRoleplayAdventure => 'Conversations interactives';
+
+  @override
+  String get gmNameGrammarDetective => 'Détective de grammaire';
+
+  @override
+  String get gmDescGrammarDetective => 'Résous des énigmes de grammaire';
+
+  @override
+  String get gmNameListenAndSketch => 'Écoute et dessine';
+
+  @override
+  String get gmDescListenAndSketch => 'Dessine ce que tu entends';
+
+  @override
+  String get gmNamePictureWordAssociation => 'Mots en images';
+
+  @override
+  String get gmDescPictureWordAssociation => 'Associe les mots aux images';
+
+  @override
+  String get gmNameMemoryMap => 'Carte mémoire';
+
+  @override
+  String get gmDescMemoryMap => 'Défi de mémoire';
+
+  @override
+  String get gmNameConversationRelay => 'Relais de conversation';
+
+  @override
+  String get gmDescConversationRelay => 'Enchaîne les conversations';
+
+  @override
+  String get gmNameGrammarJam => 'Jam de grammaire';
+
+  @override
+  String get gmDescGrammarJam => 'Jeu de rythme grammatical';
+
+  @override
+  String get gmNamePronunciationKaraoke => 'Karaoké de prononciation';
+
+  @override
+  String get gmDescPronunciationKaraoke => 'Chante et prononce';
+
+  @override
+  String get gmNameQuizChef => 'Chef du quiz';
+
+  @override
+  String get gmDescQuizChef => 'Cuisine tes réponses';
+
+  @override
+  String get gmNameToneTrainer => 'Entraîneur de tons';
+
+  @override
+  String get gmDescToneTrainer => 'Maîtrise les tons';
+
+  @override
+  String get gmNameScrabbleSprintArena => 'Sprint de mots';
+
+  @override
+  String get gmDescScrabbleSprintArena => 'Forme des mots sous pression';
+
+  @override
+  String get gmNameProverbUnlocker => 'Proverbes à débloquer';
+
+  @override
+  String get gmDescProverbUnlocker => 'Débloque la sagesse';
+
+  @override
+  String get gmNameDrumRhythmShadowing => 'Rythme du tambour';
+
+  @override
+  String get gmDescDrumRhythmShadowing => 'Suis le rythme';
+
+  @override
+  String get gmNameClanLineageStoryBuilder => 'Histoires de clan';
+
+  @override
+  String get gmDescClanLineageStoryBuilder => 'Raconte l\'histoire du clan';
+
+  @override
+  String get gmNameMarketBargainingSimulator => 'Marchandage au marché';
+
+  @override
+  String get gmDescMarketBargainingSimulator => 'Entraîne-toi à marchander';
+
+  @override
+  String get gmNameTaxiBusStopSurvival => 'Survie en taxi';
+
+  @override
+  String get gmDescTaxiBusStopSurvival => 'Déplace-toi en ville';
+
+  @override
+  String get gmNameFoodQuest => 'Quête culinaire';
+
+  @override
+  String get gmDescFoodQuest => 'Explore la cuisine';
+
+  @override
+  String get gmNameCallAndResponse => 'Appel et réponse';
+
+  @override
+  String get gmDescCallAndResponse => 'Formes traditionnelles';
+
+  @override
+  String get gmNameGreetingDiplomacyChallenge => 'Diplomatie des salutations';
+
+  @override
+  String get gmDescGreetingDiplomacyChallenge => 'Maîtrise les salutations';
+
+  @override
+  String get gmNameFolktaleReconstruction => 'Contes à reconstruire';
+
+  @override
+  String get gmDescFolktaleReconstruction => 'Reconstitue les histoires';
+
+  @override
+  String get gmNamePhraseSniper => 'Tireur de phrases';
+
+  @override
+  String get gmDescPhraseSniper => 'Vise les bonnes phrases';
+
+  @override
+  String get gmNameLiarLiar => 'Menteur, menteur';
+
+  @override
+  String get gmDescLiarLiar => 'Démêle le vrai du faux';
+
+  @override
+  String get gmNameVillageQuest => 'Quête du village';
+
+  @override
+  String get gmDescVillageQuest => 'Aventure au village';
+
+  @override
+  String get gmNameAccentDecodingPuzzle => 'Énigme des accents';
+
+  @override
+  String get gmDescAccentDecodingPuzzle => 'Décode les accents';
+
+  @override
+  String get gmNameFlashcardSafari => 'Safari de cartes';
+
+  @override
+  String get gmDescFlashcardSafari => 'Vocabulaire en safari';
+
+  @override
+  String get gmNameRapidTongueTwisterRace => 'Virelangues';
+
+  @override
+  String get gmDescRapidTongueTwisterRace => 'Maîtrise les virelangues';
+
+  @override
+  String get gmNameEmojiTranslator => 'Traducteur d\'emoji';
+
+  @override
+  String get gmDescEmojiTranslator => 'Traduis les emoji';
+
+  @override
+  String get gmNameRhythmTyping => 'Frappe en rythme';
+
+  @override
+  String get gmDescRhythmTyping => 'Tape en rythme';
+
+  @override
+  String get gmNameEldersBlessingsChallenge => 'Bénédictions des aînés';
+
+  @override
+  String get gmDescEldersBlessingsChallenge => 'Apprends les bénédictions';
+
+  @override
+  String get gmNameMultilingualRelayRace => 'Relais multilingue';
+
+  @override
+  String get gmDescMultilingualRelayRace => 'Relais des langues';
+
+  @override
+  String get gmNameCulturalEtiquetteScenarios => 'Savoir-vivre culturel';
+
+  @override
+  String get gmDescCulturalEtiquetteScenarios => 'Apprends les usages';
+
+  @override
+  String get gmNameDrumToWordMatching => 'Tambour et mots';
+
+  @override
+  String get gmDescDrumToWordMatching => 'Associe les rythmes du tambour';
+
+  @override
+  String get gmNameMarketMonopolyChallenge => 'Monopoly du marché';
+
+  @override
+  String get gmDescMarketMonopolyChallenge =>
+      'Négociations stratégiques au marché';
+
+  @override
+  String get gmNameAyoMancala => 'Ayo (mancala)';
+
+  @override
+  String get gmDescAyoMancala =>
+      'Jeu de plateau traditionnel avec du vocabulaire';
+
+  @override
+  String get gmNameSuweHopscotch => 'Suwe (marelle)';
+
+  @override
+  String get gmDescSuweHopscotch =>
+      'Lance la pierre et suis les tons sur la grille';
+
+  @override
+  String get gmNameLudoLanguage => 'Ludo des langues';
+
+  @override
+  String get gmDescLudoLanguage => 'Ludo africain, chaque coup après un QCM';
+
+  @override
+  String get gmNameSnakesAndLaddersCultural => 'Serpents et échelles (culture)';
+
+  @override
+  String get gmDescSnakesAndLaddersCultural =>
+      'Échelles de proverbes, serpents de corrections';
+
+  @override
+  String get gmNameWhotCardGame => 'Whot (cartes nigérianes)';
+
+  @override
+  String get gmDescWhotCardGame => 'Règles complètes du Whot, un mot par carte';
 }

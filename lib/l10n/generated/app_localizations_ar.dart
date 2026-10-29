@@ -2707,4 +2707,257 @@ class AppLocalizationsAr extends AppLocalizations {
   String dgGoalA11y(String title, String progress, String status) {
     return '$title، $progress، $status';
   }
+
+  @override
+  String get gmNameWordMatchAudio => 'مطابقة الكلمات بالصوت';
+
+  @override
+  String get gmDescWordMatchAudio => 'طابق الكلمات مع الصوت';
+
+  @override
+  String get gmNamePronunciationDuel => 'مبارزة النطق';
+
+  @override
+  String get gmDescPronunciationDuel => 'أتقن النطق';
+
+  @override
+  String get gmNameSpeedRoundRemix => 'الجولة السريعة';
+
+  @override
+  String get gmDescSpeedRoundRemix => 'مفردات بإيقاع سريع';
+
+  @override
+  String get gmNameStoryBuilder => 'صانع القصص';
+
+  @override
+  String get gmDescStoryBuilder => 'ابنِ قصصًا';
+
+  @override
+  String get gmNameRoleplayAdventure => 'مغامرة تقمّص الأدوار';
+
+  @override
+  String get gmDescRoleplayAdventure => 'محادثات تفاعلية';
+
+  @override
+  String get gmNameGrammarDetective => 'محقّق القواعد';
+
+  @override
+  String get gmDescGrammarDetective => 'حلّ ألغاز القواعد';
+
+  @override
+  String get gmNameListenAndSketch => 'استمع وارسم';
+
+  @override
+  String get gmDescListenAndSketch => 'ارسم ما تسمعه';
+
+  @override
+  String get gmNamePictureWordAssociation => 'مطابقة الصور والكلمات';
+
+  @override
+  String get gmDescPictureWordAssociation => 'طابق الكلمات مع الصور';
+
+  @override
+  String get gmNameMemoryMap => 'خريطة الذاكرة';
+
+  @override
+  String get gmDescMemoryMap => 'تحدّي الذاكرة';
+
+  @override
+  String get gmNameConversationRelay => 'تتابع المحادثة';
+
+  @override
+  String get gmDescConversationRelay => 'سلسِل المحادثات';
+
+  @override
+  String get gmNameGrammarJam => 'إيقاع القواعد';
+
+  @override
+  String get gmDescGrammarJam => 'لعبة قواعد على الإيقاع';
+
+  @override
+  String get gmNamePronunciationKaraoke => 'كاريوكي النطق';
+
+  @override
+  String get gmDescPronunciationKaraoke => 'غنِّ وانطق';
+
+  @override
+  String get gmNameQuizChef => 'طاهي الاختبار';
+
+  @override
+  String get gmDescQuizChef => 'حضّر إجاباتك';
+
+  @override
+  String get gmNameToneTrainer => 'مدرّب النغمات';
+
+  @override
+  String get gmDescToneTrainer => 'أتقن النطق النغمي';
+
+  @override
+  String get gmNameScrabbleSprintArena => 'سباق الكلمات';
+
+  @override
+  String get gmDescScrabbleSprintArena => 'كوّن كلمات تحت الضغط';
+
+  @override
+  String get gmNameProverbUnlocker => 'مفتاح الأمثال';
+
+  @override
+  String get gmDescProverbUnlocker => 'اكتشف الحكمة';
+
+  @override
+  String get gmNameDrumRhythmShadowing => 'إيقاع الطبل';
+
+  @override
+  String get gmDescDrumRhythmShadowing => 'تابع الإيقاع';
+
+  @override
+  String get gmNameClanLineageStoryBuilder => 'قصص العشيرة';
+
+  @override
+  String get gmDescClanLineageStoryBuilder => 'ابنِ قصص العشيرة';
+
+  @override
+  String get gmNameMarketBargainingSimulator => 'المساومة في السوق';
+
+  @override
+  String get gmDescMarketBargainingSimulator => 'تدرّب على المساومة';
+
+  @override
+  String get gmNameTaxiBusStopSurvival => 'النجاة في التاكسي';
+
+  @override
+  String get gmDescTaxiBusStopSurvival => 'تنقّل في المواصلات';
+
+  @override
+  String get gmNameFoodQuest => 'رحلة الطعام';
+
+  @override
+  String get gmDescFoodQuest => 'استكشف المطبخ';
+
+  @override
+  String get gmNameCallAndResponse => 'النداء والجواب';
+
+  @override
+  String get gmDescCallAndResponse => 'أنماط تقليدية';
+
+  @override
+  String get gmNameGreetingDiplomacyChallenge => 'دبلوماسية التحية';
+
+  @override
+  String get gmDescGreetingDiplomacyChallenge => 'أتقن التحيات';
+
+  @override
+  String get gmNameFolktaleReconstruction => 'إعادة بناء الحكايات';
+
+  @override
+  String get gmDescFolktaleReconstruction => 'أعد بناء القصص';
+
+  @override
+  String get gmNamePhraseSniper => 'قنّاص العبارات';
+
+  @override
+  String get gmDescPhraseSniper => 'استهدف العبارات';
+
+  @override
+  String get gmNameLiarLiar => 'كاذب كاذب';
+
+  @override
+  String get gmDescLiarLiar => 'اكتشف الحقيقة';
+
+  @override
+  String get gmNameVillageQuest => 'مغامرة القرية';
+
+  @override
+  String get gmDescVillageQuest => 'مغامرة استكشافية';
+
+  @override
+  String get gmNameAccentDecodingPuzzle => 'لغز اللهجات';
+
+  @override
+  String get gmDescAccentDecodingPuzzle => 'فكّ رموز اللهجات';
+
+  @override
+  String get gmNameFlashcardSafari => 'سفاري البطاقات';
+
+  @override
+  String get gmDescFlashcardSafari => 'مفردات السفاري';
+
+  @override
+  String get gmNameRapidTongueTwisterRace => 'سباق الألسن';
+
+  @override
+  String get gmDescRapidTongueTwisterRace => 'أتقن الجمل الصعبة النطق';
+
+  @override
+  String get gmNameEmojiTranslator => 'مترجم الرموز التعبيرية';
+
+  @override
+  String get gmDescEmojiTranslator => 'ترجم الرموز التعبيرية';
+
+  @override
+  String get gmNameRhythmTyping => 'الكتابة على الإيقاع';
+
+  @override
+  String get gmDescRhythmTyping => 'اكتب على الإيقاع';
+
+  @override
+  String get gmNameEldersBlessingsChallenge => 'بركات الكبار';
+
+  @override
+  String get gmDescEldersBlessingsChallenge => 'تعلّم عبارات البركة';
+
+  @override
+  String get gmNameMultilingualRelayRace => 'تتابع متعدد اللغات';
+
+  @override
+  String get gmDescMultilingualRelayRace => 'سباق تتابع بين اللغات';
+
+  @override
+  String get gmNameCulturalEtiquetteScenarios => 'آداب ثقافية';
+
+  @override
+  String get gmDescCulturalEtiquetteScenarios => 'تعلّم آداب التعامل';
+
+  @override
+  String get gmNameDrumToWordMatching => 'مطابقة الطبل والكلمات';
+
+  @override
+  String get gmDescDrumToWordMatching => 'طابق أنماط الطبل';
+
+  @override
+  String get gmNameMarketMonopolyChallenge => 'احتكار السوق';
+
+  @override
+  String get gmDescMarketMonopolyChallenge => 'مفاوضات استراتيجية في السوق';
+
+  @override
+  String get gmNameAyoMancala => '⁦Ayo⁩ (منقلة)';
+
+  @override
+  String get gmDescAyoMancala => 'لعبة لوحية تقليدية مع مفردات';
+
+  @override
+  String get gmNameSuweHopscotch => '⁦Suwe⁩ (الحجلة)';
+
+  @override
+  String get gmDescSuweHopscotch => 'ارمِ الحجر وتابع النغمات على الشبكة';
+
+  @override
+  String get gmNameLudoLanguage => 'لودو اللغات';
+
+  @override
+  String get gmDescLudoLanguage => 'لودو أفريقي بحركات تفتحها أسئلة اختيار';
+
+  @override
+  String get gmNameSnakesAndLaddersCultural => 'السلالم والثعابين (ثقافية)';
+
+  @override
+  String get gmDescSnakesAndLaddersCultural =>
+      'سلالم الأمثال وثعابين تصحيح الأخطاء';
+
+  @override
+  String get gmNameWhotCardGame => '⁦Whot⁩ (ورق نيجيري)';
+
+  @override
+  String get gmDescWhotCardGame => 'قواعد ⁦Whot⁩ كاملة مع كلمة لكل ورقة';
 }

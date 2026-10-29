@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lingafriq/screens/games/game_catalog.dart';
+import 'package:lingafriq/screens/games/game_catalog_l10n.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/screens/games/games_screen_material3.dart';
 import 'package:riverpod/misc.dart' show Override;
 
@@ -166,17 +168,21 @@ void main() {
     );
   });
 
-  testWidgets('RTL: back arrow on the right, catalog text isolated', (t) async {
-    await _pump(t, goldenVariants[1], _o());
-    expect(
-      t.getRect(find.byKey(const Key('gm-back'))).center.dx,
-      greaterThan(195),
-    );
-    final s = _texts(t);
-    expect(s, contains('\u2066${_core.first.name}\u2069'));
-    expect(s, contains('\u2066Yoruba\u2069'));
-    expect(s, contains('الألعاب'));
-  });
+  testWidgets(
+    'RTL: back arrow on the right, games in Arabic, language isolated',
+    (t) async {
+      await _pump(t, goldenVariants[1], _o());
+      expect(
+        t.getRect(find.byKey(const Key('gm-back'))).center.dx,
+        greaterThan(195),
+      );
+      final s = _texts(t);
+      expect(s, contains('مطابقة الكلمات بالصوت'));
+      expect(s, isNot(contains(_core.first.name)));
+      expect(s, contains('\u2066Yoruba\u2069'));
+      expect(s, contains('الألعاب'));
+    },
+  );
 
   testWidgets('French chrome', (t) async {
     await _pump(
@@ -225,5 +231,58 @@ void main() {
         reason: k,
       );
     }
+  });
+
+  for (final loc in ['ar', 'fr']) {
+    testWidgets('$loc: no hard-coded English game text on screen', (t) async {
+      final english = <String>{
+        for (final g in GameCatalog.entries) ...[g.name, g.description],
+      };
+      final v = loc == 'ar'
+          ? goldenVariants[1]
+          : const GoldenVariant('fr', Size(390, 844), locale: Locale('fr'));
+      for (final cultural in [false, true]) {
+        await _pump(t, v, _o());
+        if (cultural) {
+          await t.tap(find.byKey(const Key('gm-cultural')));
+          await t.pumpAndSettle();
+        }
+        final shown = t
+            .widgetList<Text>(find.byType(Text))
+            .map((w) => w.data ?? w.textSpan?.toPlainText() ?? '')
+            .toSet();
+        expect(
+          shown.intersection(english),
+          isEmpty,
+          reason: 'cultural=$cultural',
+        );
+      }
+      // Every catalog id has a translation that differs from English.
+      final l = lookupAppLocalizations(Locale(loc));
+      for (final g in GameCatalog.entries) {
+        expect(
+          localizedGameName(l, g.type),
+          isNot(g.name),
+          reason: '${g.type}',
+        );
+        expect(
+          localizedGameDescription(l, g.type),
+          isNot(g.description),
+          reason: '${g.type}',
+        );
+      }
+    });
+  }
+
+  testWidgets("today's pick is localized", (t) async {
+    await _pump(t, goldenVariants[1], _o());
+    final featured = find.byKey(const Key('gm-featured'));
+    final texts = t
+        .widgetList<Text>(
+          find.descendant(of: featured, matching: find.byType(Text)),
+        )
+        .map((w) => w.data ?? '')
+        .join(' ');
+    expect(RegExp(r'[\u0600-\u06FF]').hasMatch(texts), isTrue, reason: texts);
   });
 }
