@@ -82,7 +82,7 @@ class _ReasonStep extends HookConsumerWidget {
               leading: Icon(
                 r.icon,
                 color: selected.value.contains(r.id)
-                    ? ModernGriotColors.brandCoral
+                    ? ModernGriotColors.primary
                     : ModernGriotColors.primary,
               ),
               onTap: () {

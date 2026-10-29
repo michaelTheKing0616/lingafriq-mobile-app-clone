@@ -40,7 +40,7 @@ class _SaveProgressStep extends StatelessWidget {
             textAlign: TextAlign.center,
             style: ModernGriotTypography.labelLarge(
               context: context,
-              color: ModernGriotColors.onSurfaceVariant,
+              color: _captionInk,
             ),
           ),
         ),

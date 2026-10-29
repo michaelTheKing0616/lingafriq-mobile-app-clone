@@ -309,7 +309,7 @@ void main() {
       await tapVisible(tester, label('Yoruba'));
       expect(
         tester.getSemantics(find.bySemanticsLabel(RegExp(r'^Yoruba,'))),
-        containsSemantics(isSelected: true),
+        isSemantics(isSelected: true),
       );
       handle.dispose();
     });

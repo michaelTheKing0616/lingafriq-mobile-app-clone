@@ -77,7 +77,7 @@ class _NotificationsStep extends HookConsumerWidget {
               'Not now',
               style: ModernGriotTypography.labelLarge(
                 context: context,
-                color: ModernGriotColors.onSurfaceVariant,
+                color: _captionInk,
               ),
             ),
           ),

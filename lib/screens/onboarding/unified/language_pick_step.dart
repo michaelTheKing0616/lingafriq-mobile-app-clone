@@ -19,84 +19,57 @@ class _LanguagePickStep extends HookConsumerWidget {
       'name': 'Yoruba',
       'script': 'Èdè Yorùbá',
       'region': 'West Africa',
-      'glyph': 'Y',
     },
-    {
-      'code': 'ha',
-      'name': 'Hausa',
-      'script': 'Hausa',
-      'region': 'West Africa',
-      'glyph': 'H',
-    },
+    {'code': 'ha', 'name': 'Hausa', 'script': 'Hausa', 'region': 'West Africa'},
     {
       'code': 'ig',
       'name': 'Igbo',
       'script': 'Asụsụ Igbo',
       'region': 'West Africa',
-      'glyph': 'Ị',
     },
-    {
-      'code': 'tw',
-      'name': 'Twi',
-      'script': 'Twi',
-      'region': 'West Africa',
-      'glyph': 'T',
-    },
-    {
-      'code': 'wo',
-      'name': 'Wolof',
-      'script': 'Wolof',
-      'region': 'West Africa',
-      'glyph': 'W',
-    },
+    {'code': 'tw', 'name': 'Twi', 'script': 'Twi', 'region': 'West Africa'},
+    {'code': 'wo', 'name': 'Wolof', 'script': 'Wolof', 'region': 'West Africa'},
     {
       'code': 'pcm',
       'name': 'Nigerian Pidgin',
       'script': 'Naijá',
       'region': 'West Africa',
-      'glyph': 'N',
     },
     {
       'code': 'sw',
       'name': 'Swahili',
       'script': 'Kiswahili',
       'region': 'East Africa',
-      'glyph': 'S',
     },
     {
       'code': 'am',
       'name': 'Amharic',
       'script': 'አማርኛ',
       'region': 'East Africa',
-      'glyph': 'አ',
     },
     {
       'code': 'zu',
       'name': 'Zulu',
       'script': 'isiZulu',
       'region': 'Southern Africa',
-      'glyph': 'Z',
     },
     {
       'code': 'xh',
       'name': 'Xhosa',
       'script': 'isiXhosa',
       'region': 'Southern Africa',
-      'glyph': 'X',
     },
     {
       'code': 'ar-maghreb',
       'name': 'Darija',
       'script': 'الدارجة',
       'region': 'North Africa',
-      'glyph': 'د',
     },
     {
       'code': 'ber',
       'name': 'Tamazight',
       'script': 'ⵜⴰⵎⴰⵣⵉⵖⵜ',
       'region': 'North Africa',
-      'glyph': 'ⵣ',
     },
   ];
 
@@ -187,7 +160,7 @@ class _LanguagePickStep extends HookConsumerWidget {
             _bidi(context, 'I speak'),
             style: ModernGriotTypography.labelLarge(
               context: context,
-              color: ModernGriotColors.onSurfaceVariant,
+              color: _captionInk,
             ),
           ),
           SizedBox(height: ModernGriotSpacing.xs.h),
@@ -220,7 +193,7 @@ class _LanguagePickStep extends HookConsumerWidget {
                       selectedColor: ModernGriotColors.brandGold.withValues(
                         alpha: _GriotAlpha.chipSelected,
                       ),
-                      checkmarkColor: ModernGriotColors.brandCoral,
+                      checkmarkColor: ModernGriotColors.primary,
                       labelStyle: ModernGriotTypography.labelLarge(
                         context: context,
                         color: ModernGriotColors.onSurface,
@@ -273,7 +246,7 @@ class _LanguagePickStep extends HookConsumerWidget {
                     Icon(
                       Icons.search_off_rounded,
                       size: ModernGriotSpacing.xl.sp,
-                      color: ModernGriotColors.onSurfaceVariant,
+                      color: _captionInk,
                     ),
                     SizedBox(height: ModernGriotSpacing.xs.h),
                     Text(
@@ -286,11 +259,14 @@ class _LanguagePickStep extends HookConsumerWidget {
                     ),
                     SizedBox(height: ModernGriotSpacing.xxs.h),
                     Text(
-                      _bidi(context, 'Try a region, a script name, or clear the box.'),
+                      _bidi(
+                        context,
+                        'Try a region, a script name, or clear the box.',
+                      ),
                       textAlign: TextAlign.center,
                       style: ModernGriotTypography.bodyMedium(
                         context: context,
-                        color: ModernGriotColors.onSurfaceVariant,
+                        color: _captionInk,
                       ),
                     ),
                   ],
@@ -303,7 +279,7 @@ class _LanguagePickStep extends HookConsumerWidget {
                 _bidi(context, region),
                 style: ModernGriotTypography.titleSmall(
                   context: context,
-                  color: ModernGriotColors.onSurfaceVariant,
+                  color: _captionInk,
                 ),
               ),
               SizedBox(height: ModernGriotSpacing.xs.h),
@@ -315,9 +291,9 @@ class _LanguagePickStep extends HookConsumerWidget {
                       ? lang['script'] as String
                       : '${_greetings[lang['code']]} · ${lang['script']}',
                   isSelected: selectedLearn.value == lang['code'],
-                  leading: _ScriptGlyphBadge(
-                    glyph: lang['glyph'] as String,
-                    accent: _accentFor(lang['code'] as String),
+                  leading: _LanguageEmblem(
+                    code: lang['code'] as String,
+                    size: ModernGriotLayout.minTouchTarget.w * 0.75,
                   ),
                   onTap: () {
                     HapticFeedback.selectionClick();
@@ -328,40 +304,6 @@ class _LanguagePickStep extends HookConsumerWidget {
             ],
           SizedBox(height: ModernGriotSpacing.lg.h),
         ],
-      ),
-    );
-  }
-}
-
-class _ScriptGlyphBadge extends StatelessWidget {
-  const _ScriptGlyphBadge({required this.glyph, this.accent});
-
-  final String glyph;
-  final Color? accent;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: ModernGriotLayout.minTouchTarget.w * 0.75,
-      height: ModernGriotLayout.minTouchTarget.w * 0.75,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: ModernGriotColors.surfaceContainerHigh,
-        borderRadius: BorderRadius.circular(ModernGriotRadius.md),
-        border: accent == null
-            ? Border.all(
-                color: ModernGriotColors.outlineVariant.withValues(
-                  alpha: _GriotAlpha.ghostBorder,
-                ),
-              )
-            : Border.all(color: accent!, width: 2),
-      ),
-      child: Text(
-        glyph,
-        style: ModernGriotTypography.titleMedium(
-          context: context,
-          color: ModernGriotColors.onSurface,
-        ).copyWith(height: 1),
       ),
     );
   }

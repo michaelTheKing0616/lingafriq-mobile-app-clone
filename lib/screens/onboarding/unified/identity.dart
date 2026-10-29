@@ -3,6 +3,10 @@ part of '../unified_onboarding_screen.dart';
 /// LingAfriq identity: original code-drawn motifs, per-language greetings and
 /// regional accents. No third-party pattern or brand asset is used.
 
+/// Caption ink for onboarding: >= 7:1 on surface, >= 4.5:1 on overlays
+/// and the welcome gradient (darker than the app-wide onSurfaceVariant).
+const Color _captionInk = Color(0xFF4A453B);
+
 /// Native greeting per learn language (shown in its own script).
 const Map<String, String> _greetings = {
   'yo': 'Ẹ kú àbọ̀',
@@ -36,7 +40,7 @@ const Map<String, Color> _accents = {
 };
 
 Color _accentFor(String? code) =>
-    _accents[code] ?? ModernGriotColors.brandCoral;
+    _accents[code] ?? const Color(0xFFB8451F); // deep coral, 5:1 on white
 
 /// Original "woven strip" motif: diamonds on a zig-zag warp. Drawn in code.
 class _WovenStripPainter extends CustomPainter {
@@ -83,7 +87,7 @@ class _WovenStrip extends StatelessWidget {
     child: SizedBox(
       height: height,
       width: double.infinity,
-      child: CustomPaint(painter: _WovenStripPainter(color)),
+      child: ClipRect(child: CustomPaint(painter: _WovenStripPainter(color))),
     ),
   );
 }
@@ -161,4 +165,205 @@ class _BeadProgressPainter extends CustomPainter {
       o.total != total ||
       o.accent != accent ||
       o.rtl != rtl;
+}
+
+/// Emblem motif per language: original geometric bead and weave marks drawn
+/// in code (not copied from any cloth, flag or brand).
+enum _Motif {
+  indigoDots,
+  weave,
+  uliSpiral,
+  checker,
+  waves,
+  ladder,
+  beadRings,
+  chevrons,
+  triangles,
+  star,
+}
+
+const Map<String, _Motif> _motifs = {
+  'yo': _Motif.indigoDots,
+  'ha': _Motif.star,
+  'ig': _Motif.uliSpiral,
+  'tw': _Motif.checker,
+  'wo': _Motif.waves,
+  'pcm': _Motif.ladder,
+  'sw': _Motif.waves,
+  'am': _Motif.chevrons,
+  'zu': _Motif.beadRings,
+  'xh': _Motif.beadRings,
+  'ar-maghreb': _Motif.star,
+  'ber': _Motif.triangles,
+};
+
+class _LanguageEmblem extends StatelessWidget {
+  const _LanguageEmblem({required this.code, required this.size});
+  final String code;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) => ExcludeSemantics(
+    child: SizedBox.square(
+      key: ValueKey('emblem-$code'),
+      dimension: size,
+      child: CustomPaint(
+        painter: _EmblemPainter(
+          motif: _motifs[code] ?? _Motif.weave,
+          accent: _accentFor(code),
+          // Two languages may share a motif; the seed varies the layout.
+          seed: code.codeUnits.fold(0, (a, b) => a + b) % 3,
+        ),
+      ),
+    ),
+  );
+}
+
+class _EmblemPainter extends CustomPainter {
+  const _EmblemPainter({
+    required this.motif,
+    required this.accent,
+    required this.seed,
+  });
+  final _Motif motif;
+  final Color accent;
+  final int seed;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final s = size.width;
+    final r = RRect.fromRectAndRadius(
+      Offset.zero & size,
+      Radius.circular(s * 0.28),
+    );
+    canvas.drawRRect(r, Paint()..color = accent.withValues(alpha: 0.12));
+    canvas.save();
+    canvas.clipRRect(r);
+    final ink = Paint()..color = accent;
+    final line = Paint()
+      ..color = accent
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = s * 0.07
+      ..strokeCap = StrokeCap.round;
+    final c = Offset(s / 2, s / 2);
+    final n = 3 + seed;
+    switch (motif) {
+      case _Motif.indigoDots:
+        for (var i = 0; i < 3; i++) {
+          for (var j = 0; j < 3; j++) {
+            canvas.drawCircle(
+              Offset(s * (0.25 + i * 0.25), s * (0.25 + j * 0.25)),
+              s * ((i + j).isEven ? 0.08 : 0.045),
+              ink,
+            );
+          }
+        }
+      case _Motif.weave:
+        for (var i = 1; i < 4; i++) {
+          canvas.drawLine(
+            Offset(s * i / 4, s * 0.15),
+            Offset(s * i / 4, s * 0.85),
+            line,
+          );
+        }
+        canvas.drawLine(Offset(s * 0.15, c.dy), Offset(s * 0.85, c.dy), line);
+      case _Motif.uliSpiral:
+        final p = Path()..moveTo(c.dx, c.dy);
+        for (double t = 0; t < 4 * math.pi; t += 0.2) {
+          final rr = s * 0.03 * t;
+          p.lineTo(c.dx + rr * math.cos(t), c.dy + rr * math.sin(t));
+        }
+        canvas.drawPath(p, line..strokeWidth = s * 0.05);
+      case _Motif.checker:
+        final q = s / 4;
+        for (var i = 0; i < 4; i++) {
+          for (var j = 0; j < 4; j++) {
+            if ((i + j).isEven) {
+              canvas.drawRect(
+                Rect.fromLTWH(i * q, j * q, q, q).deflate(q * 0.12),
+                ink,
+              );
+            }
+          }
+        }
+      case _Motif.waves:
+        for (var k = 0; k < n - 1; k++) {
+          final y = s * (0.3 + k * 0.2);
+          final p = Path()..moveTo(0, y);
+          for (double x = 0; x <= s; x += s / 8) {
+            p.lineTo(x, y + ((x / (s / 8)).round().isEven ? -1 : 1) * s * 0.06);
+          }
+          canvas.drawPath(p, line..strokeWidth = s * 0.05);
+        }
+      case _Motif.ladder:
+        canvas.drawLine(
+          Offset(s * 0.3, s * 0.15),
+          Offset(s * 0.3, s * 0.85),
+          line,
+        );
+        canvas.drawLine(
+          Offset(s * 0.7, s * 0.15),
+          Offset(s * 0.7, s * 0.85),
+          line,
+        );
+        for (var k = 0; k < 4; k++) {
+          final y = s * (0.25 + k * 0.17);
+          canvas.drawLine(Offset(s * 0.3, y), Offset(s * 0.7, y), line);
+        }
+      case _Motif.beadRings:
+        for (var k = 0; k < 3; k++) {
+          canvas.drawCircle(
+            c,
+            s * (0.12 + k * 0.12),
+            line..strokeWidth = s * 0.06,
+          );
+        }
+        canvas.drawCircle(c, s * 0.05, ink);
+      case _Motif.chevrons:
+        for (var k = 0; k < n; k++) {
+          final y = s * (0.25 + k * 0.5 / n);
+          canvas.drawPath(
+            Path()
+              ..moveTo(s * 0.2, y + s * 0.12)
+              ..lineTo(c.dx, y)
+              ..lineTo(s * 0.8, y + s * 0.12),
+            line,
+          );
+        }
+      case _Motif.triangles:
+        for (var k = 0; k < 3; k++) {
+          final x = s * (0.2 + k * 0.3);
+          canvas.drawPath(
+            Path()
+              ..moveTo(x - s * 0.12, s * 0.7)
+              ..lineTo(x, s * 0.35)
+              ..lineTo(x + s * 0.12, s * 0.7)
+              ..close(),
+            ink,
+          );
+        }
+      case _Motif.star:
+        final p = Path();
+        final pts = 8 - seed;
+        for (var k = 0; k < pts * 2; k++) {
+          final rr = k.isEven ? s * 0.34 : s * 0.16;
+          final a = k * math.pi / pts - math.pi / 2;
+          final o = Offset(c.dx + rr * math.cos(a), c.dy + rr * math.sin(a));
+          k == 0 ? p.moveTo(o.dx, o.dy) : p.lineTo(o.dx, o.dy);
+        }
+        canvas.drawPath(p..close(), ink);
+    }
+    canvas.restore();
+    canvas.drawRRect(
+      r.deflate(0.75),
+      Paint()
+        ..color = accent
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.5,
+    );
+  }
+
+  @override
+  bool shouldRepaint(_EmblemPainter o) =>
+      o.motif != motif || o.accent != accent || o.seed != seed;
 }

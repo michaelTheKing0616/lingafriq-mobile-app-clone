@@ -116,7 +116,7 @@ class _LevelPlacementStep extends HookConsumerWidget {
               'Quick check: tap each word you recognize.',
               style: ModernGriotTypography.bodyMedium(
                 context: context,
-                color: ModernGriotColors.onSurfaceVariant,
+                color: _captionInk,
               ),
             ),
             SizedBox(height: ModernGriotSpacing.xs.h),

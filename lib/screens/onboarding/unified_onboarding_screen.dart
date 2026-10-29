@@ -319,6 +319,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                 return;
               }
             }
+            if (!context.mounted) return;
             failedChoice.value = null;
             isCompleting.value = true;
             try {
@@ -410,7 +411,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                           ),
                           SizedBox(height: ModernGriotSpacing.md.h),
                           Text(
-                            'Preparing your village...',
+                            'Preparing your village…',
                             style: ModernGriotTypography.bodyMedium(
                               context: context,
                               color: ModernGriotColors.surface,
@@ -712,7 +713,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                   'from your profile.',
                   style: ModernGriotTypography.bodyMedium(
                     context: dialogContext,
-                    color: ModernGriotColors.onSurfaceVariant,
+                    color: _captionInk,
                   ),
                 ),
                 actions: [
@@ -722,7 +723,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                       'Maybe later',
                       style: ModernGriotTypography.labelLarge(
                         context: dialogContext,
-                        color: ModernGriotColors.onSurfaceVariant,
+                        color: _captionInk,
                       ),
                     ),
                   ),

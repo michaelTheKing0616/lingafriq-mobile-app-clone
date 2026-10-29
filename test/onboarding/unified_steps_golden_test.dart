@@ -173,9 +173,7 @@ void main() {
     'every step, offline',
     (tester) => walk(tester, suffix: '_offline', online: false),
   );
-  testWidgets('error: offline sign-in shows message and Retry', (
-    tester,
-  ) async {
+  testWidgets('error: offline sign-in shows message and Retry', (tester) async {
     await pumpOnboarding(tester, reducedMotion: true, online: false);
     await settleOnce(tester);
     await advanceToFirstWin(tester);

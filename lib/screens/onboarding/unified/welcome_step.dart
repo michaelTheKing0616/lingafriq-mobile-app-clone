@@ -26,6 +26,7 @@ class _WelcomeStep extends StatelessWidget {
                           size: side,
                           animate: true,
                           showDialogue: false,
+                          showCaption: false,
                         ),
                       ),
                     ),
@@ -46,7 +47,8 @@ class _WelcomeStep extends StatelessWidget {
     return [
       // Polie's intro: greets in five home scripts on a woven mat.
       Semantics(
-        label: 'Polie greets you: welcome, in Yoruba, Hausa, Igbo, '
+        label:
+            'Polie greets you: welcome, in Yoruba, Hausa, Igbo, '
             'Swahili and Twi.',
         child: ExcludeSemantics(
           child: Column(
@@ -75,7 +77,7 @@ class _WelcomeStep extends StatelessWidget {
         textAlign: TextAlign.center,
         style: ModernGriotTypography.titleMedium(
           context: context,
-          color: ModernGriotColors.onSurfaceVariant,
+          color: _captionInk,
         ),
       ).animate().fadeIn(
         delay: _motionDelay(context, 400.ms),
@@ -101,11 +103,14 @@ class _WelcomeStep extends StatelessWidget {
       ),
       SizedBox(height: ModernGriotSpacing.xxs.h),
       Text(
-        _bidi(context, 'Short lessons with Polie. Hear, tap, and say real phrases.'),
+        _bidi(
+          context,
+          'Short lessons with Polie. Hear, tap, and say real phrases.',
+        ),
         textAlign: TextAlign.center,
         style: ModernGriotTypography.bodyMedium(
           context: context,
-          color: ModernGriotColors.onSurfaceVariant,
+          color: _captionInk,
         ),
       ),
       SizedBox(height: ModernGriotSpacing.sm.h),

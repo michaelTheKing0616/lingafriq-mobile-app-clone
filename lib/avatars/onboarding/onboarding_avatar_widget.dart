@@ -14,6 +14,9 @@ class OnboardingAvatarWidget extends StatefulWidget {
   final OnboardingStep step;
   final double size;
   final bool showDialogue;
+
+  /// Name and title under the avatar; off where the avatar is clipped art.
+  final bool showCaption;
   final String? dialogue;
   final bool animate;
   final VoidCallback? onDialogueComplete;
@@ -23,6 +26,7 @@ class OnboardingAvatarWidget extends StatefulWidget {
     required this.step,
     this.size = 180,
     this.showDialogue = false,
+    this.showCaption = true,
     this.dialogue,
     this.animate = true,
     this.onDialogueComplete,
@@ -148,27 +152,29 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
           child: _buildAvatar(info),
         ),
 
-        const SizedBox(height: 16),
+        if (widget.showCaption) ...[
+          const SizedBox(height: 16),
 
-        // Character name
-        Text(
-          info.name,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: info.primaryColor,
-          ),
-        ).animate().fadeIn(delay: 300.ms),
+          // Character name
+          Text(
+            info.name,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: info.primaryColor,
+            ),
+          ).animate().fadeIn(delay: 300.ms),
 
-        // Title
-        Text(
-          info.title,
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.grey[600],
-            fontStyle: FontStyle.italic,
-          ),
-        ).animate().fadeIn(delay: 400.ms),
+          // Title
+          Text(
+            info.title,
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey[600],
+              fontStyle: FontStyle.italic,
+            ),
+          ).animate().fadeIn(delay: 400.ms),
+        ],
 
         // Dialogue box
         if (widget.showDialogue && widget.dialogue != null) ...[

@@ -192,7 +192,7 @@ class _BirthYearStep extends HookConsumerWidget {
                                   )
                                 : ModernGriotTypography.titleMedium(
                                     context: context,
-                                    color: ModernGriotColors.onSurfaceVariant,
+                                    color: _captionInk,
                                   ),
                           ),
                         ),
@@ -238,7 +238,7 @@ class _BirthYearStep extends HookConsumerWidget {
                 'direct messages.',
                 style: ModernGriotTypography.bodyMedium(
                   context: context,
-                  color: ModernGriotColors.onSurfaceVariant,
+                  color: _captionInk,
                 ),
               ),
             ),

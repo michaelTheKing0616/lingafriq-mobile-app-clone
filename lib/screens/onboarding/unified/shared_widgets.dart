@@ -23,6 +23,7 @@ class _PolieBadge extends StatelessWidget {
             size: side,
             animate: true,
             showDialogue: false,
+            showCaption: false,
           ),
         ),
       ),
@@ -149,7 +150,7 @@ class _PrimaryCta extends StatelessWidget {
             backgroundColor: color,
             foregroundColor: foreground,
             disabledBackgroundColor: ModernGriotColors.surfaceContainerHighest,
-            disabledForegroundColor: ModernGriotColors.onSurfaceVariant,
+            disabledForegroundColor: _captionInk,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
             ),
@@ -214,7 +215,7 @@ class _SelectRow extends StatelessWidget {
               borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
               border: Border.all(
                 color: isSelected
-                    ? ModernGriotColors.brandCoral
+                    ? ModernGriotColors.primary
                     : ModernGriotColors.outlineVariant.withValues(
                         alpha: _GriotAlpha.ghostBorder,
                       ),
@@ -253,7 +254,7 @@ class _SelectRow extends StatelessWidget {
                 if (isSelected)
                   Icon(
                     Icons.check_circle_rounded,
-                    color: ModernGriotColors.brandCoral,
+                    color: ModernGriotColors.primary,
                     size: ModernGriotSpacing.lg.sp,
                   ),
               ],
@@ -336,7 +337,7 @@ class _QuestionHeader extends StatelessWidget {
             _bidi(context, hint!),
             style: ModernGriotTypography.bodyMedium(
               context: context,
-              color: ModernGriotColors.onSurfaceVariant,
+              color: _captionInk,
             ),
           ),
         ],

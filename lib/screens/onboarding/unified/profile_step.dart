@@ -14,6 +14,7 @@ class _ProfileStep extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final usernameController = useTextEditingController();
+    final learnCode = onboardingData['learning_language'] as String?;
     final username = useState('');
     final usernameStatus = useState<_UsernameStatus>(_UsernameStatus.initial);
     final isChecking = useState(false);
@@ -102,7 +103,7 @@ class _ProfileStep extends HookConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           _PrimaryCta(
-            label: 'Complete Setup',
+            label: 'Complete setup',
             enabled: canComplete,
             onPressed: () async {
               try {
@@ -123,7 +124,7 @@ class _ProfileStep extends HookConsumerWidget {
               'Skip for now',
               style: ModernGriotTypography.labelLarge(
                 context: context,
-                color: ModernGriotColors.onSurfaceVariant,
+                color: _captionInk,
               ),
             ),
           ),
@@ -211,15 +212,65 @@ class _ProfileStep extends HookConsumerWidget {
               helperMaxLines: 3,
               helperStyle: ModernGriotTypography.bodySmall(
                 context: context,
-                color: ModernGriotColors.onSurfaceVariant,
+                color: _captionInk,
               ),
             ),
+          ),
+          SizedBox(height: ModernGriotSpacing.sm.h),
+          Text(
+            _bidi(context, 'Ideas from your language'),
+            style: ModernGriotTypography.labelLarge(
+              context: context,
+              color: _captionInk,
+            ),
+          ),
+          SizedBox(height: ModernGriotSpacing.xs.h),
+          Wrap(
+            spacing: ModernGriotSpacing.xs.w,
+            runSpacing: ModernGriotSpacing.xs.h,
+            children: [
+              for (final idea in _nameIdeas(learnCode))
+                ActionChip(
+                  label: Text(idea),
+                  tooltip: 'Use the name $idea',
+                  materialTapTargetSize: MaterialTapTargetSize.padded,
+                  backgroundColor: ModernGriotColors.surfaceContainerLowest,
+                  side: BorderSide(color: _accentFor(learnCode)),
+                  labelStyle: ModernGriotTypography.labelLarge(
+                    context: context,
+                    color: ModernGriotColors.onSurface,
+                  ),
+                  onPressed: () {
+                    usernameController.text = idea;
+                    usernameController.selection = TextSelection.collapsed(
+                      offset: idea.length,
+                    );
+                  },
+                ),
+            ],
+          ),
+          SizedBox(height: ModernGriotSpacing.md.h),
+          _VillageCardPreview(
+            name: username.value.isEmpty ? null : username.value,
+            accent: _accentFor(learnCode),
+            greeting: _greetings[learnCode],
           ),
           SizedBox(height: ModernGriotSpacing.lg.h),
         ],
       ),
     );
   }
+
+  /// Original name ideas: words for star, light, joy, hope in each language.
+  static List<String> _nameIdeas(String? code) => switch (code) {
+    'yo' => const ['Irawo_learns', 'Ayo_speaks', 'Ireti'],
+    'ha' => const ['Tauraro', 'Haske_learns', 'Murna'],
+    'ig' => const ['Kpakpando', 'Obi_learns', 'Nkem'],
+    'sw' => const ['Nyota', 'Furaha_learns', 'Tumaini'],
+    'tw' => const ['Nsoroma', 'Anigye_learns', 'Akwaaba'],
+    'zu' => const ['Inkanyezi', 'Injabulo', 'Themba'],
+    _ => const ['Baobab_learns', 'Griot_speaks', 'Village_star'],
+  };
 
   Widget? _usernameIcon(_UsernameStatus status) {
     switch (status) {
@@ -247,7 +298,7 @@ class _ProfileStep extends HookConsumerWidget {
       case _UsernameStatus.initial:
         return 'Use 3 to 30 letters, numbers, or underscores';
       case _UsernameStatus.checking:
-        return 'Checking if that name is free...';
+        return 'Checking if that name is free…';
       case _UsernameStatus.available:
         return 'That name is yours';
       case _UsernameStatus.taken:
@@ -273,4 +324,84 @@ enum _UsernameStatus {
   tooLong,
   invalidFormat,
   error,
+}
+
+/// How the learner will appear in the village: fills the step with a live
+/// preview instead of empty space.
+class _VillageCardPreview extends StatelessWidget {
+  const _VillageCardPreview({
+    required this.name,
+    required this.accent,
+    required this.greeting,
+  });
+
+  final String? name;
+  final Color accent;
+  final String? greeting;
+
+  @override
+  Widget build(BuildContext context) {
+    final shown = name ?? 'Your name';
+    return Semantics(
+      container: true,
+      label: 'Preview: how you appear in the village, $shown',
+      excludeSemantics: true,
+      child: Container(
+        key: const ValueKey('village-card-preview'),
+        padding: EdgeInsets.all(ModernGriotSpacing.md.w),
+        decoration: BoxDecoration(
+          color: ModernGriotColors.surfaceContainerLowest,
+          borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
+          border: Border.all(color: accent, width: 1.5),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: ModernGriotSpacing.lg.r,
+                  backgroundColor: accent,
+                  child: Text(
+                    shown.characters.first.toUpperCase(),
+                    style: ModernGriotTypography.titleMedium(
+                      context: context,
+                      color: ModernGriotColors.surfaceContainerLowest,
+                    ),
+                  ),
+                ),
+                SizedBox(width: ModernGriotSpacing.sm.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _bidi(context, shown),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: ModernGriotTypography.titleMedium(
+                          context: context,
+                          color: ModernGriotColors.onSurface,
+                        ),
+                      ),
+                      if (greeting != null)
+                        Text(
+                          greeting!,
+                          style: ModernGriotTypography.bodyMedium(
+                            context: context,
+                            color: _captionInk,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: ModernGriotSpacing.sm.h),
+            _WovenStrip(color: accent),
+          ],
+        ),
+      ),
+    );
+  }
 }

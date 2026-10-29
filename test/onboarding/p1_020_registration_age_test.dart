@@ -14,23 +14,26 @@ void main() {
     expect(computeRegistrationAgeBand(now - 10, countryCode: 'DE'), 'child');
   });
 
-  test('onboarding provider persists registration birth year payload', () async {
-    SharedPreferences.setMockInitialValues({});
-    final prefs = await SharedPreferences.getInstance();
-    final container = ProviderContainer(
-      overrides: [
-        sharedPreferencesProvider.overrideWithValue(
-          SharedPreferencesProvider(prefs),
-        ),
-      ],
-    );
-    addTearDown(container.dispose);
-    await container
-        .read(onboardingProvider.notifier)
-        .persistRegistrationBirthYear(2012, 'teen');
-    expect(
-      container.read(onboardingProvider.notifier).registrationAgePayload(),
-      {'birth_year': 2012, 'age_band': 'teen'},
-    );
-  });
+  test(
+    'onboarding provider persists registration birth year payload',
+    () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final container = ProviderContainer(
+        overrides: [
+          sharedPreferencesProvider.overrideWithValue(
+            SharedPreferencesProvider(prefs),
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+      await container
+          .read(onboardingProvider.notifier)
+          .persistRegistrationBirthYear(2012, 'teen');
+      expect(
+        container.read(onboardingProvider.notifier).registrationAgePayload(),
+        {'birth_year': 2012, 'age_band': 'teen'},
+      );
+    },
+  );
 }

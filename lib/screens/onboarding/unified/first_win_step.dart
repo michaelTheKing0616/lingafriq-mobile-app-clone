@@ -110,7 +110,7 @@ class _FirstWinStep extends HookConsumerWidget {
                   textAlign: TextAlign.center,
                   style: ModernGriotTypography.bodyLarge(
                     context: context,
-                    color: ModernGriotColors.onSurfaceVariant,
+                    color: _captionInk,
                   ),
                 ),
                 SizedBox(height: ModernGriotSpacing.lg.h),
@@ -169,7 +169,7 @@ class _FirstWinStep extends HookConsumerWidget {
             'A 60-second taste of ${copy.name}. Hear, tap, say.',
             style: ModernGriotTypography.bodyMedium(
               context: context,
-              color: ModernGriotColors.onSurfaceVariant,
+              color: _captionInk,
             ),
           ),
           SizedBox(height: ModernGriotSpacing.lg.h),
@@ -245,7 +245,7 @@ class _FirstWinStep extends HookConsumerWidget {
                 textAlign: TextAlign.center,
                 style: ModernGriotTypography.bodySmall(
                   context: context,
-                  color: ModernGriotColors.onSurfaceVariant,
+                  color: _captionInk,
                 ),
               ),
             ],
@@ -288,7 +288,7 @@ class _FirstWinStep extends HookConsumerWidget {
                 textAlign: TextAlign.center,
                 style: ModernGriotTypography.bodyLarge(
                   context: context,
-                  color: ModernGriotColors.onSurfaceVariant,
+                  color: _captionInk,
                 ),
               ),
             ),
@@ -331,7 +331,7 @@ class _FirstWinStep extends HookConsumerWidget {
                     ModernGriotLayout.minTouchTarget * 2.5,
                     ModernGriotLayout.minTouchTarget.toDouble(),
                   ),
-                  foregroundColor: ModernGriotColors.onSurfaceVariant,
+                  foregroundColor: _captionInk,
                 ),
                 onPressed: () {
                   spoke.value = false;
