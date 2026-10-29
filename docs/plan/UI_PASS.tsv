@@ -247,7 +247,7 @@ mobile	lib/screens/splash/splash_screen_material3.dart	todo
 mobile	lib/screens/staff/micro_mentor_reports_screen.dart	todo			
 mobile	lib/screens/story/story_mode_screen.dart	todo			
 mobile	lib/screens/subscription/family_dashboard_screen.dart	todo			
-mobile	lib/screens/subscription/subscription_screen.dart	below-bar C5 review: disclosure wall-of-text, hardcoded prices, links wrap/orphan	8/8/9/8/8/8/8/9/7/8 avg 8.1		2026-10-29
+mobile	lib/screens/subscription/subscription_screen.dart	ready-for-review C5 fix: SubscriptionTermsDisclosure: labelled rows Price/Renews/Free trial/Cancel (side-by-side, stacked at 200%/narrow), bodyMedium size, prices+trial from RevenueCat offerings (storePricesProvider, per-field fallback), bidi-isolated prices, full-width Manage button, Terms/Privacy as whole 48dp buttons (no orphan wrap); l10n en/ar/fr; goldens paywall_terms_* (prev: 8/8/9/8/8/8/8/9/7/8 avg 8.1)			2026-10-29
 mobile	lib/screens/tabs_view/home/home_tab.dart	todo			
 mobile	lib/screens/tabs_view/home/home_tab_material3.dart	below-bar	9/9/9/9/9/9/9/9/8/9 avg8.8	Duolingo	2026-10-28
 mobile	lib/screens/tabs_view/home/language_detail_screen.dart	todo			
