@@ -72,14 +72,21 @@ class FestivalThemeService {
     VillageFestivalThemeId.travel: 'Travel & journeys',
   };
 
+  /// Upper bound on the remote festival lookup before the local fallback.
+  static const Duration remoteTimeout = Duration(seconds: 3);
+
   Future<VillageFestivalSnapshot> loadActive({DateTime? utcNow}) async {
     final now = utcNow ?? DateTime.now().toUtc();
     if (_cached != null && utcNow != null) {
       return _cached!;
     }
     try {
-      await ApiService.initialize();
-      final response = await ApiService.get('/games/festival/village');
+      // Festival weighting is decoration: never let a slow or unreachable
+      // backend hold up a game start. Falls back to the local week schedule.
+      final response = await () async {
+        await ApiService.initialize();
+        return ApiService.get('/games/festival/village');
+      }().timeout(remoteTimeout);
       final data = response.data;
       if (data is Map && data['success'] == true) {
         final payload = data['data'];

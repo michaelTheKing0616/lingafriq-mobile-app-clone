@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lingafriq/games/festival/festival_theme_service.dart';
 import 'package:lingafriq/games/gamekit/batch_game_factory.dart';
 import 'package:lingafriq/games/learning_game_adapter.dart';
 import 'package:lingafriq/models/game/game_content_failure.dart';
 import 'package:lingafriq/models/game/game_content_models.dart';
 import 'package:lingafriq/models/verified_lexeme.dart';
-import 'package:lingafriq/services/offline/lexicon_pack_service.dart';
 
 VerifiedLexeme _lexeme({
   required String id,
@@ -34,6 +34,15 @@ VerifiedLexeme _lexeme({
 }
 
 void main() {
+  // Pool building is unit-tested offline: seed the festival cache with the
+  // deterministic local schedule instead of calling the backend.
+  setUp(() {
+    FestivalThemeService.instance.seedCacheForTests(
+      FestivalThemeService.instance.snapshotAt(DateTime.utc(2026, 1, 5)),
+    );
+  });
+  tearDown(FestivalThemeService.instance.clearCacheForTests);
+
   group('GameLexiconPoolBuilder', () {
     test('maps lexeme to pool item with licence and audio', () {
       final item = verifiedLexemeToPoolItem(
