@@ -1,102 +1,82 @@
 {
   "@@locale": "en",
   "@@last_modified": "2026-02-04",
-  
   "appTitle": "LingAfriq",
   "@appTitle": {
     "description": "The app title"
   },
-  
   "welcomeMessage": "Welcome to LingAfriq",
   "@welcomeMessage": {
     "description": "Welcome message shown on home screen"
   },
-  
   "continueButton": "Continue",
   "@continueButton": {
     "description": "Continue button text"
   },
-  
   "startLearning": "Start Learning",
   "@startLearning": {
     "description": "Start learning button"
   },
-  
   "loading": "Loading...",
   "@loading": {
     "description": "Loading indicator text"
   },
-  
   "errorOccurred": "Something went wrong on our side. The app lost the last step. Try again or restart the lesson.",
   "@errorOccurred": {
     "description": "Generic error message"
   },
-  
   "tryAgain": "Try Again",
   "@tryAgain": {
     "description": "Retry button text"
   },
-  
   "home": "Home",
   "@home": {
     "description": "Home tab label"
   },
-  
   "learn": "Learn",
   "@learn": {
     "description": "Learn tab label"
   },
-  
   "games": "Games",
   "@games": {
     "description": "Games tab label"
   },
-  
   "profile": "Profile",
   "@profile": {
     "description": "Profile tab label"
   },
-  
   "settings": "Settings",
   "@settings": {
     "description": "Settings screen title"
   },
-  
   "language": "Language",
   "@language": {
     "description": "Language selection label"
   },
-  
   "selectLanguage": "Select Language",
   "@selectLanguage": {
     "description": "Language selection prompt"
   },
-  
   "lessons": "Lessons",
   "@lessons": {
     "description": "Lessons section title"
   },
-  
   "quizzes": "Quizzes",
   "@quizzes": {
     "description": "Quizzes section title"
   },
-  
   "takeQuiz": "Take a Quiz",
   "@takeQuiz": {
     "description": "Take quiz button"
   },
-  
   "takeLesson": "Take a Lesson",
   "@takeLesson": {
     "description": "Take lesson button"
   },
-  
   "dailyStreak": "Daily Streak",
   "@dailyStreak": {
     "description": "Streak counter label"
   },
-  
   "daysStreak": "{count} days",
   "@daysStreak": {
     "description": "Streak days count",
@@ -106,7 +86,6 @@
       }
     }
   },
-  
   "xpEarned": "{count} XP",
   "@xpEarned": {
     "description": "XP earned display",
@@ -116,227 +95,182 @@
       }
     }
   },
-  
   "level": "Level",
   "@level": {
     "description": "Level label"
   },
-  
   "beginner": "Beginner",
   "@beginner": {
     "description": "Beginner level"
   },
-  
   "intermediate": "Intermediate",
   "@intermediate": {
     "description": "Intermediate level"
   },
-  
   "advanced": "Advanced",
   "@advanced": {
     "description": "Advanced level"
   },
-  
   "correct": "Correct!",
   "@correct": {
     "description": "Correct answer feedback"
   },
-  
   "incorrect": "Incorrect",
   "@incorrect": {
     "description": "Incorrect answer feedback"
   },
-  
   "next": "Go on",
   "@next": {
     "description": "Next button"
   },
-  
   "back": "Go back",
   "@back": {
     "description": "Back button"
   },
-  
   "skip": "Skip",
   "@skip": {
     "description": "Skip button"
   },
-  
   "cancel": "Cancel",
   "@cancel": {
     "description": "Cancel button"
   },
-  
   "save": "Save",
   "@save": {
     "description": "Save button"
   },
-  
   "done": "Finish",
   "@done": {
     "description": "Done button"
   },
-  
   "submit": "Submit",
   "@submit": {
     "description": "Submit button"
   },
-  
   "logout": "Log Out",
   "@logout": {
     "description": "Logout button"
   },
-  
   "login": "Log In",
   "@login": {
     "description": "Login button"
   },
-  
   "signup": "Sign Up",
   "@signup": {
     "description": "Signup button"
   },
-  
   "email": "Email",
   "@email": {
     "description": "Email field label"
   },
-  
   "password": "Password",
   "@password": {
     "description": "Password field label"
   },
-  
   "forgotPassword": "Forgot Password?",
   "@forgotPassword": {
     "description": "Forgot password link"
   },
-  
   "noAccount": "Don't have an account?",
   "@noAccount": {
     "description": "No account text"
   },
-  
   "haveAccount": "Already have an account?",
   "@haveAccount": {
     "description": "Have account text"
   },
-  
   "congratulations": "Congratulations!",
   "@congratulations": {
     "description": "Congratulations message"
   },
-  
   "lessonComplete": "Lesson Complete!",
   "@lessonComplete": {
     "description": "Lesson completion message"
   },
-  
   "quizComplete": "Quiz Complete!",
   "@quizComplete": {
     "description": "Quiz completion message"
   },
-  
   "accuracy": "Accuracy",
   "@accuracy": {
     "description": "Accuracy label"
   },
-  
   "score": "Score",
   "@score": {
     "description": "Score label"
   },
-  
   "aiTutor": "AI Tutor",
   "@aiTutor": {
     "description": "AI Tutor feature name"
   },
-  
   "cultureMagazine": "Culture Magazine",
   "@cultureMagazine": {
     "description": "Culture Magazine feature name"
   },
-  
   "tribes": "Tribes",
   "@tribes": {
     "description": "Tribes feature name"
   },
-  
   "leaderboard": "Leaderboard",
   "@leaderboard": {
     "description": "Leaderboard feature name"
   },
-
   "flbHeritageTitle": "FLB Heritage",
   "@flbHeritageTitle": {
     "description": "FLB Heritage archive screen title"
   },
-
   "flbHeritageSearchHint": "Search title, country, or tags",
   "@flbHeritageSearchHint": {
     "description": "Search field hint on FLB Heritage archive"
   },
-
   "flbHeritageEmptyMessage": "No entries match your search. Try another keyword or pull to refresh.",
   "@flbHeritageEmptyMessage": {
     "description": "Empty state when no heritage items match"
   },
-
   "flbHeritageLoadError": "Could not load the heritage archive. The network or server timed out. Pull to retry.",
   "@flbHeritageLoadError": {
     "description": "Error when heritage API and bundle fail"
   },
-
   "flbHeritageRefresh": "Refresh",
   "@flbHeritageRefresh": {
     "description": "Refresh heritage list button"
   },
-
   "flbHeritageDetailTitle": "Heritage",
   "@flbHeritageDetailTitle": {
     "description": "Heritage detail screen short title"
   },
-
   "flbHeritageMissingContent": "This heritage page is missing. The link did not include an item. Go back and pick another entry.",
   "@flbHeritageMissingContent": {
     "description": "Route error when heritage detail has no arguments"
   },
-
   "tooltipFlbHeritageArchive": "FLB Heritage archive",
   "@tooltipFlbHeritageArchive": {
     "description": "Tooltip for opening heritage from magazine"
   },
-
   "tooltipTribeDiscovery": "Tribe discovery",
   "@tooltipTribeDiscovery": {
     "description": "Tooltip for tribe discovery from magazine"
   },
-
   "drawerFlbHeritageArchive": "FLB Heritage Archive",
   "@drawerFlbHeritageArchive": {
     "description": "Drawer item label for heritage archive"
   },
-
   "tooltipTribes": "Tribes",
   "@tooltipTribes": {
     "description": "Tooltip for tribes action on heritage detail"
   },
-
   "magazineKeyTakeaways": "Key takeaways",
   "@magazineKeyTakeaways": {
     "description": "Section title for scraped article highlights"
   },
-
   "magazineRelatedTopics": "Related topics",
   "@magazineRelatedTopics": {
     "description": "Related Wikipedia-style topics from scraper"
   },
-
   "magazineSourceAndLicense": "Source & license",
   "@magazineSourceAndLicense": {
     "description": "Footer for attribution and license text"
   },
-
   "magazineReadingTime": "{minutes} min read",
   "@magazineReadingTime": {
     "description": "Reading time chip",
@@ -346,17 +280,14 @@
       }
     }
   },
-
   "gameTutorialGotIt": "Got it",
   "@gameTutorialGotIt": {
     "description": "Dismiss game tutorial sheet"
   },
-
   "gameTutorialHowToPlay": "How to play",
   "@gameTutorialHowToPlay": {
     "description": "Game tutorial dialog title"
   },
-
   "gamekitFeedbackTitle": "Your answer",
   "@gamekitFeedbackTitle": {
     "description": "GameKit feedback panel title"
@@ -502,7 +433,6 @@
       }
     }
   },
-
   "chatPeerTyping": "{name} is typing…",
   "@chatPeerTyping": {
     "description": "Typing indicator label",
@@ -512,22 +442,18 @@
       }
     }
   },
-
   "polieTranslationSourceLabel": "From",
   "@polieTranslationSourceLabel": {
     "description": "Label above source language in Polie translation panel"
   },
-
   "polieTranslationTargetLabel": "To",
   "@polieTranslationTargetLabel": {
     "description": "Label above target language in Polie translation panel"
   },
-
   "polieConversationIncludeEnglishTranslations": "English translations",
   "@polieConversationIncludeEnglishTranslations": {
     "description": "Toggle label in Polie conversation mode to include English translations."
   },
-
   "polieTutorSavedCards": "Saved cards",
   "@polieTutorSavedCards": {
     "description": "Title for the Polie tutor saved cards list."
@@ -544,7 +470,6 @@
   "@polieTutorNoSavedCardsYet": {
     "description": "Empty state message when user has no saved tutor cards."
   },
-
   "liveTranslateTitle": "Live translate",
   "@liveTranslateTitle": {
     "description": "Title for the live/real-time translation screen"
@@ -600,7 +525,7 @@
   "@liveTranslateInterruptBargeIn": {
     "description": "Button label to interrupt playback and barge in"
   },
-  "liveTranslatePlaceholderDash": "\u2026",
+  "liveTranslatePlaceholderDash": "…",
   "@liveTranslatePlaceholderDash": {
     "description": "Placeholder when no caption is available (ellipsis, not em dash)"
   },
@@ -650,7 +575,6 @@
   "@liveTranslateDefaultAudioMime": {
     "description": "Default mime type for TTS audio when server does not provide one"
   },
-
   "gameWordMatchConnectMeaningTitle": "Connect the Meaning",
   "@gameWordMatchConnectMeaningTitle": {
     "description": "Title in Word Match Audio game screen."
@@ -663,7 +587,6 @@
   "@gameWordMatchEnglishLabel": {
     "description": "Right-column header label for meanings in Word Match Audio game."
   },
-
   "content_coming_soon": "Coming Soon",
   "@content_coming_soon": {
     "description": "Empty state when a language or level has no verified curriculum content"
@@ -708,8 +631,12 @@
   "@personaOpeningHowBuilt": {
     "description": "copy_keys: persona.opening.how_built — spoken/read before the first in-character line",
     "placeholders": {
-      "personaName": {"type": "String"},
-      "sourceSummary": {"type": "String"}
+      "personaName": {
+        "type": "String"
+      },
+      "sourceSummary": {
+        "type": "String"
+      }
     }
   },
   "personaVoiceSynthesised": "Synthesised voice",
@@ -756,13 +683,11 @@
   "@personaChipNoSourceSemantics": {
     "description": "Screen reader label when documented claim has no source id"
   },
-
   "persona_dialogue_welcome": "Eh, welcome back, friend. The path waits for you today.",
   "@persona_dialogue_welcome": {
     "description": "Sample in-character persona greeting; village voice allowed here only",
     "voice": "character"
   },
-
   "labelBetaCopy": "AI-assisted, machine-checked. Spotted a problem? Tell us.",
   "@labelBetaCopy": {
     "description": "copy_keys: label.beta.copy — Beta quality label on learner items"
@@ -779,7 +704,6 @@
   "@audioSynthetic": {
     "description": "copy_keys: audio.synthetic — tag on TTS audio"
   },
-
   "avatarSemanticsExpression": "{name} looks {expression}",
   "@avatarSemanticsExpression": {
     "description": "copy_keys: avatar.semantics.expression — screen reader when idle",
@@ -889,5 +813,356 @@
   "aiDisclosureLabel": "AI-generated: replies and voice come from an AI tutor and can be wrong.",
   "@aiDisclosureLabel": {
     "description": "Persistent AI transparency label (EU AI Act Art. 50) on AI chat, tutor, voice and persona screens"
+  },
+  "aiDisclosureShort": "AI-generated content",
+  "@aiDisclosureShort": {
+    "description": "Compliance batch 1 UI"
+  },
+  "aiDisclosureMoreHint": "Learn how AI is used here",
+  "@aiDisclosureMoreHint": {
+    "description": "Compliance batch 1 UI"
+  },
+  "aiDisclosureSheetTitle": "About AI in LingAfriq",
+  "@aiDisclosureSheetTitle": {
+    "description": "Compliance batch 1 UI"
+  },
+  "aiDisclosureSheetBody": "Polie, the tutors and AI personas are not people. Their text and voices are generated by AI. They can be wrong, so check important facts. Avoid sharing private information in chats.",
+  "@aiDisclosureSheetBody": {
+    "description": "Compliance batch 1 UI"
+  },
+  "aiDisclosureGotIt": "Got it",
+  "@aiDisclosureGotIt": {
+    "description": "Compliance batch 1 UI"
+  },
+  "voiceRetentionTitle": "Recordings on this device",
+  "@voiceRetentionTitle": {
+    "description": "Compliance batch 1 UI"
+  },
+  "voiceRetentionBody": "Your voice is recorded only while you practise, to score pronunciation and turn speech into text. Recordings saved on this phone are deleted automatically.",
+  "@voiceRetentionBody": {
+    "description": "Compliance batch 1 UI"
+  },
+  "voiceRetentionSelectLabel": "Delete recordings automatically",
+  "@voiceRetentionSelectLabel": {
+    "description": "Compliance batch 1 UI"
+  },
+  "voiceRetentionImmediate": "Right after scoring",
+  "@voiceRetentionImmediate": {
+    "description": "Compliance batch 1 UI"
+  },
+  "voiceRetention24h": "After 24 hours",
+  "@voiceRetention24h": {
+    "description": "Compliance batch 1 UI"
+  },
+  "voiceRetention7d": "After 7 days",
+  "@voiceRetention7d": {
+    "description": "Compliance batch 1 UI"
+  },
+  "voiceRetention30d": "After 30 days",
+  "@voiceRetention30d": {
+    "description": "Compliance batch 1 UI"
+  },
+  "voiceRetentionDeleteNow": "Delete my recordings now",
+  "@voiceRetentionDeleteNow": {
+    "description": "Compliance batch 1 UI"
+  },
+  "voiceRetentionConfirmTitle": "Delete recordings on this device?",
+  "@voiceRetentionConfirmTitle": {
+    "description": "Compliance batch 1 UI"
+  },
+  "voiceRetentionConfirmBody": "Practice recordings saved on this phone will be removed. This can't be undone. Recordings you chose to save to your account are not affected.",
+  "@voiceRetentionConfirmBody": {
+    "description": "Compliance batch 1 UI"
+  },
+  "voiceRetentionConfirmDelete": "Delete",
+  "@voiceRetentionConfirmDelete": {
+    "description": "Compliance batch 1 UI"
+  },
+  "voiceRetentionDeleted": "{count, plural, =0{No recordings to delete.} =1{1 recording deleted from this device.} other{{count} recordings deleted from this device.}}",
+  "@voiceRetentionDeleted": {
+    "description": "Compliance batch 1 UI",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paywallTermsTitle": "Subscription terms",
+  "@paywallTermsTitle": {
+    "description": "Compliance batch 1 UI"
+  },
+  "paywallRowPrice": "Price",
+  "@paywallRowPrice": {
+    "description": "Compliance batch 1 UI"
+  },
+  "paywallRowRenews": "Renews",
+  "@paywallRowRenews": {
+    "description": "Compliance batch 1 UI"
+  },
+  "paywallRowTrial": "Free trial",
+  "@paywallRowTrial": {
+    "description": "Compliance batch 1 UI"
+  },
+  "paywallRowCancel": "Cancel",
+  "@paywallRowCancel": {
+    "description": "Compliance batch 1 UI"
+  },
+  "paywallPriceValue": "Premium {premium}/month\nFamily {family}/month\nLifetime {lifetime}, paid once",
+  "@paywallPriceValue": {
+    "description": "Compliance batch 1 UI",
+    "placeholders": {
+      "premium": {
+        "type": "String"
+      },
+      "family": {
+        "type": "String"
+      },
+      "lifetime": {
+        "type": "String"
+      }
+    }
+  },
+  "paywallChargedTo": "Charged to your {store} account.",
+  "@paywallChargedTo": {
+    "description": "Compliance batch 1 UI",
+    "placeholders": {
+      "store": {
+        "type": "String"
+      }
+    }
+  },
+  "paywallRenewsAuto": "Monthly plans renew automatically at the same price until you cancel. Lifetime does not renew.",
+  "@paywallRenewsAuto": {
+    "description": "Compliance batch 1 UI"
+  },
+  "paywallRenewsOn": "Your plan renews on {date}.",
+  "@paywallRenewsOn": {
+    "description": "Compliance batch 1 UI",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "paywallTrialOffered": "{days}-day free trial, then {price}/month unless you cancel at least 24 hours before it ends.",
+  "@paywallTrialOffered": {
+    "description": "Compliance batch 1 UI",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "paywallTrialGeneric": "If a trial is offered, you pay the plan price when it ends unless you cancel at least 24 hours before.",
+  "@paywallTrialGeneric": {
+    "description": "Compliance batch 1 UI"
+  },
+  "paywallCancelApple": "Any time in Settings › your name › Subscriptions. You keep access until the paid period ends.",
+  "@paywallCancelApple": {
+    "description": "Compliance batch 1 UI"
+  },
+  "paywallCancelGoogle": "Any time in Google Play › Payments & subscriptions › Subscriptions. You keep access until the paid period ends.",
+  "@paywallCancelGoogle": {
+    "description": "Compliance batch 1 UI"
+  },
+  "paywallFreeStays": "Free features stay available if you don't subscribe or you cancel.",
+  "@paywallFreeStays": {
+    "description": "Compliance batch 1 UI"
+  },
+  "paywallManage": "Manage subscription",
+  "@paywallManage": {
+    "description": "Compliance batch 1 UI"
+  },
+  "paywallTerms": "Terms of Service",
+  "@paywallTerms": {
+    "description": "Compliance batch 1 UI"
+  },
+  "paywallPrivacy": "Privacy Policy",
+  "@paywallPrivacy": {
+    "description": "Compliance batch 1 UI"
+  },
+  "reportReasonHarassment": "Harassment or bullying",
+  "@reportReasonHarassment": {
+    "description": "Compliance batch 1 UI"
+  },
+  "reportReasonSpam": "Spam or scam",
+  "@reportReasonSpam": {
+    "description": "Compliance batch 1 UI"
+  },
+  "reportReasonHate": "Hate speech",
+  "@reportReasonHate": {
+    "description": "Compliance batch 1 UI"
+  },
+  "reportReasonCopyright": "Copyright infringement",
+  "@reportReasonCopyright": {
+    "description": "Compliance batch 1 UI"
+  },
+  "reportReasonCopyrightHint": "Someone posted your work without permission",
+  "@reportReasonCopyrightHint": {
+    "description": "Compliance batch 1 UI"
+  },
+  "reportReasonOther": "Something else",
+  "@reportReasonOther": {
+    "description": "Compliance batch 1 UI"
+  },
+  "settingsCopyright": "Copyright & takedown",
+  "@settingsCopyright": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpTitle": "Copyright & takedown",
+  "@cpTitle": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpIntro": "If something on LingAfriq uses your work without permission, tell us. A person reviews every notice.",
+  "@cpIntro": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpHowTitle": "How it works",
+  "@cpHowTitle": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpStep1": "You send a notice with the details below.",
+  "@cpStep1": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpStep2": "We remove or hide the content quickly and tell the uploader.",
+  "@cpStep2": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpStep3": "The uploader can send a counter-notice if it was a mistake. Unless you start a court case, the content may return after 10–14 business days.",
+  "@cpStep3": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpRepeatTitle": "Repeat infringers",
+  "@cpRepeatTitle": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpRepeatBody": "Accounts with 3 upheld copyright notices are closed. False notices or counter-notices can have legal consequences.",
+  "@cpRepeatBody": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpAgentTitle": "Designated copyright agent",
+  "@cpAgentTitle": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpAgentPending": "Agent registration in progress. Until then, use this form.",
+  "@cpAgentPending": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpKindNotice": "Report copyright",
+  "@cpKindNotice": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpKindCounter": "Counter-notice",
+  "@cpKindCounter": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpFormTitle": "Your notice",
+  "@cpFormTitle": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpFieldTarget": "Content ID or link on LingAfriq",
+  "@cpFieldTarget": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpFieldWork": "Describe your original work",
+  "@cpFieldWork": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpFieldWorkCounter": "Describe the removed content",
+  "@cpFieldWorkCounter": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpFieldWorkHelp": "For example: title, where it was first published, and a link.",
+  "@cpFieldWorkHelp": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpFieldName": "Full legal name",
+  "@cpFieldName": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpFieldEmail": "Email for our reply",
+  "@cpFieldEmail": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpFieldSignature": "Signature: type your full name",
+  "@cpFieldSignature": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpStatementsTitle": "Statements",
+  "@cpStatementsTitle": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpStmtGoodFaith": "I believe in good faith this use is not authorised by the owner, its agent or the law.",
+  "@cpStmtGoodFaith": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpStmtAccurate": "This notice is accurate and, under penalty of perjury, I am the owner or authorised to act for the owner.",
+  "@cpStmtAccurate": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpStmtMistake": "Under penalty of perjury, I believe the content was removed by mistake or misidentification.",
+  "@cpStmtMistake": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpStmtJurisdiction": "I consent to the jurisdiction of the appropriate court and accept service from the claimant.",
+  "@cpStmtJurisdiction": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpRequired": "Required",
+  "@cpRequired": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpEmailInvalid": "Enter a valid email",
+  "@cpEmailInvalid": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpWorkTooShort": "Add a little more detail",
+  "@cpWorkTooShort": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpStatementsMissing": "Tick both statements to continue",
+  "@cpStatementsMissing": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpSend": "Send notice",
+  "@cpSend": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpSending": "Sending…",
+  "@cpSending": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpErrorTitle": "We couldn't send your notice",
+  "@cpErrorTitle": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpErrorBody": "Check your connection and try again. Nothing you typed was lost.",
+  "@cpErrorBody": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpRetry": "Try again",
+  "@cpRetry": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpSuccessTitle": "Notice received",
+  "@cpSuccessTitle": {
+    "description": "Compliance batch 1 UI"
+  },
+  "cpSuccessBody": "A person will review it and email you. Keep this reference: {reference}",
+  "@cpSuccessBody": {
+    "description": "Compliance batch 1 UI",
+    "placeholders": {
+      "reference": {
+        "type": "String"
+      }
+    }
+  },
+  "cpDone": "Done",
+  "@cpDone": {
+    "description": "Compliance batch 1 UI"
   }
 }

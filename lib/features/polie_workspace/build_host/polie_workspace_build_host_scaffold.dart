@@ -19,7 +19,6 @@ Widget polieWorkspaceBuildHostScaffold(
     appBar: AppBar(
       backgroundColor: modeTheme.background,
       elevation: 0,
-      bottom: const AiDisclosureBar(),
       leading: BackButton(
         onPressed: () {
           FocusManager.instance.primaryFocus?.unfocus();
@@ -162,6 +161,7 @@ Widget polieWorkspaceBuildHostScaffold(
     ),
     body: Column(
       children: [
+        const AiDisclosureBar(),
         if (!host.screen.conversationOnly)
           Padding(
             padding: EdgeInsets.fromLTRB(

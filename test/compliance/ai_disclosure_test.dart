@@ -1,53 +1,73 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/widgets/ai/ai_disclosure.dart';
 
-Widget _app(Widget home, {Locale locale = const Locale('en')}) => MaterialApp(
-  locale: locale,
-  localizationsDelegates: const [
-    AppLocalizations.delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-  ],
-  supportedLocales: AppLocalizations.supportedLocales,
-  home: home,
+import 'golden_kit.dart';
+
+Widget _screen() => Scaffold(
+  appBar: AppBar(title: const Text('Polie')),
+  body: const Column(
+    children: [
+      AiDisclosureBar(),
+      Expanded(child: Center(child: Text('Polie'))),
+    ],
+  ),
 );
 
 void main() {
-  testWidgets('AppBar disclosure is visible and announced (en)', (
-    tester,
-  ) async {
-    await tester.pumpWidget(
-      _app(
-        Scaffold(
-          appBar: AppBar(
-            title: const Text('Polie'),
-            bottom: const AiDisclosureBar(),
-          ),
-        ),
-      ),
-    );
-    expect(find.textContaining('AI-generated'), findsOneWidget);
-    expect(find.bySemanticsLabel(RegExp('AI tutor')), findsOneWidget);
-  });
+  setUpAll(
+    () => loadComplianceFonts('test/compliance/ai_disclosure_test.dart'),
+  );
 
-  testWidgets('AiDisclosed keeps the body and localises (ar, RTL)', (
+  for (final v in goldenVariants) {
+    testWidgets('AI disclosure never truncates: ${v.name}', (tester) async {
+      await pumpVariant(tester, v, _screen());
+      expectNoLayoutErrors(tester);
+      final bar = find.byKey(const ValueKey('ai-disclosure'));
+      expect(tester.getSize(bar).height, greaterThanOrEqualTo(48));
+      final label = find.descendant(
+        of: bar,
+        matching: find.byWidgetPredicate(
+          (w) => w is RichText && w.text.toPlainText().length > 20,
+        ),
+      );
+      final para = tester.renderObject<RenderParagraph>(label.first);
+      expect(para.didExceedMaxLines, isFalse);
+      expect(tester.widget<RichText>(label.first).maxLines, isNull);
+      expect(
+        tester.widget<RichText>(label.first).overflow,
+        isNot(TextOverflow.ellipsis),
+      );
+      // Text scales with the user's setting (12sp floor at 1x).
+      expect(para.textScaler.scale(13), greaterThanOrEqualTo(12 * v.scale));
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('goldens/ai_disclosure_${v.name}.png'),
+      );
+    });
+  }
+
+  testWidgets('tap opens full explanation sheet, announced as a button', (
     tester,
   ) async {
-    await tester.pumpWidget(
-      _app(
-        const Scaffold(body: AiDisclosed(child: Text('lesson body'))),
-        locale: const Locale('ar'),
-      ),
+    await pumpVariant(tester, goldenVariants.first, _screen());
+    final s = tester.getSemantics(find.byKey(const ValueKey('ai-disclosure')));
+    expect(s.label, contains('AI-generated'));
+    expect(s.hint, 'Learn how AI is used here');
+    await tester.tap(find.byKey(const ValueKey('ai-disclosure')));
+    await tester.pumpAndSettle();
+    expect(find.text('About AI in LingAfriq'), findsOneWidget);
+    expect(find.textContaining('are not people'), findsOneWidget);
+    await expectLater(
+      find.byType(MaterialApp),
+      matchesGoldenFile('goldens/ai_disclosure_sheet_ltr_390.png'),
     );
-    expect(find.text('lesson body'), findsOneWidget);
-    expect(find.textContaining('الذكاء الاصطناعي'), findsOneWidget);
-    expect(find.textContaining('AI-generated'), findsNothing);
+    await tester.tap(find.text('Got it'));
+    await tester.pumpAndSettle();
+    expect(find.text('About AI in LingAfriq'), findsNothing);
   });
 
   test('every AI-generated surface carries the disclosure', () {
@@ -68,7 +88,6 @@ void main() {
         reason: '$f lacks the AI disclosure label',
       );
     }
-    // Historical personas keep their own persistent recreation disclosure.
     expect(
       File(
         'lib/screens/personalities/personality_chat_screen.dart',

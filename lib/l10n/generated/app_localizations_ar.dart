@@ -665,4 +665,275 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get aiDisclosureLabel =>
       'محتوى مُولَّد بالذكاء الاصطناعي: الردود والصوت من معلّم ذكاء اصطناعي وقد تكون خاطئة.';
+
+  @override
+  String get aiDisclosureShort => 'محتوى مُولَّد بالذكاء الاصطناعي';
+
+  @override
+  String get aiDisclosureMoreHint =>
+      'تعرّف على كيفية استخدام الذكاء الاصطناعي هنا';
+
+  @override
+  String get aiDisclosureSheetTitle => 'عن الذكاء الاصطناعي في LingAfriq';
+
+  @override
+  String get aiDisclosureSheetBody =>
+      'بولي والمعلّمون والشخصيات الافتراضية ليسوا بشرًا. نصوصهم وأصواتهم مُولَّدة بالذكاء الاصطناعي وقد تكون خاطئة، لذا تحقّق من المعلومات المهمة. تجنّب مشاركة معلومات خاصة في المحادثات.';
+
+  @override
+  String get aiDisclosureGotIt => 'فهمت';
+
+  @override
+  String get voiceRetentionTitle => 'التسجيلات على هذا الجهاز';
+
+  @override
+  String get voiceRetentionBody =>
+      'يُسجَّل صوتك أثناء التدريب فقط لتقييم النطق وتحويل الكلام إلى نص. تُحذف التسجيلات المحفوظة على هذا الهاتف تلقائيًا.';
+
+  @override
+  String get voiceRetentionSelectLabel => 'حذف التسجيلات تلقائيًا';
+
+  @override
+  String get voiceRetentionImmediate => 'مباشرة بعد التقييم';
+
+  @override
+  String get voiceRetention24h => 'بعد 24 ساعة';
+
+  @override
+  String get voiceRetention7d => 'بعد 7 أيام';
+
+  @override
+  String get voiceRetention30d => 'بعد 30 يومًا';
+
+  @override
+  String get voiceRetentionDeleteNow => 'احذف تسجيلاتي الآن';
+
+  @override
+  String get voiceRetentionConfirmTitle => 'حذف التسجيلات على هذا الجهاز؟';
+
+  @override
+  String get voiceRetentionConfirmBody =>
+      'ستُزال تسجيلات التدريب المحفوظة على هذا الهاتف. لا يمكن التراجع عن ذلك. لا يتأثر ما اخترت حفظه في حسابك.';
+
+  @override
+  String get voiceRetentionConfirmDelete => 'حذف';
+
+  @override
+  String voiceRetentionDeleted(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'حُذف $count من التسجيلات من هذا الجهاز.',
+      one: 'حُذف تسجيل واحد من هذا الجهاز.',
+      zero: 'لا توجد تسجيلات لحذفها.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get paywallTermsTitle => 'شروط الاشتراك';
+
+  @override
+  String get paywallRowPrice => 'السعر';
+
+  @override
+  String get paywallRowRenews => 'التجديد';
+
+  @override
+  String get paywallRowTrial => 'الفترة التجريبية';
+
+  @override
+  String get paywallRowCancel => 'الإلغاء';
+
+  @override
+  String paywallPriceValue(String premium, String family, String lifetime) {
+    return 'بريميوم $premium شهريًا\nالعائلة $family شهريًا\nمدى الحياة $lifetime تُدفع مرة واحدة';
+  }
+
+  @override
+  String paywallChargedTo(String store) {
+    return 'يُخصم المبلغ من حسابك في $store.';
+  }
+
+  @override
+  String get paywallRenewsAuto =>
+      'تتجدد الخطط الشهرية تلقائيًا بالسعر نفسه حتى تلغيها. خطة مدى الحياة لا تتجدد.';
+
+  @override
+  String paywallRenewsOn(String date) {
+    return 'تتجدد خطتك في $date.';
+  }
+
+  @override
+  String paywallTrialOffered(int days, String price) {
+    return 'تجربة مجانية لمدة $days يومًا، ثم $price شهريًا ما لم تلغِ قبل انتهائها بـ 24 ساعة على الأقل.';
+  }
+
+  @override
+  String get paywallTrialGeneric =>
+      'إذا عُرضت فترة تجريبية، تدفع سعر الخطة عند انتهائها ما لم تلغِ قبلها بـ 24 ساعة على الأقل.';
+
+  @override
+  String get paywallCancelApple =>
+      'في أي وقت من الإعدادات › اسمك › الاشتراكات. يبقى وصولك حتى نهاية الفترة المدفوعة.';
+
+  @override
+  String get paywallCancelGoogle =>
+      'في أي وقت من Google Play › الدفعات والاشتراكات › الاشتراكات. يبقى وصولك حتى نهاية الفترة المدفوعة.';
+
+  @override
+  String get paywallFreeStays =>
+      'تبقى الميزات المجانية متاحة إن لم تشترك أو ألغيت.';
+
+  @override
+  String get paywallManage => 'إدارة الاشتراك';
+
+  @override
+  String get paywallTerms => 'شروط الخدمة';
+
+  @override
+  String get paywallPrivacy => 'سياسة الخصوصية';
+
+  @override
+  String get reportReasonHarassment => 'تحرّش أو تنمّر';
+
+  @override
+  String get reportReasonSpam => 'رسائل مزعجة أو احتيال';
+
+  @override
+  String get reportReasonHate => 'خطاب كراهية';
+
+  @override
+  String get reportReasonCopyright => 'انتهاك حقوق النشر';
+
+  @override
+  String get reportReasonCopyrightHint => 'نشر أحدهم عملك دون إذن';
+
+  @override
+  String get reportReasonOther => 'شيء آخر';
+
+  @override
+  String get settingsCopyright => 'حقوق النشر والإزالة';
+
+  @override
+  String get cpTitle => 'حقوق النشر والإزالة';
+
+  @override
+  String get cpIntro =>
+      'إذا استخدم محتوى على LingAfriq عملك دون إذن، فأخبرنا. يراجع شخصٌ كل إشعار.';
+
+  @override
+  String get cpHowTitle => 'كيف تتم العملية';
+
+  @override
+  String get cpStep1 => 'ترسل إشعارًا بالتفاصيل أدناه.';
+
+  @override
+  String get cpStep2 => 'نزيل المحتوى أو نخفيه بسرعة ونُبلغ من رفعه.';
+
+  @override
+  String get cpStep3 =>
+      'يمكن لمن رفع المحتوى إرسال إشعار مضاد إن كان خطأً. ما لم ترفع دعوى قضائية، قد يعود المحتوى بعد 10 إلى 14 يوم عمل.';
+
+  @override
+  String get cpRepeatTitle => 'المخالفون المتكرّرون';
+
+  @override
+  String get cpRepeatBody =>
+      'تُغلق الحسابات التي تتلقى 3 إشعارات حقوق نشر مؤكَّدة. قد تترتب عواقب قانونية على الإشعارات الكاذبة.';
+
+  @override
+  String get cpAgentTitle => 'وكيل حقوق النشر المعيَّن';
+
+  @override
+  String get cpAgentPending =>
+      'تسجيل الوكيل قيد الإجراء. حتى ذلك الحين، استخدم هذا النموذج.';
+
+  @override
+  String get cpKindNotice => 'الإبلاغ عن انتهاك';
+
+  @override
+  String get cpKindCounter => 'إشعار مضاد';
+
+  @override
+  String get cpFormTitle => 'إشعارك';
+
+  @override
+  String get cpFieldTarget => 'معرّف المحتوى أو رابطه على LingAfriq';
+
+  @override
+  String get cpFieldWork => 'صِف عملك الأصلي';
+
+  @override
+  String get cpFieldWorkCounter => 'صِف المحتوى المُزال';
+
+  @override
+  String get cpFieldWorkHelp => 'مثلًا: العنوان ومكان النشر الأول ورابط.';
+
+  @override
+  String get cpFieldName => 'الاسم القانوني الكامل';
+
+  @override
+  String get cpFieldEmail => 'البريد الإلكتروني للرد';
+
+  @override
+  String get cpFieldSignature => 'التوقيع: اكتب اسمك الكامل';
+
+  @override
+  String get cpStatementsTitle => 'الإقرارات';
+
+  @override
+  String get cpStmtGoodFaith =>
+      'أعتقد بحسن نية أن هذا الاستخدام غير مُصرَّح به من المالك أو وكيله أو القانون.';
+
+  @override
+  String get cpStmtAccurate =>
+      'هذا الإشعار دقيق، وأُقرّ تحت طائلة عقوبة الحنث باليمين بأنني المالك أو مفوَّض عنه.';
+
+  @override
+  String get cpStmtMistake =>
+      'أُقرّ تحت طائلة عقوبة الحنث باليمين بأن المحتوى أُزيل خطأً أو بسبب سوء تعريف.';
+
+  @override
+  String get cpStmtJurisdiction =>
+      'أوافق على اختصاص المحكمة المختصة وأقبل التبليغ من المُدّعي.';
+
+  @override
+  String get cpRequired => 'مطلوب';
+
+  @override
+  String get cpEmailInvalid => 'أدخل بريدًا إلكترونيًا صالحًا';
+
+  @override
+  String get cpWorkTooShort => 'أضف مزيدًا من التفاصيل';
+
+  @override
+  String get cpStatementsMissing => 'حدّد الإقرارين للمتابعة';
+
+  @override
+  String get cpSend => 'إرسال الإشعار';
+
+  @override
+  String get cpSending => 'جارٍ الإرسال…';
+
+  @override
+  String get cpErrorTitle => 'تعذّر إرسال إشعارك';
+
+  @override
+  String get cpErrorBody =>
+      'تحقّق من اتصالك وحاول مجددًا. لم يُفقد شيء مما كتبته.';
+
+  @override
+  String get cpRetry => 'حاول مجددًا';
+
+  @override
+  String get cpSuccessTitle => 'تم استلام الإشعار';
+
+  @override
+  String cpSuccessBody(String reference) {
+    return 'سيراجعه شخص ويراسلك عبر البريد. احتفظ بهذا المرجع: $reference';
+  }
+
+  @override
+  String get cpDone => 'تم';
 }

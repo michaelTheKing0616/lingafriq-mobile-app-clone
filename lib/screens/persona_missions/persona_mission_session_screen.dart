@@ -132,10 +132,10 @@ class _PersonaMissionSessionScreenState
         title: Text(_session.mission.personaTitle),
         backgroundColor: PanAfricanColors.primary,
         foregroundColor: Colors.white,
-        bottom: const AiDisclosureBar(),
       ),
       body: Column(
         children: [
+          const AiDisclosureBar(),
           LinearProgressIndicator(
             value: _session.isComplete ? 1 : (index + 1) / total,
             backgroundColor: PanAfricanColors.surfaceLight,

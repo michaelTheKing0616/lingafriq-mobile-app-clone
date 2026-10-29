@@ -665,4 +665,280 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get aiDisclosureLabel =>
       'Généré par IA : les réponses et la voix proviennent d\'un tuteur IA et peuvent être erronées.';
+
+  @override
+  String get aiDisclosureShort => 'Contenu généré par IA';
+
+  @override
+  String get aiDisclosureMoreHint => 'Découvrir comment l\'IA est utilisée ici';
+
+  @override
+  String get aiDisclosureSheetTitle => 'À propos de l\'IA dans LingAfriq';
+
+  @override
+  String get aiDisclosureSheetBody =>
+      'Polie, les tuteurs et les personnages IA ne sont pas des personnes. Leurs textes et leurs voix sont générés par IA. Ils peuvent se tromper : vérifiez les informations importantes. Évitez de partager des informations privées.';
+
+  @override
+  String get aiDisclosureGotIt => 'Compris';
+
+  @override
+  String get voiceRetentionTitle => 'Enregistrements sur cet appareil';
+
+  @override
+  String get voiceRetentionBody =>
+      'Votre voix n\'est enregistrée que pendant l\'entraînement, pour noter la prononciation et transcrire la parole. Les enregistrements sur ce téléphone sont supprimés automatiquement.';
+
+  @override
+  String get voiceRetentionSelectLabel => 'Supprimer automatiquement';
+
+  @override
+  String get voiceRetentionImmediate => 'Juste après l\'évaluation';
+
+  @override
+  String get voiceRetention24h => 'Après 24 heures';
+
+  @override
+  String get voiceRetention7d => 'Après 7 jours';
+
+  @override
+  String get voiceRetention30d => 'Après 30 jours';
+
+  @override
+  String get voiceRetentionDeleteNow => 'Supprimer mes enregistrements';
+
+  @override
+  String get voiceRetentionConfirmTitle =>
+      'Supprimer les enregistrements de cet appareil ?';
+
+  @override
+  String get voiceRetentionConfirmBody =>
+      'Les enregistrements d\'entraînement de ce téléphone seront supprimés. Action irréversible. Les enregistrements sauvegardés dans votre compte ne sont pas concernés.';
+
+  @override
+  String get voiceRetentionConfirmDelete => 'Supprimer';
+
+  @override
+  String voiceRetentionDeleted(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count enregistrements supprimés de cet appareil.',
+      one: '1 enregistrement supprimé de cet appareil.',
+      zero: 'Aucun enregistrement à supprimer.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get paywallTermsTitle => 'Conditions de l\'abonnement';
+
+  @override
+  String get paywallRowPrice => 'Prix';
+
+  @override
+  String get paywallRowRenews => 'Renouvellement';
+
+  @override
+  String get paywallRowTrial => 'Essai gratuit';
+
+  @override
+  String get paywallRowCancel => 'Résiliation';
+
+  @override
+  String paywallPriceValue(String premium, String family, String lifetime) {
+    return 'Premium $premium/mois\nFamille $family/mois\nÀ vie $lifetime, paiement unique';
+  }
+
+  @override
+  String paywallChargedTo(String store) {
+    return 'Débité sur votre compte $store.';
+  }
+
+  @override
+  String get paywallRenewsAuto =>
+      'Les forfaits mensuels se renouvellent automatiquement au même prix jusqu\'à résiliation. L\'offre à vie ne se renouvelle pas.';
+
+  @override
+  String paywallRenewsOn(String date) {
+    return 'Votre forfait se renouvelle le $date.';
+  }
+
+  @override
+  String paywallTrialOffered(int days, String price) {
+    return 'Essai gratuit de $days jours, puis $price/mois sauf résiliation au moins 24 h avant la fin.';
+  }
+
+  @override
+  String get paywallTrialGeneric =>
+      'Si un essai est proposé, le prix du forfait est facturé à la fin, sauf résiliation au moins 24 h avant.';
+
+  @override
+  String get paywallCancelApple =>
+      'À tout moment dans Réglages › votre nom › Abonnements. L\'accès reste actif jusqu\'à la fin de la période payée.';
+
+  @override
+  String get paywallCancelGoogle =>
+      'À tout moment dans Google Play › Paiements et abonnements › Abonnements. L\'accès reste actif jusqu\'à la fin de la période payée.';
+
+  @override
+  String get paywallFreeStays =>
+      'Les fonctions gratuites restent disponibles sans abonnement ou après résiliation.';
+
+  @override
+  String get paywallManage => 'Gérer l\'abonnement';
+
+  @override
+  String get paywallTerms => 'Conditions d\'utilisation';
+
+  @override
+  String get paywallPrivacy => 'Politique de confidentialité';
+
+  @override
+  String get reportReasonHarassment => 'Harcèlement ou intimidation';
+
+  @override
+  String get reportReasonSpam => 'Spam ou arnaque';
+
+  @override
+  String get reportReasonHate => 'Discours haineux';
+
+  @override
+  String get reportReasonCopyright => 'Atteinte au droit d\'auteur';
+
+  @override
+  String get reportReasonCopyrightHint =>
+      'Quelqu\'un a publié votre œuvre sans autorisation';
+
+  @override
+  String get reportReasonOther => 'Autre chose';
+
+  @override
+  String get settingsCopyright => 'Droit d\'auteur et retrait';
+
+  @override
+  String get cpTitle => 'Droit d\'auteur et retrait';
+
+  @override
+  String get cpIntro =>
+      'Si un contenu sur LingAfriq utilise votre œuvre sans autorisation, signalez-le. Chaque notification est examinée par une personne.';
+
+  @override
+  String get cpHowTitle => 'Comment ça marche';
+
+  @override
+  String get cpStep1 =>
+      'Vous envoyez une notification avec les informations ci-dessous.';
+
+  @override
+  String get cpStep2 =>
+      'Nous retirons ou masquons rapidement le contenu et prévenons la personne qui l\'a publié.';
+
+  @override
+  String get cpStep3 =>
+      'La personne peut envoyer une contre-notification en cas d\'erreur. Sauf action en justice, le contenu peut revenir après 10 à 14 jours ouvrés.';
+
+  @override
+  String get cpRepeatTitle => 'Récidivistes';
+
+  @override
+  String get cpRepeatBody =>
+      'Les comptes ayant 3 notifications confirmées sont fermés. Les notifications ou contre-notifications mensongères peuvent engager votre responsabilité.';
+
+  @override
+  String get cpAgentTitle => 'Agent désigné pour le droit d\'auteur';
+
+  @override
+  String get cpAgentPending =>
+      'Enregistrement de l\'agent en cours. En attendant, utilisez ce formulaire.';
+
+  @override
+  String get cpKindNotice => 'Signaler';
+
+  @override
+  String get cpKindCounter => 'Contre-notification';
+
+  @override
+  String get cpFormTitle => 'Votre notification';
+
+  @override
+  String get cpFieldTarget => 'Identifiant ou lien du contenu sur LingAfriq';
+
+  @override
+  String get cpFieldWork => 'Décrivez votre œuvre originale';
+
+  @override
+  String get cpFieldWorkCounter => 'Décrivez le contenu retiré';
+
+  @override
+  String get cpFieldWorkHelp =>
+      'Par exemple : titre, lieu de première publication et lien.';
+
+  @override
+  String get cpFieldName => 'Nom légal complet';
+
+  @override
+  String get cpFieldEmail => 'E-mail pour notre réponse';
+
+  @override
+  String get cpFieldSignature => 'Signature : saisissez votre nom complet';
+
+  @override
+  String get cpStatementsTitle => 'Déclarations';
+
+  @override
+  String get cpStmtGoodFaith =>
+      'Je crois de bonne foi que cette utilisation n\'est autorisée ni par le titulaire, ni par son agent, ni par la loi.';
+
+  @override
+  String get cpStmtAccurate =>
+      'Cette notification est exacte et, sous peine de parjure, je suis le titulaire ou autorisé à agir en son nom.';
+
+  @override
+  String get cpStmtMistake =>
+      'Sous peine de parjure, je crois que le contenu a été retiré par erreur ou mauvaise identification.';
+
+  @override
+  String get cpStmtJurisdiction =>
+      'J\'accepte la compétence du tribunal compétent et la signification par le plaignant.';
+
+  @override
+  String get cpRequired => 'Obligatoire';
+
+  @override
+  String get cpEmailInvalid => 'Saisissez un e-mail valide';
+
+  @override
+  String get cpWorkTooShort => 'Ajoutez un peu plus de détails';
+
+  @override
+  String get cpStatementsMissing =>
+      'Cochez les deux déclarations pour continuer';
+
+  @override
+  String get cpSend => 'Envoyer la notification';
+
+  @override
+  String get cpSending => 'Envoi…';
+
+  @override
+  String get cpErrorTitle => 'Impossible d\'envoyer votre notification';
+
+  @override
+  String get cpErrorBody =>
+      'Vérifiez votre connexion et réessayez. Votre saisie est conservée.';
+
+  @override
+  String get cpRetry => 'Réessayer';
+
+  @override
+  String get cpSuccessTitle => 'Notification reçue';
+
+  @override
+  String cpSuccessBody(String reference) {
+    return 'Une personne l\'examinera et vous écrira. Conservez cette référence : $reference';
+  }
+
+  @override
+  String get cpDone => 'Terminé';
 }

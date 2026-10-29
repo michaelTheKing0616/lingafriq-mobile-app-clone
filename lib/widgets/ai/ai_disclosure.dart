@@ -1,60 +1,107 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 
-/// Fallback copy when no [AppLocalizations] is in scope (tests, early boot).
+/// English fallback when no [AppLocalizations] is in scope.
 const String kAiDisclosureFallback =
     'AI-generated: replies and voice come from an AI tutor and can be wrong.';
 
-/// Persistent, non-dismissible transparency label (EU AI Act Art. 50 style)
-/// shown wherever learners interact with AI-generated text, voice or personas.
-class AiDisclosureBar extends StatelessWidget implements PreferredSizeWidget {
+/// Persistent, non-dismissible AI transparency label (EU AI Act Art. 50).
+///
+/// The full required sentence always wraps; it is never ellipsized and the
+/// bar grows with text scale. Tapping opens a sheet with the longer
+/// explanation, so the whole bar is a ≥48dp target.
+class AiDisclosureBar extends StatelessWidget {
   const AiDisclosureBar({super.key, this.label});
 
   /// Optional override (e.g. persona-specific copy); defaults to l10n text.
   final String? label;
 
-  static const double height = 28;
-
-  @override
-  Size get preferredSize => const Size.fromHeight(height);
+  static Future<void> showDetails(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    return showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      isScrollControlled: true,
+      builder: (ctx) => SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsetsDirectional.fromSTEB(24, 0, 24, 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Semantics(
+                header: true,
+                child: Text(
+                  l?.aiDisclosureSheetTitle ?? 'About AI in LingAfriq',
+                  style: Theme.of(ctx).textTheme.titleLarge,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                l?.aiDisclosureSheetBody ?? kAiDisclosureFallback,
+                style: Theme.of(ctx).textTheme.bodyLarge,
+              ),
+              const SizedBox(height: 24),
+              FilledButton(
+                style: FilledButton.styleFrom(
+                  minimumSize: const Size.fromHeight(48),
+                ),
+                onPressed: () => Navigator.of(ctx).pop(),
+                child: Text(l?.aiDisclosureGotIt ?? 'Got it'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final text =
-        label ??
-        AppLocalizations.of(context)?.aiDisclosureLabel ??
-        kAiDisclosureFallback;
-    final scheme = Theme.of(context).colorScheme;
+    final l = AppLocalizations.of(context);
+    final text = label ?? l?.aiDisclosureLabel ?? kAiDisclosureFallback;
+    const fg = PanAfricanColors.onSecondaryContainer;
+    // Icons grow with text (capped) so they stay legible beside large type.
+    final iconSize = MediaQuery.textScalerOf(
+      context,
+    ).scale(18).clamp(18.0, 30.0);
     return Semantics(
       key: const ValueKey('ai-disclosure'),
       container: true,
+      button: true,
       label: text,
+      hint: l?.aiDisclosureMoreHint,
       excludeSemantics: true,
-      child: Container(
-        height: height,
-        width: double.infinity,
-        color: scheme.secondaryContainer,
-        padding: const EdgeInsetsDirectional.symmetric(horizontal: 12),
-        child: Row(
-          children: [
-            Icon(
-              Icons.auto_awesome,
-              size: 14,
-              color: scheme.onSecondaryContainer,
-            ),
-            const SizedBox(width: 6),
-            Expanded(
-              child: Text(
-                text,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: scheme.onSecondaryContainer,
-                ),
+      child: Material(
+        color: PanAfricanColors.secondaryContainer,
+        child: InkWell(
+          onTap: () => showDetails(context),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 48),
+            child: Padding(
+              padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 8, 8),
+              child: Row(
+                children: [
+                  Icon(Icons.auto_awesome, size: iconSize, color: fg),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      text,
+                      softWrap: true,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        height: 1.35,
+                        color: fg,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  Icon(Icons.info_outline, size: iconSize, color: fg),
+                ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -72,7 +119,10 @@ class AiDisclosed extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SafeArea(bottom: false, child: AiDisclosureBar(label: label)),
+        Material(
+          color: PanAfricanColors.secondaryContainer,
+          child: SafeArea(bottom: false, child: AiDisclosureBar(label: label)),
+        ),
         Expanded(
           child: MediaQuery.removePadding(
             context: context,
