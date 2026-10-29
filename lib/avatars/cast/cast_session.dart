@@ -131,7 +131,15 @@ class CastSession extends ChangeNotifier {
     _set(pose.copyWith(gazeX: x.clamp(-1, 1), gazeY: y.clamp(-1, 1)));
   }
 
+  /// Triggers fired, recorded in debug builds only (motion tests).
+  @visibleForTesting
+  final List<String> debugFired = [];
+
   void fire(String trigger) {
+    assert(() {
+      debugFired.add(trigger);
+      return true;
+    }());
     _bound?.trigger(trigger)?.trigger();
   }
 

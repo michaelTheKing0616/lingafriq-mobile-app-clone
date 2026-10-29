@@ -86,6 +86,13 @@ class _LevelPlacementStep extends HookConsumerWidget {
             ),
           SizedBox(height: ModernGriotSpacing.xs.h),
           TextButton(
+            style: TextButton.styleFrom(
+              minimumSize: const Size(
+                double.infinity,
+                ModernGriotLayout.minTouchTarget,
+              ),
+              alignment: AlignmentDirectional.centerStart,
+            ),
             onPressed: () {
               showQuickCheck.value = !showQuickCheck.value;
               if (!showQuickCheck.value) {
@@ -94,8 +101,9 @@ class _LevelPlacementStep extends HookConsumerWidget {
               }
               selected.value = 'unsure';
             },
+            // Non-breaking hyphen: "1-" never dangles at the end of a line.
             child: Text(
-              "Not sure? Take a 1-minute check",
+              _bidi(context, 'Not sure? Take a 1\u2011minute check'),
               style: ModernGriotTypography.labelLarge(
                 context: context,
                 color: ModernGriotColors.primary,

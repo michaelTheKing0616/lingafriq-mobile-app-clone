@@ -193,7 +193,15 @@ class _LanguagePickStep extends HookConsumerWidget {
                     ),
                     child: FilterChip(
                       selected: selectedHome == home['code'],
-                      label: Text(home['name']!),
+                      // Endonym: people spot their own language faster.
+                      label: Text(
+                        home['script']!,
+                        semanticsLabel: home['name'],
+                        style: ModernGriotTypography.labelLarge(
+                          context: context,
+                          color: ModernGriotColors.onSurface,
+                        ),
+                      ),
                       onSelected: (_) {
                         HapticFeedback.selectionClick();
                         selectedHomeOverride.value = home['code']!;

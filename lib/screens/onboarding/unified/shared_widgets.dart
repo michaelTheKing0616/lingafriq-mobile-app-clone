@@ -30,6 +30,16 @@ class _PolieBadge extends StatelessWidget {
   }
 }
 
+final _rtlChars = RegExp(r'[\u0590-\u08FF\uFB1D-\uFEFC]');
+
+/// Onboarding copy is English today. In an RTL layout an English string must
+/// still read LTR, or its punctuation flips ("?Not sure"). Wrap it in a
+/// left-to-right isolate; real RTL strings pass through untouched.
+String _bidi(BuildContext context, String text) =>
+    Directionality.of(context) == TextDirection.rtl && !_rtlChars.hasMatch(text)
+    ? '\u2066$text\u2069'
+    : text;
+
 class _StepScaffold extends ConsumerWidget {
   const _StepScaffold({required this.child, this.bottom, this.header});
 
@@ -135,7 +145,7 @@ class _PrimaryCta extends StatelessWidget {
             ),
             textStyle: ModernGriotTypography.titleMedium(context: context),
           ),
-          child: Text(label),
+          child: Text(_bidi(context, label)),
         ),
       ),
     );
@@ -213,7 +223,7 @@ class _SelectRow extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        label,
+                        _bidi(context, label),
                         style: ModernGriotTypography.titleMedium(
                           context: context,
                           color: ModernGriotColors.onSurface,
@@ -221,7 +231,7 @@ class _SelectRow extends StatelessWidget {
                       ),
                       if (subtitle != null)
                         Text(
-                          subtitle!,
+                          _bidi(context, subtitle!),
                           style: ModernGriotTypography.bodyMedium(
                             context: context,
                             color: ModernGriotColors.onSurface,
@@ -299,7 +309,7 @@ class _QuestionHeader extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    question,
+                    _bidi(context, question),
                     style: ModernGriotTypography.titleLarge(
                       context: context,
                       color: ModernGriotColors.onSurface,
@@ -313,7 +323,7 @@ class _QuestionHeader extends StatelessWidget {
         if (hint != null) ...[
           SizedBox(height: ModernGriotSpacing.sm.h),
           Text(
-            hint!,
+            _bidi(context, hint!),
             style: ModernGriotTypography.bodyMedium(
               context: context,
               color: ModernGriotColors.onSurfaceVariant,

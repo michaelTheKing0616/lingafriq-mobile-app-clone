@@ -295,6 +295,7 @@ class ModernGriotTypography {
 
   static const List<String> _fontFallback = [
     'Noto Sans',
+    'Noto Sans Arabic',
     'Roboto',
     'Segoe UI',
     'Arial Unicode MS',
