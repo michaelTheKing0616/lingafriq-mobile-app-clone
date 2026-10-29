@@ -282,4 +282,19 @@ void main() {
       );
     }
   });
+
+  testWidgets('country shows a painted flag, never emoji text', (t) async {
+    await _pump(t, base, _o());
+    final row = find.byKey(const Key('pe-country'));
+    expect(
+      find.descendant(of: row, matching: find.byKey(const Key('flag-NG'))),
+      findsOneWidget,
+    );
+    final txt = t
+        .widgetList<Text>(find.descendant(of: row, matching: find.byType(Text)))
+        .map((w) => w.data ?? '')
+        .join();
+    expect(txt.runes.any((r) => r >= 0x1F1E6 && r <= 0x1F1FF), isFalse);
+    expect(txt, contains('Nigeria'));
+  });
 }

@@ -15,7 +15,7 @@ import 'package:lingafriq/widgets/points_and_profile_image_builder.dart'
 import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart'
     show ageTierStatusProvider;
 import 'package:lingafriq/services/account_service.dart';
-import 'package:lingafriq/utils/constants.dart';
+import 'package:lingafriq/widgets/country_flag.dart';
 
 import '../../../widgets/delete_account_dialogue.dart';
 
@@ -227,7 +227,6 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
     }
 
     _seed(u);
-    final flag = kCountries[u.nationality] ?? '';
     final handle = u.global_id?.replaceFirst('@', '');
     String? req(TextEditingController c, String f) =>
         _tried && c.text.trim().isEmpty ? l.peRequired(f.toLowerCase()) : null;
@@ -434,7 +433,8 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
                 rowKey: const Key('pe-country'),
                 icon: Icons.lock_outline_rounded,
                 label: l.peCountry,
-                value: '$flag ${u.nationality}'.trim(),
+                value: u.nationality,
+                leadingValue: CountryFlag(country: u.nationality),
                 note: l.peCountryLocked,
               ),
               _Header(l.peDanger),
@@ -544,7 +544,9 @@ class _Row extends StatelessWidget {
     this.note,
     this.action,
     this.onTap,
+    this.leadingValue,
   });
+  final Widget? leadingValue;
   final Key rowKey;
   final IconData icon;
   final String label, value;
@@ -574,13 +576,23 @@ class _Row extends StatelessWidget {
                     style: const TextStyle(fontSize: 13, color: _muted),
                   ),
                   const SizedBox(height: 2),
-                  Text(
-                    value,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: _ink,
-                    ),
+                  Row(
+                    children: [
+                      if (leadingValue != null) ...[
+                        leadingValue!,
+                        const SizedBox(width: 8),
+                      ],
+                      Expanded(
+                        child: Text(
+                          value,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: _ink,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   if (note != null) ...[
                     const SizedBox(height: 2),
