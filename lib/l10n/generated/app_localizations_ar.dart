@@ -1902,4 +1902,175 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get pgErrorSaved => 'لن تتأثر سلسلتك وأيام تدريبك.';
+
+  @override
+  String get subTitle => 'LingAfriq Plus';
+
+  @override
+  String get subClose => 'إغلاق';
+
+  @override
+  String get subPlusBadge => 'بلس';
+
+  @override
+  String get subHeadline => 'تعلّم أسرع مع إضافات اختيارية';
+
+  @override
+  String get subFreeForever =>
+      'كل درس ولعبة وقصة تبقى مجانية للأبد. بلس يضيف مزايا إضافية فقط.';
+
+  @override
+  String get subOffline =>
+      'أنت غير متصل. الشراء يحتاج اتصالًا، لكن كل دروسك ما زالت تعمل.';
+
+  @override
+  String get subWhatYouGet => 'ما يضيفه بلس';
+
+  @override
+  String get subBenefitOffline => 'نزّل كل وحدة لتتعلم دون اتصال';
+
+  @override
+  String get subBenefitChat => 'محادثات تدريب غير محدودة مع معلّمك';
+
+  @override
+  String get subBenefitSpeaking => 'تقييم مفصّل للنطق والنغمات';
+
+  @override
+  String get subBenefitNoAds => 'بلا إعلانات أبدًا';
+
+  @override
+  String subYouHavePlus(String plan) {
+    return 'لديك $plan. شكرًا لدعمك اللغات الأفريقية!';
+  }
+
+  @override
+  String get subChoosePlan => 'اختر خطة';
+
+  @override
+  String get subPriceError =>
+      'تعذّر تحميل أسعار المتجر، لذا هذه أسعار قياسية. يعرض المتجر السعر النهائي قبل الدفع.';
+
+  @override
+  String get subPlanMonthly => 'بلس الشهري';
+
+  @override
+  String get subPlanMonthlyDetail => 'يُحتسب كل شهر. ألغِ في أي وقت.';
+
+  @override
+  String get subPlanFamily => 'بلس العائلي';
+
+  @override
+  String get subPlanFamilyDetail => 'حتى 4 متعلمين. يُحتسب كل شهر.';
+
+  @override
+  String get subPlanLifetime => 'بلس مدى الحياة';
+
+  @override
+  String get subPlanLifetimeDetail => 'ادفع مرة واحدة. بلا تجديد.';
+
+  @override
+  String get subMostPopular => 'الأكثر شيوعًا';
+
+  @override
+  String subPerMonth(String price) {
+    return '$price / شهريًا';
+  }
+
+  @override
+  String subOnce(String price) {
+    return '$price مرة واحدة';
+  }
+
+  @override
+  String get subHowTrialWorks => 'كيف تعمل تجربتك المجانية';
+
+  @override
+  String get subStepToday => 'اليوم';
+
+  @override
+  String get subStepTodayBody => 'كل مزايا بلس مفتوحة.';
+
+  @override
+  String subStepDay(int day) {
+    return 'اليوم $day';
+  }
+
+  @override
+  String get subStepRemindBody => 'نذكّرك قبل انتهاء التجربة.';
+
+  @override
+  String subStepChargeBody(String price) {
+    return 'يُخصم $price ما لم تلغِ قبل ذلك.';
+  }
+
+  @override
+  String subStartTrial(int days) {
+    return 'ابدأ تجربة مجانية لمدة $days أيام';
+  }
+
+  @override
+  String get subGetPlus => 'احصل على بلس الشهري';
+
+  @override
+  String get subGetFamily => 'احصل على بلس العائلي';
+
+  @override
+  String get subGetLifetime => 'احصل على بلس مدى الحياة';
+
+  @override
+  String subFineTrial(int days, String price) {
+    return 'مجانًا لمدة $days أيام، ثم $price شهريًا. ألغِ في أي وقت من إعدادات المتجر.';
+  }
+
+  @override
+  String subFineMonthly(String price) {
+    return '$price شهريًا، يتجدد تلقائيًا. ألغِ في أي وقت من إعدادات المتجر.';
+  }
+
+  @override
+  String subFineOnce(String price) {
+    return 'دفعة واحدة بقيمة $price. لا يوجد تجديد.';
+  }
+
+  @override
+  String get subKeepFree => 'تابع التعلّم مجانًا';
+
+  @override
+  String get subRestore => 'استعادة المشتريات';
+
+  @override
+  String get subRestored => 'تمت استعادة المشتريات';
+
+  @override
+  String get subRestoreNone => 'لم يتم العثور على مشتريات لاستعادتها';
+
+  @override
+  String get subLoading => 'جارٍ تحميل الخطط';
+
+  @override
+  String get subParentTitle => 'بلس يحتاج إلى شخص بالغ';
+
+  @override
+  String get subParentBody =>
+      'كل ما تتعلمه يبقى مجانيًا. اطلب من وليّ أمرك إن أردت مزايا بلس.';
+
+  @override
+  String get subAskParent => 'وليّ الأمر هنا';
+
+  @override
+  String get subGateTitle => 'للبالغين';
+
+  @override
+  String subGateQuestion(int a, int b) {
+    return 'كم يساوي $a × $b؟';
+  }
+
+  @override
+  String get subGateWrong => 'هذا غير صحيح. حاول مرة أخرى.';
+
+  @override
+  String get subGateContinue => 'متابعة';
+
+  @override
+  String get subCancel => 'إلغاء';
 }

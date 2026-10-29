@@ -2526,5 +2526,257 @@
   "pgErrorSaved": "Your streak and practice days are not affected.",
   "@pgErrorSaved": {
     "description": "Error reassurance"
+  },
+  "subTitle": "LingAfriq Plus",
+  "@subTitle": {
+    "description": "Paywall title"
+  },
+  "subClose": "Close",
+  "@subClose": {
+    "description": "Close paywall"
+  },
+  "subPlusBadge": "PLUS",
+  "@subPlusBadge": {
+    "description": "Badge"
+  },
+  "subHeadline": "Learn faster with optional extras",
+  "@subHeadline": {
+    "description": "Hero headline"
+  },
+  "subFreeForever": "Every lesson, game and story stays free forever. Plus only adds extras.",
+  "@subFreeForever": {
+    "description": "Free promise"
+  },
+  "subOffline": "You're offline. Buying needs a connection, but all your lessons still work.",
+  "@subOffline": {
+    "description": "Offline note"
+  },
+  "subWhatYouGet": "What Plus adds",
+  "@subWhatYouGet": {
+    "description": "Benefits header"
+  },
+  "subBenefitOffline": "Download every unit to learn offline",
+  "@subBenefitOffline": {
+    "description": "Benefit"
+  },
+  "subBenefitChat": "Unlimited practice chats with your tutor",
+  "@subBenefitChat": {
+    "description": "Benefit"
+  },
+  "subBenefitSpeaking": "Detailed speaking and tone scores",
+  "@subBenefitSpeaking": {
+    "description": "Benefit"
+  },
+  "subBenefitNoAds": "No ads, ever",
+  "@subBenefitNoAds": {
+    "description": "Benefit"
+  },
+  "subYouHavePlus": "You have {plan}. Thank you for supporting African languages!",
+  "@subYouHavePlus": {
+    "description": "Current plan",
+    "placeholders": {
+      "plan": {
+        "type": "String"
+      }
+    }
+  },
+  "subChoosePlan": "Choose a plan",
+  "@subChoosePlan": {
+    "description": "Plans header"
+  },
+  "subPriceError": "We couldn't load store prices, so these are standard prices. The store shows the final price before you pay.",
+  "@subPriceError": {
+    "description": "Price error"
+  },
+  "subPlanMonthly": "Plus Monthly",
+  "@subPlanMonthly": {
+    "description": "Plan"
+  },
+  "subPlanMonthlyDetail": "Billed every month. Cancel anytime.",
+  "@subPlanMonthlyDetail": {
+    "description": "Plan detail"
+  },
+  "subPlanFamily": "Plus Family",
+  "@subPlanFamily": {
+    "description": "Plan"
+  },
+  "subPlanFamilyDetail": "Up to 4 learners. Billed every month.",
+  "@subPlanFamilyDetail": {
+    "description": "Plan detail"
+  },
+  "subPlanLifetime": "Plus Lifetime",
+  "@subPlanLifetime": {
+    "description": "Plan"
+  },
+  "subPlanLifetimeDetail": "Pay once. No renewals.",
+  "@subPlanLifetimeDetail": {
+    "description": "Plan detail"
+  },
+  "subMostPopular": "Most popular",
+  "@subMostPopular": {
+    "description": "Tag"
+  },
+  "subPerMonth": "{price} / month",
+  "@subPerMonth": {
+    "description": "Monthly price",
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "subOnce": "{price} once",
+  "@subOnce": {
+    "description": "One-time price",
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "subHowTrialWorks": "How your free trial works",
+  "@subHowTrialWorks": {
+    "description": "Timeline header"
+  },
+  "subStepToday": "Today",
+  "@subStepToday": {
+    "description": "Timeline"
+  },
+  "subStepTodayBody": "All Plus extras unlocked.",
+  "@subStepTodayBody": {
+    "description": "Timeline"
+  },
+  "subStepDay": "Day {day}",
+  "@subStepDay": {
+    "description": "Timeline day",
+    "placeholders": {
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "subStepRemindBody": "We remind you before the trial ends.",
+  "@subStepRemindBody": {
+    "description": "Timeline"
+  },
+  "subStepChargeBody": "You're charged {price} unless you cancel before.",
+  "@subStepChargeBody": {
+    "description": "Timeline",
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "subStartTrial": "Start {days}-day free trial",
+  "@subStartTrial": {
+    "description": "CTA",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "subGetPlus": "Get Plus Monthly",
+  "@subGetPlus": {
+    "description": "CTA"
+  },
+  "subGetFamily": "Get Plus Family",
+  "@subGetFamily": {
+    "description": "CTA"
+  },
+  "subGetLifetime": "Get Plus Lifetime",
+  "@subGetLifetime": {
+    "description": "CTA"
+  },
+  "subFineTrial": "Free for {days} days, then {price}/month. Cancel anytime in your store settings.",
+  "@subFineTrial": {
+    "description": "Fine print",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "subFineMonthly": "{price}/month, renews automatically. Cancel anytime in your store settings.",
+  "@subFineMonthly": {
+    "description": "Fine print",
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "subFineOnce": "One payment of {price}. Nothing renews.",
+  "@subFineOnce": {
+    "description": "Fine print",
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "subKeepFree": "Keep learning for free",
+  "@subKeepFree": {
+    "description": "Free path"
+  },
+  "subRestore": "Restore purchases",
+  "@subRestore": {
+    "description": "Restore"
+  },
+  "subRestored": "Purchases restored",
+  "@subRestored": {
+    "description": "Restore ok"
+  },
+  "subRestoreNone": "No purchases found to restore",
+  "@subRestoreNone": {
+    "description": "Restore none"
+  },
+  "subLoading": "Loading plans",
+  "@subLoading": {
+    "description": "Loading"
+  },
+  "subParentTitle": "Plus needs a grown-up",
+  "@subParentTitle": {
+    "description": "Parent gate"
+  },
+  "subParentBody": "Everything you're learning stays free. Ask a parent or guardian if you'd like Plus extras.",
+  "@subParentBody": {
+    "description": "Parent gate"
+  },
+  "subAskParent": "A grown-up is here",
+  "@subAskParent": {
+    "description": "Parent gate button"
+  },
+  "subGateTitle": "For grown-ups",
+  "@subGateTitle": {
+    "description": "Gate dialog"
+  },
+  "subGateQuestion": "What is {a} × {b}?",
+  "@subGateQuestion": {
+    "description": "Gate question",
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "subGateWrong": "That's not right. Try again.",
+  "@subGateWrong": {
+    "description": "Gate wrong"
+  },
+  "subGateContinue": "Continue",
+  "@subGateContinue": {
+    "description": "Gate ok"
+  },
+  "subCancel": "Cancel",
+  "@subCancel": {
+    "description": "Gate cancel"
   }
 }

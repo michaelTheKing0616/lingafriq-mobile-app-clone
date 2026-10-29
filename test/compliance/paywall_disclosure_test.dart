@@ -227,9 +227,10 @@ void main() {
     expect(src, contains('SubscriptionTermsDisclosure('));
     expect(src, contains('restorePurchases()'));
     expect(src, contains('SubscriptionTier.free'));
+    expect(src, contains("Key('sub-restore')"));
     expect(
       src.indexOf('SubscriptionTermsDisclosure('),
-      lessThan(src.indexOf("label: 'Restore purchases'")),
+      lessThan(src.indexOf("Key('sub-restore')")),
     );
   });
 }

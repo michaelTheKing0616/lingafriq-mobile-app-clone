@@ -1893,4 +1893,175 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get pgErrorSaved => 'Your streak and practice days are not affected.';
+
+  @override
+  String get subTitle => 'LingAfriq Plus';
+
+  @override
+  String get subClose => 'Close';
+
+  @override
+  String get subPlusBadge => 'PLUS';
+
+  @override
+  String get subHeadline => 'Learn faster with optional extras';
+
+  @override
+  String get subFreeForever =>
+      'Every lesson, game and story stays free forever. Plus only adds extras.';
+
+  @override
+  String get subOffline =>
+      'You\'re offline. Buying needs a connection, but all your lessons still work.';
+
+  @override
+  String get subWhatYouGet => 'What Plus adds';
+
+  @override
+  String get subBenefitOffline => 'Download every unit to learn offline';
+
+  @override
+  String get subBenefitChat => 'Unlimited practice chats with your tutor';
+
+  @override
+  String get subBenefitSpeaking => 'Detailed speaking and tone scores';
+
+  @override
+  String get subBenefitNoAds => 'No ads, ever';
+
+  @override
+  String subYouHavePlus(String plan) {
+    return 'You have $plan. Thank you for supporting African languages!';
+  }
+
+  @override
+  String get subChoosePlan => 'Choose a plan';
+
+  @override
+  String get subPriceError =>
+      'We couldn\'t load store prices, so these are standard prices. The store shows the final price before you pay.';
+
+  @override
+  String get subPlanMonthly => 'Plus Monthly';
+
+  @override
+  String get subPlanMonthlyDetail => 'Billed every month. Cancel anytime.';
+
+  @override
+  String get subPlanFamily => 'Plus Family';
+
+  @override
+  String get subPlanFamilyDetail => 'Up to 4 learners. Billed every month.';
+
+  @override
+  String get subPlanLifetime => 'Plus Lifetime';
+
+  @override
+  String get subPlanLifetimeDetail => 'Pay once. No renewals.';
+
+  @override
+  String get subMostPopular => 'Most popular';
+
+  @override
+  String subPerMonth(String price) {
+    return '$price / month';
+  }
+
+  @override
+  String subOnce(String price) {
+    return '$price once';
+  }
+
+  @override
+  String get subHowTrialWorks => 'How your free trial works';
+
+  @override
+  String get subStepToday => 'Today';
+
+  @override
+  String get subStepTodayBody => 'All Plus extras unlocked.';
+
+  @override
+  String subStepDay(int day) {
+    return 'Day $day';
+  }
+
+  @override
+  String get subStepRemindBody => 'We remind you before the trial ends.';
+
+  @override
+  String subStepChargeBody(String price) {
+    return 'You\'re charged $price unless you cancel before.';
+  }
+
+  @override
+  String subStartTrial(int days) {
+    return 'Start $days-day free trial';
+  }
+
+  @override
+  String get subGetPlus => 'Get Plus Monthly';
+
+  @override
+  String get subGetFamily => 'Get Plus Family';
+
+  @override
+  String get subGetLifetime => 'Get Plus Lifetime';
+
+  @override
+  String subFineTrial(int days, String price) {
+    return 'Free for $days days, then $price/month. Cancel anytime in your store settings.';
+  }
+
+  @override
+  String subFineMonthly(String price) {
+    return '$price/month, renews automatically. Cancel anytime in your store settings.';
+  }
+
+  @override
+  String subFineOnce(String price) {
+    return 'One payment of $price. Nothing renews.';
+  }
+
+  @override
+  String get subKeepFree => 'Keep learning for free';
+
+  @override
+  String get subRestore => 'Restore purchases';
+
+  @override
+  String get subRestored => 'Purchases restored';
+
+  @override
+  String get subRestoreNone => 'No purchases found to restore';
+
+  @override
+  String get subLoading => 'Loading plans';
+
+  @override
+  String get subParentTitle => 'Plus needs a grown-up';
+
+  @override
+  String get subParentBody =>
+      'Everything you\'re learning stays free. Ask a parent or guardian if you\'d like Plus extras.';
+
+  @override
+  String get subAskParent => 'A grown-up is here';
+
+  @override
+  String get subGateTitle => 'For grown-ups';
+
+  @override
+  String subGateQuestion(int a, int b) {
+    return 'What is $a × $b?';
+  }
+
+  @override
+  String get subGateWrong => 'That\'s not right. Try again.';
+
+  @override
+  String get subGateContinue => 'Continue';
+
+  @override
+  String get subCancel => 'Cancel';
 }

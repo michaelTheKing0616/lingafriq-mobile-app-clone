@@ -1910,4 +1910,180 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get pgErrorSaved =>
       'Ta série et tes jours d\'entraînement ne sont pas affectés.';
+
+  @override
+  String get subTitle => 'LingAfriq Plus';
+
+  @override
+  String get subClose => 'Fermer';
+
+  @override
+  String get subPlusBadge => 'PLUS';
+
+  @override
+  String get subHeadline => 'Apprends plus vite avec des bonus en option';
+
+  @override
+  String get subFreeForever =>
+      'Chaque leçon, jeu et histoire reste gratuit pour toujours. Plus ajoute seulement des bonus.';
+
+  @override
+  String get subOffline =>
+      'Tu es hors ligne. L\'achat nécessite une connexion, mais toutes tes leçons fonctionnent.';
+
+  @override
+  String get subWhatYouGet => 'Ce que Plus ajoute';
+
+  @override
+  String get subBenefitOffline =>
+      'Télécharge chaque unité pour apprendre hors ligne';
+
+  @override
+  String get subBenefitChat =>
+      'Conversations d\'entraînement illimitées avec ton tuteur';
+
+  @override
+  String get subBenefitSpeaking =>
+      'Scores détaillés de prononciation et de tons';
+
+  @override
+  String get subBenefitNoAds => 'Aucune publicité';
+
+  @override
+  String subYouHavePlus(String plan) {
+    return 'Tu as $plan. Merci de soutenir les langues africaines !';
+  }
+
+  @override
+  String get subChoosePlan => 'Choisis une formule';
+
+  @override
+  String get subPriceError =>
+      'Impossible de charger les prix du store : voici les prix standard. Le store affiche le prix final avant paiement.';
+
+  @override
+  String get subPlanMonthly => 'Plus mensuel';
+
+  @override
+  String get subPlanMonthlyDetail =>
+      'Facturé chaque mois. Résiliable à tout moment.';
+
+  @override
+  String get subPlanFamily => 'Plus Famille';
+
+  @override
+  String get subPlanFamilyDetail =>
+      'Jusqu\'à 4 apprenants. Facturé chaque mois.';
+
+  @override
+  String get subPlanLifetime => 'Plus à vie';
+
+  @override
+  String get subPlanLifetimeDetail => 'Un seul paiement. Sans renouvellement.';
+
+  @override
+  String get subMostPopular => 'La plus choisie';
+
+  @override
+  String subPerMonth(String price) {
+    return '$price / mois';
+  }
+
+  @override
+  String subOnce(String price) {
+    return '$price une fois';
+  }
+
+  @override
+  String get subHowTrialWorks => 'Comment fonctionne ton essai gratuit';
+
+  @override
+  String get subStepToday => 'Aujourd\'hui';
+
+  @override
+  String get subStepTodayBody => 'Tous les bonus Plus débloqués.';
+
+  @override
+  String subStepDay(int day) {
+    return 'Jour $day';
+  }
+
+  @override
+  String get subStepRemindBody => 'On te prévient avant la fin de l\'essai.';
+
+  @override
+  String subStepChargeBody(String price) {
+    return 'Tu es débité de $price sauf si tu résilies avant.';
+  }
+
+  @override
+  String subStartTrial(int days) {
+    return 'Commencer l\'essai gratuit de $days jours';
+  }
+
+  @override
+  String get subGetPlus => 'Prendre Plus mensuel';
+
+  @override
+  String get subGetFamily => 'Prendre Plus Famille';
+
+  @override
+  String get subGetLifetime => 'Prendre Plus à vie';
+
+  @override
+  String subFineTrial(int days, String price) {
+    return 'Gratuit $days jours, puis $price/mois. Résiliable à tout moment dans les réglages du store.';
+  }
+
+  @override
+  String subFineMonthly(String price) {
+    return '$price/mois, renouvellement automatique. Résiliable à tout moment dans les réglages du store.';
+  }
+
+  @override
+  String subFineOnce(String price) {
+    return 'Un paiement unique de $price. Aucun renouvellement.';
+  }
+
+  @override
+  String get subKeepFree => 'Continuer gratuitement';
+
+  @override
+  String get subRestore => 'Restaurer les achats';
+
+  @override
+  String get subRestored => 'Achats restaurés';
+
+  @override
+  String get subRestoreNone => 'Aucun achat à restaurer';
+
+  @override
+  String get subLoading => 'Chargement des formules';
+
+  @override
+  String get subParentTitle => 'Plus nécessite un adulte';
+
+  @override
+  String get subParentBody =>
+      'Tout ce que tu apprends reste gratuit. Demande à un parent ou tuteur si tu veux les bonus Plus.';
+
+  @override
+  String get subAskParent => 'Un adulte est là';
+
+  @override
+  String get subGateTitle => 'Pour les adultes';
+
+  @override
+  String subGateQuestion(int a, int b) {
+    return 'Combien font $a × $b ?';
+  }
+
+  @override
+  String get subGateWrong => 'Ce n\'est pas ça. Réessaie.';
+
+  @override
+  String get subGateContinue => 'Continuer';
+
+  @override
+  String get subCancel => 'Annuler';
 }

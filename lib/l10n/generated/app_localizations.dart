@@ -3353,6 +3353,300 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your streak and practice days are not affected.'**
   String get pgErrorSaved;
+
+  /// Paywall title
+  ///
+  /// In en, this message translates to:
+  /// **'LingAfriq Plus'**
+  String get subTitle;
+
+  /// Close paywall
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get subClose;
+
+  /// Badge
+  ///
+  /// In en, this message translates to:
+  /// **'PLUS'**
+  String get subPlusBadge;
+
+  /// Hero headline
+  ///
+  /// In en, this message translates to:
+  /// **'Learn faster with optional extras'**
+  String get subHeadline;
+
+  /// Free promise
+  ///
+  /// In en, this message translates to:
+  /// **'Every lesson, game and story stays free forever. Plus only adds extras.'**
+  String get subFreeForever;
+
+  /// Offline note
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline. Buying needs a connection, but all your lessons still work.'**
+  String get subOffline;
+
+  /// Benefits header
+  ///
+  /// In en, this message translates to:
+  /// **'What Plus adds'**
+  String get subWhatYouGet;
+
+  /// Benefit
+  ///
+  /// In en, this message translates to:
+  /// **'Download every unit to learn offline'**
+  String get subBenefitOffline;
+
+  /// Benefit
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited practice chats with your tutor'**
+  String get subBenefitChat;
+
+  /// Benefit
+  ///
+  /// In en, this message translates to:
+  /// **'Detailed speaking and tone scores'**
+  String get subBenefitSpeaking;
+
+  /// Benefit
+  ///
+  /// In en, this message translates to:
+  /// **'No ads, ever'**
+  String get subBenefitNoAds;
+
+  /// Current plan
+  ///
+  /// In en, this message translates to:
+  /// **'You have {plan}. Thank you for supporting African languages!'**
+  String subYouHavePlus(String plan);
+
+  /// Plans header
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a plan'**
+  String get subChoosePlan;
+
+  /// Price error
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t load store prices, so these are standard prices. The store shows the final price before you pay.'**
+  String get subPriceError;
+
+  /// Plan
+  ///
+  /// In en, this message translates to:
+  /// **'Plus Monthly'**
+  String get subPlanMonthly;
+
+  /// Plan detail
+  ///
+  /// In en, this message translates to:
+  /// **'Billed every month. Cancel anytime.'**
+  String get subPlanMonthlyDetail;
+
+  /// Plan
+  ///
+  /// In en, this message translates to:
+  /// **'Plus Family'**
+  String get subPlanFamily;
+
+  /// Plan detail
+  ///
+  /// In en, this message translates to:
+  /// **'Up to 4 learners. Billed every month.'**
+  String get subPlanFamilyDetail;
+
+  /// Plan
+  ///
+  /// In en, this message translates to:
+  /// **'Plus Lifetime'**
+  String get subPlanLifetime;
+
+  /// Plan detail
+  ///
+  /// In en, this message translates to:
+  /// **'Pay once. No renewals.'**
+  String get subPlanLifetimeDetail;
+
+  /// Tag
+  ///
+  /// In en, this message translates to:
+  /// **'Most popular'**
+  String get subMostPopular;
+
+  /// Monthly price
+  ///
+  /// In en, this message translates to:
+  /// **'{price} / month'**
+  String subPerMonth(String price);
+
+  /// One-time price
+  ///
+  /// In en, this message translates to:
+  /// **'{price} once'**
+  String subOnce(String price);
+
+  /// Timeline header
+  ///
+  /// In en, this message translates to:
+  /// **'How your free trial works'**
+  String get subHowTrialWorks;
+
+  /// Timeline
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get subStepToday;
+
+  /// Timeline
+  ///
+  /// In en, this message translates to:
+  /// **'All Plus extras unlocked.'**
+  String get subStepTodayBody;
+
+  /// Timeline day
+  ///
+  /// In en, this message translates to:
+  /// **'Day {day}'**
+  String subStepDay(int day);
+
+  /// Timeline
+  ///
+  /// In en, this message translates to:
+  /// **'We remind you before the trial ends.'**
+  String get subStepRemindBody;
+
+  /// Timeline
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re charged {price} unless you cancel before.'**
+  String subStepChargeBody(String price);
+
+  /// CTA
+  ///
+  /// In en, this message translates to:
+  /// **'Start {days}-day free trial'**
+  String subStartTrial(int days);
+
+  /// CTA
+  ///
+  /// In en, this message translates to:
+  /// **'Get Plus Monthly'**
+  String get subGetPlus;
+
+  /// CTA
+  ///
+  /// In en, this message translates to:
+  /// **'Get Plus Family'**
+  String get subGetFamily;
+
+  /// CTA
+  ///
+  /// In en, this message translates to:
+  /// **'Get Plus Lifetime'**
+  String get subGetLifetime;
+
+  /// Fine print
+  ///
+  /// In en, this message translates to:
+  /// **'Free for {days} days, then {price}/month. Cancel anytime in your store settings.'**
+  String subFineTrial(int days, String price);
+
+  /// Fine print
+  ///
+  /// In en, this message translates to:
+  /// **'{price}/month, renews automatically. Cancel anytime in your store settings.'**
+  String subFineMonthly(String price);
+
+  /// Fine print
+  ///
+  /// In en, this message translates to:
+  /// **'One payment of {price}. Nothing renews.'**
+  String subFineOnce(String price);
+
+  /// Free path
+  ///
+  /// In en, this message translates to:
+  /// **'Keep learning for free'**
+  String get subKeepFree;
+
+  /// Restore
+  ///
+  /// In en, this message translates to:
+  /// **'Restore purchases'**
+  String get subRestore;
+
+  /// Restore ok
+  ///
+  /// In en, this message translates to:
+  /// **'Purchases restored'**
+  String get subRestored;
+
+  /// Restore none
+  ///
+  /// In en, this message translates to:
+  /// **'No purchases found to restore'**
+  String get subRestoreNone;
+
+  /// Loading
+  ///
+  /// In en, this message translates to:
+  /// **'Loading plans'**
+  String get subLoading;
+
+  /// Parent gate
+  ///
+  /// In en, this message translates to:
+  /// **'Plus needs a grown-up'**
+  String get subParentTitle;
+
+  /// Parent gate
+  ///
+  /// In en, this message translates to:
+  /// **'Everything you\'re learning stays free. Ask a parent or guardian if you\'d like Plus extras.'**
+  String get subParentBody;
+
+  /// Parent gate button
+  ///
+  /// In en, this message translates to:
+  /// **'A grown-up is here'**
+  String get subAskParent;
+
+  /// Gate dialog
+  ///
+  /// In en, this message translates to:
+  /// **'For grown-ups'**
+  String get subGateTitle;
+
+  /// Gate question
+  ///
+  /// In en, this message translates to:
+  /// **'What is {a} × {b}?'**
+  String subGateQuestion(int a, int b);
+
+  /// Gate wrong
+  ///
+  /// In en, this message translates to:
+  /// **'That\'s not right. Try again.'**
+  String get subGateWrong;
+
+  /// Gate ok
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get subGateContinue;
+
+  /// Gate cancel
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get subCancel;
 }
 
 class _AppLocalizationsDelegate
