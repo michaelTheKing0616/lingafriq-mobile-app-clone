@@ -1,3 +1,4 @@
+import 'package:lingafriq/widgets/points_and_profile_image_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -274,5 +275,15 @@ void main() {
     await t.tap(retry);
     await t.pumpAndSettle();
     expect(_last!.initCalls, before + 1);
+  });
+
+  testWidgets('header avatar sits on an opaque disc (not faded)', (t) async {
+    await _pump(t, _Mode.quiz);
+    final disc = t.widget<DecoratedBox>(
+      find.byKey(const Key('header-avatar-disc')),
+    );
+    final color = (disc.decoration as BoxDecoration).color!;
+    expect(color.a, 1.0);
+    expect(color, kHeaderAvatarDisc);
   });
 }
