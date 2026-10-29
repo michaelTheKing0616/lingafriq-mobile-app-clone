@@ -49,6 +49,7 @@ part 'unified/learning_style_step.dart';
 part 'unified/tone_step.dart';
 part 'unified/profile_step.dart';
 part 'unified/save_progress_step.dart';
+part 'unified/identity.dart';
 
 /// Documented Modern Griot opacity roles — never invent ad-hoc alphas in UI.
 abstract final class _GriotAlpha {
@@ -62,7 +63,6 @@ abstract final class _GriotAlpha {
   static const double chipSelected = 0.35;
 
   /// Progress track under coral fill.
-  static const double progressTrack = 0.12;
 
   /// Back / icon button wash.
   static const double iconWash = 0.08;
@@ -353,6 +353,8 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                 currentStep.value,
                 totalSteps,
                 isLightBackground: stepsLight[currentStep.value],
+                accentCode:
+                    onboardingData.value['learning_language'] as String?,
                 allowSkip: stepsAllowSkip[currentStep.value],
                 onBack: (!isCompleting.value && currentStep.value > 0)
                     ? () => _goToPrevious(
@@ -418,11 +420,12 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
     required bool allowSkip,
     VoidCallback? onBack,
     VoidCallback? onSkip,
+    String? accentCode,
   }) {
     final Color foregroundColor = isLightBackground
         ? ModernGriotColors.onSurface
         : ModernGriotColors.surface;
-    final Color progressFillColor = ModernGriotColors.brandCoral;
+    final Color progressFillColor = _accentFor(accentCode);
     return Positioned(
       top: MediaQuery.of(context).padding.top + ModernGriotSpacing.xxs.h,
       left: 0,
@@ -465,33 +468,16 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                   padding: EdgeInsets.symmetric(
                     horizontal: ModernGriotSpacing.xs.w,
                   ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(ModernGriotRadius.pill),
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        final progress = total == 0
-                            ? 0.0
-                            : ((current + 1) / total).clamp(0.0, 1.0);
-                        return Stack(
-                          children: [
-                            Container(
-                              height: ModernGriotSpacing.xxs.h,
-                              color: foregroundColor.withValues(
-                                alpha: _GriotAlpha.progressTrack,
-                              ),
-                            ),
-                            AnimatedContainer(
-                              duration: _motionDuration(
-                                context,
-                                const Duration(milliseconds: 300),
-                              ),
-                              height: ModernGriotSpacing.xxs.h,
-                              width: constraints.maxWidth * progress,
-                              color: progressFillColor,
-                            ),
-                          ],
-                        );
-                      },
+                  child: SizedBox(
+                    height: 12,
+                    child: CustomPaint(
+                      painter: _BeadProgressPainter(
+                        current: current,
+                        total: total,
+                        accent: progressFillColor,
+                        track: foregroundColor.withValues(alpha: 0.38),
+                        rtl: Directionality.of(context) == TextDirection.rtl,
+                      ),
                     ),
                   ),
                 ),

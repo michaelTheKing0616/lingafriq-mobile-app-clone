@@ -44,6 +44,32 @@ class _WelcomeStep extends StatelessWidget {
 
   List<Widget> _copyAndActions(BuildContext context) {
     return [
+      // Polie's intro: greets in five home scripts on a woven mat.
+      Semantics(
+        label: 'Polie greets you: welcome, in Yoruba, Hausa, Igbo, '
+            'Swahili and Twi.',
+        child: ExcludeSemantics(
+          child: Column(
+            children: [
+              const _WovenStrip(color: ModernGriotColors.brandCoral),
+              SizedBox(height: ModernGriotSpacing.xxs.h),
+              Text(
+                'Ẹ kú àbọ̀ · Sannu · Nnọọ · Karibu · Akwaaba',
+                key: const ValueKey('welcome-greetings'),
+                textAlign: TextAlign.center,
+                style: ModernGriotTypography.titleSmall(
+                  context: context,
+                  color: ModernGriotColors.onSurface,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ).animate().fadeIn(
+        delay: _motionDelay(context, 300.ms),
+        duration: _motionDuration(context, 400.ms),
+      ),
+      SizedBox(height: ModernGriotSpacing.xs.h),
       Text(
         'Welcome to',
         textAlign: TextAlign.center,

@@ -206,6 +206,43 @@ void main() {
       expect(label('Skip'), findsNothing);
     });
 
+    for (final rtl in [false, true]) {
+      testWidgets('identity: greetings, woven strip, bead progress '
+          '(rtl=$rtl, 200%, reduced motion)', (tester) async {
+        await pumpOnboarding(
+          tester,
+          reducedMotion: true,
+          textScaler: const TextScaler.linear(2),
+          textDirection: rtl ? TextDirection.rtl : TextDirection.ltr,
+        );
+        await settleOnce(tester);
+        expect(find.byKey(const ValueKey('welcome-greetings')), findsOneWidget);
+        bool painted(String type) => find
+            .byWidgetPredicate(
+              (w) => w is CustomPaint &&
+                  w.painter.runtimeType.toString() == type,
+            )
+            .evaluate()
+            .isNotEmpty;
+        expect(painted('_WovenStripPainter'), isTrue);
+        expect(painted('_BeadProgressPainter'), isTrue);
+
+        await next(tester, 'Get started');
+        expect(find.byKey(const ValueKey('onboarding-greeting')), findsNothing);
+        await tapVisible(tester, label('Yoruba'));
+        await settleOnce(tester);
+        expect(
+          find.descendant(
+            of: find.byKey(const ValueKey('onboarding-greeting')),
+            matching: find.textContaining('Ẹ kú àbọ̀'),
+            matchRoot: true,
+          ),
+          findsOneWidget,
+        );
+        expect(tester.takeException(), isNull);
+      });
+    }
+
     testWidgets(
       'Get started advances to language pick with Continue disabled',
       (tester) async {

@@ -166,9 +166,30 @@ class _LanguagePickStep extends HookConsumerWidget {
           });
         },
       ),
-      header: const _QuestionHeader(
-        question: 'What do you want to learn?',
-        step: OnboardingStep.languageSelection,
+      header: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const _QuestionHeader(
+            question: 'What do you want to learn?',
+            step: OnboardingStep.languageSelection,
+          ),
+          if (_greetings[selectedLearn.value] != null) ...[
+            SizedBox(height: ModernGriotSpacing.xs.h),
+            Semantics(
+              liveRegion: true,
+              child: Text(
+                _greetings[selectedLearn.value]!,
+                key: const ValueKey('onboarding-greeting'),
+                style: ModernGriotTypography.headlineSmall(
+                  context: context,
+                  color: ModernGriotColors.onSurface,
+                ),
+              ),
+            ),
+            SizedBox(height: ModernGriotSpacing.xxs.h),
+            _WovenStrip(color: _accentFor(selectedLearn.value)),
+          ],
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -302,9 +323,14 @@ class _LanguagePickStep extends HookConsumerWidget {
                 _SelectRow(
                   height: ModernGriotLayout.selectRowComfortable,
                   label: lang['name'] as String,
-                  subtitle: '${lang['script']} · ${lang['learners']}',
+                  subtitle:
+                      '${_greetings[lang['code']] ?? lang['script']} · '
+                      '${lang['script']} · ${lang['learners']}',
                   isSelected: selectedLearn.value == lang['code'],
-                  leading: _ScriptGlyphBadge(glyph: lang['glyph'] as String),
+                  leading: _ScriptGlyphBadge(
+                    glyph: lang['glyph'] as String,
+                    accent: _accentFor(lang['code'] as String),
+                  ),
                   onTap: () {
                     HapticFeedback.selectionClick();
                     selectedLearn.value = lang['code'] as String;
@@ -320,9 +346,10 @@ class _LanguagePickStep extends HookConsumerWidget {
 }
 
 class _ScriptGlyphBadge extends StatelessWidget {
-  const _ScriptGlyphBadge({required this.glyph});
+  const _ScriptGlyphBadge({required this.glyph, this.accent});
 
   final String glyph;
+  final Color? accent;
 
   @override
   Widget build(BuildContext context) {
@@ -333,11 +360,13 @@ class _ScriptGlyphBadge extends StatelessWidget {
       decoration: BoxDecoration(
         color: ModernGriotColors.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(ModernGriotRadius.md),
-        border: Border.all(
-          color: ModernGriotColors.outlineVariant.withValues(
-            alpha: _GriotAlpha.ghostBorder,
-          ),
-        ),
+        border: accent == null
+            ? Border.all(
+                color: ModernGriotColors.outlineVariant.withValues(
+                  alpha: _GriotAlpha.ghostBorder,
+                ),
+              )
+            : Border.all(color: accent!, width: 2),
       ),
       child: Text(
         glyph,
