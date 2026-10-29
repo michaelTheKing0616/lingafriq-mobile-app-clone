@@ -59,9 +59,14 @@ Future<void> loadComplianceFonts(String testPath) async {
         ..addFont(_bytes('$sdk/Roboto-Medium.ttf'))
         ..addFont(_bytes('$sdk/Roboto-Bold.ttf')))
       .load();
-  await (FontLoader(
-    'Noto Sans Arabic',
-  )..addFont(_bytes('test/fonts/NotoSansArabic.ttf'))).load();
+  // 'Noto Sans' heads PanAfricanTypography's fallback list; on devices the
+  // OS supplies Arabic glyphs there, so tests register Noto Sans Arabic under
+  // that name too (only used for glyphs Lato lacks).
+  for (final family in ['Noto Sans Arabic', 'Noto Sans']) {
+    await (FontLoader(
+      family,
+    )..addFont(_bytes('test/fonts/NotoSansArabic.ttf'))).load();
+  }
   await GoogleFonts.pendingFonts([
     for (final w in [FontWeight.w400, FontWeight.w600, FontWeight.w700])
       GoogleFonts.lato(fontWeight: w),

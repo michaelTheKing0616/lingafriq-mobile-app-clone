@@ -157,7 +157,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                                 'Dark mode ${value ? 'enabled' : 'disabled'}');
                           }
                         },
-                        activeColor: PanAfricanColors.primary,
+                        activeThumbColor: PanAfricanColors.primary,
                       ),
                       isDark: isDark.value,
                     ),
@@ -183,7 +183,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                           HapticFeedback.selectionClick();
                           notificationsEnabled.value = value;
                         },
-                        activeColor: PanAfricanColors.primary,
+                        activeThumbColor: PanAfricanColors.primary,
                       ),
                       isDark: isDark.value,
                     ),
@@ -199,7 +199,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                           HapticFeedback.selectionClick();
                           dailyRemindersEnabled.value = value;
                         },
-                        activeColor: PanAfricanColors.primary,
+                        activeThumbColor: PanAfricanColors.primary,
                       ),
                       isDark: isDark.value,
                     ),
@@ -225,7 +225,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                           HapticFeedback.selectionClick();
                           soundEffectsEnabled.value = value;
                         },
-                        activeColor: PanAfricanColors.primary,
+                        activeThumbColor: PanAfricanColors.primary,
                       ),
                       isDark: isDark.value,
                     ),
@@ -340,7 +340,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                               biometricEnabled.value = false;
                             }
                           },
-                          activeColor: PanAfricanColors.primary,
+                          activeThumbColor: PanAfricanColors.primary,
                         ),
                         isDark: isDark.value,
                       ),
@@ -367,7 +367,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                             );
                           }
                         },
-                        activeColor: PanAfricanColors.primary,
+                        activeThumbColor: PanAfricanColors.primary,
                       ),
                       isDark: isDark.value,
                     ),
@@ -602,8 +602,9 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                     ),
                     _SettingsDivider(isDark: isDark.value),
                     _SettingsTile(
+                      key: const ValueKey('settings-copyright'),
                       icon: Icons.copyright_rounded,
-                      title: 'Copyright & takedown',
+                      title: AppLocalizations.of(context)!.settingsCopyright,
                       trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
@@ -697,8 +698,12 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
             borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
             boxShadow: PanAfricanShadows.sm,
           ),
-          child: Column(
-            children: children,
+          // Ink (tile splashes) must paint above the card colour.
+          child: Material(
+            type: MaterialType.transparency,
+            child: Column(
+              children: children,
+            ),
           ),
         ),
       ],
@@ -714,6 +719,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
     WidgetRef ref,
   ) async {
     await DynamicLocalizationService.initialize();
+    if (!context.mounted) return;
 
     final languages = AppLanguage.values.map((lang) => lang.name).toList();
 
@@ -748,7 +754,22 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
               ),
               SizedBox(height: PanAfricanSpacing.md),
               Expanded(
-                child: OptimizedListView.builder(
+                child: RadioGroup<String>(
+                  groupValue: selectedLanguage.value,
+                  onChanged: (value) async {
+                    HapticFeedback.selectionClick();
+                    if (value == null) return;
+                    selectedLanguage.value = value;
+                    final appLang = AppLanguage.values.firstWhere(
+                      (e) => e.name == value,
+                      orElse: () => AppLanguage.english,
+                    );
+                    await DynamicLocalizationService.setLanguage(appLang.code);
+                    if (!context.mounted) return;
+                    Navigator.pop(context);
+                    showLingAfriqSuccess(context, 'Language changed to $value');
+                  },
+                  child: OptimizedListView.builder(
                   shrinkWrap: true,
                   itemCount: languages.length,
                   itemBuilder: (context, index) {
@@ -759,25 +780,10 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                         style: PanAfricanTypography.bodyLarge(context),
                       ),
                       value: lang,
-                      groupValue: selectedLanguage.value,
                       activeColor: PanAfricanColors.primary,
-                      onChanged: (value) async {
-                        HapticFeedback.selectionClick();
-                        if (value != null) {
-                          selectedLanguage.value = value;
-                          final appLang = AppLanguage.values.firstWhere(
-                            (e) => e.name == value,
-                            orElse: () => AppLanguage.english,
-                          );
-                          await DynamicLocalizationService.setLanguage(appLang.code);
-                          Navigator.pop(context);
-                          if (context.mounted) {
-                            showLingAfriqSuccess(context, 'Language changed to $value');
-                          }
-                        }
-                      },
                     );
                   },
+                ),
                 ),
               ),
             ],
@@ -828,6 +834,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
     final selectiveSync = SelectiveSyncService();
     await selectiveSync.initialize();
     final preferences = await selectiveSync.getAllPreferences();
+    if (!context.mounted) return;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     showModalBottomSheet(
@@ -885,6 +892,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                         maxSize: entry.value.maxSize,
                       ),
                     );
+                    if (!context.mounted) return;
                     Navigator.pop(context);
                     _showSyncSettings(context, ref);
                   },
@@ -900,6 +908,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
 
   void _showCacheManagement(BuildContext context, WidgetRef ref) async {
     final stats = await PersistedOutboxService.instance.getCacheStats();
+    if (!context.mounted) return;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     showDialog(
@@ -968,6 +977,8 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
     );
   }
 
+  // Kept for the reminders entry point; currently unreferenced.
+  // ignore: unused_element
   void _showStudyReminderSettings(BuildContext context, WidgetRef ref) {
     final state = ref.read(notificationProvider);
     final notifier = ref.read(notificationProvider.notifier);
@@ -1198,6 +1209,7 @@ class _SettingsTile extends StatelessWidget {
   final bool? toggleValue;
 
   const _SettingsTile({
+    super.key,
     required this.icon,
     required this.title,
     this.subtitle,
