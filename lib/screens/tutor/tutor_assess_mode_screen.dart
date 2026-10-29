@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:lingafriq/widgets/ai/ai_disclosure.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -151,184 +152,186 @@ Keep lists practical. Use culturally appropriate examples.
       isLoading: isLoading.value,
       message: 'Preparing your assessment...',
       child: Scaffold(
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: isDark
-                  ? [
-                      PolieColors.primary,
-                      PolieColors.primaryDark,
-                      PolieColors.obsidian,
-                    ]
-                  : [
-                      PolieColors.primary.withValues(alpha: 0.92),
-                      PolieColors.primaryDark.withValues(alpha: 0.88),
-                      PolieColors.surfaceContainerLight,
-                    ],
+        body: AiDisclosed(
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: isDark
+                    ? [
+                        PolieColors.primary,
+                        PolieColors.primaryDark,
+                        PolieColors.obsidian,
+                      ]
+                    : [
+                        PolieColors.primary.withValues(alpha: 0.92),
+                        PolieColors.primaryDark.withValues(alpha: 0.88),
+                        PolieColors.surfaceContainerLight,
+                      ],
+              ),
             ),
-          ),
-          child: SafeArea(
-            child: assessmentResult.value == null
-                ? SingleChildScrollView(
-                    padding: EdgeInsets.all(PolieSpacing.lg),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          'Proficiency Assessment',
-                          style: PolieTypography.h1(
-                            context,
-                          ).copyWith(color: PolieColors.textPrimary),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: PolieSpacing.sm),
-                        Text(
-                          'Discover your level with calm, clear feedback. Choose your assessment type below.',
-                          style: PolieTypography.body(
-                            context,
-                          ).copyWith(color: PolieColors.textSecondary),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: PolieSpacing.xl),
-                        PolieGlassCard(
-                          padding: EdgeInsets.all(PolieSpacing.md),
-                          child: DropdownButtonFormField<AppLanguage>(
-                            initialValue: selectedLanguage.value,
-                            dropdownColor: PolieColors.surfaceContainer,
-                            decoration: InputDecoration(
-                              labelText: 'Language',
-                              border: InputBorder.none,
-                              labelStyle: PolieTypography.label(context),
-                            ),
-                            style: PolieTypography.body(context),
-                            items: availableLanguages
-                                .map(
-                                  (lang) => DropdownMenuItem<AppLanguage>(
-                                    value: lang,
-                                    child: Text(lang.displayName),
-                                  ),
-                                )
-                                .toList(),
-                            onChanged: (value) {
-                              if (value != null) {
-                                HapticFeedback.selectionClick();
-                                selectedLanguage.value = value;
-                              }
-                            },
+            child: SafeArea(
+              child: assessmentResult.value == null
+                  ? SingleChildScrollView(
+                      padding: EdgeInsets.all(PolieSpacing.lg),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            'Proficiency Assessment',
+                            style: PolieTypography.h1(
+                              context,
+                            ).copyWith(color: PolieColors.textPrimary),
+                            textAlign: TextAlign.center,
                           ),
-                        ),
-                        SizedBox(height: PolieSpacing.lg),
-                        Text(
-                          'Assessment Type',
-                          style: PolieTypography.label(context),
-                        ),
-                        SizedBox(height: PolieSpacing.sm),
-                        ...kAssessmentTypes.map((t) {
-                          final id = t['id'] as String;
-                          final selected = assessmentType.value == id;
-                          return Padding(
-                            padding: EdgeInsets.only(bottom: PolieSpacing.sm),
-                            child: PolieGlassCard(
-                              hasGlow: selected,
-                              glowColor: PolieColors.royalAmethyst,
-                              padding: EdgeInsets.all(PolieSpacing.md),
-                              child: Semantics(
-                                label:
-                                    '${t['label']}. ${t['desc'] ?? ''}. ${selected ? 'Selected' : ''}',
-                                button: true,
-                                child: InkWell(
-                                  onTap: () {
-                                    HapticFeedback.selectionClick();
-                                    assessmentType.value = id;
-                                  },
-                                  borderRadius: BorderRadius.circular(
-                                    PolieRadius.lg,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        padding: EdgeInsets.all(
-                                          PolieSpacing.sm,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: (t['icon'] != null)
-                                              ? PolieColors.royalAmethyst
-                                                    .withValues(alpha: 0.25)
-                                              : null,
-                                          borderRadius: BorderRadius.circular(
-                                            PolieRadius.md,
+                          SizedBox(height: PolieSpacing.sm),
+                          Text(
+                            'Discover your level with calm, clear feedback. Choose your assessment type below.',
+                            style: PolieTypography.body(
+                              context,
+                            ).copyWith(color: PolieColors.textSecondary),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: PolieSpacing.xl),
+                          PolieGlassCard(
+                            padding: EdgeInsets.all(PolieSpacing.md),
+                            child: DropdownButtonFormField<AppLanguage>(
+                              initialValue: selectedLanguage.value,
+                              dropdownColor: PolieColors.surfaceContainer,
+                              decoration: InputDecoration(
+                                labelText: 'Language',
+                                border: InputBorder.none,
+                                labelStyle: PolieTypography.label(context),
+                              ),
+                              style: PolieTypography.body(context),
+                              items: availableLanguages
+                                  .map(
+                                    (lang) => DropdownMenuItem<AppLanguage>(
+                                      value: lang,
+                                      child: Text(lang.displayName),
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: (value) {
+                                if (value != null) {
+                                  HapticFeedback.selectionClick();
+                                  selectedLanguage.value = value;
+                                }
+                              },
+                            ),
+                          ),
+                          SizedBox(height: PolieSpacing.lg),
+                          Text(
+                            'Assessment Type',
+                            style: PolieTypography.label(context),
+                          ),
+                          SizedBox(height: PolieSpacing.sm),
+                          ...kAssessmentTypes.map((t) {
+                            final id = t['id'] as String;
+                            final selected = assessmentType.value == id;
+                            return Padding(
+                              padding: EdgeInsets.only(bottom: PolieSpacing.sm),
+                              child: PolieGlassCard(
+                                hasGlow: selected,
+                                glowColor: PolieColors.royalAmethyst,
+                                padding: EdgeInsets.all(PolieSpacing.md),
+                                child: Semantics(
+                                  label:
+                                      '${t['label']}. ${t['desc'] ?? ''}. ${selected ? 'Selected' : ''}',
+                                  button: true,
+                                  child: InkWell(
+                                    onTap: () {
+                                      HapticFeedback.selectionClick();
+                                      assessmentType.value = id;
+                                    },
+                                    borderRadius: BorderRadius.circular(
+                                      PolieRadius.lg,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.all(
+                                            PolieSpacing.sm,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: (t['icon'] != null)
+                                                ? PolieColors.royalAmethyst
+                                                      .withValues(alpha: 0.25)
+                                                : null,
+                                            borderRadius: BorderRadius.circular(
+                                              PolieRadius.md,
+                                            ),
+                                          ),
+                                          child: Icon(
+                                            t['icon'] as IconData,
+                                            color: PolieColors.royalAmethyst,
+                                            size: 24.sp,
                                           ),
                                         ),
-                                        child: Icon(
-                                          t['icon'] as IconData,
-                                          color: PolieColors.royalAmethyst,
-                                          size: 24.sp,
-                                        ),
-                                      ),
-                                      SizedBox(width: PolieSpacing.md),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              t['label'] as String,
-                                              style: PolieTypography.label(
-                                                context,
-                                              ),
-                                            ),
-                                            if (t['desc'] != null)
+                                        SizedBox(width: PolieSpacing.md),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
                                               Text(
-                                                t['desc'] as String,
-                                                style:
-                                                    PolieTypography.bodySmall(
-                                                      context,
-                                                    ),
+                                                t['label'] as String,
+                                                style: PolieTypography.label(
+                                                  context,
+                                                ),
                                               ),
-                                          ],
+                                              if (t['desc'] != null)
+                                                Text(
+                                                  t['desc'] as String,
+                                                  style:
+                                                      PolieTypography.bodySmall(
+                                                        context,
+                                                      ),
+                                                ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      if (selected)
-                                        const Icon(
-                                          Icons.check_circle_rounded,
-                                          color: PolieColors.electricTeal,
-                                          semanticLabel: 'Selected',
-                                        ),
-                                    ],
+                                        if (selected)
+                                          const Icon(
+                                            Icons.check_circle_rounded,
+                                            color: PolieColors.electricTeal,
+                                            semanticLabel: 'Selected',
+                                          ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
+                            );
+                          }),
+                          SizedBox(height: PolieSpacing.xl),
+                          Semantics(
+                            label: 'Start assessment',
+                            button: true,
+                            child: PoliePrimaryButton(
+                              label: 'Start Assessment',
+                              icon: Icons.assessment_rounded,
+                              loading: isLoading.value,
+                              onPressed: isLoading.value
+                                  ? null
+                                  : assessProficiency,
                             ),
-                          );
-                        }),
-                        SizedBox(height: PolieSpacing.xl),
-                        Semantics(
-                          label: 'Start assessment',
-                          button: true,
-                          child: PoliePrimaryButton(
-                            label: 'Start Assessment',
-                            icon: Icons.assessment_rounded,
-                            loading: isLoading.value,
-                            onPressed: isLoading.value
-                                ? null
-                                : assessProficiency,
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
+                    )
+                  : _AssessmentResultsView(
+                      result: assessmentResult.value!,
+                      isDark: isDark,
+                      cefrRevealed: cefrRevealed.value,
+                      onLearningPathTap: () {
+                        HapticFeedback.mediumImpact();
+                        // Navigate to Polie mode carousel or dashboard
+                        Navigator.of(context).pop();
+                      },
                     ),
-                  )
-                : _AssessmentResultsView(
-                    result: assessmentResult.value!,
-                    isDark: isDark,
-                    cefrRevealed: cefrRevealed.value,
-                    onLearningPathTap: () {
-                      HapticFeedback.mediumImpact();
-                      // Navigate to Polie mode carousel or dashboard
-                      Navigator.of(context).pop();
-                    },
-                  ),
+            ),
           ),
         ),
       ),

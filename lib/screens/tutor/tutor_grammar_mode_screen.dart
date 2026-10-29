@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:lingafriq/widgets/ai/ai_disclosure.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -198,186 +199,192 @@ Quality requirements:
       isLoading: isLoading.value,
       message: 'Generating grammar explanation...',
       child: Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                PolieColors.primary,
-                PolieColors.primaryDark,
-                PolieColors.obsidian,
-              ],
+        body: AiDisclosed(
+          child: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  PolieColors.primary,
+                  PolieColors.primaryDark,
+                  PolieColors.obsidian,
+                ],
+              ),
             ),
-          ),
-          child: SafeArea(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(PolieSpacing.md),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  PolieGlassCard(
-                    padding: EdgeInsets.all(PolieSpacing.md),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        TextField(
-                          controller: topicController,
-                          onChanged: (v) => topicInput.value = v,
-                          decoration: InputDecoration(
-                            hintText:
-                                'e.g., verb conjugation, noun cases, tenses',
-                            hintStyle: PolieTypography.body(
-                              context,
-                            ).copyWith(color: PolieColors.textSecondary),
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.zero,
+            child: SafeArea(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(PolieSpacing.md),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    PolieGlassCard(
+                      padding: EdgeInsets.all(PolieSpacing.md),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextField(
+                            controller: topicController,
+                            onChanged: (v) => topicInput.value = v,
+                            decoration: InputDecoration(
+                              hintText:
+                                  'e.g., verb conjugation, noun cases, tenses',
+                              hintStyle: PolieTypography.body(
+                                context,
+                              ).copyWith(color: PolieColors.textSecondary),
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.zero,
+                            ),
+                            style: PolieTypography.body(context),
                           ),
-                          style: PolieTypography.body(context),
-                        ),
-                        if (filteredTopics.isNotEmpty) ...[
-                          SizedBox(height: PolieSpacing.sm),
-                          Text(
-                            'Suggestions',
-                            style: PolieTypography.label(
-                              context,
-                            ).copyWith(color: PolieColors.textSecondary),
-                          ),
-                          SizedBox(height: PolieSpacing.xs),
-                          Wrap(
-                            spacing: PolieSpacing.xs,
-                            runSpacing: PolieSpacing.xs,
-                            children: filteredTopics.take(8).map((topic) {
-                              return Semantics(
-                                label: 'Select topic: $topic',
-                                button: true,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    HapticFeedback.selectionClick();
-                                    topicController.text = topic;
-                                    topicInput.value = topic;
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: PolieSpacing.sm,
-                                      vertical: PolieSpacing.xs,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: PolieColors.royalAmethyst
-                                          .withValues(alpha: 0.2),
-                                      borderRadius: BorderRadius.circular(
-                                        PolieRadius.pill,
+                          if (filteredTopics.isNotEmpty) ...[
+                            SizedBox(height: PolieSpacing.sm),
+                            Text(
+                              'Suggestions',
+                              style: PolieTypography.label(
+                                context,
+                              ).copyWith(color: PolieColors.textSecondary),
+                            ),
+                            SizedBox(height: PolieSpacing.xs),
+                            Wrap(
+                              spacing: PolieSpacing.xs,
+                              runSpacing: PolieSpacing.xs,
+                              children: filteredTopics.take(8).map((topic) {
+                                return Semantics(
+                                  label: 'Select topic: $topic',
+                                  button: true,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      HapticFeedback.selectionClick();
+                                      topicController.text = topic;
+                                      topicInput.value = topic;
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: PolieSpacing.sm,
+                                        vertical: PolieSpacing.xs,
                                       ),
-                                      border: Border.all(
+                                      decoration: BoxDecoration(
                                         color: PolieColors.royalAmethyst
-                                            .withValues(alpha: 0.5),
+                                            .withValues(alpha: 0.2),
+                                        borderRadius: BorderRadius.circular(
+                                          PolieRadius.pill,
+                                        ),
+                                        border: Border.all(
+                                          color: PolieColors.royalAmethyst
+                                              .withValues(alpha: 0.5),
+                                        ),
                                       ),
-                                    ),
-                                    child: Text(
-                                      topic,
-                                      style: PolieTypography.bodySmall(context),
+                                      child: Text(
+                                        topic,
+                                        style: PolieTypography.bodySmall(
+                                          context,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              );
-                            }).toList(),
-                          ),
+                                );
+                              }).toList(),
+                            ),
+                          ],
                         ],
+                      ),
+                    ),
+                    SizedBox(height: PolieSpacing.md),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: PolieLanguagePill(
+                            label: selectedLanguage.value.name,
+                            regionTag: SupportedLanguages.getCountry(
+                              selectedLanguage.value.code,
+                            ),
+                            isSelected: true,
+                            accentColor: polieAccentForLanguage(
+                              SupportedLanguages.getKeyFromCode(
+                                    selectedLanguage.value.code,
+                                  ) ??
+                                  selectedLanguage.value.name.toLowerCase(),
+                            ),
+                            onTap: () => _showLanguagePicker(
+                              context,
+                              availableLanguages,
+                              selectedLanguage.value,
+                              (v) => selectedLanguage.value = v,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: PolieSpacing.sm),
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: PolieSpacing.sm,
+                            ),
+                            decoration: BoxDecoration(
+                              color: PolieColors.surfaceContainerLight,
+                              borderRadius: BorderRadius.circular(
+                                PolieRadius.md,
+                              ),
+                              border: Border.all(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurface.withValues(alpha: 0.1),
+                              ),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                value: userLevel.value,
+                                isExpanded: true,
+                                dropdownColor: PolieColors.surfaceContainer,
+                                items: ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
+                                    .map(
+                                      (l) => DropdownMenuItem(
+                                        value: l,
+                                        child: Text(
+                                          l,
+                                          style: PolieTypography.label(context),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                                onChanged: (v) {
+                                  if (v != null) userLevel.value = v;
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                  SizedBox(height: PolieSpacing.md),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: PolieLanguagePill(
-                          label: selectedLanguage.value.name,
-                          regionTag: SupportedLanguages.getCountry(
-                            selectedLanguage.value.code,
-                          ),
-                          isSelected: true,
-                          accentColor: polieAccentForLanguage(
-                            SupportedLanguages.getKeyFromCode(
-                                  selectedLanguage.value.code,
-                                ) ??
-                                selectedLanguage.value.name.toLowerCase(),
-                          ),
-                          onTap: () => _showLanguagePicker(
-                            context,
-                            availableLanguages,
-                            selectedLanguage.value,
-                            (v) => selectedLanguage.value = v,
-                          ),
+                    SizedBox(height: PolieSpacing.lg),
+                    Center(
+                      child: Semantics(
+                        label: 'Generate grammar explanation',
+                        button: true,
+                        child: PoliePrimaryButton(
+                          label: 'Explain Grammar',
+                          loading: isLoading.value,
+                          enabled: !isLoading.value,
+                          icon: Icons.menu_book_rounded,
+                          onPressed: explainGrammar,
                         ),
-                      ),
-                      SizedBox(width: PolieSpacing.sm),
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: PolieSpacing.sm,
-                          ),
-                          decoration: BoxDecoration(
-                            color: PolieColors.surfaceContainerLight,
-                            borderRadius: BorderRadius.circular(PolieRadius.md),
-                            border: Border.all(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.onSurface.withValues(alpha: 0.1),
-                            ),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              value: userLevel.value,
-                              isExpanded: true,
-                              dropdownColor: PolieColors.surfaceContainer,
-                              items: ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
-                                  .map(
-                                    (l) => DropdownMenuItem(
-                                      value: l,
-                                      child: Text(
-                                        l,
-                                        style: PolieTypography.label(context),
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
-                              onChanged: (v) {
-                                if (v != null) userLevel.value = v;
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: PolieSpacing.lg),
-                  Center(
-                    child: Semantics(
-                      label: 'Generate grammar explanation',
-                      button: true,
-                      child: PoliePrimaryButton(
-                        label: 'Explain Grammar',
-                        loading: isLoading.value,
-                        enabled: !isLoading.value,
-                        icon: Icons.menu_book_rounded,
-                        onPressed: explainGrammar,
                       ),
                     ),
-                  ),
-                  if (grammarResult.value != null) ...[
-                    SizedBox(height: PolieSpacing.xl),
-                    _buildGrammarResult(
-                          context,
-                          grammarResult.value!,
-                          isDark,
-                          userLevel.value,
-                        )
-                        .animate()
-                        .fadeIn(duration: 300.ms)
-                        .slideY(begin: 0.1, end: 0),
+                    if (grammarResult.value != null) ...[
+                      SizedBox(height: PolieSpacing.xl),
+                      _buildGrammarResult(
+                            context,
+                            grammarResult.value!,
+                            isDark,
+                            userLevel.value,
+                          )
+                          .animate()
+                          .fadeIn(duration: 300.ms)
+                          .slideY(begin: 0.1, end: 0),
+                    ],
                   ],
-                ],
+                ),
               ),
             ),
           ),

@@ -661,4 +661,8 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get stitchLabel => 'Native correction';
+
+  @override
+  String get aiDisclosureLabel =>
+      'Généré par IA : les réponses et la voix proviennent d\'un tuteur IA et peuvent être erronées.';
 }

@@ -61,5 +61,6 @@
   "tooltipFlbHeritageArchive": "FLB Heritage archive",
   "tooltipTribeDiscovery": "Tribe discovery",
   "drawerFlbHeritageArchive": "FLB Heritage Archive",
-  "tooltipTribes": "Tribes"
+  "tooltipTribes": "Tribes",
+  "aiDisclosureLabel": "Généré par IA : les réponses et la voix proviennent d'un tuteur IA et peuvent être erronées."
 }

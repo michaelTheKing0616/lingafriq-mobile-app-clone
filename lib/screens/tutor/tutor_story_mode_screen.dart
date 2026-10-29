@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:lingafriq/widgets/ai/ai_disclosure.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -160,128 +161,135 @@ Quality requirements:
       isLoading: isLoading.value,
       message: 'Generating story...',
       child: Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                PolieColors.primary,
-                PolieColors.primaryDark,
-                PolieColors.obsidian,
-              ],
+        body: AiDisclosed(
+          child: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  PolieColors.primary,
+                  PolieColors.primaryDark,
+                  PolieColors.obsidian,
+                ],
+              ),
             ),
-          ),
-          child: SafeArea(
-            child: Column(
-              children: [
-                _buildHeader(
-                  context,
-                  showTranslation.value,
-                  showVocabulary.value,
-                  (show) => showTranslation.value = show,
-                  (show) => showVocabulary.value = show,
-                  isDark,
-                ),
-                Expanded(
-                  child: storyResult.value != null
-                      ? _buildStoryContent(
-                          context,
-                          storyResult.value!,
-                          showTranslation.value,
-                          showVocabulary.value,
-                          currentQuizIndex.value,
-                          (index) => currentQuizIndex.value = index,
-                          isDark,
-                          revealedParagraphs.value,
-                          () => revealedParagraphs.value =
-                              revealedParagraphs.value + 1,
-                          savedToLibrary.value,
-                          () async {
-                            if (savedToLibrary.value) return;
-                            try {
-                              final prefs =
-                                  await SharedPreferences.getInstance();
-                              final saved =
-                                  prefs.getStringList(_kSavedStoriesKey) ?? [];
-                              final story = storyResult.value!;
-                              final entry = jsonEncode({
-                                'title': story['title'],
-                                'story': story['story'],
-                                'translation': story['translation'],
-                                'ts': DateTime.now().toIso8601String(),
-                              });
-                              saved.add(entry);
-                              await prefs.setStringList(
-                                _kSavedStoriesKey,
-                                saved,
-                              );
-                              savedToLibrary.value = true;
-                              HapticFeedback.mediumImpact();
-                              if (context.mounted)
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Saved to library'),
-                                  ),
+            child: SafeArea(
+              child: Column(
+                children: [
+                  _buildHeader(
+                    context,
+                    showTranslation.value,
+                    showVocabulary.value,
+                    (show) => showTranslation.value = show,
+                    (show) => showVocabulary.value = show,
+                    isDark,
+                  ),
+                  Expanded(
+                    child: storyResult.value != null
+                        ? _buildStoryContent(
+                            context,
+                            storyResult.value!,
+                            showTranslation.value,
+                            showVocabulary.value,
+                            currentQuizIndex.value,
+                            (index) => currentQuizIndex.value = index,
+                            isDark,
+                            revealedParagraphs.value,
+                            () => revealedParagraphs.value =
+                                revealedParagraphs.value + 1,
+                            savedToLibrary.value,
+                            () async {
+                              if (savedToLibrary.value) return;
+                              try {
+                                final prefs =
+                                    await SharedPreferences.getInstance();
+                                final saved =
+                                    prefs.getStringList(_kSavedStoriesKey) ??
+                                    [];
+                                final story = storyResult.value!;
+                                final entry = jsonEncode({
+                                  'title': story['title'],
+                                  'story': story['story'],
+                                  'translation': story['translation'],
+                                  'ts': DateTime.now().toIso8601String(),
+                                });
+                                saved.add(entry);
+                                await prefs.setStringList(
+                                  _kSavedStoriesKey,
+                                  saved,
                                 );
-                            } catch (_) {}
-                          },
-                          alternateEnding.value,
-                          isLoadingAlternate.value,
-                          () async {
-                            if (storyResult.value == null) return;
-                            isLoadingAlternate.value = true;
-                            try {
-                              final theme =
-                                  storyResult.value!['title'] ?? 'Story';
-                              final storyText =
-                                  storyResult.value!['story'] ?? '';
-                              final resp = await ApiService.post(
-                                '/api/ai/chat/completion',
-                                data: {
-                                  'messages': [
-                                    {
-                                      'role': 'user',
-                                      'content':
-                                          'Write a short alternate ending (2-4 sentences) for this story. Story title: $theme. Story text (end): ${storyText.length > 200 ? storyText.substring(storyText.length - 200) : storyText}. Return only the alternate ending text, no JSON.',
-                                    },
-                                  ],
-                                  'temperature': 0.4,
-                                  'max_tokens': 200,
-                                  'language': selectedLanguage.value.name,
-                                  'languageCode': selectedLanguage.value.code,
-                                  'sourceLanguage': 'en',
-                                  'targetLanguage': selectedLanguage.value.code,
-                                  'cefr': userLevel.value,
-                                  'mode': 'story',
-                                },
-                              );
-                              if (resp.statusCode == 200 && resp.data != null) {
-                                final content = (resp.data is Map)
-                                    ? (resp.data['content']?.toString() ?? '')
-                                    : resp.data.toString();
-                                if (content.isNotEmpty)
-                                  alternateEnding.value = content.trim();
-                              }
-                            } catch (_) {}
-                            isLoadingAlternate.value = false;
-                          },
-                          (String text) =>
-                              speakParagraph(text, selectedLanguage.value.code),
-                        )
-                      : _buildStoryInput(
-                          context,
-                          themeController,
-                          selectedLanguage,
-                          availableLanguages,
-                          userLevel.value,
-                          (level) => userLevel.value = level,
-                          isLoading.value,
-                          generateStory,
-                          isDark,
-                        ),
-                ),
-              ],
+                                savedToLibrary.value = true;
+                                HapticFeedback.mediumImpact();
+                                if (context.mounted)
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Saved to library'),
+                                    ),
+                                  );
+                              } catch (_) {}
+                            },
+                            alternateEnding.value,
+                            isLoadingAlternate.value,
+                            () async {
+                              if (storyResult.value == null) return;
+                              isLoadingAlternate.value = true;
+                              try {
+                                final theme =
+                                    storyResult.value!['title'] ?? 'Story';
+                                final storyText =
+                                    storyResult.value!['story'] ?? '';
+                                final resp = await ApiService.post(
+                                  '/api/ai/chat/completion',
+                                  data: {
+                                    'messages': [
+                                      {
+                                        'role': 'user',
+                                        'content':
+                                            'Write a short alternate ending (2-4 sentences) for this story. Story title: $theme. Story text (end): ${storyText.length > 200 ? storyText.substring(storyText.length - 200) : storyText}. Return only the alternate ending text, no JSON.',
+                                      },
+                                    ],
+                                    'temperature': 0.4,
+                                    'max_tokens': 200,
+                                    'language': selectedLanguage.value.name,
+                                    'languageCode': selectedLanguage.value.code,
+                                    'sourceLanguage': 'en',
+                                    'targetLanguage':
+                                        selectedLanguage.value.code,
+                                    'cefr': userLevel.value,
+                                    'mode': 'story',
+                                  },
+                                );
+                                if (resp.statusCode == 200 &&
+                                    resp.data != null) {
+                                  final content = (resp.data is Map)
+                                      ? (resp.data['content']?.toString() ?? '')
+                                      : resp.data.toString();
+                                  if (content.isNotEmpty)
+                                    alternateEnding.value = content.trim();
+                                }
+                              } catch (_) {}
+                              isLoadingAlternate.value = false;
+                            },
+                            (String text) => speakParagraph(
+                              text,
+                              selectedLanguage.value.code,
+                            ),
+                          )
+                        : _buildStoryInput(
+                            context,
+                            themeController,
+                            selectedLanguage,
+                            availableLanguages,
+                            userLevel.value,
+                            (level) => userLevel.value = level,
+                            isLoading.value,
+                            generateStory,
+                            isDark,
+                          ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

@@ -1301,6 +1301,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Native correction'**
   String get stitchLabel;
+
+  /// Persistent AI transparency label (EU AI Act Art. 50) on AI chat, tutor, voice and persona screens
+  ///
+  /// In en, this message translates to:
+  /// **'AI-generated: replies and voice come from an AI tutor and can be wrong.'**
+  String get aiDisclosureLabel;
 }
 
 class _AppLocalizationsDelegate

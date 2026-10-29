@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:lingafriq/widgets/ai/ai_disclosure.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -8,7 +9,8 @@ import 'package:lingafriq/providers/dio_provider.dart';
 import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show AppLanguage;
+import 'package:lingafriq/services/localization/dynamic_localization_service.dart'
+    show AppLanguage;
 import 'package:just_audio/just_audio.dart';
 import 'package:lingafriq/services/voice/audio_recording_service.dart';
 import 'package:lingafriq/screens/pronunciation/tone_overlay_view.dart';
@@ -46,9 +48,14 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
 
       try {
         if (!isRecording.value) {
-          final path = await recorder.startRecording(sampleRate: 16000, numChannels: 1);
+          final path = await recorder.startRecording(
+            sampleRate: 16000,
+            numChannels: 1,
+          );
           if (path == null) {
-            throw Exception('Microphone permission denied or recorder unavailable.');
+            throw Exception(
+              'Microphone permission denied or recorder unavailable.',
+            );
           }
           recordingPath.value = path;
           isRecording.value = true;
@@ -71,22 +78,26 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
         coachSyllables.value = [];
         coachRetry.value = false;
 
-        final response = await ref.read(client).post(
-          '/api/ai/score/utterance',
-          data: FormData.fromMap({
-            'audio': await MultipartFile.fromFile(
-              path,
-              filename: 'pronunciation_audio.wav',
-            ),
-            'expected_text': textController.text,
-            'language': selectedLanguage.value.code,
-          }),
-          options: Options(
-            validateStatus: (status) => status != null && status < 600,
-          ),
-        );
+        final response = await ref
+            .read(client)
+            .post(
+              '/api/ai/score/utterance',
+              data: FormData.fromMap({
+                'audio': await MultipartFile.fromFile(
+                  path,
+                  filename: 'pronunciation_audio.wav',
+                ),
+                'expected_text': textController.text,
+                'language': selectedLanguage.value.code,
+              }),
+              options: Options(
+                validateStatus: (status) => status != null && status < 600,
+              ),
+            );
         final raw = response.data;
-        final body = raw is Map ? Map<String, dynamic>.from(raw) : <String, dynamic>{};
+        final body = raw is Map
+            ? Map<String, dynamic>.from(raw)
+            : <String, dynamic>{};
         analyzeStatus.value = response.statusCode;
         analyzeBody.value = body;
         isScoring.value = false;
@@ -127,7 +138,8 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
     }
 
     return Scaffold(
-        body: Container(
+      body: AiDisclosed(
+        child: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
@@ -161,16 +173,16 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
                         decoration: InputDecoration(
                           labelText: 'Text to Practice',
                           hintText: 'Enter text to practice pronunciation...',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(PolieRadius.md),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(PolieRadius.md),
+                          ),
+                          filled: true,
+                          fillColor: isDark
+                              ? PolieColors.surfaceContainer
+                              : PolieColors.surfaceContainerLight,
                         ),
-                        filled: true,
-                        fillColor: isDark
-                            ? PolieColors.surfaceContainer
-                            : PolieColors.surfaceContainerLight,
+                        style: PolieTypography.body(context),
                       ),
-                      style: PolieTypography.body(context),
-                    ),
                     ),
                   ),
                   SizedBox(height: PolieSpacing.md),
@@ -180,18 +192,30 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
                     children: [
                       Expanded(
                         child: PolieGlassCard(
-                          padding: EdgeInsets.symmetric(horizontal: PolieSpacing.md, vertical: PolieSpacing.sm),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: PolieSpacing.md,
+                            vertical: PolieSpacing.sm,
+                          ),
                           child: DropdownButtonFormField<AppLanguage>(
                             initialValue: selectedLanguage.value,
-                            dropdownColor: isDark ? PolieColors.surfaceContainer : PolieColors.surfaceContainerLight,
+                            dropdownColor: isDark
+                                ? PolieColors.surfaceContainer
+                                : PolieColors.surfaceContainerLight,
                             decoration: const InputDecoration(
                               labelText: 'Language',
                               border: InputBorder.none,
                             ),
-                            items: availableLanguages.map((lang) => DropdownMenuItem<AppLanguage>(
-                              value: lang,
-                              child: Text(lang.displayName, style: PolieTypography.body(context)),
-                            )).toList(),
+                            items: availableLanguages
+                                .map(
+                                  (lang) => DropdownMenuItem<AppLanguage>(
+                                    value: lang,
+                                    child: Text(
+                                      lang.displayName,
+                                      style: PolieTypography.body(context),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
                             onChanged: (value) {
                               if (value != null) selectedLanguage.value = value;
                             },
@@ -200,11 +224,17 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
                       ),
                       SizedBox(width: PolieSpacing.sm),
                       PolieGlassCard(
-                        padding: EdgeInsets.symmetric(horizontal: PolieSpacing.sm, vertical: PolieSpacing.sm),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: PolieSpacing.sm,
+                          vertical: PolieSpacing.sm,
+                        ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text('Regional', style: PolieTypography.bodySmall(context)),
+                            Text(
+                              'Regional',
+                              style: PolieTypography.bodySmall(context),
+                            ),
                             SizedBox(width: PolieSpacing.xs),
                             Switch(
                               value: useRegionalPronunciation.value,
@@ -223,56 +253,72 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
 
                   Center(
                     child: Semantics(
-                      label: isRecording.value ? 'Tap to stop recording' : 'Tap to start recording',
+                      label: isRecording.value
+                          ? 'Tap to stop recording'
+                          : 'Tap to start recording',
                       button: true,
                       child: GestureDetector(
                         onTap: recordPractice,
                         child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 200),
-                        width: isRecording.value ? 140.w : 120.w,
-                        height: isRecording.value ? 140.w : 120.w,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              PolieColors.electricTeal,
-                              PolieColors.electricTealLight.withValues(alpha: 0.9),
+                          duration: const Duration(milliseconds: 200),
+                          width: isRecording.value ? 140.w : 120.w,
+                          height: isRecording.value ? 140.w : 120.w,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                PolieColors.electricTeal,
+                                PolieColors.electricTealLight.withValues(
+                                  alpha: 0.9,
+                                ),
+                              ],
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: PolieColors.electricTeal.withValues(
+                                  alpha: 0.5,
+                                ),
+                                blurRadius: isRecording.value ? 32 : 24,
+                                spreadRadius: isRecording.value ? 4 : 0,
+                              ),
+                              BoxShadow(
+                                color: PolieColors.electricTeal.withValues(
+                                  alpha: 0.3,
+                                ),
+                                blurRadius: 48,
+                                spreadRadius: -8,
+                              ),
                             ],
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: PolieColors.electricTeal.withValues(alpha: 0.5),
-                              blurRadius: isRecording.value ? 32 : 24,
-                              spreadRadius: isRecording.value ? 4 : 0,
+                            border: Border.all(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onPrimary.withValues(alpha: 0.3),
+                              width: 2,
                             ),
-                            BoxShadow(
-                              color: PolieColors.electricTeal.withValues(alpha: 0.3),
-                              blurRadius: 48,
-                              spreadRadius: -8,
-                            ),
-                          ],
-                          border: Border.all(
-                            color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.3),
-                            width: 2,
                           ),
-                        ),
-                        child: Icon(
-                          isRecording.value ? Icons.stop_rounded : Icons.mic_rounded,
-                          size: 48.sp,
-                          color: Theme.of(context).colorScheme.onPrimary,
-                          semanticLabel: isRecording.value ? 'Stop' : 'Record',
+                          child: Icon(
+                            isRecording.value
+                                ? Icons.stop_rounded
+                                : Icons.mic_rounded,
+                            size: 48.sp,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                            semanticLabel: isRecording.value
+                                ? 'Stop'
+                                : 'Record',
+                          ),
                         ),
                       ),
-                    ),
                     ),
                   ),
                   SizedBox(height: PolieSpacing.sm),
                   Center(
                     child: Text(
                       isRecording.value ? 'Tap to stop' : 'Tap to record',
-                      style: PolieTypography.bodySmall(context).copyWith(color: PolieColors.textSecondary),
+                      style: PolieTypography.bodySmall(
+                        context,
+                      ).copyWith(color: PolieColors.textSecondary),
                     ),
                   ),
                   if (isScoring.value || coachPhase.value != null) ...[
@@ -296,6 +342,7 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
             ),
           ),
         ),
+      ),
     );
   }
 }
@@ -329,8 +376,17 @@ class _ReplayButtons extends StatelessWidget {
               HapticFeedback.lightImpact();
               _playAtSpeed(context, 1.0);
             },
-            icon: const Icon(Icons.play_arrow_rounded, color: PolieColors.electricTeal, size: 24),
-            label: Text('Replay', style: PolieTypography.label(context).copyWith(color: PolieColors.electricTeal)),
+            icon: const Icon(
+              Icons.play_arrow_rounded,
+              color: PolieColors.electricTeal,
+              size: 24,
+            ),
+            label: Text(
+              'Replay',
+              style: PolieTypography.label(
+                context,
+              ).copyWith(color: PolieColors.electricTeal),
+            ),
           ),
           SizedBox(width: PolieSpacing.md),
           TextButton.icon(
@@ -338,8 +394,17 @@ class _ReplayButtons extends StatelessWidget {
               HapticFeedback.lightImpact();
               _playAtSpeed(context, 0.5);
             },
-            icon: const Icon(Icons.slow_motion_video_rounded, color: PolieColors.royalAmethyst, size: 24),
-            label: Text('Slow motion', style: PolieTypography.label(context).copyWith(color: PolieColors.royalAmethyst)),
+            icon: const Icon(
+              Icons.slow_motion_video_rounded,
+              color: PolieColors.royalAmethyst,
+              size: 24,
+            ),
+            label: Text(
+              'Slow motion',
+              style: PolieTypography.label(
+                context,
+              ).copyWith(color: PolieColors.royalAmethyst),
+            ),
           ),
         ],
       ),
@@ -358,7 +423,9 @@ void _applyShadowingCoachResult(
   if (rawList is List) {
     for (final item in rawList) {
       if (item is Map) {
-        rows.add(SyllableToneOverlayRow.fromJson(Map<String, dynamic>.from(item)));
+        rows.add(
+          SyllableToneOverlayRow.fromJson(Map<String, dynamic>.from(item)),
+        );
       }
     }
   }
@@ -371,7 +438,9 @@ void _applyShadowingCoachResult(
     retry.value = true;
     return;
   }
-  phase.value = rows.isEmpty ? ToneOverlayStatus.error : ToneOverlayStatus.scored;
+  phase.value = rows.isEmpty
+      ? ToneOverlayStatus.error
+      : ToneOverlayStatus.scored;
   retry.value = false;
 }
 
@@ -409,7 +478,9 @@ class _ShadowingCoachPanel extends StatelessWidget {
             Text(
               unsureCopy,
               key: const ValueKey(unsureKey),
-              style: PolieTypography.bodySmall(context).copyWith(color: PolieColors.textSecondary),
+              style: PolieTypography.bodySmall(
+                context,
+              ).copyWith(color: PolieColors.textSecondary),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: PolieSpacing.sm),
@@ -421,7 +492,9 @@ class _ShadowingCoachPanel extends StatelessWidget {
                 child: Text(
                   'Try again',
                   key: const ValueKey(retryNoiseKey),
-                  style: PolieTypography.label(context).copyWith(color: PolieColors.electricTeal),
+                  style: PolieTypography.label(
+                    context,
+                  ).copyWith(color: PolieColors.electricTeal),
                 ),
               ),
             ),
@@ -440,8 +513,10 @@ class _PronPracticeBanner extends StatelessWidget {
 
   static const _copy = <String, String>{
     'pron.practice_mode': 'Practice mode',
-    'pron.shadowing_hint': 'Listen, record, and compare your pitch to the model line.',
-    'pron.unavailable': 'The scoring service is unavailable. No score is shown.',
+    'pron.shadowing_hint':
+        'Listen, record, and compare your pitch to the model line.',
+    'pron.unavailable':
+        'The scoring service is unavailable. No score is shown.',
   };
 
   bool get _isUnavailable {
@@ -453,7 +528,9 @@ class _PronPracticeBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final practiceMode = _copy['pron.practice_mode']!;
-    final subtitle = _isUnavailable ? _copy['pron.unavailable']! : _copy['pron.shadowing_hint']!;
+    final subtitle = _isUnavailable
+        ? _copy['pron.unavailable']!
+        : _copy['pron.shadowing_hint']!;
     return Semantics(
       liveRegion: true,
       excludeSemantics: true,
@@ -464,13 +541,17 @@ class _PronPracticeBanner extends StatelessWidget {
           children: [
             Text(
               practiceMode,
-              style: PolieTypography.label(context).copyWith(color: PolieColors.electricTeal),
+              style: PolieTypography.label(
+                context,
+              ).copyWith(color: PolieColors.electricTeal),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: PolieSpacing.xs),
             Text(
               subtitle,
-              style: PolieTypography.bodySmall(context).copyWith(color: PolieColors.textSecondary),
+              style: PolieTypography.bodySmall(
+                context,
+              ).copyWith(color: PolieColors.textSecondary),
               textAlign: TextAlign.center,
             ),
           ],
@@ -479,4 +560,3 @@ class _PronPracticeBanner extends StatelessWidget {
     );
   }
 }
-

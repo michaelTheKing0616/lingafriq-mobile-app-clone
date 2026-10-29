@@ -6,6 +6,7 @@ import 'package:lingafriq/features/polie_workspace/polie_workspace_mode_surface.
 import 'package:lingafriq/features/polie_workspace/polie_workspace_screen_widget.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
+import 'package:lingafriq/widgets/ai/ai_disclosure.dart';
 import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,6 +19,7 @@ Widget polieWorkspaceBuildHostScaffold(
     appBar: AppBar(
       backgroundColor: modeTheme.background,
       elevation: 0,
+      bottom: const AiDisclosureBar(),
       leading: BackButton(
         onPressed: () {
           FocusManager.instance.primaryFocus?.unfocus();

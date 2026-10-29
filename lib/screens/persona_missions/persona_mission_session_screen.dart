@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/widgets/ai/ai_disclosure.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/content/lingafriq_ux_voice.dart';
 import 'package:lingafriq/providers/dio_provider.dart';
@@ -131,6 +132,7 @@ class _PersonaMissionSessionScreenState
         title: Text(_session.mission.personaTitle),
         backgroundColor: PanAfricanColors.primary,
         foregroundColor: Colors.white,
+        bottom: const AiDisclosureBar(),
       ),
       body: Column(
         children: [

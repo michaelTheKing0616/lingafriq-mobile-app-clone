@@ -661,4 +661,8 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get stitchLabel => 'Native correction';
+
+  @override
+  String get aiDisclosureLabel =>
+      'محتوى مُولَّد بالذكاء الاصطناعي: الردود والصوت من معلّم ذكاء اصطناعي وقد تكون خاطئة.';
 }

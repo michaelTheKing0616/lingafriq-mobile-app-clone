@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:lingafriq/widgets/ai/ai_disclosure.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -213,271 +214,277 @@ Rules:
       isLoading: isLoading.value,
       message: 'Sending message...',
       child: Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                PolieColors.primary,
-                PolieColors.primaryDark,
-                PolieColors.obsidian,
-              ],
+        body: AiDisclosed(
+          child: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  PolieColors.primary,
+                  PolieColors.primaryDark,
+                  PolieColors.obsidian,
+                ],
+              ),
             ),
-          ),
-          child: SafeArea(
-            child: Column(
-              children: [
-                // Header: back, title, language
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: PolieSpacing.sm,
-                    vertical: PolieSpacing.xs,
-                  ),
-                  child: Row(
-                    children: [
-                      Semantics(
-                        label: 'Go back',
-                        button: true,
-                        child: IconButton(
-                          icon: const Icon(
-                            Icons.arrow_back_rounded,
-                            color: PolieColors.textPrimary,
-                            semanticLabel: 'Back',
+            child: SafeArea(
+              child: Column(
+                children: [
+                  // Header: back, title, language
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: PolieSpacing.sm,
+                      vertical: PolieSpacing.xs,
+                    ),
+                    child: Row(
+                      children: [
+                        Semantics(
+                          label: 'Go back',
+                          button: true,
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.arrow_back_rounded,
+                              color: PolieColors.textPrimary,
+                              semanticLabel: 'Back',
+                            ),
+                            onPressed: () {
+                              HapticFeedback.lightImpact();
+                              Navigator.pop(context);
+                            },
                           ),
-                          onPressed: () {
-                            HapticFeedback.lightImpact();
-                            Navigator.pop(context);
-                          },
                         ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          'Practice Dialogue',
-                          style: PolieTypography.h2(
-                            context,
-                          ).copyWith(color: PolieColors.textPrimary),
+                        Expanded(
+                          child: Text(
+                            'Practice Dialogue',
+                            style: PolieTypography.h2(
+                              context,
+                            ).copyWith(color: PolieColors.textPrimary),
+                          ),
                         ),
-                      ),
-                      Semantics(
-                        label:
-                            'Select language. Current: ${selectedLanguage.value.displayName}',
-                        button: true,
-                        child: PolieLanguagePill(
-                          label: selectedLanguage.value.displayName,
-                          isSelected: true,
-                          accentColor: PolieColors.royalAmethyst,
-                          onTap: () {
-                            showModalBottomSheet(
-                              context: context,
-                              backgroundColor: Colors.transparent,
-                              builder: (ctx) => Container(
-                                padding: EdgeInsets.all(PolieSpacing.lg),
-                                decoration: BoxDecoration(
-                                  color: PolieColors.surfaceContainer,
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(PolieRadius.xl),
+                        Semantics(
+                          label:
+                              'Select language. Current: ${selectedLanguage.value.displayName}',
+                          button: true,
+                          child: PolieLanguagePill(
+                            label: selectedLanguage.value.displayName,
+                            isSelected: true,
+                            accentColor: PolieColors.royalAmethyst,
+                            onTap: () {
+                              showModalBottomSheet(
+                                context: context,
+                                backgroundColor: Colors.transparent,
+                                builder: (ctx) => Container(
+                                  padding: EdgeInsets.all(PolieSpacing.lg),
+                                  decoration: BoxDecoration(
+                                    color: PolieColors.surfaceContainer,
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(PolieRadius.xl),
+                                    ),
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        'Language',
+                                        style: PolieTypography.h2(ctx),
+                                      ),
+                                      SizedBox(height: PolieSpacing.md),
+                                      ...availableLanguages.map(
+                                        (lang) => ListTile(
+                                          title: Text(
+                                            lang.displayName,
+                                            style: PolieTypography.body(ctx),
+                                          ),
+                                          onTap: () {
+                                            selectedLanguage.value = lang;
+                                            Navigator.pop(ctx);
+                                          },
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      'Language',
-                                      style: PolieTypography.h2(ctx),
-                                    ),
-                                    SizedBox(height: PolieSpacing.md),
-                                    ...availableLanguages.map(
-                                      (lang) => ListTile(
-                                        title: Text(
-                                          lang.displayName,
-                                          style: PolieTypography.body(ctx),
-                                        ),
-                                        onTap: () {
-                                          selectedLanguage.value = lang;
-                                          Navigator.pop(ctx);
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ),
+                        SizedBox(width: PolieSpacing.xs),
+                      ],
+                    ),
+                  ),
+                  // Role selection chips
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: PolieSpacing.md,
+                      vertical: PolieSpacing.xs,
+                    ),
+                    child: Row(
+                      children: kDialogueRoles.map((r) {
+                        final id = r['id'] as String;
+                        final isSelected = selectedRole.value == id;
+                        return Padding(
+                          padding: EdgeInsets.only(right: PolieSpacing.sm),
+                          child: Semantics(
+                            label:
+                                'Role: ${r['label']}. ${isSelected ? 'Selected' : ''}',
+                            button: true,
+                            child: FilterChip(
+                              label: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    r['icon'] as IconData,
+                                    size: 16.sp,
+                                    color: isSelected
+                                        ? Theme.of(
+                                            context,
+                                          ).colorScheme.onPrimary
+                                        : PolieColors.textSecondary,
+                                    semanticLabel: r['label'] as String,
+                                  ),
+                                  SizedBox(width: PolieSpacing.xs),
+                                  Text(
+                                    r['label'] as String,
+                                    style: PolieTypography.label(context),
+                                  ),
+                                ],
+                              ),
+                              selected: isSelected,
+                              onSelected: (v) {
+                                HapticFeedback.selectionClick();
+                                selectedRole.value = id;
+                              },
+                              selectedColor: PolieColors.royalAmethyst,
+                              checkmarkColor: Theme.of(
+                                context,
+                              ).colorScheme.onPrimary,
+                              backgroundColor: PolieColors.surfaceContainer,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  // Tone / difficulty slider
+                  Semantics(
+                    label:
+                        'Difficulty: Easier to Harder. Adjust to change response complexity.',
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: PolieSpacing.lg,
                       ),
-                      SizedBox(width: PolieSpacing.xs),
-                    ],
+                      child: Row(
+                        children: [
+                          Text(
+                            'Easier',
+                            style: PolieTypography.bodySmall(context),
+                          ),
+                          Expanded(
+                            child: Slider(
+                              value: difficulty.value,
+                              onChanged: (v) => difficulty.value = v,
+                              activeColor: PolieColors.electricTeal,
+                            ),
+                          ),
+                          Text(
+                            'Harder',
+                            style: PolieTypography.bodySmall(context),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-                // Role selection chips
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: PolieSpacing.md,
-                    vertical: PolieSpacing.xs,
-                  ),
-                  child: Row(
-                    children: kDialogueRoles.map((r) {
-                      final id = r['id'] as String;
-                      final isSelected = selectedRole.value == id;
-                      return Padding(
-                        padding: EdgeInsets.only(right: PolieSpacing.sm),
-                        child: Semantics(
-                          label:
-                              'Role: ${r['label']}. ${isSelected ? 'Selected' : ''}',
-                          button: true,
-                          child: FilterChip(
-                            label: Row(
-                              mainAxisSize: MainAxisSize.min,
+                  Expanded(
+                    child: messages.value.isEmpty
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
-                                  r['icon'] as IconData,
-                                  size: 16.sp,
-                                  color: isSelected
-                                      ? Theme.of(context).colorScheme.onPrimary
-                                      : PolieColors.textSecondary,
-                                  semanticLabel: r['label'] as String,
+                                  Icons.chat_bubble_outline_rounded,
+                                  size: 64.sp,
+                                  color: PolieColors.textSecondary,
                                 ),
-                                SizedBox(width: PolieSpacing.xs),
+                                SizedBox(height: PolieSpacing.md),
                                 Text(
-                                  r['label'] as String,
-                                  style: PolieTypography.label(context),
+                                  'Start a conversation with Polie',
+                                  style: PolieTypography.body(context),
                                 ),
                               ],
                             ),
-                            selected: isSelected,
-                            onSelected: (v) {
-                              HapticFeedback.selectionClick();
-                              selectedRole.value = id;
+                          )
+                        : ListView.builder(
+                            controller: scrollController,
+                            padding: EdgeInsets.all(PolieSpacing.md),
+                            itemCount: messages.value.length,
+                            itemBuilder: (context, index) {
+                              final message = messages.value[index];
+                              return _DialogueMessageItem(
+                                    message: message,
+                                    isDark: isDark,
+                                  )
+                                  .animate(delay: (index * 50).ms)
+                                  .fadeIn(duration: 200.ms)
+                                  .slideX(
+                                    begin: message['sender'] == 'user'
+                                        ? 0.2
+                                        : -0.2,
+                                  );
                             },
-                            selectedColor: PolieColors.royalAmethyst,
-                            checkmarkColor: Theme.of(
-                              context,
-                            ).colorScheme.onPrimary,
-                            backgroundColor: PolieColors.surfaceContainer,
                           ),
-                        ),
-                      );
-                    }).toList(),
                   ),
-                ),
-                // Tone / difficulty slider
-                Semantics(
-                  label:
-                      'Difficulty: Easier to Harder. Adjust to change response complexity.',
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: PolieSpacing.lg),
+                  PolieGlassCard(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: PolieSpacing.md,
+                      vertical: PolieSpacing.sm,
+                    ),
                     child: Row(
                       children: [
-                        Text(
-                          'Easier',
-                          style: PolieTypography.bodySmall(context),
-                        ),
                         Expanded(
-                          child: Slider(
-                            value: difficulty.value,
-                            onChanged: (v) => difficulty.value = v,
-                            activeColor: PolieColors.electricTeal,
+                          child: Semantics(
+                            label: 'Type your message',
+                            child: TextField(
+                              controller: messageController,
+                              decoration: const InputDecoration(
+                                hintText: 'Type your message...',
+                                border: InputBorder.none,
+                                filled: false,
+                              ),
+                              style: PolieTypography.body(context),
+                              onSubmitted: (_) => sendMessage(),
+                            ),
                           ),
                         ),
-                        Text(
-                          'Harder',
-                          style: PolieTypography.bodySmall(context),
+                        SizedBox(width: PolieSpacing.sm),
+                        Semantics(
+                          label: isLoading.value ? 'Sending' : 'Send message',
+                          button: true,
+                          child: IconButton(
+                            icon: isLoading.value
+                                ? SizedBox(
+                                    width: 24.w,
+                                    height: 24.h,
+                                    child: const CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        PolieColors.electricTeal,
+                                      ),
+                                    ),
+                                  )
+                                : const Icon(
+                                    Icons.send_rounded,
+                                    color: PolieColors.electricTeal,
+                                    semanticLabel: 'Send',
+                                  ),
+                            onPressed: isLoading.value ? null : sendMessage,
+                          ),
                         ),
                       ],
                     ),
                   ),
-                ),
-                Expanded(
-                  child: messages.value.isEmpty
-                      ? Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.chat_bubble_outline_rounded,
-                                size: 64.sp,
-                                color: PolieColors.textSecondary,
-                              ),
-                              SizedBox(height: PolieSpacing.md),
-                              Text(
-                                'Start a conversation with Polie',
-                                style: PolieTypography.body(context),
-                              ),
-                            ],
-                          ),
-                        )
-                      : ListView.builder(
-                          controller: scrollController,
-                          padding: EdgeInsets.all(PolieSpacing.md),
-                          itemCount: messages.value.length,
-                          itemBuilder: (context, index) {
-                            final message = messages.value[index];
-                            return _DialogueMessageItem(
-                                  message: message,
-                                  isDark: isDark,
-                                )
-                                .animate(delay: (index * 50).ms)
-                                .fadeIn(duration: 200.ms)
-                                .slideX(
-                                  begin: message['sender'] == 'user'
-                                      ? 0.2
-                                      : -0.2,
-                                );
-                          },
-                        ),
-                ),
-                PolieGlassCard(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: PolieSpacing.md,
-                    vertical: PolieSpacing.sm,
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Semantics(
-                          label: 'Type your message',
-                          child: TextField(
-                            controller: messageController,
-                            decoration: const InputDecoration(
-                              hintText: 'Type your message...',
-                              border: InputBorder.none,
-                              filled: false,
-                            ),
-                            style: PolieTypography.body(context),
-                            onSubmitted: (_) => sendMessage(),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: PolieSpacing.sm),
-                      Semantics(
-                        label: isLoading.value ? 'Sending' : 'Send message',
-                        button: true,
-                        child: IconButton(
-                          icon: isLoading.value
-                              ? SizedBox(
-                                  width: 24.w,
-                                  height: 24.h,
-                                  child: const CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                      PolieColors.electricTeal,
-                                    ),
-                                  ),
-                                )
-                              : const Icon(
-                                  Icons.send_rounded,
-                                  color: PolieColors.electricTeal,
-                                  semanticLabel: 'Send',
-                                ),
-                          onPressed: isLoading.value ? null : sendMessage,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

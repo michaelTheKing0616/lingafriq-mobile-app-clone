@@ -885,5 +885,9 @@
   "stitchLabel": "Native correction",
   "@stitchLabel": {
     "description": "copy_keys: stitch.label"
+  },
+  "aiDisclosureLabel": "AI-generated: replies and voice come from an AI tutor and can be wrong.",
+  "@aiDisclosureLabel": {
+    "description": "Persistent AI transparency label (EU AI Act Art. 50) on AI chat, tutor, voice and persona screens"
   }
 }

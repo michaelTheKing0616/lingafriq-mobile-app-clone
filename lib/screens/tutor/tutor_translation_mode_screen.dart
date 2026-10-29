@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/widgets/ai/ai_disclosure.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -8,10 +9,12 @@ import 'package:lingafriq/utils/supported_languages.dart';
 import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/providers/ai_chat_provider_groq.dart' show groqChatProvider, PolieMode;
+import 'package:lingafriq/providers/ai_chat_provider_groq.dart'
+    show groqChatProvider, PolieMode;
 import 'package:lingafriq/services/hybrid_polie/hybrid_polie_orchestrator.dart';
 import 'package:lingafriq/services/telemetry_service.dart';
-import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show AppLanguage;
+import 'package:lingafriq/services/localization/dynamic_localization_service.dart'
+    show AppLanguage;
 import 'package:lingafriq/services/vocabulary/vocabulary_service.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:permission_handler/permission_handler.dart';
@@ -21,7 +24,8 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
   const TutorTranslationModeScreen({super.key});
 
   static String _displayName(AppLanguage lang) => lang.name;
-  static String? _regionTag(AppLanguage lang) => SupportedLanguages.getCountry(lang.code);
+  static String? _regionTag(AppLanguage lang) =>
+      SupportedLanguages.getCountry(lang.code);
 
   static String _sttLocaleFor(String code) {
     const map = {
@@ -86,15 +90,17 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
           sourceLanguage: sourceLanguage.value.name,
           groqProvider: groqProvider,
           onTelemetry: (hybridResponse, {required elapsedMs}) async {
-            await ref.read(telemetryServiceProvider).trackHybridPolieResponse(
-              mode: PolieMode.translation.name,
-              language: targetLanguage.value.name,
-              modelUsed: hybridResponse.model,
-              responseTimeMs: elapsedMs,
-              confidence: hybridResponse.confidence,
-              diacriticsCorrected: hybridResponse.diacriticsCorrected,
-              needsNativeReview: hybridResponse.needsNativeReview,
-            );
+            await ref
+                .read(telemetryServiceProvider)
+                .trackHybridPolieResponse(
+                  mode: PolieMode.translation.name,
+                  language: targetLanguage.value.name,
+                  modelUsed: hybridResponse.model,
+                  responseTimeMs: elapsedMs,
+                  confidence: hybridResponse.confidence,
+                  diacriticsCorrected: hybridResponse.diacriticsCorrected,
+                  needsNativeReview: hybridResponse.needsNativeReview,
+                );
           },
         );
 
@@ -119,9 +125,9 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
           'Output ONLY the translation with correct diacritics, nothing else:\n\n'
           '${textController.text}',
           systemPromptOverride:
-            'You are a precise translator. Translate from $srcName to $tgtName. '
-            'Output ONLY the translated text with correct orthography and diacritics. '
-            'Do not add explanations, notes, or formatting — just the translation.',
+              'You are a precise translator. Translate from $srcName to $tgtName. '
+              'Output ONLY the translated text with correct orthography and diacritics. '
+              'Do not add explanations, notes, or formatting — just the translation.',
         );
 
         if (groqTranslation.trim().isNotEmpty) {
@@ -164,7 +170,9 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
       if (!status.isGranted) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Microphone permission is needed for voice input')),
+            const SnackBar(
+              content: Text('Microphone permission is needed for voice input'),
+            ),
           );
         }
         return;
@@ -176,7 +184,11 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
       if (!available) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Speech recognition is not available on this device')),
+            const SnackBar(
+              content: Text(
+                'Speech recognition is not available on this device',
+              ),
+            ),
           );
         }
         return;
@@ -189,7 +201,9 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
             final current = textController.text;
             final newText = current.isEmpty ? words : '$current $words';
             textController.text = newText;
-            textController.selection = TextSelection.collapsed(offset: newText.length);
+            textController.selection = TextSelection.collapsed(
+              offset: newText.length,
+            );
           }
         },
         listenFor: const Duration(seconds: 30),
@@ -203,146 +217,176 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
     return LoadingOverlay(
       isLoading: isLoading.value,
       message: 'Translating...',
-        child: Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                PolieColors.primary,
-                PolieColors.primaryDark,
-                PolieColors.obsidian,
-              ],
+      child: Scaffold(
+        body: AiDisclosed(
+          child: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  PolieColors.primary,
+                  PolieColors.primaryDark,
+                  PolieColors.obsidian,
+                ],
+              ),
             ),
-          ),
-          child: SafeArea(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(PolieSpacing.md),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _buildTranslationTypeToggle(context, translationType.value, (type) {
-                    HapticFeedback.selectionClick();
-                    translationType.value = type;
-                  }, isDark),
-                  SizedBox(height: PolieSpacing.lg),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: PolieLanguagePill(
-                          label: _displayName(sourceLanguage.value),
-                          regionTag: _regionTag(sourceLanguage.value),
-                          isSelected: true,
-                          accentColor: polieAccentForLanguage(sourceLanguage.value.name),
-                          onTap: () => _showLanguagePicker(
-                            context,
-                            availableLanguages,
-                            sourceLanguage.value,
-                            (lang) => sourceLanguage.value = lang,
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: swapLanguages,
-                        icon: const Icon(Icons.swap_horiz_rounded, color: PolieColors.royalAmethyst),
-                        tooltip: 'Swap languages',
-                      ),
-                      Expanded(
-                        child: PolieLanguagePill(
-                          label: _displayName(targetLanguage.value),
-                          regionTag: _regionTag(targetLanguage.value),
-                          isSelected: true,
-                          accentColor: polieAccentForLanguage(
-                            SupportedLanguages.getKeyFromCode(targetLanguage.value.code) ??
-                                targetLanguage.value.name.toLowerCase(),
-                          ),
-                          onTap: () => _showLanguagePicker(
-                            context,
-                            availableLanguages,
-                            targetLanguage.value,
-                            (lang) => targetLanguage.value = lang,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: PolieSpacing.lg),
-                  PolieGlassCard(
-                    padding: EdgeInsets.all(PolieSpacing.md),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+            child: SafeArea(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(PolieSpacing.md),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _buildTranslationTypeToggle(
+                      context,
+                      translationType.value,
+                      (type) {
+                        HapticFeedback.selectionClick();
+                        translationType.value = type;
+                      },
+                      isDark,
+                    ),
+                    SizedBox(height: PolieSpacing.lg),
+                    Row(
                       children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Semantics(
-                                label: 'Text to translate',
-                                textField: true,
-                                child: TextField(
-                                  controller: textController,
-                                  maxLines: 5,
-                                  decoration: InputDecoration(
-                                    hintText: 'Type or use voice input...',
-                                  hintStyle: PolieTypography.body(context).copyWith(color: PolieColors.textSecondary),
-                                  border: InputBorder.none,
-                                  contentPadding: EdgeInsets.zero,
-                                ),
-                                style: PolieTypography.body(context),
-                              ),
-                              ),
+                        Expanded(
+                          child: PolieLanguagePill(
+                            label: _displayName(sourceLanguage.value),
+                            regionTag: _regionTag(sourceLanguage.value),
+                            isSelected: true,
+                            accentColor: polieAccentForLanguage(
+                              sourceLanguage.value.name,
                             ),
-                            Semantics(
-                              label: isListening.value ? 'Stop voice input' : 'Start voice input',
-                              button: true,
-                              child: IconButton(
-                                onPressed: () => toggleVoiceInput(),
-                                icon: Icon(
-                                  isListening.value ? Icons.mic_rounded : Icons.mic_none_rounded,
-                                color: isListening.value ? PolieColors.error : PolieColors.electricTeal,
-                                size: 28,
-                              ),
-                              tooltip: isListening.value ? 'Stop listening' : 'Voice input',
+                            onTap: () => _showLanguagePicker(
+                              context,
+                              availableLanguages,
+                              sourceLanguage.value,
+                              (lang) => sourceLanguage.value = lang,
                             ),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: swapLanguages,
+                          icon: const Icon(
+                            Icons.swap_horiz_rounded,
+                            color: PolieColors.royalAmethyst,
+                          ),
+                          tooltip: 'Swap languages',
+                        ),
+                        Expanded(
+                          child: PolieLanguagePill(
+                            label: _displayName(targetLanguage.value),
+                            regionTag: _regionTag(targetLanguage.value),
+                            isSelected: true,
+                            accentColor: polieAccentForLanguage(
+                              SupportedLanguages.getKeyFromCode(
+                                    targetLanguage.value.code,
+                                  ) ??
+                                  targetLanguage.value.name.toLowerCase(),
                             ),
-                          ],
+                            onTap: () => _showLanguagePicker(
+                              context,
+                              availableLanguages,
+                              targetLanguage.value,
+                              (lang) => targetLanguage.value = lang,
+                            ),
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                  SizedBox(height: PolieSpacing.lg),
-                  Center(
-                    child: Semantics(
-                      label: 'Translate',
-                      button: true,
-                      child: PoliePrimaryButton(
-                        label: 'Translate',
-                        loading: isLoading.value,
-                        enabled: !isLoading.value,
-                        icon: Icons.translate_rounded,
-                        onPressed: translate,
+                    SizedBox(height: PolieSpacing.lg),
+                    PolieGlassCard(
+                      padding: EdgeInsets.all(PolieSpacing.md),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Semantics(
+                                  label: 'Text to translate',
+                                  textField: true,
+                                  child: TextField(
+                                    controller: textController,
+                                    maxLines: 5,
+                                    decoration: InputDecoration(
+                                      hintText: 'Type or use voice input...',
+                                      hintStyle: PolieTypography.body(context)
+                                          .copyWith(
+                                            color: PolieColors.textSecondary,
+                                          ),
+                                      border: InputBorder.none,
+                                      contentPadding: EdgeInsets.zero,
+                                    ),
+                                    style: PolieTypography.body(context),
+                                  ),
+                                ),
+                              ),
+                              Semantics(
+                                label: isListening.value
+                                    ? 'Stop voice input'
+                                    : 'Start voice input',
+                                button: true,
+                                child: IconButton(
+                                  onPressed: () => toggleVoiceInput(),
+                                  icon: Icon(
+                                    isListening.value
+                                        ? Icons.mic_rounded
+                                        : Icons.mic_none_rounded,
+                                    color: isListening.value
+                                        ? PolieColors.error
+                                        : PolieColors.electricTeal,
+                                    size: 28,
+                                  ),
+                                  tooltip: isListening.value
+                                      ? 'Stop listening'
+                                      : 'Voice input',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                  if (translationResult.value != null) ...[
-                    SizedBox(height: PolieSpacing.xl),
-                    _buildResultViewToggle(context, resultViewMode.value, (mode) {
-                      HapticFeedback.selectionClick();
-                      resultViewMode.value = mode;
-                    }),
-                    SizedBox(height: PolieSpacing.sm),
-                    _buildTranslationResult(
-                      context,
-                      ref,
-                      textController.text.trim(),
-                      targetLanguage.value,
-                      translationResult.value!,
-                      isDark,
-                      resultViewMode.value,
-                    ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.1, end: 0),
+                    SizedBox(height: PolieSpacing.lg),
+                    Center(
+                      child: Semantics(
+                        label: 'Translate',
+                        button: true,
+                        child: PoliePrimaryButton(
+                          label: 'Translate',
+                          loading: isLoading.value,
+                          enabled: !isLoading.value,
+                          icon: Icons.translate_rounded,
+                          onPressed: translate,
+                        ),
+                      ),
+                    ),
+                    if (translationResult.value != null) ...[
+                      SizedBox(height: PolieSpacing.xl),
+                      _buildResultViewToggle(context, resultViewMode.value, (
+                        mode,
+                      ) {
+                        HapticFeedback.selectionClick();
+                        resultViewMode.value = mode;
+                      }),
+                      SizedBox(height: PolieSpacing.sm),
+                      _buildTranslationResult(
+                            context,
+                            ref,
+                            textController.text.trim(),
+                            targetLanguage.value,
+                            translationResult.value!,
+                            isDark,
+                            resultViewMode.value,
+                          )
+                          .animate()
+                          .fadeIn(duration: 300.ms)
+                          .slideY(begin: 0.1, end: 0),
+                    ],
                   ],
-                ],
+                ),
               ),
             ),
           ),
@@ -394,7 +438,9 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
           color: Theme.of(ctx).brightness == Brightness.dark
               ? PolieColors.surfaceContainer
               : Theme.of(ctx).colorScheme.surface,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(PolieRadius.xl)),
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(PolieRadius.xl),
+          ),
         ),
         padding: EdgeInsets.symmetric(vertical: PolieSpacing.lg),
         child: SafeArea(
@@ -409,7 +455,9 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
                   title: Text(
                     lang.name,
                     style: PolieTypography.body(ctx).copyWith(
-                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                      fontWeight: isSelected
+                          ? FontWeight.w600
+                          : FontWeight.w400,
                       color: isSelected ? PolieColors.royalAmethyst : null,
                     ),
                   ),
@@ -460,13 +508,21 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
     );
   }
 
-  static List<Map<String, String>> _getPhraseBreakdowns(Map<String, dynamic> result) {
+  static List<Map<String, String>> _getPhraseBreakdowns(
+    Map<String, dynamic> result,
+  ) {
     final meta = result['metadata'];
     if (meta is! Map) return [];
     final list = meta['phraseBreakdowns'];
     if (list is! List || list.isEmpty) return [];
     return list
-        .map((e) => e is Map ? Map<String, String>.from(e.map((k, v) => MapEntry(k.toString(), v?.toString() ?? ''))) : null)
+        .map(
+          (e) => e is Map
+              ? Map<String, String>.from(
+                  e.map((k, v) => MapEntry(k.toString(), v?.toString() ?? '')),
+                )
+              : null,
+        )
         .whereType<Map<String, String>>()
         .toList();
   }
@@ -480,7 +536,8 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
     bool isDark,
     String viewMode,
   ) {
-    final translatedText = result['translation'] ?? result['adaptiveTranslation'] ?? '';
+    final translatedText =
+        result['translation'] ?? result['adaptiveTranslation'] ?? '';
     final isSideBySide = viewMode == 'sideBySide';
     return PolieGlassCard(
       hasGlow: true,
@@ -509,24 +566,36 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Translation', style: PolieTypography.label(context)),
+                      Text(
+                        'Translation',
+                        style: PolieTypography.label(context),
+                      ),
                       SizedBox(height: PolieSpacing.xs),
-                      Text(translatedText, style: PolieTypography.body(context)),
+                      Text(
+                        translatedText,
+                        style: PolieTypography.body(context),
+                      ),
                     ],
                   ),
                 ),
               ],
             )
           else ...[
-            if (!isSideBySide) Text(translatedText, style: PolieTypography.body(context)),
+            if (!isSideBySide)
+              Text(translatedText, style: PolieTypography.body(context)),
           ],
           if (_getPhraseBreakdowns(result).isNotEmpty) ...[
             SizedBox(height: PolieSpacing.lg),
             Divider(color: PolieColors.textSecondary.withValues(alpha: 0.3)),
             SizedBox(height: PolieSpacing.sm),
-            Text('Tap a phrase for breakdown', style: PolieTypography.label(context)),
+            Text(
+              'Tap a phrase for breakdown',
+              style: PolieTypography.label(context),
+            ),
             SizedBox(height: PolieSpacing.xs),
-            _TapToHighlightPhraseBreakdown(phrases: _getPhraseBreakdowns(result)),
+            _TapToHighlightPhraseBreakdown(
+              phrases: _getPhraseBreakdowns(result),
+            ),
           ],
           if (result['grammarNotes'] != null) ...[
             SizedBox(height: PolieSpacing.lg),
@@ -534,18 +603,24 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
             SizedBox(height: PolieSpacing.md),
             Text('Grammar notes', style: PolieTypography.label(context)),
             SizedBox(height: PolieSpacing.sm),
-            Text(result['grammarNotes'], style: PolieTypography.bodySmall(context)),
+            Text(
+              result['grammarNotes'],
+              style: PolieTypography.bodySmall(context),
+            ),
           ],
-          if (result['examples'] != null && (result['examples'] as List).isNotEmpty) ...[
+          if (result['examples'] != null &&
+              (result['examples'] as List).isNotEmpty) ...[
             SizedBox(height: PolieSpacing.lg),
             Divider(color: PolieColors.textSecondary.withValues(alpha: 0.3)),
             SizedBox(height: PolieSpacing.md),
             Text('Examples', style: PolieTypography.label(context)),
             SizedBox(height: PolieSpacing.sm),
-            ...(result['examples'] as List).map((e) => Padding(
-                  padding: EdgeInsets.only(bottom: PolieSpacing.xs),
-                  child: Text('• $e', style: PolieTypography.bodySmall(context)),
-                )),
+            ...(result['examples'] as List).map(
+              (e) => Padding(
+                padding: EdgeInsets.only(bottom: PolieSpacing.xs),
+                child: Text('• $e', style: PolieTypography.bodySmall(context)),
+              ),
+            ),
           ],
           if (sourceText.isNotEmpty && translatedText.isNotEmpty) ...[
             SizedBox(height: PolieSpacing.lg),
@@ -578,7 +653,8 @@ class _SaveToVocabularyButton extends StatefulWidget {
   });
 
   @override
-  State<_SaveToVocabularyButton> createState() => _SaveToVocabularyButtonState();
+  State<_SaveToVocabularyButton> createState() =>
+      _SaveToVocabularyButtonState();
 }
 
 class _SaveToVocabularyButtonState extends State<_SaveToVocabularyButton> {
@@ -635,10 +711,12 @@ class _TapToHighlightPhraseBreakdown extends StatefulWidget {
   const _TapToHighlightPhraseBreakdown({required this.phrases});
 
   @override
-  State<_TapToHighlightPhraseBreakdown> createState() => _TapToHighlightPhraseBreakdownState();
+  State<_TapToHighlightPhraseBreakdown> createState() =>
+      _TapToHighlightPhraseBreakdownState();
 }
 
-class _TapToHighlightPhraseBreakdownState extends State<_TapToHighlightPhraseBreakdown> {
+class _TapToHighlightPhraseBreakdownState
+    extends State<_TapToHighlightPhraseBreakdown> {
   int? _selectedIndex;
 
   @override
@@ -654,7 +732,10 @@ class _TapToHighlightPhraseBreakdownState extends State<_TapToHighlightPhraseBre
               setState(() => _selectedIndex = _selectedIndex == i ? null : i);
             },
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: PolieSpacing.sm, vertical: PolieSpacing.xs),
+              padding: EdgeInsets.symmetric(
+                horizontal: PolieSpacing.sm,
+                vertical: PolieSpacing.xs,
+              ),
               decoration: BoxDecoration(
                 color: _selectedIndex == i
                     ? PolieColors.royalAmethyst.withValues(alpha: 0.25)
@@ -667,24 +748,35 @@ class _TapToHighlightPhraseBreakdownState extends State<_TapToHighlightPhraseBre
               child: Text(
                 widget.phrases[i]['targetPhrase'] ?? '',
                 style: PolieTypography.bodySmall(context).copyWith(
-                  color: _selectedIndex == i ? PolieColors.electricTealLight : null,
+                  color: _selectedIndex == i
+                      ? PolieColors.electricTealLight
+                      : null,
                 ),
               ),
             ),
           ),
         ],
-        if (_selectedIndex != null && _selectedIndex! < widget.phrases.length) ...[
+        if (_selectedIndex != null &&
+            _selectedIndex! < widget.phrases.length) ...[
           SizedBox(width: double.infinity, height: PolieSpacing.sm),
           PolieGlassCard(
             padding: EdgeInsets.all(PolieSpacing.sm),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Source: ${widget.phrases[_selectedIndex!]['sourcePhrase'] ?? ''}', style: PolieTypography.bodySmall(context)),
+                Text(
+                  'Source: ${widget.phrases[_selectedIndex!]['sourcePhrase'] ?? ''}',
+                  style: PolieTypography.bodySmall(context),
+                ),
                 if ((widget.phrases[_selectedIndex!]['note'] ?? '').isNotEmpty)
                   Padding(
                     padding: EdgeInsets.only(top: PolieSpacing.xs),
-                    child: Text(widget.phrases[_selectedIndex!]['note']!, style: PolieTypography.bodySmall(context).copyWith(color: PolieColors.goldEmber)),
+                    child: Text(
+                      widget.phrases[_selectedIndex!]['note']!,
+                      style: PolieTypography.bodySmall(
+                        context,
+                      ).copyWith(color: PolieColors.goldEmber),
+                    ),
                   ),
               ],
             ),
@@ -719,7 +811,9 @@ class _PolieToggleChip extends StatelessWidget {
             label,
             textAlign: TextAlign.center,
             style: PolieTypography.label(context).copyWith(
-              color: isSelected ? PolieColors.royalAmethyst : PolieColors.textSecondary,
+              color: isSelected
+                  ? PolieColors.royalAmethyst
+                  : PolieColors.textSecondary,
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
             ),
           ),
