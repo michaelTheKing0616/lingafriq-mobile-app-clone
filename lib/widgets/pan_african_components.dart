@@ -16,6 +16,9 @@ class PanAfricanButton extends StatefulWidget {
   final String label;
   final VoidCallback? onPressed;
   final IconData? icon;
+
+  /// Grow the icon with the user's text size (for icon+label CTAs).
+  final bool iconScalesWithText;
   final bool isLoading;
   final bool isOutlined;
   final Color? backgroundColor;
@@ -30,6 +33,7 @@ class PanAfricanButton extends StatefulWidget {
     required this.label,
     this.onPressed,
     this.icon,
+    this.iconScalesWithText = false,
     this.isLoading = false,
     this.isOutlined = false,
     this.backgroundColor,
@@ -46,6 +50,10 @@ class PanAfricanButton extends StatefulWidget {
 
 class _PanAfricanButtonState extends State<PanAfricanButton>
     with SingleTickerProviderStateMixin {
+  double _iconSize(BuildContext context) => widget.iconScalesWithText
+      ? MediaQuery.textScalerOf(context).scale(20.sp)
+      : 20.sp;
+
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   // ignore: unused_field
@@ -86,7 +94,7 @@ class _PanAfricanButtonState extends State<PanAfricanButton>
                 child: const CircularProgressIndicator(strokeWidth: 2),
               )
             : widget.icon != null
-                ? Icon(widget.icon, size: 20.sp)
+                ? Icon(widget.icon, size: _iconSize(context))
                 : const SizedBox.shrink(),
         label: Text(
           widget.label,
@@ -160,7 +168,7 @@ class _PanAfricanButtonState extends State<PanAfricanButton>
                       ),
                     )
                   else if (widget.icon != null) ...[
-                    Icon(widget.icon, size: 20.sp, color: fgColor),
+                    Icon(widget.icon, size: _iconSize(context), color: fgColor),
                     SizedBox(width: PanAfricanSpacing.sm),
                   ],
                   Text(
@@ -187,7 +195,7 @@ class _PanAfricanButtonState extends State<PanAfricanButton>
                 ),
               )
             : widget.icon != null
-                ? Icon(widget.icon, size: 20.sp)
+                ? Icon(widget.icon, size: _iconSize(context))
                 : const SizedBox.shrink(),
         label: Text(
           widget.label,

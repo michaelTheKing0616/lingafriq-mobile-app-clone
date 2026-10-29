@@ -219,7 +219,6 @@ class LessonCompleteWidget extends StatelessWidget {
       },
     );
 
-    final rtl = Directionality.of(context) == TextDirection.rtl;
     final compactShare = bigText || MediaQuery.sizeOf(context).width < 360;
     final bar = DecoratedBox(
       decoration: BoxDecoration(
@@ -252,9 +251,9 @@ class LessonCompleteWidget extends StatelessWidget {
                       key: const Key('lc-continue'),
                       onPressed: onContinue,
                       label: l.lcContinue,
-                      icon: rtl
-                          ? Icons.arrow_back_rounded
-                          : Icons.arrow_forward_rounded,
+                      // Material arrows auto-mirror in RTL.
+                      icon: Icons.arrow_forward_rounded,
+                      iconScalesWithText: true,
                       backgroundColor: PanAfricanColors.primary,
                       foregroundColor: Colors.white,
                     ),

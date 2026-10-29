@@ -156,13 +156,27 @@ void main() {
     expect(shared, 1);
   });
 
+  testWidgets('Continue arrow grows with 200% text', (t) async {
+    await _pump(t, goldenVariants[0], _screen());
+    final normal = t.getSize(find.byIcon(Icons.arrow_forward_rounded)).width;
+    await t.pumpWidget(const SizedBox());
+    await _pump(t, goldenVariants[2], _screen());
+    final big = t.getSize(find.byIcon(Icons.arrow_forward_rounded)).width;
+    expect(big, greaterThanOrEqualTo(normal * 1.8));
+  });
+
   testWidgets('a11y: labels, 48dp targets, one summary, RTL arrow', (t) async {
     final h = t.ensureSemantics();
     await _pump(t, goldenVariants[1], _screen());
     expect(find.bySemanticsLabel('المتابعة إلى الدرس التالي'), findsOneWidget);
     expect(find.bySemanticsLabel('شارك نتيجتك'), findsOneWidget);
     expect(find.bySemanticsLabel(RegExp('^اكتمل الدرس\\. 42')), findsOneWidget);
-    expect(find.byIcon(Icons.arrow_back_rounded), findsOneWidget);
+    // One forward arrow, mirrored by the RTL Directionality (not swapped).
+    final arrow = find.byIcon(Icons.arrow_forward_rounded);
+    expect(arrow, findsOneWidget);
+    expect(find.byIcon(Icons.arrow_back_rounded), findsNothing);
+    expect(Icons.arrow_forward_rounded.matchTextDirection, isTrue);
+    expect(Directionality.of(t.element(arrow)), TextDirection.rtl);
     for (final k in ['lc-continue', 'lc-share']) {
       expect(t.getSize(find.byKey(Key(k))).height, greaterThanOrEqualTo(48));
     }
