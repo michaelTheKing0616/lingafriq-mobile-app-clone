@@ -263,7 +263,7 @@ mobile	lib/screens/tutor/curriculum_viewer_screen.dart	todo
 mobile	lib/screens/tutor/listening_quiz_screen.dart	todo			
 mobile	lib/screens/tutor/shadowing_exercise_screen.dart	todo			
 mobile	lib/screens/tutor/tutor_assess_mode_screen.dart	ready-for-review C3 fix: AiDisclosureBar wraps full text, no fixed height, 48dp tap target -> details sheet, icons scale; goldens ltr/rtl/200%/320 in test/compliance/goldens (prev: 8/8/8/7/8/8/7/9/7/7 avg 7.7)			2026-10-29
-mobile	lib/screens/tutor/tutor_dashboard_screen.dart	todo			
+mobile	lib/screens/tutor/tutor_dashboard_screen.dart	needs pack			
 mobile	lib/screens/tutor/tutor_dialogue_mode_screen.dart	ready-for-review C3 fix: AiDisclosureBar wraps full text, no fixed height, 48dp tap target -> details sheet, icons scale; goldens ltr/rtl/200%/320 in test/compliance/goldens (prev: 8/8/8/7/8/8/7/9/7/7 avg 7.7)			2026-10-29
 mobile	lib/screens/tutor/tutor_grammar_mode_screen.dart	ready-for-review C3 fix: AiDisclosureBar wraps full text, no fixed height, 48dp tap target -> details sheet, icons scale; goldens ltr/rtl/200%/320 in test/compliance/goldens (prev: 8/8/8/7/8/8/7/9/7/7 avg 7.7)			2026-10-29
 mobile	lib/screens/tutor/tutor_pronunciation_mode_screen.dart	ready-for-review C3 fix: AiDisclosureBar wraps full text, no fixed height, 48dp tap target -> details sheet, icons scale; goldens ltr/rtl/200%/320 in test/compliance/goldens (prev: 8/8/8/7/8/8/7/9/7/7 avg 7.7)			2026-10-29
