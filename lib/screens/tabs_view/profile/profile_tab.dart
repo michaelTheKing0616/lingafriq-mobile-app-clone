@@ -1,3 +1,11 @@
+import 'package:intl/intl.dart' show DateFormat;
+import 'package:share_plus/share_plus.dart';
+import 'package:lingafriq/models/achievement_model.dart';
+import 'package:lingafriq/models/language_response.dart';
+import 'package:lingafriq/providers/achievements_provider.dart';
+import 'package:lingafriq/screens/achievements/achievements_screen.dart';
+import 'package:lingafriq/screens/progress/progress_dashboard_data.dart';
+import 'package:lingafriq/screens/progress/progress_dashboard_screen.dart';
 import 'package:lingafriq/l10n/l10n_of.dart';
 import 'package:lingafriq/providers/gamification_provider.dart';
 import 'package:lingafriq/services/connectivity_service.dart';
@@ -33,6 +41,28 @@ final profileWalletProvider = Provider.autoDispose<(int, int, int)>((ref) {
   return (g.ngwenya, g.cowries, g.ancestralBeads);
 });
 
+/// Achievements for the badge row (overridable in tests).
+final profileBadgesProvider = Provider.autoDispose<List<Achievement>>((ref) {
+  ref.watch(achievementsProvider);
+  return ref.read(achievementsProvider.notifier).achievements;
+});
+
+/// Languages with their score, for the per-language level rows.
+final profileLanguagesProvider = FutureProvider.autoDispose<List<Language>>(
+  (ref) async => (await ref.watch(languagesProvider.future)).results,
+);
+
+/// Minutes per day for the last 7 days (oldest first), from local progress.
+final profileWeekProvider = Provider.autoDispose<List<int>?>(
+  (ref) => ref.watch(progressSnapshotProvider).value?.thisWeek,
+);
+
+/// OS share sheet (overridable in tests).
+final profileShareProvider = Provider<void Function(String text)>(
+  (ref) =>
+      (text) => Share.share(text),
+);
+
 /// Connectivity for the profile's offline note (overridable in tests).
 final profileOnlineProvider = FutureProvider.autoDispose<bool>(
   (ref) => ConnectivityService.hasInternet(),
@@ -67,18 +97,26 @@ class ProfileTab extends HookConsumerWidget {
     }, const []);
 
     final Widget body;
+    final bar = _StateBar(title: l.profTitle, closeLabel: l.profClose);
     if (user == null && fetching.value == false) {
-      body = Center(
+      body = Column(
         key: const Key('profile-error'),
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(PanAfricanSpacing.md),
-          child: PanAfricanErrorState(
-            title: l.profErrorTitle,
-            description: l.profErrorBody,
-            retryLabel: l.profRetry,
-            onRetry: load,
+        children: [
+          bar,
+          Expanded(
+            child: Center(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(PanAfricanSpacing.md),
+                child: PanAfricanErrorState(
+                  title: l.profErrorTitle,
+                  description: l.profErrorBody,
+                  retryLabel: l.profRetry,
+                  onRetry: load,
+                ),
+              ),
+            ),
           ),
-        ),
+        ],
       );
     } else if (user == null) {
       body = _ProfileSkeleton(label: l.profLoading);
@@ -199,7 +237,8 @@ class _ProfileBody extends ConsumerWidget {
                     Text(
                       [
                         '\u2066@${(user.global_id ?? '').trim().isNotEmpty ? user.global_id : user.username}\u2069',
-                        if (langName != null) l.profLearning(langName),
+                        if (langName != null)
+                          l.profLearning('\u2068$langName\u2069'),
                       ].join(' · ').toUpperCase(),
                       key: const Key('profile-handle'),
                       style: PanAfricanTypography.labelLarge(context).copyWith(
@@ -225,6 +264,23 @@ class _ProfileBody extends ConsumerWidget {
                         text: l.profPrivateHint,
                       ),
                     ],
+                    section(l.profThisWeek),
+                    _WeekStrip(
+                      minutes: ref.watch(profileWeekProvider),
+                      today: ref.watch(progressClockProvider)(),
+                      onSeeAll: () => open(const ProgressDashboardScreen()),
+                    ),
+                    section(l.profLanguages),
+                    _Languages(
+                      langs:
+                          ref.watch(profileLanguagesProvider).value ?? const [],
+                      learningSlug: slug,
+                    ),
+                    section(l.profBadges),
+                    _Badges(
+                      badges: ref.watch(profileBadgesProvider),
+                      onViewAll: () => open(const AchievementsScreen()),
+                    ),
                     section(l.profWallet),
                     _Wallet(
                       items: [
@@ -249,7 +305,22 @@ class _ProfileBody extends ConsumerWidget {
                       ],
                       oneColumn: bigText,
                     ),
-                    section(l.profAccount),
+                    if (online && !private) ...[
+                      SizedBox(height: PanAfricanSpacing.lg),
+                      _ShareCard(
+                        slug: slug,
+                        streak: user.streak,
+                        xp: user.completed_point,
+                        onShare: () => ref.read(profileShareProvider)(
+                          l.profShareText(
+                            langName ?? 'LingAfriq',
+                            user.streak,
+                            user.completed_point,
+                          ),
+                        ),
+                      ),
+                    ],
+                    section(l.profSecurity),
                     _Group(
                       rows: [
                         _Row(
@@ -262,14 +333,19 @@ class _ProfileBody extends ConsumerWidget {
                           l.profChangePassword,
                           () => open(const ChangePasswordScreen()),
                         ),
+                      ],
+                    ),
+                    section(l.profHelpLegal),
+                    _Group(
+                      rows: [
                         _Row(
                           Icons.forum_rounded,
                           l.profFeedback,
                           () => open(const SuggestLanguageScreen()),
                         ),
                         _Row(
-                          Icons.diversity_3_rounded,
-                          l.profAbout,
+                          Icons.info_rounded,
+                          l.profAboutApp,
                           () => kLaunchUrl('${EnvConfig.appWebUrl}/#about-us'),
                         ),
                         _Row(
@@ -698,7 +774,486 @@ class _Note extends StatelessWidget {
   }
 }
 
-/// Loading: the real layout in quiet placeholder blocks (no spinner jump).
+/// Header for the loading/error states: title plus a close that pops when
+/// pushed, or returns to Home when shown as a tab.
+class _StateBar extends ConsumerWidget {
+  const _StateBar({required this.title, required this.closeLabel});
+  final String title, closeLabel;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final scheme = Theme.of(context).colorScheme;
+    return SafeArea(
+      bottom: false,
+      child: Padding(
+        padding: EdgeInsetsDirectional.fromSTEB(
+          PanAfricanSpacing.xxs,
+          PanAfricanSpacing.xxs,
+          PanAfricanSpacing.md,
+          0,
+        ),
+        child: Row(
+          children: [
+            IconButton(
+              key: const Key('profile-close'),
+              tooltip: closeLabel,
+              icon: Icon(Icons.close_rounded, color: scheme.onSurface),
+              onPressed: () {
+                final nav = Navigator.of(context);
+                if (nav.canPop()) {
+                  nav.pop();
+                } else {
+                  ref.read(tabIndexProvider.notifier).setIndex(0);
+                }
+              },
+            ),
+            SizedBox(width: PanAfricanSpacing.xxs),
+            Expanded(
+              child: Semantics(
+                header: true,
+                child: Text(
+                  title,
+                  style: PanAfricanTypography.titleLarge(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.w800),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+BoxDecoration _cardDeco(ColorScheme scheme) => BoxDecoration(
+  color: scheme.surface,
+  borderRadius: BorderRadius.circular(16),
+  border: Border.all(color: scheme.outlineVariant, width: 2),
+);
+
+/// Pack 02 streak calendar, compact: the last 7 days, today ringed.
+class _WeekStrip extends StatelessWidget {
+  const _WeekStrip({
+    required this.minutes,
+    required this.today,
+    required this.onSeeAll,
+  });
+  final List<int>? minutes;
+  final DateTime today;
+  final VoidCallback onSeeAll;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = l10nOf(context);
+    final scheme = Theme.of(context).colorScheme;
+    final locale = Localizations.localeOf(context).toLanguageTag();
+    final week = minutes ?? List.filled(7, 0);
+    return Container(
+      key: const Key('profile-week'),
+      decoration: _cardDeco(scheme),
+      padding: EdgeInsets.fromLTRB(
+        PanAfricanSpacing.sm,
+        PanAfricanSpacing.sm,
+        PanAfricanSpacing.sm,
+        0,
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              for (var i = 0; i < 7; i++)
+                Expanded(
+                  child: Builder(
+                    builder: (context) {
+                      final day = today.subtract(Duration(days: 6 - i));
+                      final done = week[i] > 0;
+                      return Semantics(
+                        container: true,
+                        label: l.profDayA11y(
+                          DateFormat.EEEE(locale).format(day),
+                          done ? l.profDayDone : l.profDayMissed,
+                        ),
+                        excludeSemantics: true,
+                        child: Column(
+                          children: [
+                            FittedBox(
+                              child: Text(
+                                DateFormat('EEEEE', locale).format(day),
+                                style: PanAfricanTypography.labelMedium(context)
+                                    .copyWith(
+                                      color: scheme.onSurfaceVariant,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                              ),
+                            ),
+                            SizedBox(height: PanAfricanSpacing.xxs),
+                            Container(
+                              width: 30,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: done
+                                    ? kProgressGold
+                                    : scheme.surfaceContainerHighest,
+                                border: i == 6
+                                    ? Border.all(
+                                        color: PanAfricanColors.primary,
+                                        width: 3,
+                                      )
+                                    : null,
+                              ),
+                              child: done
+                                  ? const Icon(
+                                      Icons.local_fire_department_rounded,
+                                      size: 18,
+                                      color: Color(0xFF8A2E0C),
+                                    )
+                                  : null,
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+            ],
+          ),
+          Align(
+            alignment: AlignmentDirectional.centerEnd,
+            child: TextButton(
+              key: const Key('profile-see-progress'),
+              onPressed: onSeeAll,
+              style: TextButton.styleFrom(
+                minimumSize: const Size(
+                  AdaptiveLayout.minTouchTarget,
+                  AdaptiveLayout.minTouchTarget,
+                ),
+                foregroundColor: PanAfricanColors.primary,
+              ),
+              child: Text(
+                l.profSeeProgress,
+                style: const TextStyle(fontWeight: FontWeight.w800),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Pack 06: one row per language with its level and a thin progress bar.
+class _Languages extends StatelessWidget {
+  const _Languages({required this.langs, required this.learningSlug});
+  final List<Language> langs;
+  final String? learningSlug;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = l10nOf(context);
+    final scheme = Theme.of(context).colorScheme;
+    final shown =
+        langs
+            .where(
+              (g) =>
+                  g.total_score > 0 ||
+                  learningLanguageSlug(g.name) == learningSlug,
+            )
+            .take(4)
+            .toList()
+          ..sort((a, b) => b.total_score.compareTo(a.total_score));
+    if (shown.isEmpty) {
+      return Container(
+        key: const Key('profile-langs-empty'),
+        decoration: _cardDeco(scheme),
+        padding: EdgeInsets.all(PanAfricanSpacing.sm),
+        child: Text(
+          l.profLangEmpty,
+          style: PanAfricanTypography.bodyMedium(
+            context,
+          ).copyWith(color: scheme.onSurfaceVariant),
+        ),
+      );
+    }
+    return Container(
+      key: const Key('profile-langs'),
+      decoration: _cardDeco(scheme),
+      padding: EdgeInsets.all(PanAfricanSpacing.sm),
+      child: Column(
+        children: [
+          for (final (i, g) in shown.indexed) ...[
+            if (i > 0) SizedBox(height: PanAfricanSpacing.sm),
+            _LangRow(lang: g),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _LangRow extends StatelessWidget {
+  const _LangRow({required this.lang});
+  final Language lang;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = l10nOf(context);
+    final scheme = Theme.of(context).colorScheme;
+    final slug = learningLanguageSlug(lang.name) ?? lang.name.toLowerCase();
+    final id = languageIdentity(slug);
+    final pct = lang.total_score.clamp(0, 100);
+    return MergeSemantics(
+      child: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(color: id.base, shape: BoxShape.circle),
+            child: ClipOval(
+              child: CustomPaint(painter: MotifPainter(id.motif, id.accent)),
+            ),
+          ),
+          SizedBox(width: PanAfricanSpacing.sm),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  id.native ?? lang.name,
+                  style: PanAfricanTypography.titleSmall(context).copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: scheme.onSurface,
+                  ),
+                ),
+                Text(
+                  l.profLangProgress(lang.level_language, pct),
+                  style: PanAfricanTypography.bodySmall(
+                    context,
+                  ).copyWith(color: scheme.onSurfaceVariant),
+                ),
+                SizedBox(height: PanAfricanSpacing.xxs),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: LinearProgressIndicator(
+                    value: pct / 100,
+                    minHeight: 6,
+                    color: PanAfricanColors.primary,
+                    backgroundColor: scheme.surfaceContainerHighest,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+IconData _badgeIcon(AchievementType t) => switch (t) {
+  AchievementType.streak => Icons.local_fire_department_rounded,
+  AchievementType.xp => Icons.bolt_rounded,
+  AchievementType.trophy => Icons.emoji_events_rounded,
+  AchievementType.medal => Icons.military_tech_rounded,
+  AchievementType.milestone => Icons.flag_rounded,
+  AchievementType.badge => Icons.workspace_premium_rounded,
+};
+
+/// Pack 05/10: three badges (unlocked first, locked as outlines) + view all.
+class _Badges extends StatelessWidget {
+  const _Badges({required this.badges, required this.onViewAll});
+  final List<Achievement> badges;
+  final VoidCallback onViewAll;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = l10nOf(context);
+    final scheme = Theme.of(context).colorScheme;
+    final sorted = [...badges]
+      ..sort((a, b) => (b.isUnlocked ? 1 : 0) - (a.isUnlocked ? 1 : 0));
+    final done = badges.where((b) => b.isUnlocked).length;
+    return Container(
+      key: const Key('profile-badges'),
+      decoration: _cardDeco(scheme),
+      padding: EdgeInsets.fromLTRB(
+        PanAfricanSpacing.sm,
+        PanAfricanSpacing.sm,
+        PanAfricanSpacing.sm,
+        0,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l.profBadgesCount(done, badges.length),
+            style: PanAfricanTypography.titleSmall(
+              context,
+            ).copyWith(fontWeight: FontWeight.w800, color: kProgressGoldText),
+          ),
+          SizedBox(height: PanAfricanSpacing.xs),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (var i = 0; i < 3; i++)
+                Expanded(
+                  child: i < sorted.length
+                      ? _BadgeView(a: sorted[i])
+                      : const SizedBox.shrink(),
+                ),
+            ],
+          ),
+          Align(
+            alignment: AlignmentDirectional.centerEnd,
+            child: TextButton(
+              key: const Key('profile-badges-all'),
+              onPressed: onViewAll,
+              style: TextButton.styleFrom(
+                minimumSize: const Size(
+                  AdaptiveLayout.minTouchTarget,
+                  AdaptiveLayout.minTouchTarget,
+                ),
+                foregroundColor: PanAfricanColors.primary,
+              ),
+              child: Text(
+                l.profViewAll,
+                style: const TextStyle(fontWeight: FontWeight.w800),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BadgeView extends StatelessWidget {
+  const _BadgeView({required this.a});
+  final Achievement a;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = l10nOf(context);
+    final scheme = Theme.of(context).colorScheme;
+    final on = a.isUnlocked;
+    return Semantics(
+      label: on ? a.name : l.profBadgeLocked(a.name),
+      excludeSemantics: true,
+      child: Column(
+        children: [
+          Container(
+            width: 64,
+            height: 64,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: on ? kProgressGold : scheme.surface,
+              border: Border.all(
+                color: on ? const Color(0xFF8C5A00) : scheme.outlineVariant,
+                width: 3,
+              ),
+            ),
+            child: Icon(
+              on ? _badgeIcon(a.type) : Icons.lock_rounded,
+              size: 30,
+              color: on ? const Color(0xFF5C3B00) : scheme.onSurfaceVariant,
+            ),
+          ),
+          SizedBox(height: PanAfricanSpacing.xxs),
+          Text(
+            a.name,
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: PanAfricanTypography.bodySmall(
+              context,
+            ).copyWith(color: scheme.onSurface, fontWeight: FontWeight.w700),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Pack 07 share card: a language-coloured preview with streak and XP.
+class _ShareCard extends StatelessWidget {
+  const _ShareCard({
+    required this.slug,
+    required this.streak,
+    required this.xp,
+    required this.onShare,
+  });
+  final String? slug;
+  final int streak, xp;
+  final VoidCallback onShare;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = l10nOf(context);
+    final id = languageIdentity(slug ?? 'lingafriq');
+    final base = slug == null ? PanAfricanColors.primary : id.base;
+    return ClipRRect(
+      key: const Key('profile-share'),
+      borderRadius: BorderRadius.circular(16),
+      child: DecoratedBox(
+        decoration: BoxDecoration(color: base),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Opacity(
+                opacity: 0.3,
+                child: ClipRect(
+                  child: CustomPaint(
+                    painter: MotifPainter(id.motif, id.accent),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(PanAfricanSpacing.md),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l.profShareTitle,
+                    style: PanAfricanTypography.titleMedium(context).copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  SizedBox(height: PanAfricanSpacing.xxs),
+                  Text(
+                    l.profShareBody,
+                    style: PanAfricanTypography.bodyMedium(
+                      context,
+                    ).copyWith(color: Colors.white),
+                  ),
+                  SizedBox(height: PanAfricanSpacing.sm),
+                  FilledButton.icon(
+                    key: const Key('profile-share-button'),
+                    onPressed: onShare,
+                    style: FilledButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: const Color(0xFF14321F),
+                      minimumSize: const Size(0, AdaptiveLayout.minTouchTarget),
+                    ),
+                    icon: const Icon(Icons.ios_share_rounded),
+                    label: Text(
+                      l.profShare,
+                      style: const TextStyle(fontWeight: FontWeight.w800),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Loading: header, avatar, name, handle and the 2x2 stats in placeholder
+/// shapes, so nothing jumps when the profile arrives.
 class _ProfileSkeleton extends StatelessWidget {
   const _ProfileSkeleton({required this.label});
   final String label;
@@ -707,13 +1262,23 @@ class _ProfileSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final block = scheme.surfaceContainerHighest;
-    Widget box(double h) => Container(
+    final onHeader = Colors.white.withValues(alpha: 0.25);
+    Widget bar(double w, double h, Color c) => Container(
+      width: w,
       height: h,
+      decoration: BoxDecoration(
+        color: c,
+        borderRadius: BorderRadius.circular(h / 2),
+      ),
+    );
+    Widget tile() => Container(
+      height: 72,
       decoration: BoxDecoration(
         color: block,
         borderRadius: BorderRadius.circular(16),
       ),
     );
+    final avatar = (MediaQuery.sizeOf(context).width * 0.30).clamp(96.0, 148.0);
     return Semantics(
       key: const Key('profile-loading'),
       label: label,
@@ -721,27 +1286,61 @@ class _ProfileSkeleton extends StatelessWidget {
       child: ExcludeSemantics(
         child: ListView(
           physics: const NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.zero,
           children: [
-            Container(height: 220, color: PanAfricanColors.primary),
+            ColoredBox(
+              color: PanAfricanColors.primary,
+              child: SafeArea(
+                bottom: false,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    PanAfricanSpacing.md,
+                    PanAfricanSpacing.md,
+                    PanAfricanSpacing.md,
+                    PanAfricanSpacing.lg,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      bar(180, 24, onHeader),
+                      SizedBox(height: PanAfricanSpacing.md),
+                      Center(
+                        child: Container(
+                          width: avatar,
+                          height: avatar,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: onHeader,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
             Padding(
               padding: EdgeInsets.all(PanAfricanSpacing.md),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  box(16),
+                  bar(220, 14, block),
                   SizedBox(height: PanAfricanSpacing.lg),
+                  bar(90, 14, block),
+                  SizedBox(height: PanAfricanSpacing.xs),
                   Row(
                     children: [
-                      Expanded(child: box(72)),
+                      Expanded(child: tile()),
                       SizedBox(width: PanAfricanSpacing.xs),
-                      Expanded(child: box(72)),
+                      Expanded(child: tile()),
                     ],
                   ),
                   SizedBox(height: PanAfricanSpacing.xs),
                   Row(
                     children: [
-                      Expanded(child: box(72)),
+                      Expanded(child: tile()),
                       SizedBox(width: PanAfricanSpacing.xs),
-                      Expanded(child: box(72)),
+                      Expanded(child: tile()),
                     ],
                   ),
                 ],

@@ -3155,6 +3155,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Totals'**
   String get pgOverviewTitle;
+
+  /// profTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profTitle;
+
+  /// profClose
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get profClose;
+
+  /// profThisWeek
+  ///
+  /// In en, this message translates to:
+  /// **'This week'**
+  String get profThisWeek;
+
+  /// profSeeProgress
+  ///
+  /// In en, this message translates to:
+  /// **'See all progress'**
+  String get profSeeProgress;
+
+  /// profDayA11y
+  ///
+  /// In en, this message translates to:
+  /// **'{day}: {status}'**
+  String profDayA11y(String day, String status);
+
+  /// profDayDone
+  ///
+  /// In en, this message translates to:
+  /// **'practised'**
+  String get profDayDone;
+
+  /// profDayMissed
+  ///
+  /// In en, this message translates to:
+  /// **'no practice'**
+  String get profDayMissed;
+
+  /// profLanguages
+  ///
+  /// In en, this message translates to:
+  /// **'Languages'**
+  String get profLanguages;
+
+  /// profLangProgress
+  ///
+  /// In en, this message translates to:
+  /// **'Level {level} · {percent}%'**
+  String profLangProgress(String level, int percent);
+
+  /// profLangEmpty
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a language on Home to start your journey.'**
+  String get profLangEmpty;
+
+  /// profBadges
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements'**
+  String get profBadges;
+
+  /// profBadgesCount
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {total} unlocked'**
+  String profBadgesCount(int done, int total);
+
+  /// profViewAll
+  ///
+  /// In en, this message translates to:
+  /// **'View all'**
+  String get profViewAll;
+
+  /// profBadgeLocked
+  ///
+  /// In en, this message translates to:
+  /// **'{name}, locked'**
+  String profBadgeLocked(String name);
+
+  /// profShareTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Share your progress'**
+  String get profShareTitle;
+
+  /// profShareBody
+  ///
+  /// In en, this message translates to:
+  /// **'Send a card with your streak and XP.'**
+  String get profShareBody;
+
+  /// profShare
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get profShare;
+
+  /// profShareText
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m learning {language} on LingAfriq: {streak}-day streak and {xp} XP!'**
+  String profShareText(String language, int streak, int xp);
+
+  /// profHelpLegal
+  ///
+  /// In en, this message translates to:
+  /// **'Help and legal'**
+  String get profHelpLegal;
+
+  /// profAboutApp
+  ///
+  /// In en, this message translates to:
+  /// **'About LingAfriq'**
+  String get profAboutApp;
+
+  /// profSecurity
+  ///
+  /// In en, this message translates to:
+  /// **'Account and security'**
+  String get profSecurity;
 }
 
 class _AppLocalizationsDelegate

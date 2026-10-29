@@ -2336,5 +2336,129 @@
   "pgOverviewTitle": "Totals",
   "@pgOverviewTitle": {
     "description": "pgOverviewTitle"
+  },
+  "profTitle": "Profile",
+  "@profTitle": {
+    "description": "profTitle"
+  },
+  "profClose": "Close",
+  "@profClose": {
+    "description": "profClose"
+  },
+  "profThisWeek": "This week",
+  "@profThisWeek": {
+    "description": "profThisWeek"
+  },
+  "profSeeProgress": "See all progress",
+  "@profSeeProgress": {
+    "description": "profSeeProgress"
+  },
+  "profDayA11y": "{day}: {status}",
+  "@profDayA11y": {
+    "description": "profDayA11y",
+    "placeholders": {
+      "day": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "profDayDone": "practised",
+  "@profDayDone": {
+    "description": "profDayDone"
+  },
+  "profDayMissed": "no practice",
+  "@profDayMissed": {
+    "description": "profDayMissed"
+  },
+  "profLanguages": "Languages",
+  "@profLanguages": {
+    "description": "profLanguages"
+  },
+  "profLangProgress": "Level {level} · {percent}%",
+  "@profLangProgress": {
+    "description": "profLangProgress",
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "profLangEmpty": "Pick a language on Home to start your journey.",
+  "@profLangEmpty": {
+    "description": "profLangEmpty"
+  },
+  "profBadges": "Achievements",
+  "@profBadges": {
+    "description": "profBadges"
+  },
+  "profBadgesCount": "{done} of {total} unlocked",
+  "@profBadgesCount": {
+    "description": "profBadgesCount",
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "profViewAll": "View all",
+  "@profViewAll": {
+    "description": "profViewAll"
+  },
+  "profBadgeLocked": "{name}, locked",
+  "@profBadgeLocked": {
+    "description": "profBadgeLocked",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profShareTitle": "Share your progress",
+  "@profShareTitle": {
+    "description": "profShareTitle"
+  },
+  "profShareBody": "Send a card with your streak and XP.",
+  "@profShareBody": {
+    "description": "profShareBody"
+  },
+  "profShare": "Share",
+  "@profShare": {
+    "description": "profShare"
+  },
+  "profShareText": "I'm learning {language} on LingAfriq: {streak}-day streak and {xp} XP!",
+  "@profShareText": {
+    "description": "profShareText",
+    "placeholders": {
+      "language": {
+        "type": "String"
+      },
+      "streak": {
+        "type": "int"
+      },
+      "xp": {
+        "type": "int"
+      }
+    }
+  },
+  "profHelpLegal": "Help and legal",
+  "@profHelpLegal": {
+    "description": "profHelpLegal"
+  },
+  "profAboutApp": "About LingAfriq",
+  "@profAboutApp": {
+    "description": "profAboutApp"
+  },
+  "profSecurity": "Account and security",
+  "@profSecurity": {
+    "description": "profSecurity"
   }
 }

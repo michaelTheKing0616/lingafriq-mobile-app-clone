@@ -1764,4 +1764,77 @@ class AppLocalizationsTw extends AppLocalizations {
 
   @override
   String get pgOverviewTitle => 'Totals';
+
+  @override
+  String get profTitle => 'Profile';
+
+  @override
+  String get profClose => 'Close';
+
+  @override
+  String get profThisWeek => 'This week';
+
+  @override
+  String get profSeeProgress => 'See all progress';
+
+  @override
+  String profDayA11y(String day, String status) {
+    return '$day: $status';
+  }
+
+  @override
+  String get profDayDone => 'practised';
+
+  @override
+  String get profDayMissed => 'no practice';
+
+  @override
+  String get profLanguages => 'Languages';
+
+  @override
+  String profLangProgress(String level, int percent) {
+    return 'Level $level · $percent%';
+  }
+
+  @override
+  String get profLangEmpty => 'Pick a language on Home to start your journey.';
+
+  @override
+  String get profBadges => 'Achievements';
+
+  @override
+  String profBadgesCount(int done, int total) {
+    return '$done of $total unlocked';
+  }
+
+  @override
+  String get profViewAll => 'View all';
+
+  @override
+  String profBadgeLocked(String name) {
+    return '$name, locked';
+  }
+
+  @override
+  String get profShareTitle => 'Share your progress';
+
+  @override
+  String get profShareBody => 'Send a card with your streak and XP.';
+
+  @override
+  String get profShare => 'Share';
+
+  @override
+  String profShareText(String language, int streak, int xp) {
+    return 'I\'m learning $language on LingAfriq: $streak-day streak and $xp XP!';
+  }
+
+  @override
+  String get profHelpLegal => 'Help and legal';
+
+  @override
+  String get profAboutApp => 'About LingAfriq';
+
+  @override
+  String get profSecurity => 'Account and security';
 }
