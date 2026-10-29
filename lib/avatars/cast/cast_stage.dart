@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:rive/rive.dart';
 
 import '../a11y/avatar_semantics.dart';
@@ -14,11 +15,27 @@ class CastStage extends StatefulWidget {
     required this.session,
     this.artboard = 'Character',
     this.onTap,
+    this.useStill = true,
   });
 
   final CastSession session;
   final String artboard;
   final VoidCallback? onTap;
+
+  /// Show the pre-rendered still for [CastSession.pose] preset while the Rive
+  /// file loads or if it fails. Off only for the still generator itself.
+  final bool useStill;
+
+  /// Presets with a bundled still at `assets/images/cast_still_<preset>.png`.
+  /// Regenerate with `test/tool/cast_stills_gen_test.dart`.
+  static const stillPresets = [
+    'PaLingAfriq',
+    'Adisa',
+    'Zuri',
+    'Learner',
+    'Kofi',
+    'Amara',
+  ];
 
   @override
   State<CastStage> createState() => _CastStageState();
@@ -26,7 +43,6 @@ class CastStage extends StatefulWidget {
 
 class _CastStageState extends State<CastStage> {
   RiveWidgetController? _controller;
-  Object? _error;
   bool? _onScreen;
 
   @override
@@ -38,7 +54,17 @@ class _CastStageState extends State<CastStage> {
   }
 
   void _onSession() {
-    if (mounted) setState(() {});
+    if (!mounted) return;
+    // AvatarCastSemantics can write to the session while it builds; defer the
+    // rebuild to after the frame instead of marking dirty mid-build.
+    if (SchedulerBinding.instance.schedulerPhase ==
+        SchedulerPhase.persistentCallbacks) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        if (mounted) setState(() {});
+      });
+      return;
+    }
+    setState(() {});
   }
 
   @override
@@ -75,10 +101,17 @@ class _CastStageState extends State<CastStage> {
       widget.session.bind(file, instance);
       _controller = controller;
       _applyActive();
-      setState(() => _error = null);
-    } catch (error) {
-      if (!mounted) return;
-      setState(() => _error = error);
+      setState(() {});
+    } catch (error, stack) {
+      // The still stays on screen; nothing else to show the learner.
+      FlutterError.reportError(
+        FlutterErrorDetails(
+          exception: error,
+          stack: stack,
+          library: 'cast_stage',
+          silent: true,
+        ),
+      );
     }
   }
 
@@ -118,7 +151,7 @@ class _CastStageState extends State<CastStage> {
         child: controller == null
             ? _Placeholder(
                 preset: widget.session.pose.preset,
-                failed: _error != null,
+                useStill: widget.useStill,
               )
             : RiveWidget(controller: controller, fit: Fit.contain),
       ),
@@ -127,23 +160,25 @@ class _CastStageState extends State<CastStage> {
 }
 
 class _Placeholder extends StatelessWidget {
-  const _Placeholder({required this.preset, required this.failed});
+  const _Placeholder({required this.preset, required this.useStill});
 
   final String preset;
-  final bool failed;
+  final bool useStill;
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    return ColoredBox(
-      color: scheme.surfaceContainerHighest,
-      child: Center(
-        child: Icon(
-          failed ? Icons.person_off_outlined : Icons.person_outline,
-          color: scheme.onSurfaceVariant,
-        ),
-      ),
-    );
+    // A still of the same character, never a generic person icon. Unknown
+    // presets get a quiet empty surface rather than a broken-looking glyph.
+    if (useStill && CastStage.stillPresets.contains(preset)) {
+      return Image.asset(
+        'assets/images/cast_still_$preset.png',
+        fit: BoxFit.contain,
+        gaplessPlayback: true,
+        excludeFromSemantics: true,
+        errorBuilder: (_, _, _) => const SizedBox.expand(),
+      );
+    }
+    return const SizedBox.expand();
   }
 }
 
