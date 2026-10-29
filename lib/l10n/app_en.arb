@@ -1168,5 +1168,213 @@
   "reportReasonTitle": "Why are you reporting this?",
   "@reportReasonTitle": {
     "description": "Compliance batch 1 UI"
+  },
+  "settingsSecAppearance": "Appearance",
+  "@settingsSecAppearance": {
+    "description": "Settings screen"
+  },
+  "settingsSecNotifications": "Notifications",
+  "@settingsSecNotifications": {
+    "description": "Settings screen"
+  },
+  "settingsSecAudio": "Audio",
+  "@settingsSecAudio": {
+    "description": "Settings screen"
+  },
+  "settingsSecSecurity": "Security",
+  "@settingsSecSecurity": {
+    "description": "Settings screen"
+  },
+  "settingsSecAccount": "Account",
+  "@settingsSecAccount": {
+    "description": "Settings screen"
+  },
+  "settingsSecLearning": "Learning",
+  "@settingsSecLearning": {
+    "description": "Settings screen"
+  },
+  "settingsSecOffline": "Offline & Sync",
+  "@settingsSecOffline": {
+    "description": "Settings screen"
+  },
+  "settingsSecAbout": "About",
+  "@settingsSecAbout": {
+    "description": "Settings screen"
+  },
+  "settingsDarkMode": "Dark mode",
+  "@settingsDarkMode": {
+    "description": "Settings screen"
+  },
+  "settingsDarkModeSub": "Switch between light and dark theme",
+  "@settingsDarkModeSub": {
+    "description": "Settings screen"
+  },
+  "settingsPush": "Push notifications",
+  "@settingsPush": {
+    "description": "Settings screen"
+  },
+  "settingsPushSub": "Receive push notifications",
+  "@settingsPushSub": {
+    "description": "Settings screen"
+  },
+  "settingsDailyReminders": "Daily reminders",
+  "@settingsDailyReminders": {
+    "description": "Settings screen"
+  },
+  "settingsDailyRemindersSub": "Get reminded to practise daily",
+  "@settingsDailyRemindersSub": {
+    "description": "Settings screen"
+  },
+  "settingsSoundEffects": "Sound effects",
+  "@settingsSoundEffects": {
+    "description": "Settings screen"
+  },
+  "settingsSoundEffectsSub": "Play sound effects during lessons",
+  "@settingsSoundEffectsSub": {
+    "description": "Settings screen"
+  },
+  "settingsVoiceStyles": "Tutor voice styles",
+  "@settingsVoiceStyles": {
+    "description": "Settings screen"
+  },
+  "settingsVoiceStylesSub": "Synthetic, non-identifying voices (opt-in)",
+  "@settingsVoiceStylesSub": {
+    "description": "Settings screen"
+  },
+  "settingsAppLanguage": "App language",
+  "@settingsAppLanguage": {
+    "description": "Settings screen"
+  },
+  "settingsBiometric": "Biometric sign-in",
+  "@settingsBiometric": {
+    "description": "Settings screen"
+  },
+  "settingsBiometricSub": "Use biometrics to sign in quickly",
+  "@settingsBiometricSub": {
+    "description": "Settings screen"
+  },
+  "settingsEncryptCache": "Encrypt cached data",
+  "@settingsEncryptCache": {
+    "description": "Settings screen"
+  },
+  "settingsEncryptCacheSub": "Encrypt sensitive data stored on this device",
+  "@settingsEncryptCacheSub": {
+    "description": "Settings screen"
+  },
+  "settingsEditProfile": "Edit profile",
+  "@settingsEditProfile": {
+    "description": "Settings screen"
+  },
+  "settingsEditProfileSub": "Update your personal information",
+  "@settingsEditProfileSub": {
+    "description": "Settings screen"
+  },
+  "settingsChangePassword": "Change password",
+  "@settingsChangePassword": {
+    "description": "Settings screen"
+  },
+  "settingsChangePasswordSub": "Update your account password",
+  "@settingsChangePasswordSub": {
+    "description": "Settings screen"
+  },
+  "settingsPrivacy": "Privacy settings",
+  "@settingsPrivacy": {
+    "description": "Settings screen"
+  },
+  "settingsPrivacySub": "Manage your privacy preferences",
+  "@settingsPrivacySub": {
+    "description": "Settings screen"
+  },
+  "settingsMentorReports": "Micro-mentor reports",
+  "@settingsMentorReports": {
+    "description": "Settings screen"
+  },
+  "settingsMentorReportsSub": "Review safety reports (staff)",
+  "@settingsMentorReportsSub": {
+    "description": "Settings screen"
+  },
+  "settingsGoals": "Learning goals",
+  "@settingsGoals": {
+    "description": "Settings screen"
+  },
+  "settingsGoalsSub": "Set your daily learning goals",
+  "@settingsGoalsSub": {
+    "description": "Settings screen"
+  },
+  "settingsStudyReminders": "Study reminders",
+  "@settingsStudyReminders": {
+    "description": "Settings screen"
+  },
+  "settingsStudyRemindersSub": "Choose when to be reminded",
+  "@settingsStudyRemindersSub": {
+    "description": "Settings screen"
+  },
+  "settingsSync": "Sync settings",
+  "@settingsSync": {
+    "description": "Settings screen"
+  },
+  "settingsSyncSub": "Choose what to sync",
+  "@settingsSyncSub": {
+    "description": "Settings screen"
+  },
+  "settingsCache": "Cache management",
+  "@settingsCache": {
+    "description": "Settings screen"
+  },
+  "settingsCacheSub": "View and manage cached data",
+  "@settingsCacheSub": {
+    "description": "Settings screen"
+  },
+  "settingsDownloads": "Downloads",
+  "@settingsDownloads": {
+    "description": "Settings screen"
+  },
+  "settingsDownloadsSub": "Unit size, Wi-Fi and delete",
+  "@settingsDownloadsSub": {
+    "description": "Settings screen"
+  },
+  "settingsAppVersion": "App version",
+  "@settingsAppVersion": {
+    "description": "Settings screen"
+  },
+  "settingsTerms": "Terms of Service",
+  "@settingsTerms": {
+    "description": "Settings screen"
+  },
+  "settingsPrivacyPolicy": "Privacy Policy",
+  "@settingsPrivacyPolicy": {
+    "description": "Settings screen"
+  },
+  "settingsHelp": "Help & Support",
+  "@settingsHelp": {
+    "description": "Settings screen"
+  },
+  "settingsLogoutConfirm": "Are you sure you want to log out?",
+  "@settingsLogoutConfirm": {
+    "description": "Settings screen"
+  },
+  "settingsFeaturesGuide": "Features guide",
+  "@settingsFeaturesGuide": {
+    "description": "Settings screen"
+  },
+  "settingsGamesTour": "How games work",
+  "@settingsGamesTour": {
+    "description": "Settings screen"
+  },
+  "lowBandwidthTitle": "Low bandwidth",
+  "@lowBandwidthTitle": {
+    "description": "Settings screen"
+  },
+  "lowBandwidthAutoOn": "On because Data Saver is on",
+  "@lowBandwidthAutoOn": {
+    "description": "Settings screen"
+  },
+  "lowBandwidthManualOn": "On until you turn it off",
+  "@lowBandwidthManualOn": {
+    "description": "Settings screen"
+  },
+  "lowBandwidthOff": "Off",
+  "@lowBandwidthOff": {
+    "description": "Settings screen"
   }
 }

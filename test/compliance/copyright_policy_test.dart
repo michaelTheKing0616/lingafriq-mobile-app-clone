@@ -57,7 +57,11 @@ void main() {
 
   for (final v in goldenVariants) {
     testWidgets('renders ${v.name} without overflow', (t) async {
-      await pumpVariant(t, v, const CopyrightPolicyScreen(targetId: 'c9'));
+      await pumpVariant(
+        t,
+        v,
+        const CopyrightPolicyScreen(targetId: 'clip_8f3a2c71'),
+      );
       expectNoLayoutErrors(t);
       await expectLater(
         find.byType(CopyrightPolicyScreen),
@@ -88,7 +92,7 @@ void main() {
       _tall,
       CopyrightPolicyScreen(
         targetType: 'clip',
-        targetId: 'c9',
+        targetId: 'clip_8f3a2c71',
         submit: (b) async {
           sent = b;
           return 'REF1';
@@ -121,7 +125,7 @@ void main() {
     await t.pumpAndSettle();
     expect(sent, containsPair('kind', 'notice'));
     expect(sent, containsPair('targetType', 'clip'));
-    expect(sent, containsPair('targetId', 'c9'));
+    expect(sent, containsPair('targetId', 'clip_8f3a2c71'));
     expect(sent!['statements'], ['good_faith', 'accurate_and_authorised']);
     expect(find.byKey(const ValueKey('copyright-success')), findsOneWidget);
     expect(find.textContaining('REF1'), findsOneWidget);
@@ -137,7 +141,7 @@ void main() {
       t,
       _tall,
       CopyrightPolicyScreen(
-        targetId: 'c9',
+        targetId: 'clip_8f3a2c71',
         submit: (b) async {
           sent = b;
           return 'R2';
@@ -166,7 +170,7 @@ void main() {
       t,
       _en,
       CopyrightPolicyScreen(
-        targetId: 'c9',
+        targetId: 'clip_8f3a2c71',
         submit: (b) async {
           calls++;
           await Future<void>.delayed(const Duration(milliseconds: 50));

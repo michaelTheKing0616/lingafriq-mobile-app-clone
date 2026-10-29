@@ -103,6 +103,7 @@ class EditProfileScreen extends HookConsumerWidget {
 
         if (success && context.mounted) {
           await ref.read(userProvider.notifier).refreshUser();
+          if (!context.mounted) return;
           showLingAfriqSuccess(context, 'Profile updated successfully!');
           Navigator.pop(context);
         }

@@ -115,7 +115,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get submit => 'Soumettre';
 
   @override
-  String get logout => 'Deconnexion';
+  String get logout => 'Déconnexion';
 
   @override
   String get login => 'Connexion';
@@ -944,4 +944,169 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get reportReasonTitle => 'Pourquoi signalez-vous ce contenu ?';
+
+  @override
+  String get settingsSecAppearance => 'Apparence';
+
+  @override
+  String get settingsSecNotifications => 'Notifications';
+
+  @override
+  String get settingsSecAudio => 'Audio';
+
+  @override
+  String get settingsSecSecurity => 'Sécurité';
+
+  @override
+  String get settingsSecAccount => 'Compte';
+
+  @override
+  String get settingsSecLearning => 'Apprentissage';
+
+  @override
+  String get settingsSecOffline => 'Hors ligne et synchronisation';
+
+  @override
+  String get settingsSecAbout => 'À propos';
+
+  @override
+  String get settingsDarkMode => 'Mode sombre';
+
+  @override
+  String get settingsDarkModeSub => 'Basculer entre thème clair et sombre';
+
+  @override
+  String get settingsPush => 'Notifications push';
+
+  @override
+  String get settingsPushSub => 'Recevoir des notifications push';
+
+  @override
+  String get settingsDailyReminders => 'Rappels quotidiens';
+
+  @override
+  String get settingsDailyRemindersSub =>
+      'Un rappel pour pratiquer chaque jour';
+
+  @override
+  String get settingsSoundEffects => 'Effets sonores';
+
+  @override
+  String get settingsSoundEffectsSub =>
+      'Jouer des effets sonores pendant les leçons';
+
+  @override
+  String get settingsVoiceStyles => 'Styles de voix du tuteur';
+
+  @override
+  String get settingsVoiceStylesSub =>
+      'Voix synthétiques non identifiantes (facultatif)';
+
+  @override
+  String get settingsAppLanguage => 'Langue de l\'application';
+
+  @override
+  String get settingsBiometric => 'Connexion biométrique';
+
+  @override
+  String get settingsBiometricSub =>
+      'Utilisez la biométrie pour vous connecter rapidement';
+
+  @override
+  String get settingsEncryptCache => 'Chiffrer les données en cache';
+
+  @override
+  String get settingsEncryptCacheSub =>
+      'Chiffrer les données sensibles stockées sur cet appareil';
+
+  @override
+  String get settingsEditProfile => 'Modifier le profil';
+
+  @override
+  String get settingsEditProfileSub =>
+      'Mettre à jour vos informations personnelles';
+
+  @override
+  String get settingsChangePassword => 'Changer le mot de passe';
+
+  @override
+  String get settingsChangePasswordSub =>
+      'Mettre à jour le mot de passe du compte';
+
+  @override
+  String get settingsPrivacy => 'Paramètres de confidentialité';
+
+  @override
+  String get settingsPrivacySub => 'Gérer vos préférences de confidentialité';
+
+  @override
+  String get settingsMentorReports => 'Signalements des micro-mentors';
+
+  @override
+  String get settingsMentorReportsSub => 'Examiner les signalements (équipe)';
+
+  @override
+  String get settingsGoals => 'Objectifs d\'apprentissage';
+
+  @override
+  String get settingsGoalsSub => 'Définir vos objectifs quotidiens';
+
+  @override
+  String get settingsStudyReminders => 'Rappels d\'étude';
+
+  @override
+  String get settingsStudyRemindersSub => 'Choisir quand recevoir un rappel';
+
+  @override
+  String get settingsSync => 'Paramètres de synchronisation';
+
+  @override
+  String get settingsSyncSub => 'Choisir ce qui est synchronisé';
+
+  @override
+  String get settingsCache => 'Gestion du cache';
+
+  @override
+  String get settingsCacheSub => 'Voir et gérer les données en cache';
+
+  @override
+  String get settingsDownloads => 'Téléchargements';
+
+  @override
+  String get settingsDownloadsSub => 'Taille des unités, Wi-Fi et suppression';
+
+  @override
+  String get settingsAppVersion => 'Version de l\'application';
+
+  @override
+  String get settingsTerms => 'Conditions d\'utilisation';
+
+  @override
+  String get settingsPrivacyPolicy => 'Politique de confidentialité';
+
+  @override
+  String get settingsHelp => 'Aide et assistance';
+
+  @override
+  String get settingsLogoutConfirm => 'Voulez-vous vraiment vous déconnecter ?';
+
+  @override
+  String get settingsFeaturesGuide => 'Guide des fonctionnalités';
+
+  @override
+  String get settingsGamesTour => 'Fonctionnement des jeux';
+
+  @override
+  String get lowBandwidthTitle => 'Faible bande passante';
+
+  @override
+  String get lowBandwidthAutoOn =>
+      'Activé car l\'économiseur de données est activé';
+
+  @override
+  String get lowBandwidthManualOn =>
+      'Activé jusqu\'à ce que vous le désactiviez';
+
+  @override
+  String get lowBandwidthOff => 'Désactivé';
 }

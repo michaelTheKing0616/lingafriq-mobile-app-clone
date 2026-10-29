@@ -12,7 +12,11 @@ import 'package:lingafriq/services/auth/biometric_auth.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart'
     show DynamicLocalizationService, AppLanguage;
 import 'package:lingafriq/services/offline/persisted_outbox_service.dart'
-    show SelectiveSyncService, SyncCategory, SyncPreference, PersistedOutboxService;
+    show
+        SelectiveSyncService,
+        SyncCategory,
+        SyncPreference,
+        PersistedOutboxService;
 import 'package:lingafriq/services/offline/cache_encryption.dart'
     show CacheEncryptionService;
 import 'package:lingafriq/screens/settings/downloads_screen.dart';
@@ -49,7 +53,15 @@ List<Widget> _helpTourTiles(BuildContext context, bool isDark) {
         icon: links[i].screenOrRoute == 'FeaturesGuideScreen'
             ? Icons.menu_book_rounded
             : Icons.sports_esports_rounded,
-        title: links[i].label,
+        title: switch (links[i].screenOrRoute) {
+          'FeaturesGuideScreen' => AppLocalizations.of(
+            context,
+          )!.settingsFeaturesGuide,
+          'GameOnboardingOverlay' => AppLocalizations.of(
+            context,
+          )!.settingsGamesTour,
+          _ => links[i].label,
+        },
         trailing: const Icon(
           Icons.chevron_right_rounded,
           color: PanAfricanColors.neutralMedium,
@@ -70,6 +82,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context)!;
     final isDark = useState(Theme.of(context).brightness == Brightness.dark);
     final notificationsEnabled = useState(true);
     final soundEffectsEnabled = useState(true);
@@ -81,7 +94,9 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
     final cacheEncryptionEnabled = useState<bool?>(null);
     final polieSerifLanguageText = useState(false);
     final currentUser = ref.watch(userProvider);
-    final biometricPreferenceService = useMemoized(() => BiometricPreferenceService());
+    final biometricPreferenceService = useMemoized(
+      () => BiometricPreferenceService(),
+    );
 
     // Check biometric availability and load Polie serif preference
     useEffect(() {
@@ -130,14 +145,14 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                 // Appearance Section
                 _buildSection(
                   context,
-                  'Appearance',
+                  l.settingsSecAppearance,
                   [
                     _SettingsTile(
                       icon: isDark.value
                           ? Icons.dark_mode_rounded
                           : Icons.light_mode_rounded,
-                      title: 'Dark Mode',
-                      subtitle: 'Switch between light and dark theme',
+                      title: l.settingsDarkMode,
+                      subtitle: l.settingsDarkModeSub,
                       toggleValue: isDark.value,
                       trailing: Switch.adaptive(
                         value: isDark.value,
@@ -146,15 +161,20 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                           await safeAsync(
                             context: context,
                             operation: () async {
-                              await ref.read(themeModeProvider.notifier).setThemeMode(
-                                  value ? ThemeMode.dark : ThemeMode.light);
+                              await ref
+                                  .read(themeModeProvider.notifier)
+                                  .setThemeMode(
+                                    value ? ThemeMode.dark : ThemeMode.light,
+                                  );
                             },
                             errorContext: 'toggleDarkMode',
                           );
                           isDark.value = value;
                           if (context.mounted) {
-                            showLingAfriqInfo(context,
-                                'Dark mode ${value ? 'enabled' : 'disabled'}');
+                            showLingAfriqInfo(
+                              context,
+                              'Dark mode ${value ? 'enabled' : 'disabled'}',
+                            );
                           }
                         },
                         activeThumbColor: PanAfricanColors.primary,
@@ -170,12 +190,12 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                 // Notifications Section
                 _buildSection(
                   context,
-                  'Notifications',
+                  l.settingsSecNotifications,
                   [
                     _SettingsTile(
                       icon: Icons.notifications_rounded,
-                      title: 'Push Notifications',
-                      subtitle: 'Receive push notifications',
+                      title: l.settingsPush,
+                      subtitle: l.settingsPushSub,
                       toggleValue: notificationsEnabled.value,
                       trailing: Switch.adaptive(
                         value: notificationsEnabled.value,
@@ -190,8 +210,8 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                     _SettingsDivider(isDark: isDark.value),
                     _SettingsTile(
                       icon: Icons.access_alarm_rounded,
-                      title: 'Daily Reminders',
-                      subtitle: 'Get reminded to practice daily',
+                      title: l.settingsDailyReminders,
+                      subtitle: l.settingsDailyRemindersSub,
                       toggleValue: dailyRemindersEnabled.value,
                       trailing: Switch.adaptive(
                         value: dailyRemindersEnabled.value,
@@ -212,12 +232,12 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                 // Audio Section
                 _buildSection(
                   context,
-                  'Audio',
+                  l.settingsSecAudio,
                   [
                     _SettingsTile(
                       icon: Icons.volume_up_rounded,
-                      title: 'Sound Effects',
-                      subtitle: 'Play sound effects during lessons',
+                      title: l.settingsSoundEffects,
+                      subtitle: l.settingsSoundEffectsSub,
                       toggleValue: soundEffectsEnabled.value,
                       trailing: Switch.adaptive(
                         value: soundEffectsEnabled.value,
@@ -232,8 +252,8 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                     _SettingsDivider(isDark: isDark.value),
                     _SettingsTile(
                       icon: Icons.record_voice_over_rounded,
-                      title: 'Tutor voice styles',
-                      subtitle: 'Synthetic, non-identifying voices (opt-in)',
+                      title: l.settingsVoiceStyles,
+                      subtitle: l.settingsVoiceStylesSub,
                       trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
@@ -243,7 +263,9 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute<void>(
-                            builder: (_) => const SyntheticVoiceStylesScreen(language: 'yoruba'),
+                            builder: (_) => const SyntheticVoiceStylesScreen(
+                              language: 'yoruba',
+                            ),
                           ),
                         );
                       },
@@ -252,7 +274,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                     _SettingsDivider(isDark: isDark.value),
                     _SettingsTile(
                       icon: Icons.language_rounded,
-                      title: 'App Language',
+                      title: l.settingsAppLanguage,
                       subtitle: selectedLanguage.value,
                       trailing: const Icon(
                         Icons.chevron_right_rounded,
@@ -273,18 +295,21 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                 // Security Section
                 _buildSection(
                   context,
-                  'Security',
+                  l.settingsSecSecurity,
                   [
                     if (biometricAvailable.value)
                       _SettingsTile(
-                        icon: biometricType.value?.toLowerCase().contains('finger') ==
+                        icon:
+                            biometricType.value?.toLowerCase().contains(
+                                  'finger',
+                                ) ==
                                 true
                             ? Icons.fingerprint_rounded
                             : Icons.face_rounded,
-                        title: 'Biometric Authentication',
+                        title: l.settingsBiometric,
                         subtitle: biometricType.value != null
                             ? 'Sign in with ${biometricType.value}'
-                            : 'Use biometric to sign in quickly',
+                            : l.settingsBiometricSub,
                         toggleValue: biometricEnabled.value ?? false,
                         trailing: Switch.adaptive(
                           value: biometricEnabled.value ?? false,
@@ -292,9 +317,11 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                             HapticFeedback.mediumImpact();
                             if (value) {
                               try {
-                                final result = await BiometricAuth.authenticateWithResult(
-                                  localizedReason: 'Enable biometric authentication',
-                                );
+                                final result =
+                                    await BiometricAuth.authenticateWithResult(
+                                      localizedReason:
+                                          'Enable biometric authentication',
+                                    );
                                 if (result.success) {
                                   if (currentUser?.email == null ||
                                       currentUser!.email.trim().isEmpty) {
@@ -306,11 +333,14 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                                     }
                                     return;
                                   }
-                                  await biometricPreferenceService.enableForEmail(currentUser.email);
+                                  await biometricPreferenceService
+                                      .enableForEmail(currentUser.email);
                                   biometricEnabled.value = true;
                                   if (context.mounted) {
                                     showLingAfriqSuccess(
-                                        context, 'Biometric authentication enabled');
+                                      context,
+                                      'Biometric authentication enabled',
+                                    );
                                   }
                                 } else if (context.mounted) {
                                   showLingAfriqError(
@@ -326,13 +356,18 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                                   error: e,
                                 );
                                 if (context.mounted) {
-                                  final errorMsg = e.toString().replaceAll('Exception: ', '');
+                                  final errorMsg = e.toString().replaceAll(
+                                    'Exception: ',
+                                    '',
+                                  );
                                   showLingAfriqError(
-                                      context, errorMsg.contains('NotEnrolled')
-                                          ? 'Please set up Face ID or fingerprint in your device settings first.'
-                                          : errorMsg.contains('LockedOut')
-                                              ? 'Too many failed attempts. Please wait and try again.'
-                                              : 'Biometric not available: $errorMsg');
+                                    context,
+                                    errorMsg.contains('NotEnrolled')
+                                        ? 'Please set up Face ID or fingerprint in your device settings first.'
+                                        : errorMsg.contains('LockedOut')
+                                        ? 'Too many failed attempts. Please wait and try again.'
+                                        : 'Biometric not available: $errorMsg',
+                                  );
                                 }
                               }
                             } else {
@@ -344,11 +379,12 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                         ),
                         isDark: isDark.value,
                       ),
-                    if (biometricAvailable.value) _SettingsDivider(isDark: isDark.value),
+                    if (biometricAvailable.value)
+                      _SettingsDivider(isDark: isDark.value),
                     _SettingsTile(
                       icon: Icons.lock_rounded,
-                      title: 'Encrypt Cached Data',
-                      subtitle: 'Encrypt sensitive data stored on device',
+                      title: l.settingsEncryptCache,
+                      subtitle: l.settingsEncryptCacheSub,
                       toggleValue: cacheEncryptionEnabled.value ?? false,
                       trailing: Switch.adaptive(
                         value: cacheEncryptionEnabled.value ?? false,
@@ -380,12 +416,12 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                 // Account Section
                 _buildSection(
                   context,
-                  'Account',
+                  l.settingsSecAccount,
                   [
                     _SettingsTile(
                       icon: Icons.person_rounded,
-                      title: 'Edit Profile',
-                      subtitle: 'Update your personal information',
+                      title: l.settingsEditProfile,
+                      subtitle: l.settingsEditProfileSub,
                       trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
@@ -404,8 +440,8 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                     _SettingsDivider(isDark: isDark.value),
                     _SettingsTile(
                       icon: Icons.lock_outline_rounded,
-                      title: 'Change Password',
-                      subtitle: 'Update your account password',
+                      title: l.settingsChangePassword,
+                      subtitle: l.settingsChangePasswordSub,
                       trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
@@ -424,8 +460,8 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                     _SettingsDivider(isDark: isDark.value),
                     _SettingsTile(
                       icon: Icons.privacy_tip_rounded,
-                      title: 'Privacy Settings',
-                      subtitle: 'Manage your privacy preferences',
+                      title: l.settingsPrivacy,
+                      subtitle: l.settingsPrivacySub,
                       trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
@@ -445,8 +481,8 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       _SettingsDivider(isDark: isDark.value),
                       _SettingsTile(
                         icon: Icons.shield_outlined,
-                        title: 'Micro-mentor reports',
-                        subtitle: 'Review safety reports (staff)',
+                        title: l.settingsMentorReports,
+                        subtitle: l.settingsMentorReportsSub,
                         trailing: const Icon(
                           Icons.chevron_right_rounded,
                           color: PanAfricanColors.neutralMedium,
@@ -456,7 +492,8 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute<void>(
-                              builder: (context) => const StaffMicroMentorReportsScreen(),
+                              builder: (context) =>
+                                  const StaffMicroMentorReportsScreen(),
                             ),
                           );
                         },
@@ -472,12 +509,12 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                 // Learning Section
                 _buildSection(
                   context,
-                  'Learning',
+                  l.settingsSecLearning,
                   [
                     _SettingsTile(
                       icon: Icons.school_rounded,
-                      title: 'Learning Goals',
-                      subtitle: 'Set your daily learning goals',
+                      title: l.settingsGoals,
+                      subtitle: l.settingsGoalsSub,
                       trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
@@ -486,7 +523,9 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                         HapticFeedback.lightImpact();
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => const DailyGoalsScreen()),
+                          MaterialPageRoute(
+                            builder: (_) => const DailyGoalsScreen(),
+                          ),
                         );
                       },
                       isDark: isDark.value,
@@ -494,8 +533,8 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                     _SettingsDivider(isDark: isDark.value),
                     _SettingsTile(
                       icon: Icons.timer_rounded,
-                      title: 'Study Reminders',
-                      subtitle: 'Configure when to be reminded',
+                      title: l.settingsStudyReminders,
+                      subtitle: l.settingsStudyRemindersSub,
                       trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
@@ -504,7 +543,9 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                         HapticFeedback.lightImpact();
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => const ReminderSettingsScreen()),
+                          MaterialPageRoute(
+                            builder: (_) => const ReminderSettingsScreen(),
+                          ),
                         );
                       },
                       isDark: isDark.value,
@@ -518,12 +559,12 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                 // Offline & Sync Section
                 _buildSection(
                   context,
-                  'Offline & Sync',
+                  l.settingsSecOffline,
                   [
                     _SettingsTile(
                       icon: Icons.cloud_sync_rounded,
-                      title: 'Sync Settings',
-                      subtitle: 'Configure what to sync',
+                      title: l.settingsSync,
+                      subtitle: l.settingsSyncSub,
                       trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
@@ -537,8 +578,8 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                     _SettingsDivider(isDark: isDark.value),
                     _SettingsTile(
                       icon: Icons.storage_rounded,
-                      title: 'Cache Management',
-                      subtitle: 'View and manage cached data',
+                      title: l.settingsCache,
+                      subtitle: l.settingsCacheSub,
                       trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
@@ -552,8 +593,8 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                     _SettingsDivider(isDark: isDark.value),
                     _SettingsTile(
                       icon: Icons.download_rounded,
-                      title: 'Downloads',
-                      subtitle: 'Unit size, Wi-Fi, and delete',
+                      title: l.settingsDownloads,
+                      subtitle: l.settingsDownloadsSub,
                       trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
@@ -562,7 +603,9 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                         HapticFeedback.lightImpact();
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => const DownloadsPage()),
+                          MaterialPageRoute(
+                            builder: (_) => const DownloadsPage(),
+                          ),
                         );
                       },
                       isDark: isDark.value,
@@ -578,18 +621,18 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                 // About Section
                 _buildSection(
                   context,
-                  'About',
+                  l.settingsSecAbout,
                   [
                     _SettingsTile(
                       icon: Icons.info_rounded,
-                      title: 'App Version',
+                      title: l.settingsAppVersion,
                       subtitle: '1.6.0',
                       isDark: isDark.value,
                     ),
                     _SettingsDivider(isDark: isDark.value),
                     _SettingsTile(
                       icon: Icons.description_rounded,
-                      title: 'Terms of Service',
+                      title: l.settingsTerms,
                       trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
@@ -611,16 +654,18 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       ),
                       onTap: () {
                         HapticFeedback.lightImpact();
-                        Navigator.of(context).push(MaterialPageRoute<void>(
-                          builder: (_) => const CopyrightPolicyScreen(),
-                        ));
+                        Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => const CopyrightPolicyScreen(),
+                          ),
+                        );
                       },
                       isDark: isDark.value,
                     ),
                     _SettingsDivider(isDark: isDark.value),
                     _SettingsTile(
                       icon: Icons.privacy_tip_outlined,
-                      title: 'Privacy Policy',
+                      title: l.settingsPrivacyPolicy,
                       trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
@@ -636,7 +681,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                     _SettingsDivider(isDark: isDark.value),
                     _SettingsTile(
                       icon: Icons.help_rounded,
-                      title: 'Help & Support',
+                      title: l.settingsHelp,
                       trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
@@ -672,42 +717,42 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
     int index,
   ) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(
-            left: PanAfricanSpacing.sm,
-            bottom: PanAfricanSpacing.sm,
-          ),
-          child: Semantics(
-            header: true,
-            child: Text(
-              title,
-              style: PanAfricanTypography.titleMedium(context).copyWith(
-                color: isDark
-                    ? PanAfricanColors.textPrimaryDark
-                    : PanAfricanColors.textPrimaryLight,
-                fontWeight: FontWeight.w600,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                left: PanAfricanSpacing.sm,
+                bottom: PanAfricanSpacing.sm,
+              ),
+              child: Semantics(
+                header: true,
+                child: Text(
+                  title,
+                  style: PanAfricanTypography.titleMedium(context).copyWith(
+                    color: isDark
+                        ? PanAfricanColors.textPrimaryDark
+                        : PanAfricanColors.textPrimaryLight,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-            borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-            boxShadow: PanAfricanShadows.sm,
-          ),
-          // Ink (tile splashes) must paint above the card colour.
-          child: Material(
-            type: MaterialType.transparency,
-            child: Column(
-              children: children,
+            Container(
+              decoration: BoxDecoration(
+                color: isDark
+                    ? PanAfricanColors.cardDark
+                    : PanAfricanColors.cardLight,
+                borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+                boxShadow: PanAfricanShadows.sm,
+              ),
+              // Ink (tile splashes) must paint above the card colour.
+              child: Material(
+                type: MaterialType.transparency,
+                child: Column(children: children),
+              ),
             ),
-          ),
-        ),
-      ],
-    )
+          ],
+        )
         .animate(delay: (index * 50).ms)
         .fadeIn(duration: 300.ms)
         .slideX(begin: -0.03, end: 0, duration: 300.ms);
@@ -730,7 +775,9 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
         final isDark = Theme.of(context).brightness == Brightness.dark;
         return Container(
           decoration: BoxDecoration(
-            color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+            color: isDark
+                ? PanAfricanColors.cardDark
+                : PanAfricanColors.cardLight,
             borderRadius: BorderRadius.vertical(
               top: Radius.circular(PanAfricanRadius.xl),
             ),
@@ -770,20 +817,21 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                     showLingAfriqSuccess(context, 'Language changed to $value');
                   },
                   child: OptimizedListView.builder(
-                  shrinkWrap: true,
-                  itemCount: languages.length,
-                  itemBuilder: (context, index) {
-                    final lang = languages[index];
-                    return RadioListTile<String>(
-                      title: Text(
-                        lang.substring(0, 1).toUpperCase() + lang.substring(1),
-                        style: PanAfricanTypography.bodyLarge(context),
-                      ),
-                      value: lang,
-                      activeColor: PanAfricanColors.primary,
-                    );
-                  },
-                ),
+                    shrinkWrap: true,
+                    itemCount: languages.length,
+                    itemBuilder: (context, index) {
+                      final lang = languages[index];
+                      return RadioListTile<String>(
+                        title: Text(
+                          lang.substring(0, 1).toUpperCase() +
+                              lang.substring(1),
+                          style: PanAfricanTypography.bodyLarge(context),
+                        ),
+                        value: lang,
+                        activeColor: PanAfricanColors.primary,
+                      );
+                    },
+                  ),
                 ),
               ),
             ],
@@ -810,7 +858,9 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
       }
 
       if (email != null && email.trim().isNotEmpty) {
-        enabled.value = await biometricPreferenceService.isEnabledForEmail(email);
+        enabled.value = await biometricPreferenceService.isEnabledForEmail(
+          email,
+        );
       } else {
         enabled.value = false;
       }
@@ -844,7 +894,9 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
       builder: (context) {
         return Container(
           decoration: BoxDecoration(
-            color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+            color: isDark
+                ? PanAfricanColors.cardDark
+                : PanAfricanColors.cardLight,
             borderRadius: BorderRadius.vertical(
               top: Radius.circular(PanAfricanRadius.xl),
             ),
@@ -866,7 +918,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
               ),
               SizedBox(height: PanAfricanSpacing.lg),
               Text(
-                'Sync Settings',
+                AppLocalizations.of(context)!.settingsSync,
                 style: PanAfricanTypography.titleLarge(context),
               ),
               SizedBox(height: PanAfricanSpacing.md),
@@ -915,13 +967,14 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor:
-              isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+          backgroundColor: isDark
+              ? PanAfricanColors.cardDark
+              : PanAfricanColors.cardLight,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
           ),
           title: Text(
-            'Cache Management',
+            AppLocalizations.of(context)!.settingsCache,
             style: PanAfricanTypography.titleLarge(context),
           ),
           content: Column(
@@ -966,9 +1019,9 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
               },
               child: Text(
                 'Clear Cache',
-                style: PanAfricanTypography.labelLarge(context).copyWith(
-                  color: PanAfricanColors.error,
-                ),
+                style: PanAfricanTypography.labelLarge(
+                  context,
+                ).copyWith(color: PanAfricanColors.error),
               ),
             ),
           ],
@@ -991,15 +1044,18 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
       builder: (context) {
         var streakEnabled = state.streakRemindersEnabled;
         var dailyEnabled = state.dailyGoalRemindersEnabled;
-        var timeOfDay =
-            TimeOfDay(hour: state.reminderTime.hour, minute: state.reminderTime.minute);
+        var timeOfDay = TimeOfDay(
+          hour: state.reminderTime.hour,
+          minute: state.reminderTime.minute,
+        );
 
         return StatefulBuilder(
           builder: (context, setState) {
             return Container(
               decoration: BoxDecoration(
-                color:
-                    isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                color: isDark
+                    ? PanAfricanColors.cardDark
+                    : PanAfricanColors.cardLight,
                 borderRadius: BorderRadius.vertical(
                   top: Radius.circular(PanAfricanRadius.xl),
                 ),
@@ -1010,7 +1066,8 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                     left: PanAfricanSpacing.md,
                     right: PanAfricanSpacing.md,
                     top: PanAfricanSpacing.md,
-                    bottom: MediaQuery.of(context).viewInsets.bottom +
+                    bottom:
+                        MediaQuery.of(context).viewInsets.bottom +
                         PanAfricanSpacing.md,
                   ),
                   child: Column(
@@ -1032,7 +1089,9 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              'Study Reminders',
+                              AppLocalizations.of(
+                                context,
+                              )!.settingsStudyReminders,
                               style: PanAfricanTypography.titleLarge(context),
                             ),
                           ),
@@ -1106,7 +1165,8 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                           if (picked == null) return;
                           setState(() => timeOfDay = picked);
                           notifier.updateReminderTime(
-                              Time(picked.hour, picked.minute));
+                            Time(picked.hour, picked.minute),
+                          );
                         },
                       ),
                       SizedBox(height: PanAfricanSpacing.md),
@@ -1154,18 +1214,20 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
     showDialog(
       context: context,
       builder: (dialogContext) {
+        final l = AppLocalizations.of(dialogContext)!;
         return AlertDialog(
-          backgroundColor:
-              isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+          backgroundColor: isDark
+              ? PanAfricanColors.cardDark
+              : PanAfricanColors.cardLight,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
           ),
           title: Text(
-            'Log Out',
+            l.logout,
             style: PanAfricanTypography.titleLarge(dialogContext),
           ),
           content: Text(
-            'Are you sure you want to log out?',
+            l.settingsLogoutConfirm,
             style: PanAfricanTypography.bodyMedium(dialogContext),
           ),
           actions: [
@@ -1175,7 +1237,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                 Navigator.pop(dialogContext);
               },
               child: Text(
-                'Cancel',
+                l.cancel,
                 style: PanAfricanTypography.labelLarge(dialogContext),
               ),
             ),
@@ -1186,10 +1248,10 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                 ref.read(authProvider.notifier).signOut();
               },
               child: Text(
-                'Log Out',
-                style: PanAfricanTypography.labelLarge(dialogContext).copyWith(
-                  color: PanAfricanColors.error,
-                ),
+                l.logout,
+                style: PanAfricanTypography.labelLarge(
+                  dialogContext,
+                ).copyWith(color: PanAfricanColors.error),
               ),
             ),
           ],
@@ -1250,23 +1312,20 @@ class _SettingsTile extends StatelessWidget {
                 semanticLabel: title,
               ),
               SizedBox(width: PanAfricanSpacing.md),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: PanAfricanTypography.bodyLarge(context),
-                  ),
-                  if (subtitle != null)
-                    Text(
-                      subtitle!,
-                      style: PanAfricanTypography.bodySmall(context),
-                    ),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title, style: PanAfricanTypography.bodyLarge(context)),
+                    if (subtitle != null)
+                      Text(
+                        subtitle!,
+                        style: PanAfricanTypography.bodySmall(context),
+                      ),
+                  ],
+                ),
               ),
-            ),
-            if (trailing != null) trailing!,
+              if (trailing != null) trailing!,
             ],
           ),
         ),
@@ -1286,7 +1345,9 @@ class _SettingsDivider extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
       child: Divider(
         height: 1,
-        color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
+        color: isDark
+            ? PanAfricanColors.borderDark
+            : PanAfricanColors.borderLight,
       ),
     );
   }
@@ -1303,15 +1364,12 @@ class _CacheStatRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          label,
-          style: PanAfricanTypography.bodyMedium(context),
-        ),
+        Text(label, style: PanAfricanTypography.bodyMedium(context)),
         Text(
           value,
-          style: PanAfricanTypography.bodyMedium(context).copyWith(
-            fontWeight: FontWeight.w600,
-          ),
+          style: PanAfricanTypography.bodyMedium(
+            context,
+          ).copyWith(fontWeight: FontWeight.w600),
         ),
       ],
     );
@@ -1336,30 +1394,30 @@ class _LogoutButton extends StatelessWidget {
             HapticFeedback.mediumImpact();
             onTap();
           },
-        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.logout_rounded,
-                size: 20.sp,
-                color: PanAfricanColors.error,
-              ),
-              SizedBox(width: PanAfricanSpacing.sm),
-              Text(
-                'Log Out',
-                style: PanAfricanTypography.titleMedium(context).copyWith(
+          borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+          child: Container(
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.logout_rounded,
+                  size: 20.sp,
                   color: PanAfricanColors.error,
                 ),
-              ),
-            ],
+                SizedBox(width: PanAfricanSpacing.sm),
+                Text(
+                  AppLocalizations.of(context)!.logout,
+                  style: PanAfricanTypography.titleMedium(
+                    context,
+                  ).copyWith(color: PanAfricanColors.error),
+                ),
+              ],
+            ),
           ),
         ),
       ),
-    ),
     );
   }
 }

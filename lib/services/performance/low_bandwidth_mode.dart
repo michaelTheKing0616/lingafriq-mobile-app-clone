@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../connectivity_service.dart';
 
@@ -106,16 +107,19 @@ class _LowBandwidthSettingsTileState extends State<LowBandwidthSettingsTile> {
 
   @override
   Widget build(BuildContext context) {
+    // English fallback keeps the tile usable outside a localised app.
+    final l = AppLocalizations.of(context);
+    final title = l?.lowBandwidthTitle ?? 'Low bandwidth';
     final subtitle = switch (_decision.source) {
-      'auto-on' => 'On because Data Saver is on',
-      'manual-on' => 'On until you turn it off',
-      _ => 'Off',
+      'auto-on' => l?.lowBandwidthAutoOn ?? 'On because Data Saver is on',
+      'manual-on' => l?.lowBandwidthManualOn ?? 'On until you turn it off',
+      _ => l?.lowBandwidthOff ?? 'Off',
     };
     return Semantics(
-      label: 'Low bandwidth, $subtitle',
+      label: '$title, $subtitle',
       child: SwitchListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-        title: const Text('Low bandwidth'),
+        title: Text(title),
         subtitle: Text(subtitle),
         value: _decision.enabled,
         onChanged: (enabled) async {

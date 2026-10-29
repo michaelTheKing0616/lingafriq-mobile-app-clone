@@ -38,4 +38,54 @@ void main() {
       }
     });
   }
+
+  for (final (locale, expected) in [
+    (
+      const Locale('ar'),
+      [
+        'حول التطبيق',
+        'شروط الخدمة',
+        'سياسة الخصوصية',
+        'دليل الميزات',
+        'كيف تعمل الألعاب',
+        'المساعدة والدعم',
+        'حقوق النشر والإزالة',
+      ],
+    ),
+    (
+      const Locale('fr'),
+      [
+        'À propos',
+        "Conditions d'utilisation",
+        'Politique de confidentialité',
+        'Guide des fonctionnalités',
+        'Fonctionnement des jeux',
+        'Aide et assistance',
+      ],
+    ),
+  ]) {
+    testWidgets('About rows are translated (${locale.languageCode})', (
+      t,
+    ) async {
+      await pumpVariant(
+        t,
+        GoldenVariant('l10n', const Size(390, 3000), locale: locale),
+        const SettingsScreenMaterial3(),
+      );
+      for (final text in expected) {
+        expect(find.text(text), findsOneWidget, reason: text);
+      }
+      for (final english in [
+        'Terms of Service',
+        'Privacy Policy',
+        'Help & Support',
+        'Log Out',
+        'About',
+        'Game onboarding overlay',
+        'Low bandwidth',
+      ]) {
+        expect(find.text(english), findsNothing, reason: english);
+      }
+    });
+  }
 }

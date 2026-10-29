@@ -943,4 +943,162 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reportReasonTitle => 'Why are you reporting this?';
+
+  @override
+  String get settingsSecAppearance => 'Appearance';
+
+  @override
+  String get settingsSecNotifications => 'Notifications';
+
+  @override
+  String get settingsSecAudio => 'Audio';
+
+  @override
+  String get settingsSecSecurity => 'Security';
+
+  @override
+  String get settingsSecAccount => 'Account';
+
+  @override
+  String get settingsSecLearning => 'Learning';
+
+  @override
+  String get settingsSecOffline => 'Offline & Sync';
+
+  @override
+  String get settingsSecAbout => 'About';
+
+  @override
+  String get settingsDarkMode => 'Dark mode';
+
+  @override
+  String get settingsDarkModeSub => 'Switch between light and dark theme';
+
+  @override
+  String get settingsPush => 'Push notifications';
+
+  @override
+  String get settingsPushSub => 'Receive push notifications';
+
+  @override
+  String get settingsDailyReminders => 'Daily reminders';
+
+  @override
+  String get settingsDailyRemindersSub => 'Get reminded to practise daily';
+
+  @override
+  String get settingsSoundEffects => 'Sound effects';
+
+  @override
+  String get settingsSoundEffectsSub => 'Play sound effects during lessons';
+
+  @override
+  String get settingsVoiceStyles => 'Tutor voice styles';
+
+  @override
+  String get settingsVoiceStylesSub =>
+      'Synthetic, non-identifying voices (opt-in)';
+
+  @override
+  String get settingsAppLanguage => 'App language';
+
+  @override
+  String get settingsBiometric => 'Biometric sign-in';
+
+  @override
+  String get settingsBiometricSub => 'Use biometrics to sign in quickly';
+
+  @override
+  String get settingsEncryptCache => 'Encrypt cached data';
+
+  @override
+  String get settingsEncryptCacheSub =>
+      'Encrypt sensitive data stored on this device';
+
+  @override
+  String get settingsEditProfile => 'Edit profile';
+
+  @override
+  String get settingsEditProfileSub => 'Update your personal information';
+
+  @override
+  String get settingsChangePassword => 'Change password';
+
+  @override
+  String get settingsChangePasswordSub => 'Update your account password';
+
+  @override
+  String get settingsPrivacy => 'Privacy settings';
+
+  @override
+  String get settingsPrivacySub => 'Manage your privacy preferences';
+
+  @override
+  String get settingsMentorReports => 'Micro-mentor reports';
+
+  @override
+  String get settingsMentorReportsSub => 'Review safety reports (staff)';
+
+  @override
+  String get settingsGoals => 'Learning goals';
+
+  @override
+  String get settingsGoalsSub => 'Set your daily learning goals';
+
+  @override
+  String get settingsStudyReminders => 'Study reminders';
+
+  @override
+  String get settingsStudyRemindersSub => 'Choose when to be reminded';
+
+  @override
+  String get settingsSync => 'Sync settings';
+
+  @override
+  String get settingsSyncSub => 'Choose what to sync';
+
+  @override
+  String get settingsCache => 'Cache management';
+
+  @override
+  String get settingsCacheSub => 'View and manage cached data';
+
+  @override
+  String get settingsDownloads => 'Downloads';
+
+  @override
+  String get settingsDownloadsSub => 'Unit size, Wi-Fi and delete';
+
+  @override
+  String get settingsAppVersion => 'App version';
+
+  @override
+  String get settingsTerms => 'Terms of Service';
+
+  @override
+  String get settingsPrivacyPolicy => 'Privacy Policy';
+
+  @override
+  String get settingsHelp => 'Help & Support';
+
+  @override
+  String get settingsLogoutConfirm => 'Are you sure you want to log out?';
+
+  @override
+  String get settingsFeaturesGuide => 'Features guide';
+
+  @override
+  String get settingsGamesTour => 'How games work';
+
+  @override
+  String get lowBandwidthTitle => 'Low bandwidth';
+
+  @override
+  String get lowBandwidthAutoOn => 'On because Data Saver is on';
+
+  @override
+  String get lowBandwidthManualOn => 'On until you turn it off';
+
+  @override
+  String get lowBandwidthOff => 'Off';
 }

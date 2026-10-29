@@ -1781,6 +1781,318 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Why are you reporting this?'**
   String get reportReasonTitle;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get settingsSecAppearance;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get settingsSecNotifications;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Audio'**
+  String get settingsSecAudio;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get settingsSecSecurity;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get settingsSecAccount;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Learning'**
+  String get settingsSecLearning;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Offline & Sync'**
+  String get settingsSecOffline;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get settingsSecAbout;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Dark mode'**
+  String get settingsDarkMode;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Switch between light and dark theme'**
+  String get settingsDarkModeSub;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Push notifications'**
+  String get settingsPush;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Receive push notifications'**
+  String get settingsPushSub;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Daily reminders'**
+  String get settingsDailyReminders;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Get reminded to practise daily'**
+  String get settingsDailyRemindersSub;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Sound effects'**
+  String get settingsSoundEffects;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Play sound effects during lessons'**
+  String get settingsSoundEffectsSub;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Tutor voice styles'**
+  String get settingsVoiceStyles;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Synthetic, non-identifying voices (opt-in)'**
+  String get settingsVoiceStylesSub;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'App language'**
+  String get settingsAppLanguage;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric sign-in'**
+  String get settingsBiometric;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Use biometrics to sign in quickly'**
+  String get settingsBiometricSub;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Encrypt cached data'**
+  String get settingsEncryptCache;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Encrypt sensitive data stored on this device'**
+  String get settingsEncryptCacheSub;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Edit profile'**
+  String get settingsEditProfile;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Update your personal information'**
+  String get settingsEditProfileSub;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Change password'**
+  String get settingsChangePassword;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Update your account password'**
+  String get settingsChangePasswordSub;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy settings'**
+  String get settingsPrivacy;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your privacy preferences'**
+  String get settingsPrivacySub;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Micro-mentor reports'**
+  String get settingsMentorReports;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Review safety reports (staff)'**
+  String get settingsMentorReportsSub;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Learning goals'**
+  String get settingsGoals;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Set your daily learning goals'**
+  String get settingsGoalsSub;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Study reminders'**
+  String get settingsStudyReminders;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Choose when to be reminded'**
+  String get settingsStudyRemindersSub;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Sync settings'**
+  String get settingsSync;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Choose what to sync'**
+  String get settingsSyncSub;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Cache management'**
+  String get settingsCache;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'View and manage cached data'**
+  String get settingsCacheSub;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Downloads'**
+  String get settingsDownloads;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Unit size, Wi-Fi and delete'**
+  String get settingsDownloadsSub;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'App version'**
+  String get settingsAppVersion;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get settingsTerms;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get settingsPrivacyPolicy;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Help & Support'**
+  String get settingsHelp;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to log out?'**
+  String get settingsLogoutConfirm;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Features guide'**
+  String get settingsFeaturesGuide;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'How games work'**
+  String get settingsGamesTour;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Low bandwidth'**
+  String get lowBandwidthTitle;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'On because Data Saver is on'**
+  String get lowBandwidthAutoOn;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'On until you turn it off'**
+  String get lowBandwidthManualOn;
+
+  /// Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get lowBandwidthOff;
 }
 
 class _AppLocalizationsDelegate

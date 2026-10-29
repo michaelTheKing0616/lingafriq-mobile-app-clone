@@ -939,4 +939,163 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get reportReasonTitle => 'لماذا تُبلغ عن هذا؟';
+
+  @override
+  String get settingsSecAppearance => 'المظهر';
+
+  @override
+  String get settingsSecNotifications => 'الإشعارات';
+
+  @override
+  String get settingsSecAudio => 'الصوت';
+
+  @override
+  String get settingsSecSecurity => 'الأمان';
+
+  @override
+  String get settingsSecAccount => 'الحساب';
+
+  @override
+  String get settingsSecLearning => 'التعلّم';
+
+  @override
+  String get settingsSecOffline => 'بدون اتصال والمزامنة';
+
+  @override
+  String get settingsSecAbout => 'حول التطبيق';
+
+  @override
+  String get settingsDarkMode => 'الوضع الداكن';
+
+  @override
+  String get settingsDarkModeSub => 'التبديل بين المظهر الفاتح والداكن';
+
+  @override
+  String get settingsPush => 'الإشعارات الفورية';
+
+  @override
+  String get settingsPushSub => 'تلقَّ الإشعارات الفورية';
+
+  @override
+  String get settingsDailyReminders => 'تذكيرات يومية';
+
+  @override
+  String get settingsDailyRemindersSub => 'تلقَّ تذكيرًا بالتدرّب يوميًا';
+
+  @override
+  String get settingsSoundEffects => 'المؤثرات الصوتية';
+
+  @override
+  String get settingsSoundEffectsSub => 'تشغيل المؤثرات الصوتية أثناء الدروس';
+
+  @override
+  String get settingsVoiceStyles => 'أنماط صوت المعلّم';
+
+  @override
+  String get settingsVoiceStylesSub =>
+      'أصوات اصطناعية لا تكشف الهوية (اختيارية)';
+
+  @override
+  String get settingsAppLanguage => 'لغة التطبيق';
+
+  @override
+  String get settingsBiometric => 'تسجيل الدخول بالقياسات الحيوية';
+
+  @override
+  String get settingsBiometricSub =>
+      'استخدم القياسات الحيوية لتسجيل الدخول بسرعة';
+
+  @override
+  String get settingsEncryptCache => 'تشفير البيانات المخزّنة مؤقتًا';
+
+  @override
+  String get settingsEncryptCacheSub =>
+      'تشفير البيانات الحساسة المخزّنة على هذا الجهاز';
+
+  @override
+  String get settingsEditProfile => 'تعديل الملف الشخصي';
+
+  @override
+  String get settingsEditProfileSub => 'حدّث معلوماتك الشخصية';
+
+  @override
+  String get settingsChangePassword => 'تغيير كلمة المرور';
+
+  @override
+  String get settingsChangePasswordSub => 'حدّث كلمة مرور حسابك';
+
+  @override
+  String get settingsPrivacy => 'إعدادات الخصوصية';
+
+  @override
+  String get settingsPrivacySub => 'إدارة تفضيلات الخصوصية';
+
+  @override
+  String get settingsMentorReports => 'بلاغات المرشدين';
+
+  @override
+  String get settingsMentorReportsSub => 'مراجعة بلاغات السلامة (للفريق)';
+
+  @override
+  String get settingsGoals => 'أهداف التعلّم';
+
+  @override
+  String get settingsGoalsSub => 'حدّد أهداف تعلّمك اليومية';
+
+  @override
+  String get settingsStudyReminders => 'تذكيرات الدراسة';
+
+  @override
+  String get settingsStudyRemindersSub => 'اختر وقت التذكير';
+
+  @override
+  String get settingsSync => 'إعدادات المزامنة';
+
+  @override
+  String get settingsSyncSub => 'اختر ما تريد مزامنته';
+
+  @override
+  String get settingsCache => 'إدارة الذاكرة المؤقتة';
+
+  @override
+  String get settingsCacheSub => 'عرض البيانات المخزّنة مؤقتًا وإدارتها';
+
+  @override
+  String get settingsDownloads => 'التنزيلات';
+
+  @override
+  String get settingsDownloadsSub => 'حجم الوحدات وشبكة Wi-Fi والحذف';
+
+  @override
+  String get settingsAppVersion => 'إصدار التطبيق';
+
+  @override
+  String get settingsTerms => 'شروط الخدمة';
+
+  @override
+  String get settingsPrivacyPolicy => 'سياسة الخصوصية';
+
+  @override
+  String get settingsHelp => 'المساعدة والدعم';
+
+  @override
+  String get settingsLogoutConfirm => 'هل تريد تسجيل الخروج؟';
+
+  @override
+  String get settingsFeaturesGuide => 'دليل الميزات';
+
+  @override
+  String get settingsGamesTour => 'كيف تعمل الألعاب';
+
+  @override
+  String get lowBandwidthTitle => 'وضع البيانات المنخفضة';
+
+  @override
+  String get lowBandwidthAutoOn => 'مُفعّل لأن توفير البيانات مُفعّل';
+
+  @override
+  String get lowBandwidthManualOn => 'مُفعّل حتى توقفه';
+
+  @override
+  String get lowBandwidthOff => 'متوقف';
 }
