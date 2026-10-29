@@ -33,7 +33,10 @@ final _euro = StorePrices.fromPackages(
 Finder _plain(String s) => find.byWidgetPredicate(
   (w) =>
       w is Text &&
-      (w.data ?? '').replaceAll(RegExp('[\u2068\u2069]'), '').contains(s),
+      (w.data ?? '')
+          .replaceAll(RegExp('[\u2066\u2068\u2069]'), '')
+          .replaceAll('\u00A0', ' ')
+          .contains(s),
 );
 
 const _en = GoldenVariant('ltr_390', Size(390, 844));
@@ -143,6 +146,49 @@ void main() {
       matchesGoldenFile('goldens/paywall_terms_store_prices_ltr_390.png'),
     );
   });
+
+  for (final apple in [true, false]) {
+    testWidgets('Arabic: Latin brands are LTR-isolated and unbreakable '
+        '(${apple ? 'App Store' : 'Google Play'})', (t) async {
+      await pumpVariant(
+        t,
+        goldenVariants[1],
+        _host(SubscriptionTermsDisclosure(isApple: apple)),
+        overrides: [
+          storePricesProvider.overrideWith((ref) async => StorePrices.fallback),
+        ],
+      );
+      final texts = t
+          .widgetList<Text>(find.byType(Text))
+          .map((w) => w.data ?? '')
+          .where((d) => RegExp(r'App|Google|Store|Play').hasMatch(d))
+          .toList();
+      expect(texts, isNotEmpty);
+      for (final d in texts) {
+        expect(
+          d,
+          isNot(matches(RegExp(r'(App|Google) (Store|Play)'))),
+          reason: 'breakable space in "$d"',
+        );
+        expect(
+          d,
+          matches(RegExp('\u2066(App|Google)\u00A0(Store|Play)\u2069')),
+          reason: 'brand not LTR-isolated in "$d"',
+        );
+      }
+      if (!apple) {
+        await expectLater(
+          find.byType(Scaffold),
+          matchesGoldenFile('goldens/paywall_terms_google_rtl_390.png'),
+        );
+      }
+      // Prices too.
+      expect(
+        t.widgetList<Text>(find.byType(Text)).map((w) => w.data ?? '').join(),
+        contains('\u2066\$4.99\u2069'),
+      );
+    });
+  }
 
   test('fromPackages falls back per field and ignores paid intro offers', () {
     final p = StorePrices.fromPackages(

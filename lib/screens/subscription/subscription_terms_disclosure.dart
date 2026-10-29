@@ -88,9 +88,11 @@ class SubscriptionTermsDisclosure extends ConsumerWidget {
   static const playManageUrl =
       'https://play.google.com/store/account/subscriptions';
 
-  /// First-strong isolate so prices / store names keep their own direction
-  /// inside RTL sentences.
-  static String _iso(String s) => '\u2068$s\u2069';
+  /// Left-to-right isolate (LRI…PDI) for Latin brand names and prices inside
+  /// RTL sentences, with non-breaking spaces so "App Store" never splits and
+  /// trailing punctuation stays after the whole name.
+  @visibleForTesting
+  static String ltr(String s) => '\u2066${s.replaceAll(' ', '\u00A0')}\u2069';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -127,11 +129,11 @@ class SubscriptionTermsDisclosure extends ConsumerWidget {
             label: l.paywallRowPrice,
             values: [
               l.paywallPriceValue(
-                _iso(prices.premium),
-                _iso(prices.family),
-                _iso(prices.lifetime),
+                ltr(prices.premium),
+                ltr(prices.family),
+                ltr(prices.lifetime),
               ),
-              l.paywallChargedTo(_iso(apple ? 'App Store' : 'Google Play')),
+              l.paywallChargedTo(ltr(apple ? 'App Store' : 'Google Play')),
             ],
           ),
           _TermRow(
@@ -151,7 +153,7 @@ class SubscriptionTermsDisclosure extends ConsumerWidget {
               prices.trialDays != null
                   ? l.paywallTrialOffered(
                       prices.trialDays!,
-                      _iso(prices.premium),
+                      ltr(prices.premium),
                     )
                   : l.paywallTrialGeneric,
             ],
