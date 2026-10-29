@@ -367,3 +367,123 @@ class _EmblemPainter extends CustomPainter {
   bool shouldRepaint(_EmblemPainter o) =>
       o.motif != motif || o.accent != accent || o.seed != seed;
 }
+
+/// Sign-in's LingAfriq moment: Polie greets in the chosen language over a
+/// woven strip. Save progress shows the word basket instead, so the two
+/// screens never repeat each other.
+class _SignInHero extends StatelessWidget {
+  const _SignInHero({this.code});
+  final String? code;
+
+  @override
+  Widget build(BuildContext context) {
+    final accent = _accentFor(code);
+    final greeting = _greetings[code] ?? 'Ẹ kú àbọ̀';
+    return Column(
+      key: const ValueKey('signin-hero'),
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _WovenStrip(color: accent),
+        SizedBox(height: ModernGriotSpacing.sm.h),
+        Row(
+          children: [
+            Image.asset(
+              'assets/images/cast_still_PaLingAfriq.png',
+              height: 96,
+              excludeFromSemantics: true,
+              errorBuilder: (_, _, _) => const SizedBox(width: 72, height: 96),
+            ),
+            SizedBox(width: ModernGriotSpacing.sm.w),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.all(ModernGriotSpacing.sm.w),
+                decoration: BoxDecoration(
+                  color: ModernGriotColors.surfaceContainerLowest,
+                  borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
+                  border: Border.all(color: accent, width: 1.5),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _bidi(context, greeting),
+                      style: ModernGriotTypography.titleLarge(
+                        context: context,
+                        color: ModernGriotColors.onSurface,
+                      ),
+                    ),
+                    Text(
+                      _bidi(
+                        context,
+                        'Polie is keeping your seat in the village.',
+                      ),
+                      style: ModernGriotTypography.bodyMedium(
+                        context: context,
+                        color: _captionInk,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+/// Save progress's LingAfriq moment: the first-win basket in the chosen
+/// language's emblem and colour.
+class _WordBasket extends StatelessWidget {
+  const _WordBasket({required this.code, required this.words});
+  final String? code;
+  final int words;
+
+  @override
+  Widget build(BuildContext context) {
+    final accent = _accentFor(code);
+    return Semantics(
+      container: true,
+      child: Container(
+        key: const ValueKey('save-basket'),
+        padding: EdgeInsets.all(ModernGriotSpacing.sm.w),
+        decoration: BoxDecoration(
+          color: ModernGriotColors.surfaceContainerLowest,
+          borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
+          border: Border.all(color: ModernGriotColors.outlineVariant),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                if (code != null) _LanguageEmblem(code: code!, size: 40),
+                SizedBox(width: ModernGriotSpacing.sm.w),
+                Expanded(
+                  child: Text(
+                    _tr(
+                      context,
+                      words == 1
+                          ? '1 word in your basket'
+                          : '$words words in your basket',
+                      words == 1
+                          ? 'كلمة واحدة في سلّتك'
+                          : '$words كلمات في سلّتك',
+                    ),
+                    style: ModernGriotTypography.titleSmall(
+                      context: context,
+                      color: ModernGriotColors.onSurface,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: ModernGriotSpacing.xs.h),
+            _WovenStrip(color: accent),
+          ],
+        ),
+      ),
+    );
+  }
+}

@@ -46,6 +46,16 @@ String _bidi(BuildContext context, String text) {
       : text;
 }
 
+/// Copy with a runtime value: Arabic built from [ar] for `ar`, else [en].
+String _tr(BuildContext context, String en, String ar) =>
+    Localizations.maybeLocaleOf(context)?.languageCode == 'ar'
+    ? ar
+    : _bidi(context, en);
+
+/// Fade cue height; the body is inset by the same amount so the last line
+/// always scrolls fully clear of the cue and the footer.
+const double _scrollCueHeight = 64;
+
 class _StepScaffold extends HookConsumerWidget {
   const _StepScaffold({
     required this.child,
@@ -137,14 +147,25 @@ class _StepScaffold extends HookConsumerWidget {
                         Positioned.fill(
                           child: LayoutBuilder(
                             builder: (context, constraints) {
+                              final bottomInset = bottom == null
+                                  ? 0.0
+                                  : _scrollCueHeight.h;
                               return SingleChildScrollView(
                                 key: const ValueKey('step-body'),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: ModernGriotSpacing.lg.w,
+                                // Bottom inset = the fade height, so the last
+                                // line always scrolls clear of the cue/footer.
+                                padding: EdgeInsets.fromLTRB(
+                                  ModernGriotSpacing.lg.w,
+                                  0,
+                                  ModernGriotSpacing.lg.w,
+                                  bottomInset,
                                 ),
                                 child: ConstrainedBox(
                                   constraints: BoxConstraints(
-                                    minHeight: constraints.maxHeight,
+                                    minHeight: math.max(
+                                      0,
+                                      constraints.maxHeight - bottomInset,
+                                    ),
                                   ),
                                   child: header != null && !pinHeader
                                       ? Column(
@@ -164,7 +185,7 @@ class _StepScaffold extends HookConsumerWidget {
                             start: 0,
                             end: 0,
                             bottom: 0,
-                            height: ModernGriotSpacing.xl.h,
+                            height: _scrollCueHeight.h,
                             child: const IgnorePointer(
                               key: ValueKey('step-scroll-fade'),
                               child: DecoratedBox(

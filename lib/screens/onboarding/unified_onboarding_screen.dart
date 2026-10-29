@@ -306,6 +306,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
           busy: isCompleting.value,
           busyChoice: isCompleting.value ? pendingChoice.value : null,
           wordsLearned: onboardingData.value['first_win_words'] as int? ?? 0,
+          learnCode: onboardingData.value['learning_language'] as String?,
           failedChoice: failedChoice.value,
           onChoose: (choice) async {
             if (isCompleting.value) return;
@@ -333,7 +334,12 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                 },
                 context,
                 ref,
-                destination: _destinationFor(choice),
+                destination: _destinationFor(
+                  choice,
+                  learnCode:
+                      onboardingData.value['learning_language'] as String?,
+                  total: steps.length,
+                ),
               );
             } finally {
               if (context.mounted) isCompleting.value = false;
@@ -402,96 +408,20 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
     VoidCallback? onBack,
     VoidCallback? onSkip,
     String? accentCode,
-  }) {
-    final Color foregroundColor = isLightBackground
-        ? ModernGriotColors.onSurface
-        : ModernGriotColors.surface;
-    final Color progressFillColor = _accentFor(accentCode);
-    return Positioned(
-      top: MediaQuery.of(context).padding.top + ModernGriotSpacing.xxs.h,
-      left: 0,
-      right: 0,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: ModernGriotSpacing.sm.w),
-        child: Row(
-          children: [
-            if (onBack != null)
-              Semantics(
-                label: 'Go back to the previous step',
-                button: true,
-                child: IconButton(
-                  onPressed: onBack,
-                  icon: IconTheme(
-                    data: IconThemeData(
-                      color: foregroundColor,
-                      size: ModernGriotSpacing.lg.sp,
-                    ),
-                    child: const BackButtonIcon(),
-                  ),
-                  style: IconButton.styleFrom(
-                    backgroundColor: foregroundColor.withValues(
-                      alpha: _GriotAlpha.iconWash,
-                    ),
-                    minimumSize: const Size(
-                      ModernGriotLayout.minTouchTarget,
-                      ModernGriotLayout.minTouchTarget,
-                    ),
-                  ),
-                ),
-              )
-            else
-              SizedBox(width: ModernGriotLayout.minTouchTarget.w),
-            Expanded(
-              child: Semantics(
-                label: 'Onboarding progress',
-                value: 'Step ${current + 1} of $total',
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: ModernGriotSpacing.xs.w,
-                  ),
-                  child: SizedBox(
-                    height: 12,
-                    child: CustomPaint(
-                      painter: _BeadProgressPainter(
-                        current: current,
-                        total: total,
-                        accent: progressFillColor,
-                        track: foregroundColor.withValues(alpha: 0.38),
-                        rtl: Directionality.of(context) == TextDirection.rtl,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            if (allowSkip)
-              Semantics(
-                label: 'Skip onboarding',
-                button: true,
-                child: TextButton(
-                  onPressed: onSkip,
-                  style: TextButton.styleFrom(
-                    minimumSize: const Size(
-                      ModernGriotLayout.minTouchTarget,
-                      ModernGriotLayout.minTouchTarget,
-                    ),
-                  ),
-                  child: Text(
-                    _bidi(context, 'Skip'),
-                    style: ModernGriotTypography.labelLarge(
-                      context: context,
-                      color: foregroundColor,
-                    ),
-                  ),
-                ),
-              )
-            else
-              SizedBox(width: ModernGriotLayout.minTouchTarget.w),
-          ],
-        ),
-      ),
-    );
-  }
+  }) => Positioned(
+    top: MediaQuery.of(context).padding.top + ModernGriotSpacing.xxs.h,
+    left: 0,
+    right: 0,
+    child: _OnboardingTopBar(
+      current: current,
+      total: total,
+      isLightBackground: isLightBackground,
+      allowSkip: allowSkip,
+      onBack: onBack,
+      onSkip: onSkip,
+      accentCode: accentCode,
+    ),
+  );
 
   void _goToNext(
     BuildContext context,
@@ -574,16 +504,19 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
   }
 
   /// Where each save-progress choice lands. Signed-in users skip auth.
-  static Widget? _destinationFor(_AccountChoice choice) => switch (choice) {
-    _AccountChoice.google => const SignInOptionsScreen(
+  static Widget? _destinationFor(
+    _AccountChoice choice, {
+    String? learnCode,
+    int total = 1,
+  }) => switch (choice) {
+    _AccountChoice.google || _AccountChoice.apple => SignInOptionsScreen(
       googleIdToken: DeviceIdentity.googleIdToken,
       appleIdToken: DeviceIdentity.appleIdToken,
-      autoStart: SignInAutoStart.google,
-    ),
-    _AccountChoice.apple => const SignInOptionsScreen(
-      googleIdToken: DeviceIdentity.googleIdToken,
-      appleIdToken: DeviceIdentity.appleIdToken,
-      autoStart: SignInAutoStart.apple,
+      autoStart: choice == _AccountChoice.google
+          ? SignInAutoStart.google
+          : SignInAutoStart.apple,
+      topBar: _SignInTopBar(total: total, accentCode: learnCode),
+      hero: _SignInHero(code: learnCode),
     ),
     _AccountChoice.email => const WorldClassSignupScreen(),
     _AccountChoice.signIn => const WorldClassLoginScreen(),
@@ -731,6 +664,15 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
       final nextScreen = isLoggedIn
           ? const TabsViewMaterial3()
           : destination ?? const WorldClassLoginScreen();
+      if (!isLoggedIn && nextScreen is SignInOptionsScreen) {
+        // Keep onboarding underneath so sign-in's back returns to this step.
+        unawaited(
+          Navigator.of(
+            context,
+          ).push(SmoothPageRoute.platform(child: nextScreen)),
+        );
+        return;
+      }
       Navigator.of(context).pushAndRemoveUntil(
         SmoothPageRoute.platform(child: nextScreen),
         (route) => false,
@@ -742,3 +684,132 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
 // =============================================================================
 // Shared chrome
 // =============================================================================
+
+/// Back + bead progress + skip; shared by every step and by sign-in.
+class _OnboardingTopBar extends StatelessWidget {
+  const _OnboardingTopBar({
+    required this.current,
+    required this.total,
+    this.isLightBackground = true,
+    this.allowSkip = false,
+    this.onBack,
+    this.onSkip,
+    this.accentCode,
+  });
+
+  final int current;
+  final int total;
+  final bool isLightBackground;
+  final bool allowSkip;
+  final VoidCallback? onBack;
+  final VoidCallback? onSkip;
+  final String? accentCode;
+
+  @override
+  Widget build(BuildContext context) {
+    final Color foregroundColor = isLightBackground
+        ? ModernGriotColors.onSurface
+        : ModernGriotColors.surface;
+    final Color progressFillColor = _accentFor(accentCode);
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: ModernGriotSpacing.sm.w),
+      child: Row(
+        children: [
+          if (onBack != null)
+            Semantics(
+              label: _bidi(context, 'Go back to the previous step'),
+              button: true,
+              child: IconButton(
+                onPressed: onBack,
+                icon: IconTheme(
+                  data: IconThemeData(
+                    color: foregroundColor,
+                    size: ModernGriotSpacing.lg.sp,
+                  ),
+                  child: const BackButtonIcon(),
+                ),
+                style: IconButton.styleFrom(
+                  backgroundColor: foregroundColor.withValues(
+                    alpha: _GriotAlpha.iconWash,
+                  ),
+                  minimumSize: const Size(
+                    ModernGriotLayout.minTouchTarget,
+                    ModernGriotLayout.minTouchTarget,
+                  ),
+                ),
+              ),
+            )
+          else
+            SizedBox(width: ModernGriotLayout.minTouchTarget.w),
+          Expanded(
+            child: Semantics(
+              label: _bidi(context, 'Onboarding progress'),
+              value: _tr(
+                context,
+                'Step ${current + 1} of $total',
+                'الخطوة ${current + 1} من $total',
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: ModernGriotSpacing.xs.w,
+                ),
+                child: SizedBox(
+                  height: 12,
+                  child: CustomPaint(
+                    painter: _BeadProgressPainter(
+                      current: current,
+                      total: total,
+                      accent: progressFillColor,
+                      track: foregroundColor.withValues(alpha: 0.38),
+                      rtl: Directionality.of(context) == TextDirection.rtl,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          if (allowSkip)
+            Semantics(
+              label: _bidi(context, 'Skip onboarding'),
+              button: true,
+              child: TextButton(
+                onPressed: onSkip,
+                style: TextButton.styleFrom(
+                  minimumSize: const Size(
+                    ModernGriotLayout.minTouchTarget,
+                    ModernGriotLayout.minTouchTarget,
+                  ),
+                ),
+                child: Text(
+                  _bidi(context, 'Skip'),
+                  style: ModernGriotTypography.labelLarge(
+                    context: context,
+                    color: foregroundColor,
+                  ),
+                ),
+              ),
+            )
+          else
+            SizedBox(width: ModernGriotLayout.minTouchTarget.w),
+        ],
+      ),
+    );
+  }
+}
+
+class _SignInTopBar extends StatelessWidget {
+  const _SignInTopBar({required this.total, this.accentCode});
+  final int total;
+  final String? accentCode;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: EdgeInsets.only(top: ModernGriotSpacing.xxs.h),
+    child: _OnboardingTopBar(
+      current: total - 1,
+      total: total,
+      accentCode: accentCode,
+      onBack: () => Navigator.of(context).maybePop(),
+    ),
+  );
+}

@@ -2,6 +2,7 @@ import 'dart:io' as io;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lingafriq/screens/auth/sign_in_options.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lingafriq/avatars/cast/cast_file_cache.dart';
@@ -22,11 +23,43 @@ Future<void> _shot(WidgetTester tester, String name) async {
   );
 }
 
+/// Saving does real I/O (prefs, outbox); give it real time until sign-in
+/// is on screen. Offline never leaves save progress.
+Future<void> _untilSignIn(WidgetTester tester, {bool online = true}) async {
+  for (var i = 0; i < 20; i++) {
+    await tester.pump(const Duration(milliseconds: 500));
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(milliseconds: 100)),
+    );
+    await settleArt(tester);
+    if (find.byKey(const ValueKey('signin-hero')).evaluate().isNotEmpty) {
+      // Finish the route transition before any golden.
+      for (var j = 0; j < 5; j++) {
+        await tester.pump(const Duration(milliseconds: 200));
+      }
+      return;
+    }
+  }
+  if (online) fail('sign-in never opened after saving');
+}
+
+final _signInBack = find.descendant(
+  of: find.byType(SignInOptionsScreen),
+  matching: find.byType(BackButtonIcon),
+);
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   CastFileCache.instance.renderer = Factory.flutter;
 
+  // rootBundle caches asset futures; one completed in an earlier test's
+  // fake zone never resumes here, so the rig's part catalog would stall.
+  setUp(rootBundle.clear);
+
   setUpAll(() async {
+    // Decode the rig once in a real zone: a decode begun inside one test's
+    // fake clock never resumes in the next, which left 01 on the still.
+    await CastFileCache.instance.load();
     // Brand type is bundled in assets/google_fonts, so no network is used.
     GoogleFonts.config.allowRuntimeFetching = false;
     goldenFileComparator = ThresholdGoldenComparator(
@@ -81,6 +114,7 @@ void main() {
       online: online,
     );
     await settleOnce(tester);
+    await settleRive(tester);
     await _shot(tester, '01_welcome$suffix');
     await next(tester, 'Get started');
     await tapVisible(tester, label('Yoruba'));
@@ -128,17 +162,79 @@ void main() {
     await _shot(tester, '16_save_progress$suffix');
     // Loading: tapping an account choice shows the saving overlay first.
     await tapVisible(tester, label('Continue with Google'));
+    // Let the disabled styling finish its 200 ms shape/colour transition.
+    await tester.pump(const Duration(milliseconds: 300));
+    if (online) expect(label('Saving your progress…'), findsOneWidget);
     await _shot(tester, '17_save_progress_loading$suffix');
-    for (var i = 0; i < 10; i++) {
-      await tester.pump(const Duration(milliseconds: 500));
-    }
-    await settleArt(tester);
+    await _untilSignIn(tester, online: online);
     expect(find.textContaining('provider_invalid'), findsNothing);
     await expectLater(
       find.byType(MaterialApp),
       matchesGoldenFile('goldens/unified/18_signin_google$suffix.png'),
     );
+    if (!online) {
+      expect(find.byKey(const ValueKey('finish-error')), findsOneWidget);
+      await expectLastButtonReachable(tester, 'save progress offline');
+      return;
+    }
+    // Same chrome as every step: back + bead progress, plus Polie's greeting.
+    expect(_signInBack, findsOneWidget);
+    expect(find.byKey(const ValueKey('signin-hero')), findsOneWidget);
+    await expectLastButtonReachable(
+      tester,
+      'sign-in$suffix',
+      bodyKey: const Key('signin-body'),
+    );
+    // Back returns to save progress (onboarding stays underneath).
+    await tester.tap(_signInBack);
+    for (var i = 0; i < 6; i++) {
+      await tester.pump(const Duration(milliseconds: 200));
+    }
+    expect(find.byKey(const ValueKey('save-basket')), findsOneWidget);
+    await expectLastButtonReachable(tester, 'save progress$suffix');
   }
+
+  testWidgets('Arabic locale: save progress and sign-in in Arabic, mirrored', (
+    tester,
+  ) async {
+    await pumpOnboarding(
+      tester,
+      reducedMotion: true,
+      textDirection: TextDirection.rtl,
+      locale: const Locale('ar'),
+    );
+    await settleOnce(tester);
+    await advanceToFirstWin(tester);
+    await completeFirstWin(tester);
+    await advanceToSaveProgress(tester);
+    for (final ar in [
+      'هل تريد حفظ تقدّمك؟',
+      'المتابعة باستخدام Google',
+      'إنشاء حساب بالبريد الإلكتروني',
+      'لدي حساب بالفعل',
+      'لاحقًا. تبقى إجاباتي على هذا الهاتف',
+    ]) {
+      expect(find.text(ar), findsOneWidget, reason: ar);
+    }
+    for (final en in ['Save your', 'Continue with', 'Sign up', 'Later.']) {
+      expect(find.textContaining(en), findsNothing, reason: en);
+    }
+    await _shot(tester, '16a_save_progress_arabic_rtl');
+    await tapVisible(tester, find.text('المتابعة باستخدام Google'));
+    await _untilSignIn(tester);
+    for (final ar in ['اختر طريقة تسجيل الدخول', 'أو', 'أرسل لي رابطًا']) {
+      expect(find.text(ar), findsOneWidget, reason: ar);
+    }
+    for (final en in ['Choose how', 'Email me', 'Continue with']) {
+      expect(find.textContaining(en), findsNothing, reason: en);
+    }
+    // Mirrored: back at the right (start) edge.
+    expect(tester.getCenter(_signInBack).dx, greaterThan(195));
+    await expectLater(
+      find.byType(MaterialApp),
+      matchesGoldenFile('goldens/unified/18a_signin_arabic_rtl.png'),
+    );
+  });
 
   testWidgets('Arabic locale: welcome and language in Arabic, mirrored', (
     tester,

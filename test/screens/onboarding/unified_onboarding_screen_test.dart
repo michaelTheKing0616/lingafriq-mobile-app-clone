@@ -39,7 +39,11 @@ Future<Widget> wrap(
           locale: locale,
           supportedLocales: const [Locale('en'), Locale('ar')],
           localizationsDelegates: GlobalMaterialLocalizations.delegates,
-          home: Directionality(textDirection: textDirection, child: child),
+          // Every route (sign-in too) inherits the direction, as the
+          // locale does in the app.
+          builder: (_, navigator) =>
+              Directionality(textDirection: textDirection, child: navigator!),
+          home: child,
         ),
       ),
     ),
@@ -47,8 +51,19 @@ Future<Widget> wrap(
 }
 
 /// Text finder that also matches copy wrapped in an LTR isolate (RTL runs).
+/// Arabic copy the walk taps through, so the same helpers drive `ar` runs.
+const Map<String, String> arLabels = {
+  'Get started': 'ابدأ الآن',
+  'Continue': 'متابعة',
+  'Yoruba': 'اليوروبا',
+};
+
 Finder label(String text) => find.byWidgetPredicate(
-  (w) => w is Text && (w.data == text || w.data == '\u2066$text\u2069'),
+  (w) =>
+      w is Text &&
+      (w.data == text ||
+          w.data == '\u2066$text\u2069' ||
+          (arLabels[text] != null && w.data == arLabels[text])),
   description: 'text "$text"',
 );
 
@@ -227,8 +242,8 @@ void main() {
         expect(find.byKey(const ValueKey('welcome-greetings')), findsOneWidget);
         bool painted(String type) => find
             .byWidgetPredicate(
-              (w) => w is CustomPaint &&
-                  w.painter.runtimeType.toString() == type,
+              (w) =>
+                  w is CustomPaint && w.painter.runtimeType.toString() == type,
             )
             .evaluate()
             .isNotEmpty;

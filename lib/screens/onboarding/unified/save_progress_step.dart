@@ -12,7 +12,11 @@ class _SaveProgressStep extends StatelessWidget {
     required this.busy,
     this.failedChoice,
     this.busyChoice,
+    this.learnCode,
   });
+
+  /// Chosen language; colours the word basket.
+  final String? learnCode;
 
   /// The choice whose button shows in-button progress while saving.
   final _AccountChoice? busyChoice;
@@ -28,6 +32,7 @@ class _SaveProgressStep extends StatelessWidget {
   Widget build(BuildContext context) {
     VoidCallback? go(_AccountChoice c) => busy ? null : () => onChoose(c);
     final words = wordsLearned == 1 ? '1 word' : '$wordsLearned words';
+    final arWords = wordsLearned == 1 ? 'كلمة واحدة' : '$wordsLearned كلمات';
     return _StepScaffold(
       showOfflineNotice: failedChoice == null,
       bottom: Padding(
@@ -53,13 +58,19 @@ class _SaveProgressStep extends StatelessWidget {
       header: _QuestionHeader(
         step: OnboardingStep.profile,
         question: 'Save your progress?',
-        hint:
-            'You finished your first lesson and learned $words. '
-            'An account keeps your progress safe if you change phones.',
+        hint: _tr(
+          context,
+          'You finished your first lesson and learned $words. '
+              'An account keeps your progress safe if you change phones.',
+          'أنهيت درسك الأول وتعلّمت $arWords. '
+              'يحفظ الحساب تقدّمك إذا غيّرت هاتفك.',
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          _WordBasket(code: learnCode, words: wordsLearned),
+          SizedBox(height: ModernGriotSpacing.md.h),
           if (failedChoice != null) ...[
             _FinishError(onRetry: () => onChoose(failedChoice!)),
             SizedBox(height: ModernGriotSpacing.md.h),
@@ -149,32 +160,42 @@ class _AuthProviderButton extends StatelessWidget {
       ),
       child: Semantics(
         button: true,
-        label: busy ? 'Saving your progress' : label,
+        label: _bidi(context, busy ? 'Saving your progress…' : label),
         excludeSemantics: true,
         child: OutlinedButton.icon(
           onPressed: onPressed,
           icon: busy
-              ? const SizedBox.shrink()
-              : Icon(icon, color: foreground, size: 24),
+              ? null
+              : Icon(
+                  icon,
+                  color: onPressed == null ? _captionInk : foreground,
+                  size: 24,
+                ),
           label: busy
-              ? _BusyLabel(label: _bidi(context, 'Saving…'))
+              ? const _BusyLabel(label: 'Saving your progress…')
               : Text(
                   _bidi(context, label),
                   textAlign: TextAlign.center,
                   style: ModernGriotTypography.labelLarge(
                     context: context,
-                    color: foreground,
+                    color: onPressed == null ? _captionInk : foreground,
                   ),
                 ),
           style: OutlinedButton.styleFrom(
             backgroundColor: background,
             foregroundColor: foreground,
-            disabledBackgroundColor: background,
-            disabledForegroundColor: foreground,
+            // While saving, every choice greys out; only the busy one speaks.
+            disabledBackgroundColor: ModernGriotColors.surfaceContainerHigh,
+            disabledForegroundColor: ModernGriotColors.onSurface,
             minimumSize: const Size.fromHeight(
               ModernGriotLayout.minTouchTarget,
             ),
-            side: BorderSide(color: border, width: 1.5),
+            side: BorderSide(
+              color: onPressed == null
+                  ? ModernGriotColors.outlineVariant
+                  : border,
+              width: 1.5,
+            ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
             ),

@@ -219,6 +219,7 @@ Future<void> audit(WidgetTester tester, String step) async {
       await tester.pump(const Duration(milliseconds: 100));
     }
     expectLastItemAboveBar(tester, step);
+    await expectLastButtonReachable(tester, step);
     // At large text the question stays pinned as one line while scrolled.
     final big = MediaQuery.textScalerOf(tester.element(body)).scale(1) >= 1.5;
     if (big && st.position.pixels > 48 && _questionSteps.contains(step)) {

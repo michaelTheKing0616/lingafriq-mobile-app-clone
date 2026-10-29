@@ -38,4 +38,18 @@ const Map<String, String> _arCopy = {
   'No languages match that search.': 'لا توجد لغات تطابق هذا البحث.',
   'Try a region, a script name, or clear the box.':
       'جرّب اسم منطقة أو كتابة، أو امسح الحقل.',
+  'Save your progress?': 'هل تريد حفظ تقدّمك؟',
+  'Continue with Google': 'المتابعة باستخدام Google',
+  'Continue with Apple': 'المتابعة باستخدام Apple',
+  'Sign up with email': 'إنشاء حساب بالبريد الإلكتروني',
+  'Later. My answers stay on this phone': 'لاحقًا. تبقى إجاباتي على هذا الهاتف',
+  'Saving your progress…': 'جارٍ حفظ تقدّمك…',
+  "Couldn't reach sign-in": 'تعذّر الوصول إلى تسجيل الدخول',
+  "You're offline. Your answers are saved on this phone. Connect, then try again.":
+      'أنت غير متصل. إجاباتك محفوظة على هذا الهاتف. اتصل ثم حاول مجددًا.',
+  'Retry': 'إعادة المحاولة',
+  'Polie is keeping your seat in the village.': 'بولي يحجز لك مكانك في القرية.',
+  'Go back to the previous step': 'الرجوع إلى الخطوة السابقة',
+  'Onboarding progress': 'تقدّم الإعداد',
+  'Skip onboarding': 'تخطي الإعداد',
 };
