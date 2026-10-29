@@ -9,6 +9,7 @@ import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart';
 import 'package:lingafriq/services/age_tier_service.dart';
 import 'package:riverpod/misc.dart' show Override;
 
+import '../../compliance/contrast_kit.dart';
 import '../../compliance/golden_kit.dart';
 
 /// Fake notifier: no plugin, no network; records every change.
@@ -358,4 +359,15 @@ void main() {
     await _pump(t, base, _o(tier: 'adult'));
     expect(find.byKey(const Key('rm-child')), findsNothing);
   });
+
+  for (final on in [false, true]) {
+    testWidgets(
+      'measured text contrast >= 4.5:1 (master ${on ? 'on' : 'off'})',
+      (t) async {
+        await _pump(t, base, _o(fake: _Fake(on: on)));
+        final bad = lowContrastTexts(t, find.byType(ReminderSettingsScreen));
+        expect(bad, isEmpty, reason: '$bad');
+      },
+    );
+  }
 }

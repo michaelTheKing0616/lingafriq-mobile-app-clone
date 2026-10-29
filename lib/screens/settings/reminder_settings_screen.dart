@@ -245,8 +245,11 @@ class _ReminderSettingsScreenState
               activeTrackColor: _navy,
               activeThumbColor: Colors.white,
               secondary: const Icon(Icons.flag_rounded, color: _navy),
-              title: Text(l.rmGoal),
-              subtitle: Text(l.rmGoalSub),
+              title: Text(l.rmGoal, style: const TextStyle(color: _ink)),
+              subtitle: Text(
+                l.rmGoalSub,
+                style: const TextStyle(color: _muted),
+              ),
               onChanged: on
                   ? (v) {
                       _touch();
@@ -261,8 +264,11 @@ class _ReminderSettingsScreenState
               activeTrackColor: _navy,
               activeThumbColor: Colors.white,
               secondary: const Icon(Icons.celebration_rounded, color: _navy),
-              title: Text(l.rmRhythm),
-              subtitle: Text(l.rmRhythmSub),
+              title: Text(l.rmRhythm, style: const TextStyle(color: _ink)),
+              subtitle: Text(
+                l.rmRhythmSub,
+                style: const TextStyle(color: _muted),
+              ),
               onChanged: on
                   ? (v) {
                       _touch();
@@ -344,7 +350,7 @@ class _Preview extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
       ),
       child: AnimatedOpacity(
-        opacity: on ? 1 : 0.85,
+        opacity: 1,
         duration: MediaQuery.disableAnimationsOf(context)
             ? Duration.zero
             : const Duration(milliseconds: 200),
@@ -474,11 +480,18 @@ class _TimeChip extends StatelessWidget {
       button: true,
       selected: selected,
       enabled: enabled,
+      // Disabled is shown with solid muted colours, not opacity, so text
+      // keeps >= 4.5:1 contrast while the master switch is off.
       child: Material(
-        color: selected ? _navy : Colors.white,
+        color: selected
+            ? (enabled ? _navy : _muted)
+            : (enabled ? Colors.white : _soft),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
-          side: BorderSide(color: selected ? _navy : _line, width: 2),
+          side: BorderSide(
+            color: selected ? (enabled ? _navy : _muted) : _line,
+            width: 2,
+          ),
         ),
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
@@ -486,31 +499,30 @@ class _TimeChip extends StatelessWidget {
           child: Container(
             constraints: const BoxConstraints(minHeight: 56, minWidth: 96),
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-            child: Opacity(
-              opacity: enabled ? 1 : 0.45,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    color: selected ? Colors.white : (enabled ? _ink : _muted),
+                  ),
+                ),
+                if (time != null)
                   Text(
-                    label,
+                    time!,
+                    textDirection: TextDirection.ltr,
                     style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      color: selected ? Colors.white : _ink,
+                      fontSize: 13,
+                      color: selected
+                          ? (enabled ? _gold : Colors.white)
+                          : _muted,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
-                  if (time != null)
-                    Text(
-                      time!,
-                      textDirection: TextDirection.ltr,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: selected ? _gold : _muted,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                ],
-              ),
+              ],
             ),
           ),
         ),
