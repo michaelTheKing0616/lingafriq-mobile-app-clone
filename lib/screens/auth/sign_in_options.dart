@@ -9,7 +9,8 @@ import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/auth/email_verification_screen.dart';
 import 'package:lingafriq/screens/onboarding/onboarding_screen_material3.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
-import 'package:lingafriq/services/passkey_codec.dart';
+import 'package:lingafriq/screens/auth/sign_in_errors.dart';
+import 'package:lingafriq/utils/modern_griot_design_system.dart';
 import 'package:lingafriq/utils/api.dart';
 
 enum SignInOptionsState { options, sending, linkSent, error }
@@ -28,7 +29,7 @@ class SignInOptionsView extends StatelessWidget {
     required this.emailController,
     required this.tokenController,
     required this.onUseToken,
-    this.errorText,
+    this.errorCode,
   });
 
   final SignInOptionsState state;
@@ -38,84 +39,303 @@ class SignInOptionsView extends StatelessWidget {
   final VoidCallback onUseToken;
   final TextEditingController emailController;
   final TextEditingController tokenController;
-  final String? errorText;
+
+  /// A [signInErrorCodes] entry; shown as learner copy, never raw.
+  final String? errorCode;
+
+  @override
+  Widget build(BuildContext context) {
+    final linkSent = state == SignInOptionsState.linkSent;
+    final lang = Localizations.maybeLocaleOf(context)?.languageCode;
+    final title = linkSent
+        ? 'Check your email for a sign-in link'
+        : 'Choose how to sign in';
+    return Semantics(
+      label: linkSent ? 'signin.link_sent' : 'signin.options',
+      child: Material(
+        color: ModernGriotColors.surface,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Center(
+                child: Image.asset(
+                  'assets/images/cast_still_PaLingAfriq.png',
+                  height: 112,
+                  excludeFromSemantics: true,
+                  errorBuilder: (_, _, _) => const SizedBox(height: 112),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Semantics(
+                header: true,
+                child: Text(
+                  title,
+                  key: Key(linkSent ? 'signin.link_sent' : 'signin.options'),
+                  textAlign: TextAlign.center,
+                  style: ModernGriotTypography.headlineSmall(
+                    context: context,
+                    color: ModernGriotColors.onSurface,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                linkSent
+                    ? 'The link expires in 15 minutes and works once.'
+                    : 'Your answers and first win are saved to this account.',
+                textAlign: TextAlign.center,
+                style: ModernGriotTypography.bodyMedium(
+                  context: context,
+                  color: ModernGriotColors.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(height: 24),
+              if (state == SignInOptionsState.sending)
+                const Center(
+                  child: CircularProgressIndicator(
+                    key: Key('signin.sending'),
+                    color: ModernGriotColors.primary,
+                  ),
+                ),
+              if (state == SignInOptionsState.error) ...[
+                _SignInError(
+                  text: signInErrorText(errorCode ?? 'unknown', lang),
+                ),
+                const SizedBox(height: 16),
+              ],
+              if (state == SignInOptionsState.options ||
+                  state == SignInOptionsState.error) ...[
+                _ProviderButton(
+                  label: 'Continue with Google',
+                  icon: Icons.account_circle_outlined,
+                  background: ModernGriotColors.surfaceContainerLowest,
+                  foreground: ModernGriotColors.onSurface,
+                  border: ModernGriotColors.outlineVariant,
+                  onPressed: onGoogle,
+                ),
+                const SizedBox(height: 12),
+                _ProviderButton(
+                  label: 'Continue with Apple',
+                  icon: Icons.apple,
+                  background: ModernGriotColors.onSurface,
+                  foreground: ModernGriotColors.surfaceContainerLowest,
+                  border: ModernGriotColors.onSurface,
+                  onPressed: onApple,
+                ),
+                const SizedBox(height: 24),
+                _OrDivider(),
+                const SizedBox(height: 24),
+                _GriotField(
+                  controller: emailController,
+                  label: 'Email for a sign-in link',
+                  keyboardType: TextInputType.emailAddress,
+                ),
+                const SizedBox(height: 12),
+                _GoldButton(label: 'Email me a link', onPressed: onSendLink),
+              ],
+              if (linkSent) ...[
+                _GriotField(
+                  controller: tokenController,
+                  label: 'Paste the link token',
+                ),
+                const SizedBox(height: 12),
+                _GoldButton(
+                  label: 'Sign in with the link',
+                  onPressed: onUseToken,
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SignInError extends StatelessWidget {
+  const _SignInError({required this.text});
+
+  final String text;
 
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: state == SignInOptionsState.linkSent
-          ? 'signin.link_sent'
-          : 'signin.options',
-      child: Material(
-        child: ListView(
-          padding: const EdgeInsets.all(24),
+      liveRegion: true,
+      child: Container(
+        key: const Key('signin.error'),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: ModernGriotColors.surfaceContainerLowest,
+          borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
+          border: Border.all(color: ModernGriotColors.outlineVariant),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              state == SignInOptionsState.linkSent
-                  ? 'Check your email for a sign-in link'
-                  : 'Choose how to sign in',
-              key: Key(
-                state == SignInOptionsState.linkSent
-                    ? 'signin.link_sent'
-                    : 'signin.options',
-              ),
-              style: Theme.of(context).textTheme.titleLarge,
+            const Icon(
+              Icons.info_outline,
+              color: ModernGriotColors.primary,
+              size: 22,
             ),
-            const SizedBox(height: 16),
-            if (state == SignInOptionsState.sending)
-              const Center(
-                child: CircularProgressIndicator(key: Key('signin.sending')),
-              ),
-            if (state == SignInOptionsState.error)
-              Text(
-                errorText ?? 'Sign-in could not be completed',
-                key: const Key('signin.error'),
-              ),
-            if (state == SignInOptionsState.options ||
-                state == SignInOptionsState.error) ...[
-              const SizedBox(height: 12),
-              FilledButton(
-                onPressed: onGoogle,
-                child: const Text('Continue with Google'),
-              ),
-              const SizedBox(height: 8),
-              FilledButton(
-                onPressed: onApple,
-                child: const Text('Continue with Apple'),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  labelText: 'Email for a sign-in link',
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                text,
+                style: ModernGriotTypography.bodyMedium(
+                  context: context,
+                  color: ModernGriotColors.onSurface,
                 ),
               ),
-              const SizedBox(height: 8),
-              OutlinedButton(
-                onPressed: onSendLink,
-                child: const Text('Email me a link'),
-              ),
-            ],
-            if (state == SignInOptionsState.linkSent) ...[
-              const SizedBox(height: 12),
-              const Text('The link expires in 15 minutes and works once.'),
-              const SizedBox(height: 12),
-              TextField(
-                controller: tokenController,
-                decoration: const InputDecoration(
-                  labelText: 'Paste the link token',
-                ),
-              ),
-              const SizedBox(height: 8),
-              FilledButton(
-                onPressed: onUseToken,
-                child: const Text('Sign in with the link'),
-              ),
-            ],
+            ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _ProviderButton extends StatelessWidget {
+  const _ProviderButton({
+    required this.label,
+    required this.icon,
+    required this.background,
+    required this.foreground,
+    required this.border,
+    required this.onPressed,
+  });
+
+  final String label;
+  final IconData icon;
+  final Color background;
+  final Color foreground;
+  final Color border;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: 56),
+      child: OutlinedButton.icon(
+        onPressed: onPressed,
+        icon: Icon(icon, color: foreground, size: 24),
+        label: Text(
+          label,
+          style: ModernGriotTypography.labelLarge(
+            context: context,
+            color: foreground,
+          ),
+        ),
+        style: OutlinedButton.styleFrom(
+          backgroundColor: background,
+          foregroundColor: foreground,
+          side: BorderSide(color: border, width: 1.5),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _GoldButton extends StatelessWidget {
+  const _GoldButton({required this.label, required this.onPressed});
+
+  final String label;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: 56),
+      child: FilledButton(
+        onPressed: onPressed,
+        style: FilledButton.styleFrom(
+          backgroundColor: ModernGriotColors.brandGold,
+          foregroundColor: ModernGriotColors.onBrandGold,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
+          ),
+        ),
+        child: Text(
+          label,
+          style: ModernGriotTypography.labelLarge(
+            context: context,
+            color: ModernGriotColors.onBrandGold,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _GriotField extends StatelessWidget {
+  const _GriotField({
+    required this.controller,
+    required this.label,
+    this.keyboardType,
+  });
+
+  final TextEditingController controller;
+  final String label;
+  final TextInputType? keyboardType;
+
+  @override
+  Widget build(BuildContext context) {
+    OutlineInputBorder edge(Color c, double w) => OutlineInputBorder(
+      borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
+      borderSide: BorderSide(color: c, width: w),
+    );
+    return TextField(
+      controller: controller,
+      keyboardType: keyboardType,
+      cursorColor: ModernGriotColors.primary,
+      style: ModernGriotTypography.bodyLarge(
+        context: context,
+        color: ModernGriotColors.onSurface,
+      ),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: ModernGriotTypography.bodyMedium(
+          context: context,
+          color: ModernGriotColors.onSurfaceVariant,
+        ),
+        floatingLabelStyle: ModernGriotTypography.bodyMedium(
+          context: context,
+          color: ModernGriotColors.primary,
+        ),
+        filled: true,
+        fillColor: ModernGriotColors.surfaceContainerLowest,
+        enabledBorder: edge(ModernGriotColors.outlineVariant, 1.5),
+        focusedBorder: edge(ModernGriotColors.primary, 2),
+      ),
+    );
+  }
+}
+
+class _OrDivider extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    const line = Expanded(
+      child: Divider(color: ModernGriotColors.outlineVariant),
+    );
+    return Row(
+      children: [
+        line,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Text(
+            'or',
+            style: ModernGriotTypography.bodyMedium(
+              context: context,
+              color: ModernGriotColors.onSurfaceVariant,
+            ),
+          ),
+        ),
+        line,
+      ],
     );
   }
 }
@@ -254,7 +474,7 @@ class _SignInOptionsScreenState extends ConsumerState<SignInOptionsScreen> {
   void _fail(Object error) {
     if (!mounted) return;
     setState(() {
-      _error = passkeyErrorText(error);
+      _error = signInErrorCode(error);
       _state = SignInOptionsState.error;
     });
   }
@@ -287,12 +507,25 @@ class _SignInOptionsScreenState extends ConsumerState<SignInOptionsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign in')),
+      backgroundColor: ModernGriotColors.surface,
+      appBar: AppBar(
+        backgroundColor: ModernGriotColors.surface,
+        surfaceTintColor: ModernGriotColors.surface,
+        foregroundColor: ModernGriotColors.onSurface,
+        elevation: 0,
+        title: Text(
+          'Sign in',
+          style: ModernGriotTypography.titleMedium(
+            context: context,
+            color: ModernGriotColors.onSurface,
+          ),
+        ),
+      ),
       body: SignInOptionsView(
         state: _state,
         emailController: _email,
         tokenController: _token,
-        errorText: _error,
+        errorCode: _error,
         onGoogle: _google,
         onApple: _apple,
         onSendLink: _sendLink,
