@@ -87,21 +87,12 @@ class _NotificationsStep extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'A soft nudge when it matters',
-            style: ModernGriotTypography.headlineSmall(
-              context: context,
-              color: ModernGriotColors.onSurface,
-            ),
-          ),
-          SizedBox(height: ModernGriotSpacing.xxs.h),
-          Text(
-            'See the reminder below. Turn it on only if it helps you '
-            'keep your streak. You pick the time.',
-            style: ModernGriotTypography.bodyMedium(
-              context: context,
-              color: ModernGriotColors.onSurfaceVariant,
-            ),
+          const _QuestionHeader(
+            question: 'A soft nudge when it matters',
+            hint:
+                'See the reminder below. Turn it on only if it helps you '
+                'keep your streak. You pick the time.',
+            step: OnboardingStep.schedule,
           ),
           SizedBox(height: ModernGriotSpacing.lg.h),
           Container(

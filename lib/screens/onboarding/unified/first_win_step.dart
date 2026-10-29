@@ -15,6 +15,9 @@ class _FirstWinStep extends HookConsumerWidget {
     );
     final pickedTap = useState<String?>(null);
     final saidReady = useState(false);
+    // Speaking is never required: "Can't speak now" finishes the lesson
+    // without the speaking XP, and is never penalised beyond that.
+    final spoke = useState(false);
     final reduceMotion = MediaQuery.disableAnimationsOf(context);
     final copy = _lessonCopyFor(learningLanguage);
     final decoy = switch (learningLanguage) {
@@ -56,6 +59,7 @@ class _FirstWinStep extends HookConsumerWidget {
     }
 
     if (phase.value >= 3) {
+      final xp = _kExerciseXp * (spoke.value ? 3 : 2);
       return _StepScaffold(
         bottom: _PrimaryCta(
           label: 'Keep going',
@@ -63,8 +67,9 @@ class _FirstWinStep extends HookConsumerWidget {
           onPressed: () {
             onNext({
               'first_win_completed': true,
-              'first_win_xp': 20,
-              'first_win_words': 3,
+              'first_win_xp': xp,
+              'first_win_words': 1,
+              'first_win_spoke': spoke.value,
             });
           },
         ),
@@ -109,16 +114,16 @@ class _FirstWinStep extends HookConsumerWidget {
                   ),
                 ),
                 SizedBox(height: ModernGriotSpacing.lg.h),
-                const Row(
+                Row(
                   children: [
-                    Expanded(
-                      child: _StatTile(value: '3', label: 'Words'),
+                    const Expanded(
+                      child: _StatTile(value: '1', label: 'New word'),
                     ),
                     Expanded(
-                      child: _StatTile(value: '20', label: 'XP'),
+                      child: _StatTile(value: '$xp', label: 'XP'),
                     ),
-                    Expanded(
-                      child: _StatTile(value: '1', label: 'Day streak'),
+                    const Expanded(
+                      child: _StatTile(value: '1', label: 'Lesson done'),
                     ),
                   ],
                 ),
@@ -142,6 +147,7 @@ class _FirstWinStep extends HookConsumerWidget {
         label: phase.value == 2 ? 'Finish lesson' : 'Continue',
         enabled: canAdvance,
         onPressed: () {
+          if (phase.value == 2) spoke.value = true;
           phase.value++;
           heard.value = false;
           pickedTap.value = null;
@@ -317,6 +323,24 @@ class _FirstWinStep extends HookConsumerWidget {
                 ),
               ),
             ),
+            SizedBox(height: ModernGriotSpacing.xs.h),
+            Center(
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  minimumSize: Size(
+                    ModernGriotLayout.minTouchTarget * 2.5,
+                    ModernGriotLayout.minTouchTarget.toDouble(),
+                  ),
+                  foregroundColor: ModernGriotColors.onSurfaceVariant,
+                ),
+                onPressed: () {
+                  spoke.value = false;
+                  saidReady.value = false;
+                  phase.value = 3;
+                },
+                child: const Text("Can't speak now"),
+              ),
+            ),
           ],
           SizedBox(height: ModernGriotSpacing.lg.h),
         ],
@@ -324,6 +348,9 @@ class _FirstWinStep extends HookConsumerWidget {
     );
   }
 }
+
+/// XP per completed exercise (hear, tap, say).
+const int _kExerciseXp = 5;
 
 enum _GreetingAudioStatus { idle, playing, heard, unavailable }
 

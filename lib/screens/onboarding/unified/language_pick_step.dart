@@ -169,33 +169,9 @@ class _LanguagePickStep extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const _PolieBadge(step: OnboardingStep.languageSelection),
-              SizedBox(width: ModernGriotSpacing.sm.w),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.all(ModernGriotSpacing.sm.w),
-                  decoration: BoxDecoration(
-                    color: ModernGriotColors.surfaceContainerLowest,
-                    borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
-                    border: Border.all(
-                      color: ModernGriotColors.outlineVariant.withValues(
-                        alpha: _GriotAlpha.ghostBorder,
-                      ),
-                    ),
-                  ),
-                  child: Text(
-                    'What do you want to learn?',
-                    style: ModernGriotTypography.titleLarge(
-                      context: context,
-                      color: ModernGriotColors.onSurface,
-                    ),
-                  ),
-                ),
-              ),
-            ],
+          const _QuestionHeader(
+            question: 'What do you want to learn?',
+            step: OnboardingStep.languageSelection,
           ),
           SizedBox(height: ModernGriotSpacing.md.h),
           Text(

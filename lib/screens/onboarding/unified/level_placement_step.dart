@@ -69,33 +69,9 @@ class _LevelPlacementStep extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const _PolieBadge(step: OnboardingStep.goals),
-              SizedBox(width: ModernGriotSpacing.sm.w),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.all(ModernGriotSpacing.sm.w),
-                  decoration: BoxDecoration(
-                    color: ModernGriotColors.surfaceContainerLowest,
-                    borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
-                    border: Border.all(
-                      color: ModernGriotColors.outlineVariant.withValues(
-                        alpha: _GriotAlpha.ghostBorder,
-                      ),
-                    ),
-                  ),
-                  child: Text(
-                    'How much $_langName do you know?',
-                    style: ModernGriotTypography.titleLarge(
-                      context: context,
-                      color: ModernGriotColors.onSurface,
-                    ),
-                  ),
-                ),
-              ),
-            ],
+          _QuestionHeader(
+            question: 'How much $_langName do you know?',
+            step: OnboardingStep.goals,
           ),
           SizedBox(height: ModernGriotSpacing.lg.h),
           for (final level in _levels)

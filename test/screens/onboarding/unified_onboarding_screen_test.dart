@@ -13,6 +13,8 @@ Future<Widget> wrap(
   Widget child, {
   bool reducedMotion = false,
   TextScaler textScaler = TextScaler.noScaling,
+  bool online = true,
+  TextDirection textDirection = TextDirection.ltr,
 }) async {
   SharedPreferences.setMockInitialValues({});
   final prefs = await SharedPreferences.getInstance();
@@ -28,8 +30,11 @@ Future<Widget> wrap(
           sharedPreferencesProvider.overrideWithValue(
             SharedPreferencesProvider(prefs),
           ),
+          onboardingOnlineProvider.overrideWith((ref) async => online),
         ],
-        child: MaterialApp(home: child),
+        child: MaterialApp(
+          home: Directionality(textDirection: textDirection, child: child),
+        ),
       ),
     ),
   );
@@ -39,6 +44,8 @@ Future<void> pumpOnboarding(
   WidgetTester tester, {
   bool reducedMotion = false,
   TextScaler textScaler = TextScaler.noScaling,
+  bool online = true,
+  TextDirection textDirection = TextDirection.ltr,
 }) async {
   tester.view.physicalSize = const Size(390, 844);
   tester.view.devicePixelRatio = 1.0;
@@ -50,6 +57,8 @@ Future<void> pumpOnboarding(
       const UnifiedOnboardingScreen(),
       reducedMotion: reducedMotion,
       textScaler: textScaler,
+      online: online,
+      textDirection: textDirection,
     ),
   );
 }
@@ -90,46 +99,62 @@ Future<void> tapVisible(WidgetTester tester, Finder finder) async {
   await tester.pump();
 }
 
-Future<void> advanceToFirstWin(WidgetTester tester) async {
-  await tapVisible(tester, find.text('Get started'));
-  await settleOnce(tester);
-  await tapVisible(tester, find.text('Yoruba'));
-  await tapVisible(tester, find.text('Continue').first);
-  await settleOnce(tester);
-  await tapVisible(tester, find.text('Talk to family'));
-  await tapVisible(tester, find.text('Continue').first);
-  await settleOnce(tester);
-  await tapVisible(tester, find.text("I'm new"));
-  await tapVisible(tester, find.text('Continue').first);
+Future<void> next(WidgetTester tester, [String label = 'Continue']) async {
+  await tapVisible(tester, find.text(label).first);
   await settleOnce(tester);
 }
 
-Future<void> completeFirstWin(WidgetTester tester) async {
-  await tester.ensureVisible(find.text('Play greeting'));
-  await tester.tap(find.text('Play greeting'));
-  await tester.pump();
+/// Welcome → language → reason → level → daily goal, landing on first win.
+Future<void> advanceToFirstWin(
+  WidgetTester tester, {
+  String language = 'Yoruba',
+}) async {
+  await next(tester, 'Get started');
+  await tapVisible(tester, find.text(language));
+  await next(tester);
+  await tapVisible(tester, find.text('Talk to family'));
+  await next(tester);
+  await tapVisible(tester, find.text("I'm new"));
+  await next(tester);
+  await tapVisible(tester, find.text('Steady'));
+  await next(tester);
+}
+
+Future<void> completeFirstWin(WidgetTester tester, {bool speak = true}) async {
+  await tapVisible(tester, find.text('Play greeting'));
   await tester.pump(const Duration(milliseconds: 50));
-  await tester.ensureVisible(find.text('Continue').first);
-  await tester.tap(find.text('Continue').first);
-  await settleOnce(tester);
+  await next(tester);
+  await tapVisible(tester, find.text('Báwo ni'));
+  await next(tester);
+  if (speak) {
+    await tapVisible(tester, find.text('I said it'));
+    await next(tester, 'Finish lesson');
+  } else {
+    await next(tester, "Can't speak now");
+  }
+}
 
-  await tester.ensureVisible(find.text('Báwo ni'));
-  await tester.tap(find.text('Báwo ni'));
+Future<void> enterBirthYear(WidgetTester tester, int age) async {
+  await tester.enterText(
+    find.byType(TextField).first,
+    '${DateTime.now().year - age}',
+  );
   await tester.pump();
-  await tester.ensureVisible(find.text('Continue').first);
-  await tester.tap(find.text('Continue').first);
-  await settleOnce(tester);
+  // Let the field's floating label finish moving.
+  await tester.pump(const Duration(milliseconds: 300));
+}
 
-  await tester.ensureVisible(find.text('I said it'));
-  await tester.tap(find.text('I said it'));
-  await tester.pump();
-  await tester.ensureVisible(find.text('Finish lesson'));
-  await tester.tap(find.text('Finish lesson'));
-  await settleOnce(tester);
-
-  await tester.ensureVisible(find.text('Keep going'));
-  await tester.tap(find.text('Keep going'));
-  await settleOnce(tester);
+/// From the celebration through age, reminders, style, tone and profile.
+Future<void> advanceToSaveProgress(WidgetTester tester, {int age = 25}) async {
+  await next(tester, 'Keep going');
+  await enterBirthYear(tester, age);
+  await next(tester);
+  await next(tester, 'Not now');
+  await tapVisible(tester, find.text('Listening'));
+  await next(tester);
+  await tapVisible(tester, find.text('Friendly'));
+  await next(tester);
+  await next(tester, 'Skip for now');
 }
 
 void main() {
@@ -137,12 +162,15 @@ void main() {
   CastFileCache.instance.renderer = Factory.flutter;
 
   group('computeRegistrationAgeBand', () {
-    test('returns child/teen/adult from birth year with default threshold 13', () {
-      final now = DateTime.now().year;
-      expect(computeRegistrationAgeBand(now - 10), 'child');
-      expect(computeRegistrationAgeBand(now - 15), 'teen');
-      expect(computeRegistrationAgeBand(now - 25), 'adult');
-    });
+    test(
+      'returns child/teen/adult from birth year with default threshold 13',
+      () {
+        final now = DateTime.now().year;
+        expect(computeRegistrationAgeBand(now - 10), 'child');
+        expect(computeRegistrationAgeBand(now - 15), 'teen');
+        expect(computeRegistrationAgeBand(now - 25), 'adult');
+      },
+    );
 
     test('uses DE child threshold 16 without hard-coding NG to 18', () {
       final now = DateTime.now().year;
@@ -168,24 +196,25 @@ void main() {
       expect(find.text('Skip'), findsOneWidget);
     });
 
-    testWidgets('Get started advances to language pick with Continue disabled', (
-      tester,
-    ) async {
-      await pumpOnboarding(tester);
-      await settleOnce(tester);
+    testWidgets(
+      'Get started advances to language pick with Continue disabled',
+      (tester) async {
+        await pumpOnboarding(tester);
+        await settleOnce(tester);
 
-      await tapVisible(tester, find.text('Get started'));
-      await settleOnce(tester);
+        await tapVisible(tester, find.text('Get started'));
+        await settleOnce(tester);
 
-      expect(find.text('What do you want to learn?'), findsOneWidget);
-      expect(find.text('Yoruba'), findsOneWidget);
-      expect(find.text('West Africa'), findsOneWidget);
+        expect(find.text('What do you want to learn?'), findsOneWidget);
+        expect(find.text('Yoruba'), findsOneWidget);
+        expect(find.text('West Africa'), findsOneWidget);
 
-      final continueButton = tester.widget<FilledButton>(
-        continueButtonFinder(),
-      );
-      expect(continueButton.onPressed, isNull);
-    });
+        final continueButton = tester.widget<FilledButton>(
+          continueButtonFinder(),
+        );
+        expect(continueButton.onPressed, isNull);
+      },
+    );
 
     testWidgets('selecting a language enables Continue', (tester) async {
       await pumpOnboarding(tester);
@@ -282,100 +311,183 @@ void main() {
       },
     );
 
-    testWidgets('birth-year child band shows Ask a parent path and wired Skip', (
+    testWidgets('reason step is multi-select and gates Continue', (
       tester,
     ) async {
       await pumpOnboarding(tester);
       await settleOnce(tester);
-      await advanceToFirstWin(tester);
-      await completeFirstWin(tester);
+      await next(tester, 'Get started');
+      await tapVisible(tester, find.text('Yoruba'));
+      await next(tester);
 
-      expect(find.text('When were you born?'), findsOneWidget);
-      expect(find.textContaining('Ask a parent'), findsNothing);
-
-      // Type a child birth year (age ~10).
-      final yearField = find.byType(TextField).first;
-      await tester.enterText(
-        yearField,
-        '${DateTime.now().year - 10}',
-      );
-      await tester.pump();
-
-      expect(find.text('Ask a parent'), findsWidgets);
-      expect(find.textContaining('guardian can help'), findsOneWidget);
-
+      expect(find.text('Why are you learning Yoruba?'), findsOneWidget);
       expect(
-        find.text('Skip for now. Progress stays on this device'),
-        findsOneWidget,
+        tester.widget<FilledButton>(continueButtonFinder()).onPressed,
+        isNull,
       );
-      final skipAccount = tester.widget<TextButton>(
-        find.ancestor(
-          of: find.text('Skip for now. Progress stays on this device'),
-          matching: find.byType(TextButton),
-        ),
+      await tapVisible(tester, find.text('Talk to family'));
+      await tapVisible(tester, find.text('Travel'));
+      expect(
+        tester.widget<FilledButton>(continueButtonFinder()).onPressed,
+        isNotNull,
       );
-      // Skip must advance + persist even without parent email.
-      expect(skipAccount.onPressed, isNotNull);
-
-      expect(find.text('Continue with Google'), findsOneWidget);
-      expect(find.text('Continue with Apple'), findsOneWidget);
-      expect(find.text('Continue with Email'), findsOneWidget);
     });
 
-    testWidgets('account Skip for now persists progress on device', (
+    testWidgets('daily goal waits for a choice', (tester) async {
+      await pumpOnboarding(tester);
+      await settleOnce(tester);
+      await next(tester, 'Get started');
+      await tapVisible(tester, find.text('Yoruba'));
+      await next(tester);
+      await tapVisible(tester, find.text('Talk to family'));
+      await next(tester);
+      await tapVisible(tester, find.text("I'm new"));
+      await next(tester);
+
+      expect(find.text('How much time a day feels right?'), findsOneWidget);
+      expect(
+        tester.widget<FilledButton>(continueButtonFinder()).onPressed,
+        isNull,
+      );
+      await tapVisible(tester, find.text('Steady'));
+      expect(
+        tester.widget<FilledButton>(continueButtonFinder()).onPressed,
+        isNotNull,
+      );
+    });
+
+    testWidgets('celebration shows real stats when the learner speaks', (
       tester,
     ) async {
-      SharedPreferences.setMockInitialValues({});
       await pumpOnboarding(tester);
       await settleOnce(tester);
       await advanceToFirstWin(tester);
       await completeFirstWin(tester);
 
-      final yearField = find.byType(TextField).first;
-      await tester.enterText(yearField, '${DateTime.now().year - 10}');
-      await tester.pump();
+      expect(find.text('You did it!'), findsOneWidget);
+      expect(find.text('15'), findsOneWidget);
+      expect(find.text('New word'), findsOneWidget);
+    });
 
-      await tapVisible(
-        tester,
-        find.text('Skip for now. Progress stays on this device'),
-      );
+    testWidgets("Can't speak now finishes the lesson without penalty", (
+      tester,
+    ) async {
+      await pumpOnboarding(tester);
       await settleOnce(tester);
+      await advanceToFirstWin(tester);
+      await completeFirstWin(tester, speak: false);
+
+      expect(find.text('You did it!'), findsOneWidget);
+      expect(find.text('10'), findsOneWidget);
+    });
+
+    testWidgets(
+      'birth-year: Continue waits for a year; child sees parent ask',
+      (tester) async {
+        await pumpOnboarding(tester);
+        await settleOnce(tester);
+        await advanceToFirstWin(tester);
+        await completeFirstWin(tester);
+        await next(tester, 'Keep going');
+
+        expect(find.text('What year were you born?'), findsOneWidget);
+        expect(
+          tester.widget<FilledButton>(continueButtonFinder()).onPressed,
+          isNull,
+        );
+        expect(find.text('Ask a parent'), findsNothing);
+
+        await enterBirthYear(tester, 10);
+        expect(find.text('Ask a parent'), findsOneWidget);
+        expect(
+          find.text('Keep learning. My parent will add it later'),
+          findsOneWidget,
+        );
+      },
+    );
+
+    testWidgets('child "parent will add it later" persists consent need', (
+      tester,
+    ) async {
+      await pumpOnboarding(tester);
+      await settleOnce(tester);
+      await advanceToFirstWin(tester);
+      await completeFirstWin(tester);
+      await next(tester, 'Keep going');
+      await enterBirthYear(tester, 10);
+      await next(tester, 'Keep learning. My parent will add it later');
 
       final prefs = await SharedPreferences.getInstance();
       expect(prefs.getString('age_category'), 'child');
       expect(prefs.getBool('needs_guardian_consent'), isTrue);
-      expect(prefs.getBool('onboarding_account_skipped'), isTrue);
+      expect(prefs.getInt('birth_year'), DateTime.now().year - 10);
     });
 
-    testWidgets('Continue with Email persists birth year before leaving', (
+    testWidgets('account wall comes last and Later keeps progress on device', (
       tester,
     ) async {
-      SharedPreferences.setMockInitialValues({});
       await pumpOnboarding(tester);
       await settleOnce(tester);
       await advanceToFirstWin(tester);
       await completeFirstWin(tester);
+      await advanceToSaveProgress(tester);
 
-      final year = DateTime.now().year - 25;
-      final yearField = find.byType(TextField).first;
-      await tester.enterText(yearField, '$year');
-      await tester.pump();
+      expect(find.text('Save your progress?'), findsOneWidget);
+      expect(find.text('Continue with Google'), findsOneWidget);
+      expect(find.text('Continue with Apple'), findsOneWidget);
+      expect(find.text('Sign up with email'), findsOneWidget);
+      expect(find.text('I already have an account'), findsOneWidget);
 
-      await tapVisible(tester, find.text('Continue with Email'));
-      await settleOnce(tester);
-
+      await next(tester, 'Later. My answers stay on this phone');
       final prefs = await SharedPreferences.getInstance();
-      expect(prefs.getInt('birth_year'), year);
+      expect(prefs.getString('onboarding_complete'), 'true');
+      expect(prefs.getBool('onboarding_account_skipped'), isTrue);
       expect(prefs.getString('age_category'), 'adult');
+      // Let the post-completion navigation and snackbar timers drain.
+      await tester.pump(const Duration(seconds: 5));
     });
+
+    testWidgets('offline notice appears and keeps the flow usable', (
+      tester,
+    ) async {
+      await pumpOnboarding(tester, online: false);
+      await settleOnce(tester);
+      await next(tester, 'Get started');
+
+      expect(find.textContaining("You're offline"), findsOneWidget);
+      expect(find.text('Retry'), findsOneWidget);
+      await tapVisible(tester, find.text('Yoruba'));
+      expect(
+        tester.widget<FilledButton>(continueButtonFinder()).onPressed,
+        isNotNull,
+      );
+    });
+
+    for (final dir in TextDirection.values) {
+      testWidgets('every step survives 200% text in ${dir.name}', (
+        tester,
+      ) async {
+        await pumpOnboarding(
+          tester,
+          textScaler: const TextScaler.linear(2.0),
+          textDirection: dir,
+        );
+        await settleOnce(tester);
+        expect(tester.takeException(), isNull);
+        await advanceToFirstWin(tester);
+        expect(tester.takeException(), isNull);
+        await completeFirstWin(tester);
+        expect(tester.takeException(), isNull);
+        await advanceToSaveProgress(tester);
+        expect(tester.takeException(), isNull);
+        expect(find.text('Save your progress?'), findsOneWidget);
+      });
+    }
 
     testWidgets('welcome survives 200% text scale without overflow', (
       tester,
     ) async {
-      await pumpOnboarding(
-        tester,
-        textScaler: const TextScaler.linear(2.0),
-      );
+      await pumpOnboarding(tester, textScaler: const TextScaler.linear(2.0));
       await settleOnce(tester);
 
       expect(tester.takeException(), isNull);
@@ -392,9 +504,7 @@ void main() {
       await advanceToFirstWin(tester);
 
       expect(find.text('Play greeting'), findsOneWidget);
-      final continueBtn = tester.widget<FilledButton>(
-        continueButtonFinder(),
-      );
+      final continueBtn = tester.widget<FilledButton>(continueButtonFinder());
       expect(continueBtn.onPressed, isNull);
     });
 
@@ -411,10 +521,7 @@ void main() {
 
       // In tests the audio pipeline is unavailable — must disclose that.
       expect(find.text('Audio unavailable'), findsOneWidget);
-      expect(
-        find.textContaining('could not play sound'),
-        findsOneWidget,
-      );
+      expect(find.textContaining('could not play sound'), findsOneWidget);
 
       final continueBtn = tester.widget<FilledButton>(continueButtonFinder());
       expect(continueBtn.onPressed, isNotNull);
@@ -425,18 +532,7 @@ void main() {
     ) async {
       await pumpOnboarding(tester);
       await settleOnce(tester);
-
-      await tapVisible(tester, find.text('Get started'));
-      await settleOnce(tester);
-      await tapVisible(tester, find.text('Hausa'));
-      await tapVisible(tester, find.text('Continue').first);
-      await settleOnce(tester);
-      await tapVisible(tester, find.text('Travel'));
-      await tapVisible(tester, find.text('Continue').first);
-      await settleOnce(tester);
-      await tapVisible(tester, find.text("I'm new"));
-      await tapVisible(tester, find.text('Continue').first);
-      await settleOnce(tester);
+      await advanceToFirstWin(tester, language: 'Hausa');
 
       expect(find.textContaining('Hausa'), findsWidgets);
       expect(find.textContaining('Sannu'), findsWidgets);

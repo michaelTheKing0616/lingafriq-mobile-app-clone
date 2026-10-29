@@ -15,6 +15,9 @@ import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/auth/world_class_login_screen.dart';
+import 'package:lingafriq/screens/auth/world_class_signup_screen.dart';
+import 'package:lingafriq/screens/auth/sign_in_options.dart';
+import 'package:lingafriq/services/device_identity.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
 import 'package:lingafriq/utils/modern_griot_design_system.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
@@ -30,19 +33,22 @@ import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
 import 'package:lingafriq/services/connectivity_service.dart';
 import 'package:lingafriq/providers/onboarding_provider.dart';
 import 'package:lingafriq/providers/firebase_messaging_provider.dart';
+
 import 'package:lingafriq/providers/tts_provider.dart';
 
 part 'unified/shared_widgets.dart';
 part 'unified/welcome_step.dart';
 part 'unified/language_pick_step.dart';
-part 'unified/goal_step.dart';
+part 'unified/reason_step.dart';
 part 'unified/level_placement_step.dart';
-part 'unified/learning_style_step.dart';
+part 'unified/daily_goal_step.dart';
 part 'unified/first_win_step.dart';
-part 'unified/account_age_step.dart';
+part 'unified/birth_year_step.dart';
 part 'unified/notifications_step.dart';
+part 'unified/learning_style_step.dart';
 part 'unified/tone_step.dart';
 part 'unified/profile_step.dart';
+part 'unified/save_progress_step.dart';
 
 /// Documented Modern Griot opacity roles — never invent ad-hoc alphas in UI.
 abstract final class _GriotAlpha {
@@ -74,21 +80,38 @@ abstract final class _GriotAlpha {
   static const double signalEmpty = 0.45;
 
   /// Ask-a-parent panel wash on primaryContainer.
-  static const double parentPanel = 0.45;
 }
 
-/// Mirrors server `agePolicy` default thresholds (P1-020).
-/// Child threshold is configurable per country (default 13, DE 16).
-/// Do NOT hard-code Nigeria to 18 — NDPA under-18 remains a counsel question.
+/// Per-country child thresholds, mirroring node-backend
+/// `src/config/agePolicy.ts` (the server re-verifies every band; P1-020).
+/// Default 13; 16 where law requires. Counsel owns additions (for example
+/// whether Nigeria's NDPA needs a different rule): add a row here and on the
+/// server, never a hard-coded branch.
+const Map<String, int> kChildThresholdByCountry = {'DE': 16};
+
+/// Whether the device can reach the network. Onboarding never blocks on it:
+/// answers save locally and sync through the outbox; this only drives the
+/// offline notice. Overridable in tests.
+final onboardingOnlineProvider = FutureProvider.autoDispose<bool>(
+  (ref) => ConnectivityService.hasInternet(),
+);
+
+const int kDefaultChildThreshold = 13;
+const int kAdultAge = 18;
+
+int childThresholdFor(String? countryCode) =>
+    kChildThresholdByCountry[countryCode?.toUpperCase()] ??
+    kDefaultChildThreshold;
+
+/// Birth year only. Age is counted conservatively (birthday not yet reached)
+/// so a borderline learner always gets the safer band.
 String? computeRegistrationAgeBand(int birthYear, {String? countryCode}) {
   final nowYear = DateTime.now().year;
   if (birthYear < 1900 || birthYear > nowYear) return null;
   final age = nowYear - birthYear - 1;
   if (age < 0) return null;
-  final childUnder = countryCode?.toUpperCase() == 'DE' ? 16 : 13;
-  const adultAt = 18;
-  if (age < childUnder) return 'child';
-  if (age < adultAt) return 'teen';
+  if (age < childThresholdFor(countryCode)) return 'child';
+  if (age < kAdultAge) return 'teen';
   return 'adult';
 }
 
@@ -201,6 +224,23 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
       steps.add(step);
     }
 
+    void capture(Map<String, dynamic> data) => _captureOnboardingAnswer(
+      data,
+      onboardingData,
+      pageController,
+      currentStep,
+      animationController,
+      stepsLength: () => stepCount[0],
+      reask: reask,
+      context: context,
+      ref: ref,
+    );
+    String language() =>
+        onboardingData.value['learning_language'] as String? ?? 'yo';
+
+    // Reference order (pack second pass, Duolingo web 15–26): language →
+    // reason → level → daily goal → first win → age → reminders → make it
+    // yours → profile → save progress. One question per screen.
     if (reask.isEmpty) {
       addStep(
         _WelcomeStep(
@@ -219,200 +259,70 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
         allowSkip: true,
       );
     }
-
     if (ask(const ['proficiency_language', 'learning_language'])) {
+      addStep(_LanguagePickStep(onNext: capture), allowSkip: true);
+    }
+    if (ask(const ['primary_goal', 'learning_reasons'])) {
+      addStep(_ReasonStep(onNext: capture, learningLanguage: language()));
+    }
+    if (ask(const ['self_reported_level']) || reask.isEmpty) {
       addStep(
-        _LanguagePickStep(
-          onNext: (data) => _captureOnboardingAnswer(
-            data,
-            onboardingData,
-            pageController,
-            currentStep,
-            animationController,
-            stepsLength: () => stepCount[0],
-            reask: reask,
-            context: context,
-            ref: ref,
-          ),
-        ),
-        allowSkip: true,
+        _LevelPlacementStep(learningLanguage: language(), onNext: capture),
       );
     }
-
-    if (ask(const [
-      'primary_goal',
-      'learning_reasons',
-      'daily_duration_minutes',
-    ])) {
-      addStep(
-        _GoalStep(
-          onNext: (data) => _captureOnboardingAnswer(
-            data,
-            onboardingData,
-            pageController,
-            currentStep,
-            animationController,
-            stepsLength: () => stepCount[0],
-            reask: reask,
-            context: context,
-            ref: ref,
-          ),
-        ),
-        allowSkip: true,
-      );
+    if (ask(const ['daily_duration_minutes'])) {
+      addStep(_DailyGoalStep(onNext: capture));
     }
-
-    if (ask(const ['learning_style']) || reask.isEmpty) {
-      addStep(
-        _LevelPlacementStep(
-          learningLanguage:
-              onboardingData.value['learning_language'] as String? ?? 'yo',
-          onNext: (data) => _captureOnboardingAnswer(
-            data,
-            onboardingData,
-            pageController,
-            currentStep,
-            animationController,
-            stepsLength: () => stepCount[0],
-            reask: reask,
-            context: context,
-            ref: ref,
-          ),
-        ),
-      );
-    }
-
     if (reask.isEmpty) {
-      addStep(
-        _FirstWinStep(
-          learningLanguage:
-              onboardingData.value['learning_language'] as String? ?? 'yo',
-          onNext: (data) => _captureOnboardingAnswer(
-            data,
-            onboardingData,
-            pageController,
-            currentStep,
-            animationController,
-            stepsLength: () => stepCount[0],
-            reask: reask,
-            context: context,
-            ref: ref,
-          ),
-        ),
-      );
+      addStep(_FirstWinStep(learningLanguage: language(), onNext: capture));
     }
-
-    if (ask(const ['age_category', 'learning_reasons']) ||
-        ask(const ['age_category'])) {
-      addStep(
-        _AccountAgeStep(
-          existingReasons:
-              (onboardingData.value['learning_reasons'] as List?)
-                  ?.cast<String>() ??
-              const <String>[],
-          onNext: (data) => _captureOnboardingAnswer(
-            data,
-            onboardingData,
-            pageController,
-            currentStep,
-            animationController,
-            stepsLength: () => stepCount[0],
-            reask: reask,
-            context: context,
-            ref: ref,
-          ),
-          onSignIn: () {
-            ref
-                .read(navigationProvider)
-                .navigateOffAll(const WorldClassLoginScreen());
-          },
-        ),
-      );
+    if (ask(const ['age_category'])) {
+      addStep(_BirthYearStep(onNext: capture));
     }
-
-    if (ask(const [
-      'daily_duration_minutes',
-      'preferred_time_of_day',
-      'reminders_enabled',
-    ])) {
+    if (ask(const ['preferred_time_of_day', 'reminders_enabled'])) {
       addStep(
         _NotificationsStep(
           dailyMinutes:
               onboardingData.value['daily_duration_minutes'] as int? ?? 10,
-          learningLanguage:
-              onboardingData.value['learning_language'] as String? ?? 'yo',
-          onNext: (data) => _captureOnboardingAnswer(
-            data,
-            onboardingData,
-            pageController,
-            currentStep,
-            animationController,
-            stepsLength: () => stepCount[0],
-            reask: reask,
-            context: context,
-            ref: ref,
-          ),
+          learningLanguage: language(),
+          onNext: capture,
         ),
       );
     }
-
-    // Remaining prefs after first win + account + notifications (recipe order).
     if (ask(const ['learning_style'])) {
-      addStep(
-        _LearningStyleStep(
-          onNext: (data) => _captureOnboardingAnswer(
-            data,
-            onboardingData,
-            pageController,
-            currentStep,
-            animationController,
-            stepsLength: () => stepCount[0],
-            reask: reask,
-            context: context,
-            ref: ref,
-          ),
-        ),
-      );
+      addStep(_LearningStyleStep(onNext: capture), allowSkip: true);
     }
-
     if (ask(const ['app_tone', 'gamification_level'])) {
-      addStep(
-        _ToneStep(
-          onNext: (data) => _captureOnboardingAnswer(
-            data,
-            onboardingData,
-            pageController,
-            currentStep,
-            animationController,
-            stepsLength: () => stepCount[0],
-            reask: reask,
-            context: context,
-            ref: ref,
-          ),
-        ),
-      );
+      addStep(_ToneStep(onNext: capture), allowSkip: true);
     }
-
     if (reask.isEmpty) {
       addStep(
         _ProfileStep(
           onboardingData: onboardingData.value,
-          onComplete: () async {
+          onComplete: () => capture(const {}),
+          onSkip: () => capture(const {}),
+        ),
+      );
+      addStep(
+        _SaveProgressStep(
+          busy: isCompleting.value,
+          wordsLearned: onboardingData.value['first_win_words'] as int? ?? 0,
+          onChoose: (choice) async {
             if (isCompleting.value) return;
             isCompleting.value = true;
             try {
-              await _completeOnboarding(onboardingData.value, context, ref);
+              await _completeOnboarding(
+                {
+                  ...onboardingData.value,
+                  'account_choice': choice.name,
+                  'account_skipped': choice == _AccountChoice.later,
+                },
+                context,
+                ref,
+                destination: _destinationFor(choice),
+              );
             } finally {
-              isCompleting.value = false;
-            }
-          },
-          onSkip: () async {
-            if (isCompleting.value) return;
-            isCompleting.value = true;
-            try {
-              await _completeOnboarding(onboardingData.value, context, ref);
-            } finally {
-              isCompleting.value = false;
+              if (context.mounted) isCompleting.value = false;
             }
           },
         ),
@@ -627,10 +537,24 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
     AnimationController anim,
   ) {
     step.value++;
-    controller.nextPage(
-      duration: _motionDuration(context, 400.ms),
-      curve: Curves.easeInOut,
-    );
+    _turnPage(context, controller, step.value, 400.ms, Curves.easeInOut);
+  }
+
+  /// Animated page turn, or an instant jump under reduce-motion
+  /// (PageController.animateToPage asserts on a zero duration).
+  static void _turnPage(
+    BuildContext context,
+    PageController controller,
+    int page,
+    Duration normal,
+    Curve curve,
+  ) {
+    final duration = _motionDuration(context, normal);
+    if (duration == Duration.zero) {
+      controller.jumpToPage(page);
+    } else {
+      controller.animateToPage(page, duration: duration, curve: curve);
+    }
   }
 
   Future<void> _captureOnboardingAnswer(
@@ -660,10 +584,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
   ) {
     if (step.value <= 0) return;
     step.value--;
-    controller.previousPage(
-      duration: _motionDuration(context, 300.ms),
-      curve: Curves.easeOut,
-    );
+    _turnPage(context, controller, step.value, 300.ms, Curves.easeOut);
   }
 
   static Future<void> _skipOnboarding(
@@ -689,11 +610,29 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
     }
   }
 
+  /// Where each save-progress choice lands. Signed-in users skip auth.
+  static Widget? _destinationFor(_AccountChoice choice) => switch (choice) {
+    _AccountChoice.google => const SignInOptionsScreen(
+      googleIdToken: DeviceIdentity.googleIdToken,
+      appleIdToken: DeviceIdentity.appleIdToken,
+      autoStart: SignInAutoStart.google,
+    ),
+    _AccountChoice.apple => const SignInOptionsScreen(
+      googleIdToken: DeviceIdentity.googleIdToken,
+      appleIdToken: DeviceIdentity.appleIdToken,
+      autoStart: SignInAutoStart.apple,
+    ),
+    _AccountChoice.email => const WorldClassSignupScreen(),
+    _AccountChoice.signIn => const WorldClassLoginScreen(),
+    _AccountChoice.later => null,
+  };
+
   static Future<void> _completeOnboarding(
     Map<String, dynamic> data,
     BuildContext context,
-    WidgetRef ref,
-  ) async {
+    WidgetRef ref, {
+    Widget? destination,
+  }) async {
     final prefs = ref.read(sharedPreferencesProvider).prefs;
 
     try {
@@ -707,13 +646,19 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
       );
       await prefs.remove('onboarding_reask');
       await prefs.setBool('onboarding_seen', true);
+      if (data.containsKey('account_skipped')) {
+        await prefs.setBool(
+          'onboarding_account_skipped',
+          data['account_skipped'] == true,
+        );
+      }
     } catch (e) {
       logger.error('Error saving onboarding completion locally', error: e);
     }
 
     var isOnline = true;
     try {
-      isOnline = await ConnectivityService.hasInternet();
+      isOnline = await ref.read(onboardingOnlineProvider.future);
       await PersistedOutboxService.instance.enqueue(
         type: 'onboarding_sync',
         data: {...data, 'completed_at': DateTime.now().toIso8601String()},
@@ -822,7 +767,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
 
       final nextScreen = isLoggedIn
           ? const TabsViewMaterial3()
-          : const WorldClassLoginScreen();
+          : destination ?? const WorldClassLoginScreen();
       Navigator.of(context).pushAndRemoveUntil(
         SmoothPageRoute.platform(child: nextScreen),
         (route) => false,

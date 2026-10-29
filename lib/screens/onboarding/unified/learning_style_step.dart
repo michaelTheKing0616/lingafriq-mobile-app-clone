@@ -65,20 +65,10 @@ class _LearningStyleStep extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'How do you learn best?',
-            style: ModernGriotTypography.headlineSmall(
-              context: context,
-              color: ModernGriotColors.onSurface,
-            ),
-          ),
-          SizedBox(height: ModernGriotSpacing.xxs.h),
-          Text(
-            'Pick the style that feels most natural.',
-            style: ModernGriotTypography.bodyMedium(
-              context: context,
-              color: ModernGriotColors.onSurfaceVariant,
-            ),
+          const _QuestionHeader(
+            question: 'How do you learn best?',
+            hint: 'Pick the style that feels most natural.',
+            step: OnboardingStep.learningStyle,
           ),
           SizedBox(height: ModernGriotSpacing.md.h),
           for (final style in _styles)

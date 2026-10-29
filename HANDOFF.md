@@ -185,7 +185,14 @@ Intron is set up and not connected. Do not put `INTRON_API_KEY` in the client.
 - UI-BELOW-BAR P12-010 UI 8/8/8/8/7/8/8/8/8/8 avg 7.9; reference: Duolingo polished list-heavy game hubs; gap: const/list-virtualisation sweep touched many screens, yet there is no independent golden/state-matrix evidence that visual hierarchy, accessibility states, and reduced-motion behavior remain at 9+.
 - UI-RESCORE P8-932 UI 8/8/8/8/7/8/7/8/8/8 avg 7.8; reviewer fix shipped in `[P8-932] review fix: wire mastery map navigation from results` so the screen is now reachable from `GameMasteryResultsScreen`.
 
+- UI-SELFSCORE unified onboarding redesign UI 9/9/9/9/9/9/9/9/9/9 avg 9.0 (self-score, independent rescore still owed). Order now language → reason → level → daily goal → first win → birth year → reminders → style → tone → profile → save progress (account wall last). Goldens per step in LTR, RTL and 200% text under `test/onboarding/goldens/unified/`.
+- Gap: no backend endpoint sends a parent-consent invite. The child birth-year path stores `guardian_email` and `needs_guardian_consent` but the copy deliberately does not promise an email. Needs an endpoint before launch.
+- Gap: `AgeGateScreen` (unused, P9-912) still collects a full date of birth through `showDatePicker`, which breaks the birth-year-only policy. Delete or convert before anything routes to it.
+- Gap: only Lato and Plus Jakarta Sans are bundled in `assets/google_fonts/`. Nunito, Playfair Display and the other faces still fetch at runtime, so they fall back offline.
+
 ## Tope to switch on
+
+- Counsel: does Nigeria's NDPA treat every under-18 as a child needing parental consent? The app uses 13 by default and 16 for DE (`kChildThresholdByCountry`); NG stays at 13 until counsel answers.
 
 Decisions for 2026-10-22 are signed in `docs/build/DECISIONS.md`. These still need the live account. None of them stops the build.
 

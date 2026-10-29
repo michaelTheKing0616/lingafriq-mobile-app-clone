@@ -30,20 +30,25 @@ class _PolieBadge extends StatelessWidget {
   }
 }
 
-class _StepScaffold extends StatelessWidget {
+class _StepScaffold extends ConsumerWidget {
   const _StepScaffold({required this.child, this.bottom});
 
   final Widget child;
   final Widget? bottom;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final offline = ref.watch(onboardingOnlineProvider).value == false;
     return Container(
       color: ModernGriotColors.surface,
       child: ResponsiveSafeArea(
         child: Column(
           children: [
             SizedBox(height: ModernGriotSpacing.xxl.h),
+            if (offline)
+              _OfflineNotice(
+                onRetry: () => ref.invalidate(onboardingOnlineProvider),
+              ),
             Expanded(
               child: LayoutBuilder(
                 builder: (context, constraints) {
@@ -74,15 +79,13 @@ class _PrimaryCta extends StatelessWidget {
     required this.label,
     required this.enabled,
     required this.onPressed,
-    this.color = ModernGriotColors.brandGold,
-    this.foreground = ModernGriotColors.onBrandGold,
   });
 
   final String label;
   final bool enabled;
   final VoidCallback? onPressed;
-  final Color color;
-  final Color foreground;
+  static const Color color = ModernGriotColors.brandGold;
+  static const Color foreground = ModernGriotColors.onBrandGold;
 
   @override
   Widget build(BuildContext context) {
@@ -229,3 +232,152 @@ class _SelectRow extends StatelessWidget {
 // =============================================================================
 // 1. Welcome — Finch mascot + Speak promise (Polie ~55%)
 // =============================================================================
+
+/// Duolingo-pattern question header: Polie on the leading edge, the question
+/// in a speech bubble pointing at her. One question per screen, always.
+/// Uses directional insets so the tail flips for RTL (Arabic, Darija).
+class _QuestionHeader extends StatelessWidget {
+  const _QuestionHeader({
+    required this.question,
+    required this.step,
+    this.hint,
+  });
+
+  final String question;
+  final String? hint;
+  final OnboardingStep step;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            ExcludeSemantics(
+              child: _PolieBadge(step: step, size: ModernGriotSpacing.xxxl.w),
+            ),
+            SizedBox(width: ModernGriotSpacing.xs.w),
+            Expanded(
+              child: Semantics(
+                header: true,
+                child: Container(
+                  padding: EdgeInsetsDirectional.symmetric(
+                    horizontal: ModernGriotSpacing.md.w,
+                    vertical: ModernGriotSpacing.sm.h,
+                  ),
+                  decoration: BoxDecoration(
+                    color: ModernGriotColors.surfaceContainerLowest,
+                    borderRadius: const BorderRadiusDirectional.only(
+                      topStart: Radius.circular(ModernGriotRadius.xl),
+                      topEnd: Radius.circular(ModernGriotRadius.xl),
+                      bottomEnd: Radius.circular(ModernGriotRadius.xl),
+                      bottomStart: Radius.circular(ModernGriotRadius.xs),
+                    ).resolve(Directionality.of(context)),
+                    border: Border.all(
+                      color: ModernGriotColors.brandGold.withValues(
+                        alpha: _GriotAlpha.goldBorder,
+                      ),
+                      width: 1.5,
+                    ),
+                  ),
+                  child: Text(
+                    question,
+                    style: ModernGriotTypography.titleLarge(
+                      context: context,
+                      color: ModernGriotColors.onSurface,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        if (hint != null) ...[
+          SizedBox(height: ModernGriotSpacing.sm.h),
+          Text(
+            hint!,
+            style: ModernGriotTypography.bodyMedium(
+              context: context,
+              color: ModernGriotColors.onSurfaceVariant,
+            ),
+          ),
+        ],
+        SizedBox(height: ModernGriotSpacing.lg.h),
+      ],
+    );
+  }
+}
+
+/// In-flow offline notice. Answers are saved on the device either way, so
+/// this is reassurance, not an error: no red, no blocking.
+class _OfflineNotice extends StatelessWidget {
+  const _OfflineNotice({required this.onRetry});
+
+  final VoidCallback onRetry;
+
+  static const String message =
+      "You're offline. Keep going: your answers are saved on this phone "
+      'and sync when you reconnect.';
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      liveRegion: true,
+      container: true,
+      child: Container(
+        margin: EdgeInsets.fromLTRB(
+          ModernGriotSpacing.lg.w,
+          0,
+          ModernGriotSpacing.lg.w,
+          ModernGriotSpacing.sm.h,
+        ),
+        padding: EdgeInsetsDirectional.only(
+          start: ModernGriotSpacing.md.w,
+          end: ModernGriotSpacing.xxs.w,
+          top: ModernGriotSpacing.xs.h,
+          bottom: ModernGriotSpacing.xs.h,
+        ),
+        decoration: BoxDecoration(
+          color: ModernGriotColors.secondaryContainer,
+          borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
+        ),
+        child: Row(
+          children: [
+            const Icon(
+              Icons.cloud_off_rounded,
+              color: ModernGriotColors.onSecondaryContainer,
+            ),
+            SizedBox(width: ModernGriotSpacing.sm.w),
+            Expanded(
+              child: Text(
+                message,
+                style: ModernGriotTypography.bodySmall(
+                  context: context,
+                  color: ModernGriotColors.onSecondaryContainer,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: onRetry,
+              style: TextButton.styleFrom(
+                minimumSize: const Size(
+                  ModernGriotLayout.minTouchTarget,
+                  ModernGriotLayout.minTouchTarget,
+                ),
+              ),
+              child: Text(
+                'Retry',
+                style: ModernGriotTypography.labelLarge(
+                  context: context,
+                  color: ModernGriotColors.onSecondaryContainer,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

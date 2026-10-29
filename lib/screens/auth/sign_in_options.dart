@@ -13,6 +13,10 @@ import 'package:lingafriq/utils/api.dart';
 
 enum SignInOptionsState { options, sending, linkSent, error }
 
+/// Provider to start immediately when arriving from a specific button
+/// (for example onboarding's "Continue with Google").
+enum SignInAutoStart { none, google, apple }
+
 class SignInOptionsView extends StatelessWidget {
   const SignInOptionsView({
     super.key,
@@ -38,7 +42,9 @@ class SignInOptionsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: state == SignInOptionsState.linkSent ? 'signin.link_sent' : 'signin.options',
+      label: state == SignInOptionsState.linkSent
+          ? 'signin.link_sent'
+          : 'signin.options',
       child: Material(
         child: ListView(
           padding: const EdgeInsets.all(24),
@@ -47,27 +53,48 @@ class SignInOptionsView extends StatelessWidget {
               state == SignInOptionsState.linkSent
                   ? 'Check your email for a sign-in link'
                   : 'Choose how to sign in',
-              key: Key(state == SignInOptionsState.linkSent ? 'signin.link_sent' : 'signin.options'),
+              key: Key(
+                state == SignInOptionsState.linkSent
+                    ? 'signin.link_sent'
+                    : 'signin.options',
+              ),
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 16),
             if (state == SignInOptionsState.sending)
-              const Center(child: CircularProgressIndicator(key: Key('signin.sending'))),
+              const Center(
+                child: CircularProgressIndicator(key: Key('signin.sending')),
+              ),
             if (state == SignInOptionsState.error)
-              Text(errorText ?? 'Sign-in could not be completed', key: const Key('signin.error')),
-            if (state == SignInOptionsState.options || state == SignInOptionsState.error) ...[
+              Text(
+                errorText ?? 'Sign-in could not be completed',
+                key: const Key('signin.error'),
+              ),
+            if (state == SignInOptionsState.options ||
+                state == SignInOptionsState.error) ...[
               const SizedBox(height: 12),
-              FilledButton(onPressed: onGoogle, child: const Text('Continue with Google')),
+              FilledButton(
+                onPressed: onGoogle,
+                child: const Text('Continue with Google'),
+              ),
               const SizedBox(height: 8),
-              FilledButton(onPressed: onApple, child: const Text('Continue with Apple')),
+              FilledButton(
+                onPressed: onApple,
+                child: const Text('Continue with Apple'),
+              ),
               const SizedBox(height: 16),
               TextField(
                 controller: emailController,
                 keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(labelText: 'Email for a sign-in link'),
+                decoration: const InputDecoration(
+                  labelText: 'Email for a sign-in link',
+                ),
               ),
               const SizedBox(height: 8),
-              OutlinedButton(onPressed: onSendLink, child: const Text('Email me a link')),
+              OutlinedButton(
+                onPressed: onSendLink,
+                child: const Text('Email me a link'),
+              ),
             ],
             if (state == SignInOptionsState.linkSent) ...[
               const SizedBox(height: 12),
@@ -75,10 +102,15 @@ class SignInOptionsView extends StatelessWidget {
               const SizedBox(height: 12),
               TextField(
                 controller: tokenController,
-                decoration: const InputDecoration(labelText: 'Paste the link token'),
+                decoration: const InputDecoration(
+                  labelText: 'Paste the link token',
+                ),
               ),
               const SizedBox(height: 8),
-              FilledButton(onPressed: onUseToken, child: const Text('Sign in with the link')),
+              FilledButton(
+                onPressed: onUseToken,
+                child: const Text('Sign in with the link'),
+              ),
             ],
           ],
         ),
@@ -92,13 +124,16 @@ class SignInOptionsScreen extends ConsumerStatefulWidget {
     super.key,
     this.googleIdToken,
     this.appleIdToken,
+    this.autoStart = SignInAutoStart.none,
   });
 
   final Future<String?> Function()? googleIdToken;
   final Future<String?> Function()? appleIdToken;
+  final SignInAutoStart autoStart;
 
   @override
-  ConsumerState<SignInOptionsScreen> createState() => _SignInOptionsScreenState();
+  ConsumerState<SignInOptionsScreen> createState() =>
+      _SignInOptionsScreenState();
 }
 
 class _SignInOptionsScreenState extends ConsumerState<SignInOptionsScreen> {
@@ -106,6 +141,34 @@ class _SignInOptionsScreenState extends ConsumerState<SignInOptionsScreen> {
   final _token = TextEditingController();
   SignInOptionsState _state = SignInOptionsState.options;
   String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.autoStart == SignInAutoStart.none) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      widget.autoStart == SignInAutoStart.google ? _google() : _apple();
+    });
+  }
+
+  Future<void> _google() async {
+    final token = await widget.googleIdToken?.call();
+    if (token == null) {
+      _show('provider_invalid');
+      return;
+    }
+    await _exchange(Api.googleSignIn, token);
+  }
+
+  Future<void> _apple() async {
+    final token = await widget.appleIdToken?.call();
+    if (token == null) {
+      _show('provider_invalid');
+      return;
+    }
+    await _exchange(Api.appleSignIn, token);
+  }
 
   @override
   void dispose() {
@@ -117,7 +180,9 @@ class _SignInOptionsScreenState extends ConsumerState<SignInOptionsScreen> {
   Future<void> _exchange(String path, String idToken) async {
     setState(() => _state = SignInOptionsState.sending);
     try {
-      final response = await ref.read(client).post(path, data: {'idToken': idToken});
+      final response = await ref
+          .read(client)
+          .post(path, data: {'idToken': idToken});
       await _enter(response.data);
     } catch (error) {
       _fail(error);
@@ -128,7 +193,10 @@ class _SignInOptionsScreenState extends ConsumerState<SignInOptionsScreen> {
     if (body is! Map) throw StateError('sign_in_invalid');
     final access = (body['access'] ?? body['token'])?.toString();
     final refresh = (body['refresh'] ?? body['refreshToken'])?.toString();
-    if (access == null || access.isEmpty || refresh == null || refresh.isEmpty) {
+    if (access == null ||
+        access.isEmpty ||
+        refresh == null ||
+        refresh.isEmpty) {
       throw StateError('sign_in_invalid');
     }
     final api = ref.read(apiProvider.notifier);
@@ -140,15 +208,22 @@ class _SignInOptionsScreenState extends ConsumerState<SignInOptionsScreen> {
     ref.read(userProvider.notifier).overrideUser(user);
     if (!mounted) return;
     if (!user.emailVerified) {
-      ref.read(navigationProvider).navigateOffAll(
-        EmailVerificationScreen(email: user.email, firstName: user.first_name),
-      );
+      ref
+          .read(navigationProvider)
+          .navigateOffAll(
+            EmailVerificationScreen(
+              email: user.email,
+              firstName: user.first_name,
+            ),
+          );
       return;
     }
     final seen = ref.read(sharedPreferencesProvider).isOnboardingSeen;
-    ref.read(navigationProvider).navigateOffAll(
-      seen ? const TabsViewMaterial3() : const OnboardingScreenMaterial3(),
-    );
+    ref
+        .read(navigationProvider)
+        .navigateOffAll(
+          seen ? const TabsViewMaterial3() : const OnboardingScreenMaterial3(),
+        );
   }
 
   void _show(String message) {
@@ -170,7 +245,9 @@ class _SignInOptionsScreenState extends ConsumerState<SignInOptionsScreen> {
   Future<void> _sendLink() async {
     setState(() => _state = SignInOptionsState.sending);
     try {
-      await ref.read(client).post(Api.magicLink, data: {'email': _email.text.trim()});
+      await ref
+          .read(client)
+          .post(Api.magicLink, data: {'email': _email.text.trim()});
       if (!mounted) return;
       setState(() => _state = SignInOptionsState.linkSent);
     } catch (error) {
@@ -181,7 +258,9 @@ class _SignInOptionsScreenState extends ConsumerState<SignInOptionsScreen> {
   Future<void> _useToken() async {
     setState(() => _state = SignInOptionsState.sending);
     try {
-      final response = await ref.read(client).post(Api.magicLinkVerify, data: {'token': _token.text.trim()});
+      final response = await ref
+          .read(client)
+          .post(Api.magicLinkVerify, data: {'token': _token.text.trim()});
       await _enter(response.data);
     } catch (error) {
       _fail(error);
@@ -197,22 +276,8 @@ class _SignInOptionsScreenState extends ConsumerState<SignInOptionsScreen> {
         emailController: _email,
         tokenController: _token,
         errorText: _error,
-        onGoogle: () async {
-          final token = await widget.googleIdToken?.call();
-          if (token == null) {
-            _show('provider_invalid');
-            return;
-          }
-          await _exchange(Api.googleSignIn, token);
-        },
-        onApple: () async {
-          final token = await widget.appleIdToken?.call();
-          if (token == null) {
-            _show('provider_invalid');
-            return;
-          }
-          await _exchange(Api.appleSignIn, token);
-        },
+        onGoogle: _google,
+        onApple: _apple,
         onSendLink: _sendLink,
         onUseToken: _useToken,
       ),

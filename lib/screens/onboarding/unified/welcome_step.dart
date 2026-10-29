@@ -145,6 +145,7 @@ class _WelcomeStep extends StatelessWidget {
         ),
         child: Text(
           'I already have an account',
+          textAlign: TextAlign.center,
           style: ModernGriotTypography.labelLarge(
             context: context,
             color: ModernGriotColors.onSurface,
@@ -181,21 +182,36 @@ class _WelcomeStep extends StatelessWidget {
             );
 
             if (useScroll) {
-              return SingleChildScrollView(
+              // Large text: copy scrolls, the two actions stay pinned so
+              // "Get started" is always one tap away.
+              final parts = _copyAndActions(context);
+              final actions = parts.sublist(parts.length - 2);
+              final copy = parts.sublist(0, parts.length - 2);
+              return Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: ModernGriotSpacing.lg.w,
                 ),
                 child: Column(
                   children: [
-                    SizedBox(height: ModernGriotSpacing.xl.h),
-                    SizedBox(
-                      height: polieSide,
-                      width: double.infinity,
-                      child: _poliePlane(context, polieSide),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            SizedBox(height: ModernGriotSpacing.xl.h),
+                            SizedBox(
+                              height: polieSide,
+                              width: double.infinity,
+                              child: _poliePlane(context, polieSide),
+                            ),
+                            SizedBox(height: ModernGriotSpacing.md.h),
+                            ...copy,
+                          ],
+                        ),
+                      ),
                     ),
-                    SizedBox(height: ModernGriotSpacing.md.h),
-                    ..._copyAndActions(context),
-                    SizedBox(height: ModernGriotSpacing.md.h),
+                    SizedBox(height: ModernGriotSpacing.xs.h),
+                    ...actions,
+                    SizedBox(height: ModernGriotSpacing.xs.h),
                   ],
                 ),
               );

@@ -67,20 +67,10 @@ class _ToneStep extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'How should Polie sound?',
-            style: ModernGriotTypography.headlineSmall(
-              context: context,
-              color: ModernGriotColors.onSurface,
-            ),
-          ),
-          SizedBox(height: ModernGriotSpacing.xxs.h),
-          Text(
-            'Pick the voice that feels like a good study buddy.',
-            style: ModernGriotTypography.bodyMedium(
-              context: context,
-              color: ModernGriotColors.onSurfaceVariant,
-            ),
+          const _QuestionHeader(
+            question: 'How should Polie sound?',
+            hint: 'Pick the voice that feels like a good study buddy.',
+            step: OnboardingStep.story,
           ),
           SizedBox(height: ModernGriotSpacing.md.h),
           for (final tone in _tones)
