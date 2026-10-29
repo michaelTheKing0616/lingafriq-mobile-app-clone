@@ -6,6 +6,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/providers/subscription_provider.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/screens/subscription/subscription_terms_disclosure.dart';
 
 /// Subscription screen with tier selection
 class SubscriptionScreen extends ConsumerWidget {
@@ -147,6 +148,13 @@ class SubscriptionScreen extends ConsumerWidget {
               },
             ),
             SizedBox(height: PanAfricanSpacing.lg),
+            SubscriptionTermsDisclosure(
+              renewsOn: subscription.isActive &&
+                      subscription.tier != SubscriptionTier.lifetime
+                  ? subscription.expiresAt
+                  : null,
+            ),
+            SizedBox(height: PanAfricanSpacing.sm),
             Center(
               child: Semantics(
                 label: 'Restore purchases',
