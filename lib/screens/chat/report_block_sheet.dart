@@ -142,8 +142,9 @@ class _ReportBlockSheetState extends State<ReportBlockSheet> {
                   child: RadioGroup<String>(
                     groupValue: _reason,
                     onChanged: (value) {
-                      if (!_submitting)
+                      if (!_submitting) {
                         setState(() => _reason = value ?? _reason);
+                      }
                     },
                     child: Column(
                       children: [
