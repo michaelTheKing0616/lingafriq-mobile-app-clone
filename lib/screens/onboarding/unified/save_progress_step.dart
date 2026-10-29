@@ -10,7 +10,11 @@ class _SaveProgressStep extends StatelessWidget {
     required this.onChoose,
     required this.wordsLearned,
     required this.busy,
+    this.failedChoice,
   });
+
+  /// Set when an account choice failed (offline); shows message + Retry.
+  final _AccountChoice? failedChoice;
 
   final Future<void> Function(_AccountChoice choice) onChoose;
   final int wordsLearned;
@@ -51,6 +55,10 @@ class _SaveProgressStep extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          if (failedChoice != null) ...[
+            _FinishError(onRetry: () => onChoose(failedChoice!)),
+            SizedBox(height: ModernGriotSpacing.md.h),
+          ],
           _AuthProviderButton(
             label: 'Continue with Google',
             icon: Icons.g_mobiledata_rounded,
@@ -148,6 +156,80 @@ class _AuthProviderButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _FinishError extends ConsumerWidget {
+  const _FinishError({required this.onRetry});
+
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Semantics(
+      liveRegion: true,
+      container: true,
+      child: Container(
+        key: const ValueKey('finish-error'),
+        padding: EdgeInsets.all(ModernGriotSpacing.md.w),
+        decoration: BoxDecoration(
+          color: ModernGriotColors.surfaceContainerLowest,
+          borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
+          border: Border.all(color: ModernGriotColors.error, width: 1.5),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(
+                  Icons.wifi_off_rounded,
+                  color: ModernGriotColors.error,
+                  semanticLabel: 'Error',
+                ),
+                SizedBox(width: ModernGriotSpacing.xs.w),
+                Expanded(
+                  child: Text(
+                    _bidi(context, "Couldn't reach sign-in"),
+                    style: ModernGriotTypography.titleSmall(
+                      context: context,
+                      color: ModernGriotColors.onSurface,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: ModernGriotSpacing.xxs.h),
+            Text(
+              _bidi(
+                context,
+                "You're offline. Your answers are saved on this phone. "
+                'Connect, then try again.',
+              ),
+              style: ModernGriotTypography.bodyMedium(
+                context: context,
+                color: ModernGriotColors.onSurface,
+              ),
+            ),
+            SizedBox(height: ModernGriotSpacing.sm.h),
+            SizedBox(
+              height: ModernGriotLayout.minTouchTarget.toDouble(),
+              child: FilledButton(
+                onPressed: () {
+                  ref.invalidate(onboardingOnlineProvider);
+                  onRetry();
+                },
+                style: FilledButton.styleFrom(
+                  backgroundColor: ModernGriotColors.brandGold,
+                  foregroundColor: ModernGriotColors.onBrandGold,
+                ),
+                child: Text(_bidi(context, 'Retry')),
+              ),
+            ),
+          ],
         ),
       ),
     );

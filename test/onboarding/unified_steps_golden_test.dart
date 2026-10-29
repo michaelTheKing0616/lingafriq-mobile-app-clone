@@ -156,20 +156,28 @@ void main() {
     'every step, offline',
     (tester) => walk(tester, suffix: '_offline', online: false),
   );
-  testWidgets('error: offline finish keeps answers (snackbar)', (tester) async {
+  testWidgets('error: offline sign-in shows message and Retry', (
+    tester,
+  ) async {
     await pumpOnboarding(tester, reducedMotion: true, online: false);
     await settleOnce(tester);
     await advanceToFirstWin(tester);
     await completeFirstWin(tester);
     await advanceToSaveProgress(tester);
-    await tapVisible(tester, label('Later. My answers stay on this phone'));
-    await tester.pump(const Duration(milliseconds: 300));
+    await tapVisible(tester, label('Continue with Google'));
+    await settleOnce(tester);
+    expect(find.byKey(const ValueKey('finish-error')), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byKey(const ValueKey('finish-error')),
+        matching: label('Retry'),
+      ),
+      findsOneWidget,
+    );
+    expect(find.byType(CircularProgressIndicator), findsNothing);
     await expectLater(
       find.byType(MaterialApp),
       matchesGoldenFile('goldens/unified/19_offline_finish_error.png'),
     );
-    for (var i = 0; i < 12; i++) {
-      await tester.pump(const Duration(milliseconds: 500));
-    }
   });
 }

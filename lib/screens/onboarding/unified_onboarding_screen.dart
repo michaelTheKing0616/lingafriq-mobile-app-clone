@@ -198,6 +198,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
     bool ask(Iterable<String> keys) =>
         reask.isEmpty || keys.any(reask.contains);
     final isCompleting = useState(false);
+    final failedChoice = useState<_AccountChoice?>(null);
 
     final animationController = useAnimationController(
       duration: const Duration(milliseconds: 800),
@@ -303,8 +304,21 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
         _SaveProgressStep(
           busy: isCompleting.value,
           wordsLearned: onboardingData.value['first_win_words'] as int? ?? 0,
+          failedChoice: failedChoice.value,
           onChoose: (choice) async {
             if (isCompleting.value) return;
+            if (choice != _AccountChoice.later) {
+              var online = true;
+              try {
+                online = await ref.read(onboardingOnlineProvider.future);
+              } catch (_) {}
+              if (!online) {
+                // Sign-in needs a connection: show the error, not a spinner.
+                failedChoice.value = choice;
+                return;
+              }
+            }
+            failedChoice.value = null;
             isCompleting.value = true;
             try {
               await _completeOnboarding(
@@ -368,7 +382,9 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                     ? null
                     : () => _skipOnboarding(context, ref),
               ),
-            if (isCompleting.value)
+            // Never stack the saving scrim over the offline banner.
+            if (isCompleting.value &&
+                ref.watch(onboardingOnlineProvider).value != false)
               Positioned.fill(
                 child: Semantics(
                   liveRegion: true,

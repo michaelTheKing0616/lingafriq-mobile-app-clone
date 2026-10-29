@@ -33,6 +33,7 @@ Future<Widget> wrap(
           onboardingOnlineProvider.overrideWith((ref) async => online),
         ],
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           home: Directionality(textDirection: textDirection, child: child),
         ),
       ),
