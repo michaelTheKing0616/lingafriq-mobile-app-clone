@@ -11,7 +11,6 @@ import 'package:lingafriq/services/lens/lens_collection_service.dart';
 import 'package:lingafriq/services/lens/object_set_mapper.dart';
 import 'package:lingafriq/services/lens/point_say_audio.dart';
 import 'package:lingafriq/services/lens/word_card_builder.dart';
-import 'package:lingafriq/services/hybrid_polie/translation_service.dart';
 import 'package:lingafriq/utils/api_service.dart';
 
 /// copy_keys: lens.point_say.not_in_dictionary, lens.point_say.suggest
@@ -205,18 +204,47 @@ Future<VerifiedLexeme?> fetchVerifiedLexemeEntry(String lexemeId) async {
   }
 }
 
+/// Queues an unverified Lens label for community review (P7-905). Lens talks
+/// to the Verified Lexicon and verify queue only, never to translation models.
+Future<bool> enqueueLensVerifySuggestion({
+  required String lexemeId,
+  required String objectSetId,
+  required String learnerLanguageCode,
+}) async {
+  try {
+    await ApiService.initialize();
+    final response = await ApiService.post(
+      '/api/v2/verify-queue/suggestions',
+      data: <String, dynamic>{
+        'item_id': lexemeId,
+        'pack_version': 'lens:$objectSetId',
+        'field': 'lens_lexicon_label',
+        'proposed_value': learnerLanguageCode,
+        'proposer_kind': 'learner',
+        'source': 'lens_object_label',
+      },
+    );
+    final status = response.statusCode ?? 0;
+    return status >= 200 && status < 300;
+  } catch (_) {
+    return false;
+  }
+}
+
 /// Production wiring for Point-and-Say dictionary resolution (P7-946).
 Future<PointSayDictionaryService> createPointSayDictionaryService({
-  TranslationService? translation,
+  EnqueueLensVerify? enqueueVerify,
   PointSayAudio? pointSayAudio,
 }) async {
   final set = await AfricanObjectSet.loadFromBundle();
   final mapper = ObjectSetMapper(set);
-  final t = translation ?? TranslationService();
-  final fetch = fetchVerifiedLexemeEntry;
+  const fetch = fetchVerifiedLexemeEntry;
   return PointSayDictionaryService(
     mapper: mapper,
-    labelResolver: t.lensLexiconResolver(fetchLexeme: fetch),
+    labelResolver: LexiconLabelResolver(
+      fetchLexeme: fetch,
+      enqueueVerify: enqueueVerify ?? enqueueLensVerifySuggestion,
+    ),
     fetchLexeme: fetch,
     pointSayAudio: pointSayAudio,
   );
