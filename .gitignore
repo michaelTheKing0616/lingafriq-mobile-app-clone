@@ -80,3 +80,10 @@ google-services.json
 GoogleService-Info.plist
 scripts/loadtest/node_modules/
 test/**/failures/
+
+# Secrets and key material (compliance batch 1, #1). Never commit; use Doppler/CI secrets.
+*.p8
+AuthKey_*.p8
+*-firebase-adminsdk-*.json
+dart_defines.json
+!*.example

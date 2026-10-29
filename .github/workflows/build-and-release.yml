@@ -229,6 +229,8 @@ jobs:
           chmod +x android/gradlew || true
           flutter build appbundle --release --obfuscate --split-debug-info=build/symbols \
             --dart-define=CERTIFICATE_PIN_HASHES="${{ secrets.CERTIFICATE_PIN_HASHES }}" \
+            --dart-define=FIREBASE_API_KEY_ANDROID="${{ secrets.FIREBASE_API_KEY_ANDROID }}" \
+            --dart-define=FIREBASE_API_KEY_IOS="${{ secrets.FIREBASE_API_KEY_IOS }}" \
             --build-name="$VERSION_NAME" --build-number="$BUILD_NUMBER" 2>&1 | tee build.log
           BUILD_EXIT_CODE=${PIPESTATUS[0]}
           if [ $BUILD_EXIT_CODE -eq 0 ]; then echo "Build succeeded"; exit 0; fi
@@ -247,6 +249,8 @@ jobs:
 
           flutter build appbundle --release --obfuscate --split-debug-info=build/symbols \
             --dart-define=CERTIFICATE_PIN_HASHES="${{ secrets.CERTIFICATE_PIN_HASHES }}" \
+            --dart-define=FIREBASE_API_KEY_ANDROID="${{ secrets.FIREBASE_API_KEY_ANDROID }}" \
+            --dart-define=FIREBASE_API_KEY_IOS="${{ secrets.FIREBASE_API_KEY_IOS }}" \
             --build-name="$VERSION_NAME" --build-number="$BUILD_NUMBER" 2>&1 | tee build-retry.log
           BUILD_EXIT_CODE=${PIPESTATUS[0]}
           if [ $BUILD_EXIT_CODE -eq 0 ]; then echo "Build succeeded on retry"; exit 0; fi
@@ -266,6 +270,8 @@ jobs:
           chmod +x android/gradlew || true
           flutter build apk --release --split-per-abi --obfuscate --split-debug-info=build/symbols-apk \
             --dart-define=CERTIFICATE_PIN_HASHES="${{ secrets.CERTIFICATE_PIN_HASHES }}" \
+            --dart-define=FIREBASE_API_KEY_ANDROID="${{ secrets.FIREBASE_API_KEY_ANDROID }}" \
+            --dart-define=FIREBASE_API_KEY_IOS="${{ secrets.FIREBASE_API_KEY_IOS }}" \
             --build-name="$VERSION_NAME" --build-number="$BUILD_NUMBER"
 
       - name: APK download size gate (P12-004)
@@ -613,6 +619,8 @@ jobs:
           if [ "$IOS_SIGNING_READY" = "true" ] && [ -n "$IOS_P12" ]; then
             flutter build ios --release --no-codesign --obfuscate --split-debug-info=build/symbols \
               --dart-define=CERTIFICATE_PIN_HASHES="${{ secrets.CERTIFICATE_PIN_HASHES }}" \
+              --dart-define=FIREBASE_API_KEY_ANDROID="${{ secrets.FIREBASE_API_KEY_ANDROID }}" \
+              --dart-define=FIREBASE_API_KEY_IOS="${{ secrets.FIREBASE_API_KEY_IOS }}" \
               --build-name="$VERSION_NAME" --build-number="$BUILD_NUMBER" 2>&1 | tee build-ios.log
             build_code=${PIPESTATUS[0]}
             if [ $build_code -eq 0 ]; then
@@ -640,6 +648,8 @@ jobs:
           else
             flutter build ios --release --no-codesign --obfuscate --split-debug-info=build/symbols \
               --dart-define=CERTIFICATE_PIN_HASHES="${{ secrets.CERTIFICATE_PIN_HASHES }}" \
+              --dart-define=FIREBASE_API_KEY_ANDROID="${{ secrets.FIREBASE_API_KEY_ANDROID }}" \
+              --dart-define=FIREBASE_API_KEY_IOS="${{ secrets.FIREBASE_API_KEY_IOS }}" \
               --build-name="$VERSION_NAME" --build-number="$BUILD_NUMBER" 2>&1 | tee build-ios.log
             code=${PIPESTATUS[0]}
           fi

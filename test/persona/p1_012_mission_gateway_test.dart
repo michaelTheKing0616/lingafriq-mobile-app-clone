@@ -116,7 +116,7 @@ void _assertGatewayRequest(RequestOptions request) {
   final body = request.data;
   expect(body, isA<Map>());
   expect((body as Map)['persona_id'], isNotNull);
-  expect((body as Map)['persona'], isNotNull);
+  expect(body['persona'], isNotNull);
 }
 
 void _assertNoClientAiKeyRead() {
