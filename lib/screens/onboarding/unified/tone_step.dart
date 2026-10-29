@@ -89,7 +89,7 @@ class _ToneStep extends HookConsumerWidget {
             ),
           SizedBox(height: ModernGriotSpacing.md.h),
           Text(
-            'How much game feel?',
+            _bidi(context, 'How much game feel?'),
             style: ModernGriotTypography.titleMedium(
               context: context,
               color: ModernGriotColors.onSurface,

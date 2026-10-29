@@ -113,7 +113,7 @@ class _LevelPlacementStep extends HookConsumerWidget {
           if (showQuickCheck.value) ...[
             SizedBox(height: ModernGriotSpacing.xs.h),
             Text(
-              'Quick check: tap each word you recognize.',
+              _bidi(context, 'Quick check: tap each word you recognize.'),
               style: ModernGriotTypography.bodyMedium(
                 context: context,
                 color: _captionInk,
@@ -125,7 +125,7 @@ class _LevelPlacementStep extends HookConsumerWidget {
               children: [
                 for (final word in _quickCheckWords(learningLanguage))
                   FilterChip(
-                    label: Text(word),
+                    label: Text(_bidi(context, word)),
                     selected: recognizedWords.value.contains(word),
                     onSelected: (isOn) {
                       HapticFeedback.selectionClick();

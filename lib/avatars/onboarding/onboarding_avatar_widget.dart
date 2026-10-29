@@ -228,7 +228,7 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
   ///   1. Outer pulsing glow ring
   ///   2. Decorative dashed orbit
   ///   3. Gradient-filled circle
-  ///   4. Character emoji at centre
+  ///   4. Character still at centre
   ///   5. Themed icon badge in bottom-right
   Widget _buildCharacterPortrait(OnboardingAvatarInfo info) {
     final innerSize = widget.size * 0.78;
@@ -304,10 +304,15 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
                 ),
               ],
             ),
-            child: Center(
-              child: Text(
-                info.characterEmoji,
-                style: TextStyle(fontSize: innerSize * 0.42),
+            // The character's own still, never an emoji stand-in.
+            child: ClipOval(
+              child: Image.asset(
+                'assets/images/cast_still_'
+                '${presetForAvatar(onboardingAvatarType(widget.step))}.png',
+                fit: BoxFit.contain,
+                excludeFromSemantics: true,
+                errorBuilder: (_, _, _) =>
+                    Center(child: Icon(info.icon, size: innerSize * 0.42)),
               ),
             ),
           ),

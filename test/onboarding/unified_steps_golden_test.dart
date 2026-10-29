@@ -9,9 +9,13 @@ import 'package:lingafriq/screens/onboarding/unified_onboarding_screen.dart';
 import 'package:rive/rive.dart';
 
 import '../golden/golden_harness.dart';
+import 'onboarding_art.dart';
 import '../screens/onboarding/unified_onboarding_screen_test.dart' hide main;
 
 Future<void> _shot(WidgetTester tester, String name) async {
+  await scrollToTop(tester);
+  await settleArt(tester);
+  expectNoBlankCast(tester, name);
   await expectLater(
     find.byType(UnifiedOnboardingScreen),
     matchesGoldenFile('goldens/unified/$name.png'),
@@ -128,6 +132,8 @@ void main() {
     for (var i = 0; i < 10; i++) {
       await tester.pump(const Duration(milliseconds: 500));
     }
+    await settleArt(tester);
+    expect(find.textContaining('provider_invalid'), findsNothing);
     await expectLater(
       find.byType(MaterialApp),
       matchesGoldenFile('goldens/unified/18_signin_google$suffix.png'),
@@ -201,6 +207,8 @@ void main() {
       findsOneWidget,
     );
     expect(find.byType(CircularProgressIndicator), findsNothing);
+    await settleArt(tester);
+    expectNoBlankCast(tester, '19_offline_finish_error');
     await expectLater(
       find.byType(MaterialApp),
       matchesGoldenFile('goldens/unified/19_offline_finish_error.png'),

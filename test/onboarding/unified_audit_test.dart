@@ -7,6 +7,7 @@ import 'package:lingafriq/avatars/cast/cast_file_cache.dart';
 import 'package:rive/rive.dart';
 
 import '../screens/onboarding/unified_onboarding_screen_test.dart' hide main;
+import 'onboarding_art.dart';
 
 /// WCAG relative-luminance contrast of [fg] over [bg] (both opaque).
 double contrast(Color fg, Color bg) {
@@ -205,7 +206,40 @@ Future<void> audit(WidgetTester tester, String step) async {
   }
 
   visit(root);
+
+  // 4. Scrolled to the end, the last item sits fully above the CTA bar and
+  // the scroll cue is gone (it only shows while more content is below).
+  final body = find.byKey(const ValueKey('step-body'));
+  if (body.evaluate().isNotEmpty) {
+    final st = tester.state<ScrollableState>(
+      find.descendant(of: body, matching: find.byType(Scrollable)).first,
+    );
+    for (var i = 0; i < 3; i++) {
+      st.position.jumpTo(st.position.maxScrollExtent);
+      await tester.pump(const Duration(milliseconds: 100));
+    }
+    expectLastItemAboveBar(tester, step);
+    // At large text the question stays pinned as one line while scrolled.
+    final big = MediaQuery.textScalerOf(tester.element(body)).scale(1) >= 1.5;
+    if (big && st.position.pixels > 48 && _questionSteps.contains(step)) {
+      expect(
+        find.byKey(const ValueKey('step-compact-question')),
+        findsOneWidget,
+        reason: '[$step] question lost while scrolled at large text',
+      );
+    }
+    expect(
+      find.byKey(const ValueKey('step-scroll-fade')),
+      findsNothing,
+      reason: '[$step] scroll cue shown at the end of the content',
+    );
+    st.position.jumpTo(0);
+    await tester.pump();
+    await tester.pump();
+  }
 }
+
+const _questionSteps = {'reason', 'level', 'daily goal', 'style', 'tone'};
 
 void main() {
   CastFileCache.instance.renderer = Factory.flutter;

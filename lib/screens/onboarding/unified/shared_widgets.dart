@@ -46,7 +46,7 @@ String _bidi(BuildContext context, String text) {
       : text;
 }
 
-class _StepScaffold extends ConsumerWidget {
+class _StepScaffold extends HookConsumerWidget {
   const _StepScaffold({
     required this.child,
     this.bottom,
@@ -68,8 +68,22 @@ class _StepScaffold extends ConsumerWidget {
     final offline =
         showOfflineNotice && ref.watch(onboardingOnlineProvider).value == false;
     // At large text a pinned header starves the body: scroll it with the
-    // body instead, above the pinned CTA.
+    // body instead, and pin a one-line question once it scrolls away.
     final pinHeader = MediaQuery.textScalerOf(context).scale(1) < 1.5;
+    final question = switch (header) {
+      final _QuestionHeader h => h.question,
+      _ => null,
+    };
+    final moreBelow = useState(false);
+    final headerGone = useState(false);
+    bool onMetrics(ScrollNotification n) {
+      final m = n.metrics;
+      if (n.depth != 0 || m.axis != Axis.vertical) return false;
+      moreBelow.value = m.extentAfter > 1;
+      headerGone.value = !pinHeader && m.pixels > 48;
+      return false;
+    }
+
     return Container(
       color: ModernGriotColors.surface,
       child: ResponsiveSafeArea(
@@ -83,7 +97,6 @@ class _StepScaffold extends ConsumerWidget {
                 ),
               if (header != null && pinHeader)
                 ConstrainedBox(
-                  // At 200% text the header may not starve the options.
                   constraints: BoxConstraints(
                     maxHeight: viewport.maxHeight * 0.35,
                   ),
@@ -97,42 +110,132 @@ class _StepScaffold extends ConsumerWidget {
                     child: header,
                   ),
                 ),
+              // The slot is reserved up front so the body never jumps when
+              // the one-line question appears.
+              if (question != null && !pinHeader)
+                SizedBox(
+                  height:
+                      MediaQuery.textScalerOf(context).scale(16.sp) * 1.5 +
+                      ModernGriotSpacing.xs.h * 2,
+                  child: headerGone.value
+                      ? _CompactQuestion(question: question)
+                      : null,
+                ),
               Expanded(
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    return SingleChildScrollView(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: ModernGriotSpacing.lg.w,
-                      ),
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                          minHeight: constraints.maxHeight,
-                        ),
-                        child: header != null && !pinHeader
-                            ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [header!, child],
-                              )
-                            : child,
-                      ),
-                    );
+                child: NotificationListener<ScrollMetricsNotification>(
+                  onNotification: (n) {
+                    final m = n.metrics;
+                    if (n.depth == 0 && m.axis == Axis.vertical) {
+                      moreBelow.value = m.extentAfter > 1;
+                    }
+                    return false;
                   },
+                  child: NotificationListener<ScrollUpdateNotification>(
+                    onNotification: onMetrics,
+                    child: Stack(
+                      children: [
+                        Positioned.fill(
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              return SingleChildScrollView(
+                                key: const ValueKey('step-body'),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: ModernGriotSpacing.lg.w,
+                                ),
+                                child: ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    minHeight: constraints.maxHeight,
+                                  ),
+                                  child: header != null && !pinHeader
+                                      ? Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          children: [header!, child],
+                                        )
+                                      : child,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        // Scroll cue: only when content continues below.
+                        if (bottom != null && moreBelow.value)
+                          PositionedDirectional(
+                            start: 0,
+                            end: 0,
+                            bottom: 0,
+                            height: ModernGriotSpacing.xl.h,
+                            child: const IgnorePointer(
+                              key: ValueKey('step-scroll-fade'),
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color(0x00FEF6E7),
+                                      ModernGriotColors.surface,
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
               if (bottom != null)
                 DecoratedBox(
                   key: const ValueKey('step-bottom'),
-                  // A hairline marks where the scroll body ends, so content
-                  // that continues below reads as scrollable, not clipped.
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     color: ModernGriotColors.surface,
-                    border: Border(
-                      top: BorderSide(color: ModernGriotColors.outlineVariant),
-                    ),
+                    boxShadow: moreBelow.value
+                        ? [
+                            BoxShadow(
+                              color: ModernGriotColors.onSurface.withValues(
+                                alpha: 0.08,
+                              ),
+                              blurRadius: 12,
+                              offset: const Offset(0, -4),
+                            ),
+                          ]
+                        : const [],
                   ),
                   child: bottom!,
                 ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// One-line question pinned at large text once the full header scrolls off.
+class _CompactQuestion extends StatelessWidget {
+  const _CompactQuestion({required this.question});
+
+  final String question;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      key: const ValueKey('step-compact-question'),
+      padding: EdgeInsets.symmetric(
+        horizontal: ModernGriotSpacing.lg.w,
+        vertical: ModernGriotSpacing.xs.h,
+      ),
+      child: Semantics(
+        header: true,
+        child: Text(
+          _bidi(context, question),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: ModernGriotTypography.titleMedium(
+            context: context,
+            color: ModernGriotColors.onSurface,
           ),
         ),
       ),
@@ -220,7 +323,7 @@ class _BusyLabel extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 10),
-        Flexible(child: Text(label)),
+        Flexible(child: Text(_bidi(context, label))),
       ],
     ),
   );
@@ -453,7 +556,7 @@ class _OfflineNotice extends StatelessWidget {
             SizedBox(width: ModernGriotSpacing.sm.w),
             Expanded(
               child: Text(
-                message,
+                _bidi(context, message),
                 style: ModernGriotTypography.bodySmall(
                   context: context,
                   color: ModernGriotColors.onSurface,

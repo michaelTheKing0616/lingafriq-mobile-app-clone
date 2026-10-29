@@ -74,7 +74,7 @@ class _NotificationsStep extends HookConsumerWidget {
               ),
             ),
             child: Text(
-              'Not now',
+              _bidi(context, 'Not now'),
               style: ModernGriotTypography.labelLarge(
                 context: context,
                 color: _captionInk,
@@ -120,7 +120,7 @@ class _NotificationsStep extends HookConsumerWidget {
                     SizedBox(width: ModernGriotSpacing.sm.w),
                     Expanded(
                       child: Text(
-                        reminderLine,
+                        _bidi(context, reminderLine),
                         style: ModernGriotTypography.titleMedium(
                           context: context,
                           color: ModernGriotColors.onSurface,
@@ -142,11 +142,14 @@ class _NotificationsStep extends HookConsumerWidget {
                     borderRadius: BorderRadius.circular(ModernGriotRadius.pill),
                   ),
                   child: Text(
-                    _times.firstWhere(
-                          (t) => t['id'] == selectedTime.value,
-                          orElse: () => _times.first,
-                        )['time']
-                        as String,
+                    _bidi(
+                      context,
+                      _times.firstWhere(
+                            (t) => t['id'] == selectedTime.value,
+                            orElse: () => _times.first,
+                          )['time']
+                          as String,
+                    ),
                     style: ModernGriotTypography.labelLarge(
                       context: context,
                       color: ModernGriotColors.onSurface,
@@ -158,7 +161,7 @@ class _NotificationsStep extends HookConsumerWidget {
           ),
           SizedBox(height: ModernGriotSpacing.lg.h),
           Text(
-            'Best time',
+            _bidi(context, 'Best time'),
             style: ModernGriotTypography.titleMedium(
               context: context,
               color: ModernGriotColors.onSurface,

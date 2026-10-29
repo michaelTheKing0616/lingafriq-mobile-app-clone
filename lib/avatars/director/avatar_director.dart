@@ -885,22 +885,27 @@ class AvatarEngine {
     }
   }
 
-  AvatarType _typeForOnboarding(OnboardingStep step) {
-    switch (step) {
-      case OnboardingStep.welcome:
-      case OnboardingStep.profile:
-      case OnboardingStep.complete:
-        return AvatarType.elder;
-      case OnboardingStep.languageSelection:
-        return AvatarType.weaver;
-      case OnboardingStep.goals:
-        return AvatarType.pathfinder;
-      case OnboardingStep.learningStyle:
-        return AvatarType.rhythmMaster;
-      case OnboardingStep.schedule:
-        return AvatarType.timekeeper;
-      case OnboardingStep.story:
-        return AvatarType.griot;
-    }
+  AvatarType _typeForOnboarding(OnboardingStep step) =>
+      onboardingAvatarType(step);
+
+}
+
+/// The cast member who guides each onboarding step.
+AvatarType onboardingAvatarType(OnboardingStep step) {
+  switch (step) {
+    case OnboardingStep.welcome:
+    case OnboardingStep.profile:
+    case OnboardingStep.complete:
+      return AvatarType.elder;
+    case OnboardingStep.languageSelection:
+      return AvatarType.weaver;
+    case OnboardingStep.goals:
+      return AvatarType.pathfinder;
+    case OnboardingStep.learningStyle:
+      return AvatarType.rhythmMaster;
+    case OnboardingStep.schedule:
+      return AvatarType.timekeeper;
+    case OnboardingStep.story:
+      return AvatarType.griot;
   }
 }

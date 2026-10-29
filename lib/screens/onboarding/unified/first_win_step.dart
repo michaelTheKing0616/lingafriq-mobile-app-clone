@@ -98,7 +98,7 @@ class _FirstWinStep extends HookConsumerWidget {
                   ),
                 SizedBox(height: ModernGriotSpacing.md.h),
                 Text(
-                  'You did it!',
+                  _bidi(context, 'You did it!'),
                   style: ModernGriotTypography.headlineMedium(
                     context: context,
                     color: ModernGriotColors.onSurface,
@@ -106,7 +106,7 @@ class _FirstWinStep extends HookConsumerWidget {
                 ),
                 SizedBox(height: ModernGriotSpacing.xs.h),
                 Text(
-                  'Celebrate progress, not perfection.',
+                  _bidi(context, 'Celebrate progress, not perfection.'),
                   textAlign: TextAlign.center,
                   style: ModernGriotTypography.bodyLarge(
                     context: context,
@@ -158,7 +158,7 @@ class _FirstWinStep extends HookConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Your first win',
+            _bidi(context, 'Your first win'),
             style: ModernGriotTypography.headlineSmall(
               context: context,
               color: ModernGriotColors.onSurface,
@@ -166,7 +166,10 @@ class _FirstWinStep extends HookConsumerWidget {
           ),
           SizedBox(height: ModernGriotSpacing.xxs.h),
           Text(
-            'A 60-second taste of ${copy.name}. Hear, tap, say.',
+            _bidi(
+              context,
+              'A 60-second taste of ${copy.name}. Hear, tap, say.',
+            ),
             style: ModernGriotTypography.bodyMedium(
               context: context,
               color: _captionInk,
@@ -191,7 +194,7 @@ class _FirstWinStep extends HookConsumerWidget {
           if (phase.value == 0) ...[
             Center(
               child: Text(
-                'Hear: ${copy.hear}',
+                _bidi(context, 'Hear: ${copy.hear}'),
                 textAlign: TextAlign.center,
                 style: ModernGriotTypography.headlineMedium(
                   context: context,
@@ -229,19 +232,24 @@ class _FirstWinStep extends HookConsumerWidget {
                     _GreetingAudioStatus.playing => Icons.graphic_eq_rounded,
                     _GreetingAudioStatus.idle => Icons.volume_up_rounded,
                   }),
-                  label: Text(switch (audioStatus.value) {
-                    _GreetingAudioStatus.heard => 'Heard it',
-                    _GreetingAudioStatus.unavailable => 'Audio unavailable',
-                    _GreetingAudioStatus.playing => 'Playing…',
-                    _GreetingAudioStatus.idle => 'Play greeting',
-                  }),
+                  label: Text(
+                    _bidi(context, switch (audioStatus.value) {
+                      _GreetingAudioStatus.heard => 'Heard it',
+                      _GreetingAudioStatus.unavailable => 'Audio unavailable',
+                      _GreetingAudioStatus.playing => 'Playing…',
+                      _GreetingAudioStatus.idle => 'Play greeting',
+                    }),
+                  ),
                 ),
               ),
             ),
             if (audioStatus.value == _GreetingAudioStatus.unavailable) ...[
               SizedBox(height: ModernGriotSpacing.xs.h),
               Text(
-                'We could not play sound right now. You can still continue.',
+                _bidi(
+                  context,
+                  'We could not play sound right now. You can still continue.',
+                ),
                 textAlign: TextAlign.center,
                 style: ModernGriotTypography.bodySmall(
                   context: context,
@@ -252,7 +260,7 @@ class _FirstWinStep extends HookConsumerWidget {
           ] else if (phase.value == 1) ...[
             Center(
               child: Text(
-                'Tap the greeting',
+                _bidi(context, 'Tap the greeting'),
                 textAlign: TextAlign.center,
                 style: ModernGriotTypography.headlineMedium(
                   context: context,
@@ -273,7 +281,7 @@ class _FirstWinStep extends HookConsumerWidget {
           ] else ...[
             Center(
               child: Text(
-                'Say it with Polie',
+                _bidi(context, 'Say it with Polie'),
                 textAlign: TextAlign.center,
                 style: ModernGriotTypography.headlineMedium(
                   context: context,
@@ -284,7 +292,7 @@ class _FirstWinStep extends HookConsumerWidget {
             SizedBox(height: ModernGriotSpacing.xs.h),
             Center(
               child: Text(
-                copy.say,
+                _bidi(context, copy.say),
                 textAlign: TextAlign.center,
                 style: ModernGriotTypography.bodyLarge(
                   context: context,
@@ -318,7 +326,10 @@ class _FirstWinStep extends HookConsumerWidget {
                         : Icons.mic_rounded,
                   ),
                   label: Text(
-                    saidReady.value ? 'Nice, you said it' : 'I said it',
+                    _bidi(
+                      context,
+                      saidReady.value ? 'Nice, you said it' : 'I said it',
+                    ),
                   ),
                 ),
               ),
@@ -338,7 +349,7 @@ class _FirstWinStep extends HookConsumerWidget {
                   saidReady.value = false;
                   phase.value = 3;
                 },
-                child: const Text("Can't speak now"),
+                child: Text(_bidi(context, "Can't speak now")),
               ),
             ),
           ],
@@ -434,7 +445,7 @@ class _StatTile extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              value,
+              _bidi(context, value),
               style: ModernGriotTypography.headlineMedium(
                 context: context,
                 color: ModernGriotColors.primary,
@@ -442,7 +453,7 @@ class _StatTile extends StatelessWidget {
             ),
             SizedBox(height: ModernGriotSpacing.xxs.h),
             Text(
-              label,
+              _bidi(context, label),
               textAlign: TextAlign.center,
               style: ModernGriotTypography.labelMedium(
                 context: context,

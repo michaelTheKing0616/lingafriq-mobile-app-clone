@@ -100,8 +100,8 @@ class _BirthYearStep extends HookConsumerWidget {
               ),
               decoration: InputDecoration(
                 counterText: '',
-                labelText: 'Birth year',
-                hintText: 'For example ${nowYear - 18}',
+                labelText: _bidi(context, 'Birth year'),
+                hintText: _bidi(context, 'For example ${nowYear - 18}'),
                 helperText: typedInvalid.value
                     ? 'Use a year between 1900 and $nowYear.'
                     : null,
@@ -132,7 +132,7 @@ class _BirthYearStep extends HookConsumerWidget {
                   ),
                 ),
                 child: Text(
-                  'Use the year wheel',
+                  _bidi(context, 'Use the year wheel'),
                   style: ModernGriotTypography.labelLarge(
                     context: context,
                     color: ModernGriotColors.onSurface,
@@ -185,7 +185,7 @@ class _BirthYearStep extends HookConsumerWidget {
                         childCount: years.length,
                         builder: (context, i) => Center(
                           child: Text(
-                            '${years[i]}',
+                            _bidi(context, '${years[i]}'),
                             style: years[i] == selectedYear.value
                                 ? ModernGriotTypography.headlineSmall(
                                     context: context,
@@ -214,7 +214,7 @@ class _BirthYearStep extends HookConsumerWidget {
                   ),
                 ),
                 child: Text(
-                  'Type it instead',
+                  _bidi(context, 'Type it instead'),
                   style: ModernGriotTypography.labelLarge(
                     context: context,
                     color: ModernGriotColors.onSurface,
@@ -235,8 +235,11 @@ class _BirthYearStep extends HookConsumerWidget {
             Semantics(
               liveRegion: true,
               child: Text(
-                'Your profile stays private, and adults cannot send you '
-                'direct messages.',
+                _bidi(
+                  context,
+                  'Your profile stays private, and adults cannot send you '
+                  'direct messages.',
+                ),
                 style: ModernGriotTypography.bodyMedium(
                   context: context,
                   color: _captionInk,
@@ -270,7 +273,7 @@ class _AskParentPanel extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Ask a parent',
+              _bidi(context, 'Ask a parent'),
               style: ModernGriotTypography.titleMedium(
                 context: context,
                 color: ModernGriotColors.onSecondaryContainer,
@@ -278,8 +281,11 @@ class _AskParentPanel extends StatelessWidget {
             ),
             SizedBox(height: ModernGriotSpacing.xxs.h),
             Text(
-              'A parent or guardian says yes before you chat or share. '
-              'Add their email so they can approve your account.',
+              _bidi(
+                context,
+                'A parent or guardian says yes before you chat or share. '
+                'Add their email so they can approve your account.',
+              ),
               style: ModernGriotTypography.bodyMedium(
                 context: context,
                 color: ModernGriotColors.onSecondaryContainer,
@@ -295,7 +301,7 @@ class _AskParentPanel extends StatelessWidget {
                 color: ModernGriotColors.onSurface,
               ),
               decoration: InputDecoration(
-                labelText: "Parent's email",
+                labelText: _bidi(context, "Parent's email"),
                 filled: true,
                 fillColor: ModernGriotColors.surfaceContainerLowest,
                 border: OutlineInputBorder(
@@ -313,7 +319,7 @@ class _AskParentPanel extends StatelessWidget {
                 ),
               ),
               child: Text(
-                'Keep learning. My parent will add it later',
+                _bidi(context, 'Keep learning. My parent will add it later'),
                 textAlign: TextAlign.center,
                 style: ModernGriotTypography.labelLarge(
                   context: context,

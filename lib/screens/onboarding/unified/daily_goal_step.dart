@@ -84,7 +84,7 @@ class _MinutesBadge extends StatelessWidget {
         borderRadius: BorderRadius.circular(ModernGriotRadius.pill),
       ),
       child: Text(
-        '$minutes min',
+        _bidi(context, '$minutes min'),
         textAlign: TextAlign.center,
         style: ModernGriotTypography.labelLarge(
           context: context,

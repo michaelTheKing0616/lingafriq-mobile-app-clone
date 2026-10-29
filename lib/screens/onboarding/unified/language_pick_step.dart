@@ -139,7 +139,7 @@ class _LanguagePickStep extends HookConsumerWidget {
             Semantics(
               liveRegion: true,
               child: Text(
-                _greetings[selectedLearn.value]!,
+                _bidi(context, _greetings[selectedLearn.value]!),
                 key: const ValueKey('onboarding-greeting'),
                 style: ModernGriotTypography.headlineSmall(
                   context: context,
@@ -177,7 +177,7 @@ class _LanguagePickStep extends HookConsumerWidget {
                       selected: selectedHome == home['code'],
                       // Endonym: people spot their own language faster.
                       label: Text(
-                        home['script']!,
+                        _bidi(context, home['script']!),
                         semanticsLabel: home['name'],
                         style: ModernGriotTypography.labelLarge(
                           context: context,

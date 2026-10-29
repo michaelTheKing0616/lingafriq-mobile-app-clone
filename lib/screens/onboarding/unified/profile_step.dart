@@ -121,7 +121,7 @@ class _ProfileStep extends HookConsumerWidget {
           TextButton(
             onPressed: onSkip,
             child: Text(
-              'Skip for now',
+              _bidi(context, 'Skip for now'),
               style: ModernGriotTypography.labelLarge(
                 context: context,
                 color: _captionInk,
@@ -171,7 +171,7 @@ class _ProfileStep extends HookConsumerWidget {
                     SizedBox(width: ModernGriotSpacing.sm.w),
                     Expanded(
                       child: Text(
-                        'Add a photo (optional)',
+                        _bidi(context, 'Add a photo (optional)'),
                         style: ModernGriotTypography.labelLarge(
                           context: context,
                           color: ModernGriotColors.onSurface,
@@ -191,8 +191,8 @@ class _ProfileStep extends HookConsumerWidget {
               color: ModernGriotColors.onSurface,
             ),
             decoration: InputDecoration(
-              labelText: 'Username',
-              hintText: 'Enter your username',
+              labelText: _bidi(context, 'Username'),
+              hintText: _bidi(context, 'Enter your username'),
               filled: true,
               fillColor: ModernGriotColors.surfaceContainerLowest,
               border: OutlineInputBorder(
@@ -231,7 +231,7 @@ class _ProfileStep extends HookConsumerWidget {
             children: [
               for (final idea in _nameIdeas(learnCode))
                 ActionChip(
-                  label: Text(idea),
+                  label: Text(_bidi(context, idea)),
                   tooltip: 'Use the name $idea',
                   materialTapTargetSize: MaterialTapTargetSize.padded,
                   backgroundColor: ModernGriotColors.surfaceContainerLowest,
@@ -363,7 +363,7 @@ class _VillageCardPreview extends StatelessWidget {
                   radius: ModernGriotSpacing.lg.r,
                   backgroundColor: accent,
                   child: Text(
-                    shown.characters.first.toUpperCase(),
+                    _bidi(context, shown.characters.first.toUpperCase()),
                     style: ModernGriotTypography.titleMedium(
                       context: context,
                       color: ModernGriotColors.surfaceContainerLowest,
@@ -386,7 +386,7 @@ class _VillageCardPreview extends StatelessWidget {
                       ),
                       if (greeting != null)
                         Text(
-                          greeting!,
+                          _bidi(context, greeting!),
                           style: ModernGriotTypography.bodyMedium(
                             context: context,
                             color: _captionInk,
