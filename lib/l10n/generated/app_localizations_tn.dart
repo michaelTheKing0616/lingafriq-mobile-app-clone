@@ -2924,4 +2924,256 @@ class AppLocalizationsTn extends AppLocalizations {
 
   @override
   String get gmDescWhotCardGame => 'Full Whot rules with vocab per card';
+
+  @override
+  String get gcTitle => 'Global chat';
+
+  @override
+  String get gcChannelGeneral => 'General';
+
+  @override
+  String get gcChannels => 'Channels';
+
+  @override
+  String get gcSwitchChannel => 'Switch channel';
+
+  @override
+  String get gcRefresh => 'Refresh';
+
+  @override
+  String get gcFindUser => 'Find someone';
+
+  @override
+  String get gcMore => 'More';
+
+  @override
+  String get gcGuidelines => 'Community guidelines';
+
+  @override
+  String get gcMutedBlocked => 'Muted and blocked';
+
+  @override
+  String get gcPolieTitle => 'Practise privately with Polie (AI)';
+
+  @override
+  String get gcPolieSub => 'Your turns are not posted to channels';
+
+  @override
+  String get gcEmptyTitle => 'No messages yet';
+
+  @override
+  String get gcEmptyBody => 'Say hello and start the conversation.';
+
+  @override
+  String get gcSayHello => 'Say hello';
+
+  @override
+  String get gcHelloText => 'Hello everyone! Excited to learn together.';
+
+  @override
+  String get gcErrorTitle => 'Couldn’t load messages';
+
+  @override
+  String get gcErrorBody => 'Check your connection and try again.';
+
+  @override
+  String get gcRetry => 'Retry';
+
+  @override
+  String get gcOffline => 'Offline · showing saved messages';
+
+  @override
+  String gcHidden(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n messages hidden from muted or blocked people',
+      one: '1 message hidden from muted or blocked people',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get gcManage => 'Manage';
+
+  @override
+  String get gcHint => 'Write a message… (@Polie for help)';
+
+  @override
+  String get gcSend => 'Send';
+
+  @override
+  String get gcSending => 'Sending…';
+
+  @override
+  String get gcYou => 'You';
+
+  @override
+  String get gcNow => 'now';
+
+  @override
+  String gcMinAgo(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n min',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String gcHourAgo(int n) {
+    String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: '$n h');
+    return '$_temp0';
+  }
+
+  @override
+  String get gcFlagged => 'Hidden by moderation';
+
+  @override
+  String get gcShow => 'Show';
+
+  @override
+  String get gcSendFailed => 'Message not sent. Check your connection.';
+
+  @override
+  String get gcPolieBusy =>
+      'Too many @Polie requests. Try again in about a minute.';
+
+  @override
+  String get gcSignIn => 'Sign in to send messages.';
+
+  @override
+  String gcActionsFor(String name) {
+    return 'Message from $name';
+  }
+
+  @override
+  String get gcMute => 'Mute';
+
+  @override
+  String get gcMuteSub =>
+      'Hide their messages on this device. They aren’t told.';
+
+  @override
+  String get gcUnmute => 'Unmute';
+
+  @override
+  String get gcReport => 'Report';
+
+  @override
+  String get gcReportSub => 'Our moderators review every report.';
+
+  @override
+  String get gcBlock => 'Block';
+
+  @override
+  String get gcBlockSub => 'Stop seeing their messages and snaps everywhere.';
+
+  @override
+  String gcBlockConfirm(String name) {
+    return 'Block $name?';
+  }
+
+  @override
+  String get gcBlockConfirmBody =>
+      'You won’t see their new messages or snaps. You can unblock later.';
+
+  @override
+  String get gcCancel => 'Cancel';
+
+  @override
+  String get gcReasonTitle => 'Why are you reporting this?';
+
+  @override
+  String get gcReasonHarassment => 'Harassment';
+
+  @override
+  String get gcReasonSpam => 'Spam';
+
+  @override
+  String get gcReasonHate => 'Hate speech';
+
+  @override
+  String get gcReasonOther => 'Something else';
+
+  @override
+  String gcReportSent(String ref) {
+    return 'Report sent. Reference $ref';
+  }
+
+  @override
+  String get gcReportFailed => 'Couldn’t send the report. Try again.';
+
+  @override
+  String gcBlockedNote(String name) {
+    return '$name is blocked';
+  }
+
+  @override
+  String get gcBlockFailed => 'Couldn’t block. Try again.';
+
+  @override
+  String gcMutedNote(String name) {
+    return '$name is muted';
+  }
+
+  @override
+  String get gcMutedTitle => 'Muted';
+
+  @override
+  String get gcBlockedTitle => 'Blocked';
+
+  @override
+  String get gcNobody => 'Nobody here';
+
+  @override
+  String get gcUnblock => 'Unblock';
+
+  @override
+  String get gcProfileUnavailable => 'Profile unavailable for this message.';
+
+  @override
+  String get gcLockedTeenTitle => 'Global chat opens at 18';
+
+  @override
+  String get gcLockedTeenBody =>
+      'To keep you safe, open chat with strangers is for adults. You can still practise with Polie and your class.';
+
+  @override
+  String get gcLockedChildTitle => 'Global chat isn’t available';
+
+  @override
+  String get gcLockedChildBody =>
+      'Child accounts can’t use open chat. Keep learning with lessons, games and Polie.';
+
+  @override
+  String get gcLockedUnknownTitle => 'We need your age first';
+
+  @override
+  String get gcLockedUnknownBody =>
+      'Global chat is for adults. It will appear here once your account’s age is confirmed.';
+
+  @override
+  String get gcPracticePolie => 'Practise with Polie';
+
+  @override
+  String get gcChecking => 'Checking access…';
+
+  @override
+  String gcMessagesLabel(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n messages',
+      one: '1 message',
+      zero: 'No messages',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String gcOpenProfile(String name) {
+    return 'Open $name’s profile';
+  }
 }

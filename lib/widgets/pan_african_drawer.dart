@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/features/global_chat/global_chat_policy.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../utils/pan_african_design_system.dart';
 import '../providers/user_provider.dart';
@@ -23,6 +24,7 @@ class PanAfricanDrawer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final chatVisible = ref.watch(globalChatEntryVisibleProvider);
     final l10n = AppLocalizations.of(context)!;
     final user = ref.watch(userProvider);
     final gamification = ref.watch(gamificationProvider.notifier).gamification;
@@ -137,7 +139,7 @@ class PanAfricanDrawer extends ConsumerWidget {
                           title: 'Language Villages',
                           onTap: () => _navigateTo(context, ref, 'villages'),
                         ),
-                        _DrawerItem(
+                        if (chatVisible) _DrawerItem(
                           icon: Icons.forum_rounded,
                           title: 'Global Chat',
                           onTap: () => _navigateTo(context, ref, 'global_chat'),

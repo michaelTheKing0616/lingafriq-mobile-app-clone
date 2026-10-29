@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/features/global_chat/global_chat_policy.dart';
 import 'package:intl/intl.dart';
 
 import '../../config/api_contract.dart';
@@ -126,6 +127,7 @@ class _CallHistoryScreenState extends ConsumerState<CallHistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final chatVisible = ref.watch(globalChatEntryVisibleProvider);
     final cs = Theme.of(context).colorScheme;
     final body = _loading
         ? const Center(child: CircularProgressIndicator())
@@ -234,7 +236,7 @@ class _CallHistoryScreenState extends ConsumerState<CallHistoryScreen> {
                   label: const Text('Open Live Classroom'),
                 ),
                 SizedBox(height: PanAfricanSpacing.sm),
-                OutlinedButton.icon(
+                if (chatVisible) OutlinedButton.icon(
                   onPressed: () {
                     HapticFeedback.mediumImpact();
                     Navigator.push(

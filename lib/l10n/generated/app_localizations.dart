@@ -5135,6 +5135,420 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Full Whot rules with vocab per card'**
   String get gmDescWhotCardGame;
+
+  /// gcTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Global chat'**
+  String get gcTitle;
+
+  /// gcChannelGeneral
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get gcChannelGeneral;
+
+  /// gcChannels
+  ///
+  /// In en, this message translates to:
+  /// **'Channels'**
+  String get gcChannels;
+
+  /// gcSwitchChannel
+  ///
+  /// In en, this message translates to:
+  /// **'Switch channel'**
+  String get gcSwitchChannel;
+
+  /// gcRefresh
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get gcRefresh;
+
+  /// gcFindUser
+  ///
+  /// In en, this message translates to:
+  /// **'Find someone'**
+  String get gcFindUser;
+
+  /// gcMore
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get gcMore;
+
+  /// gcGuidelines
+  ///
+  /// In en, this message translates to:
+  /// **'Community guidelines'**
+  String get gcGuidelines;
+
+  /// gcMutedBlocked
+  ///
+  /// In en, this message translates to:
+  /// **'Muted and blocked'**
+  String get gcMutedBlocked;
+
+  /// gcPolieTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Practise privately with Polie (AI)'**
+  String get gcPolieTitle;
+
+  /// gcPolieSub
+  ///
+  /// In en, this message translates to:
+  /// **'Your turns are not posted to channels'**
+  String get gcPolieSub;
+
+  /// gcEmptyTitle
+  ///
+  /// In en, this message translates to:
+  /// **'No messages yet'**
+  String get gcEmptyTitle;
+
+  /// gcEmptyBody
+  ///
+  /// In en, this message translates to:
+  /// **'Say hello and start the conversation.'**
+  String get gcEmptyBody;
+
+  /// gcSayHello
+  ///
+  /// In en, this message translates to:
+  /// **'Say hello'**
+  String get gcSayHello;
+
+  /// gcHelloText
+  ///
+  /// In en, this message translates to:
+  /// **'Hello everyone! Excited to learn together.'**
+  String get gcHelloText;
+
+  /// gcErrorTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t load messages'**
+  String get gcErrorTitle;
+
+  /// gcErrorBody
+  ///
+  /// In en, this message translates to:
+  /// **'Check your connection and try again.'**
+  String get gcErrorBody;
+
+  /// gcRetry
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get gcRetry;
+
+  /// gcOffline
+  ///
+  /// In en, this message translates to:
+  /// **'Offline · showing saved messages'**
+  String get gcOffline;
+
+  /// gcHidden
+  ///
+  /// In en, this message translates to:
+  /// **'{n, plural, =1{1 message hidden from muted or blocked people} other{{n} messages hidden from muted or blocked people}}'**
+  String gcHidden(int n);
+
+  /// gcManage
+  ///
+  /// In en, this message translates to:
+  /// **'Manage'**
+  String get gcManage;
+
+  /// gcHint
+  ///
+  /// In en, this message translates to:
+  /// **'Write a message… (@Polie for help)'**
+  String get gcHint;
+
+  /// gcSend
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get gcSend;
+
+  /// gcSending
+  ///
+  /// In en, this message translates to:
+  /// **'Sending…'**
+  String get gcSending;
+
+  /// gcYou
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get gcYou;
+
+  /// gcNow
+  ///
+  /// In en, this message translates to:
+  /// **'now'**
+  String get gcNow;
+
+  /// gcMinAgo
+  ///
+  /// In en, this message translates to:
+  /// **'{n, plural, other{{n} min}}'**
+  String gcMinAgo(int n);
+
+  /// gcHourAgo
+  ///
+  /// In en, this message translates to:
+  /// **'{n, plural, other{{n} h}}'**
+  String gcHourAgo(int n);
+
+  /// gcFlagged
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden by moderation'**
+  String get gcFlagged;
+
+  /// gcShow
+  ///
+  /// In en, this message translates to:
+  /// **'Show'**
+  String get gcShow;
+
+  /// gcSendFailed
+  ///
+  /// In en, this message translates to:
+  /// **'Message not sent. Check your connection.'**
+  String get gcSendFailed;
+
+  /// gcPolieBusy
+  ///
+  /// In en, this message translates to:
+  /// **'Too many @Polie requests. Try again in about a minute.'**
+  String get gcPolieBusy;
+
+  /// gcSignIn
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to send messages.'**
+  String get gcSignIn;
+
+  /// gcActionsFor
+  ///
+  /// In en, this message translates to:
+  /// **'Message from {name}'**
+  String gcActionsFor(String name);
+
+  /// gcMute
+  ///
+  /// In en, this message translates to:
+  /// **'Mute'**
+  String get gcMute;
+
+  /// gcMuteSub
+  ///
+  /// In en, this message translates to:
+  /// **'Hide their messages on this device. They aren’t told.'**
+  String get gcMuteSub;
+
+  /// gcUnmute
+  ///
+  /// In en, this message translates to:
+  /// **'Unmute'**
+  String get gcUnmute;
+
+  /// gcReport
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get gcReport;
+
+  /// gcReportSub
+  ///
+  /// In en, this message translates to:
+  /// **'Our moderators review every report.'**
+  String get gcReportSub;
+
+  /// gcBlock
+  ///
+  /// In en, this message translates to:
+  /// **'Block'**
+  String get gcBlock;
+
+  /// gcBlockSub
+  ///
+  /// In en, this message translates to:
+  /// **'Stop seeing their messages and snaps everywhere.'**
+  String get gcBlockSub;
+
+  /// gcBlockConfirm
+  ///
+  /// In en, this message translates to:
+  /// **'Block {name}?'**
+  String gcBlockConfirm(String name);
+
+  /// gcBlockConfirmBody
+  ///
+  /// In en, this message translates to:
+  /// **'You won’t see their new messages or snaps. You can unblock later.'**
+  String get gcBlockConfirmBody;
+
+  /// gcCancel
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get gcCancel;
+
+  /// gcReasonTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Why are you reporting this?'**
+  String get gcReasonTitle;
+
+  /// gcReasonHarassment
+  ///
+  /// In en, this message translates to:
+  /// **'Harassment'**
+  String get gcReasonHarassment;
+
+  /// gcReasonSpam
+  ///
+  /// In en, this message translates to:
+  /// **'Spam'**
+  String get gcReasonSpam;
+
+  /// gcReasonHate
+  ///
+  /// In en, this message translates to:
+  /// **'Hate speech'**
+  String get gcReasonHate;
+
+  /// gcReasonOther
+  ///
+  /// In en, this message translates to:
+  /// **'Something else'**
+  String get gcReasonOther;
+
+  /// gcReportSent
+  ///
+  /// In en, this message translates to:
+  /// **'Report sent. Reference {ref}'**
+  String gcReportSent(String ref);
+
+  /// gcReportFailed
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t send the report. Try again.'**
+  String get gcReportFailed;
+
+  /// gcBlockedNote
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is blocked'**
+  String gcBlockedNote(String name);
+
+  /// gcBlockFailed
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t block. Try again.'**
+  String get gcBlockFailed;
+
+  /// gcMutedNote
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is muted'**
+  String gcMutedNote(String name);
+
+  /// gcMutedTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Muted'**
+  String get gcMutedTitle;
+
+  /// gcBlockedTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked'**
+  String get gcBlockedTitle;
+
+  /// gcNobody
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody here'**
+  String get gcNobody;
+
+  /// gcUnblock
+  ///
+  /// In en, this message translates to:
+  /// **'Unblock'**
+  String get gcUnblock;
+
+  /// gcProfileUnavailable
+  ///
+  /// In en, this message translates to:
+  /// **'Profile unavailable for this message.'**
+  String get gcProfileUnavailable;
+
+  /// gcLockedTeenTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Global chat opens at 18'**
+  String get gcLockedTeenTitle;
+
+  /// gcLockedTeenBody
+  ///
+  /// In en, this message translates to:
+  /// **'To keep you safe, open chat with strangers is for adults. You can still practise with Polie and your class.'**
+  String get gcLockedTeenBody;
+
+  /// gcLockedChildTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Global chat isn’t available'**
+  String get gcLockedChildTitle;
+
+  /// gcLockedChildBody
+  ///
+  /// In en, this message translates to:
+  /// **'Child accounts can’t use open chat. Keep learning with lessons, games and Polie.'**
+  String get gcLockedChildBody;
+
+  /// gcLockedUnknownTitle
+  ///
+  /// In en, this message translates to:
+  /// **'We need your age first'**
+  String get gcLockedUnknownTitle;
+
+  /// gcLockedUnknownBody
+  ///
+  /// In en, this message translates to:
+  /// **'Global chat is for adults. It will appear here once your account’s age is confirmed.'**
+  String get gcLockedUnknownBody;
+
+  /// gcPracticePolie
+  ///
+  /// In en, this message translates to:
+  /// **'Practise with Polie'**
+  String get gcPracticePolie;
+
+  /// gcChecking
+  ///
+  /// In en, this message translates to:
+  /// **'Checking access…'**
+  String get gcChecking;
+
+  /// gcMessagesLabel
+  ///
+  /// In en, this message translates to:
+  /// **'{n, plural, =0{No messages} =1{1 message} other{{n} messages}}'**
+  String gcMessagesLabel(int n);
+
+  /// gcOpenProfile
+  ///
+  /// In en, this message translates to:
+  /// **'Open {name}’s profile'**
+  String gcOpenProfile(String name);
 }
 
 class _AppLocalizationsDelegate

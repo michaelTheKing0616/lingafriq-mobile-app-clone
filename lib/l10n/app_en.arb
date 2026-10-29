@@ -3894,5 +3894,331 @@
   "gmDescWhotCardGame": "Full Whot rules with vocab per card",
   "@gmDescWhotCardGame": {
     "description": "gmDescWhotCardGame"
+  },
+  "gcTitle": "Global chat",
+  "@gcTitle": {
+    "description": "gcTitle"
+  },
+  "gcChannelGeneral": "General",
+  "@gcChannelGeneral": {
+    "description": "gcChannelGeneral"
+  },
+  "gcChannels": "Channels",
+  "@gcChannels": {
+    "description": "gcChannels"
+  },
+  "gcSwitchChannel": "Switch channel",
+  "@gcSwitchChannel": {
+    "description": "gcSwitchChannel"
+  },
+  "gcRefresh": "Refresh",
+  "@gcRefresh": {
+    "description": "gcRefresh"
+  },
+  "gcFindUser": "Find someone",
+  "@gcFindUser": {
+    "description": "gcFindUser"
+  },
+  "gcMore": "More",
+  "@gcMore": {
+    "description": "gcMore"
+  },
+  "gcGuidelines": "Community guidelines",
+  "@gcGuidelines": {
+    "description": "gcGuidelines"
+  },
+  "gcMutedBlocked": "Muted and blocked",
+  "@gcMutedBlocked": {
+    "description": "gcMutedBlocked"
+  },
+  "gcPolieTitle": "Practise privately with Polie (AI)",
+  "@gcPolieTitle": {
+    "description": "gcPolieTitle"
+  },
+  "gcPolieSub": "Your turns are not posted to channels",
+  "@gcPolieSub": {
+    "description": "gcPolieSub"
+  },
+  "gcEmptyTitle": "No messages yet",
+  "@gcEmptyTitle": {
+    "description": "gcEmptyTitle"
+  },
+  "gcEmptyBody": "Say hello and start the conversation.",
+  "@gcEmptyBody": {
+    "description": "gcEmptyBody"
+  },
+  "gcSayHello": "Say hello",
+  "@gcSayHello": {
+    "description": "gcSayHello"
+  },
+  "gcHelloText": "Hello everyone! Excited to learn together.",
+  "@gcHelloText": {
+    "description": "gcHelloText"
+  },
+  "gcErrorTitle": "Couldn’t load messages",
+  "@gcErrorTitle": {
+    "description": "gcErrorTitle"
+  },
+  "gcErrorBody": "Check your connection and try again.",
+  "@gcErrorBody": {
+    "description": "gcErrorBody"
+  },
+  "gcRetry": "Retry",
+  "@gcRetry": {
+    "description": "gcRetry"
+  },
+  "gcOffline": "Offline · showing saved messages",
+  "@gcOffline": {
+    "description": "gcOffline"
+  },
+  "gcHidden": "{n, plural, =1{1 message hidden from muted or blocked people} other{{n} messages hidden from muted or blocked people}}",
+  "@gcHidden": {
+    "description": "gcHidden",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "gcManage": "Manage",
+  "@gcManage": {
+    "description": "gcManage"
+  },
+  "gcHint": "Write a message… (@Polie for help)",
+  "@gcHint": {
+    "description": "gcHint"
+  },
+  "gcSend": "Send",
+  "@gcSend": {
+    "description": "gcSend"
+  },
+  "gcSending": "Sending…",
+  "@gcSending": {
+    "description": "gcSending"
+  },
+  "gcYou": "You",
+  "@gcYou": {
+    "description": "gcYou"
+  },
+  "gcNow": "now",
+  "@gcNow": {
+    "description": "gcNow"
+  },
+  "gcMinAgo": "{n, plural, other{{n} min}}",
+  "@gcMinAgo": {
+    "description": "gcMinAgo",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "gcHourAgo": "{n, plural, other{{n} h}}",
+  "@gcHourAgo": {
+    "description": "gcHourAgo",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "gcFlagged": "Hidden by moderation",
+  "@gcFlagged": {
+    "description": "gcFlagged"
+  },
+  "gcShow": "Show",
+  "@gcShow": {
+    "description": "gcShow"
+  },
+  "gcSendFailed": "Message not sent. Check your connection.",
+  "@gcSendFailed": {
+    "description": "gcSendFailed"
+  },
+  "gcPolieBusy": "Too many @Polie requests. Try again in about a minute.",
+  "@gcPolieBusy": {
+    "description": "gcPolieBusy"
+  },
+  "gcSignIn": "Sign in to send messages.",
+  "@gcSignIn": {
+    "description": "gcSignIn"
+  },
+  "gcActionsFor": "Message from {name}",
+  "@gcActionsFor": {
+    "description": "gcActionsFor",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "gcMute": "Mute",
+  "@gcMute": {
+    "description": "gcMute"
+  },
+  "gcMuteSub": "Hide their messages on this device. They aren’t told.",
+  "@gcMuteSub": {
+    "description": "gcMuteSub"
+  },
+  "gcUnmute": "Unmute",
+  "@gcUnmute": {
+    "description": "gcUnmute"
+  },
+  "gcReport": "Report",
+  "@gcReport": {
+    "description": "gcReport"
+  },
+  "gcReportSub": "Our moderators review every report.",
+  "@gcReportSub": {
+    "description": "gcReportSub"
+  },
+  "gcBlock": "Block",
+  "@gcBlock": {
+    "description": "gcBlock"
+  },
+  "gcBlockSub": "Stop seeing their messages and snaps everywhere.",
+  "@gcBlockSub": {
+    "description": "gcBlockSub"
+  },
+  "gcBlockConfirm": "Block {name}?",
+  "@gcBlockConfirm": {
+    "description": "gcBlockConfirm",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "gcBlockConfirmBody": "You won’t see their new messages or snaps. You can unblock later.",
+  "@gcBlockConfirmBody": {
+    "description": "gcBlockConfirmBody"
+  },
+  "gcCancel": "Cancel",
+  "@gcCancel": {
+    "description": "gcCancel"
+  },
+  "gcReasonTitle": "Why are you reporting this?",
+  "@gcReasonTitle": {
+    "description": "gcReasonTitle"
+  },
+  "gcReasonHarassment": "Harassment",
+  "@gcReasonHarassment": {
+    "description": "gcReasonHarassment"
+  },
+  "gcReasonSpam": "Spam",
+  "@gcReasonSpam": {
+    "description": "gcReasonSpam"
+  },
+  "gcReasonHate": "Hate speech",
+  "@gcReasonHate": {
+    "description": "gcReasonHate"
+  },
+  "gcReasonOther": "Something else",
+  "@gcReasonOther": {
+    "description": "gcReasonOther"
+  },
+  "gcReportSent": "Report sent. Reference {ref}",
+  "@gcReportSent": {
+    "description": "gcReportSent",
+    "placeholders": {
+      "ref": {
+        "type": "String"
+      }
+    }
+  },
+  "gcReportFailed": "Couldn’t send the report. Try again.",
+  "@gcReportFailed": {
+    "description": "gcReportFailed"
+  },
+  "gcBlockedNote": "{name} is blocked",
+  "@gcBlockedNote": {
+    "description": "gcBlockedNote",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "gcBlockFailed": "Couldn’t block. Try again.",
+  "@gcBlockFailed": {
+    "description": "gcBlockFailed"
+  },
+  "gcMutedNote": "{name} is muted",
+  "@gcMutedNote": {
+    "description": "gcMutedNote",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "gcMutedTitle": "Muted",
+  "@gcMutedTitle": {
+    "description": "gcMutedTitle"
+  },
+  "gcBlockedTitle": "Blocked",
+  "@gcBlockedTitle": {
+    "description": "gcBlockedTitle"
+  },
+  "gcNobody": "Nobody here",
+  "@gcNobody": {
+    "description": "gcNobody"
+  },
+  "gcUnblock": "Unblock",
+  "@gcUnblock": {
+    "description": "gcUnblock"
+  },
+  "gcProfileUnavailable": "Profile unavailable for this message.",
+  "@gcProfileUnavailable": {
+    "description": "gcProfileUnavailable"
+  },
+  "gcLockedTeenTitle": "Global chat opens at 18",
+  "@gcLockedTeenTitle": {
+    "description": "gcLockedTeenTitle"
+  },
+  "gcLockedTeenBody": "To keep you safe, open chat with strangers is for adults. You can still practise with Polie and your class.",
+  "@gcLockedTeenBody": {
+    "description": "gcLockedTeenBody"
+  },
+  "gcLockedChildTitle": "Global chat isn’t available",
+  "@gcLockedChildTitle": {
+    "description": "gcLockedChildTitle"
+  },
+  "gcLockedChildBody": "Child accounts can’t use open chat. Keep learning with lessons, games and Polie.",
+  "@gcLockedChildBody": {
+    "description": "gcLockedChildBody"
+  },
+  "gcLockedUnknownTitle": "We need your age first",
+  "@gcLockedUnknownTitle": {
+    "description": "gcLockedUnknownTitle"
+  },
+  "gcLockedUnknownBody": "Global chat is for adults. It will appear here once your account’s age is confirmed.",
+  "@gcLockedUnknownBody": {
+    "description": "gcLockedUnknownBody"
+  },
+  "gcPracticePolie": "Practise with Polie",
+  "@gcPracticePolie": {
+    "description": "gcPracticePolie"
+  },
+  "gcChecking": "Checking access…",
+  "@gcChecking": {
+    "description": "gcChecking"
+  },
+  "gcMessagesLabel": "{n, plural, =0{No messages} =1{1 message} other{{n} messages}}",
+  "@gcMessagesLabel": {
+    "description": "gcMessagesLabel",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "gcOpenProfile": "Open {name}’s profile",
+  "@gcOpenProfile": {
+    "description": "gcOpenProfile",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
   }
 }

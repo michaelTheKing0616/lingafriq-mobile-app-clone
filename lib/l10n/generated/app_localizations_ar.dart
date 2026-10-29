@@ -2960,4 +2960,272 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get gmDescWhotCardGame => 'قواعد ⁦Whot⁩ كاملة مع كلمة لكل ورقة';
+
+  @override
+  String get gcTitle => 'الدردشة العامة';
+
+  @override
+  String get gcChannelGeneral => 'عام';
+
+  @override
+  String get gcChannels => 'القنوات';
+
+  @override
+  String get gcSwitchChannel => 'تبديل القناة';
+
+  @override
+  String get gcRefresh => 'تحديث';
+
+  @override
+  String get gcFindUser => 'ابحث عن شخص';
+
+  @override
+  String get gcMore => 'المزيد';
+
+  @override
+  String get gcGuidelines => 'إرشادات المجتمع';
+
+  @override
+  String get gcMutedBlocked => 'المكتومون والمحظورون';
+
+  @override
+  String get gcPolieTitle => 'تدرّب على انفراد مع ⁦Polie⁩ (ذكاء اصطناعي)';
+
+  @override
+  String get gcPolieSub => 'لا تُنشر رسائلك في القنوات';
+
+  @override
+  String get gcEmptyTitle => 'لا توجد رسائل بعد';
+
+  @override
+  String get gcEmptyBody => 'ألقِ التحية وابدأ المحادثة.';
+
+  @override
+  String get gcSayHello => 'ألقِ التحية';
+
+  @override
+  String get gcHelloText => 'مرحبًا بالجميع! سعيد بالتعلّم معكم.';
+
+  @override
+  String get gcErrorTitle => 'تعذّر تحميل الرسائل';
+
+  @override
+  String get gcErrorBody => 'تحقّق من اتصالك وحاول مجددًا.';
+
+  @override
+  String get gcRetry => 'إعادة المحاولة';
+
+  @override
+  String get gcOffline => 'غير متصل · عرض الرسائل المحفوظة';
+
+  @override
+  String gcHidden(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n رسالة مخفية من أشخاص مكتومين أو محظورين',
+      many: '$n رسالة مخفية من أشخاص مكتومين أو محظورين',
+      few: '$n رسائل مخفية من أشخاص مكتومين أو محظورين',
+      two: 'رسالتان مخفيتان من أشخاص مكتومين أو محظورين',
+      one: 'رسالة واحدة مخفية من أشخاص مكتومين أو محظورين',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get gcManage => 'إدارة';
+
+  @override
+  String get gcHint => 'اكتب رسالة… (⁦@Polie⁩ للمساعدة)';
+
+  @override
+  String get gcSend => 'إرسال';
+
+  @override
+  String get gcSending => 'جارٍ الإرسال…';
+
+  @override
+  String get gcYou => 'أنت';
+
+  @override
+  String get gcNow => 'الآن';
+
+  @override
+  String gcMinAgo(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n دقيقة',
+      many: '$n دقيقة',
+      few: '$n دقائق',
+      two: 'دقيقتان',
+      one: 'دقيقة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String gcHourAgo(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n ساعة',
+      many: '$n ساعة',
+      few: '$n ساعات',
+      two: 'ساعتان',
+      one: 'ساعة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get gcFlagged => 'أخفاه فريق الإشراف';
+
+  @override
+  String get gcShow => 'إظهار';
+
+  @override
+  String get gcSendFailed => 'لم تُرسل الرسالة. تحقّق من اتصالك.';
+
+  @override
+  String get gcPolieBusy => 'طلبات كثيرة إلى ⁦@Polie⁩. حاول بعد دقيقة تقريبًا.';
+
+  @override
+  String get gcSignIn => 'سجّل الدخول لإرسال الرسائل.';
+
+  @override
+  String gcActionsFor(String name) {
+    return 'رسالة من $name';
+  }
+
+  @override
+  String get gcMute => 'كتم';
+
+  @override
+  String get gcMuteSub => 'إخفاء رسائله على هذا الجهاز دون إبلاغه.';
+
+  @override
+  String get gcUnmute => 'إلغاء الكتم';
+
+  @override
+  String get gcReport => 'إبلاغ';
+
+  @override
+  String get gcReportSub => 'يراجع المشرفون كل بلاغ.';
+
+  @override
+  String get gcBlock => 'حظر';
+
+  @override
+  String get gcBlockSub => 'لن ترى رسائله ولقطاته في أي مكان.';
+
+  @override
+  String gcBlockConfirm(String name) {
+    return 'حظر $name؟';
+  }
+
+  @override
+  String get gcBlockConfirmBody =>
+      'لن ترى رسائله أو لقطاته الجديدة. يمكنك إلغاء الحظر لاحقًا.';
+
+  @override
+  String get gcCancel => 'إلغاء';
+
+  @override
+  String get gcReasonTitle => 'لماذا تبلغ عن هذه الرسالة؟';
+
+  @override
+  String get gcReasonHarassment => 'تحرّش';
+
+  @override
+  String get gcReasonSpam => 'رسائل مزعجة';
+
+  @override
+  String get gcReasonHate => 'خطاب كراهية';
+
+  @override
+  String get gcReasonOther => 'شيء آخر';
+
+  @override
+  String gcReportSent(String ref) {
+    return 'أُرسل البلاغ. المرجع $ref';
+  }
+
+  @override
+  String get gcReportFailed => 'تعذّر إرسال البلاغ. حاول مجددًا.';
+
+  @override
+  String gcBlockedNote(String name) {
+    return 'تم حظر $name';
+  }
+
+  @override
+  String get gcBlockFailed => 'تعذّر الحظر. حاول مجددًا.';
+
+  @override
+  String gcMutedNote(String name) {
+    return 'تم كتم $name';
+  }
+
+  @override
+  String get gcMutedTitle => 'المكتومون';
+
+  @override
+  String get gcBlockedTitle => 'المحظورون';
+
+  @override
+  String get gcNobody => 'لا أحد';
+
+  @override
+  String get gcUnblock => 'إلغاء الحظر';
+
+  @override
+  String get gcProfileUnavailable => 'الملف الشخصي غير متاح لهذه الرسالة.';
+
+  @override
+  String get gcLockedTeenTitle => 'الدردشة العامة متاحة من سن 18';
+
+  @override
+  String get gcLockedTeenBody =>
+      'حفاظًا على سلامتك، الدردشة المفتوحة مع الغرباء مخصّصة للبالغين. ما زال بإمكانك التدرّب مع ⁦Polie⁩ ومع صفّك.';
+
+  @override
+  String get gcLockedChildTitle => 'الدردشة العامة غير متاحة';
+
+  @override
+  String get gcLockedChildBody =>
+      'لا يمكن لحسابات الأطفال استخدام الدردشة المفتوحة. واصل التعلّم بالدروس والألعاب و⁦Polie⁩.';
+
+  @override
+  String get gcLockedUnknownTitle => 'نحتاج إلى معرفة عمرك أولًا';
+
+  @override
+  String get gcLockedUnknownBody =>
+      'الدردشة العامة للبالغين. ستظهر هنا بعد تأكيد عمر حسابك.';
+
+  @override
+  String get gcPracticePolie => 'تدرّب مع ⁦Polie⁩';
+
+  @override
+  String get gcChecking => 'جارٍ التحقق من الوصول…';
+
+  @override
+  String gcMessagesLabel(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n رسالة',
+      many: '$n رسالة',
+      few: '$n رسائل',
+      two: 'رسالتان',
+      one: 'رسالة واحدة',
+      zero: 'لا رسائل',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String gcOpenProfile(String name) {
+    return 'فتح ملف $name';
+  }
 }

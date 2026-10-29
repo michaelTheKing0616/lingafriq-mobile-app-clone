@@ -2958,4 +2958,257 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get gmDescWhotCardGame => 'Règles complètes du Whot, un mot par carte';
+
+  @override
+  String get gcTitle => 'Chat mondial';
+
+  @override
+  String get gcChannelGeneral => 'Général';
+
+  @override
+  String get gcChannels => 'Salons';
+
+  @override
+  String get gcSwitchChannel => 'Changer de salon';
+
+  @override
+  String get gcRefresh => 'Actualiser';
+
+  @override
+  String get gcFindUser => 'Trouver quelqu’un';
+
+  @override
+  String get gcMore => 'Plus';
+
+  @override
+  String get gcGuidelines => 'Règles de la communauté';
+
+  @override
+  String get gcMutedBlocked => 'Masqués et bloqués';
+
+  @override
+  String get gcPolieTitle => 'Pratiquer en privé avec Polie (IA)';
+
+  @override
+  String get gcPolieSub => 'Vos messages ne sont pas publiés dans les salons';
+
+  @override
+  String get gcEmptyTitle => 'Aucun message pour l’instant';
+
+  @override
+  String get gcEmptyBody => 'Dites bonjour pour lancer la conversation.';
+
+  @override
+  String get gcSayHello => 'Dire bonjour';
+
+  @override
+  String get gcHelloText => 'Bonjour à tous ! Ravi d’apprendre ensemble.';
+
+  @override
+  String get gcErrorTitle => 'Impossible de charger les messages';
+
+  @override
+  String get gcErrorBody => 'Vérifiez votre connexion et réessayez.';
+
+  @override
+  String get gcRetry => 'Réessayer';
+
+  @override
+  String get gcOffline => 'Hors ligne · messages enregistrés';
+
+  @override
+  String gcHidden(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n messages masqués (personnes masquées ou bloquées)',
+      one: '$n message masqué (personnes masquées ou bloquées)',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get gcManage => 'Gérer';
+
+  @override
+  String get gcHint => 'Écrire un message… (@Polie pour de l’aide)';
+
+  @override
+  String get gcSend => 'Envoyer';
+
+  @override
+  String get gcSending => 'Envoi…';
+
+  @override
+  String get gcYou => 'Vous';
+
+  @override
+  String get gcNow => 'à l’instant';
+
+  @override
+  String gcMinAgo(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n min',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String gcHourAgo(int n) {
+    String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: '$n h');
+    return '$_temp0';
+  }
+
+  @override
+  String get gcFlagged => 'Masqué par la modération';
+
+  @override
+  String get gcShow => 'Afficher';
+
+  @override
+  String get gcSendFailed => 'Message non envoyé. Vérifiez votre connexion.';
+
+  @override
+  String get gcPolieBusy =>
+      'Trop de demandes à @Polie. Réessayez dans une minute environ.';
+
+  @override
+  String get gcSignIn => 'Connectez-vous pour envoyer des messages.';
+
+  @override
+  String gcActionsFor(String name) {
+    return 'Message de $name';
+  }
+
+  @override
+  String get gcMute => 'Masquer';
+
+  @override
+  String get gcMuteSub =>
+      'Ne plus voir ses messages sur cet appareil. La personne n’est pas prévenue.';
+
+  @override
+  String get gcUnmute => 'Réafficher';
+
+  @override
+  String get gcReport => 'Signaler';
+
+  @override
+  String get gcReportSub => 'Nos modérateurs examinent chaque signalement.';
+
+  @override
+  String get gcBlock => 'Bloquer';
+
+  @override
+  String get gcBlockSub => 'Ne plus voir ses messages et snaps nulle part.';
+
+  @override
+  String gcBlockConfirm(String name) {
+    return 'Bloquer $name ?';
+  }
+
+  @override
+  String get gcBlockConfirmBody =>
+      'Vous ne verrez plus ses nouveaux messages ni ses snaps. Vous pourrez débloquer plus tard.';
+
+  @override
+  String get gcCancel => 'Annuler';
+
+  @override
+  String get gcReasonTitle => 'Pourquoi signalez-vous ce message ?';
+
+  @override
+  String get gcReasonHarassment => 'Harcèlement';
+
+  @override
+  String get gcReasonSpam => 'Spam';
+
+  @override
+  String get gcReasonHate => 'Discours haineux';
+
+  @override
+  String get gcReasonOther => 'Autre chose';
+
+  @override
+  String gcReportSent(String ref) {
+    return 'Signalement envoyé. Référence $ref';
+  }
+
+  @override
+  String get gcReportFailed =>
+      'Impossible d’envoyer le signalement. Réessayez.';
+
+  @override
+  String gcBlockedNote(String name) {
+    return '$name est bloqué·e';
+  }
+
+  @override
+  String get gcBlockFailed => 'Blocage impossible. Réessayez.';
+
+  @override
+  String gcMutedNote(String name) {
+    return '$name est masqué·e';
+  }
+
+  @override
+  String get gcMutedTitle => 'Masqués';
+
+  @override
+  String get gcBlockedTitle => 'Bloqués';
+
+  @override
+  String get gcNobody => 'Personne';
+
+  @override
+  String get gcUnblock => 'Débloquer';
+
+  @override
+  String get gcProfileUnavailable => 'Profil indisponible pour ce message.';
+
+  @override
+  String get gcLockedTeenTitle => 'Le chat mondial ouvre à 18 ans';
+
+  @override
+  String get gcLockedTeenBody =>
+      'Pour votre sécurité, le chat ouvert avec des inconnus est réservé aux adultes. Vous pouvez toujours pratiquer avec Polie et votre classe.';
+
+  @override
+  String get gcLockedChildTitle => 'Le chat mondial n’est pas disponible';
+
+  @override
+  String get gcLockedChildBody =>
+      'Les comptes enfants n’ont pas accès au chat ouvert. Continuez avec les leçons, les jeux et Polie.';
+
+  @override
+  String get gcLockedUnknownTitle => 'Nous devons d’abord connaître votre âge';
+
+  @override
+  String get gcLockedUnknownBody =>
+      'Le chat mondial est réservé aux adultes. Il apparaîtra ici dès que l’âge de votre compte sera confirmé.';
+
+  @override
+  String get gcPracticePolie => 'Pratiquer avec Polie';
+
+  @override
+  String get gcChecking => 'Vérification de l’accès…';
+
+  @override
+  String gcMessagesLabel(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n messages',
+      one: '$n message',
+      zero: 'Aucun message',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String gcOpenProfile(String name) {
+    return 'Ouvrir le profil de $name';
+  }
 }

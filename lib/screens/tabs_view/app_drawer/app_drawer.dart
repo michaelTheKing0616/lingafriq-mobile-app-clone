@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/features/global_chat/global_chat_policy.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
@@ -57,6 +58,7 @@ class AppDrawer extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final chatVisible = ref.watch(globalChatEntryVisibleProvider);
     final l10n = AppLocalizations.of(context)!;
     final isDark = useState(Theme.of(context).brightness == Brightness.dark);
     final currentUser = ref.watch(userProvider);
@@ -524,7 +526,7 @@ class AppDrawer extends HookConsumerWidget {
                   _DrawerSection(
                     title: 'Community',
                     children: [
-                      _DrawerItem(
+                      if (chatVisible) _DrawerItem(
                         icon: PanAfricanIcons.chat,
                         label: 'Global Chat',
                         onTap: () {

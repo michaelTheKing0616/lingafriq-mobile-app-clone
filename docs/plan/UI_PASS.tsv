@@ -61,7 +61,7 @@ mobile	lib/screens/chat/classroom_chat_livekit_screen.dart	todo
 mobile	lib/screens/chat/community_chat_screen.dart	todo			
 mobile	lib/screens/chat/community_chat_screen_material3.dart	todo			
 mobile	lib/screens/chat/contact_info_screen.dart	todo			
-mobile	lib/screens/chat/global_chat_screen_material3.dart	todo			
+mobile	lib/screens/chat/global_chat_screen_material3.dart	ready-for-review	self 9.0	social-circles	2026-10-29
 mobile	lib/screens/chat/lingchat_ai_conversation_screen.dart	todo			
 mobile	lib/screens/chat/live_classroom_screen_material3.dart	todo			
 mobile	lib/screens/chat/moderation_tools_screen.dart	todo			
