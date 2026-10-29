@@ -72,7 +72,7 @@ class GuardianMessagingExplainerService {
   }
 }
 
-enum _ExplainerUiState { loading, loaded, error, offline }
+enum _ExplainerUiState { loading, loaded, error }
 
 /// Hub entry tile (P9-920 AC4) — embed in Family hub progress view.
 class GuardianMessagingExplainerHubTile extends StatelessWidget {

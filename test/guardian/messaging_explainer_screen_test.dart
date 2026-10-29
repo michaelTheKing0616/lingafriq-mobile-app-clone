@@ -71,4 +71,31 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('B'), findsOneWidget);
   });
+
+  testWidgets('offline shows banner and saved fallback guide', (tester) async {
+    await tester.pumpWidget(
+      _wrap(
+        GuardianMessagingExplainerScreen(
+          explainerService: _FakeExplainerService(
+            GuardianMessagingExplainer(
+              title: 'unused',
+              body: 'unused',
+              moderatorsSee: const [],
+              e2eeTradeoff: 'unused',
+            ),
+            throwsOffline: true,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(
+      find.text(GuardianMessagingExplainerScreen.offlineBanner),
+      findsOneWidget,
+    );
+    expect(
+      find.text(GuardianMessagingExplainerScreen.fallbackBody),
+      findsOneWidget,
+    );
+  });
 }
