@@ -975,8 +975,9 @@ class _TimekeeperScreen extends HookConsumerWidget {
                     label: Text(time.toUpperCase()),
                     onSelected: (sel) {
                       timeOfDay.value = sel ? time : null;
-                      if (sel)
+                      if (sel) {
                         onboardingNotifier.updateSchedule(duration.value, time);
+                      }
                     },
                     backgroundColor: Theme.of(
                       context,

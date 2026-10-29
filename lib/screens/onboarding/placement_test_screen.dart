@@ -37,21 +37,24 @@ class PlacementTestScreen extends HookConsumerWidget {
     // they were defined after submitTest and caused "referenced before declared".
     // These declarations above submitTest fix that.
     List<String> getStrengths(PlacementResult r) {
-      if (r.provisional || r.level == 'unsure')
+      if (r.provisional || r.level == 'unsure') {
         return ['A precise level needs more calibrated items'];
-      if (r.score >= 70)
+      }
+      if (r.score >= 70) {
         return [
           'Strong vocabulary foundation',
           'Good understanding of basic grammar',
         ];
+      }
       if (r.score >= 50) return ['Basic vocabulary knowledge'];
       return ['Willingness to learn'];
     }
 
     List<String> getWeaknesses(PlacementResult r) {
       if (r.provisional || r.level == 'unsure') return [];
-      if (r.score < 50)
+      if (r.score < 50) {
         return ['Need to build vocabulary', 'Grammar fundamentals needed'];
+      }
       if (r.score < 70) return ['Some grammar concepts need review'];
       return [];
     }
@@ -63,18 +66,20 @@ class PlacementTestScreen extends HookConsumerWidget {
           'Start with the first lessons. A level waits until calibrated items are available.',
         ];
       }
-      if (level == 'A1' || level == 'A2')
+      if (level == 'A1' || level == 'A2') {
         return [
           'Start with beginner lessons',
           'Focus on vocabulary building',
           'Practice pronunciation daily',
         ];
-      if (level == 'B1' || level == 'B2')
+      }
+      if (level == 'B1' || level == 'B2') {
         return [
           'Continue with intermediate content',
           'Practice conversation skills',
           'Expand vocabulary in specific topics',
         ];
+      }
       return [
         'Advanced lessons recommended',
         'Focus on fluency and nuance',
@@ -293,7 +298,7 @@ class PlacementTestScreen extends HookConsumerWidget {
           );
         }
       } catch (e) {
-        ErrorHandler.showError(context, e);
+        if (context.mounted) ErrorHandler.showError(context, e);
       } finally {
         isLoading.value = false;
       }

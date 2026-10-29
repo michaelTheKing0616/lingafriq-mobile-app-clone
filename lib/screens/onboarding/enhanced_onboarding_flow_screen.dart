@@ -398,7 +398,7 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
           // Check connectivity before showing placement test
           final hasConnection = await ConnectivityService.hasInternet();
 
-          if (hasConnection) {
+          if (hasConnection && context.mounted) {
             // Show placement test as optional - user can skip
             final shouldTakeTest = await showDialog<bool>(
               context: context,
@@ -424,6 +424,7 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
               // Mark prompt as shown before navigation to avoid duplicates even if the next screen
               // triggers rebuilds or the user navigates back.
               await prefs.setBool(promptKey, true);
+              if (!context.mounted) return;
               // Navigate to placement test
               await Navigator.push(
                 context,
@@ -804,8 +805,9 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
                         (m) => m['code'] == lang['code'],
                       );
 
-                      if (isMajor)
+                      if (isMajor) {
                         return const SizedBox.shrink(); // Skip major languages already shown
+                      }
 
                       return Card(
                         margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
