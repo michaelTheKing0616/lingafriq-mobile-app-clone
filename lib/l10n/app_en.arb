@@ -1164,5 +1164,9 @@
   "cpDone": "Done",
   "@cpDone": {
     "description": "Compliance batch 1 UI"
+  },
+  "reportReasonTitle": "Why are you reporting this?",
+  "@reportReasonTitle": {
+    "description": "Compliance batch 1 UI"
   }
 }

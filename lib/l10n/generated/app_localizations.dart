@@ -1775,6 +1775,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Done'**
   String get cpDone;
+
+  /// Compliance batch 1 UI
+  ///
+  /// In en, this message translates to:
+  /// **'Why are you reporting this?'**
+  String get reportReasonTitle;
 }
 
 class _AppLocalizationsDelegate

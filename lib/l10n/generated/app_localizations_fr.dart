@@ -941,4 +941,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get cpDone => 'Terminé';
+
+  @override
+  String get reportReasonTitle => 'Pourquoi signalez-vous ce contenu ?';
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/utils/api_service.dart';
@@ -17,9 +18,11 @@ abstract final class SafetyCopy {
   static const confirmBlockBody =
       'They will not be able to message you or see when you are online.';
   static const confirmMuteTitle = 'Mute notifications?';
-  static const confirmMuteBody = 'You will not see their messages in shared spaces.';
+  static const confirmMuteBody =
+      'You will not see their messages in shared spaces.';
   static const reportReasonTitle = 'Why are you reporting this?';
-  static const offlineQueued = 'Report saved. We will send it when you are back online.';
+  static const offlineQueued =
+      'Report saved. We will send it when you are back online.';
   static const cancel = 'Cancel';
   static const confirm = 'Confirm';
 }
@@ -74,8 +77,8 @@ class SafetyReportOutbox {
     final list = raw == null
         ? <Map<String, dynamic>>[]
         : (jsonDecode(raw) as List)
-            .map((e) => Map<String, dynamic>.from(e as Map))
-            .toList();
+              .map((e) => Map<String, dynamic>.from(e as Map))
+              .toList();
     list.add({...payload, 'queuedAt': DateTime.now().toIso8601String()});
     await prefs.setString(_key, jsonEncode(list));
   }
@@ -94,7 +97,9 @@ class SafetyReportOutbox {
     await prefs.setString(_key, jsonEncode(rows));
   }
 
-  static Future<int> flush(Future<void> Function(Map<String, dynamic> row) send) async {
+  static Future<int> flush(
+    Future<void> Function(Map<String, dynamic> row) send,
+  ) async {
     final rows = await pending();
     if (rows.isEmpty) return 0;
     final remaining = <Map<String, dynamic>>[];
@@ -213,12 +218,14 @@ class _SafetyActionsSheetState extends State<SafetyActionsSheet> {
     if (reason == 'copyright' && mounted) {
       final nav = Navigator.of(context);
       nav.pop();
-      await nav.push(MaterialPageRoute<void>(
-        builder: (_) => CopyrightPolicyScreen(
-          targetType: widget.target.apiTargetType,
-          targetId: widget.target.targetId,
+      await nav.push(
+        MaterialPageRoute<void>(
+          builder: (_) => CopyrightPolicyScreen(
+            targetType: widget.target.apiTargetType,
+            targetId: widget.target.targetId,
+          ),
         ),
-      ));
+      );
       return;
     }
     setState(() => _busy = true);
@@ -226,7 +233,8 @@ class _SafetyActionsSheetState extends State<SafetyActionsSheet> {
       'targetType': widget.target.apiTargetType,
       'targetId': widget.target.targetId,
       'reason': reason,
-      if (widget.target.previewText != null) 'previewText': widget.target.previewText,
+      if (widget.target.previewText != null)
+        'previewText': widget.target.previewText,
     };
     try {
       final online = await widget.isOnline();
@@ -241,7 +249,8 @@ class _SafetyActionsSheetState extends State<SafetyActionsSheet> {
       }
       final response = await ApiService.post('/safety/reports', data: payload);
       final data = response.data as Map<String, dynamic>?;
-      final caseId = data?['caseId']?.toString() ?? data?['referenceId']?.toString();
+      final caseId =
+          data?['caseId']?.toString() ?? data?['referenceId']?.toString();
       if (!mounted) return;
       setState(() {
         _caseId = caseId;
@@ -249,7 +258,9 @@ class _SafetyActionsSheetState extends State<SafetyActionsSheet> {
         _busy = false;
       });
     } catch (_) {
-      if (mounted) setState(() => _status = 'Report failed. Try again when online.');
+      if (mounted) {
+        setState(() => _status = 'Report failed. Try again when online.');
+      }
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -276,7 +287,9 @@ class _SafetyActionsSheetState extends State<SafetyActionsSheet> {
           ),
           FilledButton(
             style: danger
-                ? FilledButton.styleFrom(backgroundColor: PanAfricanColors.error)
+                ? FilledButton.styleFrom(
+                    backgroundColor: PanAfricanColors.error,
+                  )
                 : null,
             onPressed: () {
               _tap();
@@ -290,38 +303,17 @@ class _SafetyActionsSheetState extends State<SafetyActionsSheet> {
     return result ?? false;
   }
 
-  Future<String?> _pickReason() async {
-    const reasons = ['harassment', 'spam', 'hate', 'copyright', 'other'];
-    return showModalBottomSheet<String>(
-      context: context,
-      showDragHandle: true,
-      builder: (ctx) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: EdgeInsets.all(PanAfricanSpacing.md),
-              child: Text(
-                SafetyCopy.reportReasonTitle,
-                style: PanAfricanTypography.titleSmall(context),
-              ),
-            ),
-            ...reasons.map(
-              (r) => ListTile(
-                minVerticalPadding: 12,
-                title: Text(r[0].toUpperCase() + r.substring(1)),
-                onTap: () {
-                  _tap();
-                  Navigator.pop(ctx, r);
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  Future<String?> _pickReason() => showModalBottomSheet<String>(
+    context: context,
+    showDragHandle: true,
+    isScrollControlled: true,
+    builder: (ctx) => ReportReasonPicker(
+      onPicked: (r) {
+        _tap();
+        Navigator.pop(ctx, r);
+      },
+    ),
+  );
 
   Widget _actionTile({
     required IconData icon,
@@ -386,6 +378,85 @@ class _SafetyActionsSheetState extends State<SafetyActionsSheet> {
                   ),
                 ),
               ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Report reasons, in the API's vocabulary (`POST /safety/reports`).
+const reportReasons = ['harassment', 'spam', 'hate', 'copyright', 'other'];
+
+/// Localised, human-readable reason list used by the report flow.
+class ReportReasonPicker extends StatelessWidget {
+  const ReportReasonPicker({super.key, required this.onPicked});
+
+  final ValueChanged<String> onPicked;
+
+  static (IconData, String, String?) describe(
+    AppLocalizations l,
+    String r,
+  ) => switch (r) {
+    'harassment' => (Icons.person_off_outlined, l.reportReasonHarassment, null),
+    'spam' => (Icons.report_gmailerrorred_outlined, l.reportReasonSpam, null),
+    'hate' => (Icons.do_not_disturb_on_outlined, l.reportReasonHate, null),
+    'copyright' => (
+      Icons.copyright_rounded,
+      l.reportReasonCopyright,
+      l.reportReasonCopyrightHint,
+    ),
+    _ => (Icons.more_horiz_rounded, l.reportReasonOther, null),
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 0, 24, 8),
+              child: Semantics(
+                header: true,
+                child: Text(
+                  l.reportReasonTitle,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ),
+            for (final r in reportReasons)
+              Builder(
+                builder: (context) {
+                  final (icon, title, hint) = describe(l, r);
+                  return ListTile(
+                    key: ValueKey('reason-$r'),
+                    minVerticalPadding: 12,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 24),
+                    leading: Icon(
+                      icon,
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                    title: Text(title),
+                    subtitle: hint == null ? null : Text(hint),
+                    trailing: r == 'copyright'
+                        ? Icon(
+                            Directionality.of(context) == TextDirection.rtl
+                                ? Icons.chevron_left_rounded
+                                : Icons.chevron_right_rounded,
+                          )
+                        : null,
+                    onTap: () => onPicked(r),
+                  );
+                },
+              ),
+            const SizedBox(height: 8),
           ],
         ),
       ),

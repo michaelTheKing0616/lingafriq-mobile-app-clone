@@ -140,5 +140,6 @@
   "cpRetry": "Réessayer",
   "cpSuccessTitle": "Notification reçue",
   "cpSuccessBody": "Une personne l'examinera et vous écrira. Conservez cette référence : {reference}",
-  "cpDone": "Terminé"
+  "cpDone": "Terminé",
+  "reportReasonTitle": "Pourquoi signalez-vous ce contenu ?"
 }

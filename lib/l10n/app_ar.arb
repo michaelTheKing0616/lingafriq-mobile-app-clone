@@ -140,5 +140,6 @@
   "cpRetry": "حاول مجددًا",
   "cpSuccessTitle": "تم استلام الإشعار",
   "cpSuccessBody": "سيراجعه شخص ويراسلك عبر البريد. احتفظ بهذا المرجع: {reference}",
-  "cpDone": "تم"
+  "cpDone": "تم",
+  "reportReasonTitle": "لماذا تُبلغ عن هذا؟"
 }

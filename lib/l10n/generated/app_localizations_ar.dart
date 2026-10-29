@@ -936,4 +936,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get cpDone => 'تم';
+
+  @override
+  String get reportReasonTitle => 'لماذا تُبلغ عن هذا؟';
 }

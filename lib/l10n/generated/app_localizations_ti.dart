@@ -938,4 +938,7 @@ class AppLocalizationsTi extends AppLocalizations {
 
   @override
   String get cpDone => 'Done';
+
+  @override
+  String get reportReasonTitle => 'Why are you reporting this?';
 }
