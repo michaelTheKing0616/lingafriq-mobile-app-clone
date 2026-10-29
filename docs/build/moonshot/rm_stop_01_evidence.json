@@ -20,6 +20,16 @@
         "FEATURES_UNREACHABLE_33",
         "TOPE_SIGN_OFF_PENDING"
       ]
+    },
+    {
+      "at": "2026-10-28T02:23:05+00:00",
+      "card_id": "P13-005",
+      "target_status": "Ready",
+      "reasons": [
+        "FEATURES_NOT_DONE_0_OF_151",
+        "FEATURES_UNREACHABLE_33",
+        "TOPE_SIGN_OFF_PENDING"
+      ]
     }
   ]
 }

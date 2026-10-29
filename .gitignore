@@ -78,3 +78,5 @@ lib/config/secrets_manager.dart
 .env.*
 google-services.json
 GoogleService-Info.plist
+scripts/loadtest/node_modules/
+test/**/failures/
