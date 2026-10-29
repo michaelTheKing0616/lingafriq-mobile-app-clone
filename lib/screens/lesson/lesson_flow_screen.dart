@@ -27,6 +27,13 @@ import 'widgets/word_quiz_section_widget.dart';
 import 'widgets/lesson_complete_widget.dart';
 
 /// Main lesson flow screen that orchestrates the entire lesson experience
+/// Lesson header gradient: deep kente red to deep ochre, so the white
+/// title, ✕ and points keep >=4.5:1 at every stop (see contrast test).
+const List<Color> kLessonHeaderGradient = [
+  Color(0xFFA3322B),
+  Color(0xFF8C5A00),
+];
+
 class LessonFlowScreen extends HookConsumerWidget {
   final int lessonId;
   final List<SectionLessonModel> sectionLessons;
@@ -336,15 +343,65 @@ class _LessonFlowBody extends HookConsumerWidget {
           ref.read(navigationProvider).pop();
         },
         child: LingafriqScaffold(
-          body: Semantics(
-            liveRegion: true,
-            label: "${l.lessonLoadFailedTitle}. ${l.lessonLoadFailedBody}",
-            child: PanAfricanErrorState(
-              title: l.lessonLoadFailedTitle,
-              description: l.lessonLoadFailedBody,
-              onRetry: retryLoad,
-              retryLabel: l.lessonRetry,
-            ),
+          body: Column(
+            children: [
+              TopGradientBox(
+                borderRadius: 0,
+                colors: kLessonHeaderGradient,
+                child: Row(
+                  children: [
+                    IconButton(
+                      key: const Key('lesson-error-close'),
+                      tooltip: l.lessonExit,
+                      constraints: const BoxConstraints(
+                        minWidth: 48,
+                        minHeight: 48,
+                      ),
+                      icon: const Icon(
+                        Icons.close_rounded,
+                        color: Colors.white,
+                      ),
+                      onPressed: () => ref.read(navigationProvider).pop(),
+                    ),
+                    Expanded(
+                      child: BidiText(
+                        lessonTitle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: PanAfricanTypography.titleLarge(context)
+                            .copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    ),
+                    SizedBox(width: 16.w),
+                  ],
+                ).pOnly(bottom: 8),
+              ),
+              Expanded(
+                child: Semantics(
+                  liveRegion: true,
+                  label:
+                      "${l.lessonLoadFailedTitle}. ${l.lessonLoadFailedBody}",
+                  child: LayoutBuilder(
+                    builder: (context, box) => SingleChildScrollView(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(minHeight: box.maxHeight),
+                        child: Center(
+                          child: PanAfricanErrorState(
+                            title: l.lessonLoadFailedTitle,
+                            description: l.lessonLoadFailedBody,
+                            onRetry: retryLoad,
+                            retryLabel: l.lessonRetry,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       );
@@ -379,6 +436,7 @@ class _LessonFlowBody extends HookConsumerWidget {
                   // Header
                   TopGradientBox(
                     borderRadius: 0,
+                    colors: kLessonHeaderGradient,
                     child: Column(
                       children: [
                         Row(
@@ -393,11 +451,9 @@ class _LessonFlowBody extends HookConsumerWidget {
                                     minWidth: 48,
                                     minHeight: 48,
                                   ),
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.close_rounded,
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.onPrimary,
+                                    color: Colors.white,
                                   ),
                                   onPressed: askToExit,
                                 ),
@@ -414,9 +470,7 @@ class _LessonFlowBody extends HookConsumerWidget {
                                         PanAfricanTypography.titleLarge(
                                           context,
                                         ).copyWith(
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.onPrimary,
+                                          color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                         ),
                                   ),

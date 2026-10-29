@@ -5,7 +5,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/lessons/models/section_lesson_model.dart';
+import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/screens/lesson/lesson_flow_screen.dart';
+import 'package:lingafriq/utils/constants.dart';
 import 'package:lingafriq/screens/lesson/lesson_provider.dart';
 import 'package:lingafriq/screens/lesson/models/lesson_content.dart';
 import 'package:lingafriq/services/sound_effects_service.dart';
@@ -97,6 +99,12 @@ Future<void> _pump(
     ..devicePixelRatio = 1;
   addTearDown(t.view.reset);
   await t.pumpWidget(_app(mode, locale));
+  await t.pumpAndSettle();
+  // Decode the persona avatar so every golden shows the same header.
+  final ctx = t.element(find.byType(LessonFlowScreen));
+  await t.runAsync(
+    () => precacheImage(AssetImage(kAvatarsList.values.first), ctx),
+  );
   await t.pumpAndSettle();
   // flutter_animate starts card entrances from a zero-length timer; let it
   // fire, then settle the fade so goldens show the finished frame.
@@ -196,6 +204,56 @@ void main() {
     );
     expectNoLayoutErrors(t);
     await _golden(t, 'exercise_${goldenVariants.last.name}');
+  });
+
+  testWidgets('error header: ✕ and system back both leave the lesson', (
+    t,
+  ) async {
+    for (final viaBack in [false, true]) {
+      final container = ProviderContainer(
+        overrides: [
+          lessonFlowProvider(
+            9,
+          ).overrideWith((ref) => _FixtureNotifier(ref, _Mode.error)),
+        ],
+      );
+      final key = container.read(navigationProvider).navigatorKey;
+      await t.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: ScreenUtilInit(
+            designSize: const Size(390, 844),
+            builder: (_, __) => MaterialApp(
+              navigatorKey: key,
+              home: const Scaffold(body: Text('home')),
+            ),
+          ),
+        ),
+      );
+      key.currentState!.push(
+        MaterialPageRoute<void>(
+          builder: (_) => const LessonFlowScreen(
+            lessonId: 9,
+            sectionLessons: [],
+            lessonTitle: 'Greetings',
+          ),
+        ),
+      );
+      await t.pumpAndSettle();
+      expect(find.text('Retry'), findsOneWidget);
+      final close = find.byKey(const Key('lesson-error-close'));
+      expect(t.getSize(close).width, greaterThanOrEqualTo(48));
+      if (viaBack) {
+        await t.binding.handlePopRoute();
+      } else {
+        await t.tap(close);
+      }
+      await t.pumpAndSettle();
+      expect(find.byType(LessonFlowScreen), findsNothing, reason: '$viaBack');
+      expect(find.text('home'), findsOneWidget);
+      await t.pumpWidget(const SizedBox());
+      container.dispose();
+    }
   });
 
   testWidgets('loading: localised preparing state', (t) async {

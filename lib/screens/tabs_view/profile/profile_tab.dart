@@ -256,14 +256,23 @@ Widget _initial(BuildContext context, ProfileModel? user) {
     child: FittedBox(
       child: Padding(
         padding: const EdgeInsets.all(6),
-        child: Text(
-          name.isEmpty ? '?' : name.characters.first.toUpperCase(),
-          style: const TextStyle(
-            fontWeight: FontWeight.w900,
-            fontSize: 28,
-            color: PanAfricanColors.neutralDarkest,
-          ),
-        ),
+        // No name yet (signed out / still loading): a person glyph, never
+        // a bare "?".
+        child: name.isEmpty
+            ? const Icon(
+                Icons.person_rounded,
+                key: Key('avatar-initial-glyph'),
+                size: 28,
+                color: PanAfricanColors.neutralDarkest,
+              )
+            : Text(
+                name.characters.first.toUpperCase(),
+                style: const TextStyle(
+                  fontWeight: FontWeight.w900,
+                  fontSize: 28,
+                  color: PanAfricanColors.neutralDarkest,
+                ),
+              ),
       ),
     ),
   );

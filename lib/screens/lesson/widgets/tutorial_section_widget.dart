@@ -73,6 +73,71 @@ class _TutorialSectionWidgetState extends ConsumerState<TutorialSectionWidget> {
             builder: (context, box) {
               final gap = box.maxHeight < 420 ? 12.0 : 20.0;
               final speakerH = (box.maxHeight * 0.30).clamp(110.0, 240.0);
+              final speaker =
+                  kTutorialSpeakers[c.sectionId.abs() %
+                      kTutorialSpeakers.length];
+              // Roomy screens: the speaker stage grows to fill the height
+              // between the chip and the example, so nothing floats over
+              // blank space. Tight or large-text screens scroll instead.
+              final roomy =
+                  !hasVideo &&
+                  !hasImage &&
+                  box.maxHeight >= 340 &&
+                  text.length <= 160 &&
+                  MediaQuery.textScalerOf(context).scale(10) <= 13;
+              if (roomy) {
+                return Padding(
+                  padding: EdgeInsets.fromLTRB(16.w, gap, 16.w, 0),
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 560),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          _Eyebrow(label: l.lessonNewPhrase),
+                          SizedBox(height: gap),
+                          Expanded(
+                            child: _Stage(
+                              key: const Key('tutorial-stage'),
+                              builder: (h) => _PhraseBubble(
+                                key: const Key('tutorial-phrase'),
+                                speaker: speaker,
+                                speakerHeight: h,
+                                phrase: c.title,
+                                onPlay: _hasTts
+                                    ? () => _speak(slow: false)
+                                    : null,
+                                onPlaySlow: _hasTts
+                                    ? () => _speak(slow: true)
+                                    : null,
+                              ),
+                            ),
+                          ),
+                          if (hasAudio) ...[
+                            SizedBox(height: gap),
+                            Semantics(
+                              label: l.lessonTutorialAudio,
+                              child: PanAfricanCard(
+                                padding: EdgeInsets.all(12.w),
+                                child: AudioPlayerWidget(audioUrl: c.audioUrl!),
+                              ),
+                            ),
+                          ],
+                          if (text.isNotEmpty) ...[
+                            SizedBox(height: gap),
+                            _ExampleCard(
+                              key: const Key('tutorial-example'),
+                              label: l.lessonExampleLabel,
+                              text: text,
+                            ),
+                          ],
+                          SizedBox(height: gap / 2),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }
               return SingleChildScrollView(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: gap),
                 child: ConstrainedBox(
@@ -139,6 +204,7 @@ class _TutorialSectionWidgetState extends ConsumerState<TutorialSectionWidget> {
                           if (text.isNotEmpty) ...[
                             SizedBox(height: gap),
                             _ExampleCard(
+                              key: const Key('tutorial-example'),
                               label: l.lessonExampleLabel,
                               text: text,
                             ),
@@ -228,6 +294,49 @@ class _Eyebrow extends StatelessWidget {
 
 /// A presenter (cast still) beside a speech bubble holding the phrase and
 /// its play buttons.
+/// Soft tinted backdrop (the cast art carries its own ground shadow); hands its child the speaker
+/// height that fits the space it was given.
+class _Stage extends StatelessWidget {
+  const _Stage({super.key, required this.builder});
+  final Widget Function(double speakerHeight) builder;
+
+  @override
+  Widget build(BuildContext context) {
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            PanAfricanColors.secondary.withValues(alpha: dark ? 0.08 : 0.16),
+            PanAfricanColors.primary.withValues(alpha: dark ? 0.10 : 0.08),
+          ],
+        ),
+      ),
+      padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+      child: LayoutBuilder(
+        builder: (context, box) => Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            // scaleDown only bites on unusually short stages (large text
+            // in a small window); normally the scene renders 1:1.
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
+                width: box.maxWidth,
+                child: builder((box.maxHeight * 0.92).clamp(110.0, 360.0)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _PhraseBubble extends StatelessWidget {
   const _PhraseBubble({
     super.key,
@@ -364,7 +473,7 @@ class _PlayButton extends StatelessWidget {
 }
 
 class _ExampleCard extends StatelessWidget {
-  const _ExampleCard({required this.label, required this.text});
+  const _ExampleCard({super.key, required this.label, required this.text});
   final String label;
   final String text;
 

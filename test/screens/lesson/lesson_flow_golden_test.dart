@@ -9,6 +9,7 @@ import 'package:lingafriq/screens/lesson/lesson_flow_screen.dart';
 import 'package:lingafriq/screens/lesson/widgets/tutorial_section_widget.dart';
 import 'package:lingafriq/screens/tabs_view/profile/profile_tab.dart';
 import 'package:lingafriq/utils/constants.dart';
+import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../compliance/golden_kit.dart';
@@ -156,6 +157,64 @@ void main() {
     final initial = find.byKey(const Key('avatar-initial'));
     expect(initial, findsOneWidget);
     expect(t.getSize(initial).width, greaterThan(30));
+    // Signed out: a person glyph, never a bare "?".
+    expect(find.byKey(const Key('avatar-initial-glyph')), findsOneWidget);
+    expect(find.text('?'), findsNothing);
+  });
+
+  test('header text keeps AA contrast at every gradient stop', () {
+    double ratio(Color a, Color b) {
+      final x = a.computeLuminance(), y = b.computeLuminance();
+      return (x > y ? x + 0.05 : y + 0.05) / (x > y ? y + 0.05 : x + 0.05);
+    }
+
+    for (final stop in kLessonHeaderGradient) {
+      expect(
+        ratio(Colors.white, stop),
+        greaterThanOrEqualTo(4.5),
+        reason: 'white on $stop',
+      );
+    }
+    // Midpoint too, since text can sit anywhere along the band.
+    final mid = Color.lerp(
+      kLessonHeaderGradient.first,
+      kLessonHeaderGradient.last,
+      0.5,
+    )!;
+    expect(ratio(Colors.white, mid), greaterThanOrEqualTo(4.5));
+  });
+
+  testWidgets('header text is white on the lesson gradient', (t) async {
+    await pumpVariant(t, goldenVariants.first, _screen());
+    final pts = t.widget<Text>(find.text('0 Points'));
+    final title = t.widget<Text>(find.text('Greetings'));
+    expect(
+      pts.style?.color ??
+          DefaultTextStyle.of(t.element(find.text('0 Points'))).style.color,
+      Colors.white,
+    );
+    expect(title.style?.color, Colors.white);
+    final box = t.widget<Container>(
+      find
+          .descendant(
+            of: find.byType(TopGradientBox),
+            matching: find.byType(Container),
+          )
+          .first,
+    );
+    final g = (box.decoration! as BoxDecoration).gradient! as LinearGradient;
+    expect(g.colors, kLessonHeaderGradient);
+  });
+
+  testWidgets('tutorial stage fills the height: no blank band', (t) async {
+    for (final v in [goldenVariants.first, goldenVariants[3]]) {
+      await pumpVariant(t, v, _screen());
+      await precacheLessonArt(t);
+      expect(find.byKey(const Key('tutorial-stage')), findsOneWidget);
+      final ex = t.getRect(find.byKey(const Key('tutorial-example')));
+      final cta = t.getRect(find.text('Continue'));
+      expect(cta.top - ex.bottom, lessThan(90), reason: v.name);
+    }
   });
 
   testWidgets('French tutorial golden', (t) async {
