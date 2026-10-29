@@ -4469,6 +4469,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Loading your profile'**
   String get peLoading;
+
+  /// dgTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Daily goals'**
+  String get dgTitle;
+
+  /// dgStreak
+  ///
+  /// In en, this message translates to:
+  /// **'{n}-day streak'**
+  String dgStreak(int n);
+
+  /// dgStreakOn
+  ///
+  /// In en, this message translates to:
+  /// **'Keep it going — practise today to add a day.'**
+  String get dgStreakOn;
+
+  /// dgStreakZero
+  ///
+  /// In en, this message translates to:
+  /// **'Finish one goal today to start a streak.'**
+  String get dgStreakZero;
+
+  /// dgRing
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {total} goals done'**
+  String dgRing(int done, int total);
+
+  /// dgToday
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get dgToday;
+
+  /// dgLessons
+  ///
+  /// In en, this message translates to:
+  /// **'Complete lessons'**
+  String get dgLessons;
+
+  /// dgQuizzes
+  ///
+  /// In en, this message translates to:
+  /// **'Take quizzes'**
+  String get dgQuizzes;
+
+  /// dgGames
+  ///
+  /// In en, this message translates to:
+  /// **'Play games'**
+  String get dgGames;
+
+  /// dgChat
+  ///
+  /// In en, this message translates to:
+  /// **'Chat with Polie'**
+  String get dgChat;
+
+  /// dgWords
+  ///
+  /// In en, this message translates to:
+  /// **'Learn words'**
+  String get dgWords;
+
+  /// dgGoal
+  ///
+  /// In en, this message translates to:
+  /// **'Goal'**
+  String get dgGoal;
+
+  /// dgCount
+  ///
+  /// In en, this message translates to:
+  /// **'{current} of {target}'**
+  String dgCount(int current, int target);
+
+  /// dgMinutes
+  ///
+  /// In en, this message translates to:
+  /// **'{current} of {target} min'**
+  String dgMinutes(int current, int target);
+
+  /// dgDone
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get dgDone;
+
+  /// dgStart
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get dgStart;
+
+  /// dgAllDone
+  ///
+  /// In en, this message translates to:
+  /// **'All of today\'s goals are done. See you tomorrow!'**
+  String get dgAllDone;
+
+  /// dgEmptyTitle
+  ///
+  /// In en, this message translates to:
+  /// **'No goals yet today'**
+  String get dgEmptyTitle;
+
+  /// dgEmptyBody
+  ///
+  /// In en, this message translates to:
+  /// **'Pull down or tap refresh to set today\'s goals.'**
+  String get dgEmptyBody;
+
+  /// dgRefresh
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get dgRefresh;
+
+  /// dgSyncing
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing your progress…'**
+  String get dgSyncing;
+
+  /// dgError
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t sync goals. Showing progress saved on this device.'**
+  String get dgError;
+
+  /// dgRetry
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get dgRetry;
+
+  /// dgPickLessons
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a language for lessons'**
+  String get dgPickLessons;
+
+  /// dgPickQuiz
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a language for the quiz'**
+  String get dgPickQuiz;
+
+  /// dgLangError
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load languages.'**
+  String get dgLangError;
+
+  /// dgGoalA11y
+  ///
+  /// In en, this message translates to:
+  /// **'{title}, {progress}, {status}'**
+  String dgGoalA11y(String title, String progress, String status);
 }
 
 class _AppLocalizationsDelegate

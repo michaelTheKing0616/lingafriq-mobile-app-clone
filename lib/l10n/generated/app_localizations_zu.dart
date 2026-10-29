@@ -2530,4 +2530,96 @@ class AppLocalizationsZu extends AppLocalizations {
 
   @override
   String get peLoading => 'Loading your profile';
+
+  @override
+  String get dgTitle => 'Daily goals';
+
+  @override
+  String dgStreak(int n) {
+    return '$n-day streak';
+  }
+
+  @override
+  String get dgStreakOn => 'Keep it going — practise today to add a day.';
+
+  @override
+  String get dgStreakZero => 'Finish one goal today to start a streak.';
+
+  @override
+  String dgRing(int done, int total) {
+    return '$done of $total goals done';
+  }
+
+  @override
+  String get dgToday => 'Today';
+
+  @override
+  String get dgLessons => 'Complete lessons';
+
+  @override
+  String get dgQuizzes => 'Take quizzes';
+
+  @override
+  String get dgGames => 'Play games';
+
+  @override
+  String get dgChat => 'Chat with Polie';
+
+  @override
+  String get dgWords => 'Learn words';
+
+  @override
+  String get dgGoal => 'Goal';
+
+  @override
+  String dgCount(int current, int target) {
+    return '$current of $target';
+  }
+
+  @override
+  String dgMinutes(int current, int target) {
+    return '$current of $target min';
+  }
+
+  @override
+  String get dgDone => 'Done';
+
+  @override
+  String get dgStart => 'Start';
+
+  @override
+  String get dgAllDone => 'All of today\'s goals are done. See you tomorrow!';
+
+  @override
+  String get dgEmptyTitle => 'No goals yet today';
+
+  @override
+  String get dgEmptyBody => 'Pull down or tap refresh to set today\'s goals.';
+
+  @override
+  String get dgRefresh => 'Refresh';
+
+  @override
+  String get dgSyncing => 'Syncing your progress…';
+
+  @override
+  String get dgError =>
+      'Couldn\'t sync goals. Showing progress saved on this device.';
+
+  @override
+  String get dgRetry => 'Retry';
+
+  @override
+  String get dgPickLessons => 'Choose a language for lessons';
+
+  @override
+  String get dgPickQuiz => 'Choose a language for the quiz';
+
+  @override
+  String get dgLangError => 'Couldn\'t load languages.';
+
+  @override
+  String dgGoalA11y(String title, String progress, String status) {
+    return '$title, $progress, $status';
+  }
 }

@@ -3410,5 +3410,153 @@
   "peLoading": "Loading your profile",
   "@peLoading": {
     "description": "peLoading"
+  },
+  "dgTitle": "Daily goals",
+  "@dgTitle": {
+    "description": "dgTitle"
+  },
+  "dgStreak": "{n}-day streak",
+  "@dgStreak": {
+    "description": "dgStreak",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "dgStreakOn": "Keep it going — practise today to add a day.",
+  "@dgStreakOn": {
+    "description": "dgStreakOn"
+  },
+  "dgStreakZero": "Finish one goal today to start a streak.",
+  "@dgStreakZero": {
+    "description": "dgStreakZero"
+  },
+  "dgRing": "{done} of {total} goals done",
+  "@dgRing": {
+    "description": "dgRing",
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "dgToday": "Today",
+  "@dgToday": {
+    "description": "dgToday"
+  },
+  "dgLessons": "Complete lessons",
+  "@dgLessons": {
+    "description": "dgLessons"
+  },
+  "dgQuizzes": "Take quizzes",
+  "@dgQuizzes": {
+    "description": "dgQuizzes"
+  },
+  "dgGames": "Play games",
+  "@dgGames": {
+    "description": "dgGames"
+  },
+  "dgChat": "Chat with Polie",
+  "@dgChat": {
+    "description": "dgChat"
+  },
+  "dgWords": "Learn words",
+  "@dgWords": {
+    "description": "dgWords"
+  },
+  "dgGoal": "Goal",
+  "@dgGoal": {
+    "description": "dgGoal"
+  },
+  "dgCount": "{current} of {target}",
+  "@dgCount": {
+    "description": "dgCount",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      }
+    }
+  },
+  "dgMinutes": "{current} of {target} min",
+  "@dgMinutes": {
+    "description": "dgMinutes",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      }
+    }
+  },
+  "dgDone": "Done",
+  "@dgDone": {
+    "description": "dgDone"
+  },
+  "dgStart": "Start",
+  "@dgStart": {
+    "description": "dgStart"
+  },
+  "dgAllDone": "All of today's goals are done. See you tomorrow!",
+  "@dgAllDone": {
+    "description": "dgAllDone"
+  },
+  "dgEmptyTitle": "No goals yet today",
+  "@dgEmptyTitle": {
+    "description": "dgEmptyTitle"
+  },
+  "dgEmptyBody": "Pull down or tap refresh to set today's goals.",
+  "@dgEmptyBody": {
+    "description": "dgEmptyBody"
+  },
+  "dgRefresh": "Refresh",
+  "@dgRefresh": {
+    "description": "dgRefresh"
+  },
+  "dgSyncing": "Syncing your progress…",
+  "@dgSyncing": {
+    "description": "dgSyncing"
+  },
+  "dgError": "Couldn't sync goals. Showing progress saved on this device.",
+  "@dgError": {
+    "description": "dgError"
+  },
+  "dgRetry": "Retry",
+  "@dgRetry": {
+    "description": "dgRetry"
+  },
+  "dgPickLessons": "Choose a language for lessons",
+  "@dgPickLessons": {
+    "description": "dgPickLessons"
+  },
+  "dgPickQuiz": "Choose a language for the quiz",
+  "@dgPickQuiz": {
+    "description": "dgPickQuiz"
+  },
+  "dgLangError": "Couldn't load languages.",
+  "@dgLangError": {
+    "description": "dgLangError"
+  },
+  "dgGoalA11y": "{title}, {progress}, {status}",
+  "@dgGoalA11y": {
+    "description": "dgGoalA11y",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "progress": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
   }
 }

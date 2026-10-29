@@ -2555,4 +2555,100 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get peLoading => 'Chargement du profil';
+
+  @override
+  String get dgTitle => 'Objectifs du jour';
+
+  @override
+  String dgStreak(int n) {
+    return 'Série de $n jours';
+  }
+
+  @override
+  String get dgStreakOn =>
+      'Continuez — pratiquez aujourd\'hui pour ajouter un jour.';
+
+  @override
+  String get dgStreakZero =>
+      'Terminez un objectif aujourd\'hui pour lancer une série.';
+
+  @override
+  String dgRing(int done, int total) {
+    return '$done objectifs sur $total atteints';
+  }
+
+  @override
+  String get dgToday => 'Aujourd\'hui';
+
+  @override
+  String get dgLessons => 'Terminer des leçons';
+
+  @override
+  String get dgQuizzes => 'Faire des quiz';
+
+  @override
+  String get dgGames => 'Jouer à des jeux';
+
+  @override
+  String get dgChat => 'Discuter avec Polie';
+
+  @override
+  String get dgWords => 'Apprendre des mots';
+
+  @override
+  String get dgGoal => 'Objectif';
+
+  @override
+  String dgCount(int current, int target) {
+    return '$current sur $target';
+  }
+
+  @override
+  String dgMinutes(int current, int target) {
+    return '$current sur $target min';
+  }
+
+  @override
+  String get dgDone => 'Fait';
+
+  @override
+  String get dgStart => 'Commencer';
+
+  @override
+  String get dgAllDone =>
+      'Tous les objectifs du jour sont atteints. À demain !';
+
+  @override
+  String get dgEmptyTitle => 'Pas encore d\'objectifs aujourd\'hui';
+
+  @override
+  String get dgEmptyBody =>
+      'Tirez vers le bas ou touchez Actualiser pour définir les objectifs.';
+
+  @override
+  String get dgRefresh => 'Actualiser';
+
+  @override
+  String get dgSyncing => 'Synchronisation de votre progression…';
+
+  @override
+  String get dgError =>
+      'Synchronisation impossible. Progression enregistrée sur cet appareil affichée.';
+
+  @override
+  String get dgRetry => 'Réessayer';
+
+  @override
+  String get dgPickLessons => 'Choisissez une langue pour les leçons';
+
+  @override
+  String get dgPickQuiz => 'Choisissez une langue pour le quiz';
+
+  @override
+  String get dgLangError => 'Impossible de charger les langues.';
+
+  @override
+  String dgGoalA11y(String title, String progress, String status) {
+    return '$title, $progress, $status';
+  }
 }

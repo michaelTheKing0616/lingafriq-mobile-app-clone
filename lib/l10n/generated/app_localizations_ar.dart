@@ -2533,4 +2533,96 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get peLoading => 'جارٍ تحميل ملفك الشخصي';
+
+  @override
+  String get dgTitle => 'الأهداف اليومية';
+
+  @override
+  String dgStreak(int n) {
+    return 'سلسلة $n يوم';
+  }
+
+  @override
+  String get dgStreakOn => 'واصل — تدرّب اليوم لتضيف يومًا.';
+
+  @override
+  String get dgStreakZero => 'أكمل هدفًا واحدًا اليوم لتبدأ سلسلة.';
+
+  @override
+  String dgRing(int done, int total) {
+    return 'تم $done من $total أهداف';
+  }
+
+  @override
+  String get dgToday => 'اليوم';
+
+  @override
+  String get dgLessons => 'أكمل الدروس';
+
+  @override
+  String get dgQuizzes => 'أجب عن الاختبارات';
+
+  @override
+  String get dgGames => 'العب الألعاب';
+
+  @override
+  String get dgChat => 'تحدّث مع Polie';
+
+  @override
+  String get dgWords => 'تعلّم كلمات';
+
+  @override
+  String get dgGoal => 'هدف';
+
+  @override
+  String dgCount(int current, int target) {
+    return '$current من $target';
+  }
+
+  @override
+  String dgMinutes(int current, int target) {
+    return '$current من $target دقيقة';
+  }
+
+  @override
+  String get dgDone => 'تم';
+
+  @override
+  String get dgStart => 'ابدأ';
+
+  @override
+  String get dgAllDone => 'أنجزت كل أهداف اليوم. نراك غدًا!';
+
+  @override
+  String get dgEmptyTitle => 'لا أهداف اليوم بعد';
+
+  @override
+  String get dgEmptyBody => 'اسحب للأسفل أو اضغط تحديث لتعيين أهداف اليوم.';
+
+  @override
+  String get dgRefresh => 'تحديث';
+
+  @override
+  String get dgSyncing => 'جارٍ مزامنة تقدّمك…';
+
+  @override
+  String get dgError =>
+      'تعذّرت مزامنة الأهداف. نعرض التقدّم المحفوظ على هذا الجهاز.';
+
+  @override
+  String get dgRetry => 'إعادة المحاولة';
+
+  @override
+  String get dgPickLessons => 'اختر لغة للدروس';
+
+  @override
+  String get dgPickQuiz => 'اختر لغة للاختبار';
+
+  @override
+  String get dgLangError => 'تعذّر تحميل اللغات.';
+
+  @override
+  String dgGoalA11y(String title, String progress, String status) {
+    return '$title، $progress، $status';
+  }
 }

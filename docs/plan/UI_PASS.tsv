@@ -150,7 +150,7 @@ mobile	lib/screens/gamification/seasonal_events_screen.dart	todo
 mobile	lib/screens/gamification/tribe_selection_screen.dart	todo			
 mobile	lib/screens/global/global_progress_screen.dart	todo			
 mobile	lib/screens/goals/daily_challenges_screen.dart	todo			
-mobile	lib/screens/goals/daily_goals_screen.dart	todo			
+mobile	lib/screens/goals/daily_goals_screen.dart	ready-for-review	self 9.0	profile-progress/02	2026-10-29
 mobile	lib/screens/grammar/grammar_exercise_screen.dart	todo			
 mobile	lib/screens/grammar/grammar_hub_screen.dart	todo			
 mobile	lib/screens/grammar/grammar_lesson_screen.dart	todo			
