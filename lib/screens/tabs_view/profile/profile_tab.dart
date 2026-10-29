@@ -257,7 +257,10 @@ class _ProfileBody extends ConsumerWidget {
                     ],
                     section(l.profOverview),
                     _StatsGrid(stats: stats, oneColumn: bigText),
-                    if (private) ...[
+                    if (tier == 'teen') ...[
+                      SizedBox(height: PanAfricanSpacing.sm),
+                      const _TeenPrivacyCard(),
+                    ] else if (private) ...[
                       SizedBox(height: PanAfricanSpacing.xs),
                       _Note(
                         icon: Icons.shield_rounded,
@@ -826,6 +829,9 @@ class _StateBar extends ConsumerWidget {
   }
 }
 
+/// Brand navy used behind the profile header in loading/default states.
+const kProfileNavy = Color(0xFF2E3A87);
+
 BoxDecoration _cardDeco(ColorScheme scheme) => BoxDecoration(
   color: scheme.surface,
   borderRadius: BorderRadius.circular(16),
@@ -1272,7 +1278,7 @@ class _ProfileSkeleton extends StatelessWidget {
       ),
     );
     Widget tile() => Container(
-      height: 72,
+      height: 80,
       decoration: BoxDecoration(
         color: block,
         borderRadius: BorderRadius.circular(16),
@@ -1289,7 +1295,7 @@ class _ProfileSkeleton extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: [
             ColoredBox(
-              color: PanAfricanColors.primary,
+              color: kProfileNavy,
               child: SafeArea(
                 bottom: false,
                 child: Padding(
@@ -1302,7 +1308,7 @@ class _ProfileSkeleton extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      bar(180, 24, onHeader),
+                      bar(200, 30, onHeader),
                       SizedBox(height: PanAfricanSpacing.md),
                       Center(
                         child: Container(
@@ -1324,25 +1330,79 @@ class _ProfileSkeleton extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  bar(220, 14, block),
+                  bar(220, 16, block),
                   SizedBox(height: PanAfricanSpacing.lg),
-                  bar(90, 14, block),
-                  SizedBox(height: PanAfricanSpacing.xs),
+                  bar(96, 16, block),
+                  SizedBox(height: PanAfricanSpacing.sm),
                   Row(
                     children: [
                       Expanded(child: tile()),
-                      SizedBox(width: PanAfricanSpacing.xs),
+                      SizedBox(width: PanAfricanSpacing.sm),
                       Expanded(child: tile()),
                     ],
                   ),
-                  SizedBox(height: PanAfricanSpacing.xs),
+                  SizedBox(height: PanAfricanSpacing.sm),
                   Row(
                     children: [
                       Expanded(child: tile()),
-                      SizedBox(width: PanAfricanSpacing.xs),
+                      SizedBox(width: PanAfricanSpacing.sm),
                       Expanded(child: tile()),
                     ],
                   ),
+                  SizedBox(height: PanAfricanSpacing.lg),
+                  bar(110, 16, block),
+                  SizedBox(height: PanAfricanSpacing.sm),
+                  Container(
+                    height: 104,
+                    padding: EdgeInsets.all(PanAfricanSpacing.sm),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: block, width: 2),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        for (var i = 0; i < 7; i++)
+                          Container(
+                            width: 30,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: block,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: PanAfricanSpacing.lg),
+                  bar(120, 16, block),
+                  SizedBox(height: PanAfricanSpacing.sm),
+                  for (var i = 0; i < 2; i++) ...[
+                    Row(
+                      children: [
+                        Container(
+                          width: 44,
+                          height: 44,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: block,
+                          ),
+                        ),
+                        SizedBox(width: PanAfricanSpacing.sm),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              bar(100, 14, block),
+                              SizedBox(height: PanAfricanSpacing.xs),
+                              bar(double.infinity, 8, block),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: PanAfricanSpacing.sm),
+                  ],
                 ],
               ),
             ),
@@ -1481,4 +1541,90 @@ Widget _initial(BuildContext context, ProfileModel? user) {
       ),
     ),
   );
+}
+
+/// Teen accounts: private-profile badge plus what that protects.
+class _TeenPrivacyCard extends StatelessWidget {
+  const _TeenPrivacyCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final l = l10nOf(context);
+    final scheme = Theme.of(context).colorScheme;
+    Widget line(IconData i, String t) => Padding(
+      padding: EdgeInsets.only(top: PanAfricanSpacing.xs),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(i, size: 20, color: kProfileNavy),
+          SizedBox(width: PanAfricanSpacing.xs),
+          Expanded(
+            child: Text(
+              t,
+              style: PanAfricanTypography.bodySmall(
+                context,
+              ).copyWith(color: scheme.onSurface),
+            ),
+          ),
+        ],
+      ),
+    );
+    return Container(
+      key: const Key('profile-teen-card'),
+      padding: EdgeInsets.all(PanAfricanSpacing.sm),
+      decoration: BoxDecoration(
+        color: const Color(0xFFE9ECFA),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: kProfileNavy.withValues(alpha: 0.35),
+          width: 2,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Semantics(
+            label: l.profTeenBadge,
+            excludeSemantics: true,
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: PanAfricanSpacing.sm,
+                vertical: PanAfricanSpacing.xxs,
+              ),
+              decoration: BoxDecoration(
+                color: kProfileNavy,
+                borderRadius: BorderRadius.circular(999),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.lock_rounded, size: 16, color: Colors.white),
+                  SizedBox(width: PanAfricanSpacing.xxs),
+                  Flexible(
+                    child: Text(
+                      l.profTeenBadge,
+                      style: PanAfricanTypography.labelLarge(context).copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: PanAfricanSpacing.xs),
+          Text(
+            l.profTeenTitle,
+            style: PanAfricanTypography.titleMedium(
+              context,
+            ).copyWith(fontWeight: FontWeight.w800, color: scheme.onSurface),
+          ),
+          line(Icons.visibility_off_rounded, l.profTeenHidden),
+          line(Icons.speaker_notes_off_rounded, l.profTeenNoDm),
+          line(Icons.family_restroom_rounded, l.profTeenParent),
+        ],
+      ),
+    );
+  }
 }

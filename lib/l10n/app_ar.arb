@@ -391,5 +391,10 @@
   "profShareText": "أتعلّم {language} على LingAfriq: سلسلة {streak} يومًا و{xp} نقطة خبرة!",
   "profHelpLegal": "المساعدة والشؤون القانونية",
   "profAboutApp": "عن LingAfriq",
-  "profSecurity": "الحساب والأمان"
+  "profSecurity": "الحساب والأمان",
+  "profTeenBadge": "ملف شخصي خاص",
+  "profTeenTitle": "يبقى ملفك الشخصي خاصًا",
+  "profTeenHidden": "ترتيبك واسمك مخفيان من لوحات الصدارة.",
+  "profTeenNoDm": "لا يمكن للبالغين إرسال رسائل مباشرة إليك.",
+  "profTeenParent": "حسابك مرتبط بوليّ أمر وافق عليه."
 }

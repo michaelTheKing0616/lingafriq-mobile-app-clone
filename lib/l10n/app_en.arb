@@ -2460,5 +2460,25 @@
   "profSecurity": "Account and security",
   "@profSecurity": {
     "description": "profSecurity"
+  },
+  "profTeenBadge": "Private profile",
+  "@profTeenBadge": {
+    "description": "Teen private badge"
+  },
+  "profTeenTitle": "Your profile stays private",
+  "@profTeenTitle": {
+    "description": "Teen card title"
+  },
+  "profTeenHidden": "Your rank and name are hidden from leaderboards.",
+  "@profTeenHidden": {
+    "description": "Teen hidden line"
+  },
+  "profTeenNoDm": "Adults can't send you direct messages.",
+  "@profTeenNoDm": {
+    "description": "Teen no DMs"
+  },
+  "profTeenParent": "Your account is linked to a parent or guardian, who gave consent.",
+  "@profTeenParent": {
+    "description": "Teen parent consent"
   }
 }

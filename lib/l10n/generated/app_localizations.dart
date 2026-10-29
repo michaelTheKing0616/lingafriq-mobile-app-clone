@@ -3281,6 +3281,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Account and security'**
   String get profSecurity;
+
+  /// Teen private badge
+  ///
+  /// In en, this message translates to:
+  /// **'Private profile'**
+  String get profTeenBadge;
+
+  /// Teen card title
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile stays private'**
+  String get profTeenTitle;
+
+  /// Teen hidden line
+  ///
+  /// In en, this message translates to:
+  /// **'Your rank and name are hidden from leaderboards.'**
+  String get profTeenHidden;
+
+  /// Teen no DMs
+  ///
+  /// In en, this message translates to:
+  /// **'Adults can\'t send you direct messages.'**
+  String get profTeenNoDm;
+
+  /// Teen parent consent
+  ///
+  /// In en, this message translates to:
+  /// **'Your account is linked to a parent or guardian, who gave consent.'**
+  String get profTeenParent;
 }
 
 class _AppLocalizationsDelegate

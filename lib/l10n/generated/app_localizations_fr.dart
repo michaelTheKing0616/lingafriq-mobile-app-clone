@@ -1850,4 +1850,22 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get profSecurity => 'Compte et sécurité';
+
+  @override
+  String get profTeenBadge => 'Profil privé';
+
+  @override
+  String get profTeenTitle => 'Ton profil reste privé';
+
+  @override
+  String get profTeenHidden =>
+      'Ton classement et ton nom sont masqués des classements.';
+
+  @override
+  String get profTeenNoDm =>
+      'Les adultes ne peuvent pas t\'envoyer de messages privés.';
+
+  @override
+  String get profTeenParent =>
+      'Ton compte est lié à un parent ou tuteur qui a donné son accord.';
 }

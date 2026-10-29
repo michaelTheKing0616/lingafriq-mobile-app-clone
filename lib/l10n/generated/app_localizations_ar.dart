@@ -1843,4 +1843,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get profSecurity => 'الحساب والأمان';
+
+  @override
+  String get profTeenBadge => 'ملف شخصي خاص';
+
+  @override
+  String get profTeenTitle => 'يبقى ملفك الشخصي خاصًا';
+
+  @override
+  String get profTeenHidden => 'ترتيبك واسمك مخفيان من لوحات الصدارة.';
+
+  @override
+  String get profTeenNoDm => 'لا يمكن للبالغين إرسال رسائل مباشرة إليك.';
+
+  @override
+  String get profTeenParent => 'حسابك مرتبط بوليّ أمر وافق عليه.';
 }

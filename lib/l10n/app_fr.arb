@@ -391,5 +391,10 @@
   "profShareText": "J'apprends le {language} sur LingAfriq : {streak} jours de série et {xp} XP !",
   "profHelpLegal": "Aide et mentions légales",
   "profAboutApp": "À propos de LingAfriq",
-  "profSecurity": "Compte et sécurité"
+  "profSecurity": "Compte et sécurité",
+  "profTeenBadge": "Profil privé",
+  "profTeenTitle": "Ton profil reste privé",
+  "profTeenHidden": "Ton classement et ton nom sont masqués des classements.",
+  "profTeenNoDm": "Les adultes ne peuvent pas t'envoyer de messages privés.",
+  "profTeenParent": "Ton compte est lié à un parent ou tuteur qui a donné son accord."
 }

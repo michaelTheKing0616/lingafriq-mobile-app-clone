@@ -369,8 +369,60 @@ void main() {
         .where(
           (c) => (c.decoration as BoxDecoration?)?.shape == BoxShape.circle,
         );
-    expect(circles.length, 1, reason: 'avatar placeholder');
+    expect(
+      circles.length,
+      10,
+      reason: 'avatar + 7 week days + 2 language rows',
+    );
+    final navy = t
+        .widgetList<ColoredBox>(
+          find.descendant(of: skel, matching: find.byType(ColoredBox)),
+        )
+        .where((b) => b.color == kProfileNavy);
+    expect(navy, isNotEmpty, reason: 'same navy header as loaded profile');
   });
+
+  testWidgets('teen profile shows its own privacy card, child does not', (
+    t,
+  ) async {
+    await _pump(t, base, _o(tier: 'teen'));
+    expect(find.byKey(const Key('profile-teen-card')), findsOneWidget);
+    expect(find.text('Private profile'), findsOneWidget);
+    expect(find.text("Adults can't send you direct messages."), findsOneWidget);
+    expect(
+      find.text(
+        'Your account is linked to a parent or guardian, who gave consent.',
+      ),
+      findsOneWidget,
+    );
+    await t.pumpWidget(const SizedBox());
+    await _pump(t, base, _o(tier: 'child'));
+    expect(find.byKey(const Key('profile-teen-card')), findsNothing);
+  });
+
+  for (final (name, o, key) in [
+    ('badges', _o(), 'profile-badges'),
+    ('share', _o(), 'profile-share'),
+    ('share_hidden_offline', _o(online: false), 'profile-badges'),
+  ]) {
+    testWidgets('profile scrolled golden $name', (t) async {
+      await _pump(t, base, o);
+      final target = find.byKey(Key(key));
+      await t.ensureVisible(target);
+      await t.pumpAndSettle();
+      // Bring the section title into frame too.
+      await t.drag(find.byType(CustomScrollView), const Offset(0, 90));
+      await t.pumpAndSettle();
+      if (name.startsWith('share_hidden')) {
+        expect(find.byKey(const Key('profile-share')), findsNothing);
+      }
+      expectNoLayoutErrors(t);
+      await expectLater(
+        find.byType(ProfileTab),
+        matchesGoldenFile('goldens/profile_scrolled_$name.png'),
+      );
+    });
+  }
 
   testWidgets('RTL handle isolates Latin runs', (t) async {
     await _pump(t, goldenVariants[1], _o());
