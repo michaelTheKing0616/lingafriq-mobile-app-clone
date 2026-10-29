@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -9,9 +8,8 @@ import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
-import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show AppLanguage;
-import 'package:lingafriq/config/url_constants.dart';
-import 'package:lingafriq/services/env_config.dart';
+import 'package:lingafriq/services/localization/dynamic_localization_service.dart'
+    show AppLanguage;
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/providers/tts_provider.dart';
@@ -53,12 +51,8 @@ class TutorStoryModeScreen extends HookConsumerWidget {
       required String language,
       required String userLevel,
     }) async {
-      final groqKey = EnvConfig.groqApiKey;
-      final useBackend = groqKey.isEmpty ||
-          groqKey.trim().isEmpty ||
-          groqKey == 'YOUR_GROQ_API_KEY' ||
-          groqKey.startsWith('YOUR_');
-      final prompt = '''
+      final prompt =
+          '''
 You are Polie, an elite African language tutor and storyteller.
 Create a culturally authentic short story based on the provided theme.
 
@@ -88,97 +82,40 @@ Quality requirements:
 - Keep content age-safe and culturally respectful.
 ''';
 
-      if (useBackend) {
-        final resp = await ApiService.post(
-          '/api/ai/chat/completion',
-          data: {
-            'messages': [{'role': 'user', 'content': prompt}],
-            'systemPrompt': 'You output only valid JSON. Never include markdown or commentary.',
-            'temperature': 0.35,
-            'max_tokens': 1400,
-            'language': language,
-            'languageCode': selectedLanguage.value.code,
-            'sourceLanguage': 'en',
-            'targetLanguage': selectedLanguage.value.code,
-            'cefr': userLevel,
-            'mode': 'story',
-          },
-        );
-        if (resp.statusCode != 200 || resp.data == null) {
-          throw Exception('AI request failed. Please try again.');
-        }
-        final content = (resp.data is Map)
-            ? (resp.data['content']?.toString() ?? '')
-            : '';
-        if (content.trim().isEmpty) throw Exception('AI returned an empty response. Please try again.');
-        try {
-          return jsonDecode(content) as Map<String, dynamic>;
-        } catch (_) {
-          final start = content.indexOf('{');
-          final end = content.lastIndexOf('}');
-          if (start >= 0 && end > start) {
-            return jsonDecode(content.substring(start, end + 1)) as Map<String, dynamic>;
-          }
-          return {
-            'title': 'Story',
-            'story': content.trim(),
-            'translation': content.trim(),
-            'vocabulary': <Object>[],
-            'comprehension': <Object>[],
-          };
-        }
-      }
-
-      final dio = Dio(
-        BaseOptions(
-          connectTimeout: const Duration(seconds: 20),
-          receiveTimeout: const Duration(seconds: 60),
-          sendTimeout: const Duration(seconds: 20),
-        ),
-      );
-
-      final resp = await dio.post(
-        UrlConstants.groqChatCompletions,
+      final resp = await ApiService.post(
+        '/api/ai/chat/completion',
         data: {
-          'model': 'llama-3.3-70b-versatile',
-          'temperature': 0.35,
-          'max_tokens': 1400,
           'messages': [
-            {
-              'role': 'system',
-              'content': 'You output only valid JSON. Never include markdown or commentary.',
-            },
             {'role': 'user', 'content': prompt},
           ],
+          'systemPrompt':
+              'You output only valid JSON. Never include markdown or commentary.',
+          'temperature': 0.35,
+          'max_tokens': 1400,
+          'language': language,
+          'languageCode': selectedLanguage.value.code,
+          'sourceLanguage': 'en',
+          'targetLanguage': selectedLanguage.value.code,
+          'cefr': userLevel,
+          'mode': 'story',
         },
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $groqKey',
-            'Content-Type': 'application/json',
-          },
-        ),
       );
-
-      if (resp.statusCode != 200) {
-        throw Exception('AI request failed (${resp.statusCode}). Please try again.');
+      if (resp.statusCode != 200 || resp.data == null) {
+        throw Exception('AI request failed. Please try again.');
       }
-
       final content = (resp.data is Map)
-          ? (resp.data['choices']?[0]?['message']?['content']?.toString() ?? '')
+          ? (resp.data['content']?.toString() ?? '')
           : '';
-
-      if (content.trim().isEmpty) {
+      if (content.trim().isEmpty)
         throw Exception('AI returned an empty response. Please try again.');
-      }
-
       try {
         return jsonDecode(content) as Map<String, dynamic>;
       } catch (_) {
         final start = content.indexOf('{');
         final end = content.lastIndexOf('}');
         if (start >= 0 && end > start) {
-          final slice = content.substring(start, end + 1);
-          return jsonDecode(slice) as Map<String, dynamic>;
+          return jsonDecode(content.substring(start, end + 1))
+              as Map<String, dynamic>;
         }
         return {
           'title': 'Story',
@@ -257,20 +194,36 @@ Quality requirements:
                           (index) => currentQuizIndex.value = index,
                           isDark,
                           revealedParagraphs.value,
-                          () => revealedParagraphs.value = revealedParagraphs.value + 1,
+                          () => revealedParagraphs.value =
+                              revealedParagraphs.value + 1,
                           savedToLibrary.value,
                           () async {
                             if (savedToLibrary.value) return;
                             try {
-                              final prefs = await SharedPreferences.getInstance();
-                              final saved = prefs.getStringList(_kSavedStoriesKey) ?? [];
+                              final prefs =
+                                  await SharedPreferences.getInstance();
+                              final saved =
+                                  prefs.getStringList(_kSavedStoriesKey) ?? [];
                               final story = storyResult.value!;
-                              final entry = jsonEncode({'title': story['title'], 'story': story['story'], 'translation': story['translation'], 'ts': DateTime.now().toIso8601String()});
+                              final entry = jsonEncode({
+                                'title': story['title'],
+                                'story': story['story'],
+                                'translation': story['translation'],
+                                'ts': DateTime.now().toIso8601String(),
+                              });
                               saved.add(entry);
-                              await prefs.setStringList(_kSavedStoriesKey, saved);
+                              await prefs.setStringList(
+                                _kSavedStoriesKey,
+                                saved,
+                              );
                               savedToLibrary.value = true;
                               HapticFeedback.mediumImpact();
-                              if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Saved to library')));
+                              if (context.mounted)
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Saved to library'),
+                                  ),
+                                );
                             } catch (_) {}
                           },
                           alternateEnding.value,
@@ -279,27 +232,42 @@ Quality requirements:
                             if (storyResult.value == null) return;
                             isLoadingAlternate.value = true;
                             try {
-                              final theme = storyResult.value!['title'] ?? 'Story';
-                              final storyText = storyResult.value!['story'] ?? '';
-                              final resp = await ApiService.post('/api/ai/chat/completion', data: {
-                                'messages': [{'role': 'user', 'content': 'Write a short alternate ending (2-4 sentences) for this story. Story title: $theme. Story text (end): ${storyText.length > 200 ? storyText.substring(storyText.length - 200) : storyText}. Return only the alternate ending text, no JSON.'}],
-                                'temperature': 0.4,
-                                'max_tokens': 200,
-                                'language': selectedLanguage.value.name,
-                                'languageCode': selectedLanguage.value.code,
-                                'sourceLanguage': 'en',
-                                'targetLanguage': selectedLanguage.value.code,
-                                'cefr': userLevel.value,
-                                'mode': 'story',
-                              });
+                              final theme =
+                                  storyResult.value!['title'] ?? 'Story';
+                              final storyText =
+                                  storyResult.value!['story'] ?? '';
+                              final resp = await ApiService.post(
+                                '/api/ai/chat/completion',
+                                data: {
+                                  'messages': [
+                                    {
+                                      'role': 'user',
+                                      'content':
+                                          'Write a short alternate ending (2-4 sentences) for this story. Story title: $theme. Story text (end): ${storyText.length > 200 ? storyText.substring(storyText.length - 200) : storyText}. Return only the alternate ending text, no JSON.',
+                                    },
+                                  ],
+                                  'temperature': 0.4,
+                                  'max_tokens': 200,
+                                  'language': selectedLanguage.value.name,
+                                  'languageCode': selectedLanguage.value.code,
+                                  'sourceLanguage': 'en',
+                                  'targetLanguage': selectedLanguage.value.code,
+                                  'cefr': userLevel.value,
+                                  'mode': 'story',
+                                },
+                              );
                               if (resp.statusCode == 200 && resp.data != null) {
-                                final content = (resp.data is Map) ? (resp.data['content']?.toString() ?? '') : resp.data.toString();
-                                if (content.isNotEmpty) alternateEnding.value = content.trim();
+                                final content = (resp.data is Map)
+                                    ? (resp.data['content']?.toString() ?? '')
+                                    : resp.data.toString();
+                                if (content.isNotEmpty)
+                                  alternateEnding.value = content.trim();
                               }
                             } catch (_) {}
                             isLoadingAlternate.value = false;
                           },
-                          (String text) => speakParagraph(text, selectedLanguage.value.code),
+                          (String text) =>
+                              speakParagraph(text, selectedLanguage.value.code),
                         )
                       : _buildStoryInput(
                           context,
@@ -330,30 +298,40 @@ Quality requirements:
     bool isDark,
   ) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: PolieSpacing.sm, vertical: PolieSpacing.xs),
+      padding: EdgeInsets.symmetric(
+        horizontal: PolieSpacing.sm,
+        vertical: PolieSpacing.xs,
+      ),
       child: Row(
         children: [
           Semantics(
             label: 'Go back',
             button: true,
             child: IconButton(
-              icon: const Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
+              icon: const Icon(
+                Icons.arrow_back_rounded,
+                color: PolieColors.textPrimary,
+                semanticLabel: 'Back',
+              ),
               onPressed: () => Navigator.pop(context),
             ),
           ),
           Expanded(
-            child: Text(
-              'Cultural Stories',
-              style: PolieTypography.h2(context),
-            ),
+            child: Text('Cultural Stories', style: PolieTypography.h2(context)),
           ),
           Semantics(
-            label: showTranslation ? 'Translation on. Tap to hide' : 'Translation off. Tap to show',
+            label: showTranslation
+                ? 'Translation on. Tap to hide'
+                : 'Translation off. Tap to show',
             button: true,
             child: IconButton(
               icon: Icon(
-                showTranslation ? Icons.translate_rounded : Icons.translate_outlined,
-                color: showTranslation ? PolieColors.electricTeal : PolieColors.textSecondary,
+                showTranslation
+                    ? Icons.translate_rounded
+                    : Icons.translate_outlined,
+                color: showTranslation
+                    ? PolieColors.electricTeal
+                    : PolieColors.textSecondary,
                 semanticLabel: 'Toggle translation',
               ),
               onPressed: () => onTranslationToggle(!showTranslation),
@@ -361,12 +339,18 @@ Quality requirements:
             ),
           ),
           Semantics(
-            label: showVocabulary ? 'Vocabulary on. Tap to hide' : 'Vocabulary off. Tap to show',
+            label: showVocabulary
+                ? 'Vocabulary on. Tap to hide'
+                : 'Vocabulary off. Tap to show',
             button: true,
             child: IconButton(
               icon: Icon(
-                showVocabulary ? Icons.menu_book_rounded : Icons.menu_book_outlined,
-                color: showVocabulary ? PolieColors.goldEmber : PolieColors.textSecondary,
+                showVocabulary
+                    ? Icons.menu_book_rounded
+                    : Icons.menu_book_outlined,
+                color: showVocabulary
+                    ? PolieColors.goldEmber
+                    : PolieColors.textSecondary,
                 semanticLabel: 'Vocabulary',
               ),
               onPressed: () => onVocabularyToggle(!showVocabulary),
@@ -394,10 +378,7 @@ Quality requirements:
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            'Generate a Cultural Story',
-            style: PolieTypography.h2(context),
-          ),
+          Text('Generate a Cultural Story', style: PolieTypography.h2(context)),
           SizedBox(height: PolieSpacing.md),
           Semantics(
             label: 'Story theme',
@@ -407,7 +388,8 @@ Quality requirements:
                 controller: themeController,
                 decoration: const InputDecoration(
                   labelText: 'Story Theme',
-                  hintText: 'e.g., traditional festival, village life, folktale',
+                  hintText:
+                      'e.g., traditional festival, village life, folktale',
                   border: InputBorder.none,
                   filled: false,
                 ),
@@ -420,16 +402,29 @@ Quality requirements:
             children: [
               Expanded(
                 child: PolieGlassCard(
-                  padding: EdgeInsets.symmetric(horizontal: PolieSpacing.md, vertical: PolieSpacing.xs),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PolieSpacing.md,
+                    vertical: PolieSpacing.xs,
+                  ),
                   child: DropdownButtonFormField<AppLanguage>(
                     initialValue: selectedLanguage.value,
                     dropdownColor: PolieColors.surfaceContainer,
-                    decoration: const InputDecoration(labelText: 'Language', border: InputBorder.none),
+                    decoration: const InputDecoration(
+                      labelText: 'Language',
+                      border: InputBorder.none,
+                    ),
                     style: PolieTypography.body(context),
-                    items: availableLanguages.map((lang) => DropdownMenuItem<AppLanguage>(
-                      value: lang,
-                      child: Text(lang.displayName, style: PolieTypography.body(context)),
-                    )).toList(),
+                    items: availableLanguages
+                        .map(
+                          (lang) => DropdownMenuItem<AppLanguage>(
+                            value: lang,
+                            child: Text(
+                              lang.displayName,
+                              style: PolieTypography.body(context),
+                            ),
+                          ),
+                        )
+                        .toList(),
                     onChanged: (value) {
                       if (value != null) selectedLanguage.value = value;
                     },
@@ -439,14 +434,25 @@ Quality requirements:
               SizedBox(width: PolieSpacing.md),
               Expanded(
                 child: PolieGlassCard(
-                  padding: EdgeInsets.symmetric(horizontal: PolieSpacing.md, vertical: PolieSpacing.xs),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PolieSpacing.md,
+                    vertical: PolieSpacing.xs,
+                  ),
                   child: DropdownButtonFormField<String>(
                     initialValue: userLevel,
                     dropdownColor: PolieColors.surfaceContainer,
-                    decoration: const InputDecoration(labelText: 'Level', border: InputBorder.none),
+                    decoration: const InputDecoration(
+                      labelText: 'Level',
+                      border: InputBorder.none,
+                    ),
                     style: PolieTypography.body(context),
                     items: ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
-                        .map((level) => DropdownMenuItem(value: level, child: Text(level)))
+                        .map(
+                          (level) => DropdownMenuItem(
+                            value: level,
+                            child: Text(level),
+                          ),
+                        )
                         .toList(),
                     onChanged: (value) {
                       if (value != null) onLevelChanged(value);
@@ -491,8 +497,14 @@ Quality requirements:
   ) {
     final storyText = (result['story'] ?? '') as String;
     final translationText = (result['translation'] ?? '') as String;
-    final paragraphs = storyText.split(RegExp(r'\n\s*\n')).where((s) => s.trim().isNotEmpty).toList();
-    final translationParagraphs = translationText.split(RegExp(r'\n\s*\n')).where((s) => s.trim().isNotEmpty).toList();
+    final paragraphs = storyText
+        .split(RegExp(r'\n\s*\n'))
+        .where((s) => s.trim().isNotEmpty)
+        .toList();
+    final translationParagraphs = translationText
+        .split(RegExp(r'\n\s*\n'))
+        .where((s) => s.trim().isNotEmpty)
+        .toList();
     final toShow = paragraphs.take(revealedParagraphs).toList();
     final hasMore = revealedParagraphs < paragraphs.length;
     final vocab = (result['vocabulary'] as List?) ?? [];
@@ -516,7 +528,9 @@ Quality requirements:
                 ...toShow.asMap().entries.map((entry) {
                   final i = entry.key;
                   final para = entry.value;
-                  final transPara = i < translationParagraphs.length ? translationParagraphs[i] : '';
+                  final transPara = i < translationParagraphs.length
+                      ? translationParagraphs[i]
+                      : '';
                   return Padding(
                     padding: EdgeInsets.only(bottom: PolieSpacing.md),
                     child: PolieGlassCard(
@@ -541,7 +555,12 @@ Quality requirements:
                                   HapticFeedback.lightImpact();
                                   onSpeakParagraph(para);
                                 },
-                                icon: Icon(Icons.record_voice_over_rounded, color: PolieColors.goldEmber, size: 22.sp, semanticLabel: 'Listen'),
+                                icon: Icon(
+                                  Icons.record_voice_over_rounded,
+                                  color: PolieColors.goldEmber,
+                                  size: 22.sp,
+                                  semanticLabel: 'Listen',
+                                ),
                                 tooltip: 'Listen',
                               ),
                             ),
@@ -573,9 +592,16 @@ Quality requirements:
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.volunteer_activism_rounded, color: PolieColors.royalAmethyst, size: 20.sp),
+                            Icon(
+                              Icons.volunteer_activism_rounded,
+                              color: PolieColors.royalAmethyst,
+                              size: 20.sp,
+                            ),
                             SizedBox(width: PolieSpacing.xs),
-                            Text('Moral & cultural context', style: PolieTypography.label(context)),
+                            Text(
+                              'Moral & cultural context',
+                              style: PolieTypography.label(context),
+                            ),
                           ],
                         ),
                         SizedBox(height: PolieSpacing.sm),
@@ -588,11 +614,15 @@ Quality requirements:
                   children: [
                     Expanded(
                       child: Semantics(
-                        label: savedToLibrary ? 'Saved to library' : 'Save to library',
+                        label: savedToLibrary
+                            ? 'Saved to library'
+                            : 'Save to library',
                         button: true,
                         child: PoliePrimaryButton(
                           label: savedToLibrary ? 'Saved' : 'Save to library',
-                          icon: savedToLibrary ? Icons.check_circle : Icons.bookmark_add_rounded,
+                          icon: savedToLibrary
+                              ? Icons.check_circle
+                              : Icons.bookmark_add_rounded,
                           onPressed: savedToLibrary ? null : onSaveToLibrary,
                           enabled: !savedToLibrary,
                         ),
@@ -604,10 +634,14 @@ Quality requirements:
                         label: 'Generate alternate ending',
                         button: true,
                         child: PoliePrimaryButton(
-                          label: alternateEnding != null ? 'Alternate ending' : 'Alternate ending',
+                          label: alternateEnding != null
+                              ? 'Alternate ending'
+                              : 'Alternate ending',
                           icon: Icons.lightbulb_outline_rounded,
                           loading: isLoadingAlternate,
-                          onPressed: isLoadingAlternate ? null : onGenerateAlternateEnding,
+                          onPressed: isLoadingAlternate
+                              ? null
+                              : onGenerateAlternateEnding,
                         ),
                       ),
                     ),
@@ -622,9 +656,15 @@ Quality requirements:
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Alternate ending', style: PolieTypography.label(context)),
+                        Text(
+                          'Alternate ending',
+                          style: PolieTypography.label(context),
+                        ),
                         SizedBox(height: PolieSpacing.sm),
-                        Text(alternateEnding, style: PolieTypography.body(context)),
+                        Text(
+                          alternateEnding,
+                          style: PolieTypography.body(context),
+                        ),
                       ],
                     ),
                   ),
@@ -634,10 +674,7 @@ Quality requirements:
           ),
         ),
         if (showVocabulary && vocab.isNotEmpty)
-          _VocabularyDrawer(
-            vocabulary: vocab,
-            isDark: isDark,
-          ),
+          _VocabularyDrawer(vocabulary: vocab, isDark: isDark),
         if (result['comprehension'] != null &&
             (result['comprehension'] as List).isNotEmpty)
           _ComprehensionQuiz(
@@ -670,7 +707,10 @@ class _CulturalStoryBanner extends StatelessWidget {
           children: [
             Container(
               width: double.infinity,
-              padding: EdgeInsets.symmetric(vertical: PolieSpacing.lg, horizontal: PolieSpacing.lg),
+              padding: EdgeInsets.symmetric(
+                vertical: PolieSpacing.lg,
+                horizontal: PolieSpacing.lg,
+              ),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -684,7 +724,11 @@ class _CulturalStoryBanner extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  Icon(Icons.auto_stories_rounded, size: 40.sp, color: PolieColors.goldEmber),
+                  Icon(
+                    Icons.auto_stories_rounded,
+                    size: 40.sp,
+                    color: PolieColors.goldEmber,
+                  ),
                   SizedBox(height: PolieSpacing.sm),
                   Text(
                     title,
@@ -694,7 +738,9 @@ class _CulturalStoryBanner extends StatelessWidget {
                   SizedBox(height: PolieSpacing.xs),
                   Text(
                     'Cultural Story',
-                    style: PolieTypography.bodySmall(context).copyWith(color: PolieColors.textSecondary),
+                    style: PolieTypography.bodySmall(
+                      context,
+                    ).copyWith(color: PolieColors.textSecondary),
                   ),
                 ],
               ),
@@ -706,7 +752,9 @@ class _CulturalStoryBanner extends StatelessWidget {
                 opacity: 0.2,
                 child: CustomPaint(
                   size: Size(120.w, 80.w),
-                  painter: _GeometricPatternPainter(color: PolieColors.goldEmber),
+                  painter: _GeometricPatternPainter(
+                    color: PolieColors.goldEmber,
+                  ),
                 ),
               ),
             ),
@@ -724,7 +772,10 @@ class _GeometricPatternPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = color..style = PaintingStyle.stroke..strokeWidth = 1.5;
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.5;
     for (int i = 0; i < 6; i++) {
       final r = (size.shortestSide / 2) * (1 - i * 0.12);
       canvas.drawCircle(Offset(size.width * 0.7, size.height * 0.6), r, paint);
@@ -773,9 +824,19 @@ class _TapToTranslateParagraph extends StatelessWidget {
       runSpacing: 4,
       children: words.map((word) {
         final clean = word.replaceAll(RegExp(r'[^\w\s]'), '');
-        final vocabMatch = vocabulary.cast<Map<String, dynamic>>().where((v) =>
-            (v['term'] ?? v['word'] ?? '').toString().toLowerCase().contains(clean.toLowerCase()) ||
-            clean.toLowerCase().contains((v['term'] ?? v['word'] ?? '').toString().toLowerCase())).toList();
+        final vocabMatch = vocabulary
+            .cast<Map<String, dynamic>>()
+            .where(
+              (v) =>
+                  (v['term'] ?? v['word'] ?? '')
+                      .toString()
+                      .toLowerCase()
+                      .contains(clean.toLowerCase()) ||
+                  clean.toLowerCase().contains(
+                    (v['term'] ?? v['word'] ?? '').toString().toLowerCase(),
+                  ),
+            )
+            .toList();
         return GestureDetector(
           onTap: () {
             if (vocabMatch.isEmpty) return;
@@ -784,9 +845,15 @@ class _TapToTranslateParagraph extends StatelessWidget {
               context: context,
               builder: (ctx) => AlertDialog(
                 backgroundColor: PolieColors.surfaceContainer,
-                title: Text(vocabMatch.first['term'] ?? word, style: PolieTypography.label(ctx)),
+                title: Text(
+                  vocabMatch.first['term'] ?? word,
+                  style: PolieTypography.label(ctx),
+                ),
                 content: Text(
-                  (vocabMatch.first['translation'] ?? vocabMatch.first['meaning'] ?? translation).toString(),
+                  (vocabMatch.first['translation'] ??
+                          vocabMatch.first['meaning'] ??
+                          translation)
+                      .toString(),
                   style: PolieTypography.body(ctx),
                 ),
               ),
@@ -795,7 +862,9 @@ class _TapToTranslateParagraph extends StatelessWidget {
           child: Text(
             '$word ',
             style: PolieTypography.body(context).copyWith(
-              decoration: vocabMatch.isNotEmpty ? TextDecoration.underline : null,
+              decoration: vocabMatch.isNotEmpty
+                  ? TextDecoration.underline
+                  : null,
               decorationColor: PolieColors.electricTeal,
             ),
           ),
@@ -809,10 +878,7 @@ class _VocabularyDrawer extends StatelessWidget {
   final List vocabulary;
   final bool isDark;
 
-  const _VocabularyDrawer({
-    required this.vocabulary,
-    required this.isDark,
-  });
+  const _VocabularyDrawer({required this.vocabulary, required this.isDark});
 
   @override
   Widget build(BuildContext context) {
@@ -820,8 +886,12 @@ class _VocabularyDrawer extends StatelessWidget {
       height: 200.h,
       decoration: BoxDecoration(
         color: PolieColors.surfaceContainer,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(PolieRadius.lg)),
-        border: Border.all(color: PolieColors.textSecondary.withValues(alpha: 0.2)),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(PolieRadius.lg),
+        ),
+        border: Border.all(
+          color: PolieColors.textSecondary.withValues(alpha: 0.2),
+        ),
       ),
       child: Column(
         children: [
@@ -853,18 +923,25 @@ class _VocabularyDrawer extends StatelessWidget {
                       style: PolieTypography.body(context),
                     ),
                     subtitle: Text(
-                      (vocab['meaning'] ?? vocab['translation'] ?? '').toString(),
+                      (vocab['meaning'] ?? vocab['translation'] ?? '')
+                          .toString(),
                       style: PolieTypography.bodySmall(context),
                     ),
                     trailing: vocab['example'] != null
                         ? IconButton(
-                            icon: const Icon(Icons.info_outline_rounded, color: PolieColors.electricTeal),
+                            icon: const Icon(
+                              Icons.info_outline_rounded,
+                              color: PolieColors.electricTeal,
+                            ),
                             onPressed: () {
                               showDialog(
                                 context: context,
                                 builder: (ctx) => AlertDialog(
                                   backgroundColor: PolieColors.surfaceContainer,
-                                  title: Text('Example', style: PolieTypography.label(context)),
+                                  title: Text(
+                                    'Example',
+                                    style: PolieTypography.label(context),
+                                  ),
                                   content: Text(
                                     vocab['example'].toString(),
                                     style: PolieTypography.body(context),
@@ -907,7 +984,8 @@ class _ComprehensionQuizState extends State<_ComprehensionQuiz> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.currentIndex == null || widget.currentIndex! >= widget.questions.length) {
+    if (widget.currentIndex == null ||
+        widget.currentIndex! >= widget.questions.length) {
       return Padding(
         padding: EdgeInsets.all(PolieSpacing.md),
         child: PolieGlassCard(
@@ -926,7 +1004,8 @@ class _ComprehensionQuizState extends State<_ComprehensionQuiz> {
       );
     }
 
-    final question = widget.questions[widget.currentIndex!] as Map<String, dynamic>;
+    final question =
+        widget.questions[widget.currentIndex!] as Map<String, dynamic>;
 
     return Padding(
       padding: EdgeInsets.all(PolieSpacing.md),
@@ -934,75 +1013,87 @@ class _ComprehensionQuizState extends State<_ComprehensionQuiz> {
         hasGlow: true,
         glowColor: PolieColors.electricTeal,
         child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            'Question ${widget.currentIndex! + 1} of ${widget.questions.length}',
-            style: PolieTypography.label(context),
-          ),
-          SizedBox(height: PolieSpacing.md),
-          Text(
-            question['question'] ?? '',
-            style: PolieTypography.body(context),
-          ),
-          SizedBox(height: PolieSpacing.lg),
-          ...(question['options'] as List? ?? []).asMap().entries.map((entry) {
-            final index = entry.key;
-            final option = entry.value;
-            final isSelected = selectedAnswer == index;
-            final rawCorrect = question['correctIndex'] ?? question['answer'];
-            final correctIdx = rawCorrect is int ? rawCorrect : (rawCorrect is num ? rawCorrect.toInt() : null);
-            final isCorrect = correctIdx != null && index == correctIdx;
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'Question ${widget.currentIndex! + 1} of ${widget.questions.length}',
+              style: PolieTypography.label(context),
+            ),
+            SizedBox(height: PolieSpacing.md),
+            Text(
+              question['question'] ?? '',
+              style: PolieTypography.body(context),
+            ),
+            SizedBox(height: PolieSpacing.lg),
+            ...(question['options'] as List? ?? []).asMap().entries.map((
+              entry,
+            ) {
+              final index = entry.key;
+              final option = entry.value;
+              final isSelected = selectedAnswer == index;
+              final rawCorrect = question['correctIndex'] ?? question['answer'];
+              final correctIdx = rawCorrect is int
+                  ? rawCorrect
+                  : (rawCorrect is num ? rawCorrect.toInt() : null);
+              final isCorrect = correctIdx != null && index == correctIdx;
 
-            return Container(
-              margin: EdgeInsets.only(bottom: PolieSpacing.sm),
-              decoration: BoxDecoration(
-                color: isSelected
-                    ? (isCorrect
-                        ? PolieColors.success.withValues(alpha: 0.2)
-                        : PolieColors.error.withValues(alpha: 0.2))
-                    : PolieColors.surfaceContainer,
-                borderRadius: BorderRadius.circular(PolieRadius.md),
-              ),
-              child: Semantics(
-                label: 'Answer option: $option. ${isSelected ? (isCorrect ? 'Correct' : 'Incorrect') : ''}',
-                button: true,
-                child: ListTile(
-                  title: Text(option.toString(), style: PolieTypography.body(context)),
-                  trailing: isSelected
-                      ? Icon(
-                          isCorrect ? Icons.check_circle_rounded : Icons.cancel_rounded,
-                          color: isCorrect ? PolieColors.success : PolieColors.error,
-                          semanticLabel: isCorrect ? 'Correct' : 'Incorrect',
-                        )
-                      : null,
-                  onTap: () {
-                  setState(() {
-                    selectedAnswer = index;
-                  });
-                  Future.delayed(const Duration(seconds: 1), () {
-                    if (widget.currentIndex! < widget.questions.length - 1) {
-                      widget.onIndexChanged(widget.currentIndex! + 1);
-                      setState(() {
-                        selectedAnswer = null;
-                      });
-                    } else {
-                      widget.onIndexChanged(null);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Quiz completed!')),
-                      );
-                    }
-                  });
-                },
+              return Container(
+                margin: EdgeInsets.only(bottom: PolieSpacing.sm),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? (isCorrect
+                            ? PolieColors.success.withValues(alpha: 0.2)
+                            : PolieColors.error.withValues(alpha: 0.2))
+                      : PolieColors.surfaceContainer,
+                  borderRadius: BorderRadius.circular(PolieRadius.md),
                 ),
-              ),
-            );
-          }),
-        ],
+                child: Semantics(
+                  label:
+                      'Answer option: $option. ${isSelected ? (isCorrect ? 'Correct' : 'Incorrect') : ''}',
+                  button: true,
+                  child: ListTile(
+                    title: Text(
+                      option.toString(),
+                      style: PolieTypography.body(context),
+                    ),
+                    trailing: isSelected
+                        ? Icon(
+                            isCorrect
+                                ? Icons.check_circle_rounded
+                                : Icons.cancel_rounded,
+                            color: isCorrect
+                                ? PolieColors.success
+                                : PolieColors.error,
+                            semanticLabel: isCorrect ? 'Correct' : 'Incorrect',
+                          )
+                        : null,
+                    onTap: () {
+                      setState(() {
+                        selectedAnswer = index;
+                      });
+                      Future.delayed(const Duration(seconds: 1), () {
+                        if (widget.currentIndex! <
+                            widget.questions.length - 1) {
+                          widget.onIndexChanged(widget.currentIndex! + 1);
+                          setState(() {
+                            selectedAnswer = null;
+                          });
+                        } else {
+                          widget.onIndexChanged(null);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Quiz completed!')),
+                          );
+                        }
+                      });
+                    },
+                  ),
+                ),
+              );
+            }),
+          ],
         ),
       ),
     );
   }
 }
-

@@ -4,13 +4,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/ai/personas/historical_roleplay_controller.dart';
 import 'package:lingafriq/providers/dio_provider.dart';
 import 'package:lingafriq/providers/persona_providers.dart';
-import 'package:lingafriq/services/env_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const _gatewayPath = '/api/ai/persona/historical-roleplay/turn';
@@ -191,11 +189,8 @@ void main() {
   test(
     'P1-012_AC1_release_mission_message_goes_through_gateway_without_client_ai_key',
     () async {
-      expect(
-        EnvConfig.groqApiKey,
-        isEmpty,
-        reason: 'this spec injects no client AI key',
-      );
+      // No client AI key can exist: EnvConfig has no AI key getters and
+      // test/security/no_client_secrets_test.dart guards lib/.
 
       final recorder = _RecordingGateway();
       final controller = _controllerFor(recorder.dio());
@@ -297,12 +292,8 @@ void main() {
   test(
     'P1-012_AC4_release_mode_without_injected_ai_key_starts_mission_through_gateway',
     () async {
-      expect(EnvConfig.groqApiKey, isEmpty);
-      expect(
-        kReleaseMode || EnvConfig.groqApiKey.isEmpty,
-        isTrue,
-        reason: 'release-config: no injected client AI key',
-      );
+      // Release config cannot inject a client AI key (see
+      // test/security/no_client_secrets_test.dart).
 
       final recorder = _RecordingGateway();
       final controller = _controllerFor(recorder.dio());

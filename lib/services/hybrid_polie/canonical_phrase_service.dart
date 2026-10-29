@@ -2,27 +2,21 @@
 // Generates orthographically correct phrases with proper diacritics
 // Uses backend API with fallback to HuggingFace Inference API
 
-import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:lingafriq/config/api_contract.dart';
-import '../../config/url_constants.dart';
-import '../env_config.dart';
 import 'cache_service.dart';
 
 class CanonicalPhraseService {
   final Dio _dio = Dio();
 
   /// Hugging Face model: AfriTeVa v2 for canonical phrase generation.
-  static String get _hfAfritevaUrl =>
-      UrlConstants.huggingFaceModel('castorini/afriteva_v2_large');
 
   /// Generate canonical phrase using AfriTeVa (with caching)
-  /// Priority: 1. Cache → 2. Backend API → 3. HuggingFace API → 4. Fallback
+  /// Priority: 1. Cache → 2. Backend API → 3. Fallback
   Future<CanonicalPhraseResult> generateCanonical({
     required String phrase,
     required String language,
-    String? hfToken,
     bool useCache = true,
   }) async {
     // Check cache first
@@ -41,7 +35,7 @@ class CanonicalPhraseService {
         );
       }
     }
-    
+
     // Try backend API first
     try {
       final backendResult = await _generateViaBackend(
@@ -60,72 +54,12 @@ class CanonicalPhraseService {
         return backendResult;
       }
     } catch (e) {
-      debugPrint('Backend canonical generation failed, trying HuggingFace: $e');
+      debugPrint('Backend canonical generation failed, using fallback: $e');
     }
-    
-    // Fallback to HuggingFace Inference API
-    try {
-      final effectiveToken = hfToken ?? EnvConfig.huggingFaceToken;
-      
-      if (effectiveToken.isEmpty) {
-        debugPrint('⚠️ HuggingFace token not configured for canonical generation');
-        return _fallbackResult(phrase, language);
-      }
-      
-      final response = await _dio.post(
-        _hfAfritevaUrl,
-        data: jsonEncode({
-          'inputs': 'Generate canonical form: $phrase',
-          'parameters': {
-            'lang': language,
-          },
-        }),
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $effectiveToken',
-            'Content-Type': 'application/json',
-          },
-          receiveTimeout: const Duration(seconds: 30),
-        ),
-      );
-      
-      if (response.statusCode == 200) {
-        final data = response.data;
-        String canonical = phrase;
-        
-        if (data is List && data.isNotEmpty) {
-          canonical = data[0]['generated_text'] ?? phrase;
-        } else if (data is Map && data.containsKey('generated_text')) {
-          canonical = data['generated_text'];
-        }
-        
-        final result = CanonicalPhraseResult(
-          canonicalText: canonical,
-          originalText: phrase,
-          language: language,
-          model: 'AfriTeVa-HF',
-          confidence: 0.8,
-        );
-        
-        // Cache the result
-        if (useCache && canonical.isNotEmpty && canonical != phrase) {
-          await HybridPolieCache.cacheCanonical(
-            phrase: phrase,
-            language: language,
-            result: canonical,
-          );
-        }
-        
-        return result;
-      }
-      
-      return _fallbackResult(phrase, language);
-    } catch (e) {
-      debugPrint('HuggingFace canonical generation failed: $e');
-      return _fallbackResult(phrase, language, error: e.toString());
-    }
+
+    return _fallbackResult(phrase, language);
   }
-  
+
   /// Generate canonical phrase via backend API
   Future<CanonicalPhraseResult?> _generateViaBackend({
     required String phrase,
@@ -134,16 +68,13 @@ class CanonicalPhraseService {
     try {
       final response = await _dio.post(
         ApiContract.url(ApiContract.ai.hybridCanonical),
-        data: {
-          'phrase': phrase,
-          'language': language,
-        },
+        data: {'phrase': phrase, 'language': language},
         options: Options(
           contentType: 'application/json',
           receiveTimeout: const Duration(seconds: 15),
         ),
       );
-      
+
       if (response.statusCode == 200) {
         final data = response.data;
         return CanonicalPhraseResult(
@@ -160,8 +91,12 @@ class CanonicalPhraseService {
       return null;
     }
   }
-  
-  CanonicalPhraseResult _fallbackResult(String phrase, String language, {String? error}) {
+
+  CanonicalPhraseResult _fallbackResult(
+    String phrase,
+    String language, {
+    String? error,
+  }) {
     return CanonicalPhraseResult(
       canonicalText: phrase,
       originalText: phrase,
@@ -171,27 +106,25 @@ class CanonicalPhraseService {
       error: error,
     );
   }
-  
+
   /// Batch generate canonical phrases
   Future<List<CanonicalPhraseResult>> generateBatch({
     required List<String> phrases,
     required String language,
-    String? hfToken,
   }) async {
     final results = <CanonicalPhraseResult>[];
-    
+
     for (final phrase in phrases) {
       final result = await generateCanonical(
         phrase: phrase,
         language: language,
-        hfToken: hfToken,
       );
       results.add(result);
-      
+
       // Rate limiting
       await Future.delayed(const Duration(milliseconds: 200));
     }
-    
+
     return results;
   }
 }
@@ -203,7 +136,7 @@ class CanonicalPhraseResult {
   final String model;
   final double confidence;
   final String? error;
-  
+
   CanonicalPhraseResult({
     required this.canonicalText,
     required this.originalText,

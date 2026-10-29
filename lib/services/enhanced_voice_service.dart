@@ -1,13 +1,13 @@
 // Enhanced Voice Recognition Service
 // Uses multiple free, high-quality models for African languages
-// 
+//
 // Features:
 // - Multi-model ensemble for better accuracy
 // - Offline support with on-device models
 // - Real-time feedback with confidence scoring
 // - Tone and pronunciation analysis
 // - Support for 100+ African languages
-// 
+//
 // Free Models Used:
 // - Wav2Vec2 (Meta/Facebook) - Best for African languages
 // - Whisper (OpenAI) - Multi-lingual fallback
@@ -26,14 +26,14 @@ import 'package:lingafriq/utils/structured_logger.dart';
 
 enum VoiceModel {
   wav2vec2, // Best for African languages
-  whisper,  // OpenAI Whisper (via API)
+  whisper, // OpenAI Whisper (via API)
   ensemble, // Use multiple models and vote
 }
 
 enum RecognitionQuality {
-  low,    // Fast, less accurate
+  low, // Fast, less accurate
   medium, // Balanced
-  high,   // Slow, most accurate
+  high, // Slow, most accurate
 }
 
 class VoiceRecognitionConfig {
@@ -86,11 +86,9 @@ class EnhancedVoiceService {
   final Dio _dio;
   final SecretsManager _secrets;
 
-  EnhancedVoiceService({
-    Dio? dio,
-    SecretsManager? secrets,
-  })  : _dio = dio ?? Dio(),
-        _secrets = secrets ?? SecretsManager() {
+  EnhancedVoiceService({Dio? dio, SecretsManager? secrets})
+    : _dio = dio ?? Dio(),
+      _secrets = secrets ?? SecretsManager() {
     // Enable retry logic
     _dio.enableRetry(config: RetryConfig.conservative);
   }
@@ -103,11 +101,14 @@ class EnhancedVoiceService {
     final startTime = DateTime.now();
 
     try {
-      logger.info('Starting voice recognition', context: {
-        'model': config.model.toString(),
-        'language': config.language,
-        'quality': config.quality.toString(),
-      });
+      logger.info(
+        'Starting voice recognition',
+        context: {
+          'model': config.model.toString(),
+          'language': config.language,
+          'quality': config.quality.toString(),
+        },
+      );
 
       VoiceRecognitionResult result;
 
@@ -124,10 +125,13 @@ class EnhancedVoiceService {
       }
 
       final processingTime = DateTime.now().difference(startTime);
-      logger.info('Voice recognition completed', context: {
-        'confidence': result.confidence,
-        'processingTimeMs': processingTime.inMilliseconds,
-      });
+      logger.info(
+        'Voice recognition completed',
+        context: {
+          'confidence': result.confidence,
+          'processingTimeMs': processingTime.inMilliseconds,
+        },
+      );
 
       return VoiceRecognitionResult(
         transcript: result.transcript,
@@ -188,8 +192,10 @@ class EnhancedVoiceService {
   ) async {
     try {
       // Use free Whisper API endpoint (Hugging Face or local deployment)
-      final serviceUrl = _secrets.pronunciationApiUrl ?? UrlConstants.huggingFacePronunciationFallback;
-      
+      final serviceUrl =
+          _secrets.pronunciationApiUrl ??
+          UrlConstants.huggingFacePronunciationFallback;
+
       final formData = FormData.fromMap({
         'audio': await MultipartFile.fromFile(audioFile.path),
         'task': 'transcribe',
@@ -200,11 +206,7 @@ class EnhancedVoiceService {
         '$serviceUrl/models/openai/whisper-large-v3',
         data: formData,
         options: Options(
-          headers: {
-            'Accept': 'application/json',
-            if (_secrets.huggingfaceToken != null)
-              'Authorization': 'Bearer ${_secrets.huggingfaceToken}',
-          },
+          headers: {'Accept': 'application/json'},
           sendTimeout: const Duration(seconds: 30),
           receiveTimeout: const Duration(seconds: 30),
         ),
@@ -240,10 +242,7 @@ class EnhancedVoiceService {
         }
       }
 
-      final results = await Future.wait([
-        safeWav2Vec2(),
-        safeWhisper(),
-      ]);
+      final results = await Future.wait([safeWav2Vec2(), safeWhisper()]);
 
       // Filter out failed results
       final validResults = results.whereType<VoiceRecognitionResult>().toList();
@@ -257,16 +256,19 @@ class EnhancedVoiceService {
       }
 
       // Use weighted voting based on confidence
-      final bestResult = validResults.reduce((a, b) =>
-          a.confidence > b.confidence ? a : b);
+      final bestResult = validResults.reduce(
+        (a, b) => a.confidence > b.confidence ? a : b,
+      );
 
       // Combine alternatives from all models
       final allAlternatives = <VoiceRecognitionAlternative>[];
       for (final result in validResults) {
-        allAlternatives.add(VoiceRecognitionAlternative(
-          transcript: result.transcript,
-          confidence: result.confidence,
-        ));
+        allAlternatives.add(
+          VoiceRecognitionAlternative(
+            transcript: result.transcript,
+            confidence: result.confidence,
+          ),
+        );
         allAlternatives.addAll(result.alternatives);
       }
 
@@ -274,7 +276,7 @@ class EnhancedVoiceService {
       allAlternatives.sort((a, b) => b.confidence.compareTo(a.confidence));
       final uniqueAlternatives = <VoiceRecognitionAlternative>[];
       final seenTranscripts = <String>{};
-      
+
       for (final alt in allAlternatives) {
         if (!seenTranscripts.contains(alt.transcript)) {
           uniqueAlternatives.add(alt);
@@ -301,13 +303,17 @@ class EnhancedVoiceService {
     return VoiceRecognitionResult(
       transcript: data['transcript'] as String? ?? '',
       confidence: (data['confidence'] as num?)?.toDouble() ?? 0.0,
-      pronunciationFeedback: data['pronunciation_feedback'] as Map<String, dynamic>?,
+      pronunciationFeedback:
+          data['pronunciation_feedback'] as Map<String, dynamic>?,
       toneAnalysis: data['tone_analysis'] as Map<String, dynamic>?,
-      alternatives: (data['alternatives'] as List?)
-              ?.map((e) => VoiceRecognitionAlternative(
-                    transcript: e['transcript'] as String,
-                    confidence: (e['confidence'] as num).toDouble(),
-                  ))
+      alternatives:
+          (data['alternatives'] as List?)
+              ?.map(
+                (e) => VoiceRecognitionAlternative(
+                  transcript: e['transcript'] as String,
+                  confidence: (e['confidence'] as num).toDouble(),
+                ),
+              )
               .toList() ??
           [],
       processingTime: Duration.zero, // Will be set by caller
@@ -320,7 +326,7 @@ class EnhancedVoiceService {
     VoiceRecognitionConfig config,
   ) {
     final text = data['text'] as String? ?? '';
-    
+
     return VoiceRecognitionResult(
       transcript: text,
       confidence: 0.85, // Whisper doesn't provide confidence, use default
@@ -394,4 +400,3 @@ class EnhancedVoiceService {
 
 /// Global instance
 final enhancedVoiceService = EnhancedVoiceService();
-

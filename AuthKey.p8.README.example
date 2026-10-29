@@ -1,0 +1,1 @@
+Apple App Store Connect API key: download AuthKey_<KEY_ID>.p8 from Doppler (APP_STORE_CONNECT_P8) at build time; never commit.

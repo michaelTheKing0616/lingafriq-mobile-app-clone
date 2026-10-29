@@ -13,20 +13,19 @@ class EnsembleVoting {
     required String sourceLang,
     required String targetLang,
     required GroqChatProvider groqProvider,
-    String? hfToken,
   }) async {
-    debugPrint('🗳️ Ensemble voting: Getting translations from multiple models...');
+    debugPrint(
+      '🗳️ Ensemble voting: Getting translations from multiple models...',
+    );
 
     // Get translations from multiple sources
     final translationService = TranslationService();
     final results = await Future.wait([
       // NLLB-200
-      translationService.translate(
-        text: text,
-        sourceLang: sourceLang,
-        targetLang: targetLang,
-        hfToken: hfToken,
-      ).then((r) => r.translation).catchError((e) => ''),
+      translationService
+          .translate(text: text, sourceLang: sourceLang, targetLang: targetLang)
+          .then((r) => r.translation)
+          .catchError((e) => ''),
 
       // LLaMA-70B (via Groq)
       _getLlamaTranslation(
@@ -37,14 +36,16 @@ class EnsembleVoting {
       ).catchError((e) => ''),
 
       // MyMemory (free API, ISO 639-1)
-      translationService.translateWithMyMemory(text, sourceLang, targetLang).then((r) => r ?? '').catchError((e) => ''),
+      translationService
+          .translateWithMyMemory(text, sourceLang, targetLang)
+          .then((r) => r ?? '')
+          .catchError((e) => ''),
 
       // AfriTeVa (if available)
-      CanonicalPhraseService().generateCanonical(
-        phrase: text,
-        language: targetLang,
-        hfToken: hfToken,
-      ).then((r) => r.canonicalText).catchError((e) => ''),
+      CanonicalPhraseService()
+          .generateCanonical(phrase: text, language: targetLang)
+          .then((r) => r.canonicalText)
+          .catchError((e) => ''),
     ]);
 
     // Filter out nulls
@@ -76,7 +77,9 @@ class EnsembleVoting {
       bestResult = validResults[0].toString();
     }
 
-    debugPrint('✅ Ensemble voting: Selected "$bestResult" with $maxVotes votes');
+    debugPrint(
+      '✅ Ensemble voting: Selected "$bestResult" with $maxVotes votes',
+    );
     return bestResult ?? validResults[0].toString();
   }
 
@@ -85,18 +88,18 @@ class EnsembleVoting {
     required String phrase,
     required String language,
     required GroqChatProvider groqProvider,
-    String? hfToken,
   }) async {
-    debugPrint('🗳️ Ensemble voting: Getting canonical phrases from multiple models...');
+    debugPrint(
+      '🗳️ Ensemble voting: Getting canonical phrases from multiple models...',
+    );
 
     // Get canonical forms from multiple sources
     final results = await Future.wait([
       // AfriTeVa
-      CanonicalPhraseService().generateCanonical(
-        phrase: phrase,
-        language: language,
-        hfToken: hfToken,
-      ).then((r) => r.canonicalText).catchError((e) => ''),
+      CanonicalPhraseService()
+          .generateCanonical(phrase: phrase, language: language)
+          .then((r) => r.canonicalText)
+          .catchError((e) => ''),
 
       // LLaMA-70B (with canonical constraint)
       _getLlamaCanonical(
@@ -126,13 +129,14 @@ class EnsembleVoting {
     required String targetLang,
     required GroqChatProvider groqProvider,
   }) async {
-    final prompt = 'Translate "$text" from $sourceLang to $targetLang. Return only the translation, no explanations.';
-    
+    final prompt =
+        'Translate "$text" from $sourceLang to $targetLang. Return only the translation, no explanations.';
+
     String fullResponse = '';
     await for (final chunk in groqProvider.sendMessageStream(prompt)) {
       fullResponse += chunk;
     }
-    
+
     return fullResponse.trim();
   }
 
@@ -142,13 +146,14 @@ class EnsembleVoting {
     required String language,
     required GroqChatProvider groqProvider,
   }) async {
-    final prompt = 'Provide the canonical (correctly spelled with diacritics) form of "$phrase" in $language. Return only the canonical form, no explanations.';
-    
+    final prompt =
+        'Provide the canonical (correctly spelled with diacritics) form of "$phrase" in $language. Return only the canonical form, no explanations.';
+
     String fullResponse = '';
     await for (final chunk in groqProvider.sendMessageStream(prompt)) {
       fullResponse += chunk;
     }
-    
+
     return fullResponse.trim();
   }
 
@@ -168,8 +173,10 @@ class EnsembleVoting {
     for (final result in results) {
       final weight = result.confidence;
       totalWeight += weight;
-      weightedSum += result.confidence * result.confidence; // Confidence squared for emphasis
-      
+      weightedSum +=
+          result.confidence *
+          result.confidence; // Confidence squared for emphasis
+
       final key = result.output.toLowerCase().trim();
       votes[key] = (votes[key] ?? 0) + weight;
     }
@@ -220,4 +227,3 @@ class EnsembleResult {
     required this.agreement,
   });
 }
-

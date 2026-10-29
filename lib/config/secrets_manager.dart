@@ -6,18 +6,18 @@ import 'package:lingafriq/utils/structured_logger.dart';
 
 /// Secrets Management Service
 /// Secure API key and secret management
-/// 
+///
 /// Features:
 /// - Environment variable loading
 /// - Secure storage for sensitive keys
 /// - Validation on startup
 /// - Secrets rotation support
 /// - CI/CD integration ready
-/// 
+///
 /// Production-ready implementation (December 2025)
 
 /// Secrets Manager
-/// 
+///
 /// Manages all API keys and secrets securely
 /// Uses environment variables and secure storage
 class SecretsManager {
@@ -26,9 +26,7 @@ class SecretsManager {
   SecretsManager._internal();
 
   static const _secureStorage = FlutterSecureStorage(
-    aOptions: AndroidOptions(
-      encryptedSharedPreferences: true,
-    ),
+    aOptions: AndroidOptions(encryptedSharedPreferences: true),
     iOptions: IOSOptions(
       accessibility: KeychainAccessibility.first_unlock_this_device,
     ),
@@ -63,18 +61,18 @@ class SecretsManager {
         // If not loaded, this will be null and we'll fall back to other methods
       }
     } catch (e) {
-      logger.debug('Note: .env file not loaded. Using build-time variables and secure storage.');
+      logger.debug(
+        'Note: .env file not loaded. Using build-time variables and secure storage.',
+      );
     }
 
     // Load from environment variables (priority order):
     // 1. Build-time variables (--dart-define)
     // 2. .env file (flutter_dotenv)
     // 3. Secure storage (runtime-loaded secrets)
-    _secrets['OPENAI_API_KEY'] = _getEnv('OPENAI_API_KEY');
-    _secrets['HUGGINGFACE_TOKEN'] = _getEnv('HUGGINGFACE_TOKEN');
-    _secrets['GOOGLE_CLOUD_API_KEY'] = _getEnv('GOOGLE_CLOUD_API_KEY');
     _secrets['SENTRY_DSN'] = _getEnv('SENTRY_DSN');
-    _secrets['BACKEND_API_URL'] = _getEnv('BACKEND_API_URL') ?? 'https://api.lingafriq.com';
+    _secrets['BACKEND_API_URL'] =
+        _getEnv('BACKEND_API_URL') ?? 'https://api.lingafriq.com';
     _secrets['VOICE_SERVICE_URL'] = _getEnv('VOICE_SERVICE_URL');
     _secrets['TRANSLATION_SERVICE_URL'] = _getEnv('TRANSLATION_SERVICE_URL');
     _secrets['PRONUNCIATION_API_URL'] = _getEnv('PRONUNCIATION_API_URL');
@@ -85,7 +83,9 @@ class SecretsManager {
     _secrets['MIXPANEL_TOKEN'] = _getEnv('MIXPANEL_TOKEN');
     _secrets['AMPLITUDE_API_KEY'] = _getEnv('AMPLITUDE_API_KEY');
     _secrets['REVENUECAT_API_KEY_IOS'] = _getEnv('REVENUECAT_API_KEY_IOS');
-    _secrets['REVENUECAT_API_KEY_ANDROID'] = _getEnv('REVENUECAT_API_KEY_ANDROID');
+    _secrets['REVENUECAT_API_KEY_ANDROID'] = _getEnv(
+      'REVENUECAT_API_KEY_ANDROID',
+    );
 
     // Load sensitive secrets from secure storage (if not in env)
     for (final key in _secrets.keys) {
@@ -111,7 +111,7 @@ class SecretsManager {
     if (buildTimeValue != null && buildTimeValue.isNotEmpty) {
       return buildTimeValue;
     }
-    
+
     // Priority 2: .env file (flutter_dotenv)
     try {
       if (dotenv.isInitialized) {
@@ -123,7 +123,7 @@ class SecretsManager {
     } catch (e) {
       // .env not loaded, continue to next source
     }
-    
+
     // Priority 3: Secure storage (checked in _loadSecrets() after this method)
     // This will be populated from secure storage if available
     return null;
@@ -135,9 +135,6 @@ class SecretsManager {
     // Map environment variable names to their --dart-define equivalents
     // Some keys use different names in --dart-define vs .env files
     final keyMap = {
-      'OPENAI_API_KEY': 'OPENAI_API_KEY',
-      'HUGGINGFACE_TOKEN': 'HUGGINGFACE_TOKEN',
-      'GOOGLE_CLOUD_API_KEY': 'GOOGLE_CLOUD_API_KEY',
       'SENTRY_DSN': 'SENTRY_DSN',
       'BACKEND_API_URL': 'BACKEND_URL', // EnvConfig uses BACKEND_URL
       'VOICE_SERVICE_URL': 'VOICE_SERVICE_URL',
@@ -154,7 +151,7 @@ class SecretsManager {
     };
 
     final dartDefineKey = keyMap[key] ?? key;
-    
+
     // Use String.fromEnvironment to get build-time variables
     // These are set via: flutter build --dart-define=KEY=value
     // Note: This is compile-time only, so it only works if set during build
@@ -162,7 +159,7 @@ class SecretsManager {
     if (value.isNotEmpty) {
       return value;
     }
-    
+
     // Try the specific key
     // Since String.fromEnvironment is compile-time, we need to check each key individually
     // For now, return null and let _loadSecrets() check secure storage
@@ -183,9 +180,10 @@ class SecretsManager {
     }
 
     if (missingSecrets.isNotEmpty) {
-      logger.warn('Missing required secrets', context: {
-        'missingSecrets': missingSecrets,
-      });
+      logger.warn(
+        'Missing required secrets',
+        context: {'missingSecrets': missingSecrets},
+      );
       // In production, might want to throw or show error
       // For now, just log warning
     }
@@ -239,9 +237,9 @@ class SecretsManager {
   /// Check if secret exists
   bool hasSecret(String key) {
     if (!_initialized) return false;
-    return _secrets.containsKey(key) && 
-           _secrets[key] != null && 
-           _secrets[key]!.isNotEmpty;
+    return _secrets.containsKey(key) &&
+        _secrets[key] != null &&
+        _secrets[key]!.isNotEmpty;
   }
 
   /// Get all secret keys (for debugging, be careful)
@@ -254,10 +252,10 @@ class SecretsManager {
   Future<void> rotateSecret(String key, String newValue) async {
     if (!_initialized) await initialize();
 
-      await setSecret(key, newValue, secure: true);
+    await setSecret(key, newValue, secure: true);
 
-      logger.info('Secret rotated', context: {'key': key});
-    
+    logger.info('Secret rotated', context: {'key': key});
+
     // In production, might want to:
     // - Log rotation event
     // - Notify backend of rotation
@@ -265,16 +263,8 @@ class SecretsManager {
   }
 
   /// Get backend API URL
-  String get backendApiUrl => getSecret('BACKEND_API_URL') ?? 'https://api.lingafriq.com';
-
-  /// Get OpenAI API key
-  String? get openAiApiKey => getSecret('OPENAI_API_KEY');
-
-  /// Get HuggingFace token
-  String? get huggingfaceToken => getSecret('HUGGINGFACE_TOKEN');
-
-  /// Get Google Cloud API key
-  String? get googleCloudApiKey => getSecret('GOOGLE_CLOUD_API_KEY');
+  String get backendApiUrl =>
+      getSecret('BACKEND_API_URL') ?? 'https://api.lingafriq.com';
 
   /// Get Sentry DSN
   String? get sentryDsn => getSecret('SENTRY_DSN');
@@ -306,4 +296,3 @@ class SecretsManager {
   /// Get Amplitude API key
   String? get amplitudeApiKey => getSecret('AMPLITUDE_API_KEY');
 }
-

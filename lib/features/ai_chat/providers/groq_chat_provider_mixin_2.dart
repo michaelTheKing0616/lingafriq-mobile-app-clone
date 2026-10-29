@@ -99,7 +99,6 @@ mixin GroqChatProviderMixin2 on GroqChatStreamHelpers {
             targetLanguage: _selectedLanguage,
             sourceLanguage: _sourceLanguage,
             groqProvider: this as GroqChatProvider,
-            hfToken: null, // Can be set via environment
             onTelemetry: (response, {required elapsedMs}) async {
               try {
                 final telemetry = ref.read(telemetryServiceProvider);

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/polie_design_tokens.dart';
@@ -9,19 +8,38 @@ import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
-import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show AppLanguage;
+import 'package:lingafriq/services/localization/dynamic_localization_service.dart'
+    show AppLanguage;
 import 'package:uuid/uuid.dart';
-import 'package:lingafriq/config/url_constants.dart';
-import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:flutter/services.dart';
 
 /// Dialogue roles for role selection (friend, teacher, market seller, elder).
 const List<Map<String, dynamic>> kDialogueRoles = [
-  {'id': 'friend', 'label': 'Friend', 'icon': Icons.people_rounded, 'desc': 'Casual chat'},
-  {'id': 'teacher', 'label': 'Teacher', 'icon': Icons.school_rounded, 'desc': 'Patient guidance'},
-  {'id': 'market_seller', 'label': 'Market seller', 'icon': Icons.store_rounded, 'desc': 'Market scenario'},
-  {'id': 'elder', 'label': 'Elder', 'icon': Icons.face_rounded, 'desc': 'Respectful dialogue'},
+  {
+    'id': 'friend',
+    'label': 'Friend',
+    'icon': Icons.people_rounded,
+    'desc': 'Casual chat',
+  },
+  {
+    'id': 'teacher',
+    'label': 'Teacher',
+    'icon': Icons.school_rounded,
+    'desc': 'Patient guidance',
+  },
+  {
+    'id': 'market_seller',
+    'label': 'Market seller',
+    'icon': Icons.store_rounded,
+    'desc': 'Market scenario',
+  },
+  {
+    'id': 'elder',
+    'label': 'Elder',
+    'icon': Icons.face_rounded,
+    'desc': 'Respectful dialogue',
+  },
 ];
 
 /// Dialogue Mode — premium chat (PolieChatBubble), role selection, real-time correction overlay, tone/difficulty slider.
@@ -48,14 +66,19 @@ class TutorDialogueModeScreen extends HookConsumerWidget {
       required String role,
       required double difficultyLevel,
     }) async {
-      final groqKey = EnvConfig.groqApiKey;
-      final useBackend = groqKey.isEmpty ||
-          groqKey.trim().isEmpty ||
-          groqKey == 'YOUR_GROQ_API_KEY' ||
-          groqKey.startsWith('YOUR_');
-      final roleDesc = kDialogueRoles.firstWhere((r) => r['id'] == role, orElse: () => kDialogueRoles.first)['label'] as String;
-      final difficultyDesc = difficultyLevel < 0.4 ? 'Use simple vocabulary and short sentences.' : (difficultyLevel > 0.7 ? 'Use richer vocabulary and longer sentences; correct subtle errors.' : 'Use moderate complexity.');
-      final prompt = '''
+      final roleDesc =
+          kDialogueRoles.firstWhere(
+                (r) => r['id'] == role,
+                orElse: () => kDialogueRoles.first,
+              )['label']
+              as String;
+      final difficultyDesc = difficultyLevel < 0.4
+          ? 'Use simple vocabulary and short sentences.'
+          : (difficultyLevel > 0.7
+                ? 'Use richer vocabulary and longer sentences; correct subtle errors.'
+                : 'Use moderate complexity.');
+      final prompt =
+          '''
 You are Polie, an elite African language tutor.
 Run a realistic practice dialogue in the TARGET_LANGUAGE. You are playing the role of: $roleDesc. $difficultyDesc
 Respond in TARGET_LANGUAGE in the "response" field only. Put short English hints in "hints" only.
@@ -84,103 +107,45 @@ Rules:
 - Contextual hints (prompt-side): Provide "hints" only when genuinely helpful (e.g. after a correction, when the user made a clear mistake, or when they might be stuck). When the user wrote well or the reply is straightforward, return an empty array for "hints". Do not add hints on every turn.
 ''';
 
-      if (useBackend) {
-        final messages = <Map<String, String>>[
-          {'role': 'user', 'content': prompt},
-        ];
-        final resp = await ApiService.post(
-          '/api/ai/chat/completion',
-          data: {
-            'messages': messages.map((m) => {'role': m['role'], 'content': m['content']!}).toList(),
-            'systemPrompt': 'You output only valid JSON. Never include markdown or commentary.',
-            'temperature': 0.3,
-            'max_tokens': 700,
-            'language': language,
-            'languageCode': selectedLanguage.value.code,
-            'sourceLanguage': 'en',
-            'targetLanguage': selectedLanguage.value.code,
-            'cefr': 'A1',
-            'mode': 'dialogue',
-          },
-        );
-        if (resp.statusCode != 200 || resp.data == null) {
-          throw Exception('AI request failed. Please try again.');
-        }
-        final content = (resp.data is Map)
-            ? (resp.data['content']?.toString() ?? '')
-            : '';
-        if (content.trim().isEmpty) throw Exception('AI returned an empty response. Please try again.');
-        try {
-          return jsonDecode(content) as Map<String, dynamic>;
-        } catch (_) {
-          final start = content.indexOf('{');
-          final end = content.lastIndexOf('}');
-          if (start >= 0 && end > start) {
-            return jsonDecode(content.substring(start, end + 1)) as Map<String, dynamic>;
-          }
-          return {
-            'response': content.trim(),
-            'corrections': null,
-            'hints': null,
-          };
-        }
-      }
-
-      final dio = Dio(
-        BaseOptions(
-          connectTimeout: const Duration(seconds: 20),
-          receiveTimeout: const Duration(seconds: 45),
-          sendTimeout: const Duration(seconds: 20),
-        ),
-      );
-
-      final resp = await dio.post(
-        UrlConstants.groqChatCompletions,
+      final messages = <Map<String, String>>[
+        {'role': 'user', 'content': prompt},
+      ];
+      final resp = await ApiService.post(
+        '/api/ai/chat/completion',
         data: {
-          'model': 'llama-3.3-70b-versatile',
+          'messages': messages
+              .map((m) => {'role': m['role'], 'content': m['content']!})
+              .toList(),
+          'systemPrompt':
+              'You output only valid JSON. Never include markdown or commentary.',
           'temperature': 0.3,
           'max_tokens': 700,
-          'messages': [
-            {
-              'role': 'system',
-              'content': 'You output only valid JSON. Never include markdown or commentary.',
-            },
-            {'role': 'user', 'content': prompt},
-          ],
+          'language': language,
+          'languageCode': selectedLanguage.value.code,
+          'sourceLanguage': 'en',
+          'targetLanguage': selectedLanguage.value.code,
+          'cefr': 'A1',
+          'mode': 'dialogue',
         },
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $groqKey',
-            'Content-Type': 'application/json',
-          },
-        ),
       );
-
-      if (resp.statusCode != 200) {
-        throw Exception('AI request failed (${resp.statusCode}). Please try again.');
+      if (resp.statusCode != 200 || resp.data == null) {
+        throw Exception('AI request failed. Please try again.');
       }
-
       final content = (resp.data is Map)
-          ? (resp.data['choices']?[0]?['message']?['content']?.toString() ?? '')
+          ? (resp.data['content']?.toString() ?? '')
           : '';
-      if (content.trim().isEmpty) {
+      if (content.trim().isEmpty)
         throw Exception('AI returned an empty response. Please try again.');
-      }
-
       try {
         return jsonDecode(content) as Map<String, dynamic>;
       } catch (_) {
         final start = content.indexOf('{');
         final end = content.lastIndexOf('}');
         if (start >= 0 && end > start) {
-          final slice = content.substring(start, end + 1);
-          return jsonDecode(slice) as Map<String, dynamic>;
+          return jsonDecode(content.substring(start, end + 1))
+              as Map<String, dynamic>;
         }
-        return {
-          'response': content.trim(),
-          'corrections': null,
-          'hints': null,
-        };
+        return {'response': content.trim(), 'corrections': null, 'hints': null};
       }
     }
 
@@ -211,10 +176,12 @@ Rules:
         context: context,
         operation: () async {
           final contextTurns = messages.value
-              .map((m) => {
-                    'role': (m['sender'] == 'user') ? 'user' : 'assistant',
-                    'content': (m['text'] ?? '').toString(),
-                  })
+              .map(
+                (m) => {
+                  'role': (m['sender'] == 'user') ? 'user' : 'assistant',
+                  'content': (m['text'] ?? '').toString(),
+                },
+              )
               .toList();
 
           final result = await generateDialogueTurnWithGroq(
@@ -263,14 +230,21 @@ Rules:
               children: [
                 // Header: back, title, language
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: PolieSpacing.sm, vertical: PolieSpacing.xs),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PolieSpacing.sm,
+                    vertical: PolieSpacing.xs,
+                  ),
                   child: Row(
                     children: [
                       Semantics(
                         label: 'Go back',
                         button: true,
                         child: IconButton(
-                          icon: const Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
+                          icon: const Icon(
+                            Icons.arrow_back_rounded,
+                            color: PolieColors.textPrimary,
+                            semanticLabel: 'Back',
+                          ),
                           onPressed: () {
                             HapticFeedback.lightImpact();
                             Navigator.pop(context);
@@ -280,43 +254,56 @@ Rules:
                       Expanded(
                         child: Text(
                           'Practice Dialogue',
-                          style: PolieTypography.h2(context).copyWith(color: PolieColors.textPrimary),
+                          style: PolieTypography.h2(
+                            context,
+                          ).copyWith(color: PolieColors.textPrimary),
                         ),
                       ),
                       Semantics(
-                        label: 'Select language. Current: ${selectedLanguage.value.displayName}',
+                        label:
+                            'Select language. Current: ${selectedLanguage.value.displayName}',
                         button: true,
                         child: PolieLanguagePill(
                           label: selectedLanguage.value.displayName,
                           isSelected: true,
                           accentColor: PolieColors.royalAmethyst,
                           onTap: () {
-                          showModalBottomSheet(
-                            context: context,
-                            backgroundColor: Colors.transparent,
-                            builder: (ctx) => Container(
-                              padding: EdgeInsets.all(PolieSpacing.lg),
-                              decoration: BoxDecoration(
-                                color: PolieColors.surfaceContainer,
-                                borderRadius: BorderRadius.vertical(top: Radius.circular(PolieRadius.xl)),
+                            showModalBottomSheet(
+                              context: context,
+                              backgroundColor: Colors.transparent,
+                              builder: (ctx) => Container(
+                                padding: EdgeInsets.all(PolieSpacing.lg),
+                                decoration: BoxDecoration(
+                                  color: PolieColors.surfaceContainer,
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(PolieRadius.xl),
+                                  ),
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      'Language',
+                                      style: PolieTypography.h2(ctx),
+                                    ),
+                                    SizedBox(height: PolieSpacing.md),
+                                    ...availableLanguages.map(
+                                      (lang) => ListTile(
+                                        title: Text(
+                                          lang.displayName,
+                                          style: PolieTypography.body(ctx),
+                                        ),
+                                        onTap: () {
+                                          selectedLanguage.value = lang;
+                                          Navigator.pop(ctx);
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text('Language', style: PolieTypography.h2(ctx)),
-                                  SizedBox(height: PolieSpacing.md),
-                                  ...availableLanguages.map((lang) => ListTile(
-                                    title: Text(lang.displayName, style: PolieTypography.body(ctx)),
-                                    onTap: () {
-                                      selectedLanguage.value = lang;
-                                      Navigator.pop(ctx);
-                                    },
-                                  )),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
+                            );
+                          },
                         ),
                       ),
                       SizedBox(width: PolieSpacing.xs),
@@ -326,7 +313,10 @@ Rules:
                 // Role selection chips
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  padding: EdgeInsets.symmetric(horizontal: PolieSpacing.md, vertical: PolieSpacing.xs),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PolieSpacing.md,
+                    vertical: PolieSpacing.xs,
+                  ),
                   child: Row(
                     children: kDialogueRoles.map((r) {
                       final id = r['id'] as String;
@@ -334,15 +324,26 @@ Rules:
                       return Padding(
                         padding: EdgeInsets.only(right: PolieSpacing.sm),
                         child: Semantics(
-                          label: 'Role: ${r['label']}. ${isSelected ? 'Selected' : ''}',
+                          label:
+                              'Role: ${r['label']}. ${isSelected ? 'Selected' : ''}',
                           button: true,
                           child: FilterChip(
                             label: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(r['icon'] as IconData, size: 16.sp, color: isSelected ? Theme.of(context).colorScheme.onPrimary : PolieColors.textSecondary, semanticLabel: r['label'] as String),
+                                Icon(
+                                  r['icon'] as IconData,
+                                  size: 16.sp,
+                                  color: isSelected
+                                      ? Theme.of(context).colorScheme.onPrimary
+                                      : PolieColors.textSecondary,
+                                  semanticLabel: r['label'] as String,
+                                ),
                                 SizedBox(width: PolieSpacing.xs),
-                                Text(r['label'] as String, style: PolieTypography.label(context)),
+                                Text(
+                                  r['label'] as String,
+                                  style: PolieTypography.label(context),
+                                ),
                               ],
                             ),
                             selected: isSelected,
@@ -350,9 +351,11 @@ Rules:
                               HapticFeedback.selectionClick();
                               selectedRole.value = id;
                             },
-                          selectedColor: PolieColors.royalAmethyst,
-                          checkmarkColor: Theme.of(context).colorScheme.onPrimary,
-                          backgroundColor: PolieColors.surfaceContainer,
+                            selectedColor: PolieColors.royalAmethyst,
+                            checkmarkColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
+                            backgroundColor: PolieColors.surfaceContainer,
                           ),
                         ),
                       );
@@ -361,12 +364,16 @@ Rules:
                 ),
                 // Tone / difficulty slider
                 Semantics(
-                  label: 'Difficulty: Easier to Harder. Adjust to change response complexity.',
+                  label:
+                      'Difficulty: Easier to Harder. Adjust to change response complexity.',
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: PolieSpacing.lg),
                     child: Row(
                       children: [
-                        Text('Easier', style: PolieTypography.bodySmall(context)),
+                        Text(
+                          'Easier',
+                          style: PolieTypography.bodySmall(context),
+                        ),
                         Expanded(
                           child: Slider(
                             value: difficulty.value,
@@ -374,7 +381,10 @@ Rules:
                             activeColor: PolieColors.electricTeal,
                           ),
                         ),
-                        Text('Harder', style: PolieTypography.bodySmall(context)),
+                        Text(
+                          'Harder',
+                          style: PolieTypography.bodySmall(context),
+                        ),
                       ],
                     ),
                   ),
@@ -385,7 +395,11 @@ Rules:
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.chat_bubble_outline_rounded, size: 64.sp, color: PolieColors.textSecondary),
+                              Icon(
+                                Icons.chat_bubble_outline_rounded,
+                                size: 64.sp,
+                                color: PolieColors.textSecondary,
+                              ),
                               SizedBox(height: PolieSpacing.md),
                               Text(
                                 'Start a conversation with Polie',
@@ -400,15 +414,25 @@ Rules:
                           itemCount: messages.value.length,
                           itemBuilder: (context, index) {
                             final message = messages.value[index];
-                            return _DialogueMessageItem(message: message, isDark: isDark)
+                            return _DialogueMessageItem(
+                                  message: message,
+                                  isDark: isDark,
+                                )
                                 .animate(delay: (index * 50).ms)
                                 .fadeIn(duration: 200.ms)
-                                .slideX(begin: message['sender'] == 'user' ? 0.2 : -0.2);
+                                .slideX(
+                                  begin: message['sender'] == 'user'
+                                      ? 0.2
+                                      : -0.2,
+                                );
                           },
                         ),
                 ),
                 PolieGlassCard(
-                  padding: EdgeInsets.symmetric(horizontal: PolieSpacing.md, vertical: PolieSpacing.sm),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PolieSpacing.md,
+                    vertical: PolieSpacing.sm,
+                  ),
                   child: Row(
                     children: [
                       Expanded(
@@ -437,10 +461,16 @@ Rules:
                                   height: 24.h,
                                   child: const CircularProgressIndicator(
                                     strokeWidth: 2,
-                                    valueColor: AlwaysStoppedAnimation<Color>(PolieColors.electricTeal),
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      PolieColors.electricTeal,
+                                    ),
                                   ),
                                 )
-                              : const Icon(Icons.send_rounded, color: PolieColors.electricTeal, semanticLabel: 'Send'),
+                              : const Icon(
+                                  Icons.send_rounded,
+                                  color: PolieColors.electricTeal,
+                                  semanticLabel: 'Send',
+                                ),
                           onPressed: isLoading.value ? null : sendMessage,
                         ),
                       ),
@@ -483,41 +513,47 @@ class _DialogueMessageItemState extends State<_DialogueMessageItem> {
 
     String? correctionText;
     if (corrections != null && corrections.isNotEmpty) {
-      correctionText = corrections.map((c) {
-        if (c is Map) return '${c['original']} → ${c['corrected']}';
-        return c.toString();
-      }).join(' • ');
+      correctionText = corrections
+          .map((c) {
+            if (c is Map) return '${c['original']} → ${c['corrected']}';
+            return c.toString();
+          })
+          .join(' • ');
     }
 
     final expression = !isUser
         ? (hasHints
-            ? _PolieExpression.thinking
-            : (correctionText != null && correctionText.isNotEmpty)
-                ? _PolieExpression.encouraging
-                : _PolieExpression.neutral)
+              ? _PolieExpression.thinking
+              : (correctionText != null && correctionText.isNotEmpty)
+              ? _PolieExpression.encouraging
+              : _PolieExpression.neutral)
         : _PolieExpression.neutral;
 
     return Padding(
       padding: EdgeInsets.only(bottom: PolieSpacing.sm),
       child: Column(
-        crossAxisAlignment: isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        crossAxisAlignment: isUser
+            ? CrossAxisAlignment.end
+            : CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+            mainAxisAlignment: isUser
+                ? MainAxisAlignment.end
+                : MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               if (!isUser) ...[
-                _PolieAvatarAnimated(
-                  expression: expression,
-                  showGesture: true,
-                ),
+                _PolieAvatarAnimated(expression: expression, showGesture: true),
                 SizedBox(width: PolieSpacing.sm),
               ],
               Flexible(
                 child: PolieChatBubble(
                   text: text,
-                  role: isUser ? PolieChatBubbleRole.user : PolieChatBubbleRole.assistant,
-                  isCorrectionOverlay: correctionText != null && correctionText.isNotEmpty,
+                  role: isUser
+                      ? PolieChatBubbleRole.user
+                      : PolieChatBubbleRole.assistant,
+                  isCorrectionOverlay:
+                      correctionText != null && correctionText.isNotEmpty,
                   correctionText: correctionText,
                 ),
               ),
@@ -526,12 +562,18 @@ class _DialogueMessageItemState extends State<_DialogueMessageItem> {
           ),
           if (hasHints)
             Padding(
-              padding: EdgeInsets.only(top: PolieSpacing.xs, left: PolieSpacing.md, right: PolieSpacing.md),
+              padding: EdgeInsets.only(
+                top: PolieSpacing.xs,
+                left: PolieSpacing.md,
+                right: PolieSpacing.md,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Semantics(
-                    label: _hintsExpanded ? 'Hide hint' : 'Need a hint? Tap to expand',
+                    label: _hintsExpanded
+                        ? 'Hide hint'
+                        : 'Need a hint? Tap to expand',
                     button: true,
                     child: GestureDetector(
                       onTap: () {
@@ -539,44 +581,67 @@ class _DialogueMessageItemState extends State<_DialogueMessageItem> {
                         setState(() => _hintsExpanded = !_hintsExpanded);
                       },
                       child: PolieGlassCard(
-                      padding: EdgeInsets.symmetric(horizontal: PolieSpacing.sm, vertical: PolieSpacing.xs),
-                      borderRadius: PolieRadius.sm,
-                      child: Row(
-                        children: [
-                          Icon(
-                            _hintsExpanded ? Icons.lightbulb_rounded : Icons.lightbulb_outline_rounded,
-                            size: 16.sp,
-                            color: PolieColors.goldEmber,
-                            semanticLabel: _hintsExpanded ? 'Hint expanded' : 'Hint',
-                          ),
-                          SizedBox(width: PolieSpacing.xs),
-                          Text(
-                            _hintsExpanded ? 'Hide hint' : 'Need a hint?',
-                            style: PolieTypography.label(context).copyWith(color: PolieColors.goldEmber),
-                          ),
-                          SizedBox(width: PolieSpacing.xs),
-                          Icon(
-                            _hintsExpanded ? Icons.expand_less : Icons.expand_more,
-                            size: 18.sp,
-                            color: PolieColors.goldEmber,
-                          ),
-                        ],
+                        padding: EdgeInsets.symmetric(
+                          horizontal: PolieSpacing.sm,
+                          vertical: PolieSpacing.xs,
+                        ),
+                        borderRadius: PolieRadius.sm,
+                        child: Row(
+                          children: [
+                            Icon(
+                              _hintsExpanded
+                                  ? Icons.lightbulb_rounded
+                                  : Icons.lightbulb_outline_rounded,
+                              size: 16.sp,
+                              color: PolieColors.goldEmber,
+                              semanticLabel: _hintsExpanded
+                                  ? 'Hint expanded'
+                                  : 'Hint',
+                            ),
+                            SizedBox(width: PolieSpacing.xs),
+                            Text(
+                              _hintsExpanded ? 'Hide hint' : 'Need a hint?',
+                              style: PolieTypography.label(
+                                context,
+                              ).copyWith(color: PolieColors.goldEmber),
+                            ),
+                            SizedBox(width: PolieSpacing.xs),
+                            Icon(
+                              _hintsExpanded
+                                  ? Icons.expand_less
+                                  : Icons.expand_more,
+                              size: 18.sp,
+                              color: PolieColors.goldEmber,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
                     ),
                   ),
                   if (_hintsExpanded)
                     Padding(
                       padding: EdgeInsets.only(top: PolieSpacing.xs),
                       child: PolieGlassCard(
-                        padding: EdgeInsets.symmetric(horizontal: PolieSpacing.sm, vertical: PolieSpacing.xs),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: PolieSpacing.sm,
+                          vertical: PolieSpacing.xs,
+                        ),
                         borderRadius: PolieRadius.sm,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: hints.map<Widget>((h) => Padding(
-                            padding: EdgeInsets.only(bottom: PolieSpacing.xs),
-                            child: Text(h.toString(), style: PolieTypography.bodySmall(context)),
-                          )).toList(),
+                          children: hints
+                              .map<Widget>(
+                                (h) => Padding(
+                                  padding: EdgeInsets.only(
+                                    bottom: PolieSpacing.xs,
+                                  ),
+                                  child: Text(
+                                    h.toString(),
+                                    style: PolieTypography.bodySmall(context),
+                                  ),
+                                ),
+                              )
+                              .toList(),
                         ),
                       ),
                     ),
@@ -652,13 +717,18 @@ class _PolieAvatarAnimatedState extends State<_PolieAvatarAnimated>
           AnimatedBuilder(
             animation: _pulseController,
             builder: (context, child) {
-              final scale = 1.0 +
+              final scale =
+                  1.0 +
                   (isSpeaking ? 0.04 * _pulseController.value : 0.0) +
-                  (isThinking ? 0.02 * (0.5 + 0.5 * _pulseController.value) : 0.0);
+                  (isThinking
+                      ? 0.02 * (0.5 + 0.5 * _pulseController.value)
+                      : 0.0);
               return Transform.scale(
                 scale: scale,
                 child: Transform.rotate(
-                  angle: isThinking ? 0.02 * (1 - 2 * _pulseController.value) : 0,
+                  angle: isThinking
+                      ? 0.02 * (1 - 2 * _pulseController.value)
+                      : 0,
                   child: child,
                 ),
               );
@@ -671,10 +741,7 @@ class _PolieAvatarAnimatedState extends State<_PolieAvatarAnimated>
                 gradient: const LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [
-                    PolieColors.royalAmethyst,
-                    PolieColors.electricTeal,
-                  ],
+                  colors: [PolieColors.royalAmethyst, PolieColors.electricTeal],
                 ),
                 border: Border.all(
                   color: isEncouraging
@@ -692,9 +759,7 @@ class _PolieAvatarAnimatedState extends State<_PolieAvatarAnimated>
               ),
               child: Stack(
                 alignment: Alignment.center,
-                children: [
-                  _PolieFaceExpression(expression: widget.expression),
-                ],
+                children: [_PolieFaceExpression(expression: widget.expression)],
               ),
             ),
           ),
@@ -705,17 +770,14 @@ class _PolieAvatarAnimatedState extends State<_PolieAvatarAnimated>
               child: AnimatedBuilder(
                 animation: _gestureController,
                 builder: (context, child) {
-                  final curve = Curves.easeOut.transform(_gestureController.value);
-                  final opacity = curve < 0.5
-                      ? curve * 2
-                      : 2 * (1 - curve);
+                  final curve = Curves.easeOut.transform(
+                    _gestureController.value,
+                  );
+                  final opacity = curve < 0.5 ? curve * 2 : 2 * (1 - curve);
                   final rotate = curve * 0.4;
                   return Opacity(
                     opacity: opacity.clamp(0.0, 1.0),
-                    child: Transform.rotate(
-                      angle: rotate,
-                      child: child,
-                    ),
+                    child: Transform.rotate(angle: rotate, child: child),
                   );
                 },
                 child: Icon(
@@ -755,7 +817,11 @@ class _PolieFaceExpression extends StatelessWidget {
           ],
         ),
         SizedBox(height: 4.w),
-        _mouth(onPrimary: onPrimary, smile: isEncouraging, open: expression == _PolieExpression.speaking),
+        _mouth(
+          onPrimary: onPrimary,
+          smile: isEncouraging,
+          open: expression == _PolieExpression.speaking,
+        ),
       ],
     );
   }
@@ -766,15 +832,16 @@ class _PolieFaceExpression extends StatelessWidget {
       child: Container(
         width: 5.w,
         height: 5.w,
-        decoration: BoxDecoration(
-          color: onPrimary,
-          shape: BoxShape.circle,
-        ),
+        decoration: BoxDecoration(color: onPrimary, shape: BoxShape.circle),
       ),
     );
   }
 
-  Widget _mouth({required Color onPrimary, bool smile = false, bool open = false}) {
+  Widget _mouth({
+    required Color onPrimary,
+    bool smile = false,
+    bool open = false,
+  }) {
     if (open) {
       return Container(
         width: 10.w,
@@ -796,4 +863,3 @@ class _PolieFaceExpression extends StatelessWidget {
     );
   }
 }
-
