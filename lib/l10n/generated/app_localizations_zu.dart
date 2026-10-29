@@ -2132,4 +2132,133 @@ class AppLocalizationsZu extends AppLocalizations {
 
   @override
   String get lsLoading => 'Loading languages';
+
+  @override
+  String get lbTitle => 'Leaderboard';
+
+  @override
+  String get lbBack => 'Back';
+
+  @override
+  String get lbGlobal => 'Global';
+
+  @override
+  String get lbTribe => 'My tribe';
+
+  @override
+  String get lbCountry => 'My country';
+
+  @override
+  String get lbWeek => 'This week';
+
+  @override
+  String get lbLeader => 'Top of the week';
+
+  @override
+  String get lbColRank => 'RANK';
+
+  @override
+  String get lbColLearner => 'LEARNER';
+
+  @override
+  String get lbColXp => 'XP';
+
+  @override
+  String lbXp(int xp) {
+    return '$xp XP';
+  }
+
+  @override
+  String lbStreak(int days) {
+    return '$days-day streak';
+  }
+
+  @override
+  String lbUp(int n) {
+    return 'Up $n places';
+  }
+
+  @override
+  String lbDown(int n) {
+    return 'Down $n places';
+  }
+
+  @override
+  String lbRankN(int n) {
+    return 'Rank $n';
+  }
+
+  @override
+  String get lbYou => 'You';
+
+  @override
+  String lbYourRank(int n) {
+    return 'Your rank: #$n';
+  }
+
+  @override
+  String get lbUnranked => 'Finish a lesson to join this week\'s board';
+
+  @override
+  String get lbFriendly =>
+      'Everyone starts fresh each Monday. Practice is what counts, not speed.';
+
+  @override
+  String lbLearner(int n) {
+    return 'Learner $n';
+  }
+
+  @override
+  String get lbMinorTeen =>
+      'Your profile is private: others see you as \"Learner\", never your name.';
+
+  @override
+  String get lbMinorChild =>
+      'Names are hidden to keep everyone safe. You can still see how you\'re doing!';
+
+  @override
+  String get lbNoTribeTitle => 'Pick a tribe first';
+
+  @override
+  String get lbNoTribeBody =>
+      'Join a tribe to see how your group is doing this week.';
+
+  @override
+  String get lbPickTribe => 'Choose a tribe';
+
+  @override
+  String get lbNoCountryTitle => 'Add your country';
+
+  @override
+  String get lbNoCountryBody =>
+      'Set your country in your profile to see learners near you.';
+
+  @override
+  String get lbEmptyTitle => 'No rankings yet this week';
+
+  @override
+  String get lbEmptyBody =>
+      'Finish a lesson and you could be first on the board.';
+
+  @override
+  String get lbErrorTitle => 'We couldn\'t load the board';
+
+  @override
+  String get lbErrorBody => 'Your XP is safe. Try again in a moment.';
+
+  @override
+  String get lbOfflineTitle => 'You\'re offline';
+
+  @override
+  String get lbOfflineBody =>
+      'Rankings update when you\'re back online. Lessons you finish offline still count.';
+
+  @override
+  String get lbRetry => 'Try again';
+
+  @override
+  String get lbLoading => 'Loading leaderboard';
+
+  @override
+  String get lbMore => 'Loading more';
 }

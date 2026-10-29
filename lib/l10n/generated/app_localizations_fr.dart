@@ -2156,4 +2156,134 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get lsLoading => 'Chargement des langues';
+
+  @override
+  String get lbTitle => 'Classement';
+
+  @override
+  String get lbBack => 'Retour';
+
+  @override
+  String get lbGlobal => 'Mondial';
+
+  @override
+  String get lbTribe => 'Ma tribu';
+
+  @override
+  String get lbCountry => 'Mon pays';
+
+  @override
+  String get lbWeek => 'Cette semaine';
+
+  @override
+  String get lbLeader => 'En tête cette semaine';
+
+  @override
+  String get lbColRank => 'RANG';
+
+  @override
+  String get lbColLearner => 'APPRENANT';
+
+  @override
+  String get lbColXp => 'XP';
+
+  @override
+  String lbXp(int xp) {
+    return '$xp XP';
+  }
+
+  @override
+  String lbStreak(int days) {
+    return 'Série de $days jours';
+  }
+
+  @override
+  String lbUp(int n) {
+    return 'Gagne $n places';
+  }
+
+  @override
+  String lbDown(int n) {
+    return 'Perd $n places';
+  }
+
+  @override
+  String lbRankN(int n) {
+    return 'Rang $n';
+  }
+
+  @override
+  String get lbYou => 'Toi';
+
+  @override
+  String lbYourRank(int n) {
+    return 'Ton rang : n° $n';
+  }
+
+  @override
+  String get lbUnranked =>
+      'Termine une leçon pour rejoindre le classement de la semaine';
+
+  @override
+  String get lbFriendly =>
+      'Tout le monde repart à zéro chaque lundi. C\'est la pratique qui compte, pas la vitesse.';
+
+  @override
+  String lbLearner(int n) {
+    return 'Apprenant $n';
+  }
+
+  @override
+  String get lbMinorTeen =>
+      'Ton profil est privé : les autres te voient comme « Apprenant », jamais ton nom.';
+
+  @override
+  String get lbMinorChild =>
+      'Les noms sont cachés pour la sécurité de tous. Tu vois quand même tes progrès !';
+
+  @override
+  String get lbNoTribeTitle => 'Choisis d\'abord une tribu';
+
+  @override
+  String get lbNoTribeBody =>
+      'Rejoins une tribu pour voir comment ton groupe s\'en sort cette semaine.';
+
+  @override
+  String get lbPickTribe => 'Choisir une tribu';
+
+  @override
+  String get lbNoCountryTitle => 'Ajoute ton pays';
+
+  @override
+  String get lbNoCountryBody =>
+      'Indique ton pays dans ton profil pour voir les apprenants près de toi.';
+
+  @override
+  String get lbEmptyTitle => 'Pas encore de classement cette semaine';
+
+  @override
+  String get lbEmptyBody => 'Termine une leçon et tu pourrais être premier.';
+
+  @override
+  String get lbErrorTitle => 'Impossible de charger le classement';
+
+  @override
+  String get lbErrorBody =>
+      'Tes XP sont en sécurité. Réessaie dans un instant.';
+
+  @override
+  String get lbOfflineTitle => 'Tu es hors ligne';
+
+  @override
+  String get lbOfflineBody =>
+      'Le classement se met à jour une fois en ligne. Les leçons faites hors ligne comptent.';
+
+  @override
+  String get lbRetry => 'Réessayer';
+
+  @override
+  String get lbLoading => 'Chargement du classement';
+
+  @override
+  String get lbMore => 'Chargement';
 }

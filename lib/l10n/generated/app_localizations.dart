@@ -3773,6 +3773,222 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Loading languages'**
   String get lsLoading;
+
+  /// lbTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Leaderboard'**
+  String get lbTitle;
+
+  /// lbBack
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get lbBack;
+
+  /// lbGlobal
+  ///
+  /// In en, this message translates to:
+  /// **'Global'**
+  String get lbGlobal;
+
+  /// lbTribe
+  ///
+  /// In en, this message translates to:
+  /// **'My tribe'**
+  String get lbTribe;
+
+  /// lbCountry
+  ///
+  /// In en, this message translates to:
+  /// **'My country'**
+  String get lbCountry;
+
+  /// lbWeek
+  ///
+  /// In en, this message translates to:
+  /// **'This week'**
+  String get lbWeek;
+
+  /// lbLeader
+  ///
+  /// In en, this message translates to:
+  /// **'Top of the week'**
+  String get lbLeader;
+
+  /// lbColRank
+  ///
+  /// In en, this message translates to:
+  /// **'RANK'**
+  String get lbColRank;
+
+  /// lbColLearner
+  ///
+  /// In en, this message translates to:
+  /// **'LEARNER'**
+  String get lbColLearner;
+
+  /// lbColXp
+  ///
+  /// In en, this message translates to:
+  /// **'XP'**
+  String get lbColXp;
+
+  /// lbXp
+  ///
+  /// In en, this message translates to:
+  /// **'{xp} XP'**
+  String lbXp(int xp);
+
+  /// lbStreak
+  ///
+  /// In en, this message translates to:
+  /// **'{days}-day streak'**
+  String lbStreak(int days);
+
+  /// lbUp
+  ///
+  /// In en, this message translates to:
+  /// **'Up {n} places'**
+  String lbUp(int n);
+
+  /// lbDown
+  ///
+  /// In en, this message translates to:
+  /// **'Down {n} places'**
+  String lbDown(int n);
+
+  /// lbRankN
+  ///
+  /// In en, this message translates to:
+  /// **'Rank {n}'**
+  String lbRankN(int n);
+
+  /// lbYou
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get lbYou;
+
+  /// lbYourRank
+  ///
+  /// In en, this message translates to:
+  /// **'Your rank: #{n}'**
+  String lbYourRank(int n);
+
+  /// lbUnranked
+  ///
+  /// In en, this message translates to:
+  /// **'Finish a lesson to join this week\'s board'**
+  String get lbUnranked;
+
+  /// lbFriendly
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone starts fresh each Monday. Practice is what counts, not speed.'**
+  String get lbFriendly;
+
+  /// lbLearner
+  ///
+  /// In en, this message translates to:
+  /// **'Learner {n}'**
+  String lbLearner(int n);
+
+  /// lbMinorTeen
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile is private: others see you as \"Learner\", never your name.'**
+  String get lbMinorTeen;
+
+  /// lbMinorChild
+  ///
+  /// In en, this message translates to:
+  /// **'Names are hidden to keep everyone safe. You can still see how you\'re doing!'**
+  String get lbMinorChild;
+
+  /// lbNoTribeTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a tribe first'**
+  String get lbNoTribeTitle;
+
+  /// lbNoTribeBody
+  ///
+  /// In en, this message translates to:
+  /// **'Join a tribe to see how your group is doing this week.'**
+  String get lbNoTribeBody;
+
+  /// lbPickTribe
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a tribe'**
+  String get lbPickTribe;
+
+  /// lbNoCountryTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Add your country'**
+  String get lbNoCountryTitle;
+
+  /// lbNoCountryBody
+  ///
+  /// In en, this message translates to:
+  /// **'Set your country in your profile to see learners near you.'**
+  String get lbNoCountryBody;
+
+  /// lbEmptyTitle
+  ///
+  /// In en, this message translates to:
+  /// **'No rankings yet this week'**
+  String get lbEmptyTitle;
+
+  /// lbEmptyBody
+  ///
+  /// In en, this message translates to:
+  /// **'Finish a lesson and you could be first on the board.'**
+  String get lbEmptyBody;
+
+  /// lbErrorTitle
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t load the board'**
+  String get lbErrorTitle;
+
+  /// lbErrorBody
+  ///
+  /// In en, this message translates to:
+  /// **'Your XP is safe. Try again in a moment.'**
+  String get lbErrorBody;
+
+  /// lbOfflineTitle
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline'**
+  String get lbOfflineTitle;
+
+  /// lbOfflineBody
+  ///
+  /// In en, this message translates to:
+  /// **'Rankings update when you\'re back online. Lessons you finish offline still count.'**
+  String get lbOfflineBody;
+
+  /// lbRetry
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get lbRetry;
+
+  /// lbLoading
+  ///
+  /// In en, this message translates to:
+  /// **'Loading leaderboard'**
+  String get lbLoading;
+
+  /// lbMore
+  ///
+  /// In en, this message translates to:
+  /// **'Loading more'**
+  String get lbMore;
 }
 
 class _AppLocalizationsDelegate

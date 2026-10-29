@@ -143,7 +143,7 @@ mobile	lib/screens/games/victory_results_screen.dart	todo
 mobile	lib/screens/gamification/badge_collection_screen.dart	todo			
 mobile	lib/screens/gamification/badge_collection_screen_material3.dart	todo			
 mobile	lib/screens/gamification/classroom_dashboard_screen.dart	todo			
-mobile	lib/screens/gamification/leaderboard_screen.dart	todo			
+mobile	lib/screens/gamification/leaderboard_screen.dart	ready-for-review	self 9x10 avg 9.0; weekly board: champion hero, medals, movement, pinned self, minors anonymised, all states, en/ar/fr, goldens+tablet	social-circles 08/09/13; profile-progress 04	2026-10-29
 mobile	lib/screens/gamification/magic_items_screen.dart	todo			
 mobile	lib/screens/gamification/quest_screen.dart	todo			
 mobile	lib/screens/gamification/seasonal_events_screen.dart	todo			

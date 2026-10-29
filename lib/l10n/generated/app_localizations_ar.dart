@@ -2140,4 +2140,131 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get lsLoading => 'جارٍ تحميل اللغات';
+
+  @override
+  String get lbTitle => 'لوحة الصدارة';
+
+  @override
+  String get lbBack => 'رجوع';
+
+  @override
+  String get lbGlobal => 'عالمي';
+
+  @override
+  String get lbTribe => 'قبيلتي';
+
+  @override
+  String get lbCountry => 'بلدي';
+
+  @override
+  String get lbWeek => 'هذا الأسبوع';
+
+  @override
+  String get lbLeader => 'صاحب الصدارة هذا الأسبوع';
+
+  @override
+  String get lbColRank => 'المركز';
+
+  @override
+  String get lbColLearner => 'المتعلّم';
+
+  @override
+  String get lbColXp => 'نقاط';
+
+  @override
+  String lbXp(int xp) {
+    return '$xp نقطة';
+  }
+
+  @override
+  String lbStreak(int days) {
+    return 'سلسلة $days يوم';
+  }
+
+  @override
+  String lbUp(int n) {
+    return 'صعد $n مراكز';
+  }
+
+  @override
+  String lbDown(int n) {
+    return 'نزل $n مراكز';
+  }
+
+  @override
+  String lbRankN(int n) {
+    return 'المركز $n';
+  }
+
+  @override
+  String get lbYou => 'أنت';
+
+  @override
+  String lbYourRank(int n) {
+    return 'مركزك: #$n';
+  }
+
+  @override
+  String get lbUnranked => 'أكمل درسًا لتنضم إلى لوحة هذا الأسبوع';
+
+  @override
+  String get lbFriendly =>
+      'الجميع يبدأ من جديد كل اثنين. المهم هو التدرّب، لا السرعة.';
+
+  @override
+  String lbLearner(int n) {
+    return 'متعلّم $n';
+  }
+
+  @override
+  String get lbMinorTeen =>
+      'ملفك خاص: يراك الآخرون باسم «متعلّم»، ولا يرون اسمك أبدًا.';
+
+  @override
+  String get lbMinorChild =>
+      'الأسماء مخفية ليبقى الجميع بأمان. ويمكنك أن ترى تقدّمك!';
+
+  @override
+  String get lbNoTribeTitle => 'اختر قبيلة أولًا';
+
+  @override
+  String get lbNoTribeBody => 'انضم إلى قبيلة لترى أداء مجموعتك هذا الأسبوع.';
+
+  @override
+  String get lbPickTribe => 'اختر قبيلة';
+
+  @override
+  String get lbNoCountryTitle => 'أضف بلدك';
+
+  @override
+  String get lbNoCountryBody =>
+      'حدّد بلدك في ملفك لترى المتعلّمين القريبين منك.';
+
+  @override
+  String get lbEmptyTitle => 'لا ترتيب بعد هذا الأسبوع';
+
+  @override
+  String get lbEmptyBody => 'أكمل درسًا وقد تكون الأول في اللوحة.';
+
+  @override
+  String get lbErrorTitle => 'تعذّر تحميل اللوحة';
+
+  @override
+  String get lbErrorBody => 'نقاطك محفوظة. حاول مجددًا بعد قليل.';
+
+  @override
+  String get lbOfflineTitle => 'أنت غير متصل';
+
+  @override
+  String get lbOfflineBody =>
+      'يتحدّث الترتيب عند عودتك للاتصال. الدروس التي تكملها دون اتصال تُحتسب.';
+
+  @override
+  String get lbRetry => 'حاول مجددًا';
+
+  @override
+  String get lbLoading => 'جارٍ تحميل لوحة الصدارة';
+
+  @override
+  String get lbMore => 'جارٍ تحميل المزيد';
 }

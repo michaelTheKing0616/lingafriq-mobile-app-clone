@@ -2872,5 +2872,184 @@
   "lsLoading": "Loading languages",
   "@lsLoading": {
     "description": "lsLoading"
+  },
+  "lbTitle": "Leaderboard",
+  "@lbTitle": {
+    "description": "lbTitle"
+  },
+  "lbBack": "Back",
+  "@lbBack": {
+    "description": "lbBack"
+  },
+  "lbGlobal": "Global",
+  "@lbGlobal": {
+    "description": "lbGlobal"
+  },
+  "lbTribe": "My tribe",
+  "@lbTribe": {
+    "description": "lbTribe"
+  },
+  "lbCountry": "My country",
+  "@lbCountry": {
+    "description": "lbCountry"
+  },
+  "lbWeek": "This week",
+  "@lbWeek": {
+    "description": "lbWeek"
+  },
+  "lbLeader": "Top of the week",
+  "@lbLeader": {
+    "description": "lbLeader"
+  },
+  "lbColRank": "RANK",
+  "@lbColRank": {
+    "description": "lbColRank"
+  },
+  "lbColLearner": "LEARNER",
+  "@lbColLearner": {
+    "description": "lbColLearner"
+  },
+  "lbColXp": "XP",
+  "@lbColXp": {
+    "description": "lbColXp"
+  },
+  "lbXp": "{xp} XP",
+  "@lbXp": {
+    "description": "lbXp",
+    "placeholders": {
+      "xp": {
+        "type": "int"
+      }
+    }
+  },
+  "lbStreak": "{days}-day streak",
+  "@lbStreak": {
+    "description": "lbStreak",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "lbUp": "Up {n} places",
+  "@lbUp": {
+    "description": "lbUp",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "lbDown": "Down {n} places",
+  "@lbDown": {
+    "description": "lbDown",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "lbRankN": "Rank {n}",
+  "@lbRankN": {
+    "description": "lbRankN",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "lbYou": "You",
+  "@lbYou": {
+    "description": "lbYou"
+  },
+  "lbYourRank": "Your rank: #{n}",
+  "@lbYourRank": {
+    "description": "lbYourRank",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "lbUnranked": "Finish a lesson to join this week's board",
+  "@lbUnranked": {
+    "description": "lbUnranked"
+  },
+  "lbFriendly": "Everyone starts fresh each Monday. Practice is what counts, not speed.",
+  "@lbFriendly": {
+    "description": "lbFriendly"
+  },
+  "lbLearner": "Learner {n}",
+  "@lbLearner": {
+    "description": "lbLearner",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "lbMinorTeen": "Your profile is private: others see you as \"Learner\", never your name.",
+  "@lbMinorTeen": {
+    "description": "lbMinorTeen"
+  },
+  "lbMinorChild": "Names are hidden to keep everyone safe. You can still see how you're doing!",
+  "@lbMinorChild": {
+    "description": "lbMinorChild"
+  },
+  "lbNoTribeTitle": "Pick a tribe first",
+  "@lbNoTribeTitle": {
+    "description": "lbNoTribeTitle"
+  },
+  "lbNoTribeBody": "Join a tribe to see how your group is doing this week.",
+  "@lbNoTribeBody": {
+    "description": "lbNoTribeBody"
+  },
+  "lbPickTribe": "Choose a tribe",
+  "@lbPickTribe": {
+    "description": "lbPickTribe"
+  },
+  "lbNoCountryTitle": "Add your country",
+  "@lbNoCountryTitle": {
+    "description": "lbNoCountryTitle"
+  },
+  "lbNoCountryBody": "Set your country in your profile to see learners near you.",
+  "@lbNoCountryBody": {
+    "description": "lbNoCountryBody"
+  },
+  "lbEmptyTitle": "No rankings yet this week",
+  "@lbEmptyTitle": {
+    "description": "lbEmptyTitle"
+  },
+  "lbEmptyBody": "Finish a lesson and you could be first on the board.",
+  "@lbEmptyBody": {
+    "description": "lbEmptyBody"
+  },
+  "lbErrorTitle": "We couldn't load the board",
+  "@lbErrorTitle": {
+    "description": "lbErrorTitle"
+  },
+  "lbErrorBody": "Your XP is safe. Try again in a moment.",
+  "@lbErrorBody": {
+    "description": "lbErrorBody"
+  },
+  "lbOfflineTitle": "You're offline",
+  "@lbOfflineTitle": {
+    "description": "lbOfflineTitle"
+  },
+  "lbOfflineBody": "Rankings update when you're back online. Lessons you finish offline still count.",
+  "@lbOfflineBody": {
+    "description": "lbOfflineBody"
+  },
+  "lbRetry": "Try again",
+  "@lbRetry": {
+    "description": "lbRetry"
+  },
+  "lbLoading": "Loading leaderboard",
+  "@lbLoading": {
+    "description": "lbLoading"
+  },
+  "lbMore": "Loading more",
+  "@lbMore": {
+    "description": "lbMore"
   }
 }
