@@ -17,8 +17,7 @@ class IndexNotifier extends Notifier<int> {
   }
 }
 
-final _indexProvider =
-    NotifierProvider.autoDispose<IndexNotifier, int>(() {
+final _indexProvider = NotifierProvider.autoDispose<IndexNotifier, int>(() {
   return IndexNotifier();
 });
 
@@ -39,7 +38,9 @@ class OnboardingScreen extends HookConsumerWidget {
               onPageChanged: (value) {
                 HapticFeedback.lightImpact();
                 if (value == 4) {
-                  ref.read(navigationProvider).navigateOffAll(const TabsViewMaterial3());
+                  ref
+                      .read(navigationProvider)
+                      .navigateOffAll(const TabsViewMaterial3());
                 } else {
                   ref.read(_indexProvider.notifier).setIndex(value);
                 }
@@ -49,7 +50,8 @@ class OnboardingScreen extends HookConsumerWidget {
                   topImage: Images.obTop1,
                   bottomImage: Images.obBottom1,
                   title: "What Do We Offer Uniqely",
-                  description: "54 countries, 2000+ languages, 1+ billion voices. One origin. ",
+                  description:
+                      "54 countries, 2000+ languages, 1+ billion voices. One origin. ",
                   textfontsize: 24.sp,
                 ),
                 _OnboardingItem(
@@ -61,18 +63,19 @@ class OnboardingScreen extends HookConsumerWidget {
                       "Afrika has a voice, and our duty is to amplify it.  We'd love take you on a journey through history, and  help you express yourself through language. One thing is certain, we bring you closer to Afrika and her culture.",
                 ),
                 _OnboardingItem(
-                    textfontsize: 17.sp,
-                    topImage: Images.obTop3,
-                    bottomImage: Images.obBottom3,
-                    title: "What Do We Offer Uniqely",
-                    description:
-                        '''This app provides you with learning tools such as video, audio, and illustrations to teach you your preferred Afrikan language from scratch. 
+                  textfontsize: 17.sp,
+                  topImage: Images.obTop3,
+                  bottomImage: Images.obBottom3,
+                  title: "What Do We Offer Uniqely",
+                  description:
+                      '''This app provides you with learning tools such as video, audio, and illustrations to teach you your preferred Afrikan language from scratch. 
 
 Learn about the history of the people who speak this language, and how they express themselves in their interactions with each other through their mannerisms. 
 
 LingAfriq offers interactive quizzes  to test and improve your knowledge on language topics, history, and current affairs. 
 
-Earn points as you progress and see how you compare to other learners on the leaderboard.'''),
+Earn points as you progress and see how you compare to other learners on the leaderboard.''',
+                ),
                 _OnboardingItem(
                   topImage: Images.obTop4,
                   bottomImage: Images.obBottom2,
@@ -109,11 +112,20 @@ You can do this by going to your profile tab, and selecting the "Feedback" optio
                                   return AnimatedContainer(
                                     duration: const Duration(milliseconds: 500),
                                     curve: Curves.fastLinearToSlowEaseIn,
-                                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 4,
+                                    ),
                                     width: selected ? 24 : 6,
                                     height: 6,
                                     decoration: BoxDecoration(
-                                      color: selected ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.38),
+                                      color: selected
+                                          ? Theme.of(
+                                              context,
+                                            ).colorScheme.onPrimary
+                                          : Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary
+                                                .withValues(alpha: 0.38),
                                       borderRadius: BorderRadius.circular(100),
                                     ),
                                   );
@@ -123,29 +135,39 @@ You can do this by going to your profile tab, and selecting the "Feedback" optio
                                 onPressed: () async {
                                   if (index < 3) {
                                     controller.nextPage(
-                                      duration: const Duration(milliseconds: 1000),
+                                      duration: const Duration(
+                                        milliseconds: 1000,
+                                      ),
                                       curve: Curves.fastLinearToSlowEaseIn,
                                     );
                                   } else {
-                                    ref.read(apiProvider.notifier).registerDevice();
-                                    ref.read(navigationProvider).navigateOffAll(const TabsViewMaterial3());
+                                    ref
+                                        .read(apiProvider.notifier)
+                                        .registerDevice();
+                                    ref
+                                        .read(navigationProvider)
+                                        .navigateOffAll(
+                                          const TabsViewMaterial3(),
+                                        );
                                   }
                                 },
                                 icon: Icon(
                                   Icons.chevron_right,
                                   size: 36.sp,
-                                  color: Theme.of(context).colorScheme.onPrimary,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onPrimary,
                                 ),
-                              )
+                              ),
                             ],
                           );
                         },
-                      ).expand()
+                      ).expand(),
                     ],
                   ).py24().px16(),
-                )
+                ),
               ],
-            )
+            ),
           ],
         ),
       ),
@@ -180,9 +202,7 @@ class _OnboardingItem extends StatelessWidget {
             width: double.infinity,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(topImage, width: width ?? 0.5.sw),
-              ],
+              children: [Image.asset(topImage, width: width ?? 0.5.sw)],
             ),
           ).expand(flex: 8),
           Container(
@@ -198,7 +218,9 @@ class _OnboardingItem extends StatelessWidget {
               children: [
                 4.heightBox,
                 if (textfontsize != null)
-                  description.text.center.white.size(textfontsize).make() //.pOnly(right: 0.1.sw)
+                  description.text.center.white
+                      .size(textfontsize)
+                      .make() //.pOnly(right: 0.1.sw)
                 else
                   description.text.center.white.make(), //.pOnly(right: 0.1.sw),
                 64.heightBox,

@@ -22,15 +22,13 @@ class AgeGateScreen extends HookConsumerWidget {
   final String? deviceKeyOverride;
   final DateTime? debugPrefilledBirthDate;
 
-  static const String ageGateTitle =
-      'When were you born?';
+  static const String ageGateTitle = 'When were you born?';
   static const String ageGateBody =
       'We use this to keep learners safe and unlock the right features for your age. '
       'We store your age group, not your full birthday, after you continue.';
   static const String ageGateBlocked =
       'You already entered a birth date on this device. If something looks wrong, ask a guardian to help from their account.';
-  static const String ageGatePendingGuardianTitle =
-      'We need a guardian';
+  static const String ageGatePendingGuardianTitle = 'We need a guardian';
   static const String ageGatePendingGuardianBody =
       'Your account is ready for lessons, but chat, Village, and purchases stay paused until a guardian approves.';
 
@@ -78,7 +76,8 @@ class AgeGateScreen extends HookConsumerWidget {
             blockedRetry.value = true;
             errorText.value = ageGateBlocked;
           } else {
-            errorText.value = result.message ?? 'We could not save that date. Try again.';
+            errorText.value =
+                result.message ?? 'We could not save that date. Try again.';
           }
           return;
         }
@@ -94,7 +93,8 @@ class AgeGateScreen extends HookConsumerWidget {
 
     Future<void> pickDate() async {
       final now = DateTime.now();
-      final initial = selectedDate.value ?? DateTime(now.year - 18, now.month, now.day);
+      final initial =
+          selectedDate.value ?? DateTime(now.year - 18, now.month, now.day);
       final picked = await showDatePicker(
         context: context,
         initialDate: initial,
@@ -135,64 +135,78 @@ class AgeGateScreen extends HookConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-          Text(
-            ageGateTitle,
-            style: PanAfricanTypography.headlineSmall(context).copyWith(
-              fontWeight: FontWeight.w700,
-              color: colorScheme.onSurface,
-            ),
-          ),
-          SizedBox(height: PanAfricanSpacing.md.h),
-          Text(
-            ageGateBody,
-            style: PanAfricanTypography.bodyLarge(context).copyWith(
-              color: colorScheme.onSurfaceVariant,
-              height: 1.45,
-            ),
-          ),
-          SizedBox(height: PanAfricanSpacing.lg.h),
-          Semantics(
-            button: true,
-            label: 'Date of birth, ${selectedDate.value != null ? _formatDob(selectedDate.value!) : 'not selected'}',
-            child: Material(
-              color: colorScheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-                onTap: submitting.value ? null : pickDate,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: PanAfricanSpacing.lg.w,
-                    vertical: PanAfricanSpacing.lg.h,
+                  Text(
+                    ageGateTitle,
+                    style: PanAfricanTypography.headlineSmall(context).copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: colorScheme.onSurface,
+                    ),
                   ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.cake_outlined, color: colorScheme.primary, size: 28.sp),
-                      SizedBox(width: PanAfricanSpacing.md.w),
-                      Expanded(
-                        child: Text(
-                          selectedDate.value != null
-                              ? _formatDob(selectedDate.value!)
-                              : 'Select date of birth',
-                          style: PanAfricanTypography.titleMedium(context),
+                  SizedBox(height: PanAfricanSpacing.md.h),
+                  Text(
+                    ageGateBody,
+                    style: PanAfricanTypography.bodyLarge(context).copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                      height: 1.45,
+                    ),
+                  ),
+                  SizedBox(height: PanAfricanSpacing.lg.h),
+                  Semantics(
+                    button: true,
+                    label:
+                        'Date of birth, ${selectedDate.value != null ? _formatDob(selectedDate.value!) : 'not selected'}',
+                    child: Material(
+                      color: colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(
+                          PanAfricanRadius.lg,
+                        ),
+                        onTap: submitting.value ? null : pickDate,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: PanAfricanSpacing.lg.w,
+                            vertical: PanAfricanSpacing.lg.h,
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.cake_outlined,
+                                color: colorScheme.primary,
+                                size: 28.sp,
+                              ),
+                              SizedBox(width: PanAfricanSpacing.md.w),
+                              Expanded(
+                                child: Text(
+                                  selectedDate.value != null
+                                      ? _formatDob(selectedDate.value!)
+                                      : 'Select date of birth',
+                                  style: PanAfricanTypography.titleMedium(
+                                    context,
+                                  ),
+                                ),
+                              ),
+                              Icon(
+                                Icons.calendar_month,
+                                color: colorScheme.outline,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      Icon(Icons.calendar_month, color: colorScheme.outline),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ),
-          ),
-          if (errorText.value != null) ...[
-            SizedBox(height: PanAfricanSpacing.md.h),
-            Text(
-              errorText.value!,
-              style: PanAfricanTypography.bodyMedium(context).copyWith(
-                color: blockedRetry.value ? colorScheme.error : colorScheme.error,
-              ),
-            ),
-          ],
+                  if (errorText.value != null) ...[
+                    SizedBox(height: PanAfricanSpacing.md.h),
+                    Text(
+                      errorText.value!,
+                      style: PanAfricanTypography.bodyMedium(context).copyWith(
+                        color: blockedRetry.value
+                            ? colorScheme.error
+                            : colorScheme.error,
+                      ),
+                    ),
+                  ],
                   SizedBox(height: PanAfricanSpacing.xl.h),
                   SizedBox(
                     height: 48.h,
@@ -209,14 +223,18 @@ class AgeGateScreen extends HookConsumerWidget {
                           ? SizedBox(
                               width: 22.w,
                               height: 22.w,
-                              child: const CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                              child: const CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
                             )
                           : Text(
                               'Continue',
-                              style: PanAfricanTypography.labelLarge(context).copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style: PanAfricanTypography.labelLarge(context)
+                                  .copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                             ),
                     ),
                   ),
@@ -242,7 +260,9 @@ class _AgeGateShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
+      backgroundColor: isDark
+          ? PanAfricanColors.surfaceDark
+          : PanAfricanColors.surfaceLight,
       body: ResponsiveSafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(
@@ -282,23 +302,21 @@ class _StatusPanel extends StatelessWidget {
         SizedBox(height: PanAfricanSpacing.lg.h),
         Text(
           title,
-          style: PanAfricanTypography.headlineSmall(context).copyWith(fontWeight: FontWeight.w700),
+          style: PanAfricanTypography.headlineSmall(
+            context,
+          ).copyWith(fontWeight: FontWeight.w700),
         ),
         SizedBox(height: PanAfricanSpacing.md.h),
         Text(
           body,
-          style: PanAfricanTypography.bodyLarge(context).copyWith(
-            color: colorScheme.onSurfaceVariant,
-            height: 1.45,
-          ),
+          style: PanAfricanTypography.bodyLarge(
+            context,
+          ).copyWith(color: colorScheme.onSurfaceVariant, height: 1.45),
         ),
         SizedBox(height: PanAfricanSpacing.xl.h),
         SizedBox(
           height: 48.h,
-          child: FilledButton(
-            onPressed: onPrimary,
-            child: Text(primaryLabel),
-          ),
+          child: FilledButton(onPressed: onPrimary, child: Text(primaryLabel)),
         ),
       ],
     );

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lingafriq/screens/onboarding/unified_onboarding_screen.dart';
 
 /// Material 3 Onboarding Screen (wrapper/alias)
-/// 
+///
 /// Uses the Unified Onboarding Screen which combines:
 /// - Story-driven African narrative (Pa LingAfriq, Adisa the Weaver, etc.)
 /// - Material 3 UI with Pan-African design system
@@ -16,4 +16,3 @@ class OnboardingScreenMaterial3 extends StatelessWidget {
     return const UnifiedOnboardingScreen();
   }
 }
-

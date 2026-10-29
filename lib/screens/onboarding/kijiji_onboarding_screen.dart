@@ -26,176 +26,189 @@ class KijijiOnboardingScreen extends HookConsumerWidget {
     final animationController = useAnimationController(
       duration: const Duration(milliseconds: 800),
     );
-    
+
     useEffect(() {
       animationController.forward();
       return null;
     }, []);
-    
+
     final onboardingNotifier = ref.read(onboardingProvider.notifier);
-    
+
     final isLoading = useState(false);
-    
+
     return LoadingOverlay(
       isLoading: isLoading.value,
       message: 'Loading...',
       child: Scaffold(
-      body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light,
-        child: Stack(
-          children: [
-            PageView.builder(
-              controller: pageController,
-              physics: const NeverScrollableScrollPhysics(), // Disable swipe
-              onPageChanged: (index) {
-                currentPage.value = index;
-                HapticFeedback.lightImpact();
-                animationController.reset();
-                animationController.forward();
-              },
-              itemCount: 11, // 10 steps + completion
-              itemBuilder: (context, index) {
-                switch (index) {
-                  case 0:
-                    return _WelcomeScreen(
-                      animationController: animationController,
-                      onNext: () => _goToNext(pageController),
-                    );
-                  case 1:
-                    return _ElderScreen(
-                      animationController: animationController,
-                      onboardingNotifier: onboardingNotifier,
-                      onNext: () => _goToNext(pageController),
-                    );
-                  case 2:
-                    return _WeaverScreen(
-                      animationController: animationController,
-                      onboardingNotifier: onboardingNotifier,
-                      onNext: () => _goToNext(pageController),
-                    );
-                  case 3:
-                    return _RhythmMasterScreen(
-                      animationController: animationController,
-                      onboardingNotifier: onboardingNotifier,
-                      onNext: () => _goToNext(pageController),
-                    );
-                  case 4:
-                    return _TimekeeperScreen(
-                      animationController: animationController,
-                      onboardingNotifier: onboardingNotifier,
-                      onNext: () => _goToNext(pageController),
-                    );
-                  case 5:
-                    return _PathChooserScreen(
-                      animationController: animationController,
-                      onboardingNotifier: onboardingNotifier,
-                      onNext: () => _goToNext(pageController),
-                    );
-                  case 6:
-                    return _GriotScreen(
-                      animationController: animationController,
-                      onboardingNotifier: onboardingNotifier,
-                      onNext: () => _goToNext(pageController),
-                    );
-                  case 7:
-                    return _HealerScreen(
-                      animationController: animationController,
-                      onboardingNotifier: onboardingNotifier,
-                      onNext: () => _goToNext(pageController),
-                    );
-                  case 8:
-                    return _SocialScreen(
-                      animationController: animationController,
-                      onboardingNotifier: onboardingNotifier,
-                      onNext: () => _goToNext(pageController),
-                    );
-                  case 9:
-                    return _NamingScreen(
-                      animationController: animationController,
-                      onboardingNotifier: onboardingNotifier,
-                      onNext: () => _goToNext(pageController),
-                    );
-                  case 10:
-                    return _PlacementTestScreen(
-                      animationController: animationController,
-                      onboardingNotifier: onboardingNotifier,
-                      onComplete: () async {
-                        // Save all onboarding data to local storage and queue for backend sync
-                        await onboardingNotifier.saveOnboardingData();
-                        
-                        // Mark onboarding as truly complete (not just "seen")
-                        final prefs = ref.read(sharedPreferencesProvider).prefs;
-                        await prefs.setString('onboarding_complete', 'true');
-                        await ref.read(sharedPreferencesProvider).setOnboardingSeen();
-                        
-                        // Navigate to login screen for authentication
-                        ref.read(navigationProvider).navigateOffAll(const LoginScreen());
-                      },
-                    );
-                  default:
-                    return const SizedBox();
-                }
-              },
-            ),
-            // Progress Indicator
-            Positioned(
-              top: MediaQuery.of(context).padding.top + 16,
-              left: 0,
-              right: 0,
-              child: Consumer(
-                builder: (context, ref, child) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(10, (index) {
-                      final isActive = currentPage.value > index;
-                      final isCurrent = currentPage.value == index;
-                      return AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        width: isActive ? 24 : (isCurrent ? 16 : 8),
-                        height: 8,
-                        decoration: BoxDecoration(
-                          color: isActive
-                              ? Theme.of(context).colorScheme.onPrimary
-                              : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.3),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
+        body: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle.light,
+          child: Stack(
+            children: [
+              PageView.builder(
+                controller: pageController,
+                physics: const NeverScrollableScrollPhysics(), // Disable swipe
+                onPageChanged: (index) {
+                  currentPage.value = index;
+                  HapticFeedback.lightImpact();
+                  animationController.reset();
+                  animationController.forward();
+                },
+                itemCount: 11, // 10 steps + completion
+                itemBuilder: (context, index) {
+                  switch (index) {
+                    case 0:
+                      return _WelcomeScreen(
+                        animationController: animationController,
+                        onNext: () => _goToNext(pageController),
                       );
-                    }),
-                  );
+                    case 1:
+                      return _ElderScreen(
+                        animationController: animationController,
+                        onboardingNotifier: onboardingNotifier,
+                        onNext: () => _goToNext(pageController),
+                      );
+                    case 2:
+                      return _WeaverScreen(
+                        animationController: animationController,
+                        onboardingNotifier: onboardingNotifier,
+                        onNext: () => _goToNext(pageController),
+                      );
+                    case 3:
+                      return _RhythmMasterScreen(
+                        animationController: animationController,
+                        onboardingNotifier: onboardingNotifier,
+                        onNext: () => _goToNext(pageController),
+                      );
+                    case 4:
+                      return _TimekeeperScreen(
+                        animationController: animationController,
+                        onboardingNotifier: onboardingNotifier,
+                        onNext: () => _goToNext(pageController),
+                      );
+                    case 5:
+                      return _PathChooserScreen(
+                        animationController: animationController,
+                        onboardingNotifier: onboardingNotifier,
+                        onNext: () => _goToNext(pageController),
+                      );
+                    case 6:
+                      return _GriotScreen(
+                        animationController: animationController,
+                        onboardingNotifier: onboardingNotifier,
+                        onNext: () => _goToNext(pageController),
+                      );
+                    case 7:
+                      return _HealerScreen(
+                        animationController: animationController,
+                        onboardingNotifier: onboardingNotifier,
+                        onNext: () => _goToNext(pageController),
+                      );
+                    case 8:
+                      return _SocialScreen(
+                        animationController: animationController,
+                        onboardingNotifier: onboardingNotifier,
+                        onNext: () => _goToNext(pageController),
+                      );
+                    case 9:
+                      return _NamingScreen(
+                        animationController: animationController,
+                        onboardingNotifier: onboardingNotifier,
+                        onNext: () => _goToNext(pageController),
+                      );
+                    case 10:
+                      return _PlacementTestScreen(
+                        animationController: animationController,
+                        onboardingNotifier: onboardingNotifier,
+                        onComplete: () async {
+                          // Save all onboarding data to local storage and queue for backend sync
+                          await onboardingNotifier.saveOnboardingData();
+
+                          // Mark onboarding as truly complete (not just "seen")
+                          final prefs = ref
+                              .read(sharedPreferencesProvider)
+                              .prefs;
+                          await prefs.setString('onboarding_complete', 'true');
+                          await ref
+                              .read(sharedPreferencesProvider)
+                              .setOnboardingSeen();
+
+                          // Navigate to login screen for authentication
+                          ref
+                              .read(navigationProvider)
+                              .navigateOffAll(const LoginScreen());
+                        },
+                      );
+                    default:
+                      return const SizedBox();
+                  }
                 },
               ),
-            ),
-            // Skip Button (only on first few screens)
-            // When skipped, mark onboarding as seen and navigate to login
-            if (currentPage.value < 3)
+              // Progress Indicator
               Positioned(
                 top: MediaQuery.of(context).padding.top + 16,
-                right: 20,
-                child: TextButton(
-                  onPressed: () async {
-                    // Mark onboarding as seen
-                    await ref.read(sharedPreferencesProvider).setOnboardingSeen();
-                    // Navigate directly to login screen (with pre-filled credentials if available)
-                    ref.read(navigationProvider).navigateOffAll(const LoginScreen());
+                left: 0,
+                right: 0,
+                child: Consumer(
+                  builder: (context, ref, child) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(10, (index) {
+                        final isActive = currentPage.value > index;
+                        final isCurrent = currentPage.value == index;
+                        return AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          margin: const EdgeInsets.symmetric(horizontal: 4),
+                          width: isActive ? 24 : (isCurrent ? 16 : 8),
+                          height: 8,
+                          decoration: BoxDecoration(
+                            color: isActive
+                                ? Theme.of(context).colorScheme.onPrimary
+                                : Theme.of(context).colorScheme.onPrimary
+                                      .withValues(alpha: 0.3),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        );
+                      }),
+                    );
                   },
-                  child: Text(
-                    'Skip',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9),
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                ),
+              ),
+              // Skip Button (only on first few screens)
+              // When skipped, mark onboarding as seen and navigate to login
+              if (currentPage.value < 3)
+                Positioned(
+                  top: MediaQuery.of(context).padding.top + 16,
+                  right: 20,
+                  child: TextButton(
+                    onPressed: () async {
+                      // Mark onboarding as seen
+                      await ref
+                          .read(sharedPreferencesProvider)
+                          .setOnboardingSeen();
+                      // Navigate directly to login screen (with pre-filled credentials if available)
+                      ref
+                          .read(navigationProvider)
+                          .navigateOffAll(const LoginScreen());
+                    },
+                    child: Text(
+                      'Skip',
+                      style: TextStyle(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
-      ),
       ),
     );
   }
-  
+
   void _goToNext(PageController controller) {
     controller.nextPage(
       duration: const Duration(milliseconds: 500),
@@ -208,18 +221,16 @@ class KijijiOnboardingScreen extends HookConsumerWidget {
 class _WelcomeScreen extends StatelessWidget {
   final AnimationController animationController;
   final VoidCallback onNext;
-  
+
   const _WelcomeScreen({
     required this.animationController,
     required this.onNext,
   });
-  
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        gradient: AfricanTheme.africanSavanna,
-      ),
+      decoration: const BoxDecoration(gradient: AfricanTheme.africanSavanna),
       child: ResponsiveSafeArea(
         child: Column(
           children: [
@@ -230,28 +241,42 @@ class _WelcomeScreen extends StatelessWidget {
                   children: [
                     // Baobab tree illustration placeholder
                     Container(
-                      width: 280,
-                      height: 280,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: AfricanTheme.africanSunset,
-                        boxShadow: AfricanTheme.africanShadow,
-                      ),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Icon(
-                            Icons.park_rounded,
-                            size: 120,
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          )
-                              .animate(onPlay: (controller) => controller.repeat())
-                              .shimmer(duration: 2000.ms, color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.3)),
-                        ],
-                      ),
-                    )
+                          width: 280,
+                          height: 280,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: AfricanTheme.africanSunset,
+                            boxShadow: AfricanTheme.africanShadow,
+                          ),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Icon(
+                                    Icons.park_rounded,
+                                    size: 120,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onPrimary,
+                                  )
+                                  .animate(
+                                    onPlay: (controller) => controller.repeat(),
+                                  )
+                                  .shimmer(
+                                    duration: 2000.ms,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary
+                                        .withValues(alpha: 0.3),
+                                  ),
+                            ],
+                          ),
+                        )
                         .animate()
-                        .scale(delay: 200.ms, duration: 600.ms, curve: Curves.elasticOut)
+                        .scale(
+                          delay: 200.ms,
+                          duration: 600.ms,
+                          curve: Curves.elasticOut,
+                        )
                         .fadeIn(duration: 400.ms),
                     const SizedBox(height: 48),
                     FadeTransition(
@@ -283,7 +308,9 @@ class _WelcomeScreen extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
-                          color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onPrimary.withValues(alpha: 0.9),
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -302,17 +329,19 @@ class _WelcomeScreen extends StatelessWidget {
                   style: FilledButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.surface,
                     foregroundColor: AfricanTheme.primaryGreen,
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 16,
+                      horizontal: 48,
+                    ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(PanAfricanRadius.round),
+                      borderRadius: BorderRadius.circular(
+                        PanAfricanRadius.round,
+                      ),
                     ),
                   ),
                   child: const Text(
                     'Begin Journey',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -329,24 +358,22 @@ class _ElderScreen extends HookConsumerWidget {
   final AnimationController animationController;
   final OnboardingNotifier onboardingNotifier;
   final VoidCallback onNext;
-  
+
   const _ElderScreen({
     required this.animationController,
     required this.onboardingNotifier,
     required this.onNext,
   });
-  
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedAge = useState<String?>(null);
     final selectedReasons = useState<List<String>>([]);
-    
+
     final reasons = ['heritage', 'travel', 'school', 'business', 'curiosity'];
-    
+
     return Container(
-      decoration: const BoxDecoration(
-        gradient: AfricanTheme.africanSavanna,
-      ),
+      decoration: const BoxDecoration(gradient: AfricanTheme.africanSavanna),
       child: ResponsiveSafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -359,17 +386,16 @@ class _ElderScreen extends HookConsumerWidget {
                 height: 200,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onPrimary.withValues(alpha: 0.2),
                 ),
                 child: Icon(
                   Icons.face_rounded,
                   size: 100,
                   color: Theme.of(context).colorScheme.onPrimary,
                 ),
-              )
-                  .animate()
-                  .scale(delay: 200.ms, duration: 600.ms)
-                  .fadeIn(),
+              ).animate().scale(delay: 200.ms, duration: 600.ms).fadeIn(),
               const SizedBox(height: 32),
               FadeTransition(
                 opacity: animationController,
@@ -392,7 +418,9 @@ class _ElderScreen extends HookConsumerWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 18,
-                    color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onPrimary.withValues(alpha: 0.9),
                   ),
                 ),
               ),
@@ -410,12 +438,19 @@ class _ElderScreen extends HookConsumerWidget {
                         onboardingNotifier.updateAgeCategory(age);
                       },
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 12,
+                        ),
                         decoration: BoxDecoration(
                           color: isSelected
                               ? Theme.of(context).colorScheme.surface
-                              : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
-                          borderRadius: BorderRadius.circular(PanAfricanRadius.round),
+                              : Theme.of(
+                                  context,
+                                ).colorScheme.onPrimary.withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(
+                            PanAfricanRadius.round,
+                          ),
                           border: Border.all(
                             color: Theme.of(context).colorScheme.onPrimary,
                             width: 2,
@@ -472,15 +507,22 @@ class _ElderScreen extends HookConsumerWidget {
                       ),
                       onSelected: (selected) {
                         if (selected) {
-                          selectedReasons.value = [...selectedReasons.value, reason];
+                          selectedReasons.value = [
+                            ...selectedReasons.value,
+                            reason,
+                          ];
                         } else {
                           selectedReasons.value = selectedReasons.value
                               .where((r) => r != reason)
                               .toList();
                         }
-                        onboardingNotifier.updateLearningReasons(selectedReasons.value);
+                        onboardingNotifier.updateLearningReasons(
+                          selectedReasons.value,
+                        );
                       },
-                      backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
+                      backgroundColor: Theme.of(
+                        context,
+                      ).colorScheme.onPrimary.withValues(alpha: 0.2),
                       selectedColor: Theme.of(context).colorScheme.surface,
                       checkmarkColor: AfricanTheme.primaryGreen,
                     ),
@@ -491,24 +533,30 @@ class _ElderScreen extends HookConsumerWidget {
               FadeTransition(
                 opacity: animationController,
                 child: FilledButton(
-                  onPressed: selectedAge.value != null && selectedReasons.value.isNotEmpty
+                  onPressed:
+                      selectedAge.value != null &&
+                          selectedReasons.value.isNotEmpty
                       ? onNext
                       : null,
                   style: FilledButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.surface,
                     foregroundColor: AfricanTheme.primaryGreen,
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(PanAfricanRadius.round),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 16,
+                      horizontal: 48,
                     ),
-                    disabledBackgroundColor: Theme.of(context).colorScheme.surface.withValues(alpha: 0.3),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        PanAfricanRadius.round,
+                      ),
+                    ),
+                    disabledBackgroundColor: Theme.of(
+                      context,
+                    ).colorScheme.surface.withValues(alpha: 0.3),
                   ),
                   child: const Text(
                     'Next',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -526,13 +574,13 @@ class _WeaverScreen extends HookConsumerWidget {
   final AnimationController animationController;
   final OnboardingNotifier onboardingNotifier;
   final VoidCallback onNext;
-  
+
   const _WeaverScreen({
     required this.animationController,
     required this.onboardingNotifier,
     required this.onNext,
   });
-  
+
   /// Convert language display name to language code for DynamicLocalizationService
   String _getLanguageCode(String languageName) {
     const languageCodeMap = {
@@ -551,19 +599,25 @@ class _WeaverScreen extends HookConsumerWidget {
     };
     return languageCodeMap[languageName] ?? 'en';
   }
-  
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedLanguage = useState<String?>(null);
     final selectedLevel = useState<String?>(null);
-    
-    final languages = ['Swahili', 'Yoruba', 'Amharic', 'Zulu', 'Hausa', 'Igbo', 'Nigerian Pidgin English'];
+
+    final languages = [
+      'Swahili',
+      'Yoruba',
+      'Amharic',
+      'Zulu',
+      'Hausa',
+      'Igbo',
+      'Nigerian Pidgin English',
+    ];
     final levels = ['beginner', 'intermediate', 'advanced'];
-    
+
     return Container(
-      decoration: const BoxDecoration(
-        gradient: AfricanTheme.africanSavanna,
-      ),
+      decoration: const BoxDecoration(gradient: AfricanTheme.africanSavanna),
       child: ResponsiveSafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -575,7 +629,9 @@ class _WeaverScreen extends HookConsumerWidget {
                 height: 200,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onPrimary.withValues(alpha: 0.2),
                 ),
                 child: Icon(
                   Icons.art_track_rounded,
@@ -625,10 +681,14 @@ class _WeaverScreen extends HookConsumerWidget {
                         onboardingNotifier.updateLanguage(lang);
                         // Also set app locale for unified language storage
                         final languageCode = _getLanguageCode(lang);
-                        await DynamicLocalizationService.setLanguage(languageCode);
+                        await DynamicLocalizationService.setLanguage(
+                          languageCode,
+                        );
                       }
                     },
-                    backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
+                    backgroundColor: Theme.of(
+                      context,
+                    ).colorScheme.onPrimary.withValues(alpha: 0.2),
                     selectedColor: Theme.of(context).colorScheme.surface,
                     checkmarkColor: AfricanTheme.primaryGreen,
                   );
@@ -657,12 +717,19 @@ class _WeaverScreen extends HookConsumerWidget {
                       onboardingNotifier.updateProficiency(level);
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 12,
+                      ),
                       decoration: BoxDecoration(
                         color: isSelected
                             ? Theme.of(context).colorScheme.surface
-                            : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(PanAfricanRadius.round),
+                            : Theme.of(
+                                context,
+                              ).colorScheme.onPrimary.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(
+                          PanAfricanRadius.round,
+                        ),
                       ),
                       child: Text(
                         level.toUpperCase(),
@@ -681,15 +748,22 @@ class _WeaverScreen extends HookConsumerWidget {
               FadeTransition(
                 opacity: animationController,
                 child: FilledButton(
-                  onPressed: selectedLanguage.value != null && selectedLevel.value != null
+                  onPressed:
+                      selectedLanguage.value != null &&
+                          selectedLevel.value != null
                       ? onNext
                       : null,
                   style: FilledButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.surface,
                     foregroundColor: AfricanTheme.primaryGreen,
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 16,
+                      horizontal: 48,
+                    ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(PanAfricanRadius.round),
+                      borderRadius: BorderRadius.circular(
+                        PanAfricanRadius.round,
+                      ),
                     ),
                   ),
                   child: const Text('Next'),
@@ -708,18 +782,18 @@ class _RhythmMasterScreen extends HookConsumerWidget {
   final AnimationController animationController;
   final OnboardingNotifier onboardingNotifier;
   final VoidCallback onNext;
-  
+
   const _RhythmMasterScreen({
     required this.animationController,
     required this.onboardingNotifier,
     required this.onNext,
   });
-  
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedStyle = useState<String?>(null);
     final styles = ['audio', 'visual', 'stories', 'drills', 'conversation'];
-    
+
     return _buildCharacterScreen(
       context,
       'I am Nuru the Rhythm Master.\nTap the drum that sings to your spirit.',
@@ -732,7 +806,7 @@ class _RhythmMasterScreen extends HookConsumerWidget {
       onNext,
     );
   }
-  
+
   Widget _buildCharacterScreen(
     BuildContext context,
     String dialogue,
@@ -743,9 +817,7 @@ class _RhythmMasterScreen extends HookConsumerWidget {
     VoidCallback onNext,
   ) {
     return Container(
-      decoration: const BoxDecoration(
-        gradient: AfricanTheme.africanSavanna,
-      ),
+      decoration: const BoxDecoration(gradient: AfricanTheme.africanSavanna),
       child: ResponsiveSafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -757,9 +829,15 @@ class _RhythmMasterScreen extends HookConsumerWidget {
                 height: 200,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onPrimary.withValues(alpha: 0.2),
                 ),
-                child: Icon(icon, size: 100, color: Theme.of(context).colorScheme.onPrimary),
+                child: Icon(
+                  icon,
+                  size: 100,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
               ),
               const SizedBox(height: 32),
               FadeTransition(
@@ -789,7 +867,9 @@ class _RhythmMasterScreen extends HookConsumerWidget {
                       selected.value = sel ? option : null;
                       if (sel) onSelect(option);
                     },
-                    backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
+                    backgroundColor: Theme.of(
+                      context,
+                    ).colorScheme.onPrimary.withValues(alpha: 0.2),
                     selectedColor: Theme.of(context).colorScheme.surface,
                     checkmarkColor: AfricanTheme.primaryGreen,
                   );
@@ -803,9 +883,14 @@ class _RhythmMasterScreen extends HookConsumerWidget {
                   style: FilledButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.surface,
                     foregroundColor: AfricanTheme.primaryGreen,
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 16,
+                      horizontal: 48,
+                    ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(PanAfricanRadius.round),
+                      borderRadius: BorderRadius.circular(
+                        PanAfricanRadius.round,
+                      ),
                     ),
                   ),
                   child: const Text('Next'),
@@ -824,18 +909,18 @@ class _TimekeeperScreen extends HookConsumerWidget {
   final AnimationController animationController;
   final OnboardingNotifier onboardingNotifier;
   final VoidCallback onNext;
-  
+
   const _TimekeeperScreen({
     required this.animationController,
     required this.onboardingNotifier,
     required this.onNext,
   });
-  
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final duration = useState(15);
     final timeOfDay = useState<String?>(null);
-    
+
     return Container(
       decoration: const BoxDecoration(gradient: AfricanTheme.africanSavanna),
       child: ResponsiveSafeArea(
@@ -844,15 +929,29 @@ class _TimekeeperScreen extends HookConsumerWidget {
           child: Column(
             children: [
               const SizedBox(height: 40),
-              Icon(Icons.access_time_rounded, size: 100, color: Theme.of(context).colorScheme.onPrimary),
+              Icon(
+                Icons.access_time_rounded,
+                size: 100,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
               const SizedBox(height: 32),
               Text(
                 'I am Zawadi, keeper of time.\nWhen shall we train your tongue?',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Theme.of(context).colorScheme.onPrimary),
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
               ),
               const SizedBox(height: 32),
-              Text('${duration.value} minutes per day', style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 18)),
+              Text(
+                '${duration.value} minutes per day',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontSize: 18,
+                ),
+              ),
               Slider(
                 value: duration.value.toDouble(),
                 min: 5,
@@ -860,7 +959,10 @@ class _TimekeeperScreen extends HookConsumerWidget {
                 divisions: 20,
                 onChanged: (v) {
                   duration.value = v.toInt();
-                  onboardingNotifier.updateSchedule(duration.value, timeOfDay.value ?? 'midday');
+                  onboardingNotifier.updateSchedule(
+                    duration.value,
+                    timeOfDay.value ?? 'midday',
+                  );
                 },
               ),
               const SizedBox(height: 32),
@@ -873,9 +975,12 @@ class _TimekeeperScreen extends HookConsumerWidget {
                     label: Text(time.toUpperCase()),
                     onSelected: (sel) {
                       timeOfDay.value = sel ? time : null;
-                      if (sel) onboardingNotifier.updateSchedule(duration.value, time);
+                      if (sel)
+                        onboardingNotifier.updateSchedule(duration.value, time);
                     },
-                    backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
+                    backgroundColor: Theme.of(
+                      context,
+                    ).colorScheme.onPrimary.withValues(alpha: 0.2),
                     selectedColor: Theme.of(context).colorScheme.surface,
                   );
                 }).toList(),
@@ -886,7 +991,10 @@ class _TimekeeperScreen extends HookConsumerWidget {
                 style: FilledButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.surface,
                   foregroundColor: AfricanTheme.primaryGreen,
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 16,
+                    horizontal: 48,
+                  ),
                 ),
                 child: const Text('Next'),
               ),
@@ -902,13 +1010,13 @@ class _PathChooserScreen extends HookConsumerWidget {
   final AnimationController animationController;
   final OnboardingNotifier onboardingNotifier;
   final VoidCallback onNext;
-  
+
   const _PathChooserScreen({
     required this.animationController,
     required this.onboardingNotifier,
     required this.onNext,
   });
-  
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedGoal = useState<String?>(null);
@@ -918,9 +1026,13 @@ class _PathChooserScreen extends HookConsumerWidget {
       {'id': 'business', 'icon': Icons.business_rounded, 'title': 'Business'},
       {'id': 'academic', 'icon': Icons.school_rounded, 'title': 'Academic'},
       {'id': 'confidence', 'icon': Icons.mic_rounded, 'title': 'Confidence'},
-      {'id': 'brain_training', 'icon': Icons.psychology_rounded, 'title': 'Brain Training'},
+      {
+        'id': 'brain_training',
+        'icon': Icons.psychology_rounded,
+        'title': 'Brain Training',
+      },
     ];
-    
+
     return Container(
       decoration: const BoxDecoration(gradient: AfricanTheme.africanSavanna),
       child: ResponsiveSafeArea(
@@ -932,7 +1044,11 @@ class _PathChooserScreen extends HookConsumerWidget {
               Text(
                 'Choose your path.',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Theme.of(context).colorScheme.onPrimary),
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
               ),
               const SizedBox(height: 32),
               GridView.builder(
@@ -955,7 +1071,11 @@ class _PathChooserScreen extends HookConsumerWidget {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        color: isSelected ? Theme.of(context).colorScheme.surface : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
+                        color: isSelected
+                            ? Theme.of(context).colorScheme.surface
+                            : Theme.of(
+                                context,
+                              ).colorScheme.onPrimary.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Column(
@@ -964,13 +1084,17 @@ class _PathChooserScreen extends HookConsumerWidget {
                           Icon(
                             goal['icon'] as IconData,
                             size: 48,
-                            color: isSelected ? AfricanTheme.primaryGreen : Theme.of(context).colorScheme.onPrimary,
+                            color: isSelected
+                                ? AfricanTheme.primaryGreen
+                                : Theme.of(context).colorScheme.onPrimary,
                           ),
                           const SizedBox(height: 8),
                           Text(
                             goal['title'] as String,
                             style: TextStyle(
-                              color: isSelected ? AfricanTheme.primaryGreen : Theme.of(context).colorScheme.onPrimary,
+                              color: isSelected
+                                  ? AfricanTheme.primaryGreen
+                                  : Theme.of(context).colorScheme.onPrimary,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -986,7 +1110,10 @@ class _PathChooserScreen extends HookConsumerWidget {
                 style: FilledButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.surface,
                   foregroundColor: AfricanTheme.primaryGreen,
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 16,
+                    horizontal: 48,
+                  ),
                 ),
                 child: const Text('Next'),
               ),
@@ -1002,18 +1129,18 @@ class _GriotScreen extends HookConsumerWidget {
   final AnimationController animationController;
   final OnboardingNotifier onboardingNotifier;
   final VoidCallback onNext;
-  
+
   const _GriotScreen({
     required this.animationController,
     required this.onboardingNotifier,
     required this.onNext,
   });
-  
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedTone = useState<String?>(null);
     final selectedGamification = useState<String?>(null);
-    
+
     return Container(
       decoration: const BoxDecoration(gradient: AfricanTheme.africanSavanna),
       child: ResponsiveSafeArea(
@@ -1022,15 +1149,30 @@ class _GriotScreen extends HookConsumerWidget {
           child: Column(
             children: [
               const SizedBox(height: 40),
-              Icon(Icons.campaign_rounded, size: 100, color: Theme.of(context).colorScheme.onPrimary),
+              Icon(
+                Icons.campaign_rounded,
+                size: 100,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
               const SizedBox(height: 32),
               Text(
                 'I am Amina the Griot.\nHow shall I speak to you?',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Theme.of(context).colorScheme.onPrimary),
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
               ),
               const SizedBox(height: 32),
-              Text('Tone Preference', style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 18, fontWeight: FontWeight.w600)),
+              Text(
+                'Tone Preference',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
               const SizedBox(height: 16),
               Wrap(
                 spacing: 12,
@@ -1042,16 +1184,28 @@ class _GriotScreen extends HookConsumerWidget {
                     onSelected: (sel) {
                       selectedTone.value = sel ? tone : null;
                       if (sel && selectedGamification.value != null) {
-                        onboardingNotifier.updatePersonality(tone, selectedGamification.value!);
+                        onboardingNotifier.updatePersonality(
+                          tone,
+                          selectedGamification.value!,
+                        );
                       }
                     },
-                    backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
+                    backgroundColor: Theme.of(
+                      context,
+                    ).colorScheme.onPrimary.withValues(alpha: 0.2),
                     selectedColor: Theme.of(context).colorScheme.surface,
                   );
                 }).toList(),
               ),
               const SizedBox(height: 32),
-              Text('Gamification', style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 18, fontWeight: FontWeight.w600)),
+              Text(
+                'Gamification',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
               const SizedBox(height: 16),
               Wrap(
                 spacing: 12,
@@ -1063,21 +1217,33 @@ class _GriotScreen extends HookConsumerWidget {
                     onSelected: (sel) {
                       selectedGamification.value = sel ? level : null;
                       if (sel && selectedTone.value != null) {
-                        onboardingNotifier.updatePersonality(selectedTone.value!, level);
+                        onboardingNotifier.updatePersonality(
+                          selectedTone.value!,
+                          level,
+                        );
                       }
                     },
-                    backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
+                    backgroundColor: Theme.of(
+                      context,
+                    ).colorScheme.onPrimary.withValues(alpha: 0.2),
                     selectedColor: Theme.of(context).colorScheme.surface,
                   );
                 }).toList(),
               ),
               const SizedBox(height: 48),
               FilledButton(
-                onPressed: selectedTone.value != null && selectedGamification.value != null ? onNext : null,
+                onPressed:
+                    selectedTone.value != null &&
+                        selectedGamification.value != null
+                    ? onNext
+                    : null,
                 style: FilledButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.surface,
                   foregroundColor: AfricanTheme.primaryGreen,
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 16,
+                    horizontal: 48,
+                  ),
                 ),
                 child: const Text('Next'),
               ),
@@ -1093,13 +1259,13 @@ class _HealerScreen extends HookConsumerWidget {
   final AnimationController animationController;
   final OnboardingNotifier onboardingNotifier;
   final VoidCallback onNext;
-  
+
   const _HealerScreen({
     required this.animationController,
     required this.onboardingNotifier,
     required this.onNext,
   });
-  
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final accessibility = useState<Map<String, bool>>({
@@ -1109,7 +1275,7 @@ class _HealerScreen extends HookConsumerWidget {
       'soundOff': false,
       'motionReduction': false,
     });
-    
+
     return Container(
       decoration: const BoxDecoration(gradient: AfricanTheme.africanSavanna),
       child: ResponsiveSafeArea(
@@ -1118,17 +1284,36 @@ class _HealerScreen extends HookConsumerWidget {
           child: Column(
             children: [
               const SizedBox(height: 40),
-              Icon(Icons.healing_rounded, size: 100, color: Theme.of(context).colorScheme.onPrimary),
+              Icon(
+                Icons.healing_rounded,
+                size: 100,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
               const SizedBox(height: 32),
               Text(
                 'I am the Healer.\nLet me make your journey smooth.',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Theme.of(context).colorScheme.onPrimary),
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
               ),
               const SizedBox(height: 32),
-              ...['largeText', 'highContrast', 'dyslexia', 'soundOff', 'motionReduction'].map((key) {
+              ...[
+                'largeText',
+                'highContrast',
+                'dyslexia',
+                'soundOff',
+                'motionReduction',
+              ].map((key) {
                 return SwitchListTile(
-                  title: Text(key.replaceAll(RegExp(r'([A-Z])'), r' $1').trim().toUpperCase()),
+                  title: Text(
+                    key
+                        .replaceAll(RegExp(r'([A-Z])'), r' $1')
+                        .trim()
+                        .toUpperCase(),
+                  ),
                   value: accessibility.value[key] ?? false,
                   onChanged: (v) {
                     accessibility.value = {...accessibility.value, key: v};
@@ -1149,7 +1334,10 @@ class _HealerScreen extends HookConsumerWidget {
                 style: FilledButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.surface,
                   foregroundColor: AfricanTheme.primaryGreen,
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 16,
+                    horizontal: 48,
+                  ),
                 ),
                 child: const Text('Next'),
               ),
@@ -1165,17 +1353,17 @@ class _SocialScreen extends HookConsumerWidget {
   final AnimationController animationController;
   final OnboardingNotifier onboardingNotifier;
   final VoidCallback onNext;
-  
+
   const _SocialScreen({
     required this.animationController,
     required this.onboardingNotifier,
     required this.onNext,
   });
-  
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedPreference = useState<String?>(null);
-    
+
     return Container(
       decoration: const BoxDecoration(gradient: AfricanTheme.africanSavanna),
       child: ResponsiveSafeArea(
@@ -1184,29 +1372,41 @@ class _SocialScreen extends HookConsumerWidget {
           child: Column(
             children: [
               const SizedBox(height: 40),
-              Icon(Icons.people_rounded, size: 100, color: Theme.of(context).colorScheme.onPrimary),
+              Icon(
+                Icons.people_rounded,
+                size: 100,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
               const SizedBox(height: 32),
               Text(
                 'Build your clan.',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Theme.of(context).colorScheme.onPrimary),
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
               ),
               const SizedBox(height: 32),
               Wrap(
                 spacing: 12,
-                children: ['solo', 'buddies', 'community', 'teacher_guided'].map((pref) {
-                  final isSelected = selectedPreference.value == pref;
-                  return FilterChip(
-                    selected: isSelected,
-                    label: Text(pref.replaceAll('_', ' ').toUpperCase()),
-                    onSelected: (sel) {
-                      selectedPreference.value = sel ? pref : null;
-                      if (sel) onboardingNotifier.updateSocial(pref);
-                    },
-                    backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
-                    selectedColor: Theme.of(context).colorScheme.surface,
-                  );
-                }).toList(),
+                children: ['solo', 'buddies', 'community', 'teacher_guided']
+                    .map((pref) {
+                      final isSelected = selectedPreference.value == pref;
+                      return FilterChip(
+                        selected: isSelected,
+                        label: Text(pref.replaceAll('_', ' ').toUpperCase()),
+                        onSelected: (sel) {
+                          selectedPreference.value = sel ? pref : null;
+                          if (sel) onboardingNotifier.updateSocial(pref);
+                        },
+                        backgroundColor: Theme.of(
+                          context,
+                        ).colorScheme.onPrimary.withValues(alpha: 0.2),
+                        selectedColor: Theme.of(context).colorScheme.surface,
+                      );
+                    })
+                    .toList(),
               ),
               const SizedBox(height: 48),
               FilledButton(
@@ -1214,7 +1414,10 @@ class _SocialScreen extends HookConsumerWidget {
                 style: FilledButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.surface,
                   foregroundColor: AfricanTheme.primaryGreen,
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 16,
+                    horizontal: 48,
+                  ),
                 ),
                 child: const Text('Next'),
               ),
@@ -1230,17 +1433,17 @@ class _NamingScreen extends HookConsumerWidget {
   final AnimationController animationController;
   final OnboardingNotifier onboardingNotifier;
   final VoidCallback onNext;
-  
+
   const _NamingScreen({
     required this.animationController,
     required this.onboardingNotifier,
     required this.onNext,
   });
-  
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final usernameController = useTextEditingController();
-    
+
     return Container(
       decoration: const BoxDecoration(gradient: AfricanTheme.africanSavanna),
       child: ResponsiveSafeArea(
@@ -1249,33 +1452,59 @@ class _NamingScreen extends HookConsumerWidget {
           child: Column(
             children: [
               const SizedBox(height: 40),
-              Icon(Icons.celebration_rounded, size: 100, color: Theme.of(context).colorScheme.onPrimary),
+              Icon(
+                Icons.celebration_rounded,
+                size: 100,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
               const SizedBox(height: 32),
               Text(
                 'A learner without a name is a drum without a rhythm!\nTell us what you wish to be called.',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Theme.of(context).colorScheme.onPrimary),
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
               ),
               const SizedBox(height: 32),
               TextField(
                 controller: usernameController,
-                style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 18),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontSize: 18,
+                ),
                 decoration: InputDecoration(
                   hintText: 'Enter your username',
-                  hintStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.6)),
+                  hintStyle: TextStyle(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onPrimary.withValues(alpha: 0.6),
+                  ),
                   filled: true,
-                  fillColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
+                  fillColor: Theme.of(
+                    context,
+                  ).colorScheme.onPrimary.withValues(alpha: 0.2),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 2),
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      width: 2,
+                    ),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 2),
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      width: 2,
+                    ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 2),
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      width: 2,
+                    ),
                   ),
                 ),
                 onChanged: (value) {
@@ -1288,7 +1517,10 @@ class _NamingScreen extends HookConsumerWidget {
                 style: FilledButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.surface,
                   foregroundColor: AfricanTheme.primaryGreen,
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 16,
+                    horizontal: 48,
+                  ),
                 ),
                 child: const Text('Next'),
               ),
@@ -1304,7 +1536,7 @@ class _PlacementTestScreen extends HookConsumerWidget {
   final AnimationController animationController;
   final OnboardingNotifier onboardingNotifier;
   final VoidCallback onComplete;
-  
+
   const _PlacementTestScreen({
     required this.animationController,
     required this.onboardingNotifier,
@@ -1314,7 +1546,8 @@ class _PlacementTestScreen extends HookConsumerWidget {
   // Simple placement questions for quick level assessment
   static const _placementQuestions = [
     {
-      'question': 'How would you describe your familiarity with African languages?',
+      'question':
+          'How would you describe your familiarity with African languages?',
       'options': [
         {'text': 'Complete beginner - never learned one', 'level': 'A0'},
         {'text': 'Some exposure - know a few words', 'level': 'A1'},
@@ -1324,7 +1557,8 @@ class _PlacementTestScreen extends HookConsumerWidget {
       ],
     },
     {
-      'question': 'Can you read or write in the African language you want to learn?',
+      'question':
+          'Can you read or write in the African language you want to learn?',
       'options': [
         {'text': 'Not at all', 'level': 'A0'},
         {'text': 'I can recognize some letters/characters', 'level': 'A1'},
@@ -1334,7 +1568,8 @@ class _PlacementTestScreen extends HookConsumerWidget {
       ],
     },
     {
-      'question': 'How confident are you in understanding spoken African languages?',
+      'question':
+          'How confident are you in understanding spoken African languages?',
       'options': [
         {'text': 'Cannot understand anything', 'level': 'A0'},
         {'text': 'Understand greetings and simple words', 'level': 'A1'},
@@ -1344,29 +1579,32 @@ class _PlacementTestScreen extends HookConsumerWidget {
       ],
     },
   ];
-  
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentQuestion = useState(0);
     final answers = useState<List<String>>([]);
     final showIntro = useState(true);
     final isSubmitting = useState(false);
-    
+
     // Calculate final level based on answers
     String calculateLevel(List<String> answerLevels) {
       if (answerLevels.isEmpty) return 'A0';
-      
+
       final levelScores = {'A0': 0, 'A1': 1, 'A2': 2, 'B1': 3, 'B2': 4};
-      final totalScore = answerLevels.fold<int>(0, (sum, level) => sum + (levelScores[level] ?? 0));
+      final totalScore = answerLevels.fold<int>(
+        0,
+        (sum, level) => sum + (levelScores[level] ?? 0),
+      );
       final avgScore = totalScore / answerLevels.length;
-      
+
       if (avgScore < 0.5) return 'A0';
       if (avgScore < 1.5) return 'A1';
       if (avgScore < 2.5) return 'A2';
       if (avgScore < 3.5) return 'B1';
       return 'B2';
     }
-    
+
     void submitTest() async {
       isSubmitting.value = true;
       final level = calculateLevel(answers.value);
@@ -1376,33 +1614,33 @@ class _PlacementTestScreen extends HookConsumerWidget {
         'answers': answers.value,
         'timestamp': DateTime.now().toIso8601String(),
       });
-      
+
       // Also update proficiency level
       onboardingNotifier.updateProficiencyLevel(level.toLowerCase());
-      
+
       // Brief delay for UX
       await Future.delayed(const Duration(milliseconds: 300));
       isSubmitting.value = false;
       onComplete();
     }
-    
+
     void selectAnswer(String level) {
       HapticFeedback.selectionClick();
       answers.value = [...answers.value, level];
-      
+
       if (currentQuestion.value < _placementQuestions.length - 1) {
         currentQuestion.value++;
       } else {
         submitTest();
       }
     }
-    
+
     void skipTest() {
       HapticFeedback.lightImpact();
       onboardingNotifier.updatePlacementTest({'skipped': true});
       onComplete();
     }
-    
+
     return Container(
       decoration: const BoxDecoration(gradient: AfricanTheme.africanSavanna),
       child: ResponsiveSafeArea(
@@ -1426,8 +1664,12 @@ class _PlacementTestScreen extends HookConsumerWidget {
       ),
     );
   }
-  
-  Widget _buildIntroView(BuildContext context, VoidCallback onStart, VoidCallback onSkip) {
+
+  Widget _buildIntroView(
+    BuildContext context,
+    VoidCallback onStart,
+    VoidCallback onSkip,
+  ) {
     return Column(
       key: const ValueKey('intro'),
       children: [
@@ -1439,16 +1681,26 @@ class _PlacementTestScreen extends HookConsumerWidget {
                 Container(
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.15),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onPrimary.withValues(alpha: 0.15),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(Icons.quiz_rounded, size: 80.sp, color: Theme.of(context).colorScheme.onPrimary),
+                  child: Icon(
+                    Icons.quiz_rounded,
+                    size: 80.sp,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
                 ).animate().scale(duration: 600.ms, curve: Curves.elasticOut),
                 SizedBox(height: 32.h),
                 Text(
                   'Let us see where you stand, traveler.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w700, color: Theme.of(context).colorScheme.onPrimary),
+                  style: TextStyle(
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.w700,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
                 ).animate().fadeIn(delay: 200.ms),
                 SizedBox(height: 16.h),
                 Padding(
@@ -1456,7 +1708,12 @@ class _PlacementTestScreen extends HookConsumerWidget {
                   child: Text(
                     'Answer 3 quick questions to help us personalize your learning journey.',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16.sp, color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9)),
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                    ),
                   ),
                 ).animate().fadeIn(delay: 400.ms),
               ],
@@ -1476,12 +1733,17 @@ class _PlacementTestScreen extends HookConsumerWidget {
                     foregroundColor: AfricanTheme.primaryGreen,
                     padding: EdgeInsets.symmetric(vertical: 16.h),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(PanAfricanRadius.round),
+                      borderRadius: BorderRadius.circular(
+                        PanAfricanRadius.round,
+                      ),
                     ),
                   ),
                   child: Text(
                     'Start Assessment',
-                    style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ).animate().fadeIn(delay: 600.ms).slideY(begin: 0.2, end: 0),
@@ -1491,7 +1753,9 @@ class _PlacementTestScreen extends HookConsumerWidget {
                 child: Text(
                   'Skip for now (start as beginner)',
                   style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.8),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onPrimary.withValues(alpha: 0.8),
                     fontSize: 14.sp,
                   ),
                 ),
@@ -1502,7 +1766,7 @@ class _PlacementTestScreen extends HookConsumerWidget {
       ],
     );
   }
-  
+
   Widget _buildQuestionView(
     BuildContext context,
     Map<String, dynamic> question,
@@ -1513,7 +1777,7 @@ class _PlacementTestScreen extends HookConsumerWidget {
     bool isSubmitting,
   ) {
     final options = question['options'] as List<Map<String, String>>;
-    
+
     return Column(
       key: ValueKey('question_$questionIndex'),
       children: [
@@ -1527,7 +1791,9 @@ class _PlacementTestScreen extends HookConsumerWidget {
                   Text(
                     'Question ${questionIndex + 1} of $totalQuestions',
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.8),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onPrimary.withValues(alpha: 0.8),
                       fontSize: 14.sp,
                     ),
                   ),
@@ -1536,10 +1802,12 @@ class _PlacementTestScreen extends HookConsumerWidget {
                     onPressed: onSkip,
                     child: Text(
                       'Skip test',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.7),
-                      fontSize: 14.sp,
-                    ),
+                      style: TextStyle(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onPrimary.withValues(alpha: 0.7),
+                        fontSize: 14.sp,
+                      ),
                     ),
                   ),
                 ],
@@ -1547,14 +1815,18 @@ class _PlacementTestScreen extends HookConsumerWidget {
               SizedBox(height: 8.h),
               LinearProgressIndicator(
                 value: (questionIndex + 1) / totalQuestions,
-                backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
-                valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onPrimary),
+                backgroundColor: Theme.of(
+                  context,
+                ).colorScheme.onPrimary.withValues(alpha: 0.2),
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  Theme.of(context).colorScheme.onPrimary,
+                ),
                 borderRadius: BorderRadius.circular(4),
               ),
             ],
           ),
         ),
-        
+
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(24.w),
@@ -1564,15 +1836,15 @@ class _PlacementTestScreen extends HookConsumerWidget {
                 SizedBox(height: 32.h),
                 Text(
                   question['question'] as String,
-                    style: TextStyle(
-                      fontSize: 22.sp,
-                      fontWeight: FontWeight.w600,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      height: 1.3,
-                    ),
+                  style: TextStyle(
+                    fontSize: 22.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    height: 1.3,
+                  ),
                 ).animate().fadeIn().slideX(begin: 0.1, end: 0),
                 SizedBox(height: 32.h),
-                
+
                 // Options
                 Expanded(
                   child: ListView.separated(
@@ -1581,32 +1853,41 @@ class _PlacementTestScreen extends HookConsumerWidget {
                     itemBuilder: (context, index) {
                       final option = options[index];
                       return Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: isSubmitting ? null : () => onSelect(option['level']!),
-                          borderRadius: BorderRadius.circular(12.r),
-                          child: Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.all(16.w),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.15),
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: isSubmitting
+                                  ? null
+                                  : () => onSelect(option['level']!),
                               borderRadius: BorderRadius.circular(12.r),
-                              border: Border.all(
-                                color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.3),
-                                width: 1,
+                              child: Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.all(16.w),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.onPrimary
+                                      .withValues(alpha: 0.15),
+                                  borderRadius: BorderRadius.circular(12.r),
+                                  border: Border.all(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary
+                                        .withValues(alpha: 0.3),
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Text(
+                                  option['text']!,
+                                  style: TextStyle(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onPrimary,
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                               ),
                             ),
-                            child: Text(
-                              option['text']!,
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.onPrimary,
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ).animate(delay: Duration(milliseconds: 100 * index))
+                          )
+                          .animate(delay: Duration(milliseconds: 100 * index))
                           .fadeIn()
                           .slideX(begin: 0.05, end: 0);
                     },
@@ -1616,14 +1897,15 @@ class _PlacementTestScreen extends HookConsumerWidget {
             ),
           ),
         ),
-        
+
         if (isSubmitting)
           Padding(
             padding: EdgeInsets.all(24.w),
-            child: CircularProgressIndicator(color: Theme.of(context).colorScheme.onPrimary),
+            child: CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
           ),
       ],
     );
   }
 }
-

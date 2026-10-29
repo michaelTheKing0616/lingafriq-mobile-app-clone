@@ -19,10 +19,7 @@ import 'package:lingafriq/config/api_contract.dart';
 class PlacementTestScreen extends HookConsumerWidget {
   final String language;
 
-  const PlacementTestScreen({
-    super.key,
-    required this.language,
-  });
+  const PlacementTestScreen({super.key, required this.language});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -40,25 +37,49 @@ class PlacementTestScreen extends HookConsumerWidget {
     // they were defined after submitTest and caused "referenced before declared".
     // These declarations above submitTest fix that.
     List<String> getStrengths(PlacementResult r) {
-      if (r.provisional || r.level == 'unsure') return ['A precise level needs more calibrated items'];
-      if (r.score >= 70) return ['Strong vocabulary foundation', 'Good understanding of basic grammar'];
+      if (r.provisional || r.level == 'unsure')
+        return ['A precise level needs more calibrated items'];
+      if (r.score >= 70)
+        return [
+          'Strong vocabulary foundation',
+          'Good understanding of basic grammar',
+        ];
       if (r.score >= 50) return ['Basic vocabulary knowledge'];
       return ['Willingness to learn'];
     }
+
     List<String> getWeaknesses(PlacementResult r) {
       if (r.provisional || r.level == 'unsure') return [];
-      if (r.score < 50) return ['Need to build vocabulary', 'Grammar fundamentals needed'];
+      if (r.score < 50)
+        return ['Need to build vocabulary', 'Grammar fundamentals needed'];
       if (r.score < 70) return ['Some grammar concepts need review'];
       return [];
     }
+
     List<String> getRecommendations(PlacementResult r) {
       final level = r.level;
       if (r.provisional || level == 'unsure') {
-        return ['Start with the first lessons. A level waits until calibrated items are available.'];
+        return [
+          'Start with the first lessons. A level waits until calibrated items are available.',
+        ];
       }
-      if (level == 'A1' || level == 'A2') return ['Start with beginner lessons', 'Focus on vocabulary building', 'Practice pronunciation daily'];
-      if (level == 'B1' || level == 'B2') return ['Continue with intermediate content', 'Practice conversation skills', 'Expand vocabulary in specific topics'];
-      return ['Advanced lessons recommended', 'Focus on fluency and nuance', 'Engage with native content'];
+      if (level == 'A1' || level == 'A2')
+        return [
+          'Start with beginner lessons',
+          'Focus on vocabulary building',
+          'Practice pronunciation daily',
+        ];
+      if (level == 'B1' || level == 'B2')
+        return [
+          'Continue with intermediate content',
+          'Practice conversation skills',
+          'Expand vocabulary in specific topics',
+        ];
+      return [
+        'Advanced lessons recommended',
+        'Focus on fluency and nuance',
+        'Engage with native content',
+      ];
     }
 
     Future<void> generateTest() async {
@@ -72,13 +93,14 @@ class PlacementTestScreen extends HookConsumerWidget {
             ApiContract.url(ApiContract.onboarding.placementTestGenerate),
             queryParameters: {'language': language},
           );
-          
+
           if (response.statusCode == 200 && response.data != null) {
             final root = response.data;
             final payload = root is Map ? (root['data'] ?? root) : root;
-            final questionsList =
-                payload is Map ? ((payload['questions'] as List?) ?? []) : const [];
-            
+            final questionsList = payload is Map
+                ? ((payload['questions'] as List?) ?? [])
+                : const [];
+
             // Convert backend format to PlacementQuestion objects
             final parsed = <PlacementQuestion>[];
             for (final q in questionsList) {
@@ -88,13 +110,17 @@ class PlacementTestScreen extends HookConsumerWidget {
               final options = (optsRaw is List)
                   ? optsRaw.map((e) => e.toString()).toList()
                   : const <String>[];
-              final prompt = TextSanitizer.sanitize((qMap['prompt'] ?? '').toString());
+              final prompt = TextSanitizer.sanitize(
+                (qMap['prompt'] ?? '').toString(),
+              );
               final correct = qMap['correctIndex'];
-              final correctIndex =
-                  (correct is int) ? correct : int.tryParse(correct?.toString() ?? '') ?? 0;
+              final correctIndex = (correct is int)
+                  ? correct
+                  : int.tryParse(correct?.toString() ?? '') ?? 0;
               if (prompt.trim().isEmpty) continue;
-              final sanitizedOptions =
-                  options.map((o) => TextSanitizer.sanitize(o)).toList();
+              final sanitizedOptions = options
+                  .map((o) => TextSanitizer.sanitize(o))
+                  .toList();
               if (sanitizedOptions.length < 2) continue;
               if (correctIndex < 0 || correctIndex >= options.length) continue;
               parsed.add(
@@ -117,18 +143,27 @@ class PlacementTestScreen extends HookConsumerWidget {
             }
 
             questions = parsed;
-            
-            logger.info('Placement test generated from backend', context: {
-              'language': language,
-              'questionCount': questions.length,
-            });
+
+            logger.info(
+              'Placement test generated from backend',
+              context: {
+                'language': language,
+                'questionCount': questions.length,
+              },
+            );
           } else {
             throw Exception('Invalid response from backend');
           }
         } catch (backendError) {
           // Fallback to local service if backend fails
-          logger.warn('Backend placement test generation failed, using local service', error: backendError);
-          questions = await PlacementTestService.loadQuestionsForLanguage(ref, language);
+          logger.warn(
+            'Backend placement test generation failed, using local service',
+            error: backendError,
+          );
+          questions = await PlacementTestService.loadQuestionsForLanguage(
+            ref,
+            language,
+          );
         }
 
         if (questions.isEmpty) {
@@ -152,13 +187,19 @@ class PlacementTestScreen extends HookConsumerWidget {
         test.value = {
           'test_id': '${DateTime.now().millisecondsSinceEpoch}',
           'language': language,
-          'questions': questions.map((q) => {
-                'id': q.id,
-                'question': TextSanitizer.sanitize(q.prompt),
-                'type': 'multiple_choice',
-                'options': q.options.map((o) => TextSanitizer.sanitize(o)).toList(),
-                'correct_index': q.correctIndex,
-              }).toList(),
+          'questions': questions
+              .map(
+                (q) => {
+                  'id': q.id,
+                  'question': TextSanitizer.sanitize(q.prompt),
+                  'type': 'multiple_choice',
+                  'options': q.options
+                      .map((o) => TextSanitizer.sanitize(o))
+                      .toList(),
+                  'correct_index': q.correctIndex,
+                },
+              )
+              .toList(),
         };
         isGenerating.value = false;
       } catch (e) {
@@ -201,7 +242,9 @@ class PlacementTestScreen extends HookConsumerWidget {
         for (var i = 0; i < questions.length; i++) {
           final answer = answers.value[i];
           if (answer != null) {
-            final index = questions[i].options.indexWhere((opt) => opt == answer);
+            final index = questions[i].options.indexWhere(
+              (opt) => opt == answer,
+            );
             selectedIndices.add(index >= 0 ? index : null);
           } else {
             selectedIndices.add(null);
@@ -222,9 +265,12 @@ class PlacementTestScreen extends HookConsumerWidget {
           'total_questions': placementResult.totalQuestions,
           'correct': placementResult.correct,
           'provisional': placementResult.provisional,
-          if (placementResult.ability != null) 'ability': placementResult.ability,
-          if (placementResult.intervalLow != null) 'interval_low': placementResult.intervalLow,
-          if (placementResult.intervalHigh != null) 'interval_high': placementResult.intervalHigh,
+          if (placementResult.ability != null)
+            'ability': placementResult.ability,
+          if (placementResult.intervalLow != null)
+            'interval_low': placementResult.intervalLow,
+          if (placementResult.intervalHigh != null)
+            'interval_high': placementResult.intervalHigh,
           'strengths': getStrengths(placementResult),
           'weaknesses': getWeaknesses(placementResult),
           'recommendations': getRecommendations(placementResult),
@@ -234,16 +280,17 @@ class PlacementTestScreen extends HookConsumerWidget {
         try {
           await ApiService.post(
             '/onboarding/placement-test',
-            data: {
-              'placement_test_results': result.value,
-            },
+            data: {'placement_test_results': result.value},
           ).timeout(
             const Duration(seconds: 5),
             onTimeout: () => throw TimeoutException('Backend sync timeout'),
           );
         } catch (e) {
           // Log but continue - results are saved locally
-          logger.warn('Failed to sync placement test results to backend', error: e);
+          logger.warn(
+            'Failed to sync placement test results to backend',
+            error: e,
+          );
         }
       } catch (e) {
         ErrorHandler.showError(context, e);
@@ -328,7 +375,9 @@ class PlacementTestScreen extends HookConsumerWidget {
                       onPressed: () => Navigator.pop(context),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PanAfricanColors.primary,
-                        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                        foregroundColor: Theme.of(
+                          context,
+                        ).colorScheme.onPrimary,
                         minimumSize: Size(double.infinity, 50.h),
                       ),
                       child: const Text('Continue Without Test'),
@@ -354,7 +403,8 @@ class PlacementTestScreen extends HookConsumerWidget {
     }
 
     final questions = test.value!['questions'] as List;
-    final currentQuestion = questions[currentQuestionIndex.value] as Map<String, dynamic>;
+    final currentQuestion =
+        questions[currentQuestionIndex.value] as Map<String, dynamic>;
     final isLoadingOverlay = useState(false);
 
     return LoadingOverlay(
@@ -380,158 +430,196 @@ class PlacementTestScreen extends HookConsumerWidget {
                   ),
           ),
           child: ResponsiveSafeArea(
-          child: Column(
-            children: [
-              // Progress
-              Semantics(
-                label: 'Question ${currentQuestionIndex.value + 1} of ${questions.length}',
-                value: '${currentQuestionIndex.value + 1} of ${questions.length}',
-                child:               Container(
-                padding: EdgeInsets.all(PanAfricanSpacing.md),
-                child: Semantics(
-                  label: 'Progress: question ${currentQuestionIndex.value + 1} of ${questions.length}',
-                  value: '${currentQuestionIndex.value + 1} of ${questions.length}',
-                  child: LinearProgressIndicator(
-                  value: (currentQuestionIndex.value + 1) / questions.length,
-                  backgroundColor: PanAfricanColors.neutralLight,
-                  valueColor: const AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
-                ),
-              ),
-              ),
-              ),
-              SizedBox(height: PanAfricanSpacing.sm),
-              Text(
-                'Question ${currentQuestionIndex.value + 1} of ${questions.length}',
-                style: PanAfricanTypography.labelMedium(context),
-              ),
-
-              // Question
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.all(PanAfricanSpacing.lg),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        currentQuestion['question'] ?? '',
-                        style: PanAfricanTypography.headlineSmall(context),
+            child: Column(
+              children: [
+                // Progress
+                Semantics(
+                  label:
+                      'Question ${currentQuestionIndex.value + 1} of ${questions.length}',
+                  value:
+                      '${currentQuestionIndex.value + 1} of ${questions.length}',
+                  child: Container(
+                    padding: EdgeInsets.all(PanAfricanSpacing.md),
+                    child: Semantics(
+                      label:
+                          'Progress: question ${currentQuestionIndex.value + 1} of ${questions.length}',
+                      value:
+                          '${currentQuestionIndex.value + 1} of ${questions.length}',
+                      child: LinearProgressIndicator(
+                        value:
+                            (currentQuestionIndex.value + 1) / questions.length,
+                        backgroundColor: PanAfricanColors.neutralLight,
+                        valueColor: const AlwaysStoppedAnimation<Color>(
+                          PanAfricanColors.primary,
+                        ),
                       ),
-                      SizedBox(height: PanAfricanSpacing.lg),
+                    ),
+                  ),
+                ),
+                SizedBox(height: PanAfricanSpacing.sm),
+                Text(
+                  'Question ${currentQuestionIndex.value + 1} of ${questions.length}',
+                  style: PanAfricanTypography.labelMedium(context),
+                ),
 
-                      // Answer Options
-                      if (currentQuestion['type'] == 'multiple_choice' &&
-                          currentQuestion['options'] != null)
-                        ...(currentQuestion['options'] as List).asMap().entries.map((entry) {
-                          final option = entry.value;
-                          final isSelected = answers.value[currentQuestionIndex.value] == option;
+                // Question
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          currentQuestion['question'] ?? '',
+                          style: PanAfricanTypography.headlineSmall(context),
+                        ),
+                        SizedBox(height: PanAfricanSpacing.lg),
 
-                          return Semantics(
-                            label: 'Answer option: $option${isSelected ? ", selected" : ""}',
-                            button: true,
-                            selected: isSelected,
-                            child: Card(
-                            margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
-                            color: isSelected
-                                ? PanAfricanColors.primary
-                                : (isDark
-                                    ? PanAfricanColors.cardDark
-                                    : PanAfricanColors.cardLight),
-                            child: ListTile(
-                              title: Text(
-                                option,
-                                style: PanAfricanTypography.bodyMedium(context).copyWith(
-                                  color: isSelected ? Theme.of(context).colorScheme.onPrimary : null,
+                        // Answer Options
+                        if (currentQuestion['type'] == 'multiple_choice' &&
+                            currentQuestion['options'] != null)
+                          ...(currentQuestion['options'] as List)
+                              .asMap()
+                              .entries
+                              .map((entry) {
+                                final option = entry.value;
+                                final isSelected =
+                                    answers.value[currentQuestionIndex.value] ==
+                                    option;
+
+                                return Semantics(
+                                  label:
+                                      'Answer option: $option${isSelected ? ", selected" : ""}',
+                                  button: true,
+                                  selected: isSelected,
+                                  child: Card(
+                                    margin: EdgeInsets.only(
+                                      bottom: PanAfricanSpacing.sm,
+                                    ),
+                                    color: isSelected
+                                        ? PanAfricanColors.primary
+                                        : (isDark
+                                              ? PanAfricanColors.cardDark
+                                              : PanAfricanColors.cardLight),
+                                    child: ListTile(
+                                      title: Text(
+                                        option,
+                                        style:
+                                            PanAfricanTypography.bodyMedium(
+                                              context,
+                                            ).copyWith(
+                                              color: isSelected
+                                                  ? Theme.of(
+                                                      context,
+                                                    ).colorScheme.onPrimary
+                                                  : null,
+                                            ),
+                                      ),
+                                      trailing: isSelected
+                                          ? Icon(
+                                              Icons.check_circle,
+                                              color: Theme.of(
+                                                context,
+                                              ).colorScheme.onPrimary,
+                                              semanticLabel: 'Selected',
+                                            )
+                                          : null,
+                                      onTap: () {
+                                        answers.value = {
+                                          ...answers.value,
+                                          currentQuestionIndex.value: option,
+                                        };
+                                        HapticFeedback.mediumImpact();
+                                      },
+                                    ),
+                                  ),
+                                );
+                              }),
+
+                        // Text Input for other question types
+                        if (currentQuestion['type'] != 'multiple_choice')
+                          TextField(
+                            decoration: InputDecoration(
+                              labelText: 'Your Answer',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(
+                                  PanAfricanRadius.md,
                                 ),
                               ),
-                              trailing: isSelected
-                                  ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.onPrimary, semanticLabel: 'Selected')
-                                  : null,
-                              onTap: () {
-                                answers.value = {
-                                  ...answers.value,
-                                  currentQuestionIndex.value: option,
-                                };
-                                HapticFeedback.mediumImpact();
-                              },
+                              filled: true,
+                              fillColor: isDark
+                                  ? PanAfricanColors.surfaceContainerDark
+                                  : PanAfricanColors.surfaceContainerLight,
                             ),
-                            ),
-                          );
-                        }),
-
-                      // Text Input for other question types
-                      if (currentQuestion['type'] != 'multiple_choice')
-                        TextField(
-                          decoration: InputDecoration(
-                            labelText: 'Your Answer',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                            ),
-                            filled: true,
-                            fillColor: isDark
-                                ? PanAfricanColors.surfaceContainerDark
-                                : PanAfricanColors.surfaceContainerLight,
+                            onChanged: (value) {
+                              answers.value = {
+                                ...answers.value,
+                                currentQuestionIndex.value: value,
+                              };
+                            },
                           ),
-                          onChanged: (value) {
-                            answers.value = {
-                              ...answers.value,
-                              currentQuestionIndex.value: value,
-                            };
-                          },
+                      ],
+                    ),
+                  ),
+                ),
+
+                // Navigation Buttons
+                Container(
+                  padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                  child: Row(
+                    children: [
+                      if (currentQuestionIndex.value > 0)
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () {
+                              currentQuestionIndex.value--;
+                              HapticFeedback.lightImpact();
+                            },
+                            child: const Text('Previous'),
+                          ),
                         ),
+                      if (currentQuestionIndex.value > 0)
+                        SizedBox(width: PanAfricanSpacing.md),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed:
+                              currentQuestionIndex.value < questions.length - 1
+                              ? () {
+                                  currentQuestionIndex.value++;
+                                  HapticFeedback.mediumImpact();
+                                }
+                              : (isLoading.value ? null : submitTest),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: PanAfricanColors.primary,
+                            foregroundColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
+                            padding: EdgeInsets.symmetric(
+                              vertical: PanAfricanSpacing.md,
+                            ),
+                          ),
+                          child: isLoading.value
+                              ? SizedBox(
+                                  width: 20.w,
+                                  height: 20.h,
+                                  child: const CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : Text(
+                                  currentQuestionIndex.value <
+                                          questions.length - 1
+                                      ? 'Next'
+                                      : 'Submit',
+                                ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
-              ),
-
-              // Navigation Buttons
-              Container(
-                padding: EdgeInsets.all(PanAfricanSpacing.lg),
-                child: Row(
-                  children: [
-                    if (currentQuestionIndex.value > 0)
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () {
-                            currentQuestionIndex.value--;
-                            HapticFeedback.lightImpact();
-                          },
-                          child: const Text('Previous'),
-                        ),
-                      ),
-                    if (currentQuestionIndex.value > 0)
-                      SizedBox(width: PanAfricanSpacing.md),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: currentQuestionIndex.value < questions.length - 1
-                            ? () {
-                                currentQuestionIndex.value++;
-                                HapticFeedback.mediumImpact();
-                              }
-                            : (isLoading.value ? null : submitTest),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: PanAfricanColors.primary,
-                          foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                          padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
-                        ),
-                        child: isLoading.value
-                            ? SizedBox(
-                                width: 20.w,
-                                height: 20.h,
-                                child: const CircularProgressIndicator(strokeWidth: 2),
-                              )
-                            : Text(
-                                currentQuestionIndex.value < questions.length - 1
-                                    ? 'Next'
-                                    : 'Submit',
-                              ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ), // closes Column
-        ), // closes SafeArea
+              ],
+            ), // closes Column
+          ), // closes SafeArea
         ), // closes Container body
       ), // closes Scaffold
     ); // closes LoadingOverlay
@@ -554,8 +642,9 @@ class PlacementTestScreen extends HookConsumerWidget {
               children: [
                 Text(
                   'Placement Test Complete!',
-                  style: PanAfricanTypography.displayMedium(context)
-                      .copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                  style: PanAfricanTypography.displayMedium(
+                    context,
+                  ).copyWith(color: Theme.of(context).colorScheme.onPrimary),
                 ),
                 SizedBox(height: PanAfricanSpacing.xl),
                 Container(
@@ -566,15 +655,19 @@ class PlacementTestScreen extends HookConsumerWidget {
                   ),
                   child: Text(
                     (result['cefr_level'] ?? 'unsure').toString(),
-                    style: PanAfricanTypography.displayLarge(context)
-                        .copyWith(color: PanAfricanColors.primary),
+                    style: PanAfricanTypography.displayLarge(
+                      context,
+                    ).copyWith(color: PanAfricanColors.primary),
                   ),
                 ),
                 SizedBox(height: PanAfricanSpacing.xl),
                 Text(
-                  (result['cefr_level'] ?? 'unsure').toString() == 'unsure' ? 'Level not precise yet' : 'Your Proficiency Level',
-                  style: PanAfricanTypography.titleLarge(context)
-                      .copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                  (result['cefr_level'] ?? 'unsure').toString() == 'unsure'
+                      ? 'Level not precise yet'
+                      : 'Your Proficiency Level',
+                  style: PanAfricanTypography.titleLarge(
+                    context,
+                  ).copyWith(color: Theme.of(context).colorScheme.onPrimary),
                 ),
                 SizedBox(height: PanAfricanSpacing.xl),
 
@@ -643,10 +736,7 @@ class PlacementTestScreen extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title,
-            style: PanAfricanTypography.titleLarge(context),
-          ),
+          Text(title, style: PanAfricanTypography.titleLarge(context)),
           SizedBox(height: PanAfricanSpacing.md),
           ...items.map((item) {
             return Padding(
@@ -670,4 +760,3 @@ class PlacementTestScreen extends HookConsumerWidget {
     );
   }
 }
-

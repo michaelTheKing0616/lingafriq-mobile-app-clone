@@ -11,30 +11,35 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 class PlacementQuizScreen extends HookConsumerWidget {
   final VoidCallback onComplete;
 
-  const PlacementQuizScreen({
-    super.key,
-    required this.onComplete,
-  });
+  const PlacementQuizScreen({super.key, required this.onComplete});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final onboarding = ref.watch(onboardingProvider);
-    final languageCode = (onboarding.selectedLanguage ?? 'swahili').toLowerCase();
+    final languageCode = (onboarding.selectedLanguage ?? 'swahili')
+        .toLowerCase();
     final localization = ref.read(localizationProvider);
 
     return FutureBuilder<List<PlacementQuestion>>(
-      future: PlacementTestService.loadQuestionsForLanguage(ref as Ref, languageCode),
+      future: PlacementTestService.loadQuestionsForLanguage(
+        ref as Ref,
+        languageCode,
+      ),
       builder: (context, snapshot) {
         final isDark = Theme.of(context).brightness == Brightness.dark;
         if (!snapshot.hasData) {
           return Scaffold(
-            backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
+            backgroundColor: isDark
+                ? PanAfricanColors.surfaceDark
+                : PanAfricanColors.surfaceLight,
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      PanAfricanColors.primary,
+                    ),
                   ),
                   SizedBox(height: PanAfricanSpacing.lg),
                   Text(
@@ -49,7 +54,9 @@ class PlacementQuizScreen extends HookConsumerWidget {
         final questions = snapshot.data ?? const <PlacementQuestion>[];
         if (questions.isEmpty) {
           return Scaffold(
-            backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
+            backgroundColor: isDark
+                ? PanAfricanColors.surfaceDark
+                : PanAfricanColors.surfaceLight,
             body: Center(
               child: Padding(
                 padding: EdgeInsets.all(PanAfricanSpacing.xl),
@@ -70,7 +77,10 @@ class PlacementQuizScreen extends HookConsumerWidget {
                     SizedBox(height: PanAfricanSpacing.sm),
                     Text(
                       'Please try again later.',
-                      style: PanAfricanTypography.bodyMedium(context, color: PanAfricanColors.textSecondary),
+                      style: PanAfricanTypography.bodyMedium(
+                        context,
+                        color: PanAfricanColors.textSecondary,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: PanAfricanSpacing.xl),
@@ -81,7 +91,9 @@ class PlacementQuizScreen extends HookConsumerWidget {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PanAfricanColors.primary,
-                        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                        foregroundColor: Theme.of(
+                          context,
+                        ).colorScheme.onPrimary,
                         minimumSize: Size(200.w, 50.h),
                       ),
                       child: const Text('Go Back'),
@@ -169,11 +181,14 @@ class _PlacementQuizScaffoldState extends State<_PlacementQuizScaffold> {
     final loc = widget.localization;
     final q = widget.questions[_currentIndex];
     final selected = _answers[_currentIndex];
-    final progress = ( _currentIndex + 1 ) / (widget.questions.isEmpty ? 1 : widget.questions.length);
+    final progress =
+        (_currentIndex + 1) /
+        (widget.questions.isEmpty ? 1 : widget.questions.length);
 
     return Scaffold(
-      backgroundColor:
-          isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
+      backgroundColor: isDark
+          ? PanAfricanColors.surfaceDark
+          : PanAfricanColors.surfaceLight,
       body: Container(
         decoration: BoxDecoration(
           gradient: isDark
@@ -227,8 +242,12 @@ class _PlacementQuizScaffoldState extends State<_PlacementQuizScaffold> {
                   child: LinearProgressIndicator(
                     value: progress.clamp(0.0, 1.0),
                     minHeight: 8,
-                    backgroundColor: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
-                    valueColor: const AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
+                    backgroundColor: isDark
+                        ? PanAfricanColors.borderDark
+                        : PanAfricanColors.borderLight,
+                    valueColor: const AlwaysStoppedAnimation<Color>(
+                      PanAfricanColors.primary,
+                    ),
                   ),
                 ),
                 SizedBox(height: PanAfricanSpacing.lg),
@@ -239,7 +258,9 @@ class _PlacementQuizScaffoldState extends State<_PlacementQuizScaffold> {
                     width: double.infinity,
                     padding: EdgeInsets.all(PanAfricanSpacing.lg),
                     decoration: BoxDecoration(
-                      color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                      color: isDark
+                          ? PanAfricanColors.cardDark
+                          : PanAfricanColors.cardLight,
                       borderRadius: PanAfricanRadius.xlBR,
                       boxShadow: PanAfricanShadows.lg,
                     ),
@@ -254,7 +275,8 @@ class _PlacementQuizScaffoldState extends State<_PlacementQuizScaffold> {
                         Expanded(
                           child: ListView.separated(
                             itemCount: q.options.length,
-                            separatorBuilder: (_, __) => SizedBox(height: PanAfricanSpacing.sm),
+                            separatorBuilder: (_, __) =>
+                                SizedBox(height: PanAfricanSpacing.sm),
                             itemBuilder: (context, index) {
                               final option = q.options[index];
                               final isSelected = selected == index;
@@ -268,17 +290,21 @@ class _PlacementQuizScaffoldState extends State<_PlacementQuizScaffold> {
                                   ),
                                   decoration: BoxDecoration(
                                     color: isSelected
-                                        ? PanAfricanColors.primary.withValues(alpha: 0.15)
+                                        ? PanAfricanColors.primary.withValues(
+                                            alpha: 0.15,
+                                          )
                                         : (isDark
-                                            ? PanAfricanColors.surfaceContainerDark
-                                            : PanAfricanColors.surfaceContainerLight),
+                                              ? PanAfricanColors
+                                                    .surfaceContainerDark
+                                              : PanAfricanColors
+                                                    .surfaceContainerLight),
                                     borderRadius: PanAfricanRadius.lgBR,
                                     border: Border.all(
                                       color: isSelected
                                           ? PanAfricanColors.primary
                                           : (isDark
-                                              ? PanAfricanColors.borderDark
-                                              : PanAfricanColors.borderLight),
+                                                ? PanAfricanColors.borderDark
+                                                : PanAfricanColors.borderLight),
                                       width: isSelected ? 2 : 1,
                                     ),
                                   ),
@@ -292,21 +318,31 @@ class _PlacementQuizScaffoldState extends State<_PlacementQuizScaffold> {
                                           border: Border.all(
                                             color: isSelected
                                                 ? PanAfricanColors.primary
-                                                : PanAfricanColors.neutralMedium,
+                                                : PanAfricanColors
+                                                      .neutralMedium,
                                           ),
                                           color: isSelected
                                               ? PanAfricanColors.primary
                                               : Colors.transparent,
                                         ),
                                         child: isSelected
-                                            ? Icon(Icons.check, size: 16.sp, color: Theme.of(context).colorScheme.onPrimary)
+                                            ? Icon(
+                                                Icons.check,
+                                                size: 16.sp,
+                                                color: Theme.of(
+                                                  context,
+                                                ).colorScheme.onPrimary,
+                                              )
                                             : null,
                                       ),
                                       SizedBox(width: PanAfricanSpacing.sm),
                                       Expanded(
                                         child: Text(
                                           option,
-                                          style: PanAfricanTypography.bodyMedium(context),
+                                          style:
+                                              PanAfricanTypography.bodyMedium(
+                                                context,
+                                              ),
                                         ),
                                       ),
                                     ],
@@ -335,14 +371,21 @@ class _PlacementQuizScaffoldState extends State<_PlacementQuizScaffold> {
                     style: FilledButton.styleFrom(
                       backgroundColor: PanAfricanColors.primary,
                       foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                      padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
+                      padding: EdgeInsets.symmetric(
+                        vertical: PanAfricanSpacing.md,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: PanAfricanRadius.roundBR,
                       ),
                     ),
                     child: Text(
-                      _currentIndex == widget.questions.length - 1 ? 'Finish' : 'Next',
-                      style: PanAfricanTypography.labelLarge(context, color: Theme.of(context).colorScheme.onPrimary),
+                      _currentIndex == widget.questions.length - 1
+                          ? 'Finish'
+                          : 'Next',
+                      style: PanAfricanTypography.labelLarge(
+                        context,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
                     ),
                   ),
                 ),
@@ -354,4 +397,3 @@ class _PlacementQuizScaffoldState extends State<_PlacementQuizScaffold> {
     );
   }
 }
-
