@@ -149,7 +149,24 @@ void main() {
           nowMinute: hm(23, 30),
           reminderMinute: hm(23, 15),
         ),
-        (dayOffset: 2, minuteOfDay: hm(7, 0)),
+        (dayOffset: 1, minuteOfDay: hm(7, 0)),
+      );
+    });
+
+    test('quiet slot set after its time fires at the very next 07:00', () {
+      expect(
+        ReminderPolicy.nextReminderSlot(
+          nowMinute: hm(23, 30),
+          reminderMinute: hm(23, 0),
+        ),
+        (dayOffset: 1, minuteOfDay: hm(7, 0)),
+      );
+      expect(
+        ReminderPolicy.nextReminderSlot(
+          nowMinute: hm(3, 0),
+          reminderMinute: hm(23, 0),
+        ),
+        (dayOffset: 0, minuteOfDay: hm(7, 0)),
       );
     });
 
@@ -162,6 +179,11 @@ void main() {
           );
           expect(ReminderPolicy.inQuietWindow(s.minuteOfDay), isFalse);
           expect(s.dayOffset * 1440 + s.minuteOfDay, greaterThan(now));
+          // Never more than a day away.
+          expect(
+            s.dayOffset * 1440 + s.minuteOfDay - now,
+            lessThanOrEqualTo(1440),
+          );
         }
       }
     });

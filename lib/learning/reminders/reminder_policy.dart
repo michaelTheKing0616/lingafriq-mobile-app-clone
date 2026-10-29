@@ -42,12 +42,12 @@ class ReminderPolicy {
     int startMinute = quietHourStart * 60,
     int endMinute = quietHourEnd * 60,
   }) {
-    var day = reminderMinute > nowMinute ? 0 : 1;
     var minute = reminderMinute % minutesPerDay;
     if (inQuietWindow(minute, startMinute: startMinute, endMinute: endMinute)) {
-      if (startMinute > endMinute && minute >= startMinute) day += 1;
+      // The first allowed moment is the next quiet-window end after now.
       minute = endMinute;
     }
+    final day = minute > nowMinute ? 0 : 1;
     return (dayOffset: day, minuteOfDay: minute);
   }
 
