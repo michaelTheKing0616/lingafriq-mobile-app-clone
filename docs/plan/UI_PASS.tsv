@@ -172,7 +172,7 @@ mobile	lib/screens/learning/tone_rhythm/tone_rhythm_trainer_screen.dart	todo
 mobile	lib/screens/lens/lens_collection_screen.dart	todo			
 mobile	lib/screens/lens/lens_screen.dart	todo			
 mobile	lib/screens/lesson/authentic_lesson_flow_screen.dart	todo			
-mobile	lib/screens/lesson/lesson_flow_screen.dart	below-bar	9/9/9/9/9/9/8/9/8/9 avg8.8	Duolingo	2026-10-28
+mobile	lib/screens/lesson/lesson_flow_screen.dart	pass	9/9/9/9/9/9/9/9/9/9 avg9.0	Duolingo (lesson-flow pack 14-23)	2026-10-29
 mobile	lib/screens/lessons/lessons_map_entry_screen.dart	todo			
 mobile	lib/screens/live_translate/live_translate_screen.dart	todo			
 mobile	lib/screens/loading/dynamic_loading_screen.dart	todo			

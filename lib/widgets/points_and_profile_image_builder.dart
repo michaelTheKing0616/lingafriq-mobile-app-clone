@@ -1,3 +1,4 @@
+import 'package:lingafriq/l10n/l10n_of.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/user_provider.dart';
@@ -39,7 +40,7 @@ class PointsAndProfileImageBuilder extends ConsumerWidget {
               ref.read(navigationProvider).popToFirstRoute();
               ref.read(tabIndexProvider.notifier).setIndex(2);
             },
-            child: "$points Points".text.size(16.sp).color(Colors.white).semiBold.makeCentered(),
+            child: l10nOf(context).pointsCount(points).text.size(16.sp).color(Colors.white).semiBold.makeCentered(),
           ),
         ],
       ),

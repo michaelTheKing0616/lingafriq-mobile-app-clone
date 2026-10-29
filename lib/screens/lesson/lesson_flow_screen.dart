@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 import 'package:lingafriq/lessons/models/section_lesson_model.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/content/lingafriq_ux_voice.dart';
@@ -39,20 +40,203 @@ class LessonFlowScreen extends HookConsumerWidget {
   });
 
   @override
+  Widget build(BuildContext context, WidgetRef ref) =>
+      LessonSystemTextScale(child: _LessonFlowBody(this));
+}
+
+/// Restores the learner's system text size inside the lesson (clamped to
+/// 200%). The app shell pins [TextScaler] to 1.0, which would otherwise make
+/// large-text settings do nothing on the screen people spend the most time in.
+class LessonSystemTextScale extends StatelessWidget {
+  const LessonSystemTextScale({super.key, required this.child});
+  final Widget child;
+
+  static const maxScale = 2.0;
+
+  @override
+  Widget build(BuildContext context) {
+    final system = MediaQueryData.fromView(
+      View.of(context),
+    ).textScaler.clamp(maxScaleFactor: maxScale);
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(textScaler: system),
+      child: child,
+    );
+  }
+}
+
+/// Bottom sheet asking before a learner abandons a lesson mid-way. Shows
+/// exactly how close they are ([done] of [total] sections) so the choice is
+/// concrete. Returns true only when they choose to end it.
+Future<bool> confirmLessonQuit(
+  BuildContext context, {
+  required int done,
+  required int total,
+}) async {
+  final left = (total - done).clamp(0, total);
+  final l = l10nOf(context);
+  final scheme = Theme.of(context).colorScheme;
+  final result = await showModalBottomSheet<bool>(
+    context: context,
+    showDragHandle: true,
+    isScrollControlled: true,
+    builder: (sheetContext) {
+      final theme = Theme.of(sheetContext);
+      return ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.sizeOf(sheetContext).height * 0.85,
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(24, 0, 24, 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Copy scrolls at large text sizes; the two choices below
+                // stay pinned so "Keep learning" is never pushed off-screen.
+                Flexible(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Semantics(
+                          header: true,
+                          child: Text(
+                            l.lessonQuitTitle,
+                            textAlign: TextAlign.center,
+                            style: theme.textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        LessonQuitSteps(done: done, total: total),
+                        const SizedBox(height: 8),
+                        Text(
+                          l.lessonQuitRemaining(left),
+                          key: const Key('lesson-quit-remaining'),
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          l.lessonQuitBody,
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            color: scheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                FilledButton(
+                  key: const Key('lesson-keep-learning'),
+                  style: FilledButton.styleFrom(
+                    minimumSize: const Size.fromHeight(52),
+                  ),
+                  onPressed: () => Navigator.of(sheetContext).pop(false),
+                  child: Text(
+                    l.lessonKeepLearning,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                TextButton(
+                  key: const Key('lesson-end-session'),
+                  style: TextButton.styleFrom(
+                    minimumSize: const Size.fromHeight(48),
+                    foregroundColor: scheme.error,
+                  ),
+                  onPressed: () => Navigator.of(sheetContext).pop(true),
+                  child: Text(l.lessonEndSession, textAlign: TextAlign.center),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
+  return result ?? false;
+}
+
+/// A row of section pills: gold for finished, outlined for still to do.
+/// Reads in the text direction, so it fills from the right in Arabic.
+class LessonQuitSteps extends StatelessWidget {
+  const LessonQuitSteps({super.key, required this.done, required this.total});
+  final int done;
+  final int total;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return ExcludeSemantics(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          for (var i = 0; i < total; i++)
+            Flexible(
+              child: Container(
+                constraints: const BoxConstraints(maxWidth: 40),
+                height: 8,
+                margin: const EdgeInsets.symmetric(horizontal: 3),
+                decoration: BoxDecoration(
+                  color: i < done ? PanAfricanColors.accent : null,
+                  border: Border.all(
+                    color: i < done
+                        ? PanAfricanColors.secondaryDark
+                        : scheme.outline,
+                  ),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _LessonFlowBody extends HookConsumerWidget {
+  const _LessonFlowBody(this.w);
+  final LessonFlowScreen w;
+
+  int get lessonId => w.lessonId;
+  List<SectionLessonModel> get sectionLessons => w.sectionLessons;
+  String get lessonTitle => w.lessonTitle;
+  String? get audioLanguage => w.audioLanguage;
+
+  @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = l10nOf(context);
     final pageController = usePageController(initialPage: 0);
     final lessonFlow = ref.watch(lessonFlowProvider(lessonId).notifier);
     final lessonState = ref.watch(lessonFlowProvider(lessonId));
     final comboTracker = lessonFlow.comboTracker;
     final reducedMotion = MediaQuery.disableAnimationsOf(context);
-    final pageTransitionDuration =
-        reducedMotion ? Duration.zero : const Duration(milliseconds: 300);
+    final pageTransitionDuration = reducedMotion
+        ? Duration.zero
+        : const Duration(milliseconds: 300);
 
     void exitLesson() {
       final sections = ref.read(lessonFlowProvider(lessonId)).sections;
       _pauseAllSectionVideos(ref, sections);
       comboTracker.reset();
       ref.read(navigationProvider).pop();
+    }
+
+    Future<void> askToExit() async {
+      final st = ref.read(lessonFlowProvider(lessonId));
+      final ok = await confirmLessonQuit(
+        context,
+        done: st.completedSections,
+        total: st.sections.length,
+      );
+      if (ok) exitLesson();
     }
 
     // Stops any active BetterPlayer (iOS) if the screen is removed by any path.
@@ -138,7 +322,9 @@ class LessonFlowScreen extends HookConsumerWidget {
         lessonState.error != null &&
         !lessonState.isLoading) {
       void retryLoad() {
-        ref.read(lessonFlowProvider(lessonId).notifier).initialize(sectionLessons);
+        ref
+            .read(lessonFlowProvider(lessonId).notifier)
+            .initialize(sectionLessons);
       }
 
       return PopScope(
@@ -150,9 +336,10 @@ class LessonFlowScreen extends HookConsumerWidget {
         child: LingafriqScaffold(
           body: Semantics(
             liveRegion: true,
-            label: "Lesson couldn't load. ${LingAfriqUxVoice.connectionError}",
+            label:
+                "${l.lessonLoadFailedTitle}. ${LingAfriqUxVoice.connectionError}",
             child: PanAfricanErrorState(
-              title: "Let's try that again",
+              title: l.lessonLoadFailedTitle,
               description: LingAfriqUxVoice.connectionError,
               onRetry: retryLoad,
             ),
@@ -171,7 +358,7 @@ class LessonFlowScreen extends HookConsumerWidget {
         child: LingafriqScaffold(
           body: Semantics(
             liveRegion: true,
-            label: 'Preparing your lesson',
+            label: l.lessonPreparing,
             child: PanAfricanLoadingState(
               message: LingAfriqUxVoice.loadingHints.first,
             ),
@@ -184,7 +371,7 @@ class LessonFlowScreen extends HookConsumerWidget {
       canPop: false,
       onPopInvokedWithResult: (bool didPop, Object? result) {
         if (didPop) return;
-        exitLesson();
+        askToExit();
       },
       child: LoadingOverlayPro(
         isLoading: lessonState.isLoading,
@@ -203,15 +390,20 @@ class LessonFlowScreen extends HookConsumerWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Semantics(
-                                  label: 'Exit lesson',
-                                  button: true,
-                                  child: BackButton(
+                                IconButton(
+                                  key: const Key('lesson-close'),
+                                  tooltip: l.lessonExit,
+                                  constraints: const BoxConstraints(
+                                    minWidth: 48,
+                                    minHeight: 48,
+                                  ),
+                                  icon: Icon(
+                                    Icons.close_rounded,
                                     color: Theme.of(
                                       context,
                                     ).colorScheme.onPrimary,
-                                    onPressed: exitLesson,
                                   ),
+                                  onPressed: askToExit,
                                 ),
                                 Padding(
                                   padding: EdgeInsetsDirectional.only(
@@ -243,10 +435,18 @@ class LessonFlowScreen extends HookConsumerWidget {
                         ),
                         // Progress bar
                         Semantics(
-                          label:
-                              'Lesson progress. Section ${lessonState.currentSectionIndex + 1} of ${lessonState.sections.length}. ${(lessonState.completedSections / lessonState.sections.length * 100).toInt()} percent complete.',
-                          value:
-                              '${lessonState.currentSectionIndex + 1} of ${lessonState.sections.length}',
+                          label: l.lessonProgressLabel(
+                            lessonState.currentSectionIndex + 1,
+                            lessonState.sections.length,
+                            (lessonState.completedSections /
+                                    lessonState.sections.length *
+                                    100)
+                                .toInt(),
+                          ),
+                          value: l.lessonSectionLabel(
+                            lessonState.currentSectionIndex + 1,
+                            lessonState.sections.length,
+                          ),
                           child: LessonProgressBar(
                             sections: lessonState.sections,
                             currentIndex: lessonState.currentSectionIndex,
@@ -264,8 +464,10 @@ class LessonFlowScreen extends HookConsumerWidget {
                       itemCount: lessonState.sections.length,
                       itemBuilder: (context, index) {
                         final section = lessonState.sections[index];
-                        final sectionLabel =
-                            'Section ${index + 1} of ${lessonState.sections.length}';
+                        final sectionLabel = l.lessonSectionLabel(
+                          index + 1,
+                          lessonState.sections.length,
+                        );
                         return Semantics(
                           label: sectionLabel,
                           header: true,
@@ -309,7 +511,7 @@ class LessonFlowScreen extends HookConsumerWidget {
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 6),
         action: SnackBarAction(
-          label: 'Retry',
+          label: l10nOf(context).lessonRetry,
           textColor: colorScheme.onErrorContainer,
           onPressed: onRetry,
         ),
@@ -334,7 +536,9 @@ class LessonFlowScreen extends HookConsumerWidget {
           vocabAudioText: section.title,
           onContinue: () async {
             Future<void> completeAndAdvance() async {
-              final success = await lessonFlow.completeSection(section.sectionId);
+              final success = await lessonFlow.completeSection(
+                section.sectionId,
+              );
               if (!context.mounted) return;
               if (!success) {
                 _showRetrySnackBar(context, completeAndAdvance);
@@ -374,7 +578,9 @@ class LessonFlowScreen extends HookConsumerWidget {
           },
           onFinish: () {
             Future<void> completeAndAdvance() async {
-              final success = await lessonFlow.completeSection(section.sectionId);
+              final success = await lessonFlow.completeSection(
+                section.sectionId,
+              );
               if (!context.mounted) return;
               if (!success) {
                 _showRetrySnackBar(context, completeAndAdvance);
@@ -441,7 +647,9 @@ class LessonFlowScreen extends HookConsumerWidget {
             if (!allCorrect) return;
 
             Future<void> completeAndAdvance() async {
-              final success = await lessonFlow.completeSection(section.sectionId);
+              final success = await lessonFlow.completeSection(
+                section.sectionId,
+              );
               if (!context.mounted) return;
               if (!success) {
                 _showRetrySnackBar(context, completeAndAdvance);

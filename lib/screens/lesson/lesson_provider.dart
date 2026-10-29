@@ -149,7 +149,9 @@ class LessonFlowNotifier extends StateNotifier<LessonFlowState> {
           title: section.title,
           types: section.types,
           score: section.score,
-          isCompleted: section.completed_by == userId,
+          // null == null would mark every section done for a signed-out or
+          // still-loading user, so require a real id.
+          isCompleted: userId != null && section.completed_by == userId,
           dateTime: section.date,
           otherData: section.otherData,
         );

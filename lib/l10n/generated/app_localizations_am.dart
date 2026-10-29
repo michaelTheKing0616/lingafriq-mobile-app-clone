@@ -1099,4 +1099,58 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get lowBandwidthOff => 'Off';
+
+  @override
+  String get lessonExit => 'Exit lesson';
+
+  @override
+  String get lessonQuitTitle => 'Leave this lesson?';
+
+  @override
+  String get lessonQuitBody =>
+      'You\'re doing well. A few more minutes finishes this lesson.';
+
+  @override
+  String get lessonKeepLearning => 'Keep learning';
+
+  @override
+  String get lessonEndSession => 'End lesson';
+
+  @override
+  String get lessonPreparing => 'Preparing your lesson';
+
+  @override
+  String get lessonLoadFailedTitle => 'Let\'s try that again';
+
+  @override
+  String get lessonRetry => 'Retry';
+
+  @override
+  String lessonProgressLabel(int current, int total, int percent) {
+    return 'Lesson progress. Section $current of $total. $percent percent complete.';
+  }
+
+  @override
+  String lessonSectionLabel(int current, int total) {
+    return 'Section $current of $total';
+  }
+
+  @override
+  String get lessonContinueNext => 'Continue to next section';
+
+  @override
+  String pointsCount(int count) {
+    return '$count Points';
+  }
+
+  @override
+  String lessonQuitRemaining(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sections left',
+      one: '1 section left',
+    );
+    return '$_temp0';
+  }
 }

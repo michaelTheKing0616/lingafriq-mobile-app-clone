@@ -1109,4 +1109,58 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get lowBandwidthOff => 'Désactivé';
+
+  @override
+  String get lessonExit => 'Quitter la leçon';
+
+  @override
+  String get lessonQuitTitle => 'Quitter cette leçon ?';
+
+  @override
+  String get lessonQuitBody =>
+      'Tu t\'en sors bien. Encore quelques minutes et cette leçon est finie.';
+
+  @override
+  String get lessonKeepLearning => 'Continuer à apprendre';
+
+  @override
+  String get lessonEndSession => 'Arrêter la leçon';
+
+  @override
+  String get lessonPreparing => 'Préparation de ta leçon';
+
+  @override
+  String get lessonLoadFailedTitle => 'On réessaie';
+
+  @override
+  String get lessonRetry => 'Réessayer';
+
+  @override
+  String lessonProgressLabel(int current, int total, int percent) {
+    return 'Progression de la leçon. Section $current sur $total. $percent pour cent terminé.';
+  }
+
+  @override
+  String lessonSectionLabel(int current, int total) {
+    return 'Section $current sur $total';
+  }
+
+  @override
+  String get lessonContinueNext => 'Passer à la section suivante';
+
+  @override
+  String pointsCount(int count) {
+    return '$count points';
+  }
+
+  @override
+  String lessonQuitRemaining(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Encore $count sections',
+      one: 'Plus qu\'une section',
+    );
+    return '$_temp0';
+  }
 }

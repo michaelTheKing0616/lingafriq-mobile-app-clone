@@ -2093,6 +2093,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Off'**
   String get lowBandwidthOff;
+
+  /// Lesson flow screen
+  ///
+  /// In en, this message translates to:
+  /// **'Exit lesson'**
+  String get lessonExit;
+
+  /// Lesson flow screen
+  ///
+  /// In en, this message translates to:
+  /// **'Leave this lesson?'**
+  String get lessonQuitTitle;
+
+  /// Lesson flow screen
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re doing well. A few more minutes finishes this lesson.'**
+  String get lessonQuitBody;
+
+  /// Lesson flow screen
+  ///
+  /// In en, this message translates to:
+  /// **'Keep learning'**
+  String get lessonKeepLearning;
+
+  /// Lesson flow screen
+  ///
+  /// In en, this message translates to:
+  /// **'End lesson'**
+  String get lessonEndSession;
+
+  /// Lesson flow screen
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing your lesson'**
+  String get lessonPreparing;
+
+  /// Lesson flow screen
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s try that again'**
+  String get lessonLoadFailedTitle;
+
+  /// Lesson flow screen
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get lessonRetry;
+
+  /// Lesson flow screen
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson progress. Section {current} of {total}. {percent} percent complete.'**
+  String lessonProgressLabel(int current, int total, int percent);
+
+  /// Lesson flow screen
+  ///
+  /// In en, this message translates to:
+  /// **'Section {current} of {total}'**
+  String lessonSectionLabel(int current, int total);
+
+  /// Lesson flow screen
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to next section'**
+  String get lessonContinueNext;
+
+  /// Lesson flow screen
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Points'**
+  String pointsCount(int count);
+
+  /// Lesson quit sheet
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 section left} other{{count} sections left}}'**
+  String lessonQuitRemaining(int count);
 }
 
 class _AppLocalizationsDelegate

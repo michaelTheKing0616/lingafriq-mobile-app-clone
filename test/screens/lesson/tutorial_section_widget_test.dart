@@ -95,8 +95,14 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byIcon(Icons.arrow_back_rounded), findsOneWidget);
-      expect(find.byIcon(Icons.arrow_forward_rounded), findsNothing);
+      // The forward arrow must visually point left in RTL. It is
+      // auto-mirrored (matchTextDirection) under an RTL Directionality.
+      // A manual swap to arrow_back would mirror it a second time.
+      final icon = find.byIcon(Icons.arrow_forward_rounded);
+      expect(icon, findsOneWidget);
+      expect(find.byIcon(Icons.arrow_back_rounded), findsNothing);
+      expect(Icons.arrow_forward_rounded.matchTextDirection, isTrue);
+      expect(Directionality.of(tester.element(icon)), TextDirection.rtl);
     });
   });
 }

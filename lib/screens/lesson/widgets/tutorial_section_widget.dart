@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/audio_player_widget.dart';
 import 'package:lingafriq/widgets/content/vocab_audio_controls.dart';
@@ -137,17 +138,16 @@ class _TutorialSectionWidgetState extends ConsumerState<TutorialSectionWidget> {
           child: Padding(
             padding: EdgeInsets.all(16.w),
             child: Semantics(
-              label: 'Continue to next section',
+              label: l10nOf(context).lessonContinueNext,
               button: true,
               child: PanAfricanButton(
                 width: double.infinity,
                 onPressed: widget.onContinue,
-                label: 'Continue',
-                // Mirror the arrow for RTL locales (Arabic, Darija) so
-                // "forward" visually matches the reading direction.
-                icon: Directionality.of(context) == TextDirection.rtl
-                    ? Icons.arrow_back_rounded
-                    : Icons.arrow_forward_rounded,
+                label: l10nOf(context).continueButton,
+                // arrow_forward_rounded sets matchTextDirection, so Flutter
+                // already points it left in RTL. Swapping to arrow_back here
+                // would mirror it twice and point it backwards.
+                icon: Icons.arrow_forward_rounded,
                 backgroundColor: PanAfricanColors.primary,
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
               ),

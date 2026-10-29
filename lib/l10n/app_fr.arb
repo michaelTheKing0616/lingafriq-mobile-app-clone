@@ -193,5 +193,18 @@
   "lowBandwidthTitle": "Faible bande passante",
   "lowBandwidthAutoOn": "Activé car l'économiseur de données est activé",
   "lowBandwidthManualOn": "Activé jusqu'à ce que vous le désactiviez",
-  "lowBandwidthOff": "Désactivé"
+  "lowBandwidthOff": "Désactivé",
+  "lessonExit": "Quitter la leçon",
+  "lessonQuitTitle": "Quitter cette leçon ?",
+  "lessonQuitBody": "Tu t'en sors bien. Encore quelques minutes et cette leçon est finie.",
+  "lessonKeepLearning": "Continuer à apprendre",
+  "lessonEndSession": "Arrêter la leçon",
+  "lessonPreparing": "Préparation de ta leçon",
+  "lessonLoadFailedTitle": "On réessaie",
+  "lessonRetry": "Réessayer",
+  "lessonProgressLabel": "Progression de la leçon. Section {current} sur {total}. {percent} pour cent terminé.",
+  "lessonSectionLabel": "Section {current} sur {total}",
+  "lessonContinueNext": "Passer à la section suivante",
+  "pointsCount": "{count} points",
+  "lessonQuitRemaining": "{count, plural, =1{Plus qu'une section} other{Encore {count} sections}}"
 }

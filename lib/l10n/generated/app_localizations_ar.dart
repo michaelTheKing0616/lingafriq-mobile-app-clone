@@ -1098,4 +1098,62 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get lowBandwidthOff => 'متوقف';
+
+  @override
+  String get lessonExit => 'الخروج من الدرس';
+
+  @override
+  String get lessonQuitTitle => 'هل تريد مغادرة هذا الدرس؟';
+
+  @override
+  String get lessonQuitBody =>
+      'أنت تُبلي حسنًا. بضع دقائق أخرى وتُنهي هذا الدرس.';
+
+  @override
+  String get lessonKeepLearning => 'تابع التعلّم';
+
+  @override
+  String get lessonEndSession => 'إنهاء الدرس';
+
+  @override
+  String get lessonPreparing => 'جارٍ تحضير درسك';
+
+  @override
+  String get lessonLoadFailedTitle => 'لنحاول مرة أخرى';
+
+  @override
+  String get lessonRetry => 'إعادة المحاولة';
+
+  @override
+  String lessonProgressLabel(int current, int total, int percent) {
+    return 'تقدّم الدرس. القسم $current من $total. اكتمل $percent بالمئة.';
+  }
+
+  @override
+  String lessonSectionLabel(int current, int total) {
+    return 'القسم $current من $total';
+  }
+
+  @override
+  String get lessonContinueNext => 'المتابعة إلى القسم التالي';
+
+  @override
+  String pointsCount(int count) {
+    return '$count نقطة';
+  }
+
+  @override
+  String lessonQuitRemaining(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'تبقّى $count قسم',
+      many: 'تبقّى $count قسمًا',
+      few: 'تبقّت $count أقسام',
+      two: 'تبقّى قسمان',
+      one: 'تبقّى قسم واحد',
+      zero: 'لم يتبقَّ أي قسم',
+    );
+    return '$_temp0';
+  }
 }

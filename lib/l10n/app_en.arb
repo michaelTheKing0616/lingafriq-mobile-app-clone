@@ -1376,5 +1376,86 @@
   "lowBandwidthOff": "Off",
   "@lowBandwidthOff": {
     "description": "Settings screen"
+  },
+  "lessonExit": "Exit lesson",
+  "@lessonExit": {
+    "description": "Lesson flow screen"
+  },
+  "lessonQuitTitle": "Leave this lesson?",
+  "@lessonQuitTitle": {
+    "description": "Lesson flow screen"
+  },
+  "lessonQuitBody": "You're doing well. A few more minutes finishes this lesson.",
+  "@lessonQuitBody": {
+    "description": "Lesson flow screen"
+  },
+  "lessonKeepLearning": "Keep learning",
+  "@lessonKeepLearning": {
+    "description": "Lesson flow screen"
+  },
+  "lessonEndSession": "End lesson",
+  "@lessonEndSession": {
+    "description": "Lesson flow screen"
+  },
+  "lessonPreparing": "Preparing your lesson",
+  "@lessonPreparing": {
+    "description": "Lesson flow screen"
+  },
+  "lessonLoadFailedTitle": "Let's try that again",
+  "@lessonLoadFailedTitle": {
+    "description": "Lesson flow screen"
+  },
+  "lessonRetry": "Retry",
+  "@lessonRetry": {
+    "description": "Lesson flow screen"
+  },
+  "lessonProgressLabel": "Lesson progress. Section {current} of {total}. {percent} percent complete.",
+  "@lessonProgressLabel": {
+    "description": "Lesson flow screen",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "lessonSectionLabel": "Section {current} of {total}",
+  "@lessonSectionLabel": {
+    "description": "Lesson flow screen",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "lessonContinueNext": "Continue to next section",
+  "@lessonContinueNext": {
+    "description": "Lesson flow screen"
+  },
+  "pointsCount": "{count} Points",
+  "@pointsCount": {
+    "description": "Lesson flow screen",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "lessonQuitRemaining": "{count, plural, =1{1 section left} other{{count} sections left}}",
+  "@lessonQuitRemaining": {
+    "description": "Lesson quit sheet",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }
