@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lingafriq/config/bundled_fonts.dart';
 import 'package:lingafriq/services/offline/local_database_service.dart';
 import 'package:lingafriq/services/local_schema_migrator.dart';
 
@@ -99,6 +100,7 @@ void main() async {
   coldStartTelemetry.process.start();
   final coldStart = Stopwatch()..start();
   WidgetsFlutterBinding.ensureInitialized();
+  configureBundledFonts();
 
   FlutterError.onError = (details) {
     final report = CrashReporter.instance.report(
