@@ -130,54 +130,56 @@ class _ProfileStep extends HookConsumerWidget {
           SizedBox(height: ModernGriotSpacing.xs.h),
         ],
       ),
+      header: const _QuestionHeader(
+        step: OnboardingStep.profile,
+        question: 'Pick a name',
+        hint: 'A learner without a name is a drum without a rhythm.',
+      ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            'Pick a name',
-            style: ModernGriotTypography.headlineSmall(
-              context: context,
-              color: ModernGriotColors.onSurface,
-            ),
-          ),
-          SizedBox(height: ModernGriotSpacing.xxs.h),
-          Text(
-            'A learner without a name is a drum without a rhythm.',
-            textAlign: TextAlign.center,
-            style: ModernGriotTypography.bodyMedium(
-              context: context,
-              color: ModernGriotColors.onSurfaceVariant,
-            ),
-          ),
-          SizedBox(height: ModernGriotSpacing.lg.h),
           Semantics(
             button: true,
             label: 'Add a profile photo, optional',
-            child: GestureDetector(
+            excludeSemantics: true,
+            child: InkWell(
               onTap: pickAvatar,
-              child: CircleAvatar(
-                radius: ModernGriotSpacing.xxl.r,
-                backgroundColor: ModernGriotColors.brandGold.withValues(
-                  alpha: _GriotAlpha.chipSelected,
+              borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  minHeight: ModernGriotLayout.minTouchTarget,
                 ),
-                backgroundImage: avatarPath.value != null
-                    ? FileImage(File(avatarPath.value!))
-                    : null,
-                child: avatarPath.value == null
-                    ? Icon(
-                        Icons.person_rounded,
-                        size: ModernGriotSpacing.xl.sp,
-                        color: ModernGriotColors.onSurface,
-                      )
-                    : null,
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: ModernGriotSpacing.lg.r,
+                      backgroundColor: ModernGriotColors.brandGold.withValues(
+                        alpha: _GriotAlpha.chipSelected,
+                      ),
+                      backgroundImage: avatarPath.value != null
+                          ? FileImage(File(avatarPath.value!))
+                          : null,
+                      child: avatarPath.value == null
+                          ? Icon(
+                              Icons.add_a_photo_rounded,
+                              size: ModernGriotSpacing.md.sp,
+                              color: ModernGriotColors.onSurface,
+                            )
+                          : null,
+                    ),
+                    SizedBox(width: ModernGriotSpacing.sm.w),
+                    Expanded(
+                      child: Text(
+                        'Add a photo (optional)',
+                        style: ModernGriotTypography.labelLarge(
+                          context: context,
+                          color: ModernGriotColors.onSurface,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ),
-          SizedBox(height: ModernGriotSpacing.xs.h),
-          Text(
-            'Tap to add photo (optional)',
-            style: ModernGriotTypography.labelMedium(
-              context: context,
-              color: ModernGriotColors.onSurfaceVariant,
             ),
           ),
           SizedBox(height: ModernGriotSpacing.md.h),
@@ -206,6 +208,11 @@ class _ProfileStep extends HookConsumerWidget {
                     )
                   : _usernameIcon(usernameStatus.value),
               helperText: _usernameHelper(usernameStatus.value),
+              helperMaxLines: 3,
+              helperStyle: ModernGriotTypography.bodySmall(
+                context: context,
+                color: ModernGriotColors.onSurfaceVariant,
+              ),
             ),
           ),
           SizedBox(height: ModernGriotSpacing.lg.h),

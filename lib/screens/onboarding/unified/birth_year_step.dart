@@ -69,16 +69,16 @@ class _BirthYearStep extends HookConsumerWidget {
         enabled: ctaEnabled && !saving.value,
         onPressed: () => submit(withParentEmail: isChild),
       ),
+      header: const _QuestionHeader(
+        step: OnboardingStep.profile,
+        question: 'What year were you born?',
+        hint:
+            'This helps us keep LingAfriq right for you. '
+            'We only ask for the year.',
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const _QuestionHeader(
-            step: OnboardingStep.profile,
-            question: 'What year were you born?',
-            hint:
-                'This helps us keep LingAfriq right for you. '
-                'We only ask for the year.',
-          ),
           Semantics(
             label: 'Birth year',
             value: '${selectedYear.value}',

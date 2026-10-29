@@ -65,14 +65,14 @@ class _ReasonStep extends HookConsumerWidget {
         enabled: selected.value.isNotEmpty,
         onPressed: submit,
       ),
+      header: _QuestionHeader(
+        step: OnboardingStep.goals,
+        question: 'Why are you learning $languageName?',
+        hint: 'Pick all that fit. Your first lessons follow your answer.',
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _QuestionHeader(
-            step: OnboardingStep.goals,
-            question: 'Why are you learning $languageName?',
-            hint: 'Pick all that fit. Your first lessons follow your answer.',
-          ),
           for (final r in _reasons)
             _SelectRow(
               height: ModernGriotLayout.selectRowComfortable,

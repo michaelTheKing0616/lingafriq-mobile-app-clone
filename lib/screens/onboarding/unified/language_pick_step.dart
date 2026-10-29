@@ -166,13 +166,13 @@ class _LanguagePickStep extends HookConsumerWidget {
           });
         },
       ),
+      header: const _QuestionHeader(
+        question: 'What do you want to learn?',
+        step: OnboardingStep.languageSelection,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const _QuestionHeader(
-            question: 'What do you want to learn?',
-            step: OnboardingStep.languageSelection,
-          ),
           SizedBox(height: ModernGriotSpacing.md.h),
           Text(
             'I speak',

@@ -41,16 +41,16 @@ class _SaveProgressStep extends StatelessWidget {
           ),
         ),
       ),
+      header: _QuestionHeader(
+        step: OnboardingStep.profile,
+        question: 'Save your progress?',
+        hint:
+            'You finished your first lesson and learned $words. '
+            'An account keeps your progress safe if you change phones.',
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _QuestionHeader(
-            step: OnboardingStep.profile,
-            question: 'Save your progress?',
-            hint:
-                'You finished your first lesson and learned $words. '
-                'An account keeps your progress safe if you change phones.',
-          ),
           _AuthProviderButton(
             label: 'Continue with Google',
             icon: Icons.g_mobiledata_rounded,

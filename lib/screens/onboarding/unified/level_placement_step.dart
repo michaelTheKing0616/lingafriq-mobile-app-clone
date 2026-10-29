@@ -66,13 +66,13 @@ class _LevelPlacementStep extends HookConsumerWidget {
           onNext({'self_reported_level': level, 'learning_style': styleHint});
         },
       ),
+      header: _QuestionHeader(
+        question: 'How much $_langName do you know?',
+        step: OnboardingStep.goals,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _QuestionHeader(
-            question: 'How much $_langName do you know?',
-            step: OnboardingStep.goals,
-          ),
           SizedBox(height: ModernGriotSpacing.lg.h),
           for (final level in _levels)
             _SelectRow(

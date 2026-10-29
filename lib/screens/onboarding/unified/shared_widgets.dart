@@ -31,9 +31,12 @@ class _PolieBadge extends StatelessWidget {
 }
 
 class _StepScaffold extends ConsumerWidget {
-  const _StepScaffold({required this.child, this.bottom});
+  const _StepScaffold({required this.child, this.bottom, this.header});
 
   final Widget child;
+
+  /// Pinned above the scroll body so the question never scrolls away.
+  final Widget? header;
   final Widget? bottom;
 
   @override
@@ -48,6 +51,19 @@ class _StepScaffold extends ConsumerWidget {
             if (offline)
               _OfflineNotice(
                 onRetry: () => ref.invalidate(onboardingOnlineProvider),
+              ),
+            if (header != null)
+              ConstrainedBox(
+                // At 200% text the header may not starve the options.
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.sizeOf(context).height * 0.35,
+                ),
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: ModernGriotSpacing.lg.w,
+                  ),
+                  child: header,
+                ),
               ),
             Expanded(
               child: LayoutBuilder(

@@ -84,16 +84,16 @@ class _NotificationsStep extends HookConsumerWidget {
           SizedBox(height: ModernGriotSpacing.xs.h),
         ],
       ),
+      header: const _QuestionHeader(
+        question: 'A soft nudge when it matters',
+        hint:
+            'See the reminder below. Turn it on only if it helps you '
+            'keep your streak. You pick the time.',
+        step: OnboardingStep.schedule,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const _QuestionHeader(
-            question: 'A soft nudge when it matters',
-            hint:
-                'See the reminder below. Turn it on only if it helps you '
-                'keep your streak. You pick the time.',
-            step: OnboardingStep.schedule,
-          ),
           SizedBox(height: ModernGriotSpacing.lg.h),
           Container(
             width: double.infinity,

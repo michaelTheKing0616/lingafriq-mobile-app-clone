@@ -62,14 +62,14 @@ class _LearningStyleStep extends HookConsumerWidget {
           onNext({'learning_style': selected.value});
         },
       ),
+      header: const _QuestionHeader(
+        question: 'How do you learn best?',
+        hint: 'Pick the style that feels most natural.',
+        step: OnboardingStep.learningStyle,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const _QuestionHeader(
-            question: 'How do you learn best?',
-            hint: 'Pick the style that feels most natural.',
-            step: OnboardingStep.learningStyle,
-          ),
           SizedBox(height: ModernGriotSpacing.md.h),
           for (final style in _styles)
             _SelectRow(

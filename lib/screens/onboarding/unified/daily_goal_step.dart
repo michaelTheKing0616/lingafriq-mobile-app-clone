@@ -35,14 +35,14 @@ class _DailyGoalStep extends HookConsumerWidget {
         enabled: minutes.value != null,
         onPressed: submit,
       ),
+      header: const _QuestionHeader(
+        step: OnboardingStep.schedule,
+        question: 'How much time a day feels right?',
+        hint: 'You can change this any time in Settings.',
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const _QuestionHeader(
-            step: OnboardingStep.schedule,
-            question: 'How much time a day feels right?',
-            hint: 'You can change this any time in Settings.',
-          ),
           for (final g in _goals)
             _SelectRow(
               label: g.label,

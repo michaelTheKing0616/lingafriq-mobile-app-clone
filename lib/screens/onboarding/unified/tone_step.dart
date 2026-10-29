@@ -64,14 +64,14 @@ class _ToneStep extends HookConsumerWidget {
           });
         },
       ),
+      header: const _QuestionHeader(
+        question: 'How should Polie sound?',
+        hint: 'Pick the voice that feels like a good study buddy.',
+        step: OnboardingStep.story,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const _QuestionHeader(
-            question: 'How should Polie sound?',
-            hint: 'Pick the voice that feels like a good study buddy.',
-            step: OnboardingStep.story,
-          ),
           SizedBox(height: ModernGriotSpacing.md.h),
           for (final tone in _tones)
             _SelectRow(
