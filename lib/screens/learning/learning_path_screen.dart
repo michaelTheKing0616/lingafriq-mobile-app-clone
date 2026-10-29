@@ -28,7 +28,7 @@ import 'package:lingafriq/widgets/learning_path/polie_path_mascot.dart';
 /// Place-themed clay road (not Duo hairline). Busuu checkpoints every 5.
 /// Finch kind streak. Gold BEGIN CTAs. Drift-first via
 /// [pathLessonsProvider] / [pathUnitsProvider] (P7-952). Never gates on
-/// hearts/energy/loot boxes (P8-907).
+/// hearts, energy or paid chance mechanics (P8-907).
 class LearningPathScreen extends ConsumerStatefulWidget {
   final Language language;
 
