@@ -85,6 +85,7 @@ Future<void> pumpVariant(
   GoldenVariant v,
   Widget home, {
   List<Override> overrides = const [],
+  bool settle = true,
 }) async {
   tester.view.devicePixelRatio = 1;
   tester.view.physicalSize = v.size;
@@ -118,7 +119,7 @@ Future<void> pumpVariant(
       ),
     ),
   );
-  await tester.pumpAndSettle();
+  if (settle) await tester.pumpAndSettle();
 }
 
 /// No RenderFlex overflow or other framework error was reported.

@@ -212,6 +212,56 @@ void main() {
     expect(calls, 2);
   });
 
+  testWidgets('loading skeleton mirrors hero, bars, grid; shimmer obeys '
+      'reduced motion', (t) async {
+    final pending = _o(snap: () => Completer<ProgressSnapshot>().future);
+    await pumpVariant(
+      t,
+      base,
+      const ProgressDashboardScreen(),
+      overrides: pending,
+      settle: false,
+    );
+    await t.pump(const Duration(milliseconds: 100));
+    for (final k in ['pg-skel-hero', 'pg-skel-bars', 'pg-skel-grid']) {
+      expect(find.byKey(Key(k)), findsOneWidget, reason: k);
+    }
+    expect(find.byType(ShaderMask), findsOneWidget, reason: 'shimmer on');
+    await t.pumpWidget(const SizedBox());
+    t.platformDispatcher.accessibilityFeaturesTestValue =
+        const FakeAccessibilityFeatures(disableAnimations: true);
+    addTearDown(t.platformDispatcher.clearAccessibilityFeaturesTestValue);
+    await pumpVariant(
+      t,
+      base,
+      const ProgressDashboardScreen(),
+      overrides: _o(snap: () => Completer<ProgressSnapshot>().future),
+      settle: false,
+    );
+    await t.pump(const Duration(milliseconds: 100));
+    expect(find.byType(ShaderMask), findsNothing, reason: 'reduced motion');
+  });
+
+  testWidgets('streak hero: count, next milestone, flame', (t) async {
+    await _pump(t, base, _o());
+    expect(find.text('2-day streak'), findsOneWidget);
+    expect(find.text('1 more day to your 3-day goal'), findsOneWidget);
+    expect(
+      find.bySemanticsLabel('2-day streak. 1 more day to your 3-day goal'),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('error page has a close button and a retry', (t) async {
+    await _pump(t, base, _o(snap: () => throw Exception('disk')));
+    expect(find.byKey(const Key('pg-close')), findsOneWidget);
+    expect(find.byKey(const Key('pg-retry')), findsOneWidget);
+    expect(
+      find.text('Your streak and practice days are not affected.'),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('loading is announced', (t) async {
     final h = t.ensureSemantics();
     await _pump(

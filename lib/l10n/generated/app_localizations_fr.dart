@@ -1868,4 +1868,46 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get profTeenParent =>
       'Ton compte est lié à un parent ou tuteur qui a donné son accord.';
+
+  @override
+  String get pgClose => 'Fermer';
+
+  @override
+  String get pgStreakTitle => 'Série actuelle';
+
+  @override
+  String pgStreakDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count jours de série',
+      one: '1 jour de série',
+      zero: '0 jour de série',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String pgNextGoal(int left, int goal) {
+    String _temp0 = intl.Intl.pluralLogic(
+      left,
+      locale: localeName,
+      other: 'Plus que $left jours avant ton objectif de $goal jours',
+      one: 'Plus qu\'1 jour avant ton objectif de $goal jours',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String pgMilestoneHit(int goal) {
+    return 'Palier atteint ! $goal jours d\'affilée';
+  }
+
+  @override
+  String get pgStreakStart =>
+      'Entraîne-toi aujourd\'hui pour allumer ta série.';
+
+  @override
+  String get pgErrorSaved =>
+      'Ta série et tes jours d\'entraînement ne sont pas affectés.';
 }

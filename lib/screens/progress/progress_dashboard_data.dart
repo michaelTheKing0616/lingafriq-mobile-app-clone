@@ -24,6 +24,30 @@ class ProgressSnapshot {
   /// previous recorded day's total.
   late final List<int> dailyMinutes = _daily(28);
 
+  /// Consecutive practice days ending today (or yesterday, if today has no
+  /// practice yet, so the streak is not shown as broken before the day ends).
+  late final int streak = () {
+    final d = dailyMinutes;
+    var i = d.length - 1;
+    if (d[i] == 0) i--;
+    var n = 0;
+    while (i >= 0 && d[i] > 0) {
+      n++;
+      i--;
+    }
+    return n;
+  }();
+
+  static const milestones = [3, 7, 14, 30, 60, 100, 365];
+
+  /// The next streak milestone above [streak] (the last one once passed).
+  int get nextMilestone =>
+      milestones.firstWhere((m) => m > streak, orElse: () => milestones.last);
+
+  /// The milestone just reached today, if any (for the celebration).
+  int? get milestoneHit =>
+      milestones.contains(streak) && dailyMinutes.last > 0 ? streak : null;
+
   List<int> _daily(int days) {
     final rows = [...history]
       ..sort((a, b) => a.lastUpdated.compareTo(b.lastUpdated));

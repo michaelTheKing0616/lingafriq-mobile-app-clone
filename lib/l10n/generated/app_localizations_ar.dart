@@ -1858,4 +1858,48 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get profTeenParent => 'حسابك مرتبط بوليّ أمر وافق عليه.';
+
+  @override
+  String get pgClose => 'إغلاق';
+
+  @override
+  String get pgStreakTitle => 'السلسلة الحالية';
+
+  @override
+  String pgStreakDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'سلسلة $count يومًا',
+      few: 'سلسلة $count أيام',
+      two: 'سلسلة يومين',
+      one: 'سلسلة يوم واحد',
+      zero: 'لا توجد سلسلة بعد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String pgNextGoal(int left, int goal) {
+    String _temp0 = intl.Intl.pluralLogic(
+      left,
+      locale: localeName,
+      other: '$left يومًا متبقيًا لهدف $goal يومًا',
+      few: '$left أيام متبقية لهدف $goal يومًا',
+      two: 'يومان متبقيان لهدف $goal يومًا',
+      one: 'يوم واحد متبقٍ لهدف $goal يومًا',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String pgMilestoneHit(int goal) {
+    return 'إنجاز! $goal يومًا متتاليًا';
+  }
+
+  @override
+  String get pgStreakStart => 'تدرّب اليوم لتشعل سلسلتك.';
+
+  @override
+  String get pgErrorSaved => 'لن تتأثر سلسلتك وأيام تدريبك.';
 }

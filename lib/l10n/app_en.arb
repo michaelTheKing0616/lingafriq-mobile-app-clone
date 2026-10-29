@@ -2480,5 +2480,51 @@
   "profTeenParent": "Your account is linked to a parent or guardian, who gave consent.",
   "@profTeenParent": {
     "description": "Teen parent consent"
+  },
+  "pgClose": "Close",
+  "@pgClose": {
+    "description": "Close progress"
+  },
+  "pgStreakTitle": "Current streak",
+  "@pgStreakTitle": {
+    "description": "Streak hero label"
+  },
+  "pgStreakDays": "{count, plural, =1{1-day streak} other{{count}-day streak}}",
+  "@pgStreakDays": {
+    "description": "Streak count",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pgNextGoal": "{left, plural, =1{1 more day to your {goal}-day goal} other{{left} more days to your {goal}-day goal}}",
+  "@pgNextGoal": {
+    "description": "Next milestone",
+    "placeholders": {
+      "left": {
+        "type": "int"
+      },
+      "goal": {
+        "type": "int"
+      }
+    }
+  },
+  "pgMilestoneHit": "Milestone! {goal} days in a row",
+  "@pgMilestoneHit": {
+    "description": "Milestone celebration",
+    "placeholders": {
+      "goal": {
+        "type": "int"
+      }
+    }
+  },
+  "pgStreakStart": "Practise today to light your streak.",
+  "@pgStreakStart": {
+    "description": "No streak yet"
+  },
+  "pgErrorSaved": "Your streak and practice days are not affected.",
+  "@pgErrorSaved": {
+    "description": "Error reassurance"
   }
 }

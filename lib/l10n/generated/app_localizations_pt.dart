@@ -1854,4 +1854,43 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get profTeenParent =>
       'Your account is linked to a parent or guardian, who gave consent.';
+
+  @override
+  String get pgClose => 'Close';
+
+  @override
+  String get pgStreakTitle => 'Current streak';
+
+  @override
+  String pgStreakDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count-day streak',
+      one: '1-day streak',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String pgNextGoal(int left, int goal) {
+    String _temp0 = intl.Intl.pluralLogic(
+      left,
+      locale: localeName,
+      other: '$left more days to your $goal-day goal',
+      one: '1 more day to your $goal-day goal',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String pgMilestoneHit(int goal) {
+    return 'Milestone! $goal days in a row';
+  }
+
+  @override
+  String get pgStreakStart => 'Practise today to light your streak.';
+
+  @override
+  String get pgErrorSaved => 'Your streak and practice days are not affected.';
 }

@@ -396,5 +396,12 @@
   "profTeenTitle": "Ton profil reste privé",
   "profTeenHidden": "Ton classement et ton nom sont masqués des classements.",
   "profTeenNoDm": "Les adultes ne peuvent pas t'envoyer de messages privés.",
-  "profTeenParent": "Ton compte est lié à un parent ou tuteur qui a donné son accord."
+  "profTeenParent": "Ton compte est lié à un parent ou tuteur qui a donné son accord.",
+  "pgClose": "Fermer",
+  "pgStreakTitle": "Série actuelle",
+  "pgStreakDays": "{count, plural, =0{0 jour de série} =1{1 jour de série} other{{count} jours de série}}",
+  "pgNextGoal": "{left, plural, =1{Plus qu'1 jour avant ton objectif de {goal} jours} other{Plus que {left} jours avant ton objectif de {goal} jours}}",
+  "pgMilestoneHit": "Palier atteint ! {goal} jours d'affilée",
+  "pgStreakStart": "Entraîne-toi aujourd'hui pour allumer ta série.",
+  "pgErrorSaved": "Ta série et tes jours d'entraînement ne sont pas affectés."
 }

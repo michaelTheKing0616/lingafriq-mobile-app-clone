@@ -396,5 +396,12 @@
   "profTeenTitle": "يبقى ملفك الشخصي خاصًا",
   "profTeenHidden": "ترتيبك واسمك مخفيان من لوحات الصدارة.",
   "profTeenNoDm": "لا يمكن للبالغين إرسال رسائل مباشرة إليك.",
-  "profTeenParent": "حسابك مرتبط بوليّ أمر وافق عليه."
+  "profTeenParent": "حسابك مرتبط بوليّ أمر وافق عليه.",
+  "pgClose": "إغلاق",
+  "pgStreakTitle": "السلسلة الحالية",
+  "pgStreakDays": "{count, plural, =0{لا توجد سلسلة بعد} =1{سلسلة يوم واحد} =2{سلسلة يومين} few{سلسلة {count} أيام} other{سلسلة {count} يومًا}}",
+  "pgNextGoal": "{left, plural, =1{يوم واحد متبقٍ لهدف {goal} يومًا} =2{يومان متبقيان لهدف {goal} يومًا} few{{left} أيام متبقية لهدف {goal} يومًا} other{{left} يومًا متبقيًا لهدف {goal} يومًا}}",
+  "pgMilestoneHit": "إنجاز! {goal} يومًا متتاليًا",
+  "pgStreakStart": "تدرّب اليوم لتشعل سلسلتك.",
+  "pgErrorSaved": "لن تتأثر سلسلتك وأيام تدريبك."
 }

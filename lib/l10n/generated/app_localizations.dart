@@ -3311,6 +3311,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your account is linked to a parent or guardian, who gave consent.'**
   String get profTeenParent;
+
+  /// Close progress
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get pgClose;
+
+  /// Streak hero label
+  ///
+  /// In en, this message translates to:
+  /// **'Current streak'**
+  String get pgStreakTitle;
+
+  /// Streak count
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1-day streak} other{{count}-day streak}}'**
+  String pgStreakDays(int count);
+
+  /// Next milestone
+  ///
+  /// In en, this message translates to:
+  /// **'{left, plural, =1{1 more day to your {goal}-day goal} other{{left} more days to your {goal}-day goal}}'**
+  String pgNextGoal(int left, int goal);
+
+  /// Milestone celebration
+  ///
+  /// In en, this message translates to:
+  /// **'Milestone! {goal} days in a row'**
+  String pgMilestoneHit(int goal);
+
+  /// No streak yet
+  ///
+  /// In en, this message translates to:
+  /// **'Practise today to light your streak.'**
+  String get pgStreakStart;
+
+  /// Error reassurance
+  ///
+  /// In en, this message translates to:
+  /// **'Your streak and practice days are not affected.'**
+  String get pgErrorSaved;
 }
 
 class _AppLocalizationsDelegate

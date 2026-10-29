@@ -204,7 +204,7 @@ mobile	lib/screens/practice/tone_drill_screen.dart	todo
 mobile	lib/screens/profile/global_handle_edit_screen.dart	todo			
 mobile	lib/screens/profile/profile_screen_material3.dart	todo			
 mobile	lib/screens/profile/user_profile_screen.dart	todo			
-mobile	lib/screens/progress/progress_dashboard_screen.dart	ready-for-review	9,9,9,9,9,9,9,9,9 avg 9.0 self	profile-progress	2026-10-29
+mobile	lib/screens/progress/progress_dashboard_screen.dart	ready-for-review	9/9/9/9/9/9 avg 9.2 (self, R2)	profile-progress pack 01,02,03,07	2026-10-29
 mobile	lib/screens/quality_report_screen.dart	todo			
 mobile	lib/screens/review/gamified_review_screen.dart	todo			
 mobile	lib/screens/search/global_search_screen.dart	todo			
