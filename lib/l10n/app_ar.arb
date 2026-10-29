@@ -783,5 +783,9 @@
   "rbBlockedPeople": "الأشخاص المحظورون",
   "rbNoBlocked": "لا يوجد أشخاص محظورون",
   "rbHate": "كراهية",
-  "rbOther": "أخرى"
+  "rbOther": "أخرى",
+  "gcHeroTitle": "مرحبًا بك في #{channel}",
+  "gcHeroBody": "هذه بداية #{channel}. كن لطيفًا: يراجع المشرفون كل بلاغ.",
+  "gcGreetingIn": "قلها كأهلها: {greeting}",
+  "gcHintShort": "رسالة"
 }

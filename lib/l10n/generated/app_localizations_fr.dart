@@ -3258,4 +3258,22 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get rbOther => 'Autre';
+
+  @override
+  String gcHeroTitle(String channel) {
+    return 'Bienvenue sur #$channel';
+  }
+
+  @override
+  String gcHeroBody(String channel) {
+    return 'Voici le début de #$channel. Soyez bienveillant : les modérateurs examinent chaque signalement.';
+  }
+
+  @override
+  String gcGreetingIn(String greeting) {
+    return 'Dites-le comme sur place : $greeting';
+  }
+
+  @override
+  String get gcHintShort => 'Message';
 }

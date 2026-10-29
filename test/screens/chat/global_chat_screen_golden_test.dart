@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lingafriq/features/global_chat/global_chat_policy.dart';
 import 'package:lingafriq/features/global_chat/global_chat_repository.dart';
@@ -76,6 +77,133 @@ void main() {
       await _golden(t, v.name);
     });
   }
+
+  group('identity, layout and motion', () {
+    double opacityOf(WidgetTester t, String id) => t
+        .widget<FadeTransition>(
+          find
+              .descendant(
+                of: find.byKey(ValueKey('gc-enter-$id')),
+                matching: find.byType(FadeTransition),
+              )
+              .first,
+        )
+        .opacity
+        .value;
+
+    Future<FakeLive> pumpLive(WidgetTester t, {required bool reduce}) async {
+      final live = FakeLive();
+      await pumpVariant(
+        t,
+        base,
+        Builder(
+          builder: (c) => MediaQuery(
+            data: MediaQuery.of(c).copyWith(disableAnimations: reduce),
+            child: const GlobalChatScreenMaterial3(),
+          ),
+        ),
+        overrides: _o(live: live),
+      );
+      return live;
+    }
+
+    testWidgets('existing messages do not animate; a new arrival fades in', (
+      t,
+    ) async {
+      final live = await pumpLive(t, reduce: false);
+      expect(opacityOf(t, '1'), 1);
+      live.push('general', msg('9', 'u9', 'Bisi', 'Ẹ n lẹ́ o!'));
+      await t.pump();
+      await t.pump();
+      expect(opacityOf(t, '9'), lessThan(0.05));
+      await t.pump(const Duration(milliseconds: 90));
+      expect(opacityOf(t, '9'), inExclusiveRange(0, 1));
+      await t.pumpAndSettle();
+      expect(opacityOf(t, '9'), 1);
+    });
+
+    testWidgets('reduce motion: a new arrival appears at once', (t) async {
+      final live = await pumpLive(t, reduce: true);
+      live.push('general', msg('9', 'u9', 'Bisi', 'Ẹ n lẹ́ o!'));
+      await t.pump();
+      await t.pump();
+      expect(opacityOf(t, '9'), 1);
+      expect(t.hasRunningAnimations, isFalse);
+    });
+
+    testWidgets('channel hero shows identity, welcome and greeting', (t) async {
+      await pumpVariant(
+        t,
+        goldenVariants.first,
+        const GlobalChatScreenMaterial3(),
+        overrides: _o(),
+      );
+      await t.scrollUntilVisible(
+        find.byKey(const Key('gc-hero')),
+        300,
+        scrollable: find.byType(Scrollable).last,
+      );
+      expect(find.text('Welcome to #\u2068General\u2069'), findsOneWidget);
+      expect(
+        find.text('Say it like a local: \u2068Hello · Bonjour · مرحبا\u2069'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('tablet: conversation and banners are capped and centred', (
+      t,
+    ) async {
+      await pumpVariant(
+        t,
+        _tablet,
+        const GlobalChatScreenMaterial3(),
+        overrides: _o(
+          repo: FakeRepo(cache: {'general': _thread()})..fetchFails = true,
+        ),
+      );
+      final col = t.getRect(find.byKey(const Key('gc-column')));
+      expect(col.width, kGlobalChatMaxWidth);
+      expect(col.center.dx, closeTo(410, 0.5));
+      final banner = t.getRect(find.byKey(const Key('gc-offline')));
+      expect(banner.left, greaterThanOrEqualTo(col.left));
+      expect(banner.right, lessThanOrEqualTo(col.right));
+      final input = t.getRect(find.byKey(const Key('gc-input')));
+      expect(input.left, greaterThanOrEqualTo(col.left));
+    });
+
+    testWidgets('composer has no shadow bar (flat with a hairline)', (t) async {
+      await pumpVariant(
+        t,
+        base,
+        const GlobalChatScreenMaterial3(),
+        overrides: _o(),
+      );
+      final mats = find.ancestor(
+        of: find.byKey(const Key('gc-input')),
+        matching: find.byType(Material),
+      );
+      for (final m in t.widgetList<Material>(mats)) {
+        expect(m.elevation, 0);
+      }
+    });
+
+    testWidgets('large-text Arabic hint is short, not cut off', (t) async {
+      await pumpVariant(
+        t,
+        goldenVariants[4],
+        const GlobalChatScreenMaterial3(),
+        overrides: _o(),
+      );
+      final field = t.widget<TextField>(find.byKey(const Key('gc-input')));
+      expect(field.decoration!.hintText, 'رسالة');
+      final hint = find.descendant(
+        of: find.byKey(const Key('gc-input')),
+        matching: find.text('رسالة'),
+      );
+      final para = t.renderObject<RenderParagraph>(hint);
+      expect(para.didExceedMaxLines, isFalse);
+    });
+  });
 
   group('states', () {
     testWidgets('loading', (t) async {

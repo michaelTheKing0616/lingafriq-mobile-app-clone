@@ -3273,4 +3273,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get rbOther => 'أخرى';
+
+  @override
+  String gcHeroTitle(String channel) {
+    return 'مرحبًا بك في #$channel';
+  }
+
+  @override
+  String gcHeroBody(String channel) {
+    return 'هذه بداية #$channel. كن لطيفًا: يراجع المشرفون كل بلاغ.';
+  }
+
+  @override
+  String gcGreetingIn(String greeting) {
+    return 'قلها كأهلها: $greeting';
+  }
+
+  @override
+  String get gcHintShort => 'رسالة';
 }

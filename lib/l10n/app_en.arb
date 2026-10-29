@@ -4281,5 +4281,36 @@
   "rbOther": "Other",
   "@rbOther": {
     "description": "rbOther"
+  },
+  "gcHeroTitle": "Welcome to #{channel}",
+  "@gcHeroTitle": {
+    "description": "gcHeroTitle",
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "gcHeroBody": "This is the start of #{channel}. Be kind: moderators review every report.",
+  "@gcHeroBody": {
+    "description": "gcHeroBody",
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "gcGreetingIn": "Say it like a local: {greeting}",
+  "@gcGreetingIn": {
+    "description": "gcGreetingIn",
+    "placeholders": {
+      "greeting": {
+        "type": "String"
+      }
+    }
+  },
+  "gcHintShort": "Message",
+  "@gcHintShort": {
+    "description": "gcHintShort"
   }
 }

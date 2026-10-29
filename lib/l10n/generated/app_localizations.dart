@@ -5633,6 +5633,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Other'**
   String get rbOther;
+
+  /// gcHeroTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to #{channel}'**
+  String gcHeroTitle(String channel);
+
+  /// gcHeroBody
+  ///
+  /// In en, this message translates to:
+  /// **'This is the start of #{channel}. Be kind: moderators review every report.'**
+  String gcHeroBody(String channel);
+
+  /// gcGreetingIn
+  ///
+  /// In en, this message translates to:
+  /// **'Say it like a local: {greeting}'**
+  String gcGreetingIn(String greeting);
+
+  /// gcHintShort
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get gcHintShort;
 }
 
 class _AppLocalizationsDelegate

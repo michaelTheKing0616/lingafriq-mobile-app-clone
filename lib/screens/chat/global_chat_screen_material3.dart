@@ -26,6 +26,22 @@ String channelLabel(AppLocalizations l, String id) => id == 'general'
     ? l.gcChannelGeneral
     : '${id[0].toUpperCase()}${id.substring(1)}';
 
+/// Channel identity: accent colour and a native greeting (content, not UI copy).
+const _channelLook = <String, (Color, String)>{
+  'general': (Color(0xFF2E3A87), 'Hello · Bonjour · مرحبا'),
+  'yoruba': (Color(0xFF1B7F5A), 'Ẹ n lẹ́ o'),
+  'hausa': (Color(0xFF8A4B08), 'Sannu'),
+  'igbo': (Color(0xFF7A2E8A), 'Ndewo'),
+  'pidgin': (Color(0xFF0F6E8C), 'How far?'),
+  'swahili': (Color(0xFFB0372B), 'Habari'),
+  'zulu': (Color(0xFF4A5A12), 'Sawubona'),
+};
+(Color, String) channelLook(String id) =>
+    _channelLook[id] ?? _channelLook['general']!;
+
+/// Content column cap so tablets read as a centred conversation.
+const double kGlobalChatMaxWidth = 640;
+
 /// Global chat. Access is decided by [globalChatAccessProvider]; every route
 /// into this screen is guarded here, so hidden entries cannot be bypassed.
 class GlobalChatScreenMaterial3 extends ConsumerWidget {
@@ -172,6 +188,10 @@ class _ChatViewState extends ConsumerState<_ChatView> {
   final _input = TextEditingController();
   final _scroll = ScrollController();
   final _precached = <String>{};
+
+  /// Message ids already on screen; only later arrivals animate in.
+  final _seen = <String>{};
+  String? _seededChannel;
 
   @override
   void dispose() {
@@ -463,6 +483,10 @@ class _ChatViewState extends ConsumerState<_ChatView> {
     final me = ref.watch(globalChatMeProvider);
     final visible = s.visible;
     _preload(visible);
+    if (_seededChannel != s.channel && s.load != ChatLoad.loading) {
+      _seededChannel = s.channel;
+      _seen.addAll(visible.map((m) => m.id));
+    }
     final compact = _compact(context);
 
     return Scaffold(
@@ -565,25 +589,40 @@ class _ChatViewState extends ConsumerState<_ChatView> {
               color: _navy,
               backgroundColor: Color(0xFFE6E8F5),
             ),
-          if (s.fromCache)
-            _Banner(
-              key: const Key('gc-offline'),
-              icon: Icons.cloud_off_rounded,
-              text: l.gcOffline,
-              action: l.gcRetry,
-              onAction: _c.refresh,
+          Expanded(
+            child: Center(
+              child: ConstrainedBox(
+                key: const Key('gc-column'),
+                constraints: const BoxConstraints(
+                  maxWidth: kGlobalChatMaxWidth,
+                ),
+                child: Column(
+                  children: [
+                    if (s.fromCache)
+                      _Banner(
+                        key: const Key('gc-offline'),
+                        icon: Icons.cloud_off_rounded,
+                        text: l.gcOffline,
+                        action: l.gcRetry,
+                        onAction: _c.refresh,
+                      ),
+                    if (!compact) _PolieTile(l: l),
+                    if (s.hiddenCount > 0)
+                      _Banner(
+                        key: const Key('gc-hidden'),
+                        icon: Icons.visibility_off_outlined,
+                        text: l.gcHidden(s.hiddenCount),
+                        action: l.gcManage,
+                        onAction: () => _manage(s),
+                      ),
+                    Expanded(child: _body(l, s, visible, me)),
+                  ],
+                ),
+              ),
             ),
-          if (!compact) _PolieTile(l: l),
-          if (s.hiddenCount > 0)
-            _Banner(
-              key: const Key('gc-hidden'),
-              icon: Icons.visibility_off_outlined,
-              text: l.gcHidden(s.hiddenCount),
-              action: l.gcManage,
-              onAction: () => _manage(s),
-            ),
-          Expanded(child: _body(l, s, visible, me)),
+          ),
           _Composer(
+            compact: compact,
             controller: _input,
             sending: s.sending,
             onSend: () => _send(),
@@ -634,18 +673,27 @@ class _ChatViewState extends ConsumerState<_ChatView> {
         controller: _scroll,
         reverse: true,
         padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
-        itemCount: visible.length,
+        itemCount: visible.length + 1,
         itemBuilder: (c, i) {
+          // Reversed list: the last index is the top, where the channel starts.
+          if (i == visible.length) {
+            return _ChannelHero(channel: s.channel, l: l);
+          }
           final m = visible[visible.length - 1 - i];
           final mine = me != null && m.senderId == me.id;
-          return _Bubble(
-            key: ValueKey('gc-msg-${m.id}'),
-            m: m,
-            mine: mine,
-            onProfile: () => _openProfile(m),
-            onActions: mine || m.isPolie
-                ? null
-                : () => _actions(m, s.muted.contains(m.senderId)),
+          final enter = _seen.add(m.id);
+          return _Enter(
+            key: ValueKey('gc-enter-${m.id}'),
+            animate: enter,
+            child: _Bubble(
+              key: ValueKey('gc-msg-${m.id}'),
+              m: m,
+              mine: mine,
+              onProfile: () => _openProfile(m),
+              onActions: mine || m.isPolie
+                  ? null
+                  : () => _actions(m, s.muted.contains(m.senderId)),
+            ),
           );
         },
       ),
@@ -735,6 +783,109 @@ class _ManageSheetState extends ConsumerState<_ManageSheet> {
             const SizedBox(height: 12),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Channel start, as in group-chat references: identity badge, welcome and
+/// a native greeting. Sits at the top of the conversation.
+class _ChannelHero extends StatelessWidget {
+  const _ChannelHero({required this.channel, required this.l});
+  final String channel;
+  final AppLocalizations l;
+
+  @override
+  Widget build(BuildContext context) {
+    final (accent, greeting) = channelLook(channel);
+    final name = '\u2068${channelLabel(l, channel)}\u2069';
+    return Padding(
+      key: const Key('gc-hero'),
+      padding: const EdgeInsets.fromLTRB(4, 8, 4, 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 56,
+            height: 56,
+            decoration: BoxDecoration(color: accent, shape: BoxShape.circle),
+            child: const Icon(Icons.tag_rounded, color: Colors.white, size: 30),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            l.gcHeroTitle(name),
+            style: const TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w800,
+              color: _ink,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(l.gcHeroBody(name), style: const TextStyle(color: _muted)),
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            decoration: BoxDecoration(
+              color: accent.withValues(alpha: 0.10),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              l.gcGreetingIn('\u2068$greeting\u2069'),
+              style: TextStyle(color: accent, fontWeight: FontWeight.w700),
+            ),
+          ),
+          const SizedBox(height: 8),
+          const Divider(color: _line, height: 1),
+        ],
+      ),
+    );
+  }
+}
+
+/// New messages fade and rise in; skipped entirely when reduce motion is on.
+class _Enter extends StatefulWidget {
+  const _Enter({super.key, required this.animate, required this.child});
+  final bool animate;
+  final Widget child;
+  @override
+  State<_Enter> createState() => _EnterState();
+}
+
+class _EnterState extends State<_Enter> with SingleTickerProviderStateMixin {
+  late final AnimationController _a = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 220),
+  );
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_a.isAnimating || _a.isCompleted) return;
+    final reduce = MediaQuery.of(context).disableAnimations;
+    if (widget.animate && !reduce) {
+      _a.forward();
+    } else {
+      _a.value = 1;
+    }
+  }
+
+  @override
+  void dispose() {
+    _a.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final curve = CurvedAnimation(parent: _a, curve: Curves.easeOutCubic);
+    return FadeTransition(
+      opacity: curve,
+      child: SlideTransition(
+        position: Tween(
+          begin: const Offset(0, 0.2),
+          end: Offset.zero,
+        ).animate(curve),
+        child: widget.child,
       ),
     );
   }
@@ -1085,72 +1236,86 @@ class _Composer extends StatelessWidget {
     required this.sending,
     required this.onSend,
     required this.l,
+    required this.compact,
   });
+  final bool compact;
   final TextEditingController controller;
   final bool sending;
   final VoidCallback onSend;
   final AppLocalizations l;
 
   @override
-  Widget build(BuildContext context) => Material(
-    color: Colors.white,
-    elevation: 6,
+  Widget build(BuildContext context) => DecoratedBox(
+    decoration: const BoxDecoration(
+      color: Colors.white,
+      border: Border(top: BorderSide(color: _line)),
+    ),
     child: SafeArea(
       top: false,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(12, 8, 8, 8),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Expanded(
-              child: TextField(
-                key: const Key('gc-input'),
-                controller: controller,
-                minLines: 1,
-                maxLines: 4,
-                textInputAction: TextInputAction.send,
-                onSubmitted: (_) => onSend(),
-                style: const TextStyle(color: _ink),
-                decoration: InputDecoration(
-                  hintText: l.gcHint,
-                  hintMaxLines: 2,
-                  hintStyle: const TextStyle(color: _muted),
-                  filled: true,
-                  fillColor: _bg,
-                  isDense: true,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 14,
-                    vertical: 12,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(22),
-                    borderSide: BorderSide.none,
+      child: Center(
+        heightFactor: 1,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: kGlobalChatMaxWidth),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 8, 8),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: TextField(
+                    key: const Key('gc-input'),
+                    controller: controller,
+                    minLines: 1,
+                    maxLines: 4,
+                    textInputAction: TextInputAction.send,
+                    onSubmitted: (_) => onSend(),
+                    style: const TextStyle(color: _ink),
+                    decoration: InputDecoration(
+                      // Large text: the short hint fits instead of being cut.
+                      hintText: compact ? l.gcHintShort : l.gcHint,
+                      hintMaxLines: 2,
+                      hintStyle: const TextStyle(color: _muted),
+                      filled: true,
+                      fillColor: _bg,
+                      isDense: true,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 12,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(22),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                const SizedBox(width: 6),
+                SizedBox(
+                  width: 48,
+                  height: 48,
+                  child: sending
+                      ? const Padding(
+                          key: Key('gc-sending'),
+                          padding: EdgeInsets.all(12),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.5,
+                            color: _navy,
+                          ),
+                        )
+                      : IconButton.filled(
+                          key: const Key('gc-send'),
+                          tooltip: l.gcSend,
+                          style: IconButton.styleFrom(backgroundColor: _navy),
+                          onPressed: onSend,
+                          icon: const Icon(
+                            Icons.send_rounded,
+                            color: Colors.white,
+                          ),
+                        ),
+                ),
+              ],
             ),
-            const SizedBox(width: 6),
-            SizedBox(
-              width: 48,
-              height: 48,
-              child: sending
-                  ? const Padding(
-                      key: Key('gc-sending'),
-                      padding: EdgeInsets.all(12),
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2.5,
-                        color: _navy,
-                      ),
-                    )
-                  : IconButton.filled(
-                      key: const Key('gc-send'),
-                      tooltip: l.gcSend,
-                      style: IconButton.styleFrom(backgroundColor: _navy),
-                      onPressed: onSend,
-                      icon: const Icon(Icons.send_rounded, color: Colors.white),
-                    ),
-            ),
-          ],
+          ),
         ),
       ),
     ),

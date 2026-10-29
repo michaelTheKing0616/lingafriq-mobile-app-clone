@@ -783,5 +783,9 @@
   "rbBlockedPeople": "Personnes bloquées",
   "rbNoBlocked": "Aucune personne bloquée",
   "rbHate": "Haine",
-  "rbOther": "Autre"
+  "rbOther": "Autre",
+  "gcHeroTitle": "Bienvenue sur #{channel}",
+  "gcHeroBody": "Voici le début de #{channel}. Soyez bienveillant : les modérateurs examinent chaque signalement.",
+  "gcGreetingIn": "Dites-le comme sur place : {greeting}",
+  "gcHintShort": "Message"
 }
