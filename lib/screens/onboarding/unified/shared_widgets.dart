@@ -113,8 +113,7 @@ class _PrimaryCta extends StatelessWidget {
             backgroundColor: color,
             foregroundColor: foreground,
             disabledBackgroundColor: ModernGriotColors.surfaceContainerHighest,
-            disabledForegroundColor: ModernGriotColors.onSurfaceVariant
-                .withValues(alpha: _GriotAlpha.disabledLabel),
+            disabledForegroundColor: ModernGriotColors.onSurfaceVariant,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
             ),
@@ -149,7 +148,8 @@ class _SelectRow extends StatelessWidget {
     return Semantics(
       button: true,
       selected: isSelected,
-      label: isSelected ? '$label, selected' : label,
+      label: [label, if (subtitle != null) subtitle!].join(', '),
+      hint: isSelected ? null : 'Double tap to choose',
       excludeSemantics: true,
       child: Material(
         color: Colors.transparent,
@@ -206,9 +206,9 @@ class _SelectRow extends StatelessWidget {
                       if (subtitle != null)
                         Text(
                           subtitle!,
-                          style: ModernGriotTypography.bodySmall(
+                          style: ModernGriotTypography.bodyMedium(
                             context: context,
-                            color: ModernGriotColors.onSurfaceVariant,
+                            color: ModernGriotColors.onSurface,
                           ),
                         ),
                     ],

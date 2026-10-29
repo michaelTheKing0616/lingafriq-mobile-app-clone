@@ -91,7 +91,8 @@ class _WelcomeStep extends StatelessWidget {
             vertical: ModernGriotSpacing.xxs.h,
           ),
           decoration: BoxDecoration(
-            color: ModernGriotColors.surfaceContainerHigh,
+            color: ModernGriotColors.surfaceContainerLowest,
+            border: Border.all(color: ModernGriotColors.outline),
             borderRadius: BorderRadius.circular(ModernGriotRadius.pill),
           ),
           child: Text(
@@ -105,11 +106,13 @@ class _WelcomeStep extends StatelessWidget {
         ),
       ),
       SizedBox(height: ModernGriotSpacing.md.h),
-      SizedBox(
-        width: double.infinity,
-        height: math.max(
-          ModernGriotLayout.minTouchTarget.h,
-          ModernGriotLayout.minTouchTarget.toDouble(),
+      ConstrainedBox(
+        constraints: BoxConstraints(
+          minWidth: double.infinity,
+          minHeight: math.max(
+            ModernGriotLayout.minTouchTarget.h,
+            ModernGriotLayout.minTouchTarget.toDouble(),
+          ),
         ),
         child: FilledButton(
           onPressed: () {
@@ -139,7 +142,7 @@ class _WelcomeStep extends StatelessWidget {
         onPressed: onHaveAccount,
         style: TextButton.styleFrom(
           minimumSize: const Size(
-            ModernGriotLayout.minTouchTarget,
+            double.infinity,
             ModernGriotLayout.minTouchTarget,
           ),
         ),

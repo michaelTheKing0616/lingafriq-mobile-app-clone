@@ -193,7 +193,7 @@ void main() {
       expect(find.text('Works offline · about 2 MB per unit'), findsOneWidget);
       expect(find.text('Get started'), findsOneWidget);
       expect(find.text('I already have an account'), findsOneWidget);
-      expect(find.text('Skip'), findsOneWidget);
+      expect(find.text('Skip'), findsNothing);
     });
 
     testWidgets(
@@ -250,9 +250,12 @@ void main() {
       await tapVisible(tester, find.text('Get started'));
       await settleOnce(tester);
 
-      expect(find.bySemanticsLabel('Yoruba'), findsOneWidget);
+      expect(find.bySemanticsLabel(RegExp(r'^Yoruba,')), findsOneWidget);
       await tapVisible(tester, find.text('Yoruba'));
-      expect(find.bySemanticsLabel('Yoruba, selected'), findsOneWidget);
+      expect(
+        tester.getSemantics(find.bySemanticsLabel(RegExp(r'^Yoruba,'))),
+        containsSemantics(isSelected: true),
+      );
       handle.dispose();
     });
 

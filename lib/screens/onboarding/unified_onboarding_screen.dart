@@ -73,9 +73,6 @@ abstract final class _GriotAlpha {
   /// Completing overlay scrim on onSurface.
   static const double completingScrim = 0.72;
 
-  /// Quiet label wash when CTA disabled.
-  static const double disabledLabel = 0.5;
-
   /// Signal-bar empty segment.
   static const double signalEmpty = 0.45;
 
@@ -256,7 +253,6 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                 .navigateOffAll(const WorldClassLoginScreen());
           },
         ),
-        allowSkip: true,
       );
     }
     if (ask(const ['proficiency_language', 'learning_language'])) {

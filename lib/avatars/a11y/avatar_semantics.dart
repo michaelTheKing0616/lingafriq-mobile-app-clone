@@ -1,3 +1,4 @@
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 
@@ -77,6 +78,19 @@ class AvatarCastSemantics extends StatefulWidget {
 
 class _AvatarCastSemanticsState extends State<AvatarCastSemantics> {
   String? _lastAnnouncedLabel;
+  bool _active = true;
+
+  @override
+  void deactivate() {
+    _active = false;
+    super.deactivate();
+  }
+
+  @override
+  void activate() {
+    super.activate();
+    _active = true;
+  }
 
   @override
   void initState() {
@@ -101,7 +115,14 @@ class _AvatarCastSemanticsState extends State<AvatarCastSemantics> {
   }
 
   void _onSession() {
-    if (!mounted) return;
+    // A shared session can notify while this element sits deactivated
+    // (e.g. mid page swap); ancestor lookups are unsafe then.
+    if (!mounted || !_active) return;
+    if (SchedulerBinding.instance.schedulerPhase ==
+        SchedulerPhase.persistentCallbacks) {
+      SchedulerBinding.instance.addPostFrameCallback((_) => _onSession());
+      return;
+    }
     final label = avatarSemanticsLabelForSession(context, widget.session);
     if (label == _lastAnnouncedLabel) return;
     _lastAnnouncedLabel = label;
@@ -117,11 +138,7 @@ class _AvatarCastSemanticsState extends State<AvatarCastSemantics> {
   Widget build(BuildContext context) {
     syncAvatarReducedMotion(context, widget.session);
     final label = avatarSemanticsLabelForSession(context, widget.session);
-    return Semantics(
-      label: label,
-      liveRegion: true,
-      child: widget.child,
-    );
+    return Semantics(label: label, liveRegion: true, child: widget.child);
   }
 }
 
