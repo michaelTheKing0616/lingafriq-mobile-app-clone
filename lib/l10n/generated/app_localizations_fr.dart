@@ -2389,4 +2389,92 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get rmMasterA11y => 'Interrupteur principal des rappels d\'étude';
+
+  @override
+  String get gmTitle => 'Jeux';
+
+  @override
+  String get gmBack => 'Retour';
+
+  @override
+  String get gmWelcome => 'Bienvenue dans ton espace de jeu.';
+
+  @override
+  String gmWelcomeSub(String language) {
+    return 'Chaque jeu fait pratiquer le $language.';
+  }
+
+  @override
+  String get gmLanguage => 'Langue pratiquée';
+
+  @override
+  String get gmFeatured => 'Le choix du jour';
+
+  @override
+  String get gmPlay => 'Jouer';
+
+  @override
+  String get gmCore => 'Essentiels';
+
+  @override
+  String get gmCultural => 'Culturels';
+
+  @override
+  String gmCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count jeux',
+      one: '1 jeu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get gmCatAll => 'Tous';
+
+  @override
+  String get gmCatVocabulary => 'Vocabulaire';
+
+  @override
+  String get gmCatGrammar => 'Grammaire';
+
+  @override
+  String get gmCatPronunciation => 'Prononciation';
+
+  @override
+  String get gmCatCultural => 'Culture';
+
+  @override
+  String get gmCatTraditional => 'Traditionnels';
+
+  @override
+  String get gmEmpty => 'Pas encore de jeux ici.';
+
+  @override
+  String get gmShowAll => 'Voir tous les jeux';
+
+  @override
+  String get gmOffline =>
+      'Hors ligne : voici les jeux enregistrés sur ce téléphone.';
+
+  @override
+  String get gmSyncing => 'Recherche de nouveaux jeux';
+
+  @override
+  String get gmOpening => 'Ouverture du jeu…';
+
+  @override
+  String get gmLoadError => 'Ce jeu n\'a pas pu se charger.';
+
+  @override
+  String get gmRule1 => 'Apprends en t\'amusant avec ce mode de jeu.';
+
+  @override
+  String get gmRule2 => 'Vise la précision d\'abord, puis la vitesse.';
+
+  @override
+  String gmPlayA11y(String name, String category, String description) {
+    return '$name, $category. $description';
+  }
 }

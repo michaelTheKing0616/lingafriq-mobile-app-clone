@@ -2368,4 +2368,95 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get rmMasterA11y => 'المفتاح الرئيسي لتذكيرات الدراسة';
+
+  @override
+  String get gmTitle => 'الألعاب';
+
+  @override
+  String get gmBack => 'رجوع';
+
+  @override
+  String get gmWelcome => 'مرحبًا بك في مساحتك للعب.';
+
+  @override
+  String gmWelcomeSub(String language) {
+    return 'كل لعبة تدرّبك على $language.';
+  }
+
+  @override
+  String get gmLanguage => 'لغة التدرّب';
+
+  @override
+  String get gmFeatured => 'اختيار اليوم';
+
+  @override
+  String get gmPlay => 'العب';
+
+  @override
+  String get gmCore => 'الأساسية';
+
+  @override
+  String get gmCultural => 'الثقافية';
+
+  @override
+  String gmCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count لعبة',
+      many: '$count لعبة',
+      few: '$count ألعاب',
+      two: 'لعبتان',
+      one: 'لعبة واحدة',
+      zero: 'لا ألعاب',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get gmCatAll => 'الكل';
+
+  @override
+  String get gmCatVocabulary => 'المفردات';
+
+  @override
+  String get gmCatGrammar => 'القواعد';
+
+  @override
+  String get gmCatPronunciation => 'النطق';
+
+  @override
+  String get gmCatCultural => 'الثقافة';
+
+  @override
+  String get gmCatTraditional => 'تقليدية';
+
+  @override
+  String get gmEmpty => 'لا توجد ألعاب هنا بعد.';
+
+  @override
+  String get gmShowAll => 'اعرض كل الألعاب';
+
+  @override
+  String get gmOffline => 'أنت غير متصل، لذا هذه الألعاب المحفوظة على هاتفك.';
+
+  @override
+  String get gmSyncing => 'جارٍ البحث عن ألعاب جديدة';
+
+  @override
+  String get gmOpening => 'جارٍ فتح اللعبة…';
+
+  @override
+  String get gmLoadError => 'تعذّر تحميل هذه اللعبة.';
+
+  @override
+  String get gmRule1 => 'تعلّم واستمتع بهذا النمط من اللعب.';
+
+  @override
+  String get gmRule2 => 'ركّز على الدقة أولًا ثم السرعة.';
+
+  @override
+  String gmPlayA11y(String name, String category, String description) {
+    return '$name، $category. $description';
+  }
 }

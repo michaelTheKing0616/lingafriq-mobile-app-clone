@@ -2363,4 +2363,92 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get rmMasterA11y => 'Study reminders master switch';
+
+  @override
+  String get gmTitle => 'Games';
+
+  @override
+  String get gmBack => 'Back';
+
+  @override
+  String get gmWelcome => 'Welcome to your place to play.';
+
+  @override
+  String gmWelcomeSub(String language) {
+    return 'Every game practises $language.';
+  }
+
+  @override
+  String get gmLanguage => 'Practice language';
+
+  @override
+  String get gmFeatured => 'Today\'s pick';
+
+  @override
+  String get gmPlay => 'Play';
+
+  @override
+  String get gmCore => 'Core';
+
+  @override
+  String get gmCultural => 'Cultural';
+
+  @override
+  String gmCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count games',
+      one: '1 game',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get gmCatAll => 'All';
+
+  @override
+  String get gmCatVocabulary => 'Vocabulary';
+
+  @override
+  String get gmCatGrammar => 'Grammar';
+
+  @override
+  String get gmCatPronunciation => 'Pronunciation';
+
+  @override
+  String get gmCatCultural => 'Culture';
+
+  @override
+  String get gmCatTraditional => 'Traditional';
+
+  @override
+  String get gmEmpty => 'No games here yet.';
+
+  @override
+  String get gmShowAll => 'Show all games';
+
+  @override
+  String get gmOffline =>
+      'You\'re offline, so these are the games saved on this phone.';
+
+  @override
+  String get gmSyncing => 'Checking for new games';
+
+  @override
+  String get gmOpening => 'Opening game…';
+
+  @override
+  String get gmLoadError => 'This game could not load.';
+
+  @override
+  String get gmRule1 => 'Learn and have fun with this game mode.';
+
+  @override
+  String get gmRule2 => 'Focus on accuracy first, then speed.';
+
+  @override
+  String gmPlayA11y(String name, String category, String description) {
+    return '$name, $category. $description';
+  }
 }

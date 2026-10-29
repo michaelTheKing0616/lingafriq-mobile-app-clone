@@ -122,7 +122,7 @@ mobile	lib/screens/games/game_mastery_results_screen.dart	todo
 mobile	lib/screens/games/game_start_guide_screen.dart	todo			
 mobile	lib/screens/games/games_screen.dart	todo			
 mobile	lib/screens/games/games_screen_enhanced_with_all_games.dart	todo			
-mobile	lib/screens/games/games_screen_material3.dart	todo			
+mobile	lib/screens/games/games_screen_material3.dart	ready	self 9.1	games-duels/05	2026-10-29
 mobile	lib/screens/games/grammar_jam_screen.dart	todo			
 mobile	lib/screens/games/greeting_diplomacy_screen.dart	todo			
 mobile	lib/screens/games/language_games_screen.dart	todo			

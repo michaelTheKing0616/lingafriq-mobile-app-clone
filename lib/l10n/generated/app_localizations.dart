@@ -4175,6 +4175,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Study reminders master switch'**
   String get rmMasterA11y;
+
+  /// gmTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Games'**
+  String get gmTitle;
+
+  /// gmBack
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get gmBack;
+
+  /// gmWelcome
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to your place to play.'**
+  String get gmWelcome;
+
+  /// gmWelcomeSub
+  ///
+  /// In en, this message translates to:
+  /// **'Every game practises {language}.'**
+  String gmWelcomeSub(String language);
+
+  /// gmLanguage
+  ///
+  /// In en, this message translates to:
+  /// **'Practice language'**
+  String get gmLanguage;
+
+  /// gmFeatured
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s pick'**
+  String get gmFeatured;
+
+  /// gmPlay
+  ///
+  /// In en, this message translates to:
+  /// **'Play'**
+  String get gmPlay;
+
+  /// gmCore
+  ///
+  /// In en, this message translates to:
+  /// **'Core'**
+  String get gmCore;
+
+  /// gmCultural
+  ///
+  /// In en, this message translates to:
+  /// **'Cultural'**
+  String get gmCultural;
+
+  /// gmCount
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 game} other{{count} games}}'**
+  String gmCount(int count);
+
+  /// gmCatAll
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get gmCatAll;
+
+  /// gmCatVocabulary
+  ///
+  /// In en, this message translates to:
+  /// **'Vocabulary'**
+  String get gmCatVocabulary;
+
+  /// gmCatGrammar
+  ///
+  /// In en, this message translates to:
+  /// **'Grammar'**
+  String get gmCatGrammar;
+
+  /// gmCatPronunciation
+  ///
+  /// In en, this message translates to:
+  /// **'Pronunciation'**
+  String get gmCatPronunciation;
+
+  /// gmCatCultural
+  ///
+  /// In en, this message translates to:
+  /// **'Culture'**
+  String get gmCatCultural;
+
+  /// gmCatTraditional
+  ///
+  /// In en, this message translates to:
+  /// **'Traditional'**
+  String get gmCatTraditional;
+
+  /// gmEmpty
+  ///
+  /// In en, this message translates to:
+  /// **'No games here yet.'**
+  String get gmEmpty;
+
+  /// gmShowAll
+  ///
+  /// In en, this message translates to:
+  /// **'Show all games'**
+  String get gmShowAll;
+
+  /// gmOffline
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline, so these are the games saved on this phone.'**
+  String get gmOffline;
+
+  /// gmSyncing
+  ///
+  /// In en, this message translates to:
+  /// **'Checking for new games'**
+  String get gmSyncing;
+
+  /// gmOpening
+  ///
+  /// In en, this message translates to:
+  /// **'Opening game…'**
+  String get gmOpening;
+
+  /// gmLoadError
+  ///
+  /// In en, this message translates to:
+  /// **'This game could not load.'**
+  String get gmLoadError;
+
+  /// gmRule1
+  ///
+  /// In en, this message translates to:
+  /// **'Learn and have fun with this game mode.'**
+  String get gmRule1;
+
+  /// gmRule2
+  ///
+  /// In en, this message translates to:
+  /// **'Focus on accuracy first, then speed.'**
+  String get gmRule2;
+
+  /// gmPlayA11y
+  ///
+  /// In en, this message translates to:
+  /// **'{name}, {category}. {description}'**
+  String gmPlayA11y(String name, String category, String description);
 }
 
 class _AppLocalizationsDelegate

@@ -3188,5 +3188,126 @@
   "rmMasterA11y": "Study reminders master switch",
   "@rmMasterA11y": {
     "description": "rmMasterA11y"
+  },
+  "gmTitle": "Games",
+  "@gmTitle": {
+    "description": "gmTitle"
+  },
+  "gmBack": "Back",
+  "@gmBack": {
+    "description": "gmBack"
+  },
+  "gmWelcome": "Welcome to your place to play.",
+  "@gmWelcome": {
+    "description": "gmWelcome"
+  },
+  "gmWelcomeSub": "Every game practises {language}.",
+  "@gmWelcomeSub": {
+    "description": "gmWelcomeSub",
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "gmLanguage": "Practice language",
+  "@gmLanguage": {
+    "description": "gmLanguage"
+  },
+  "gmFeatured": "Today's pick",
+  "@gmFeatured": {
+    "description": "gmFeatured"
+  },
+  "gmPlay": "Play",
+  "@gmPlay": {
+    "description": "gmPlay"
+  },
+  "gmCore": "Core",
+  "@gmCore": {
+    "description": "gmCore"
+  },
+  "gmCultural": "Cultural",
+  "@gmCultural": {
+    "description": "gmCultural"
+  },
+  "gmCount": "{count, plural, =1{1 game} other{{count} games}}",
+  "@gmCount": {
+    "description": "gmCount",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gmCatAll": "All",
+  "@gmCatAll": {
+    "description": "gmCatAll"
+  },
+  "gmCatVocabulary": "Vocabulary",
+  "@gmCatVocabulary": {
+    "description": "gmCatVocabulary"
+  },
+  "gmCatGrammar": "Grammar",
+  "@gmCatGrammar": {
+    "description": "gmCatGrammar"
+  },
+  "gmCatPronunciation": "Pronunciation",
+  "@gmCatPronunciation": {
+    "description": "gmCatPronunciation"
+  },
+  "gmCatCultural": "Culture",
+  "@gmCatCultural": {
+    "description": "gmCatCultural"
+  },
+  "gmCatTraditional": "Traditional",
+  "@gmCatTraditional": {
+    "description": "gmCatTraditional"
+  },
+  "gmEmpty": "No games here yet.",
+  "@gmEmpty": {
+    "description": "gmEmpty"
+  },
+  "gmShowAll": "Show all games",
+  "@gmShowAll": {
+    "description": "gmShowAll"
+  },
+  "gmOffline": "You're offline, so these are the games saved on this phone.",
+  "@gmOffline": {
+    "description": "gmOffline"
+  },
+  "gmSyncing": "Checking for new games",
+  "@gmSyncing": {
+    "description": "gmSyncing"
+  },
+  "gmOpening": "Opening game…",
+  "@gmOpening": {
+    "description": "gmOpening"
+  },
+  "gmLoadError": "This game could not load.",
+  "@gmLoadError": {
+    "description": "gmLoadError"
+  },
+  "gmRule1": "Learn and have fun with this game mode.",
+  "@gmRule1": {
+    "description": "gmRule1"
+  },
+  "gmRule2": "Focus on accuracy first, then speed.",
+  "@gmRule2": {
+    "description": "gmRule2"
+  },
+  "gmPlayA11y": "{name}, {category}. {description}",
+  "@gmPlayA11y": {
+    "description": "gmPlayA11y",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "category": {
+        "type": "String"
+      },
+      "description": {
+        "type": "String"
+      }
+    }
   }
 }
