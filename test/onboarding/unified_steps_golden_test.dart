@@ -178,6 +178,26 @@ void main() {
       return;
     }
     // Same chrome as every step: back + bead progress, plus Polie's greeting.
+    expect(
+      find.descendant(
+        of: find.byType(SignInOptionsScreen),
+        matching: find.bySemanticsLabel(
+          RegExp('Onboarding progress|تقدّم الإعداد'),
+        ),
+      ),
+      findsOneWidget,
+      reason: 'sign-in bead progress row',
+    );
+    if (textScaler.scale(1) >= 1.5) {
+      expect(find.byKey(const ValueKey('signin-hero-compact')), findsOneWidget);
+      final screen = tester.getRect(find.byType(SignInOptionsScreen));
+      final title = tester.getRect(find.byKey(const Key('signin.options')));
+      expect(
+        title.bottom <= screen.bottom,
+        isTrue,
+        reason: 'title on first screen at 200%',
+      );
+    }
     expect(_signInBack, findsOneWidget);
     expect(find.byKey(const ValueKey('signin-hero')), findsOneWidget);
     await expectLastButtonReachable(
@@ -230,6 +250,13 @@ void main() {
     }
     // Mirrored: back at the right (start) edge.
     expect(tester.getCenter(_signInBack).dx, greaterThan(195));
+    expect(
+      find.descendant(
+        of: find.byType(SignInOptionsScreen),
+        matching: find.bySemanticsLabel('تقدّم الإعداد'),
+      ),
+      findsOneWidget,
+    );
     await expectLater(
       find.byType(MaterialApp),
       matchesGoldenFile('goldens/unified/18a_signin_arabic_rtl.png'),

@@ -379,6 +379,41 @@ class _SignInHero extends StatelessWidget {
   Widget build(BuildContext context) {
     final accent = _accentFor(code);
     final greeting = _greetings[code] ?? 'Ẹ kú àbọ̀';
+    // Large text: one line, so the title and first button stay on screen.
+    if (MediaQuery.textScalerOf(context).scale(1) >= 1.5) {
+      return Column(
+        key: const ValueKey('signin-hero'),
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _WovenStrip(color: accent),
+          SizedBox(height: ModernGriotSpacing.xs.h),
+          Row(
+            key: const ValueKey('signin-hero-compact'),
+            children: [
+              Image.asset(
+                'assets/images/cast_still_PaLingAfriq.png',
+                height: 40,
+                excludeFromSemantics: true,
+                errorBuilder: (_, _, _) =>
+                    const SizedBox(width: 30, height: 40),
+              ),
+              SizedBox(width: ModernGriotSpacing.xs.w),
+              Expanded(
+                child: Text(
+                  _bidi(context, greeting),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: ModernGriotTypography.titleMedium(
+                    context: context,
+                    color: ModernGriotColors.onSurface,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
+    }
     return Column(
       key: const ValueKey('signin-hero'),
       crossAxisAlignment: CrossAxisAlignment.stretch,
