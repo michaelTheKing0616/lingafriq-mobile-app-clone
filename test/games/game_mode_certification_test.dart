@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lingafriq/providers/game_provider.dart';
+import 'package:lingafriq/features/games/providers/game_mode_certification.dart';
 
 void main() {
   group('GameModeCertification', () {

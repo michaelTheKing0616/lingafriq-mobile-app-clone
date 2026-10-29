@@ -2,6 +2,7 @@ import 'dart:io' as io;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lingafriq/avatars/cast/cast_contract.dart';
 import 'package:lingafriq/avatars/cast/cast_file_cache.dart';
 import 'package:lingafriq/avatars/cast/cast_session.dart';
 import 'package:lingafriq/avatars/cast/cast_stage.dart';
@@ -13,6 +14,9 @@ void main() {
   setUpAll(() async {
     await RiveNative.init();
     CastFileCache.instance.renderer = Factory.flutter;
+    // Warm both caches in real time so each chip binds within a frame.
+    await CastFileCache.instance.load();
+    await CastContract.loadPartCatalog();
   });
 
   for (final size in [32.0, 48.0, 64.0]) {
@@ -101,6 +105,10 @@ void main() {
 
 Future<void> _untilRive(WidgetTester tester) async {
   for (var i = 0; i < 40; i++) {
+    // Let real-time asset futures settle; the fake clock cannot run them.
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(milliseconds: 5)),
+    );
     await tester.pump(const Duration(milliseconds: 50));
     if (find.byType(RiveWidget).evaluate().isNotEmpty) return;
   }

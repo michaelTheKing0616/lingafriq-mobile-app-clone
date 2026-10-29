@@ -1,20 +1,19 @@
+import 'package:lingafriq/providers/gamification_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/user_gamification_model.dart';
-import 'package:lingafriq/providers/base_provider.dart';
 import 'package:lingafriq/providers/gamification_provider.dart';
 import 'package:lingafriq/screens/village/preservation_fund_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class _FundNotifier extends GamificationProvider {
   @override
-  BaseProviderState build() => BaseProviderState();
+  GamificationState build() => GamificationState();
 
   @override
-  UserGamificationModel get gamification =>
-      UserGamificationModel(cowries: 250);
+  UserGamificationModel get gamification => UserGamificationModel(cowries: 250);
 }
 
 void main() {
@@ -30,9 +29,7 @@ void main() {
 
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [
-          gamificationProvider.overrideWith(() => _FundNotifier()),
-        ],
+        overrides: [gamificationProvider.overrideWith(() => _FundNotifier())],
         child: ScreenUtilInit(
           designSize: const Size(390, 844),
           builder: (_, __) => const MaterialApp(

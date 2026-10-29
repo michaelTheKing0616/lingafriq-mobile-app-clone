@@ -34,7 +34,18 @@ class CastContract {
     return parse(jsonDecode(raw) as Map<String, dynamic>);
   }
 
-  static Future<AvatarPartCatalog> loadPartCatalog() async {
+  static Future<AvatarPartCatalog>? _catalog;
+
+  /// Parsed once per process; a failed load is retried on the next call.
+  static Future<AvatarPartCatalog> loadPartCatalog() {
+    final pending = _catalog ??= _loadPartCatalog();
+    pending.then<void>((_) {}, onError: (Object _) {
+      if (identical(_catalog, pending)) _catalog = null;
+    });
+    return pending;
+  }
+
+  static Future<AvatarPartCatalog> _loadPartCatalog() async {
     final raw = await rootBundle.loadString(assetPath);
     final catalog =
         AvatarPartCatalog.fromContractJson(jsonDecode(raw) as Map<String, dynamic>);
