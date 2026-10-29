@@ -5,7 +5,7 @@ mobile	lib/detail_types/introduction_screen.dart	todo
 mobile	lib/detail_types/quiz_answers_screen.dart	todo			
 mobile	lib/detail_types/quiz_screen.dart	todo			
 mobile	lib/detail_types/tutorial_detail_screen.dart	todo			
-mobile	lib/features/polie_workspace/polie_workspace_screen.dart	todo			
+mobile	lib/features/polie_workspace/polie_workspace_screen.dart	below-bar C3 review: AiDisclosureBar label ellipsized at default size, clipped at 200%	8/8/8/7/8/8/7/9/7/7 avg 7.7		2026-10-29
 mobile	lib/features/polie_workspace/polie_workspace_screen_body.dart	todo			
 mobile	lib/features/polie_workspace/polie_workspace_screen_widget.dart	todo			
 mobile	lib/games/circles/circle_goal_screen.dart	todo			
@@ -213,7 +213,7 @@ mobile	lib/screens/settings/data_export_screen.dart	todo
 mobile	lib/screens/settings/downloads_screen.dart	todo			
 mobile	lib/screens/settings/edit_profile_screen.dart	todo			
 mobile	lib/screens/settings/privacy_policy_screen.dart	todo			
-mobile	lib/screens/settings/privacy_settings_screen.dart	todo			
+mobile	lib/screens/settings/privacy_settings_screen.dart	below-bar C4 review: VoiceRetentionTile title collapses 1 char/line at 200%	7/7/8/7/7/8/5/8/7/5 avg 6.9		2026-10-29
 mobile	lib/screens/settings/reminder_settings_screen.dart	todo			
 mobile	lib/screens/settings/settings_screen.dart	todo			
 mobile	lib/screens/settings/settings_screen_material3.dart	todo			
@@ -247,7 +247,7 @@ mobile	lib/screens/splash/splash_screen_material3.dart	todo
 mobile	lib/screens/staff/micro_mentor_reports_screen.dart	todo			
 mobile	lib/screens/story/story_mode_screen.dart	todo			
 mobile	lib/screens/subscription/family_dashboard_screen.dart	todo			
-mobile	lib/screens/subscription/subscription_screen.dart	todo			
+mobile	lib/screens/subscription/subscription_screen.dart	below-bar C5 review: disclosure wall-of-text, hardcoded prices, links wrap/orphan	8/8/9/8/8/8/8/9/7/8 avg 8.1		2026-10-29
 mobile	lib/screens/tabs_view/home/home_tab.dart	todo			
 mobile	lib/screens/tabs_view/home/home_tab_material3.dart	below-bar	9/9/9/9/9/9/9/9/8/9 avg8.8	Duolingo	2026-10-28
 mobile	lib/screens/tabs_view/home/language_detail_screen.dart	todo			
@@ -262,13 +262,13 @@ mobile	lib/screens/translate/live_translate_screen.dart	todo
 mobile	lib/screens/tutor/curriculum_viewer_screen.dart	todo			
 mobile	lib/screens/tutor/listening_quiz_screen.dart	todo			
 mobile	lib/screens/tutor/shadowing_exercise_screen.dart	todo			
-mobile	lib/screens/tutor/tutor_assess_mode_screen.dart	todo			
+mobile	lib/screens/tutor/tutor_assess_mode_screen.dart	below-bar C3 review: AiDisclosureBar label ellipsized at default size, clipped at 200%	8/8/8/7/8/8/7/9/7/7 avg 7.7		2026-10-29
 mobile	lib/screens/tutor/tutor_dashboard_screen.dart	todo			
-mobile	lib/screens/tutor/tutor_dialogue_mode_screen.dart	todo			
-mobile	lib/screens/tutor/tutor_grammar_mode_screen.dart	todo			
-mobile	lib/screens/tutor/tutor_pronunciation_mode_screen.dart	todo			
-mobile	lib/screens/tutor/tutor_story_mode_screen.dart	todo			
-mobile	lib/screens/tutor/tutor_translation_mode_screen.dart	todo			
+mobile	lib/screens/tutor/tutor_dialogue_mode_screen.dart	below-bar C3 review: AiDisclosureBar label ellipsized at default size, clipped at 200%	8/8/8/7/8/8/7/9/7/7 avg 7.7		2026-10-29
+mobile	lib/screens/tutor/tutor_grammar_mode_screen.dart	below-bar C3 review: AiDisclosureBar label ellipsized at default size, clipped at 200%	8/8/8/7/8/8/7/9/7/7 avg 7.7		2026-10-29
+mobile	lib/screens/tutor/tutor_pronunciation_mode_screen.dart	below-bar C3 review: AiDisclosureBar label ellipsized at default size, clipped at 200%	8/8/8/7/8/8/7/9/7/7 avg 7.7		2026-10-29
+mobile	lib/screens/tutor/tutor_story_mode_screen.dart	below-bar C3 review: AiDisclosureBar label ellipsized at default size, clipped at 200%	8/8/8/7/8/8/7/9/7/7 avg 7.7		2026-10-29
+mobile	lib/screens/tutor/tutor_translation_mode_screen.dart	below-bar C3 review: AiDisclosureBar label ellipsized at default size, clipped at 200%	8/8/8/7/8/8/7/9/7/7 avg 7.7		2026-10-29
 mobile	lib/screens/tutorials/micro_lesson_screen.dart	todo			
 mobile	lib/screens/tutorials/sound_tutorials_screen.dart	todo			
 mobile	lib/screens/ugc/create_lesson_screen.dart	todo			
@@ -375,3 +375,6 @@ admin	src/pages/SystemHealth.tsx	todo
 admin	src/pages/Telemetry.tsx	todo			
 admin	src/pages/TribesVillages.tsx	todo			
 admin	src/pages/WordQuestionsPage.tsx	todo			
+mobile	lib/widgets/ai/ai_disclosure.dart	below-bar C3 review: 1-line ellipsis truncates disclosure; fixed 28dp height clips at 200%	8/8/8/7/8/8/7/9/7/7 avg 7.7		2026-10-29
+mobile	lib/screens/safety/copyright_policy_screen.dart	below-bar C6 review: unstyled default Material, no l10n, no designed sending/success states, no designated agent contact	7/8/9/7/7/7/7/7/6/8 avg 7.3		2026-10-29
+mobile	lib/widgets/safety/safety_actions_sheet.dart	below-bar C6 review: reason labels are capitalised raw keys, no hint for Copyright, no l10n	8/8/9/8/8/6/9/8/7/8 avg 7.9		2026-10-29
