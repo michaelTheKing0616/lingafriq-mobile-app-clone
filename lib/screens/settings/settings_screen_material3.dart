@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/screens/safety/copyright_policy_screen.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -596,6 +597,22 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       onTap: () async {
                         HapticFeedback.lightImpact();
                         await kLaunchUrl(UrlConstants.termsUrl);
+                      },
+                      isDark: isDark.value,
+                    ),
+                    _SettingsDivider(isDark: isDark.value),
+                    _SettingsTile(
+                      icon: Icons.copyright_rounded,
+                      title: 'Copyright & takedown',
+                      trailing: const Icon(
+                        Icons.chevron_right_rounded,
+                        color: PanAfricanColors.neutralMedium,
+                      ),
+                      onTap: () {
+                        HapticFeedback.lightImpact();
+                        Navigator.of(context).push(MaterialPageRoute<void>(
+                          builder: (_) => const CopyrightPolicyScreen(),
+                        ));
                       },
                       isDark: isDark.value,
                     ),

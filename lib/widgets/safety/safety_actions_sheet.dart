@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/screens/safety/copyright_policy_screen.dart';
 
 /// Copy keys align with plan `safety.*` (P9-930).
 abstract final class SafetyCopy {
@@ -209,6 +210,17 @@ class _SafetyActionsSheetState extends State<SafetyActionsSheet> {
     _tap();
     final reason = await _pickReason();
     if (reason == null) return;
+    if (reason == 'copyright' && mounted) {
+      final nav = Navigator.of(context);
+      nav.pop();
+      await nav.push(MaterialPageRoute<void>(
+        builder: (_) => CopyrightPolicyScreen(
+          targetType: widget.target.apiTargetType,
+          targetId: widget.target.targetId,
+        ),
+      ));
+      return;
+    }
     setState(() => _busy = true);
     final payload = {
       'targetType': widget.target.apiTargetType,
@@ -279,7 +291,7 @@ class _SafetyActionsSheetState extends State<SafetyActionsSheet> {
   }
 
   Future<String?> _pickReason() async {
-    const reasons = ['harassment', 'spam', 'hate', 'other'];
+    const reasons = ['harassment', 'spam', 'hate', 'copyright', 'other'];
     return showModalBottomSheet<String>(
       context: context,
       showDragHandle: true,
