@@ -2064,4 +2064,72 @@ class AppLocalizationsTn extends AppLocalizations {
 
   @override
   String get subCancel => 'Cancel';
+
+  @override
+  String get lsTitle => 'Find a language';
+
+  @override
+  String get lsAsk => 'Which language do you want to explore today?';
+
+  @override
+  String get lsAskChild => 'Which language shall we play with today?';
+
+  @override
+  String get lsHint => 'Search Yoruba, Swahili, Zulu…';
+
+  @override
+  String get lsContinue => 'Continue learning';
+
+  @override
+  String get lsAll => 'All languages';
+
+  @override
+  String get lsSoon => 'Coming soon';
+
+  @override
+  String get lsNew => 'Start from zero';
+
+  @override
+  String lsPercent(int p) {
+    return '$p% done';
+  }
+
+  @override
+  String lsNoMatch(String q) {
+    return 'No language matches “$q”';
+  }
+
+  @override
+  String get lsNoMatchBody =>
+      'Check the spelling, or try the language\'s own name.';
+
+  @override
+  String get lsClear => 'Clear search';
+
+  @override
+  String get lsEmptyTitle => 'No languages yet';
+
+  @override
+  String get lsEmptyBody => 'New courses are on the way. Check back soon.';
+
+  @override
+  String get lsOfflineTitle => 'You\'re offline';
+
+  @override
+  String get lsOfflineBody => 'Connect to the internet to see every language.';
+
+  @override
+  String get lsErrorTitle => 'We couldn\'t load languages';
+
+  @override
+  String get lsErrorBody => 'Your progress is safe. Try again in a moment.';
+
+  @override
+  String get lsRetry => 'Try again';
+
+  @override
+  String get lsBack => 'Back';
+
+  @override
+  String get lsLoading => 'Loading languages';
 }

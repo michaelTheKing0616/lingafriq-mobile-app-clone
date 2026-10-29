@@ -2073,4 +2073,71 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get subCancel => 'إلغاء';
+
+  @override
+  String get lsTitle => 'ابحث عن لغة';
+
+  @override
+  String get lsAsk => 'أي لغة تريد أن تستكشف اليوم؟';
+
+  @override
+  String get lsAskChild => 'بأي لغة سنلعب اليوم؟';
+
+  @override
+  String get lsHint => 'ابحث: اليوروبا، السواحيلية، الزولو…';
+
+  @override
+  String get lsContinue => 'تابع التعلّم';
+
+  @override
+  String get lsAll => 'كل اللغات';
+
+  @override
+  String get lsSoon => 'قريبًا';
+
+  @override
+  String get lsNew => 'ابدأ من الصفر';
+
+  @override
+  String lsPercent(int p) {
+    return 'أُنجز $p٪';
+  }
+
+  @override
+  String lsNoMatch(String q) {
+    return 'لا توجد لغة تطابق «$q»';
+  }
+
+  @override
+  String get lsNoMatchBody => 'تحقّق من الإملاء أو جرّب اسم اللغة بلغتها.';
+
+  @override
+  String get lsClear => 'امسح البحث';
+
+  @override
+  String get lsEmptyTitle => 'لا توجد لغات بعد';
+
+  @override
+  String get lsEmptyBody => 'دورات جديدة في الطريق. عُد قريبًا.';
+
+  @override
+  String get lsOfflineTitle => 'أنت غير متصل';
+
+  @override
+  String get lsOfflineBody => 'اتصل بالإنترنت لترى كل اللغات.';
+
+  @override
+  String get lsErrorTitle => 'تعذّر تحميل اللغات';
+
+  @override
+  String get lsErrorBody => 'تقدّمك محفوظ. حاول مجددًا بعد قليل.';
+
+  @override
+  String get lsRetry => 'حاول مجددًا';
+
+  @override
+  String get lsBack => 'رجوع';
+
+  @override
+  String get lsLoading => 'جارٍ تحميل اللغات';
 }

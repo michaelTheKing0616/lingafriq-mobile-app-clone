@@ -3647,6 +3647,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get subCancel;
+
+  /// lsTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Find a language'**
+  String get lsTitle;
+
+  /// lsAsk
+  ///
+  /// In en, this message translates to:
+  /// **'Which language do you want to explore today?'**
+  String get lsAsk;
+
+  /// lsAskChild
+  ///
+  /// In en, this message translates to:
+  /// **'Which language shall we play with today?'**
+  String get lsAskChild;
+
+  /// lsHint
+  ///
+  /// In en, this message translates to:
+  /// **'Search Yoruba, Swahili, Zulu…'**
+  String get lsHint;
+
+  /// lsContinue
+  ///
+  /// In en, this message translates to:
+  /// **'Continue learning'**
+  String get lsContinue;
+
+  /// lsAll
+  ///
+  /// In en, this message translates to:
+  /// **'All languages'**
+  String get lsAll;
+
+  /// lsSoon
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get lsSoon;
+
+  /// lsNew
+  ///
+  /// In en, this message translates to:
+  /// **'Start from zero'**
+  String get lsNew;
+
+  /// lsPercent
+  ///
+  /// In en, this message translates to:
+  /// **'{p}% done'**
+  String lsPercent(int p);
+
+  /// lsNoMatch
+  ///
+  /// In en, this message translates to:
+  /// **'No language matches “{q}”'**
+  String lsNoMatch(String q);
+
+  /// lsNoMatchBody
+  ///
+  /// In en, this message translates to:
+  /// **'Check the spelling, or try the language\'s own name.'**
+  String get lsNoMatchBody;
+
+  /// lsClear
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search'**
+  String get lsClear;
+
+  /// lsEmptyTitle
+  ///
+  /// In en, this message translates to:
+  /// **'No languages yet'**
+  String get lsEmptyTitle;
+
+  /// lsEmptyBody
+  ///
+  /// In en, this message translates to:
+  /// **'New courses are on the way. Check back soon.'**
+  String get lsEmptyBody;
+
+  /// lsOfflineTitle
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline'**
+  String get lsOfflineTitle;
+
+  /// lsOfflineBody
+  ///
+  /// In en, this message translates to:
+  /// **'Connect to the internet to see every language.'**
+  String get lsOfflineBody;
+
+  /// lsErrorTitle
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t load languages'**
+  String get lsErrorTitle;
+
+  /// lsErrorBody
+  ///
+  /// In en, this message translates to:
+  /// **'Your progress is safe. Try again in a moment.'**
+  String get lsErrorBody;
+
+  /// lsRetry
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get lsRetry;
+
+  /// lsBack
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get lsBack;
+
+  /// lsLoading
+  ///
+  /// In en, this message translates to:
+  /// **'Loading languages'**
+  String get lsLoading;
 }
 
 class _AppLocalizationsDelegate

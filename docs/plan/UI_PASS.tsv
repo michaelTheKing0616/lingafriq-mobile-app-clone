@@ -159,7 +159,7 @@ mobile	lib/screens/help/features_guide_screen.dart	todo
 mobile	lib/screens/help/stitch_navigation_hub_screen.dart	todo			
 mobile	lib/screens/heritage/flb_heritage_archive_screen.dart	todo			
 mobile	lib/screens/heritage/flb_heritage_detail_screen.dart	todo			
-mobile	lib/screens/language/search_languages_page.dart	todo			
+mobile	lib/screens/language/search_languages_page.dart	ready-for-review	self 9/9/9/9/9/9/9/9/9/9 avg 9.0; course search/picker per onboarding 04-05, all states, en/ar/fr, goldens	onboarding/04-05	2026-10-29
 mobile	lib/screens/learn/lesson_session_screen.dart	todo			
 mobile	lib/screens/learning/dialect_preference_screen.dart	todo			
 mobile	lib/screens/learning/heritage_milestones_screen.dart	todo			

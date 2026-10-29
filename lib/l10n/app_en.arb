@@ -2778,5 +2778,99 @@
   "subCancel": "Cancel",
   "@subCancel": {
     "description": "Gate cancel"
+  },
+  "lsTitle": "Find a language",
+  "@lsTitle": {
+    "description": "lsTitle"
+  },
+  "lsAsk": "Which language do you want to explore today?",
+  "@lsAsk": {
+    "description": "lsAsk"
+  },
+  "lsAskChild": "Which language shall we play with today?",
+  "@lsAskChild": {
+    "description": "lsAskChild"
+  },
+  "lsHint": "Search Yoruba, Swahili, Zulu…",
+  "@lsHint": {
+    "description": "lsHint"
+  },
+  "lsContinue": "Continue learning",
+  "@lsContinue": {
+    "description": "lsContinue"
+  },
+  "lsAll": "All languages",
+  "@lsAll": {
+    "description": "lsAll"
+  },
+  "lsSoon": "Coming soon",
+  "@lsSoon": {
+    "description": "lsSoon"
+  },
+  "lsNew": "Start from zero",
+  "@lsNew": {
+    "description": "lsNew"
+  },
+  "lsPercent": "{p}% done",
+  "@lsPercent": {
+    "description": "lsPercent",
+    "placeholders": {
+      "p": {
+        "type": "int"
+      }
+    }
+  },
+  "lsNoMatch": "No language matches “{q}”",
+  "@lsNoMatch": {
+    "description": "lsNoMatch",
+    "placeholders": {
+      "q": {
+        "type": "String"
+      }
+    }
+  },
+  "lsNoMatchBody": "Check the spelling, or try the language's own name.",
+  "@lsNoMatchBody": {
+    "description": "lsNoMatchBody"
+  },
+  "lsClear": "Clear search",
+  "@lsClear": {
+    "description": "lsClear"
+  },
+  "lsEmptyTitle": "No languages yet",
+  "@lsEmptyTitle": {
+    "description": "lsEmptyTitle"
+  },
+  "lsEmptyBody": "New courses are on the way. Check back soon.",
+  "@lsEmptyBody": {
+    "description": "lsEmptyBody"
+  },
+  "lsOfflineTitle": "You're offline",
+  "@lsOfflineTitle": {
+    "description": "lsOfflineTitle"
+  },
+  "lsOfflineBody": "Connect to the internet to see every language.",
+  "@lsOfflineBody": {
+    "description": "lsOfflineBody"
+  },
+  "lsErrorTitle": "We couldn't load languages",
+  "@lsErrorTitle": {
+    "description": "lsErrorTitle"
+  },
+  "lsErrorBody": "Your progress is safe. Try again in a moment.",
+  "@lsErrorBody": {
+    "description": "lsErrorBody"
+  },
+  "lsRetry": "Try again",
+  "@lsRetry": {
+    "description": "lsRetry"
+  },
+  "lsBack": "Back",
+  "@lsBack": {
+    "description": "lsBack"
+  },
+  "lsLoading": "Loading languages",
+  "@lsLoading": {
+    "description": "lsLoading"
   }
 }

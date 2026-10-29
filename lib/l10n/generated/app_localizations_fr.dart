@@ -2086,4 +2086,74 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get subCancel => 'Annuler';
+
+  @override
+  String get lsTitle => 'Trouver une langue';
+
+  @override
+  String get lsAsk => 'Quelle langue veux-tu explorer aujourd\'hui ?';
+
+  @override
+  String get lsAskChild => 'Avec quelle langue on joue aujourd\'hui ?';
+
+  @override
+  String get lsHint => 'Chercher yoruba, swahili, zoulou…';
+
+  @override
+  String get lsContinue => 'Continuer';
+
+  @override
+  String get lsAll => 'Toutes les langues';
+
+  @override
+  String get lsSoon => 'Bientôt';
+
+  @override
+  String get lsNew => 'Commencer de zéro';
+
+  @override
+  String lsPercent(int p) {
+    return '$p % fait';
+  }
+
+  @override
+  String lsNoMatch(String q) {
+    return 'Aucune langue ne correspond à « $q »';
+  }
+
+  @override
+  String get lsNoMatchBody =>
+      'Vérifie l\'orthographe ou essaie le nom de la langue dans cette langue.';
+
+  @override
+  String get lsClear => 'Effacer la recherche';
+
+  @override
+  String get lsEmptyTitle => 'Pas encore de langues';
+
+  @override
+  String get lsEmptyBody => 'De nouveaux cours arrivent. Reviens bientôt.';
+
+  @override
+  String get lsOfflineTitle => 'Tu es hors ligne';
+
+  @override
+  String get lsOfflineBody =>
+      'Connecte-toi à Internet pour voir toutes les langues.';
+
+  @override
+  String get lsErrorTitle => 'Impossible de charger les langues';
+
+  @override
+  String get lsErrorBody =>
+      'Ta progression est en sécurité. Réessaie dans un instant.';
+
+  @override
+  String get lsRetry => 'Réessayer';
+
+  @override
+  String get lsBack => 'Retour';
+
+  @override
+  String get lsLoading => 'Chargement des langues';
 }
