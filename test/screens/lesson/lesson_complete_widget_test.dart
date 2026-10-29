@@ -80,8 +80,11 @@ void main() {
     expectNoLayoutErrors(t);
     expect(
       t.getSize(find.byKey(const Key('lc-continue'))).width,
-      lessThan(520),
+      allOf(lessThan(520), greaterThan(380)),
+      reason: 'footer buttons use the tablet column, not a narrow strip',
     );
+    final footer = t.getRect(find.byKey(const Key('lc-continue')));
+    expect(footer.left + footer.width / 2, closeTo(410 + 0, 120));
     await expectLater(
       find.byType(Scaffold),
       matchesGoldenFile('goldens/lesson_complete_tablet_820.png'),

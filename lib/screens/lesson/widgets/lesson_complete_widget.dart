@@ -158,16 +158,19 @@ class LessonCompleteWidget extends StatelessWidget {
         ),
     ];
 
+    // Tablets: a wider centred column, bigger hero and full-width footer.
+    final wide = MediaQuery.sizeOf(context).width >= 600;
+    final maxW = wide ? 640.0 : 520.0;
     final body = LayoutBuilder(
       builder: (context, box) {
-        final heroH = (box.maxHeight * 0.30).clamp(96.0, 260.0);
+        final heroH = (box.maxHeight * 0.30).clamp(96.0, wide ? 380.0 : 260.0);
         return SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: gap, vertical: gap),
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: box.maxHeight - gap * 2),
             child: Center(
               child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 520),
+                constraints: BoxConstraints(maxWidth: maxW),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -229,7 +232,7 @@ class LessonCompleteWidget extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(gap, PanAfricanSpacing.sm, gap, gap),
         child: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 520),
+            constraints: BoxConstraints(maxWidth: maxW),
             child: Row(
               children: [
                 if (showShare) ...[
