@@ -18,7 +18,15 @@ class _BirthYearStep extends HookConsumerWidget {
     final initialIndex = years.indexOf(nowYear - 18);
     final selectedYear = useState(years[initialIndex]);
     final touched = useState(false);
-    final wheel = useFixedExtentScrollController(initialItem: initialIndex);
+    // One input at a time: the wheel, or a typed field behind a link.
+    final typing = useState(false);
+    final wheel = useMemoized(
+      () => FixedExtentScrollController(
+        initialItem: years.indexOf(selectedYear.value),
+      ),
+      [typing.value],
+    );
+    useEffect(() => wheel.dispose, [wheel]);
     final typedInvalid = useState(false);
     final parentEmail = useState('');
     final saving = useState(false);
@@ -79,99 +87,141 @@ class _BirthYearStep extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Semantics(
-            label: 'Birth year',
-            value: '${selectedYear.value}',
-            hint: 'Swipe up or down to change the year',
-            child: Container(
-              height: ModernGriotLayout.minTouchTarget.h * 4,
-              decoration: BoxDecoration(
-                color: ModernGriotColors.surfaceContainerLowest,
-                borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
+          if (typing.value) ...[
+            TextField(
+              autofocus: true,
+              keyboardType: TextInputType.number,
+              maxLength: 4,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              style: ModernGriotTypography.bodyLarge(
+                context: context,
+                color: ModernGriotColors.onSurface,
               ),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  IgnorePointer(
-                    child: Container(
-                      height: ModernGriotLayout.minTouchTarget.h,
-                      margin: EdgeInsets.symmetric(
-                        horizontal: ModernGriotSpacing.md.w,
-                      ),
-                      decoration: BoxDecoration(
-                        color: ModernGriotColors.brandGold.withValues(
-                          alpha: _GriotAlpha.softSelected,
+              decoration: InputDecoration(
+                counterText: '',
+                labelText: 'Birth year',
+                hintText: 'For example ${nowYear - 18}',
+                helperText: typedInvalid.value
+                    ? 'Use a year between 1900 and $nowYear.'
+                    : null,
+                filled: true,
+                fillColor: ModernGriotColors.surfaceContainerLowest,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
+                ),
+              ),
+              onChanged: (v) {
+                if (v.length != 4) return;
+                final idx = years.indexOf(int.tryParse(v) ?? -1);
+                typedInvalid.value = idx < 0;
+                if (idx < 0) return;
+                selectedYear.value = years[idx];
+                touched.value = true;
+                wheel.jumpToItem(idx);
+              },
+            ),
+            Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: TextButton(
+                onPressed: () => typing.value = false,
+                style: TextButton.styleFrom(
+                  minimumSize: const Size(
+                    ModernGriotLayout.minTouchTarget,
+                    ModernGriotLayout.minTouchTarget,
+                  ),
+                ),
+                child: Text(
+                  'Use the year wheel',
+                  style: ModernGriotTypography.labelLarge(
+                    context: context,
+                    color: ModernGriotColors.onSurface,
+                  ).copyWith(decoration: TextDecoration.underline),
+                ),
+              ),
+            ),
+          ] else ...[
+            Semantics(
+              label: 'Birth year',
+              value: '${selectedYear.value}',
+              hint: 'Swipe up or down to change the year',
+              child: Container(
+                height: ModernGriotLayout.minTouchTarget.h * 4,
+                decoration: BoxDecoration(
+                  color: ModernGriotColors.surfaceContainerLowest,
+                  borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
+                ),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    IgnorePointer(
+                      child: Container(
+                        height: ModernGriotLayout.minTouchTarget.h,
+                        margin: EdgeInsets.symmetric(
+                          horizontal: ModernGriotSpacing.md.w,
                         ),
-                        borderRadius: BorderRadius.circular(
-                          ModernGriotRadius.lg,
+                        decoration: BoxDecoration(
+                          color: ModernGriotColors.brandGold.withValues(
+                            alpha: _GriotAlpha.softSelected,
+                          ),
+                          borderRadius: BorderRadius.circular(
+                            ModernGriotRadius.lg,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  ListWheelScrollView.useDelegate(
-                    controller: wheel,
-                    itemExtent: ModernGriotLayout.minTouchTarget.h,
-                    physics: const FixedExtentScrollPhysics(),
-                    diameterRatio: 1.6,
-                    onSelectedItemChanged: (i) {
-                      HapticFeedback.selectionClick();
-                      selectedYear.value = years[i];
-                      touched.value = true;
-                      typedInvalid.value = false;
-                    },
-                    childDelegate: ListWheelChildBuilderDelegate(
-                      childCount: years.length,
-                      builder: (context, i) => Center(
-                        child: Text(
-                          '${years[i]}',
-                          style: years[i] == selectedYear.value
-                              ? ModernGriotTypography.headlineSmall(
-                                  context: context,
-                                  color: ModernGriotColors.onSurface,
-                                )
-                              : ModernGriotTypography.titleMedium(
-                                  context: context,
-                                  color: ModernGriotColors.onSurfaceVariant,
-                                ),
+                    ListWheelScrollView.useDelegate(
+                      controller: wheel,
+                      itemExtent: ModernGriotLayout.minTouchTarget.h,
+                      physics: const FixedExtentScrollPhysics(),
+                      diameterRatio: 1.6,
+                      onSelectedItemChanged: (i) {
+                        HapticFeedback.selectionClick();
+                        selectedYear.value = years[i];
+                        touched.value = true;
+                        typedInvalid.value = false;
+                      },
+                      childDelegate: ListWheelChildBuilderDelegate(
+                        childCount: years.length,
+                        builder: (context, i) => Center(
+                          child: Text(
+                            '${years[i]}',
+                            style: years[i] == selectedYear.value
+                                ? ModernGriotTypography.headlineSmall(
+                                    context: context,
+                                    color: ModernGriotColors.onSurface,
+                                  )
+                                : ModernGriotTypography.titleMedium(
+                                    context: context,
+                                    color: ModernGriotColors.onSurfaceVariant,
+                                  ),
+                          ),
                         ),
                       ),
                     ),
+                  ],
+                ),
+              ),
+            ),
+            Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: TextButton(
+                onPressed: () => typing.value = true,
+                style: TextButton.styleFrom(
+                  minimumSize: const Size(
+                    ModernGriotLayout.minTouchTarget,
+                    ModernGriotLayout.minTouchTarget,
                   ),
-                ],
+                ),
+                child: Text(
+                  'Type it instead',
+                  style: ModernGriotTypography.labelLarge(
+                    context: context,
+                    color: ModernGriotColors.onSurface,
+                  ).copyWith(decoration: TextDecoration.underline),
+                ),
               ),
             ),
-          ),
-          SizedBox(height: ModernGriotSpacing.sm.h),
-          TextField(
-            keyboardType: TextInputType.number,
-            maxLength: 4,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            style: ModernGriotTypography.bodyLarge(
-              context: context,
-              color: ModernGriotColors.onSurface,
-            ),
-            decoration: InputDecoration(
-              counterText: '',
-              labelText: 'Or type the year',
-              helperText: typedInvalid.value
-                  ? 'Use a year between 1900 and $nowYear.'
-                  : null,
-              filled: true,
-              fillColor: ModernGriotColors.surfaceContainerLowest,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
-              ),
-            ),
-            onChanged: (v) {
-              if (v.length != 4) return;
-              final idx = years.indexOf(int.tryParse(v) ?? -1);
-              typedInvalid.value = idx < 0;
-              if (idx < 0) return;
-              selectedYear.value = years[idx];
-              touched.value = true;
-              wheel.jumpToItem(idx);
-            },
-          ),
+          ],
           SizedBox(height: ModernGriotSpacing.md.h),
           if (touched.value && isChild)
             _AskParentPanel(

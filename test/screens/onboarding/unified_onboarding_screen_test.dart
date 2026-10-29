@@ -135,6 +135,8 @@ Future<void> completeFirstWin(WidgetTester tester, {bool speak = true}) async {
 }
 
 Future<void> enterBirthYear(WidgetTester tester, int age) async {
+  await tapVisible(tester, find.text('Type it instead'));
+  await tester.pump();
   await tester.enterText(
     find.byType(TextField).first,
     '${DateTime.now().year - age}',
@@ -382,6 +384,28 @@ void main() {
 
       expect(find.text('You did it!'), findsOneWidget);
       expect(find.text('10'), findsOneWidget);
+    });
+
+    testWidgets('birth-year: wheel or typed field, never both', (tester) async {
+      await pumpOnboarding(tester);
+      await settleOnce(tester);
+      await advanceToFirstWin(tester);
+      await completeFirstWin(tester);
+      await next(tester, 'Keep going');
+
+      expect(find.byType(ListWheelScrollView), findsOneWidget);
+      expect(find.byType(TextField), findsNothing);
+      await tapVisible(tester, find.text('Type it instead'));
+      await tester.pump();
+      expect(find.byType(ListWheelScrollView), findsNothing);
+      expect(find.byType(TextField), findsOneWidget);
+      // The typed field is hit-testable, not covered by the wheel.
+      await tester.tap(find.byType(TextField), warnIfMissed: true);
+      await tapVisible(tester, find.text('Use the year wheel'));
+      await tester.pump();
+      expect(find.byType(ListWheelScrollView), findsOneWidget);
+      expect(find.byType(TextField), findsNothing);
+      await tester.pump(const Duration(seconds: 5));
     });
 
     testWidgets(
