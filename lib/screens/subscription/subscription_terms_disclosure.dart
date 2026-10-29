@@ -1,9 +1,9 @@
+import 'package:lingafriq/l10n/l10n_of.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:lingafriq/config/url_constants.dart';
-import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/models/revenuecat_mapping.dart';
 import 'package:lingafriq/providers/subscription_provider.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -94,9 +94,16 @@ class SubscriptionTermsDisclosure extends ConsumerWidget {
   @visibleForTesting
   static String ltr(String s) => '\u2066${s.replaceAll(' ', '\u00A0')}\u2069';
 
+  static final _brands = RegExp(r'App Store|Google Play|RevenueCat');
+
+  /// Isolates any Latin brand name that a translation spells out inline.
+  @visibleForTesting
+  static String isolateBrands(String s) =>
+      s.replaceAllMapped(_brands, (m) => ltr(m[0]!));
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l = AppLocalizations.of(context)!;
+    final l = l10nOf(context);
     final theme = Theme.of(context);
     final apple = isApple ?? defaultTargetPlatform == TargetPlatform.iOS;
     final prices = ref.watch(storePricesProvider).value ?? StorePrices.fallback;
@@ -236,7 +243,9 @@ class _TermRow extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: i == 0 ? 0 : 4),
             child: Text(
-              v,
+              Directionality.of(context).name == 'rtl'
+                  ? SubscriptionTermsDisclosure.isolateBrands(v)
+                  : v,
               style: theme.textTheme.bodyMedium?.copyWith(
                 fontWeight: i == 0 && emphasiseFirst ? FontWeight.w700 : null,
               ),

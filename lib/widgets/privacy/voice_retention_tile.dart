@@ -1,3 +1,4 @@
+import 'package:lingafriq/l10n/l10n_of.dart';
 import 'package:flutter/material.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/services/voice/voice_recording_retention.dart';
@@ -72,7 +73,7 @@ class _VoiceRetentionTileState extends State<VoiceRetentionTile> {
 
   @override
   Widget build(BuildContext context) {
-    final l = AppLocalizations.of(context)!;
+    final l = l10nOf(context);
     final t = Theme.of(context).textTheme;
     final scheme = Theme.of(context).colorScheme;
     return Padding(

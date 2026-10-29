@@ -1,3 +1,4 @@
+import 'package:lingafriq/l10n/l10n_of.dart';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -411,7 +412,7 @@ class ReportReasonPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l = AppLocalizations.of(context)!;
+    final l = l10nOf(context);
     final theme = Theme.of(context);
     return SafeArea(
       child: SingleChildScrollView(

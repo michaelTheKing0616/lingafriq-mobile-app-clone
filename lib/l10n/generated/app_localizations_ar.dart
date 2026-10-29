@@ -779,7 +779,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get paywallCancelGoogle =>
-      'في أي وقت من ⁦Google Play⁩ ‹ الدفعات والاشتراكات ‹ الاشتراكات. يبقى وصولك حتى نهاية الفترة المدفوعة.';
+      'في أي وقت من Google Play ‹ الدفعات والاشتراكات ‹ الاشتراكات. يبقى وصولك حتى نهاية الفترة المدفوعة.';
 
   @override
   String get paywallFreeStays =>

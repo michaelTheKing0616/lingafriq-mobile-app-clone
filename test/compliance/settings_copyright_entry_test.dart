@@ -14,7 +14,10 @@ void main() {
     );
   });
 
-  for (final v in goldenVariants) {
+  for (final v in [
+    ...goldenVariants,
+    const GoldenVariant('fr_390', Size(390, 844), locale: Locale('fr')),
+  ]) {
     testWidgets('settings copyright entry ${v.name}', (t) async {
       await pumpVariant(t, v, const SettingsScreenMaterial3());
       final tile = find.byKey(const ValueKey('settings-copyright'));
@@ -88,4 +91,17 @@ void main() {
       }
     });
   }
+
+  // In French, settingsSecNotifications and settingsSecAudio are both spelled
+  // "Notifications"/"Audio" exactly as in English, which is correct French.
+  testWidgets('fr section headings are genuine French', (t) async {
+    await pumpVariant(
+      t,
+      const GoldenVariant('fr', Size(390, 3000), locale: Locale('fr')),
+      const SettingsScreenMaterial3(),
+    );
+    await t.pumpAndSettle();
+    expect(find.text('Déconnexion'), findsWidgets);
+    expect(find.text('Logout'), findsNothing);
+  });
 }
