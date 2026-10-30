@@ -4,9 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/screens/guardian/approvals_screen.dart';
 import 'package:lingafriq/screens/guardian/consent_screen.dart';
 import 'package:lingafriq/screens/guardian/family_tools_section.dart';
 import 'package:lingafriq/services/guardian_link_service.dart';
+import 'package:lingafriq/theme/guarded_theme.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 
@@ -61,10 +63,21 @@ class GuardianLinkScreen extends HookConsumerWidget {
     super.key,
     this.guardianLinkService,
     this.initialChildInviteMode = false,
+    this.loadPendingApprovals,
   });
 
   final GuardianLinkService? guardianLinkService;
   final bool initialChildInviteMode;
+
+  /// Counts requests waiting for this guardian (the "Needs you" strip). When
+  /// null, the real approvals API is used, unless a test injected
+  /// [guardianLinkService], in which case the strip stays hidden.
+  final Future<int> Function()? loadPendingApprovals;
+
+  static Future<int> _realPendingCount() async {
+    final rows = await GuardianApprovalService().fetchApprovals();
+    return rows.where((r) => r.isPending).length;
+  }
 
   static const String guardianLinkTitle = 'Family hub';
   static const String guardianHubEmptyTitle = 'Link a learner you support';
@@ -84,8 +97,13 @@ class GuardianLinkScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final service = guardianLinkService ?? GuardianLinkService();
-    final colorScheme = Theme.of(context).colorScheme;
+    final guarded = guardedTheme(Theme.of(context));
+    final colorScheme = guarded.colorScheme;
     final reducedMotion = MediaQuery.disableAnimationsOf(context);
+    final pendingLoader =
+        loadPendingApprovals ??
+        (guardianLinkService == null ? _realPendingCount : null);
+    final pendingCount = useState(0);
 
     final showChildInvite = useState(initialChildInviteMode);
     final hubState = useState(GuardianLinkUiState.loading);
@@ -122,6 +140,13 @@ class GuardianLinkScreen extends HookConsumerWidget {
         hubState.value = fetched.isEmpty
             ? GuardianLinkUiState.empty
             : GuardianLinkUiState.loaded;
+        if (fetched.isNotEmpty && pendingLoader != null) {
+          try {
+            pendingCount.value = await pendingLoader();
+          } catch (_) {
+            // Keep the last count; the Approvals tile still opens the list.
+          }
+        }
       } on GuardianOfflineException {
         isOffline.value = true;
         hubState.value = links.value.isEmpty
@@ -409,72 +434,83 @@ class GuardianLinkScreen extends HookConsumerWidget {
       ],
     );
 
-    return Scaffold(
-      backgroundColor: colorScheme.surface,
-      appBar: AppBar(
-        title: Text(
-          AppLocalizations.of(context)?.gfamHubTitle ?? guardianLinkTitle,
-        ),
-        centerTitle: false,
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: PanAfricanSpacing.sm.w),
-            child: _ModeToggle(
-              showChildInvite: showChildInvite.value,
-              onChanged: (value) => showChildInvite.value = value,
-            ),
+    return Theme(
+      data: guarded,
+      child: Scaffold(
+        backgroundColor: colorScheme.surface,
+        appBar: AppBar(
+          title: Text(
+            AppLocalizations.of(context)?.gfamHubTitle ?? guardianLinkTitle,
           ),
-        ],
-      ),
-      body: ResponsiveSafeArea(
-        child: RefreshIndicator(
-          onRefresh: loadHub,
-          child: ListView(
-            padding: EdgeInsets.symmetric(
-              horizontal: PanAfricanSpacing.lg.w,
-              vertical: PanAfricanSpacing.md.h,
+          centerTitle: false,
+          actions: [
+            Padding(
+              padding: EdgeInsets.only(right: PanAfricanSpacing.sm.w),
+              child: _ModeToggle(
+                showChildInvite: showChildInvite.value,
+                onChanged: (value) => showChildInvite.value = value,
+              ),
             ),
-            children: [
-              // Cross-fades the offline banner in/out rather than having it
-              // pop in abruptly on the next frame after a failed refresh.
-              AnimatedSwitcher(
-                duration: reducedMotion ? Duration.zero : _crossFadeDuration,
-                switchInCurve: Curves.easeOut,
-                switchOutCurve: Curves.easeIn,
-                child: isOffline.value
-                    ? _BannerChip(
-                        key: const ValueKey('offline-banner-visible'),
-                        icon: Icons.cloud_off_outlined,
-                        label: offlineBanner,
-                        colorScheme: colorScheme,
-                      )
-                    : const SizedBox.shrink(
-                        key: ValueKey('offline-banner-hidden'),
-                      ),
+          ],
+        ),
+        body: ResponsiveSafeArea(
+          child: RefreshIndicator(
+            onRefresh: loadHub,
+            child: ListView(
+              padding: EdgeInsets.symmetric(
+                horizontal: PanAfricanSpacing.lg.w,
+                vertical: PanAfricanSpacing.md.h,
               ),
-              AnimatedSwitcher(
-                duration: reducedMotion ? Duration.zero : _crossFadeDuration,
-                switchInCurve: Curves.easeOut,
-                switchOutCurve: Curves.easeIn,
-                transitionBuilder: (child, animation) =>
-                    FadeTransition(opacity: animation, child: child),
-                child: showChildInvite.value
-                    ? childInviteSection
-                    : guardianSection,
-              ),
-              if (!showChildInvite.value)
-                FamilyToolsSection(
-                  activeChildIds: [
-                    for (final link in links.value)
-                      if (link.status == 'active') link.childUserId,
-                  ],
-                  childNames: {
-                    for (final link in links.value)
-                      if (link.childName != null)
-                        link.childUserId: link.childName!,
-                  },
+              children: [
+                // Cross-fades the offline banner in/out rather than having it
+                // pop in abruptly on the next frame after a failed refresh.
+                AnimatedSwitcher(
+                  duration: reducedMotion ? Duration.zero : _crossFadeDuration,
+                  switchInCurve: Curves.easeOut,
+                  switchOutCurve: Curves.easeIn,
+                  child: isOffline.value
+                      ? _BannerChip(
+                          key: const ValueKey('offline-banner-visible'),
+                          icon: Icons.cloud_off_outlined,
+                          label: offlineBanner,
+                          colorScheme: colorScheme,
+                        )
+                      : const SizedBox.shrink(
+                          key: ValueKey('offline-banner-hidden'),
+                        ),
                 ),
-            ],
+                if (!showChildInvite.value) ...[
+                  if (links.value.isNotEmpty)
+                    _FamilyOverview(
+                      links: links.value,
+                      pendingApprovals: pendingCount.value,
+                    ),
+                  FamilyToolsSection(
+                    activeChildIds: [
+                      for (final link in links.value)
+                        if (link.status == 'active') link.childUserId,
+                    ],
+                    childNames: {
+                      for (final link in links.value)
+                        if (link.childName != null)
+                          link.childUserId: link.childName!,
+                    },
+                    pendingApprovals: pendingCount.value,
+                  ),
+                  SizedBox(height: PanAfricanSpacing.lg.h),
+                ],
+                AnimatedSwitcher(
+                  duration: reducedMotion ? Duration.zero : _crossFadeDuration,
+                  switchInCurve: Curves.easeOut,
+                  switchOutCurve: Curves.easeIn,
+                  transitionBuilder: (child, animation) =>
+                      FadeTransition(opacity: animation, child: child),
+                  child: showChildInvite.value
+                      ? childInviteSection
+                      : guardianSection,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -717,7 +753,9 @@ class _LearnerLinkTile extends StatelessWidget {
               ),
             ),
             title: Text(name),
-            subtitle: Text('$statusLabel · ${link.regime ?? 'Policy'}'),
+            subtitle: Text(
+              [statusLabel, ?regimeLabel(l, link.regime)].join(' · '),
+            ),
             trailing: Icon(isRtl ? Icons.chevron_left : Icons.chevron_right),
             onTap: onTap,
           ),
@@ -885,6 +923,218 @@ class _ErrorPanel extends StatelessWidget {
             ),
           ),
         ),
+      ],
+    );
+  }
+}
+
+/// Parent-readable name for a consent regime code; never the raw code.
+String? regimeLabel(AppLocalizations l, String? code) => switch (code) {
+  null || '' => null,
+  'NDPA_2023' => l.gfamRegimeNdpa,
+  _ => l.gfamRegimeOther,
+};
+
+/// Member cards (you + each linked learner) and the "Needs you" strip.
+/// Reference pack: docs/design/references/family-hub (recipe steps 1-2).
+class _FamilyOverview extends StatelessWidget {
+  const _FamilyOverview({required this.links, required this.pendingApprovals});
+
+  final List<GuardianHubLink> links;
+  final int pendingApprovals;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final big = MediaQuery.textScalerOf(context).scale(10) >= 15;
+    Widget member({
+      required Key key,
+      required String initial,
+      required String name,
+      required String role,
+      bool you = false,
+    }) {
+      return Container(
+        key: key,
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: you ? scheme.primaryContainer : scheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: 18,
+              backgroundColor: you ? scheme.primary : scheme.primaryContainer,
+              child: Text(
+                initial,
+                style: theme.textTheme.titleSmall?.copyWith(
+                  color: you ? scheme.onPrimary : scheme.onPrimaryContainer,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  Text(
+                    role,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: scheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    final cards = <Widget>[
+      member(
+        key: const ValueKey('family-member-you'),
+        initial: l.gfamYouInitial,
+        name: l.gfamYou,
+        role: l.gfamRoleGuardian,
+        you: true,
+      ),
+      for (final link in links)
+        member(
+          key: ValueKey('family-member-${link.childUserId}'),
+          initial: (link.childName ?? l.gapLearnerFallback).characters.first
+              .toUpperCase(),
+          name: link.childName ?? l.gapLearnerFallback,
+          role: switch (link.status) {
+            'active' => l.gfamStatusActive,
+            'verifying' => l.gfamStatusVerifying,
+            'withdrawn' => l.gfamStatusWithdrawn,
+            _ => l.gfamRoleLearner,
+          },
+        ),
+    ];
+
+    return Column(
+      key: const ValueKey('family-overview'),
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Semantics(
+          header: true,
+          child: Text(
+            l.gfamMembersTitle,
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        LayoutBuilder(
+          builder: (context, c) {
+            final w = big || c.maxWidth < 300
+                ? c.maxWidth
+                : (c.maxWidth - 8) / 2;
+            return Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                for (final card in cards) SizedBox(width: w, child: card),
+              ],
+            );
+          },
+        ),
+        if (pendingApprovals > 0) ...[
+          const SizedBox(height: 12),
+          Material(
+            key: const ValueKey('family-needs-you'),
+            color: scheme.primary,
+            borderRadius: BorderRadius.circular(16),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(16),
+              onTap: () => Navigator.of(
+                context,
+              ).pushNamed(FamilyToolsSection.routeApprovals),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+                child: Builder(
+                  builder: (context) {
+                    final big =
+                        MediaQuery.textScalerOf(context).scale(10) >= 15;
+                    final label = Text(
+                      l.gfamNeedsYou(pendingApprovals),
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        color: scheme.onPrimary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    );
+                    final action = Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          l.gfamNeedsYouAction,
+                          style: theme.textTheme.labelLarge?.copyWith(
+                            color: scheme.onPrimary,
+                          ),
+                        ),
+                        Icon(
+                          Directionality.of(context) == TextDirection.rtl
+                              ? Icons.chevron_left
+                              : Icons.chevron_right,
+                          color: scheme.onPrimary,
+                        ),
+                      ],
+                    );
+                    final icon = Icon(
+                      Icons.notifications_active_outlined,
+                      color: scheme.onPrimary,
+                    );
+                    // At large text the action stacks under the label so
+                    // words never break mid-word on narrow phones.
+                    if (big) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              icon,
+                              const SizedBox(width: 12),
+                              Expanded(child: label),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Align(
+                            alignment: AlignmentDirectional.centerEnd,
+                            child: action,
+                          ),
+                        ],
+                      );
+                    }
+                    return Row(
+                      children: [
+                        icon,
+                        const SizedBox(width: 12),
+                        Expanded(child: label),
+                        action,
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+        ],
       ],
     );
   }

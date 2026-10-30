@@ -34,6 +34,7 @@ class ChildDmThread {
     required this.blockedMessageCount,
     this.heldMediaCount = 0,
     required this.revoked,
+    this.firstMessageAt,
   });
 
   factory ChildDmThread.fromJson(Map<String, dynamic> j) => ChildDmThread(
@@ -50,6 +51,7 @@ class ChildDmThread {
     blockedMessageCount: _int(j['blocked_message_count']),
     heldMediaCount: _int(j['held_media_count']),
     revoked: j['revoked'] == true,
+    firstMessageAt: _date(j['first_message_at']),
   );
 
   final int? peerUserId;
@@ -64,6 +66,14 @@ class ChildDmThread {
   final int heldMediaCount;
   final bool revoked;
 
+  /// First message between the learner and this contact (for "New").
+  final DateTime? firstMessageAt;
+
+  /// First messaged within the last 7 days.
+  bool isNewAt(DateTime now) =>
+      firstMessageAt != null &&
+      now.difference(firstMessageAt!) < const Duration(days: 7);
+
   ChildDmThread copyWith({bool? revoked}) => ChildDmThread(
     peerUserId: peerUserId,
     peerName: peerName,
@@ -74,6 +84,7 @@ class ChildDmThread {
     blockedMessageCount: blockedMessageCount,
     heldMediaCount: heldMediaCount,
     revoked: revoked ?? this.revoked,
+    firstMessageAt: firstMessageAt,
   );
 }
 

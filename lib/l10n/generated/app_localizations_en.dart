@@ -3873,4 +3873,108 @@ class AppLocalizationsEn extends AppLocalizations {
   String gcirLastActivity(String date) {
     return 'Last activity $date';
   }
+
+  @override
+  String get gfamRegimeNdpa => 'Nigeria data protection law (NDPA 2023)';
+
+  @override
+  String get gfamRegimeOther => 'Child privacy rules';
+
+  @override
+  String get gfamMembersTitle => 'Your family';
+
+  @override
+  String get gfamYou => 'You';
+
+  @override
+  String get gfamYouInitial => 'Y';
+
+  @override
+  String get gfamRoleGuardian => 'Guardian';
+
+  @override
+  String get gfamRoleLearner => 'Learner';
+
+  @override
+  String gfamNeedsYou(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count requests need you',
+      one: '1 request needs you',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get gfamNeedsYouAction => 'Review';
+
+  @override
+  String get gapNotNow => 'Not now';
+
+  @override
+  String get gapNotNowToast => 'Saved for later. It stays in your list.';
+
+  @override
+  String get gapShowAgain => 'Show';
+
+  @override
+  String gapApprovingAs(String name) {
+    return 'You\'re approving as $name (Parent)';
+  }
+
+  @override
+  String get gapApprovingAsYou =>
+      'You\'re approving as the parent on this account';
+
+  @override
+  String gapAudit(String status, String time) {
+    return '$status by you · $time';
+  }
+
+  @override
+  String gapAuditThisPhone(String status, String time) {
+    return '$status by you · $time · this phone';
+  }
+
+  @override
+  String get gapPendingSync => 'Pending sync';
+
+  @override
+  String get gapSavedOffline =>
+      'Saved offline. We\'ll send it when you\'re back online.';
+
+  @override
+  String gdmSummary(int count, int fresh) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count contacts',
+      one: '1 contact',
+    );
+    return '$_temp0 · $fresh new this week';
+  }
+
+  @override
+  String get gdmFilterAll => 'All';
+
+  @override
+  String get gdmFilterNew => 'New';
+
+  @override
+  String get gdmFilterStopped => 'Stopped';
+
+  @override
+  String get gdmFilterMedia => 'Media waiting';
+
+  @override
+  String get gdmFilterEmpty => 'No contacts match this filter.';
+
+  @override
+  String gdmStoppedToast(String name) {
+    return '$name can\'t message your learner now';
+  }
+
+  @override
+  String get gdmUndo => 'Undo';
 }

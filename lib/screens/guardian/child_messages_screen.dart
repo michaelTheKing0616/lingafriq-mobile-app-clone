@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/screens/guardian/messaging_explainer_screen.dart';
 import 'package:lingafriq/services/guarded_messaging_service.dart';
+import 'package:lingafriq/theme/guarded_theme.dart';
 
 /// Guardian view: who is messaging a linked learner. Metadata only, never message text.
 /// Reference pack: docs/design/references/contact-oversight (recoloured, own copy).
@@ -12,7 +13,11 @@ class GuardianChildMessagesScreen extends StatefulWidget {
     required this.childUserId,
     this.childName,
     this.service,
+    this.now,
   });
+
+  /// Clock for the "New this week" filter (tests pin it).
+  final DateTime Function()? now;
 
   final int childUserId;
 
@@ -32,6 +37,17 @@ class _GuardianChildMessagesScreenState
   List<ChildDmThread>? _threads;
   bool _error = false;
   final Set<int> _busy = {};
+  _Filter _filter = _Filter.all;
+
+  /// "Now" for the New filter; a field so tests can pin it.
+  DateTime get _now => widget.now?.call() ?? DateTime.now();
+
+  bool _matches(ChildDmThread t) => switch (_filter) {
+    _Filter.all => true,
+    _Filter.fresh => t.isNewAt(_now),
+    _Filter.stopped => t.revoked,
+    _Filter.media => t.heldMediaCount > 0,
+  };
 
   @override
   void initState() {
@@ -97,13 +113,33 @@ class _GuardianChildMessagesScreenState
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(l.gdmActionFailed)));
+    } else if (!t.revoked) {
+      // Undo for 10 s after Stop (pack: contact-oversight upgrades).
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          key: const ValueKey('gdm-undo-snack'),
+          duration: const Duration(seconds: 10),
+          content: Text(l.gdmStoppedToast(t.peerName ?? l.gdmUnknownName)),
+          action: SnackBarAction(
+            key: const ValueKey('gdm-undo'),
+            label: l.gdmUndo,
+            onPressed: () {
+              final now = _threads?.firstWhere(
+                (x) => x.peerUserId == peer,
+                orElse: () => t,
+              );
+              if (now != null && now.revoked) _toggle(now);
+            },
+          ),
+        ),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
+    final theme = guardedTheme(Theme.of(context));
     Widget body;
     if (_error) {
       body = _Centered(
@@ -151,73 +187,138 @@ class _GuardianChildMessagesScreenState
         ),
       );
     } else {
+      final all = _threads!;
+      final shown = all.where(_matches).toList();
+      final newCount = all.where((t) => t.isNewAt(_now)).length;
+      Widget chip(_Filter f, String label, int count) => Padding(
+        padding: const EdgeInsetsDirectional.only(end: 8),
+        child: FilterChip(
+          key: ValueKey('gdm-filter-${f.name}'),
+          label: Text(f == _Filter.all ? label : '$label · $count'),
+          selected: _filter == f,
+          showCheckmark: false,
+          selectedColor: theme.colorScheme.primary,
+          labelStyle: TextStyle(
+            color: _filter == f
+                ? theme.colorScheme.onPrimary
+                : theme.colorScheme.onSurface,
+            fontWeight: FontWeight.w600,
+          ),
+          onSelected: (_) => setState(() => _filter = f),
+        ),
+      );
       body = RefreshIndicator(
         onRefresh: _load,
-        child: ListView.separated(
+        child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
-          itemCount: _threads!.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 12),
-          itemBuilder: (context, i) => _ThreadCard(
-            thread: _threads![i],
-            busy: _busy.contains(_threads![i].peerUserId),
-            onToggle: () => _toggle(_threads![i]),
-          ),
+          children: [
+            Text(
+              l.gdmSummary(all.length, newCount),
+              key: const ValueKey('gdm-summary'),
+              style: theme.textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Wrap(
+              runSpacing: 8,
+              children: [
+                chip(_Filter.all, l.gdmFilterAll, all.length),
+                chip(_Filter.fresh, l.gdmFilterNew, newCount),
+                chip(
+                  _Filter.stopped,
+                  l.gdmFilterStopped,
+                  all.where((t) => t.revoked).length,
+                ),
+                chip(
+                  _Filter.media,
+                  l.gdmFilterMedia,
+                  all.where((t) => t.heldMediaCount > 0).length,
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            if (shown.isEmpty)
+              Padding(
+                key: const ValueKey('gdm-filter-empty'),
+                padding: const EdgeInsets.symmetric(vertical: 24),
+                child: Text(
+                  l.gdmFilterEmpty,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.bodyMedium,
+                ),
+              ),
+            for (final t in shown) ...[
+              _ThreadCard(
+                thread: t,
+                isNew: t.isNewAt(_now),
+                busy: _busy.contains(t.peerUserId),
+                onToggle: () => _toggle(t),
+              ),
+              const SizedBox(height: 12),
+            ],
+          ],
         ),
       );
     }
-    return Scaffold(
-      // The title lives in the body so it wraps at 320dp / 200% / Arabic
-      // instead of being cut off in the app bar.
-      appBar: AppBar(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
-            child: Semantics(
-              header: true,
-              child: Text(
+    return Theme(
+      data: theme,
+      child: Scaffold(
+        // The title lives in the body so it wraps at 320dp / 200% / Arabic
+        // instead of being cut off in the app bar; its scale is capped at 160%.
+        appBar: AppBar(),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
+              child: GuardedHeadline(
                 widget.childName == null
                     ? l.gdmTitle
                     : l.gdmTitleFor(widget.childName!),
+                key: const ValueKey('gdm-title'),
                 style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  Icons.visibility_off_outlined,
-                  size: _icon(context, 20),
-                  color: theme.colorScheme.primary,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(l.gdmIntro, style: theme.textTheme.bodyMedium),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.visibility_off_outlined,
+                    size: _icon(context, 20),
+                    color: theme.colorScheme.primary,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(l.gdmIntro, style: theme.textTheme.bodyMedium),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Expanded(child: body),
-        ],
+            Expanded(child: body),
+          ],
+        ),
       ),
     );
   }
 }
+
+enum _Filter { all, fresh, stopped, media }
 
 class _ThreadCard extends StatelessWidget {
   const _ThreadCard({
     required this.thread,
     required this.busy,
     required this.onToggle,
+    this.isNew = false,
   });
 
   final ChildDmThread thread;
+  final bool isNew;
   final bool busy;
   final VoidCallback onToggle;
 
@@ -284,6 +385,8 @@ class _ThreadCard extends StatelessWidget {
               spacing: 8,
               runSpacing: 8,
               children: [
+                if (isNew)
+                  _Pill(icon: Icons.fiber_new_outlined, text: l.gdmFilterNew),
                 _Pill(
                   icon: Icons.chat_bubble_outline,
                   text: l.gdmMessages(thread.messageCount),

@@ -3929,4 +3929,107 @@ class AppLocalizationsAr extends AppLocalizations {
   String gcirLastActivity(String date) {
     return 'آخر نشاط $date';
   }
+
+  @override
+  String get gfamRegimeNdpa => 'قانون حماية البيانات في نيجيريا (2023)';
+
+  @override
+  String get gfamRegimeOther => 'قواعد خصوصية الأطفال';
+
+  @override
+  String get gfamMembersTitle => 'عائلتك';
+
+  @override
+  String get gfamYou => 'أنت';
+
+  @override
+  String get gfamYouInitial => 'أ';
+
+  @override
+  String get gfamRoleGuardian => 'ولي الأمر';
+
+  @override
+  String get gfamRoleLearner => 'متعلم';
+
+  @override
+  String gfamNeedsYou(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count طلبات بانتظارك',
+      one: 'طلب واحد بانتظارك',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get gfamNeedsYouAction => 'مراجعة';
+
+  @override
+  String get gapNotNow => 'ليس الآن';
+
+  @override
+  String get gapNotNowToast => 'حُفظ لوقت لاحق. يبقى في قائمتك.';
+
+  @override
+  String get gapShowAgain => 'إظهار';
+
+  @override
+  String gapApprovingAs(String name) {
+    return 'أنت توافق بصفتك $name (ولي الأمر)';
+  }
+
+  @override
+  String get gapApprovingAsYou => 'أنت توافق بصفتك ولي الأمر في هذا الحساب';
+
+  @override
+  String gapAudit(String status, String time) {
+    return '$status بواسطتك · $time';
+  }
+
+  @override
+  String gapAuditThisPhone(String status, String time) {
+    return '$status بواسطتك · $time · هذا الهاتف';
+  }
+
+  @override
+  String get gapPendingSync => 'بانتظار المزامنة';
+
+  @override
+  String get gapSavedOffline =>
+      'حُفظ دون اتصال. سنرسله عند عودتك إلى الإنترنت.';
+
+  @override
+  String gdmSummary(int count, int fresh) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count جهات اتصال',
+      one: 'جهة اتصال واحدة',
+    );
+    return '$_temp0 · $fresh جديدة هذا الأسبوع';
+  }
+
+  @override
+  String get gdmFilterAll => 'الكل';
+
+  @override
+  String get gdmFilterNew => 'جديد';
+
+  @override
+  String get gdmFilterStopped => 'متوقف';
+
+  @override
+  String get gdmFilterMedia => 'وسائط بانتظار المراجعة';
+
+  @override
+  String get gdmFilterEmpty => 'لا توجد جهات اتصال مطابقة لهذا الفلتر.';
+
+  @override
+  String gdmStoppedToast(String name) {
+    return 'لم يعد بإمكان $name مراسلة المتعلم';
+  }
+
+  @override
+  String get gdmUndo => 'تراجع';
 }

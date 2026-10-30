@@ -5151,5 +5151,148 @@
         "type": "String"
       }
     }
+  },
+  "gfamRegimeNdpa": "Nigeria data protection law (NDPA 2023)",
+  "@gfamRegimeNdpa": {
+    "description": "gfamRegimeNdpa"
+  },
+  "gfamRegimeOther": "Child privacy rules",
+  "@gfamRegimeOther": {
+    "description": "gfamRegimeOther"
+  },
+  "gfamMembersTitle": "Your family",
+  "@gfamMembersTitle": {
+    "description": "gfamMembersTitle"
+  },
+  "gfamYou": "You",
+  "@gfamYou": {
+    "description": "gfamYou"
+  },
+  "gfamYouInitial": "Y",
+  "@gfamYouInitial": {
+    "description": "gfamYouInitial"
+  },
+  "gfamRoleGuardian": "Guardian",
+  "@gfamRoleGuardian": {
+    "description": "gfamRoleGuardian"
+  },
+  "gfamRoleLearner": "Learner",
+  "@gfamRoleLearner": {
+    "description": "gfamRoleLearner"
+  },
+  "gfamNeedsYou": "{count, plural, =1{1 request needs you} other{{count} requests need you}}",
+  "@gfamNeedsYou": {
+    "description": "gfamNeedsYou",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gfamNeedsYouAction": "Review",
+  "@gfamNeedsYouAction": {
+    "description": "gfamNeedsYouAction"
+  },
+  "gapNotNow": "Not now",
+  "@gapNotNow": {
+    "description": "gapNotNow"
+  },
+  "gapNotNowToast": "Saved for later. It stays in your list.",
+  "@gapNotNowToast": {
+    "description": "gapNotNowToast"
+  },
+  "gapShowAgain": "Show",
+  "@gapShowAgain": {
+    "description": "gapShowAgain"
+  },
+  "gapApprovingAs": "You're approving as {name} (Parent)",
+  "@gapApprovingAs": {
+    "description": "gapApprovingAs",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "gapApprovingAsYou": "You're approving as the parent on this account",
+  "@gapApprovingAsYou": {
+    "description": "gapApprovingAsYou"
+  },
+  "gapAudit": "{status} by you · {time}",
+  "@gapAudit": {
+    "description": "gapAudit",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "gapAuditThisPhone": "{status} by you · {time} · this phone",
+  "@gapAuditThisPhone": {
+    "description": "gapAuditThisPhone",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "gapPendingSync": "Pending sync",
+  "@gapPendingSync": {
+    "description": "gapPendingSync"
+  },
+  "gapSavedOffline": "Saved offline. We'll send it when you're back online.",
+  "@gapSavedOffline": {
+    "description": "gapSavedOffline"
+  },
+  "gdmSummary": "{count, plural, =1{1 contact} other{{count} contacts}} · {fresh} new this week",
+  "@gdmSummary": {
+    "description": "gdmSummary",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "fresh": {
+        "type": "int"
+      }
+    }
+  },
+  "gdmFilterAll": "All",
+  "@gdmFilterAll": {
+    "description": "gdmFilterAll"
+  },
+  "gdmFilterNew": "New",
+  "@gdmFilterNew": {
+    "description": "gdmFilterNew"
+  },
+  "gdmFilterStopped": "Stopped",
+  "@gdmFilterStopped": {
+    "description": "gdmFilterStopped"
+  },
+  "gdmFilterMedia": "Media waiting",
+  "@gdmFilterMedia": {
+    "description": "gdmFilterMedia"
+  },
+  "gdmFilterEmpty": "No contacts match this filter.",
+  "@gdmFilterEmpty": {
+    "description": "gdmFilterEmpty"
+  },
+  "gdmStoppedToast": "{name} can't message your learner now",
+  "@gdmStoppedToast": {
+    "description": "gdmStoppedToast",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "gdmUndo": "Undo",
+  "@gdmUndo": {
+    "description": "gdmUndo"
   }
 }

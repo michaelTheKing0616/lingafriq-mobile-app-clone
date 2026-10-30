@@ -29,6 +29,8 @@ class _HubService extends GuardianLinkService {
 }
 
 class _Approvals extends GuardianApprovalService {
+  _Approvals({super.isOnline, super.post});
+
   @override
   Future<List<GuardianGroupJoinRequestRow>> fetchApprovals() async => [
     GuardianGroupJoinRequestRow(
@@ -53,6 +55,7 @@ class _Approvals extends GuardianApprovalService {
       adultMemberCount: 1,
       moderationStatus: 'open',
       status: 'approved',
+      decidedAt: DateTime.utc(2026, 10, 28, 8, 30),
     ),
   ];
 }
@@ -128,6 +131,9 @@ Future<Object?> _circles() async => {
     },
   ],
 };
+
+/// French variant: the pack asks for at least one fr golden per screen.
+const _fr = GoldenVariant('fr_390', Size(390, 844), locale: Locale('fr'));
 
 void main() {
   setUpAll(
@@ -230,23 +236,91 @@ void main() {
     });
   }
 
-  for (final v in goldenVariants) {
+  testWidgets('approvals: approving-as footer, Not now, audit row', (t) async {
+    await pumpVariant(
+      t,
+      goldenVariants.first,
+      GuardianApprovalsScreen(
+        approvalService: _Approvals(),
+        guardianName: 'Tunde',
+      ),
+    );
+    expect(find.byKey(const ValueKey('gap-approving-as')), findsOneWidget);
+    expect(find.textContaining('Tunde'), findsWidgets);
+    expect(find.byKey(const ValueKey('gap-audit-r2')), findsOneWidget);
+    expect(find.textContaining('09:30 WAT'), findsOneWidget);
+    await t.tap(find.byKey(const ValueKey('gap-notnow-r1')));
+    await t.pumpAndSettle();
+    expect(find.byKey(const ValueKey('gap-notnow-r1')), findsNothing);
+  });
+
+  testWidgets('approvals offline: decision queued as Pending sync', (t) async {
+    var online = true;
+    var posts = 0;
+    await pumpVariant(
+      t,
+      goldenVariants.first,
+      GuardianApprovalsScreen(
+        approvalService: _Approvals(
+          isOnline: () async => online,
+          post: (path, {data}) async {
+            posts++;
+            return {'ok': true};
+          },
+        ),
+      ),
+    );
+    online = false;
+    await t.tap(find.byKey(const ValueKey('gap-approve-r1')));
+    await t.pumpAndSettle();
+    expect(find.byKey(const ValueKey('gap-queued-r1')), findsOneWidget);
+    expect(find.textContaining('Pending sync'), findsOneWidget);
+    expect(find.textContaining('Saved offline'), findsOneWidget);
+    expect(posts, 0);
+  });
+
+  testWidgets('approvals: Approve label never wraps at 320 + 200% RTL', (
+    t,
+  ) async {
+    await pumpVariant(
+      t,
+      goldenVariants.last,
+      GuardianApprovalsScreen(approvalService: _Approvals()),
+    );
+    final label = find.descendant(
+      of: find.byKey(const ValueKey('gap-approve-r1')),
+      matching: find.byType(RichText),
+    );
+    final paras = label
+        .evaluate()
+        .map((e) => e.renderObject! as RenderParagraph)
+        .where((p) => p.maxLines == 1)
+        .toList();
+    expect(paras, hasLength(1));
+    expect(paras.single.didExceedMaxLines, isFalse);
+    expectNoLayoutErrors(t);
+  });
+
+  for (final v in [...goldenVariants, _fr]) {
     testWidgets('family hub shows Family tools ${v.name}', (t) async {
       await pumpVariant(
         t,
         v,
-        GuardianLinkScreen(guardianLinkService: _HubService()),
+        GuardianLinkScreen(
+          guardianLinkService: _HubService(),
+          loadPendingApprovals: () async => 1,
+        ),
       );
-      await t.scrollUntilVisible(
-        find.byKey(const ValueKey('family-tools-circles')),
-        200,
-        scrollable: find.byType(Scrollable).first,
-      );
-      await t.pumpAndSettle();
+      // Golden starts at the top: members + "Needs you" first, no scrolling.
+      expect(find.byKey(const ValueKey('family-member-you')), findsOneWidget);
+      expect(find.byKey(const ValueKey('family-member-42')), findsOneWidget);
+      expect(find.byKey(const ValueKey('family-needs-you')), findsOneWidget);
+      expect(find.textContaining('NDPA_2023'), findsNothing);
       expect(find.byType(FamilyToolsSection), findsOneWidget);
       final ar = v.locale.languageCode == 'ar';
-      expect(find.text(ar ? 'مركز العائلة' : 'Family hub'), findsOneWidget);
-      expect(find.text('Family hub'), ar ? findsNothing : findsOneWidget);
+      if (ar) expect(find.text('مركز العائلة'), findsOneWidget);
+      final en = v.locale.languageCode == 'en';
+      expect(find.text('Family hub'), en ? findsOneWidget : findsNothing);
       expect(find.textContaining('Ada'), findsWidgets);
       expect(find.textContaining('#42'), findsNothing);
       expectNoLayoutErrors(t);
@@ -277,14 +351,17 @@ void main() {
         v,
         GuardianMessagingExplainerScreen(explainerService: _Explainer()),
       );
-      expect(
-        find.text(
-          v.locale.languageCode == 'ar'
-              ? 'كيف تعمل الرسائل للمتعلمين الصغار'
-              : 'Messages are checked first',
-        ),
-        findsOneWidget,
-      );
+      final lang = v.locale.languageCode;
+      if (lang != 'fr') {
+        expect(
+          find.text(
+            lang == 'ar'
+                ? 'كيف تعمل الرسائل للمتعلمين الصغار'
+                : 'Messages are checked first',
+          ),
+          findsOneWidget,
+        );
+      }
       expectNoLayoutErrors(t);
       await expectLater(
         find.byType(GuardianMessagingExplainerScreen),

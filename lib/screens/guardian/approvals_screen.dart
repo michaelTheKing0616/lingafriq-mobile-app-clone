@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/services/guardian_link_service.dart';
+import 'package:lingafriq/theme/guarded_theme.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
@@ -23,6 +24,7 @@ class GuardianGroupJoinRequestRow {
     required this.moderationStatus,
     required this.status,
     this.expiresAt,
+    this.decidedAt,
     this.childName,
   });
 
@@ -35,6 +37,9 @@ class GuardianGroupJoinRequestRow {
   final String moderationStatus;
   final String status;
   final DateTime? expiresAt;
+
+  /// When this account approved, denied or revoked (audit row).
+  final DateTime? decidedAt;
 
   /// The learner's first name (or username) from the guardian's own link; null if unknown.
   final String? childName;
@@ -55,6 +60,7 @@ class GuardianGroupJoinRequestRow {
       moderationStatus: json['moderation_status']?.toString() ?? 'open',
       status: json['status']?.toString() ?? 'pending',
       expiresAt: parse(json['expires_at']?.toString()),
+      decidedAt: parse((json['revoked_at'] ?? json['decided_at'])?.toString()),
       childName: (json['child_name']?.toString().trim().isNotEmpty ?? false)
           ? json['child_name'].toString().trim()
           : null,
@@ -129,6 +135,9 @@ class GuardianApprovalService {
         .toList();
   }
 
+  /// Whether a decision can be sent now (otherwise it is queued on this phone).
+  Future<bool> isOnline() => _isOnline();
+
   Future<bool> approve(String requestId) async {
     if (!await _isOnline()) return false;
     final json = await _post(
@@ -157,9 +166,16 @@ enum GuardianApprovalsUiState { loading, empty, loaded, error, offline }
 enum _Decision { approve, deny, revoke }
 
 class GuardianApprovalsScreen extends HookConsumerWidget {
-  const GuardianApprovalsScreen({super.key, this.approvalService});
+  const GuardianApprovalsScreen({
+    super.key,
+    this.approvalService,
+    this.guardianName,
+  });
 
   final GuardianApprovalService? approvalService;
+
+  /// Shown in the "You're approving as …" footer; generic copy when null.
+  final String? guardianName;
 
   // Note on scope: this screen is guardian-only (never opened by the learner
   // account), so a "child mode" / "locked" state is not applicable here.
@@ -171,8 +187,16 @@ class GuardianApprovalsScreen extends HookConsumerWidget {
       () => approvalService ?? GuardianApprovalService(),
       [approvalService],
     );
-    final colorScheme = Theme.of(context).colorScheme;
+    final guarded = guardedTheme(Theme.of(context));
+    final colorScheme = guarded.colorScheme;
     final reducedMotion = MediaQuery.disableAnimationsOf(context);
+
+    // Decisions made on this phone this session (audit row "this phone"),
+    // decisions saved offline (never shown as done until the server agrees),
+    // and requests put off with "Not now".
+    final localDecisions = useState<Map<String, DateTime>>({});
+    final queued = useState<Map<String, _Decision>>({});
+    final snoozed = useState<Set<String>>({});
 
     final uiState = useState(GuardianApprovalsUiState.loading);
     final rows = useState<List<GuardianGroupJoinRequestRow>>([]);
@@ -186,7 +210,29 @@ class GuardianApprovalsScreen extends HookConsumerWidget {
       errorMessage.value = null;
       isOffline.value = false;
       try {
-        final fetched = await service.fetchApprovals();
+        var fetched = await service.fetchApprovals();
+        if (queued.value.isNotEmpty) {
+          final left = <String, _Decision>{};
+          for (final e in queued.value.entries) {
+            final ok = switch (e.value) {
+              _Decision.approve => await service.approve(e.key),
+              _Decision.deny => await service.deny(e.key),
+              _Decision.revoke => await service.revoke(e.key),
+            };
+            if (ok) {
+              localDecisions.value = {
+                ...localDecisions.value,
+                e.key: DateTime.now(),
+              };
+            } else {
+              left[e.key] = e.value;
+            }
+          }
+          if (left.length != queued.value.length) {
+            fetched = await service.fetchApprovals();
+          }
+          queued.value = left;
+        }
         rows.value = fetched;
         uiState.value = fetched.isEmpty
             ? GuardianApprovalsUiState.empty
@@ -238,6 +284,15 @@ class GuardianApprovalsScreen extends HookConsumerWidget {
         );
         if (sure != true) return;
       }
+      if (!await service.isOnline()) {
+        queued.value = {...queued.value, row.requestId: d};
+        if (context.mounted) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(l.gapSavedOffline)));
+        }
+        return;
+      }
       actionBusy.value = row.requestId;
       try {
         final ok = switch (d) {
@@ -245,6 +300,12 @@ class GuardianApprovalsScreen extends HookConsumerWidget {
           _Decision.deny => await service.deny(row.requestId),
           _Decision.revoke => await service.revoke(row.requestId),
         };
+        if (ok) {
+          localDecisions.value = {
+            ...localDecisions.value,
+            row.requestId: DateTime.now(),
+          };
+        }
         if (context.mounted) {
           if (ok) HapticFeedback.lightImpact();
           final msg = ok
@@ -264,7 +325,23 @@ class GuardianApprovalsScreen extends HookConsumerWidget {
       }
     }
 
-    final pendingRows = rows.value.where((r) => r.isPending).toList();
+    void notNow(GuardianGroupJoinRequestRow row) {
+      snoozed.value = {...snoozed.value, row.requestId};
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l.gapNotNowToast),
+          action: SnackBarAction(
+            label: l.gapShowAgain,
+            onPressed: () =>
+                snoozed.value = {...snoozed.value}..remove(row.requestId),
+          ),
+        ),
+      );
+    }
+
+    final pendingRows = rows.value
+        .where((r) => r.isPending && !snoozed.value.contains(r.requestId))
+        .toList();
     final decidedRows = rows.value.where((r) => !r.isPending).toList();
 
     Widget card(GuardianGroupJoinRequestRow row, {required bool pending}) =>
@@ -273,8 +350,17 @@ class GuardianApprovalsScreen extends HookConsumerWidget {
           row: row,
           childName: childOf(row),
           busy: actionBusy.value == row.requestId,
-          onApprove: pending ? () => decide(row, _Decision.approve) : null,
-          onDeny: pending ? () => decide(row, _Decision.deny) : null,
+          queued: queued.value[row.requestId],
+          decidedHere: localDecisions.value[row.requestId],
+          onApprove: pending && !queued.value.containsKey(row.requestId)
+              ? () => decide(row, _Decision.approve)
+              : null,
+          onDeny: pending && !queued.value.containsKey(row.requestId)
+              ? () => decide(row, _Decision.deny)
+              : null,
+          onNotNow: pending && !queued.value.containsKey(row.requestId)
+              ? () => notNow(row)
+              : null,
           onRevoke: !pending && row.isApproved
               ? () => decide(row, _Decision.revoke)
               : null,
@@ -289,6 +375,7 @@ class GuardianApprovalsScreen extends HookConsumerWidget {
             _SectionHeader(title: l.gapReview, count: pendingRows.length),
             SizedBox(height: PanAfricanSpacing.sm.h),
             ...pendingRows.map((r) => card(r, pending: true)),
+            _ApprovingAsFooter(name: guardianName),
           ],
           if (decidedRows.isNotEmpty) ...[
             if (pendingRows.isNotEmpty)
@@ -326,23 +413,23 @@ class GuardianApprovalsScreen extends HookConsumerWidget {
       }
     }
 
-    return Scaffold(
-      backgroundColor: colorScheme.surface,
-      // The title lives in the body (display face, wraps) so it is never
-      // cut off in the app bar at 320dp / 200% / Arabic.
-      appBar: AppBar(),
-      body: ResponsiveSafeArea(
-        child: RefreshIndicator(
-          onRefresh: load,
-          child: ListView(
-            padding: EdgeInsets.symmetric(
-              horizontal: PanAfricanSpacing.lg.w,
-              vertical: PanAfricanSpacing.md.h,
-            ),
-            children: [
-              Semantics(
-                header: true,
-                child: Text(
+    return Theme(
+      data: guarded,
+      child: Scaffold(
+        backgroundColor: colorScheme.surface,
+        // The title lives in the body (display face, wraps) so it is never
+        // cut off in the app bar at 320dp / 200% / Arabic.
+        appBar: AppBar(),
+        body: ResponsiveSafeArea(
+          child: RefreshIndicator(
+            onRefresh: load,
+            child: ListView(
+              padding: EdgeInsets.symmetric(
+                horizontal: PanAfricanSpacing.lg.w,
+                vertical: PanAfricanSpacing.md.h,
+              ),
+              children: [
+                GuardedHeadline(
                   l.gapTitle,
                   key: const ValueKey('gap-title'),
                   style: LingAfriqFonts.displayStyle(
@@ -351,44 +438,77 @@ class GuardianApprovalsScreen extends HookConsumerWidget {
                     color: colorScheme.onSurface,
                   ),
                 ),
-              ),
-              SizedBox(height: PanAfricanSpacing.md.h),
-              if (isOffline.value)
-                Padding(
-                  padding: EdgeInsets.only(bottom: PanAfricanSpacing.md.h),
-                  child: Semantics(
-                    liveRegion: true,
-                    child: Material(
-                      key: const ValueKey('gap-offline'),
-                      color: colorScheme.secondaryContainer,
-                      borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-                      child: ListTile(
-                        leading: Icon(
-                          Icons.cloud_off_outlined,
-                          color: colorScheme.onSecondaryContainer,
+                SizedBox(height: PanAfricanSpacing.md.h),
+                if (isOffline.value)
+                  Padding(
+                    padding: EdgeInsets.only(bottom: PanAfricanSpacing.md.h),
+                    child: Semantics(
+                      liveRegion: true,
+                      child: Material(
+                        key: const ValueKey('gap-offline'),
+                        color: colorScheme.secondaryContainer,
+                        borderRadius: BorderRadius.circular(
+                          PanAfricanRadius.lg,
                         ),
-                        title: Text(
-                          l.gapOffline,
-                          style: PanAfricanTypography.bodyMedium(
-                            context,
-                          ).copyWith(color: colorScheme.onSecondaryContainer),
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.cloud_off_outlined,
+                            color: colorScheme.onSecondaryContainer,
+                          ),
+                          title: Text(
+                            l.gapOffline,
+                            style: PanAfricanTypography.bodyMedium(
+                              context,
+                            ).copyWith(color: colorScheme.onSecondaryContainer),
+                          ),
                         ),
                       ),
                     ),
                   ),
+                AnimatedSwitcher(
+                  duration: reducedMotion
+                      ? Duration.zero
+                      : const Duration(milliseconds: 220),
+                  child: KeyedSubtree(
+                    key: ValueKey(uiState.value),
+                    child: buildContent(),
+                  ),
                 ),
-              AnimatedSwitcher(
-                duration: reducedMotion
-                    ? Duration.zero
-                    : const Duration(milliseconds: 220),
-                child: KeyedSubtree(
-                  key: ValueKey(uiState.value),
-                  child: buildContent(),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// "You're approving as …" (pack recipe step 4), under the pending cards.
+class _ApprovingAsFooter extends StatelessWidget {
+  const _ApprovingAsFooter({this.name});
+  final String? name;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    final scheme = Theme.of(context).colorScheme;
+    return Padding(
+      key: const ValueKey('gap-approving-as'),
+      padding: EdgeInsets.only(bottom: PanAfricanSpacing.sm.h),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(Icons.person_pin_outlined, size: 20, color: scheme.primary),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              name == null ? l.gapApprovingAsYou : l.gapApprovingAs(name!),
+              style: PanAfricanTypography.bodyMedium(
+                context,
+              ).copyWith(color: scheme.onSurfaceVariant),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -641,16 +761,26 @@ class _ApprovalCard extends StatelessWidget {
     required this.row,
     required this.childName,
     required this.busy,
+    this.queued,
+    this.decidedHere,
     this.onApprove,
     this.onDeny,
+    this.onNotNow,
     this.onRevoke,
   });
 
   final GuardianGroupJoinRequestRow row;
   final String childName;
   final bool busy;
+
+  /// A decision saved on this phone while offline, waiting to sync.
+  final _Decision? queued;
+
+  /// When this phone sent the decision (audit row says "this phone").
+  final DateTime? decidedHere;
   final VoidCallback? onApprove;
   final VoidCallback? onDeny;
+  final VoidCallback? onNotNow;
   final VoidCallback? onRevoke;
 
   @override
@@ -700,8 +830,15 @@ class _ApprovalCard extends StatelessWidget {
               key: key,
               onPressed: busy ? null : onTap,
               icon: child,
-              // Scoped for screen readers: "Approve, <group>".
-              label: Text(label, semanticsLabel: '$label, ${row.groupName}'),
+              // Scoped for screen readers: "Approve, <group>". One line,
+              // never broken mid-word: the button gets the full card width.
+              label: Text(
+                label,
+                semanticsLabel: '$label, ${row.groupName}',
+                maxLines: 1,
+                softWrap: false,
+                overflow: TextOverflow.visible,
+              ),
             )
           : OutlinedButton.icon(
               key: key,
@@ -732,6 +869,15 @@ class _ApprovalCard extends StatelessWidget {
           onDeny,
           filled: false,
           key: ValueKey('gap-deny-${row.requestId}'),
+        ),
+      if (onNotNow != null)
+        ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 48),
+          child: TextButton(
+            key: ValueKey('gap-notnow-${row.requestId}'),
+            onPressed: busy ? null : onNotNow,
+            child: Text(l.gapNotNow),
+          ),
         ),
       if (onRevoke != null)
         action(
@@ -825,16 +971,71 @@ class _ApprovalCard extends StatelessWidget {
                 ),
               ),
             ),
+            if (queued != null) ...[
+              SizedBox(height: PanAfricanSpacing.sm.h),
+              Row(
+                key: ValueKey('gap-queued-${row.requestId}'),
+                children: [
+                  Icon(
+                    Icons.cloud_upload_outlined,
+                    size: 18,
+                    color: scheme.primary,
+                  ),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      '${l.gapPendingSync} · ${queued == _Decision.approve
+                          ? l.gapApprove
+                          : queued == _Decision.deny
+                          ? l.gapDeny
+                          : l.gapRevoke}',
+                      style: PanAfricanTypography.bodySmall(context).copyWith(
+                        color: scheme.primary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+            if (!row.isPending && row.decidedAt != null) ...[
+              SizedBox(height: PanAfricanSpacing.sm.h),
+              Row(
+                key: ValueKey('gap-audit-${row.requestId}'),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(Icons.history, size: 18, color: scheme.onSurfaceVariant),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      decidedHere != null
+                          ? l.gapAuditThisPhone(status, watTime(row.decidedAt!))
+                          : l.gapAudit(status, watTime(row.decidedAt!)),
+                      style: PanAfricanTypography.bodySmall(
+                        context,
+                      ).copyWith(color: scheme.onSurfaceVariant),
+                    ),
+                  ),
+                ],
+              ),
+            ],
             if (actions.isNotEmpty) ...[
               SizedBox(height: PanAfricanSpacing.md.h),
+              if (onApprove != null) ...[
+                actions.first,
+                const SizedBox(height: 8),
+              ],
               if (stack)
-                ...actions.expand((a) => [a, const SizedBox(height: 8)])
+                ...actions
+                    .skip(onApprove != null ? 1 : 0)
+                    .expand((a) => [a, const SizedBox(height: 8)])
               else
                 Row(
                   children: [
-                    for (var i = 0; i < actions.length; i++) ...[
+                    for (final (i, a)
+                        in actions.skip(onApprove != null ? 1 : 0).indexed) ...[
                       if (i > 0) const SizedBox(width: 12),
-                      Expanded(child: actions[i]),
+                      Expanded(child: a),
                     ],
                   ],
                 ),

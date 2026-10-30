@@ -3918,4 +3918,110 @@ class AppLocalizationsFr extends AppLocalizations {
   String gcirLastActivity(String date) {
     return 'Dernière activité $date';
   }
+
+  @override
+  String get gfamRegimeNdpa =>
+      'Loi nigériane sur la protection des données (NDPA 2023)';
+
+  @override
+  String get gfamRegimeOther => 'Règles de confidentialité pour enfants';
+
+  @override
+  String get gfamMembersTitle => 'Votre famille';
+
+  @override
+  String get gfamYou => 'Vous';
+
+  @override
+  String get gfamYouInitial => 'V';
+
+  @override
+  String get gfamRoleGuardian => 'Responsable';
+
+  @override
+  String get gfamRoleLearner => 'Apprenant';
+
+  @override
+  String gfamNeedsYou(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count demandes vous attendent',
+      one: '1 demande vous attend',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get gfamNeedsYouAction => 'Examiner';
+
+  @override
+  String get gapNotNow => 'Plus tard';
+
+  @override
+  String get gapNotNowToast =>
+      'Gardé pour plus tard. La demande reste dans votre liste.';
+
+  @override
+  String get gapShowAgain => 'Afficher';
+
+  @override
+  String gapApprovingAs(String name) {
+    return 'Vous approuvez en tant que $name (parent)';
+  }
+
+  @override
+  String get gapApprovingAsYou =>
+      'Vous approuvez en tant que parent de ce compte';
+
+  @override
+  String gapAudit(String status, String time) {
+    return '$status par vous · $time';
+  }
+
+  @override
+  String gapAuditThisPhone(String status, String time) {
+    return '$status par vous · $time · ce téléphone';
+  }
+
+  @override
+  String get gapPendingSync => 'En attente de synchronisation';
+
+  @override
+  String get gapSavedOffline =>
+      'Enregistré hors ligne. Envoi dès votre retour en ligne.';
+
+  @override
+  String gdmSummary(int count, int fresh) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count contacts',
+      one: '1 contact',
+    );
+    return '$_temp0 · $fresh nouveaux cette semaine';
+  }
+
+  @override
+  String get gdmFilterAll => 'Tous';
+
+  @override
+  String get gdmFilterNew => 'Nouveau';
+
+  @override
+  String get gdmFilterStopped => 'Arrêtés';
+
+  @override
+  String get gdmFilterMedia => 'Médias en attente';
+
+  @override
+  String get gdmFilterEmpty => 'Aucun contact ne correspond à ce filtre.';
+
+  @override
+  String gdmStoppedToast(String name) {
+    return '$name ne peut plus écrire à votre apprenant';
+  }
+
+  @override
+  String get gdmUndo => 'Annuler';
 }

@@ -6683,6 +6683,162 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Last activity {date}'**
   String gcirLastActivity(String date);
+
+  /// gfamRegimeNdpa
+  ///
+  /// In en, this message translates to:
+  /// **'Nigeria data protection law (NDPA 2023)'**
+  String get gfamRegimeNdpa;
+
+  /// gfamRegimeOther
+  ///
+  /// In en, this message translates to:
+  /// **'Child privacy rules'**
+  String get gfamRegimeOther;
+
+  /// gfamMembersTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Your family'**
+  String get gfamMembersTitle;
+
+  /// gfamYou
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get gfamYou;
+
+  /// gfamYouInitial
+  ///
+  /// In en, this message translates to:
+  /// **'Y'**
+  String get gfamYouInitial;
+
+  /// gfamRoleGuardian
+  ///
+  /// In en, this message translates to:
+  /// **'Guardian'**
+  String get gfamRoleGuardian;
+
+  /// gfamRoleLearner
+  ///
+  /// In en, this message translates to:
+  /// **'Learner'**
+  String get gfamRoleLearner;
+
+  /// gfamNeedsYou
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 request needs you} other{{count} requests need you}}'**
+  String gfamNeedsYou(int count);
+
+  /// gfamNeedsYouAction
+  ///
+  /// In en, this message translates to:
+  /// **'Review'**
+  String get gfamNeedsYouAction;
+
+  /// gapNotNow
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get gapNotNow;
+
+  /// gapNotNowToast
+  ///
+  /// In en, this message translates to:
+  /// **'Saved for later. It stays in your list.'**
+  String get gapNotNowToast;
+
+  /// gapShowAgain
+  ///
+  /// In en, this message translates to:
+  /// **'Show'**
+  String get gapShowAgain;
+
+  /// gapApprovingAs
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re approving as {name} (Parent)'**
+  String gapApprovingAs(String name);
+
+  /// gapApprovingAsYou
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re approving as the parent on this account'**
+  String get gapApprovingAsYou;
+
+  /// gapAudit
+  ///
+  /// In en, this message translates to:
+  /// **'{status} by you · {time}'**
+  String gapAudit(String status, String time);
+
+  /// gapAuditThisPhone
+  ///
+  /// In en, this message translates to:
+  /// **'{status} by you · {time} · this phone'**
+  String gapAuditThisPhone(String status, String time);
+
+  /// gapPendingSync
+  ///
+  /// In en, this message translates to:
+  /// **'Pending sync'**
+  String get gapPendingSync;
+
+  /// gapSavedOffline
+  ///
+  /// In en, this message translates to:
+  /// **'Saved offline. We\'ll send it when you\'re back online.'**
+  String get gapSavedOffline;
+
+  /// gdmSummary
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 contact} other{{count} contacts}} · {fresh} new this week'**
+  String gdmSummary(int count, int fresh);
+
+  /// gdmFilterAll
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get gdmFilterAll;
+
+  /// gdmFilterNew
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get gdmFilterNew;
+
+  /// gdmFilterStopped
+  ///
+  /// In en, this message translates to:
+  /// **'Stopped'**
+  String get gdmFilterStopped;
+
+  /// gdmFilterMedia
+  ///
+  /// In en, this message translates to:
+  /// **'Media waiting'**
+  String get gdmFilterMedia;
+
+  /// gdmFilterEmpty
+  ///
+  /// In en, this message translates to:
+  /// **'No contacts match this filter.'**
+  String get gdmFilterEmpty;
+
+  /// gdmStoppedToast
+  ///
+  /// In en, this message translates to:
+  /// **'{name} can\'t message your learner now'**
+  String gdmStoppedToast(String name);
+
+  /// gdmUndo
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get gdmUndo;
 }
 
 class _AppLocalizationsDelegate
