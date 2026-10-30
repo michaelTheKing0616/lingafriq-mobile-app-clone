@@ -3283,4 +3283,223 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get gcErrorServerBody =>
       'Un problème est survenu de notre côté. Rien de ce que vous avez écrit n\'est perdu. Réessayez dans un instant.';
+
+  @override
+  String get gfamToolsTitle => 'Outils famille';
+
+  @override
+  String get gfamToolsApprovals => 'Approbations de groupes';
+
+  @override
+  String get gfamToolsApprovalsSub => 'Cercles et classes en attente';
+
+  @override
+  String get gfamToolsGuide => 'Comment fonctionnent les messages';
+
+  @override
+  String get gfamToolsGuideSub => 'Ce qui est vérifié et qui peut écrire';
+
+  @override
+  String get gfamToolsCircles => 'Cercles';
+
+  @override
+  String get gfamToolsCirclesSub => 'Vos cercles d’étude';
+
+  @override
+  String gfamWhoMessages(int id) {
+    return 'Qui écrit à l’apprenant n°$id';
+  }
+
+  @override
+  String get gdmTitle => 'Qui écrit à votre apprenant';
+
+  @override
+  String get gdmIntro =>
+      'Vous voyez qui, quand et les signalements. Jamais le texte des messages.';
+
+  @override
+  String get gdmEmptyTitle => 'Aucun message privé pour l’instant';
+
+  @override
+  String get gdmEmptyBody =>
+      'Seuls les enseignants et les membres des groupes approuvés peuvent écrire à votre apprenant.';
+
+  @override
+  String get gdmError => 'Impossible de charger les messages. Réessayez.';
+
+  @override
+  String get gdmRetry => 'Réessayer';
+
+  @override
+  String get gdmRoleTeacher => 'Enseignant';
+
+  @override
+  String get gdmRoleClassmate => 'Camarade';
+
+  @override
+  String get gdmRoleContact => 'Contact';
+
+  @override
+  String gdmLastActive(String when) {
+    return 'Dernier message $when';
+  }
+
+  @override
+  String gdmMessages(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count messages',
+      one: '1 message',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String gdmReports(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count signalements',
+      one: '1 signalement',
+      zero: 'Aucun signalement',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String gdmBlocked(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count messages bloqués par les contrôles',
+      one: '1 message bloqué par les contrôles',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get gdmStop => 'Bloquer les messages';
+
+  @override
+  String get gdmAllow => 'Autoriser à nouveau';
+
+  @override
+  String get gdmStopped => 'Messages bloqués';
+
+  @override
+  String gdmStopConfirmTitle(String name) {
+    return 'Bloquer les messages de $name ?';
+  }
+
+  @override
+  String get gdmStopConfirmBody =>
+      'Cette personne ne pourra plus écrire à votre apprenant, et inversement. Vous pourrez réautoriser plus tard.';
+
+  @override
+  String get gdmCancel => 'Annuler';
+
+  @override
+  String get gdmActionFailed => 'Échec. Réessayez.';
+
+  @override
+  String get gdmUnknownName => 'Utilisateur inconnu';
+
+  @override
+  String get gccJoinButton => 'Saisir un code de classe';
+
+  @override
+  String get gccTitle => 'Rejoindre une classe';
+
+  @override
+  String get gccHint => 'Demandez le code à votre enseignant.';
+
+  @override
+  String get gccLabel => 'Code de classe';
+
+  @override
+  String get gccSubmit => 'Rejoindre';
+
+  @override
+  String get gccJoined => 'Vous avez rejoint la classe.';
+
+  @override
+  String get gccWaitingTitle => 'En attente de votre tuteur';
+
+  @override
+  String get gccWaitingBody =>
+      'Nous avons demandé à votre tuteur d’approuver cette classe. Vous pourrez la rejoindre après son accord.';
+
+  @override
+  String get gccNeedLink =>
+      'Demandez d’abord à un parent ou tuteur de se lier à votre compte dans l’espace Famille.';
+
+  @override
+  String get gccNeedAge =>
+      'Confirmez votre âge dans les paramètres avant de rejoindre une classe.';
+
+  @override
+  String get gccNotFound =>
+      'Aucune classe avec ce code. Vérifiez avec votre enseignant.';
+
+  @override
+  String get gccAlready => 'Vous êtes déjà dans cette classe.';
+
+  @override
+  String get gccError => 'Impossible de rejoindre pour le moment. Réessayez.';
+
+  @override
+  String get gccEmpty => 'Saisissez d’abord le code.';
+
+  @override
+  String get gccDone => 'Terminé';
+
+  @override
+  String get gtpTitle => 'Demandes des élèves';
+
+  @override
+  String get gtpOpen => 'Demandes des élèves';
+
+  @override
+  String get gtpWaitingSection => 'En attente d’un tuteur';
+
+  @override
+  String get gtpWaitingHelp =>
+      'Ces élèves ont utilisé votre code. Leur tuteur décide ; vous n’avez rien à faire.';
+
+  @override
+  String get gtpWaitingEmpty => 'Personne n’attend.';
+
+  @override
+  String get gtpSchoolSection => 'Comptes scolaires';
+
+  @override
+  String get gtpSchoolHelp =>
+      'Les messages de l’enseignant sont désactivés jusqu’à activation pour chaque élève. Vous seul pouvez leur écrire, et chaque message est vérifié.';
+
+  @override
+  String get gtpSchoolEmpty => 'Aucun compte scolaire dans cette classe.';
+
+  @override
+  String get gtpTeacherDm => 'Messages de l’enseignant';
+
+  @override
+  String get gtpPendingConsent => 'Consentement de l’école en attente';
+
+  @override
+  String gtpStudent(int id) {
+    return 'Élève n°$id';
+  }
+
+  @override
+  String gtpSince(String when) {
+    return 'Demandé $when';
+  }
+
+  @override
+  String get gtpError => 'Impossible de charger les demandes. Réessayez.';
+
+  @override
+  String get gtpNotTeacher =>
+      'Seul l’enseignant de cette classe peut voir les demandes.';
 }

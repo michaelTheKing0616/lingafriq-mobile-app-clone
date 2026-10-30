@@ -5669,6 +5669,354 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Something went wrong on our side. Nothing you wrote was lost. Try again in a moment.'**
   String get gcErrorServerBody;
+
+  /// gfamToolsTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Family tools'**
+  String get gfamToolsTitle;
+
+  /// gfamToolsApprovals
+  ///
+  /// In en, this message translates to:
+  /// **'Group approvals'**
+  String get gfamToolsApprovals;
+
+  /// gfamToolsApprovalsSub
+  ///
+  /// In en, this message translates to:
+  /// **'Circles and classrooms waiting for you'**
+  String get gfamToolsApprovalsSub;
+
+  /// gfamToolsGuide
+  ///
+  /// In en, this message translates to:
+  /// **'How messaging works'**
+  String get gfamToolsGuide;
+
+  /// gfamToolsGuideSub
+  ///
+  /// In en, this message translates to:
+  /// **'What is checked, and who can message'**
+  String get gfamToolsGuideSub;
+
+  /// gfamToolsCircles
+  ///
+  /// In en, this message translates to:
+  /// **'Circles'**
+  String get gfamToolsCircles;
+
+  /// gfamToolsCirclesSub
+  ///
+  /// In en, this message translates to:
+  /// **'Study circles you belong to'**
+  String get gfamToolsCirclesSub;
+
+  /// gfamWhoMessages
+  ///
+  /// In en, this message translates to:
+  /// **'Who messages learner #{id}'**
+  String gfamWhoMessages(int id);
+
+  /// gdmTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Who is messaging your learner'**
+  String get gdmTitle;
+
+  /// gdmIntro
+  ///
+  /// In en, this message translates to:
+  /// **'You see who, when and any reports. You never see message text.'**
+  String get gdmIntro;
+
+  /// gdmEmptyTitle
+  ///
+  /// In en, this message translates to:
+  /// **'No direct messages yet'**
+  String get gdmEmptyTitle;
+
+  /// gdmEmptyBody
+  ///
+  /// In en, this message translates to:
+  /// **'Only teachers and members of groups you approved can message your learner.'**
+  String get gdmEmptyBody;
+
+  /// gdmError
+  ///
+  /// In en, this message translates to:
+  /// **'We could not load messages. Try again.'**
+  String get gdmError;
+
+  /// gdmRetry
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get gdmRetry;
+
+  /// gdmRoleTeacher
+  ///
+  /// In en, this message translates to:
+  /// **'Teacher'**
+  String get gdmRoleTeacher;
+
+  /// gdmRoleClassmate
+  ///
+  /// In en, this message translates to:
+  /// **'Classmate'**
+  String get gdmRoleClassmate;
+
+  /// gdmRoleContact
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get gdmRoleContact;
+
+  /// gdmLastActive
+  ///
+  /// In en, this message translates to:
+  /// **'Last message {when}'**
+  String gdmLastActive(String when);
+
+  /// gdmMessages
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 message} other{{count} messages}}'**
+  String gdmMessages(int count);
+
+  /// gdmReports
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No reports} =1{1 report} other{{count} reports}}'**
+  String gdmReports(int count);
+
+  /// gdmBlocked
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 message stopped by safety checks} other{{count} messages stopped by safety checks}}'**
+  String gdmBlocked(int count);
+
+  /// gdmStop
+  ///
+  /// In en, this message translates to:
+  /// **'Stop messages'**
+  String get gdmStop;
+
+  /// gdmAllow
+  ///
+  /// In en, this message translates to:
+  /// **'Allow again'**
+  String get gdmAllow;
+
+  /// gdmStopped
+  ///
+  /// In en, this message translates to:
+  /// **'Messages stopped'**
+  String get gdmStopped;
+
+  /// gdmStopConfirmTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Stop messages from {name}?'**
+  String gdmStopConfirmTitle(String name);
+
+  /// gdmStopConfirmBody
+  ///
+  /// In en, this message translates to:
+  /// **'They will not be able to message your learner, and your learner cannot message them. You can allow it again later.'**
+  String get gdmStopConfirmBody;
+
+  /// gdmCancel
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get gdmCancel;
+
+  /// gdmActionFailed
+  ///
+  /// In en, this message translates to:
+  /// **'That did not work. Try again.'**
+  String get gdmActionFailed;
+
+  /// gdmUnknownName
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown user'**
+  String get gdmUnknownName;
+
+  /// gccJoinButton
+  ///
+  /// In en, this message translates to:
+  /// **'Enter class code'**
+  String get gccJoinButton;
+
+  /// gccTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Join a class'**
+  String get gccTitle;
+
+  /// gccHint
+  ///
+  /// In en, this message translates to:
+  /// **'Ask your teacher for the class code.'**
+  String get gccHint;
+
+  /// gccLabel
+  ///
+  /// In en, this message translates to:
+  /// **'Class code'**
+  String get gccLabel;
+
+  /// gccSubmit
+  ///
+  /// In en, this message translates to:
+  /// **'Join'**
+  String get gccSubmit;
+
+  /// gccJoined
+  ///
+  /// In en, this message translates to:
+  /// **'You joined the class.'**
+  String get gccJoined;
+
+  /// gccWaitingTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for your guardian'**
+  String get gccWaitingTitle;
+
+  /// gccWaitingBody
+  ///
+  /// In en, this message translates to:
+  /// **'We asked your guardian to approve this class. You can join once they say yes.'**
+  String get gccWaitingBody;
+
+  /// gccNeedLink
+  ///
+  /// In en, this message translates to:
+  /// **'Ask a parent or guardian to link to your account in Family hub first.'**
+  String get gccNeedLink;
+
+  /// gccNeedAge
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm your age in settings before joining a class.'**
+  String get gccNeedAge;
+
+  /// gccNotFound
+  ///
+  /// In en, this message translates to:
+  /// **'No class has that code. Check it with your teacher.'**
+  String get gccNotFound;
+
+  /// gccAlready
+  ///
+  /// In en, this message translates to:
+  /// **'You are already in this class.'**
+  String get gccAlready;
+
+  /// gccError
+  ///
+  /// In en, this message translates to:
+  /// **'Could not join right now. Try again.'**
+  String get gccError;
+
+  /// gccEmpty
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the code first.'**
+  String get gccEmpty;
+
+  /// gccDone
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get gccDone;
+
+  /// gtpTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Student requests'**
+  String get gtpTitle;
+
+  /// gtpOpen
+  ///
+  /// In en, this message translates to:
+  /// **'Student requests'**
+  String get gtpOpen;
+
+  /// gtpWaitingSection
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for a guardian'**
+  String get gtpWaitingSection;
+
+  /// gtpWaitingHelp
+  ///
+  /// In en, this message translates to:
+  /// **'These students used your class code. Their guardian decides; you do not need to do anything.'**
+  String get gtpWaitingHelp;
+
+  /// gtpWaitingEmpty
+  ///
+  /// In en, this message translates to:
+  /// **'No one is waiting.'**
+  String get gtpWaitingEmpty;
+
+  /// gtpSchoolSection
+  ///
+  /// In en, this message translates to:
+  /// **'School accounts'**
+  String get gtpSchoolSection;
+
+  /// gtpSchoolHelp
+  ///
+  /// In en, this message translates to:
+  /// **'Teacher messages are off until you turn them on for each student. Only you can message them, and every message is checked.'**
+  String get gtpSchoolHelp;
+
+  /// gtpSchoolEmpty
+  ///
+  /// In en, this message translates to:
+  /// **'No school accounts in this class.'**
+  String get gtpSchoolEmpty;
+
+  /// gtpTeacherDm
+  ///
+  /// In en, this message translates to:
+  /// **'Teacher messages'**
+  String get gtpTeacherDm;
+
+  /// gtpPendingConsent
+  ///
+  /// In en, this message translates to:
+  /// **'School consent pending'**
+  String get gtpPendingConsent;
+
+  /// gtpStudent
+  ///
+  /// In en, this message translates to:
+  /// **'Student #{id}'**
+  String gtpStudent(int id);
+
+  /// gtpSince
+  ///
+  /// In en, this message translates to:
+  /// **'Asked {when}'**
+  String gtpSince(String when);
+
+  /// gtpError
+  ///
+  /// In en, this message translates to:
+  /// **'We could not load requests. Try again.'**
+  String get gtpError;
+
+  /// gtpNotTeacher
+  ///
+  /// In en, this message translates to:
+  /// **'Only this class\'s teacher can see requests.'**
+  String get gtpNotTeacher;
 }
 
 class _AppLocalizationsDelegate

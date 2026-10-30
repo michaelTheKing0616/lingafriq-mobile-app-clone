@@ -6,6 +6,8 @@ import '../../providers/gamification_services_provider.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../chat/live_classroom_screen_material3.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
+import 'class_code_join_sheet.dart';
 
 /// Lists **classroom tribes** from `GET /api/tribes?include_classrooms=true` (production data).
 class ClassroomLobbyScreen extends ConsumerStatefulWidget {
@@ -90,6 +92,19 @@ class _ClassroomLobbyScreenState extends ConsumerState<ClassroomLobbyScreen> {
                         'Classrooms from your tribe catalog (server-backed)',
                         style: ModernGriotTypography.bodyMedium(
                           context: context,
+                        ),
+                      ),
+                      SizedBox(height: 12.h),
+                      Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(minHeight: 48),
+                          child: FilledButton.tonalIcon(
+                            key: const ValueKey('lobby-enter-class-code'),
+                            onPressed: () => ClassCodeJoinSheet.show(context, onJoined: _load),
+                            icon: const Icon(Icons.vpn_key_outlined),
+                            label: Text(AppLocalizations.of(context)!.gccJoinButton),
+                          ),
                         ),
                       ),
                       SizedBox(height: 16.h),

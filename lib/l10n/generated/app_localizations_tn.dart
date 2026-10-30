@@ -3246,4 +3246,222 @@ class AppLocalizationsTn extends AppLocalizations {
   @override
   String get gcErrorServerBody =>
       'Something went wrong on our side. Nothing you wrote was lost. Try again in a moment.';
+
+  @override
+  String get gfamToolsTitle => 'Family tools';
+
+  @override
+  String get gfamToolsApprovals => 'Group approvals';
+
+  @override
+  String get gfamToolsApprovalsSub => 'Circles and classrooms waiting for you';
+
+  @override
+  String get gfamToolsGuide => 'How messaging works';
+
+  @override
+  String get gfamToolsGuideSub => 'What is checked, and who can message';
+
+  @override
+  String get gfamToolsCircles => 'Circles';
+
+  @override
+  String get gfamToolsCirclesSub => 'Study circles you belong to';
+
+  @override
+  String gfamWhoMessages(int id) {
+    return 'Who messages learner #$id';
+  }
+
+  @override
+  String get gdmTitle => 'Who is messaging your learner';
+
+  @override
+  String get gdmIntro =>
+      'You see who, when and any reports. You never see message text.';
+
+  @override
+  String get gdmEmptyTitle => 'No direct messages yet';
+
+  @override
+  String get gdmEmptyBody =>
+      'Only teachers and members of groups you approved can message your learner.';
+
+  @override
+  String get gdmError => 'We could not load messages. Try again.';
+
+  @override
+  String get gdmRetry => 'Try again';
+
+  @override
+  String get gdmRoleTeacher => 'Teacher';
+
+  @override
+  String get gdmRoleClassmate => 'Classmate';
+
+  @override
+  String get gdmRoleContact => 'Contact';
+
+  @override
+  String gdmLastActive(String when) {
+    return 'Last message $when';
+  }
+
+  @override
+  String gdmMessages(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count messages',
+      one: '1 message',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String gdmReports(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count reports',
+      one: '1 report',
+      zero: 'No reports',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String gdmBlocked(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count messages stopped by safety checks',
+      one: '1 message stopped by safety checks',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get gdmStop => 'Stop messages';
+
+  @override
+  String get gdmAllow => 'Allow again';
+
+  @override
+  String get gdmStopped => 'Messages stopped';
+
+  @override
+  String gdmStopConfirmTitle(String name) {
+    return 'Stop messages from $name?';
+  }
+
+  @override
+  String get gdmStopConfirmBody =>
+      'They will not be able to message your learner, and your learner cannot message them. You can allow it again later.';
+
+  @override
+  String get gdmCancel => 'Cancel';
+
+  @override
+  String get gdmActionFailed => 'That did not work. Try again.';
+
+  @override
+  String get gdmUnknownName => 'Unknown user';
+
+  @override
+  String get gccJoinButton => 'Enter class code';
+
+  @override
+  String get gccTitle => 'Join a class';
+
+  @override
+  String get gccHint => 'Ask your teacher for the class code.';
+
+  @override
+  String get gccLabel => 'Class code';
+
+  @override
+  String get gccSubmit => 'Join';
+
+  @override
+  String get gccJoined => 'You joined the class.';
+
+  @override
+  String get gccWaitingTitle => 'Waiting for your guardian';
+
+  @override
+  String get gccWaitingBody =>
+      'We asked your guardian to approve this class. You can join once they say yes.';
+
+  @override
+  String get gccNeedLink =>
+      'Ask a parent or guardian to link to your account in Family hub first.';
+
+  @override
+  String get gccNeedAge =>
+      'Confirm your age in settings before joining a class.';
+
+  @override
+  String get gccNotFound =>
+      'No class has that code. Check it with your teacher.';
+
+  @override
+  String get gccAlready => 'You are already in this class.';
+
+  @override
+  String get gccError => 'Could not join right now. Try again.';
+
+  @override
+  String get gccEmpty => 'Enter the code first.';
+
+  @override
+  String get gccDone => 'Done';
+
+  @override
+  String get gtpTitle => 'Student requests';
+
+  @override
+  String get gtpOpen => 'Student requests';
+
+  @override
+  String get gtpWaitingSection => 'Waiting for a guardian';
+
+  @override
+  String get gtpWaitingHelp =>
+      'These students used your class code. Their guardian decides; you do not need to do anything.';
+
+  @override
+  String get gtpWaitingEmpty => 'No one is waiting.';
+
+  @override
+  String get gtpSchoolSection => 'School accounts';
+
+  @override
+  String get gtpSchoolHelp =>
+      'Teacher messages are off until you turn them on for each student. Only you can message them, and every message is checked.';
+
+  @override
+  String get gtpSchoolEmpty => 'No school accounts in this class.';
+
+  @override
+  String get gtpTeacherDm => 'Teacher messages';
+
+  @override
+  String get gtpPendingConsent => 'School consent pending';
+
+  @override
+  String gtpStudent(int id) {
+    return 'Student #$id';
+  }
+
+  @override
+  String gtpSince(String when) {
+    return 'Asked $when';
+  }
+
+  @override
+  String get gtpError => 'We could not load requests. Try again.';
+
+  @override
+  String get gtpNotTeacher => 'Only this class\'s teacher can see requests.';
 }

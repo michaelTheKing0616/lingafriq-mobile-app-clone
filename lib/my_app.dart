@@ -75,6 +75,12 @@ import 'package:lingafriq/screens/home_screen.dart';
 import 'screens/chat/call_history_screen.dart';
 import 'screens/chat/live_classroom_screen_material3.dart';
 import 'screens/classroom/classroom_lobby_screen.dart';
+import 'screens/classroom/classroom_student_requests_screen.dart';
+import 'screens/guardian/approvals_screen.dart';
+import 'screens/guardian/child_messages_screen.dart';
+import 'screens/guardian/guardian_link_screen.dart';
+import 'screens/guardian/messaging_explainer_screen.dart';
+import 'screens/village/circles_screen.dart';
 import 'screens/classroom/classroom_notes_screen.dart';
 import 'screens/classroom/classroom_roster_screen.dart';
 import 'screens/classroom/classroom_assignments_screen.dart';
@@ -378,6 +384,23 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
       );
     },
     'classroom-lobby': (_) => const ClassroomLobbyScreen(),
+    'family-hub': (_) => const GuardianLinkScreen(),
+    'guardian-approvals': (_) => const GuardianApprovalsScreen(),
+    'guardian-messaging-guide': (_) => const GuardianMessagingExplainerScreen(),
+    'village-circles': (_) => const CirclesScreen(),
+    'guardian-child-messages': (_) {
+      final args = settings.arguments;
+      final id = args is Map ? int.tryParse('${args['childUserId']}') : null;
+      if (id == null) return const GuardianLinkScreen();
+      return GuardianChildMessagesScreen(childUserId: id);
+    },
+    'classroom-student-requests-v2': (ctx) {
+      final p = ClassroomV2RouteArgs.parse(settings.arguments);
+      if (p.tribeId == null) {
+        return ClassroomV2RouteArgs.missingTribeIdScaffold(ctx, '/classroom-student-requests-v2');
+      }
+      return ClassroomStudentRequestsScreen(tribeId: p.tribeId!, tribeName: p.tribeName);
+    },
     'classroom-notes': (_) {
       final args = settings.arguments as Map<String, dynamic>?;
       return ClassroomNotesScreen(

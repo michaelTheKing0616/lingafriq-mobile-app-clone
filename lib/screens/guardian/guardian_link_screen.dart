@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/screens/guardian/consent_screen.dart';
+import 'package:lingafriq/screens/guardian/family_tools_section.dart';
 import 'package:lingafriq/services/guardian_link_service.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
@@ -413,6 +414,13 @@ class GuardianLinkScreen extends HookConsumerWidget {
                 transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child),
                 child: showChildInvite.value ? childInviteSection : guardianSection,
               ),
+              if (!showChildInvite.value)
+                FamilyToolsSection(
+                  activeChildIds: [
+                    for (final link in links.value)
+                      if (link.status == 'active') link.childUserId,
+                  ],
+                ),
             ],
           ),
         ),

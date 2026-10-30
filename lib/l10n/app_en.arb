@@ -4320,5 +4320,277 @@
   "gcErrorServerBody": "Something went wrong on our side. Nothing you wrote was lost. Try again in a moment.",
   "@gcErrorServerBody": {
     "description": "gcErrorServerBody"
+  },
+  "gfamToolsTitle": "Family tools",
+  "@gfamToolsTitle": {
+    "description": "gfamToolsTitle"
+  },
+  "gfamToolsApprovals": "Group approvals",
+  "@gfamToolsApprovals": {
+    "description": "gfamToolsApprovals"
+  },
+  "gfamToolsApprovalsSub": "Circles and classrooms waiting for you",
+  "@gfamToolsApprovalsSub": {
+    "description": "gfamToolsApprovalsSub"
+  },
+  "gfamToolsGuide": "How messaging works",
+  "@gfamToolsGuide": {
+    "description": "gfamToolsGuide"
+  },
+  "gfamToolsGuideSub": "What is checked, and who can message",
+  "@gfamToolsGuideSub": {
+    "description": "gfamToolsGuideSub"
+  },
+  "gfamToolsCircles": "Circles",
+  "@gfamToolsCircles": {
+    "description": "gfamToolsCircles"
+  },
+  "gfamToolsCirclesSub": "Study circles you belong to",
+  "@gfamToolsCirclesSub": {
+    "description": "gfamToolsCirclesSub"
+  },
+  "gfamWhoMessages": "Who messages learner #{id}",
+  "@gfamWhoMessages": {
+    "description": "gfamWhoMessages",
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
+  "gdmTitle": "Who is messaging your learner",
+  "@gdmTitle": {
+    "description": "gdmTitle"
+  },
+  "gdmIntro": "You see who, when and any reports. You never see message text.",
+  "@gdmIntro": {
+    "description": "gdmIntro"
+  },
+  "gdmEmptyTitle": "No direct messages yet",
+  "@gdmEmptyTitle": {
+    "description": "gdmEmptyTitle"
+  },
+  "gdmEmptyBody": "Only teachers and members of groups you approved can message your learner.",
+  "@gdmEmptyBody": {
+    "description": "gdmEmptyBody"
+  },
+  "gdmError": "We could not load messages. Try again.",
+  "@gdmError": {
+    "description": "gdmError"
+  },
+  "gdmRetry": "Try again",
+  "@gdmRetry": {
+    "description": "gdmRetry"
+  },
+  "gdmRoleTeacher": "Teacher",
+  "@gdmRoleTeacher": {
+    "description": "gdmRoleTeacher"
+  },
+  "gdmRoleClassmate": "Classmate",
+  "@gdmRoleClassmate": {
+    "description": "gdmRoleClassmate"
+  },
+  "gdmRoleContact": "Contact",
+  "@gdmRoleContact": {
+    "description": "gdmRoleContact"
+  },
+  "gdmLastActive": "Last message {when}",
+  "@gdmLastActive": {
+    "description": "gdmLastActive",
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "gdmMessages": "{count, plural, =1{1 message} other{{count} messages}}",
+  "@gdmMessages": {
+    "description": "gdmMessages",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gdmReports": "{count, plural, =0{No reports} =1{1 report} other{{count} reports}}",
+  "@gdmReports": {
+    "description": "gdmReports",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gdmBlocked": "{count, plural, =1{1 message stopped by safety checks} other{{count} messages stopped by safety checks}}",
+  "@gdmBlocked": {
+    "description": "gdmBlocked",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gdmStop": "Stop messages",
+  "@gdmStop": {
+    "description": "gdmStop"
+  },
+  "gdmAllow": "Allow again",
+  "@gdmAllow": {
+    "description": "gdmAllow"
+  },
+  "gdmStopped": "Messages stopped",
+  "@gdmStopped": {
+    "description": "gdmStopped"
+  },
+  "gdmStopConfirmTitle": "Stop messages from {name}?",
+  "@gdmStopConfirmTitle": {
+    "description": "gdmStopConfirmTitle",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "gdmStopConfirmBody": "They will not be able to message your learner, and your learner cannot message them. You can allow it again later.",
+  "@gdmStopConfirmBody": {
+    "description": "gdmStopConfirmBody"
+  },
+  "gdmCancel": "Cancel",
+  "@gdmCancel": {
+    "description": "gdmCancel"
+  },
+  "gdmActionFailed": "That did not work. Try again.",
+  "@gdmActionFailed": {
+    "description": "gdmActionFailed"
+  },
+  "gdmUnknownName": "Unknown user",
+  "@gdmUnknownName": {
+    "description": "gdmUnknownName"
+  },
+  "gccJoinButton": "Enter class code",
+  "@gccJoinButton": {
+    "description": "gccJoinButton"
+  },
+  "gccTitle": "Join a class",
+  "@gccTitle": {
+    "description": "gccTitle"
+  },
+  "gccHint": "Ask your teacher for the class code.",
+  "@gccHint": {
+    "description": "gccHint"
+  },
+  "gccLabel": "Class code",
+  "@gccLabel": {
+    "description": "gccLabel"
+  },
+  "gccSubmit": "Join",
+  "@gccSubmit": {
+    "description": "gccSubmit"
+  },
+  "gccJoined": "You joined the class.",
+  "@gccJoined": {
+    "description": "gccJoined"
+  },
+  "gccWaitingTitle": "Waiting for your guardian",
+  "@gccWaitingTitle": {
+    "description": "gccWaitingTitle"
+  },
+  "gccWaitingBody": "We asked your guardian to approve this class. You can join once they say yes.",
+  "@gccWaitingBody": {
+    "description": "gccWaitingBody"
+  },
+  "gccNeedLink": "Ask a parent or guardian to link to your account in Family hub first.",
+  "@gccNeedLink": {
+    "description": "gccNeedLink"
+  },
+  "gccNeedAge": "Confirm your age in settings before joining a class.",
+  "@gccNeedAge": {
+    "description": "gccNeedAge"
+  },
+  "gccNotFound": "No class has that code. Check it with your teacher.",
+  "@gccNotFound": {
+    "description": "gccNotFound"
+  },
+  "gccAlready": "You are already in this class.",
+  "@gccAlready": {
+    "description": "gccAlready"
+  },
+  "gccError": "Could not join right now. Try again.",
+  "@gccError": {
+    "description": "gccError"
+  },
+  "gccEmpty": "Enter the code first.",
+  "@gccEmpty": {
+    "description": "gccEmpty"
+  },
+  "gccDone": "Done",
+  "@gccDone": {
+    "description": "gccDone"
+  },
+  "gtpTitle": "Student requests",
+  "@gtpTitle": {
+    "description": "gtpTitle"
+  },
+  "gtpOpen": "Student requests",
+  "@gtpOpen": {
+    "description": "gtpOpen"
+  },
+  "gtpWaitingSection": "Waiting for a guardian",
+  "@gtpWaitingSection": {
+    "description": "gtpWaitingSection"
+  },
+  "gtpWaitingHelp": "These students used your class code. Their guardian decides; you do not need to do anything.",
+  "@gtpWaitingHelp": {
+    "description": "gtpWaitingHelp"
+  },
+  "gtpWaitingEmpty": "No one is waiting.",
+  "@gtpWaitingEmpty": {
+    "description": "gtpWaitingEmpty"
+  },
+  "gtpSchoolSection": "School accounts",
+  "@gtpSchoolSection": {
+    "description": "gtpSchoolSection"
+  },
+  "gtpSchoolHelp": "Teacher messages are off until you turn them on for each student. Only you can message them, and every message is checked.",
+  "@gtpSchoolHelp": {
+    "description": "gtpSchoolHelp"
+  },
+  "gtpSchoolEmpty": "No school accounts in this class.",
+  "@gtpSchoolEmpty": {
+    "description": "gtpSchoolEmpty"
+  },
+  "gtpTeacherDm": "Teacher messages",
+  "@gtpTeacherDm": {
+    "description": "gtpTeacherDm"
+  },
+  "gtpPendingConsent": "School consent pending",
+  "@gtpPendingConsent": {
+    "description": "gtpPendingConsent"
+  },
+  "gtpStudent": "Student #{id}",
+  "@gtpStudent": {
+    "description": "gtpStudent",
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
+  "gtpSince": "Asked {when}",
+  "@gtpSince": {
+    "description": "gtpSince",
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "gtpError": "We could not load requests. Try again.",
+  "@gtpError": {
+    "description": "gtpError"
+  },
+  "gtpNotTeacher": "Only this class's teacher can see requests.",
+  "@gtpNotTeacher": {
+    "description": "gtpNotTeacher"
   }
 }

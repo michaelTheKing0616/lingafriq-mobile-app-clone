@@ -1,3 +1,5 @@
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
+import 'package:lingafriq/screens/classroom/classroom_student_requests_screen.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -113,6 +115,16 @@ class _ClassroomRosterScreenState extends ConsumerState<ClassroomRosterScreen> {
           style: PanAfricanTypography.titleLarge(context),
         ),
         actions: [
+          IconButton(
+            key: const ValueKey('roster-student-requests'),
+            tooltip: AppLocalizations.of(context)!.gtpOpen,
+            icon: const Icon(Icons.how_to_reg_outlined),
+            onPressed: () => Navigator.of(context).push<void>(
+              MaterialPageRoute<void>(
+                builder: (_) => ClassroomStudentRequestsScreen(tribeId: widget.tribeId, tribeName: widget.tribeName),
+              ),
+            ),
+          ),
           IconButton(
             tooltip: 'Import roster CSV',
             icon: _importing

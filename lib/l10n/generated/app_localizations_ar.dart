@@ -3298,4 +3298,226 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get gcErrorServerBody =>
       'حدث خطأ من جهتنا. لم يضِع شيء مما كتبته. حاول مرة أخرى بعد قليل.';
+
+  @override
+  String get gfamToolsTitle => 'أدوات العائلة';
+
+  @override
+  String get gfamToolsApprovals => 'موافقات المجموعات';
+
+  @override
+  String get gfamToolsApprovalsSub => 'حلقات وفصول بانتظارك';
+
+  @override
+  String get gfamToolsGuide => 'كيف تعمل الرسائل';
+
+  @override
+  String get gfamToolsGuideSub => 'ما الذي يُفحص ومن يمكنه المراسلة';
+
+  @override
+  String get gfamToolsCircles => 'الحلقات';
+
+  @override
+  String get gfamToolsCirclesSub => 'حلقات الدراسة التي تنتمي إليها';
+
+  @override
+  String gfamWhoMessages(int id) {
+    return 'من يراسل المتعلم رقم $id';
+  }
+
+  @override
+  String get gdmTitle => 'من يراسل متعلمك';
+
+  @override
+  String get gdmIntro => 'ترى من وتى وأي بلاغات. لا ترى نص الرسائل أبدًا.';
+
+  @override
+  String get gdmEmptyTitle => 'لا توجد رسائل خاصة بعد';
+
+  @override
+  String get gdmEmptyBody =>
+      'يمكن فقط للمعلمين وأعضاء المجموعات التي وافقت عليها مراسلة متعلمك.';
+
+  @override
+  String get gdmError => 'تعذّر تحميل الرسائل. حاول مرة أخرى.';
+
+  @override
+  String get gdmRetry => 'حاول مرة أخرى';
+
+  @override
+  String get gdmRoleTeacher => 'معلم';
+
+  @override
+  String get gdmRoleClassmate => 'زميل';
+
+  @override
+  String get gdmRoleContact => 'جهة اتصال';
+
+  @override
+  String gdmLastActive(String when) {
+    return 'آخر رسالة $when';
+  }
+
+  @override
+  String gdmMessages(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count رسالة',
+      many: '$count رسالة',
+      few: '$count رسائل',
+      two: 'رسالتان',
+      one: 'رسالة واحدة',
+      zero: 'لا رسائل',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String gdmReports(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count بلاغ',
+      many: '$count بلاغًا',
+      few: '$count بلاغات',
+      two: 'بلاغان',
+      one: 'بلاغ واحد',
+      zero: 'لا بلاغات',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String gdmBlocked(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'أُوقفت $count رسائل بفحوص الأمان',
+      one: 'أُوقفت رسالة واحدة بفحوص الأمان',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get gdmStop => 'إيقاف الرسائل';
+
+  @override
+  String get gdmAllow => 'السماح مرة أخرى';
+
+  @override
+  String get gdmStopped => 'الرسائل موقوفة';
+
+  @override
+  String gdmStopConfirmTitle(String name) {
+    return 'إيقاف الرسائل من $name؟';
+  }
+
+  @override
+  String get gdmStopConfirmBody =>
+      'لن يتمكن من مراسلة متعلمك، ولن يتمكن متعلمك من مراسلته. يمكنك السماح مجددًا لاحقًا.';
+
+  @override
+  String get gdmCancel => 'إلغاء';
+
+  @override
+  String get gdmActionFailed => 'لم ينجح ذلك. حاول مرة أخرى.';
+
+  @override
+  String get gdmUnknownName => 'مستخدم غير معروف';
+
+  @override
+  String get gccJoinButton => 'أدخل رمز الفصل';
+
+  @override
+  String get gccTitle => 'الانضمام إلى فصل';
+
+  @override
+  String get gccHint => 'اطلب رمز الفصل من معلمك.';
+
+  @override
+  String get gccLabel => 'رمز الفصل';
+
+  @override
+  String get gccSubmit => 'انضمام';
+
+  @override
+  String get gccJoined => 'انضممت إلى الفصل.';
+
+  @override
+  String get gccWaitingTitle => 'بانتظار وليّ أمرك';
+
+  @override
+  String get gccWaitingBody =>
+      'طلبنا من وليّ أمرك الموافقة على هذا الفصل. يمكنك الانضمام بعد موافقته.';
+
+  @override
+  String get gccNeedLink =>
+      'اطلب أولًا من أحد الوالدين أو وليّ الأمر ربط حسابك في مركز العائلة.';
+
+  @override
+  String get gccNeedAge => 'أكّد عمرك في الإعدادات قبل الانضمام إلى فصل.';
+
+  @override
+  String get gccNotFound => 'لا يوجد فصل بهذا الرمز. تحقق منه مع معلمك.';
+
+  @override
+  String get gccAlready => 'أنت بالفعل في هذا الفصل.';
+
+  @override
+  String get gccError => 'تعذّر الانضمام الآن. حاول مرة أخرى.';
+
+  @override
+  String get gccEmpty => 'أدخل الرمز أولًا.';
+
+  @override
+  String get gccDone => 'تم';
+
+  @override
+  String get gtpTitle => 'طلبات الطلاب';
+
+  @override
+  String get gtpOpen => 'طلبات الطلاب';
+
+  @override
+  String get gtpWaitingSection => 'بانتظار وليّ الأمر';
+
+  @override
+  String get gtpWaitingHelp =>
+      'استخدم هؤلاء الطلاب رمز فصلك. يقرر وليّ الأمر؛ لا تحتاج لفعل شيء.';
+
+  @override
+  String get gtpWaitingEmpty => 'لا أحد ينتظر.';
+
+  @override
+  String get gtpSchoolSection => 'حسابات المدرسة';
+
+  @override
+  String get gtpSchoolHelp =>
+      'رسائل المعلم مغلقة حتى تفعّلها لكل طالب. أنت فقط يمكنك مراسلتهم، وتُفحص كل رسالة.';
+
+  @override
+  String get gtpSchoolEmpty => 'لا توجد حسابات مدرسية في هذا الفصل.';
+
+  @override
+  String get gtpTeacherDm => 'رسائل المعلم';
+
+  @override
+  String get gtpPendingConsent => 'موافقة المدرسة معلّقة';
+
+  @override
+  String gtpStudent(int id) {
+    return 'الطالب رقم $id';
+  }
+
+  @override
+  String gtpSince(String when) {
+    return 'طُلب $when';
+  }
+
+  @override
+  String get gtpError => 'تعذّر تحميل الطلبات. حاول مرة أخرى.';
+
+  @override
+  String get gtpNotTeacher => 'فقط معلم هذا الفصل يمكنه رؤية الطلبات.';
 }
