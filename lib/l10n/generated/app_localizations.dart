@@ -5657,6 +5657,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Message'**
   String get gcHintShort;
+
+  /// gcErrorServerTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Global chat didn\'t load'**
+  String get gcErrorServerTitle;
+
+  /// gcErrorServerBody
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong on our side. Nothing you wrote was lost. Try again in a moment.'**
+  String get gcErrorServerBody;
 }
 
 class _AppLocalizationsDelegate

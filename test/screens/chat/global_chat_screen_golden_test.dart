@@ -205,6 +205,145 @@ void main() {
     });
   });
 
+  group('review 7479726c8', () {
+    testWidgets('server 403 age_restricted on load shows the locked view, '
+        'and cached public messages are not shown', (t) async {
+      final repo = FakeRepo(cache: {'general': _thread()})
+        ..fetchError = const GlobalChatAgeRestricted();
+      await pumpVariant(
+        t,
+        base,
+        const GlobalChatScreenMaterial3(),
+        overrides: _o(repo: repo),
+      );
+      expect(find.byKey(const Key('gc-locked')), findsOneWidget);
+      expect(find.byKey(const Key('gc-input')), findsNothing);
+      expect(find.textContaining('Adaeze'), findsNothing);
+      expect(repo.cacheStore['general'], isEmpty);
+    });
+
+    testWidgets('server 403 age_restricted on send locks the screen', (
+      t,
+    ) async {
+      final repo = FakeRepo(server: {'general': _thread()})
+        ..postError = const GlobalChatAgeRestricted();
+      await pumpVariant(
+        t,
+        base,
+        const GlobalChatScreenMaterial3(),
+        overrides: _o(repo: repo),
+      );
+      await t.enterText(find.byKey(const Key('gc-input')), 'hi all');
+      await t.tap(find.byKey(const Key('gc-send')));
+      await t.pumpAndSettle();
+      expect(find.byKey(const Key('gc-locked')), findsOneWidget);
+      expect(find.byType(SnackBar), findsNothing);
+    });
+
+    test('only a 403 with code age_restricted counts as the age gate', () {
+      expect(isAgeRestrictedResponse(403, {'code': 'age_restricted'}), isTrue);
+      expect(isAgeRestrictedResponse(403, {'code': 'forbidden'}), isFalse);
+      expect(isAgeRestrictedResponse(500, {'code': 'age_restricted'}), isFalse);
+      expect(isAgeRestrictedResponse(403, 'age_restricted'), isFalse);
+    });
+
+    testWidgets('empty state is the channel hero with Say hello', (t) async {
+      await pumpVariant(
+        t,
+        base,
+        const GlobalChatScreenMaterial3(),
+        overrides: _o(repo: FakeRepo()),
+      );
+      final empty = find.byKey(const Key('gc-empty'));
+      expect(
+        find.descendant(of: empty, matching: find.byKey(const Key('gc-hero'))),
+        findsOneWidget,
+      );
+      expect(find.byKey(const Key('gc-say-hello')), findsOneWidget);
+    });
+
+    testWidgets('error differs from offline in icon and wording', (t) async {
+      await pumpVariant(
+        t,
+        base,
+        const GlobalChatScreenMaterial3(),
+        overrides: _o(repo: FakeRepo()..fetchFails = true),
+      );
+      final err = find.byKey(const Key('gc-error'));
+      expect(
+        find.descendant(
+          of: err,
+          matching: find.byIcon(Icons.cloud_off_rounded),
+        ),
+        findsNothing,
+      );
+      expect(
+        find.descendant(
+          of: err,
+          matching: find.byIcon(Icons.sync_problem_rounded),
+        ),
+        findsOneWidget,
+      );
+      expect(find.text("Global chat didn't load"), findsOneWidget);
+      expect(find.textContaining('Offline'), findsNothing);
+    });
+
+    for (final v in [_tablet, _fr]) {
+      testWidgets(
+        '${v.name}: hero sits right under the banners, fully visible',
+        (t) async {
+          await pumpVariant(
+            t,
+            v,
+            const GlobalChatScreenMaterial3(),
+            overrides: _o(),
+          );
+          final list = t.getRect(find.byKey(const Key('gc-list')));
+          final hero = find.byKey(const Key('gc-hero'));
+          if (v == _tablet) {
+            final heroRect = t.getRect(hero);
+            // No empty band above the hero on a tall screen.
+            expect(heroRect.top - list.top, lessThan(40));
+            expect(heroRect.top, greaterThanOrEqualTo(list.top));
+          } else {
+            // Phone: a long thread scrolls; the top edge fades rather than cuts.
+            expect(
+              find.ancestor(
+                of: find.byKey(const Key('gc-list')),
+                matching: find.byType(ShaderMask),
+              ),
+              findsOneWidget,
+            );
+          }
+        },
+      );
+    }
+
+    for (final access in [
+      GlobalChatAccess.deniedTeen,
+      GlobalChatAccess.deniedChild,
+      GlobalChatAccess.deniedUnknown,
+    ]) {
+      testWidgets('320 + 200% RTL ${access.name}: Polie button is on screen', (
+        t,
+      ) async {
+        await pumpVariant(
+          t,
+          goldenVariants[4],
+          const GlobalChatScreenMaterial3(),
+          overrides: _o(access: access),
+        );
+        final btn = t.getRect(find.byKey(const Key('gc-locked-polie')));
+        final screen = t.getRect(find.byType(GlobalChatScreenMaterial3));
+        expect(btn.bottom, lessThanOrEqualTo(screen.bottom));
+        expect(btn.top, greaterThan(screen.top));
+        // Body copy scrolls above the pinned button, never under it.
+        final scroll = t.getRect(find.byKey(const Key('gc-locked-scroll')));
+        expect(scroll.bottom, lessThanOrEqualTo(btn.top));
+      });
+    }
+  });
+
   group('states', () {
     testWidgets('loading', (t) async {
       final repo = FakeRepo()..fetchGate = Completer();

@@ -113,67 +113,116 @@ class _LockedView extends StatelessWidget {
                 ],
               ),
             )
-          : SafeArea(
-              child: Center(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(24),
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 480),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          width: 84,
-                          height: 84,
-                          decoration: const BoxDecoration(
-                            color: Color(0xFFE6E8F5),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.shield_outlined,
-                            size: 42,
-                            color: _navy,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Text(
-                          title,
-                          key: const Key('gc-locked-title'),
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w800,
-                            color: _ink,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          body,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 15,
-                            height: 1.4,
-                            color: _muted,
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                        FilledButton.icon(
-                          key: const Key('gc-locked-polie'),
-                          style: FilledButton.styleFrom(
-                            backgroundColor: _navy,
-                            minimumSize: const Size(48, 48),
-                          ),
-                          onPressed: () =>
-                              Navigator.pushNamed(context, 'lingchat_ai'),
-                          icon: const Icon(Icons.smart_toy_outlined),
-                          label: Text(l.gcPracticePolie),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+          : _LockedBody(title: title, body: body),
+    );
+  }
+}
+
+/// Locked copy plus the Polie way out. With large text on small phones the
+/// button is pinned above the fold and the copy scrolls (with a fade at the
+/// bottom edge) so neither the action nor a half-cut line is the last thing seen.
+class _LockedBody extends StatelessWidget {
+  const _LockedBody({required this.title, required this.body});
+  final String title, body;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = l10nOf(context);
+    final compact = _compact(context);
+    final button = FilledButton.icon(
+      key: const Key('gc-locked-polie'),
+      style: FilledButton.styleFrom(
+        backgroundColor: _navy,
+        minimumSize: const Size(48, 48),
+      ),
+      onPressed: () => Navigator.pushNamed(context, 'lingchat_ai'),
+      icon: const Icon(Icons.smart_toy_outlined),
+      label: Text(l.gcPracticePolie, textAlign: TextAlign.center),
+    );
+    final copy = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: compact ? 56 : 84,
+          height: compact ? 56 : 84,
+          decoration: const BoxDecoration(
+            color: Color(0xFFE6E8F5),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(
+            Icons.shield_outlined,
+            size: compact ? 28 : 42,
+            color: _navy,
+          ),
+        ),
+        SizedBox(height: compact ? 12 : 20),
+        Text(
+          title,
+          key: const Key('gc-locked-title'),
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: compact ? 18 : 22,
+            fontWeight: FontWeight.w800,
+            color: _ink,
+          ),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          body,
+          key: const Key('gc-locked-body'),
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: compact ? 14 : 15,
+            height: 1.4,
+            color: _muted,
+          ),
+        ),
+      ],
+    );
+    if (!compact) {
+      return SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 480),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [copy, const SizedBox(height: 24), button],
               ),
             ),
+          ),
+        ),
+      );
+    }
+    return SafeArea(
+      child: Column(
+        children: [
+          Expanded(
+            child: ShaderMask(
+              shaderCallback: (r) => LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: const [Color(0xFF000000), Color(0x00000000)],
+                stops: [
+                  r.height <= 0 ? 1 : (1 - 40 / r.height).clamp(0.0, 1.0),
+                  1,
+                ],
+              ).createShader(r),
+              blendMode: BlendMode.dstIn,
+              child: SingleChildScrollView(
+                key: const Key('gc-locked-scroll'),
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 40),
+                child: copy,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+            child: SizedBox(width: double.infinity, child: button),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -237,6 +286,9 @@ class _ChatViewState extends ConsumerState<_ChatView> {
         _snack(l.gcSignIn);
       case SendResult.polieBusy:
         _snack(l.gcPolieBusy);
+      case SendResult.ageRestricted:
+        // The screen swaps to the locked view (state.serverLocked).
+        break;
       case SendResult.sent || SendResult.empty:
         break;
     }
@@ -480,6 +532,9 @@ class _ChatViewState extends ConsumerState<_ChatView> {
   Widget build(BuildContext context) {
     final l = l10nOf(context);
     final s = ref.watch(globalChatControllerProvider);
+    if (s.serverLocked) {
+      return const _LockedView(access: GlobalChatAccess.deniedUnknown);
+    }
     final me = ref.watch(globalChatMeProvider);
     final visible = s.visible;
     _preload(visible);
@@ -649,53 +704,91 @@ class _ChatViewState extends ConsumerState<_ChatView> {
     if (s.load == ChatLoad.error) {
       return _Center(
         key: const Key('gc-error'),
-        icon: Icons.wifi_off_rounded,
-        title: l.gcErrorTitle,
-        body: l.gcErrorBody,
+        icon: Icons.sync_problem_rounded,
+        title: l.gcErrorServerTitle,
+        body: l.gcErrorServerBody,
         action: l.gcRetry,
         onAction: _c.refresh,
       );
     }
     if (visible.isEmpty) {
-      return _Center(
+      return ListView(
         key: const Key('gc-empty'),
-        icon: Icons.forum_outlined,
-        title: l.gcEmptyTitle,
-        body: l.gcEmptyBody,
-        action: l.gcSayHello,
-        onAction: () => _send(l.gcHelloText),
+        padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
+        children: [
+          _ChannelHero(channel: s.channel, l: l),
+          Text(
+            l.gcEmptyTitle,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w800,
+              color: _ink,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(l.gcEmptyBody, style: const TextStyle(color: _muted)),
+          const SizedBox(height: 12),
+          Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: FilledButton.icon(
+              key: const Key('gc-say-hello'),
+              style: FilledButton.styleFrom(
+                backgroundColor: _navy,
+                minimumSize: const Size(48, 48),
+              ),
+              onPressed: () => _send(l.gcHelloText),
+              icon: const Icon(Icons.waving_hand_outlined),
+              label: Text(l.gcSayHello),
+            ),
+          ),
+        ],
       );
     }
+    // Short conversations sit under the header (no empty band above the hero on
+    // tablets); long ones scroll, with a soft fade instead of a hard cut at the top.
     return Semantics(
       label: l.gcMessagesLabel(visible.length),
-      child: ListView.builder(
-        key: const Key('gc-list'),
-        controller: _scroll,
-        reverse: true,
-        padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
-        itemCount: visible.length + 1,
-        itemBuilder: (c, i) {
-          // Reversed list: the last index is the top, where the channel starts.
-          if (i == visible.length) {
-            return _ChannelHero(channel: s.channel, l: l);
-          }
-          final m = visible[visible.length - 1 - i];
-          final mine = me != null && m.senderId == me.id;
-          final enter = _seen.add(m.id);
-          return _Enter(
-            key: ValueKey('gc-enter-${m.id}'),
-            animate: enter,
-            child: _Bubble(
-              key: ValueKey('gc-msg-${m.id}'),
-              m: m,
-              mine: mine,
-              onProfile: () => _openProfile(m),
-              onActions: mine || m.isPolie
-                  ? null
-                  : () => _actions(m, s.muted.contains(m.senderId)),
-            ),
-          );
-        },
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: ShaderMask(
+          shaderCallback: (r) => LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: const [Color(0x00000000), Color(0xFF000000)],
+            stops: [0, r.height <= 0 ? 0 : (24 / r.height).clamp(0.0, 1.0)],
+          ).createShader(r),
+          blendMode: BlendMode.dstIn,
+          child: ListView.builder(
+            key: const Key('gc-list'),
+            controller: _scroll,
+            shrinkWrap: true,
+            reverse: true,
+            padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
+            itemCount: visible.length + 1,
+            itemBuilder: (c, i) {
+              // Reversed list: the last index is the top, where the channel starts.
+              if (i == visible.length) {
+                return _ChannelHero(channel: s.channel, l: l);
+              }
+              final m = visible[visible.length - 1 - i];
+              final mine = me != null && m.senderId == me.id;
+              final enter = _seen.add(m.id);
+              return _Enter(
+                key: ValueKey('gc-enter-${m.id}'),
+                animate: enter,
+                child: _Bubble(
+                  key: ValueKey('gc-msg-${m.id}'),
+                  m: m,
+                  mine: mine,
+                  onProfile: () => _openProfile(m),
+                  onActions: mine || m.isPolie
+                      ? null
+                      : () => _actions(m, s.muted.contains(m.senderId)),
+                ),
+              );
+            },
+          ),
+        ),
       ),
     );
   }
@@ -805,20 +898,33 @@ class _ChannelHero extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 56,
-            height: 56,
-            decoration: BoxDecoration(color: accent, shape: BoxShape.circle),
-            child: const Icon(Icons.tag_rounded, color: Colors.white, size: 30),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            l.gcHeroTitle(name),
-            style: const TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.w800,
-              color: _ink,
-            ),
+          Row(
+            children: [
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: accent,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.tag_rounded,
+                  color: Colors.white,
+                  size: 26,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  l.gcHeroTitle(name),
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
+                    color: _ink,
+                  ),
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 4),
           Text(l.gcHeroBody(name), style: const TextStyle(color: _muted)),

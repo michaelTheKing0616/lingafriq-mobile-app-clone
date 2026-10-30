@@ -4312,5 +4312,13 @@
   "gcHintShort": "Message",
   "@gcHintShort": {
     "description": "gcHintShort"
+  },
+  "gcErrorServerTitle": "Global chat didn't load",
+  "@gcErrorServerTitle": {
+    "description": "gcErrorServerTitle"
+  },
+  "gcErrorServerBody": "Something went wrong on our side. Nothing you wrote was lost. Try again in a moment.",
+  "@gcErrorServerBody": {
+    "description": "gcErrorServerBody"
   }
 }

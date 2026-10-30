@@ -6,7 +6,7 @@ import 'global_chat_repository.dart';
 
 enum ChatLoad { loading, ready, error }
 
-enum SendResult { sent, empty, signedOut, failed, polieBusy }
+enum SendResult { sent, empty, signedOut, failed, polieBusy, ageRestricted }
 
 class GlobalChatState {
   const GlobalChatState({
@@ -17,6 +17,7 @@ class GlobalChatState {
     this.sending = false,
     this.muted = const {},
     this.blocked = const {},
+    this.serverLocked = false,
   });
 
   final String channel;
@@ -28,6 +29,9 @@ class GlobalChatState {
   final bool sending;
   final Set<String> muted;
   final Set<String> blocked;
+
+  /// The server answered 403 `age_restricted`: show the locked view, whatever the app thought.
+  final bool serverLocked;
 
   /// Messages the learner should see (blocked and muted senders removed).
   List<ChatMessage> get visible => [
@@ -45,6 +49,7 @@ class GlobalChatState {
     bool? sending,
     Set<String>? muted,
     Set<String>? blocked,
+    bool? serverLocked,
   }) => GlobalChatState(
     channel: channel ?? this.channel,
     messages: messages ?? this.messages,
@@ -53,6 +58,7 @@ class GlobalChatState {
     sending: sending ?? this.sending,
     muted: muted ?? this.muted,
     blocked: blocked ?? this.blocked,
+    serverLocked: serverLocked ?? this.serverLocked,
   );
 }
 
@@ -124,6 +130,16 @@ class GlobalChatController extends Notifier<GlobalChatState> {
         fromCache: false,
       );
       unawaited(_repo.saveCache(channel, state.messages));
+    } on GlobalChatAgeRestricted {
+      if (!ref.mounted) return;
+      // Never show cached public messages to an account the server has locked.
+      state = state.copyWith(
+        messages: const [],
+        load: ChatLoad.ready,
+        fromCache: false,
+        serverLocked: true,
+      );
+      unawaited(_repo.saveCache(channel, const []));
     } catch (_) {
       final cached = await _repo.cached(channel);
       if (!ref.mounted || channel != state.channel) return;
@@ -174,8 +190,12 @@ class GlobalChatController extends Notifier<GlobalChatState> {
     state = state.copyWith(sending: true, messages: [...state.messages, local]);
     _socket.send(channel, text, me);
     var ok = true;
+    var locked = false;
     try {
       await _repo.post(channel, text);
+    } on GlobalChatAgeRestricted {
+      ok = false;
+      locked = true;
     } catch (_) {
       ok = false;
     }
@@ -183,12 +203,13 @@ class GlobalChatController extends Notifier<GlobalChatState> {
     if (!ok) {
       state = state.copyWith(
         sending: false,
+        serverLocked: locked ? true : null,
         messages: [
           for (final m in state.messages)
             if (m.id != local.id) m,
         ],
       );
-      return SendResult.failed;
+      return locked ? SendResult.ageRestricted : SendResult.failed;
     }
     state = state.copyWith(
       sending: false,

@@ -787,5 +787,7 @@
   "gcHeroTitle": "Bienvenue sur #{channel}",
   "gcHeroBody": "Voici le début de #{channel}. Soyez bienveillant : les modérateurs examinent chaque signalement.",
   "gcGreetingIn": "Dites-le comme sur place : {greeting}",
-  "gcHintShort": "Message"
+  "gcHintShort": "Message",
+  "gcErrorServerTitle": "Le chat mondial ne s'est pas chargé",
+  "gcErrorServerBody": "Un problème est survenu de notre côté. Rien de ce que vous avez écrit n'est perdu. Réessayez dans un instant."
 }

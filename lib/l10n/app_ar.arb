@@ -787,5 +787,7 @@
   "gcHeroTitle": "مرحبًا بك في #{channel}",
   "gcHeroBody": "هذه بداية #{channel}. كن لطيفًا: يراجع المشرفون كل بلاغ.",
   "gcGreetingIn": "قلها كأهلها: {greeting}",
-  "gcHintShort": "رسالة"
+  "gcHintShort": "رسالة",
+  "gcErrorServerTitle": "لم تُحمَّل الدردشة العامة",
+  "gcErrorServerBody": "حدث خطأ من جهتنا. لم يضِع شيء مما كتبته. حاول مرة أخرى بعد قليل."
 }

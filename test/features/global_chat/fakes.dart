@@ -18,6 +18,10 @@ class FakeRepo implements GlobalChatRepository {
   String? last;
   bool fetchFails = false;
   bool postFails = false;
+
+  /// When set, fetch/post throw this (e.g. the server's age gate refusal).
+  Object? fetchError;
+  Object? postError;
   Completer<void>? postGate;
   Completer<List<ChatMessage>>? fetchGate;
   final posts = <(String, String)>[];
@@ -31,6 +35,7 @@ class FakeRepo implements GlobalChatRepository {
   Future<List<ChatMessage>> fetch(String channel) async {
     fetchCount++;
     if (fetchGate != null) return fetchGate!.future;
+    if (fetchError != null) throw fetchError!;
     if (fetchFails) throw StateError('offline');
     return server[channel] ?? const [];
   }
@@ -39,6 +44,7 @@ class FakeRepo implements GlobalChatRepository {
   Future<void> post(String channel, String text) async {
     posts.add((channel, text));
     if (postGate != null) await postGate!.future;
+    if (postError != null) throw postError!;
     if (postFails) throw StateError('offline');
   }
 

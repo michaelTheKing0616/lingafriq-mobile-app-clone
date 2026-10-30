@@ -3291,4 +3291,11 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get gcHintShort => 'رسالة';
+
+  @override
+  String get gcErrorServerTitle => 'لم تُحمَّل الدردشة العامة';
+
+  @override
+  String get gcErrorServerBody =>
+      'حدث خطأ من جهتنا. لم يضِع شيء مما كتبته. حاول مرة أخرى بعد قليل.';
 }

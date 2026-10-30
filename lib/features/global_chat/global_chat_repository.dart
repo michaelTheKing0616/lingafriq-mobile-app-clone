@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/chat_socket_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
@@ -186,6 +187,35 @@ abstract class GlobalChatLive {
 
 String _room(String channel) => 'global_$channel';
 
+/// The server refused Global chat for this account's age (HTTP 403 `age_restricted`).
+/// The server age record wins over whatever the app believes locally.
+class GlobalChatAgeRestricted implements Exception {
+  const GlobalChatAgeRestricted();
+  @override
+  String toString() => 'GlobalChatAgeRestricted';
+}
+
+/// True when a response is the server's age gate refusal.
+bool isAgeRestrictedResponse(int? status, Object? data) =>
+    status == 403 && data is Map && data['code'] == 'age_restricted';
+
+Future<Response<dynamic>> _guardAge(
+  Future<Response<dynamic>> Function() call,
+) async {
+  try {
+    final r = await call();
+    if (isAgeRestrictedResponse(r.statusCode, r.data)) {
+      throw const GlobalChatAgeRestricted();
+    }
+    return r;
+  } on DioException catch (e) {
+    if (isAgeRestrictedResponse(e.response?.statusCode, e.response?.data)) {
+      throw const GlobalChatAgeRestricted();
+    }
+    rethrow;
+  }
+}
+
 class ApiGlobalChatRepository implements GlobalChatRepository {
   static const _prefix = 'global_chat_cache_';
   static const _mutedKey = 'global_chat_muted_ids';
@@ -204,9 +234,11 @@ class ApiGlobalChatRepository implements GlobalChatRepository {
 
   @override
   Future<List<ChatMessage>> fetch(String channel) async {
-    final r = await ApiService.get(
-      Api.chatGlobal,
-      queryParameters: {'channel': channel, 'limit': 50},
+    final r = await _guardAge(
+      () => ApiService.get(
+        Api.chatGlobal,
+        queryParameters: {'channel': channel, 'limit': 50},
+      ),
     );
     if (r.statusCode != 200) {
       throw StateError('global chat ${r.statusCode}');
@@ -216,9 +248,11 @@ class ApiGlobalChatRepository implements GlobalChatRepository {
 
   @override
   Future<void> post(String channel, String text) async {
-    final r = await ApiService.post(
-      Api.chatGlobal,
-      data: {'message': text, 'channel': channel},
+    final r = await _guardAge(
+      () => ApiService.post(
+        Api.chatGlobal,
+        data: {'message': text, 'channel': channel},
+      ),
     );
     final c = r.statusCode ?? 0;
     if (c < 200 || c >= 300) throw StateError('send $c');

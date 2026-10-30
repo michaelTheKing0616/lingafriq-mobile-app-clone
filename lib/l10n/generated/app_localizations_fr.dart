@@ -3276,4 +3276,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get gcHintShort => 'Message';
+
+  @override
+  String get gcErrorServerTitle => 'Le chat mondial ne s\'est pas chargé';
+
+  @override
+  String get gcErrorServerBody =>
+      'Un problème est survenu de notre côté. Rien de ce que vous avez écrit n\'est perdu. Réessayez dans un instant.';
 }

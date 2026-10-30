@@ -3239,4 +3239,11 @@ class AppLocalizationsIg extends AppLocalizations {
 
   @override
   String get gcHintShort => 'Message';
+
+  @override
+  String get gcErrorServerTitle => 'Global chat didn\'t load';
+
+  @override
+  String get gcErrorServerBody =>
+      'Something went wrong on our side. Nothing you wrote was lost. Try again in a moment.';
 }
