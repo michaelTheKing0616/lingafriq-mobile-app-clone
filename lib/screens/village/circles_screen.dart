@@ -9,7 +9,10 @@ import 'package:lingafriq/screens/chat/tribe_chat_screen.dart';
 
 /// Village circles list — reference: WhatsApp Communities member list + Discord server sidebar.
 class CirclesScreen extends HookConsumerWidget {
-  const CirclesScreen({super.key});
+  const CirclesScreen({super.key, this.fetchCircles});
+
+  /// Test seam; defaults to `GET /api/v2/circles`.
+  final Future<Object?> Function()? fetchCircles;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,8 +25,9 @@ class CirclesScreen extends HookConsumerWidget {
       loading.value = true;
       error.value = null;
       try {
-        final res = await ApiService.get('/api/v2/circles');
-        final data = res.data;
+        final data = fetchCircles != null
+            ? await fetchCircles!()
+            : (await ApiService.get('/api/v2/circles')).data;
         if (data is Map && data['ok'] == true && data['circles'] is List) {
           circles.value = (data['circles'] as List)
               .map((e) => Map<String, dynamic>.from(e as Map))
@@ -32,7 +36,8 @@ class CirclesScreen extends HookConsumerWidget {
           error.value = 'We could not load your circles right now.';
         }
       } catch (_) {
-        error.value = 'You are offline. Your circles will appear when you reconnect.';
+        error.value =
+            'You are offline. Your circles will appear when you reconnect.';
       } finally {
         loading.value = false;
       }
@@ -44,15 +49,25 @@ class CirclesScreen extends HookConsumerWidget {
     }, const []);
 
     return Scaffold(
-      backgroundColor:
-          isDark ? PanAfricanColors.backgroundDark : PanAfricanColors.backgroundLight,
+      backgroundColor: isDark
+          ? PanAfricanColors.backgroundDark
+          : PanAfricanColors.backgroundLight,
       appBar: AppBar(
-        title: Text('Your circles', style: PanAfricanTypography.titleLarge(context)),
+        title: Text(
+          'Your circles',
+          style: PanAfricanTypography.titleLarge(context),
+        ),
       ),
       body: ResponsiveSafeArea(
         child: RefreshIndicator(
           onRefresh: load,
-          child: _body(context, loading.value, error.value, circles.value, load),
+          child: _body(
+            context,
+            loading.value,
+            error.value,
+            circles.value,
+            load,
+          ),
         ),
       ),
     );
@@ -125,8 +140,8 @@ class CirclesScreen extends HookConsumerWidget {
         final subtitle = status == 'open'
             ? '$count of $max members · Open'
             : status == 'full'
-                ? 'Full — $count members'
-                : '$count members · Opens at ${c['min_open'] ?? 5}';
+            ? 'Full — $count members'
+            : '$count members · Opens at ${c['min_open'] ?? 5}';
 
         return Semantics(
           button: true,
@@ -158,9 +173,10 @@ class CirclesScreen extends HookConsumerWidget {
                       backgroundColor: PanAfricanColors.primary,
                       child: Text(
                         name.isNotEmpty ? name[0].toUpperCase() : '?',
-                        style: PanAfricanTypography.labelLarge(context).copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        ),
+                        style: PanAfricanTypography.labelLarge(context)
+                            .copyWith(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
                       ),
                     ),
                     SizedBox(width: PanAfricanSpacing.md),
@@ -168,14 +184,23 @@ class CirclesScreen extends HookConsumerWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(name, style: PanAfricanTypography.titleMedium(context)),
+                          Text(
+                            name,
+                            style: PanAfricanTypography.titleMedium(context),
+                          ),
                           SizedBox(height: PanAfricanSpacing.xxs),
-                          Text(subtitle, style: PanAfricanTypography.bodySmall(context)),
+                          Text(
+                            subtitle,
+                            style: PanAfricanTypography.bodySmall(context),
+                          ),
                         ],
                       ),
                     ),
                     if (status == 'pending-approval')
-                      Icon(Icons.hourglass_top, color: Theme.of(context).colorScheme.error),
+                      Icon(
+                        Icons.hourglass_top,
+                        color: Theme.of(context).colorScheme.error,
+                      ),
                   ],
                 ),
               ),

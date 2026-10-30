@@ -129,10 +129,24 @@ class _GuardianChildMessagesScreenState
       );
     }
     return Scaffold(
-      appBar: AppBar(title: Text(l.gdmTitle)),
+      // The title lives in the body so it wraps at 320dp / 200% / Arabic
+      // instead of being cut off in the app bar.
+      appBar: AppBar(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
+            child: Semantics(
+              header: true,
+              child: Text(
+                l.gdmTitle,
+                style: theme.textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
             child: Row(
@@ -183,7 +197,6 @@ class _ThreadCard extends StatelessWidget {
         : MaterialLocalizations.of(
             context,
           ).formatMediumDate(thread.lastActivityAt!.toLocal());
-    final flagged = thread.reportCount > 0 || thread.blockedMessageCount > 0;
     return Card(
       margin: EdgeInsets.zero,
       child: Padding(
@@ -263,15 +276,13 @@ class _ThreadCard extends StatelessWidget {
                         icon: const Icon(Icons.undo),
                         label: Text(l.gdmAllow),
                       )
-                    : flagged
-                    ? FilledButton.icon(
-                        key: ValueKey('gdm-stop-${thread.peerUserId}'),
-                        onPressed: busy ? null : onToggle,
-                        icon: const Icon(Icons.block),
-                        label: Text(l.gdmStop),
-                      )
+                    // One Stop style on every card; flags are shown by the pills.
                     : OutlinedButton.icon(
                         key: ValueKey('gdm-stop-${thread.peerUserId}'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: scheme.error,
+                          side: BorderSide(color: scheme.error),
+                        ),
                         onPressed: busy ? null : onToggle,
                         icon: const Icon(Icons.block),
                         label: Text(l.gdmStop),

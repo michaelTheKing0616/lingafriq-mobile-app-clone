@@ -3464,4 +3464,20 @@ class AppLocalizationsSn extends AppLocalizations {
 
   @override
   String get gtpNotTeacher => 'Only this class\'s teacher can see requests.';
+
+  @override
+  String get gccClose => 'Close';
+
+  @override
+  String get gccOpenFamilyHub => 'Open Family hub';
+
+  @override
+  String get gtpEmptyTitle => 'No student requests yet';
+
+  @override
+  String get gtpEmptyBody =>
+      'Share your class code. Students who join will show up here.';
+
+  @override
+  String get gtpLocked => 'Locked until the school confirms consent';
 }

@@ -3502,4 +3502,21 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get gtpNotTeacher =>
       'Seul l’enseignant de cette classe peut voir les demandes.';
+
+  @override
+  String get gccClose => 'Fermer';
+
+  @override
+  String get gccOpenFamilyHub => 'Ouvrir l’espace Famille';
+
+  @override
+  String get gtpEmptyTitle => 'Aucune demande d’élève pour l’instant';
+
+  @override
+  String get gtpEmptyBody =>
+      'Partagez le code de la classe. Les élèves qui rejoignent apparaîtront ici.';
+
+  @override
+  String get gtpLocked =>
+      'Bloqué jusqu’à la confirmation du consentement par l’école';
 }

@@ -101,6 +101,30 @@ class _ClassroomStudentRequestsScreenState
       );
     } else if (_data == null) {
       body = const Center(child: CircularProgressIndicator());
+    } else if (_data!.waiting.isEmpty && _data!.school.isEmpty) {
+      body = ListView(
+        key: const ValueKey('gtp-empty'),
+        padding: const EdgeInsets.all(32),
+        children: [
+          Icon(
+            Icons.group_add_outlined,
+            size: 48,
+            color: theme.colorScheme.primary,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            l.gtpEmptyTitle,
+            textAlign: TextAlign.center,
+            style: theme.textTheme.titleMedium,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            l.gtpEmptyBody,
+            textAlign: TextAlign.center,
+            style: theme.textTheme.bodyMedium,
+          ),
+        ],
+      );
     } else {
       final d = _data!;
       body = RefreshIndicator(
@@ -136,10 +160,25 @@ class _ClassroomStudentRequestsScreenState
                 (s) => Card(
                   child: SwitchListTile(
                     key: ValueKey('gtp-dm-${s.studentUserId}'),
-                    secondary: const Icon(Icons.school_outlined),
-                    title: Text(s.name ?? l.gtpStudent(s.studentUserId)),
+                    // Locked rows keep full-contrast text; the lock icon and
+                    // subtitle say why the switch is off.
+                    secondary: Icon(
+                      s.accountActive
+                          ? Icons.school_outlined
+                          : Icons.lock_outline,
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                    title: Text(
+                      s.name ?? l.gtpStudent(s.studentUserId),
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
                     subtitle: Text(
-                      s.accountActive ? l.gtpTeacherDm : l.gtpPendingConsent,
+                      s.accountActive ? l.gtpTeacherDm : l.gtpLocked,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
                     ),
                     value: _dm[s.studentUserId] ?? false,
                     onChanged:
@@ -153,15 +192,40 @@ class _ClassroomStudentRequestsScreenState
         ),
       );
     }
+    // Title and class name live in the body so they wrap at 320dp, 200%
+    // and in Arabic instead of being cut off in the app bar.
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          widget.tribeName == null
-              ? l.gtpTitle
-              : '${l.gtpTitle} · ${widget.tribeName}',
-        ),
+      appBar: AppBar(),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Semantics(
+                  header: true,
+                  child: Text(
+                    l.gtpTitle,
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+                if (widget.tribeName != null)
+                  Text(
+                    widget.tribeName!,
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          Expanded(child: body),
+        ],
       ),
-      body: body,
     );
   }
 }

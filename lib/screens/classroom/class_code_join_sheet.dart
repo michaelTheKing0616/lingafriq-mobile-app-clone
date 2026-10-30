@@ -18,7 +18,6 @@ class ClassCodeJoinSheet extends StatefulWidget {
     return showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      showDragHandle: true,
       builder: (_) => ClassCodeJoinSheet(service: service, onJoined: onJoined),
     );
   }
@@ -85,13 +84,42 @@ class _ClassCodeJoinSheetState extends State<ClassCodeJoinSheet> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            l.gccTitle,
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w700,
+          Center(
+            child: Container(
+              key: const ValueKey('gcc-handle'),
+              margin: const EdgeInsets.only(top: 12, bottom: 4),
+              width: 32,
+              height: 4,
+              decoration: BoxDecoration(
+                color: theme.colorScheme.onSurfaceVariant.withValues(
+                  alpha: 0.4,
+                ),
+                borderRadius: BorderRadius.circular(2),
+              ),
             ),
           ),
-          const SizedBox(height: 8),
+          Row(
+            children: [
+              Expanded(
+                child: Semantics(
+                  header: true,
+                  child: Text(
+                    l.gccTitle,
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
+              IconButton(
+                key: const ValueKey('gcc-close'),
+                tooltip: l.gccClose,
+                onPressed: () => Navigator.of(context).maybePop(),
+                icon: const Icon(Icons.close),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
           if (_outcome == ClassJoinOutcome.waitingForGuardian)
             _Status(
               key: const ValueKey('gcc-waiting'),
@@ -123,6 +151,18 @@ class _ClassCodeJoinSheetState extends State<ClassCodeJoinSheet> {
                 errorText: error,
                 errorMaxLines: 4,
                 counterText: '',
+              ),
+            ),
+          ],
+          if (_outcome == ClassJoinOutcome.needsGuardianLink) ...[
+            const SizedBox(height: 12),
+            ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: 48),
+              child: OutlinedButton.icon(
+                key: const ValueKey('gcc-family-hub'),
+                onPressed: () => Navigator.of(context).pushNamed('/family-hub'),
+                icon: const Icon(Icons.family_restroom_outlined),
+                label: Text(l.gccOpenFamilyHub),
               ),
             ),
           ],

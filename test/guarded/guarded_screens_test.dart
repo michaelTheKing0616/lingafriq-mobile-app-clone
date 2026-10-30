@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
@@ -116,6 +119,58 @@ void main() {
       expect(find.text('No direct messages yet'), findsOneWidget);
     });
 
+    testWidgets('every Stop button uses the same outlined style', (t) async {
+      final f = FakeGuarded({
+        _threads: const GuardedResponse(200, threadsJson),
+      });
+      await pumpVariant(
+        t,
+        base,
+        GuardianChildMessagesScreen(childUserId: 7, service: f.service),
+      );
+      final stops = find.byWidgetPredicate(
+        (w) =>
+            w.key is ValueKey<String> &&
+            (w.key! as ValueKey<String>).value.startsWith('gdm-stop-'),
+      );
+      expect(stops, findsWidgets);
+      for (final e in stops.evaluate()) {
+        expect(e.widget, isA<OutlinedButton>());
+      }
+      expect(find.byType(FilledButton), findsNothing);
+    });
+
+    final stateCases = <String, GuardedResponse?>{
+      'loading': null,
+      'error': const GuardedResponse(500, {}),
+      'empty': const GuardedResponse(200, {'ok': true, 'threads': []}),
+    };
+    for (final v in [goldenVariants.first, goldenVariants.last]) {
+      stateCases.forEach((state, r) {
+        testWidgets('golden $state ${v.name}', (t) async {
+          final f = FakeGuarded({if (r != null) _threads: r});
+          final service = r == null
+              ? GuardedMessagingService(
+                  request: (m, p, {data}) =>
+                      Completer<GuardedResponse>().future,
+                )
+              : f.service;
+          await pumpVariant(
+            t,
+            v,
+            GuardianChildMessagesScreen(childUserId: 7, service: service),
+            settle: r != null,
+          );
+          if (r == null) await t.pump(const Duration(milliseconds: 100));
+          expectNoLayoutErrors(t);
+          await expectLater(
+            find.byType(GuardianChildMessagesScreen),
+            matchesGoldenFile('goldens/child_messages_${state}_${v.name}.png'),
+          );
+        });
+      });
+    }
+
     for (final v in goldenVariants) {
       testWidgets('golden ${v.name}', (t) async {
         final f = FakeGuarded({
@@ -145,10 +200,77 @@ void main() {
       await pumpVariant(
         t,
         v ?? base,
-        Scaffold(body: ClassCodeJoinSheet(service: f.service)),
+        Scaffold(body: _AsSheet(ClassCodeJoinSheet(service: f.service))),
       );
       return f;
     }
+
+    testWidgets('has a drag handle and a close button that pops', (t) async {
+      final f = FakeGuarded({});
+      await pumpVariant(
+        t,
+        base,
+        Builder(
+          builder: (ctx) => Scaffold(
+            body: Center(
+              child: TextButton(
+                onPressed: () =>
+                    ClassCodeJoinSheet.show(ctx, service: f.service),
+                child: const Text('open'),
+              ),
+            ),
+          ),
+        ),
+      );
+      await t.tap(find.text('open'));
+      await t.pumpAndSettle();
+      expect(find.byKey(const ValueKey('gcc-handle')), findsOneWidget);
+      await t.tap(find.byKey(const ValueKey('gcc-close')));
+      await t.pumpAndSettle();
+      expect(find.byType(ClassCodeJoinSheet), findsNothing);
+    });
+
+    testWidgets('guardian link error offers Family hub', (t) async {
+      final f = FakeGuarded({
+        _join: const GuardedResponse(403, {'code': 'guardian_link_required'}),
+      });
+      final pushed = <String?>[];
+      await t.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          onGenerateRoute: (s) {
+            pushed.add(s.name);
+            return MaterialPageRoute<void>(
+              settings: s,
+              builder: (_) => s.name == '/'
+                  ? Scaffold(body: ClassCodeJoinSheet(service: f.service))
+                  : const Scaffold(body: Text('hub')),
+            );
+          },
+        ),
+      );
+      await t.enterText(find.byKey(const ValueKey('gcc-field')), 'ABC');
+      await t.tap(find.byKey(const ValueKey('gcc-submit')));
+      await t.pumpAndSettle();
+      expect(find.byKey(const ValueKey('gcc-family-hub')), findsOneWidget);
+      await t.tap(find.byKey(const ValueKey('gcc-family-hub')));
+      await t.pumpAndSettle();
+      expect(pushed.last, '/family-hub');
+      expect(find.text('hub'), findsOneWidget);
+    });
+
+    testWidgets('other errors do not show the Family hub button', (t) async {
+      await pumpSheet(t, const GuardedResponse(404, {}));
+      await t.enterText(find.byKey(const ValueKey('gcc-field')), 'ABC');
+      await t.tap(find.byKey(const ValueKey('gcc-submit')));
+      await t.pumpAndSettle();
+      expect(find.byKey(const ValueKey('gcc-family-hub')), findsNothing);
+    });
 
     testWidgets('202 shows waiting for guardian', (t) async {
       final f = await pumpSheet(
@@ -271,7 +393,21 @@ void main() {
       );
       expect(find.text('Amara'), findsOneWidget);
       expect(find.text('Waiting for a guardian'), findsOneWidget);
-      expect(find.text('School consent pending'), findsOneWidget);
+      expect(
+        find.text('Locked until the school confirms consent'),
+        findsOneWidget,
+      );
+      // Locked rows keep full-contrast text.
+      final scheme = Theme.of(t.element(find.text('Amara'))).colorScheme;
+      final lockedTitle = t.widget<Text>(
+        find
+            .descendant(
+              of: find.byKey(const ValueKey('gtp-dm-33')),
+              matching: find.byType(Text),
+            )
+            .first,
+      );
+      expect(lockedTitle.style?.color, scheme.onSurface);
       SwitchListTile sw(int id) =>
           t.widget<SwitchListTile>(find.byKey(ValueKey('gtp-dm-$id')));
       expect(sw(31).value, isFalse);
@@ -327,6 +463,53 @@ void main() {
         findsOneWidget,
       );
       expect(find.text('Try again'), findsNothing);
+    });
+
+    for (final v in [goldenVariants.first, goldenVariants.last]) {
+      testWidgets('empty state golden ${v.name}', (t) async {
+        final f = FakeGuarded({
+          _requests: const GuardedResponse(200, {
+            'ok': true,
+            'waiting_for_guardian': [],
+            'school_students': [],
+          }),
+        });
+        await pumpVariant(
+          t,
+          v,
+          ClassroomStudentRequestsScreen(
+            tribeId: 't1',
+            tribeName: 'Yoruba 201',
+            service: f.service,
+          ),
+        );
+        expect(find.byKey(const ValueKey('gtp-empty')), findsOneWidget);
+        expectNoLayoutErrors(t);
+        await expectLater(
+          find.byType(ClassroomStudentRequestsScreen),
+          matchesGoldenFile('goldens/student_requests_empty_${v.name}.png'),
+        );
+      });
+    }
+
+    testWidgets('long class name wraps instead of truncating', (t) async {
+      final f = FakeGuarded({
+        _requests: const GuardedResponse(200, requestsJson),
+      });
+      await pumpVariant(
+        t,
+        goldenVariants.last,
+        ClassroomStudentRequestsScreen(
+          tribeId: 't1',
+          tribeName: 'Yoruba 201 for the Saturday morning group',
+          service: f.service,
+        ),
+      );
+      final title = find.text('Yoruba 201 for the Saturday morning group');
+      expect(title, findsOneWidget);
+      final para = t.renderObject<RenderParagraph>(title);
+      expect(para.didExceedMaxLines, isFalse);
+      expectNoLayoutErrors(t);
     });
 
     for (final v in goldenVariants) {
@@ -400,4 +583,20 @@ void main() {
       expect(find.text('Who messages learner #7'), findsOneWidget);
     });
   });
+}
+
+/// Renders the sheet the way the modal does: bottom-aligned, sized to content.
+class _AsSheet extends StatelessWidget {
+  const _AsSheet(this.child);
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => Align(
+    alignment: Alignment.bottomCenter,
+    child: Material(
+      color: Theme.of(context).colorScheme.surfaceContainerLow,
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+      child: child,
+    ),
+  );
 }

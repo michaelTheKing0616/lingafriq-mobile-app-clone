@@ -6017,6 +6017,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Only this class\'s teacher can see requests.'**
   String get gtpNotTeacher;
+
+  /// gccClose
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get gccClose;
+
+  /// gccOpenFamilyHub
+  ///
+  /// In en, this message translates to:
+  /// **'Open Family hub'**
+  String get gccOpenFamilyHub;
+
+  /// gtpEmptyTitle
+  ///
+  /// In en, this message translates to:
+  /// **'No student requests yet'**
+  String get gtpEmptyTitle;
+
+  /// gtpEmptyBody
+  ///
+  /// In en, this message translates to:
+  /// **'Share your class code. Students who join will show up here.'**
+  String get gtpEmptyBody;
+
+  /// gtpLocked
+  ///
+  /// In en, this message translates to:
+  /// **'Locked until the school confirms consent'**
+  String get gtpLocked;
 }
 
 class _AppLocalizationsDelegate

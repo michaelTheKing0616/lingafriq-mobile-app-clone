@@ -3520,4 +3520,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get gtpNotTeacher => 'فقط معلم هذا الفصل يمكنه رؤية الطلبات.';
+
+  @override
+  String get gccClose => 'إغلاق';
+
+  @override
+  String get gccOpenFamilyHub => 'افتح مركز العائلة';
+
+  @override
+  String get gtpEmptyTitle => 'لا توجد طلبات من الطلاب بعد';
+
+  @override
+  String get gtpEmptyBody => 'شارك رمز الفصل. سيظهر هنا الطلاب الذين ينضمون.';
+
+  @override
+  String get gtpLocked => 'مقفل حتى تؤكد المدرسة الموافقة';
 }

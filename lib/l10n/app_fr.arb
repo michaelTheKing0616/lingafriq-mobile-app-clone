@@ -847,5 +847,10 @@
   "gtpStudent": "Élève n°{id}",
   "gtpSince": "Demandé {when}",
   "gtpError": "Impossible de charger les demandes. Réessayez.",
-  "gtpNotTeacher": "Seul l’enseignant de cette classe peut voir les demandes."
+  "gtpNotTeacher": "Seul l’enseignant de cette classe peut voir les demandes.",
+  "gccClose": "Fermer",
+  "gccOpenFamilyHub": "Ouvrir l’espace Famille",
+  "gtpEmptyTitle": "Aucune demande d’élève pour l’instant",
+  "gtpEmptyBody": "Partagez le code de la classe. Les élèves qui rejoignent apparaîtront ici.",
+  "gtpLocked": "Bloqué jusqu’à la confirmation du consentement par l’école"
 }

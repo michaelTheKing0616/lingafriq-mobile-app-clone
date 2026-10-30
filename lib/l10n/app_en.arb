@@ -4592,5 +4592,25 @@
   "gtpNotTeacher": "Only this class's teacher can see requests.",
   "@gtpNotTeacher": {
     "description": "gtpNotTeacher"
+  },
+  "gccClose": "Close",
+  "@gccClose": {
+    "description": "gccClose"
+  },
+  "gccOpenFamilyHub": "Open Family hub",
+  "@gccOpenFamilyHub": {
+    "description": "gccOpenFamilyHub"
+  },
+  "gtpEmptyTitle": "No student requests yet",
+  "@gtpEmptyTitle": {
+    "description": "gtpEmptyTitle"
+  },
+  "gtpEmptyBody": "Share your class code. Students who join will show up here.",
+  "@gtpEmptyBody": {
+    "description": "gtpEmptyBody"
+  },
+  "gtpLocked": "Locked until the school confirms consent",
+  "@gtpLocked": {
+    "description": "gtpLocked"
   }
 }
