@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:lingafriq/theme/lingafriq_fonts.dart';
 import 'package:lingafriq/data/polie_translate_language_options.dart';
 
 /// Searchable bottom sheet for FLORES / NLLB language selection.
 class PolieLanguageSearchSheet extends StatefulWidget {
-  const PolieLanguageSearchSheet({super.key, 
+  const PolieLanguageSearchSheet({
+    super.key,
     required this.title,
     required this.selectedDisplayName,
     required this.onSelected,
@@ -75,7 +76,7 @@ class PolieLanguageSearchSheetState extends State<PolieLanguageSearchSheet> {
                       Expanded(
                         child: Text(
                           widget.title,
-                          style: GoogleFonts.nunito(
+                          style: LingAfriqFonts.roleStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 17,
                           ),

@@ -47,16 +47,18 @@ String duelOpponentDisplayName({
   if (isBot) return GamekitBotLabelCopy.title;
   final fromServer = serverDisplayName?.trim();
   if (fromServer != null && fromServer.isNotEmpty) return fromServer;
-  return levelLabel?.trim().isNotEmpty == true ? levelLabel!.trim() : 'Opponent';
+  return levelLabel?.trim().isNotEmpty == true
+      ? levelLabel!.trim()
+      : 'Opponent';
 }
 
 bool duelCountsForLeaderboard({required bool duelOpponentIsBot}) =>
     !duelOpponentIsBot;
 
 /// Elite Game Engine Service
-/// 
+///
 /// Unified service that provides game instances for ALL games in the system.
-/// 
+///
 /// Handles both:
 /// - Games with dedicated factories (ProverbUnlocker, ToneForge, DrumRhythm)
 /// - Games using GenericGame template (all other 34+ games via AllGamesRegistry)
@@ -70,11 +72,8 @@ class GameEngineService {
   final PolieGameClient polieClient;
   final GameAnimationBridge animationBridge;
   final Map<String, Game<dynamic, dynamic>> _gameCache = {};
-  
-  GameEngineService({
-    required this.polieClient,
-    required this.animationBridge,
-  });
+
+  GameEngineService({required this.polieClient, required this.animationBridge});
 
   /// Get game instance for a game ID
   /// Caches instances for performance
@@ -95,24 +94,15 @@ class GameEngineService {
     // Use existing dedicated factories for games that have them
     switch (gameId) {
       case 'proverb_unlocker':
-        return ProverbUnlockerGame(
-          engine: engine,
-          polieClient: polieClient,
-        );
-      
+        return ProverbUnlockerGame(engine: engine, polieClient: polieClient);
+
       case 'tone_forge':
       case 'tone_trainer':
-        return ToneForgeGame(
-          engine: engine,
-          polieClient: polieClient,
-        );
-      
+        return ToneForgeGame(engine: engine, polieClient: polieClient);
+
       case 'drum_rhythm_shadowing':
-        return DrumRhythmGame(
-          engine: engine,
-          polieClient: polieClient,
-        );
-      
+        return DrumRhythmGame(engine: engine, polieClient: polieClient);
+
       default:
         // Use AllGamesRegistry for all other games (creates GenericGame)
         final definition = AllGamesRegistry.getGame(gameId);
@@ -194,7 +184,8 @@ class GameEngineService {
       return applyDuelBotMatch(
         session,
         matchId: payload['matchId']?.toString() ?? 'duel_bot',
-        botLevelLabel: opponent['levelLabel']?.toString() ??
+        botLevelLabel:
+            opponent['levelLabel']?.toString() ??
             payload['botLevelLabel']?.toString() ??
             'Building',
       );
@@ -215,7 +206,7 @@ class GameEngineService {
         'duel_match_id': payload['matchId'],
         'duel_matchmaking_status': isBot ? 'matched_bot' : 'matched_human',
         'duel_self_level_label': self['levelLabel'],
-        'duel_opponent_user_id': opponent['userId'],
+        'duel_opponent_handle': opponent['handle'],
         'duel_opponent_level_label': opponent['levelLabel'],
         'duel_opponent_is_bot': isBot,
         'duel_opponent_display_name': duelOpponentDisplayName(
@@ -256,7 +247,7 @@ class GameEngineService {
         ...session.metadata,
         'duel_match_id': matchId,
         'duel_matchmaking_status': 'matched_bot',
-        'duel_opponent_user_id': 'gamekit_bot',
+        'duel_opponent_handle': 'gamekit_bot',
         'duel_opponent_level_label': botLevelLabel,
         'duel_opponent_is_bot': true,
         'duel_opponent_display_name': GamekitBotLabelCopy.title,
@@ -300,7 +291,9 @@ class GameEngineService {
       startTime: startTime,
       turns: [],
       // Performance profile is calculated from turns, but we can store it in metadata if needed
-      metadata: performanceProfile != null ? {'initial_performance': performanceProfile} : {},
+      metadata: performanceProfile != null
+          ? {'initial_performance': performanceProfile}
+          : {},
     );
   }
 
@@ -349,13 +342,13 @@ final gameEngineServiceProvider = Provider<GameEngineService>((ref) {
   // Create PolieGameClient instance (no provider exists, create directly)
   final dio = ref.read(client);
   final polieClient = PolieGameClient(dio: dio);
-  
+
   // Get Rive service and create guide controller
   final riveService = ref.read(riveGamificationServiceProvider);
   final guideController = RiveGameGuideController();
   riveService.setController(guideController);
   final animationBridge = GameAnimationBridge(guideController: guideController);
-  
+
   return GameEngineService(
     polieClient: polieClient,
     animationBridge: animationBridge,
@@ -364,13 +357,19 @@ final gameEngineServiceProvider = Provider<GameEngineService>((ref) {
 
 /// Provider for getting a specific game instance by ID via GameKit
 /// Note: This is different from providers/game_provider.dart which handles game sessions
-final gameKitProvider = Provider.family<Game<dynamic, dynamic>, String>((ref, gameId) {
+final gameKitProvider = Provider.family<Game<dynamic, dynamic>, String>((
+  ref,
+  gameId,
+) {
   final engineService = ref.read(gameEngineServiceProvider);
   return engineService.getGame(gameId);
 });
 
 /// Provider for getting game configuration
-final gameKitConfigProvider = Provider.family<GameConfig, String>((ref, gameId) {
+final gameKitConfigProvider = Provider.family<GameConfig, String>((
+  ref,
+  gameId,
+) {
   final engineService = ref.read(gameEngineServiceProvider);
   return engineService.getGameConfig(gameId);
 });

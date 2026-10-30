@@ -17,11 +17,14 @@ class GameSession {
 
   /// P8-906 duel matchmaking (server-authoritative levels; never trust client level).
   String? get duelMatchId => metadata['duel_match_id'] as String?;
-  String? get duelOpponentUserId => metadata['duel_opponent_user_id'] as String?;
-  String? get duelOpponentLevelLabel => metadata['duel_opponent_level_label'] as String?;
-  String? get duelSelfLevelLabel => metadata['duel_self_level_label'] as String?;
+  String? get duelOpponentHandle => metadata['duel_opponent_handle'] as String?;
+  String? get duelOpponentLevelLabel =>
+      metadata['duel_opponent_level_label'] as String?;
+  String? get duelSelfLevelLabel =>
+      metadata['duel_self_level_label'] as String?;
   bool get duelOpponentIsBot => metadata['duel_opponent_is_bot'] == true;
-  String? get duelMatchmakingStatus => metadata['duel_matchmaking_status'] as String?;
+  String? get duelMatchmakingStatus =>
+      metadata['duel_matchmaking_status'] as String?;
 
   GameSession({
     required this.sessionId,
@@ -35,9 +38,10 @@ class GameSession {
     this.turnQueue = const [],
     this.queueLoadFailed = false,
     this.metadata = const {},
-  }) : plannedDurationSeconds = plannedDurationSeconds ??
-            (metadata['planned_duration_seconds'] as int?) ??
-            120;
+  }) : plannedDurationSeconds =
+           plannedDurationSeconds ??
+           (metadata['planned_duration_seconds'] as int?) ??
+           120;
 
   DateTime get plannedEndTime =>
       startTime.add(Duration(seconds: plannedDurationSeconds));
@@ -75,20 +79,27 @@ class GameSession {
 
   double _calculateAverageConfidence() {
     if (turns.isEmpty) return 0.0;
-    final sum = turns.fold<double>(0.0, (acc, turn) => acc + turn.score.accuracy);
+    final sum = turns.fold<double>(
+      0.0,
+      (acc, turn) => acc + turn.score.accuracy,
+    );
     return sum / turns.length;
   }
 
   /// Performance profile for Polie backend
   Map<String, dynamic> get performanceProfile => {
-        'accuracy': accuracy,
-        'streak': streak,
-        'average_confidence': averageConfidence,
-        'total_turns': totalTurns,
-        'recent_accuracy': turns.length >= 3
-            ? turns.sublist(turns.length - 3).where((t) => t.score.isCorrect).length / 3
-            : accuracy,
-      };
+    'accuracy': accuracy,
+    'streak': streak,
+    'average_confidence': averageConfidence,
+    'total_turns': totalTurns,
+    'recent_accuracy': turns.length >= 3
+        ? turns
+                  .sublist(turns.length - 3)
+                  .where((t) => t.score.isCorrect)
+                  .length /
+              3
+        : accuracy,
+  };
 
   GameSession copyWith({
     String? sessionId,
@@ -128,9 +139,10 @@ class GameSession {
       language: language,
       level: level,
       startTime: startTime,
-      turns: turns.map((t) => t.toGameTurn(cardId: '')).toList(), // cardId should be provided by caller
+      turns: turns
+          .map((t) => t.toGameTurn(cardId: ''))
+          .toList(), // cardId should be provided by caller
       metadata: metadata,
     );
   }
 }
-

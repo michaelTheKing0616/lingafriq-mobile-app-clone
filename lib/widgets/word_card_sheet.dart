@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/theme/lingafriq_fonts.dart';
 import 'package:lingafriq/models/lens_word_card.dart';
 import 'package:lingafriq/models/verified_lexeme.dart';
 import 'package:lingafriq/services/lexicon_audio_client.dart';
@@ -32,10 +33,7 @@ class WordCardSpeakerClip {
 }
 
 class WordCardExampleLine {
-  const WordCardExampleLine({
-    required this.text,
-    this.audioUri,
-  });
+  const WordCardExampleLine({required this.text, this.audioUri});
 
   final String text;
   final String? audioUri;
@@ -130,7 +128,9 @@ List<WordCardSpeakerClip> wordCardSpeakerClipsFromEntry(
     final voice = map['voice_id']?.toString().trim();
     out.add(
       WordCardSpeakerClip(
-        voiceId: voice != null && voice.isNotEmpty ? voice : 'speaker_${out.length + 1}',
+        voiceId: voice != null && voice.isNotEmpty
+            ? voice
+            : 'speaker_${out.length + 1}',
         uri: uri,
         speed: (map['speed'] ?? 'natural').toString(),
         dialectTag: map['dialect_tag']?.toString(),
@@ -140,7 +140,9 @@ List<WordCardSpeakerClip> wordCardSpeakerClipsFromEntry(
   return out;
 }
 
-List<WordCardExampleLine> wordCardExamplesFromEntry(Map<String, dynamic> entry) {
+List<WordCardExampleLine> wordCardExamplesFromEntry(
+  Map<String, dynamic> entry,
+) {
   final out = <WordCardExampleLine>[];
   final senses = entry['senses'];
   if (senses is! List) return out;
@@ -149,8 +151,15 @@ List<WordCardExampleLine> wordCardExamplesFromEntry(Map<String, dynamic> entry) 
     final map = sense.cast<String, dynamic>();
     final text = (map['example_target'] ?? '').toString().trim();
     if (text.isEmpty) continue;
-    final uri = (map['example_audio_uri'] ?? map['example_uri'])?.toString().trim();
-    out.add(WordCardExampleLine(text: text, audioUri: uri?.isNotEmpty == true ? uri : null));
+    final uri = (map['example_audio_uri'] ?? map['example_uri'])
+        ?.toString()
+        .trim();
+    out.add(
+      WordCardExampleLine(
+        text: text,
+        audioUri: uri?.isNotEmpty == true ? uri : null,
+      ),
+    );
   }
   return out;
 }
@@ -220,10 +229,10 @@ class _WordCardSheetState extends State<WordCardSheet> {
   String _dialectTag = DialectChips.standardTag;
 
   String get _displayWord => wordCardSurfaceForDialect(
-        standardWord: widget.model.standardWord,
-        variants: widget.model.dialectVariants,
-        selectedTag: _dialectTag,
-      );
+    standardWord: widget.model.standardWord,
+    variants: widget.model.dialectVariants,
+    selectedTag: _dialectTag,
+  );
 
   List<WordCardSpeakerClip> get _speakerClips {
     final clips = widget.model.speakerClips;
@@ -245,13 +254,9 @@ class _WordCardSheetState extends State<WordCardSheet> {
   @override
   Widget build(BuildContext context) {
     final bottom = MediaQuery.paddingOf(context).bottom;
-    final lemmaStyle = const TextStyle(
-      fontFamily: 'Noto Sans',
-      fontFamilyFallback: [
-        'NotoSans',
-        'Roboto',
-        'Arial Unicode MS',
-      ],
+    final lemmaStyle = TextStyle(
+      fontFamily: LingAfriqFonts.text,
+      fontFamilyFallback: LingAfriqFonts.textFallback,
       fontSize: kWordCardLemmaFontSize,
       height: kWordCardLemmaLineHeight,
       fontWeight: FontWeight.w600,
@@ -290,9 +295,9 @@ class _WordCardSheetState extends State<WordCardSheet> {
               ),
             ),
             MediaQuery(
-              data: MediaQuery.of(context).copyWith(
-                textScaler: TextScaler.noScaling,
-              ),
+              data: MediaQuery.of(
+                context,
+              ).copyWith(textScaler: TextScaler.noScaling),
               child: ToneLensContour(
                 tonePattern: widget.model.tonePattern,
                 syllables: widget.model.syllables.isNotEmpty
@@ -320,9 +325,9 @@ class _WordCardSheetState extends State<WordCardSheet> {
                   sublabel: clip.speed,
                   onPlay: clip.uri.isNotEmpty
                       ? () => widget.onPlayAudio?.call(
-                            clip.uri,
-                            label: clip.voiceId,
-                          )
+                          clip.uri,
+                          label: clip.voiceId,
+                        )
                       : null,
                 ),
             ],
@@ -348,9 +353,9 @@ class _WordCardSheetState extends State<WordCardSheet> {
                         onPressed: example.audioUri == null
                             ? null
                             : () => widget.onPlayAudio?.call(
-                                  example.audioUri!,
-                                  label: 'example',
-                                ),
+                                example.audioUri!,
+                                label: 'example',
+                              ),
                       ),
                     ],
                   ),
@@ -402,10 +407,7 @@ class _AiDraftBadge extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          child: Text(
-            label,
-            style: Theme.of(context).textTheme.labelLarge,
-          ),
+          child: Text(label, style: Theme.of(context).textTheme.labelLarge),
         ),
       ),
     );
@@ -434,10 +436,7 @@ class _AudioRow extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(label),
-                Text(
-                  sublabel,
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
+                Text(sublabel, style: Theme.of(context).textTheme.bodySmall),
               ],
             ),
           ),

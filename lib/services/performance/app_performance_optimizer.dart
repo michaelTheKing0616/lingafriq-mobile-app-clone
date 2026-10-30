@@ -13,7 +13,7 @@ import 'package:lingafriq/services/monitoring/sentry_service.dart';
 class AppPerformanceOptimizer {
   static const String _preloadKey = 'preload_completed';
   static const String _cacheWarmupKey = 'cache_warmup_completed';
-  
+
   final PerformanceAnalytics _analytics = PerformanceAnalytics();
   final Map<String, Completer<void>> _preloadCompleters = {};
   final Set<String> _preloadedResources = {};
@@ -32,7 +32,7 @@ class AppPerformanceOptimizer {
       // Check if already preloaded
       final prefs = await SharedPreferences.getInstance();
       final alreadyPreloaded = prefs.getBool(_preloadKey) ?? false;
-      
+
       if (alreadyPreloaded && !kDebugMode) {
         debugPrint('Resources already preloaded, skipping...');
         _analytics.stopTracking(
@@ -54,7 +54,7 @@ class AppPerformanceOptimizer {
 
       // Mark as preloaded
       await prefs.setBool(_preloadKey, true);
-      
+
       _analytics.stopTracking(
         trackingId: trackingId,
         operationName: 'preload_critical_resources',
@@ -72,8 +72,7 @@ class AppPerformanceOptimizer {
     try {
       // Preload common fonts used in the app
       final fontsToPreload = [
-        'Roboto',
-        'Inter',
+        'Plus Jakarta Sans',
         // Add other fonts used in the app
       ];
 
@@ -132,7 +131,7 @@ class AppPerformanceOptimizer {
 
       final prefs = await SharedPreferences.getInstance();
       final alreadyWarmed = prefs.getBool(_cacheWarmupKey) ?? false;
-      
+
       if (alreadyWarmed && !kDebugMode) {
         debugPrint('Cache already warmed up, skipping...');
         _analytics.stopTracking(
@@ -149,12 +148,12 @@ class AppPerformanceOptimizer {
             return null;
           }),
         );
-        
+
         await Future.wait(warmupFutures, eagerError: false);
       }
 
       await prefs.setBool(_cacheWarmupKey, true);
-      
+
       _analytics.stopTracking(
         trackingId: trackingId,
         operationName: 'cache_warmup',
@@ -285,10 +284,11 @@ class AppPerformanceOptimizer {
       final stats = _analytics.getAllPerformanceStats();
       return {
         'operation_count': stats.length,
-        'operations': stats.map(
-          (key, value) => MapEntry(key, value.toJson()),
-        ),
-        'slow_operations': _analytics.getSlowOperations().map((m) => m.toJson()).toList(),
+        'operations': stats.map((key, value) => MapEntry(key, value.toJson())),
+        'slow_operations': _analytics
+            .getSlowOperations()
+            .map((m) => m.toJson())
+            .toList(),
       };
     } catch (e, stackTrace) {
       debugPrint('Error getting performance metrics: $e');
@@ -317,4 +317,3 @@ class AppPerformanceOptimizer {
     debugPrint('Code splitting enabled for: ${featureModules.join(", ")}');
   }
 }
-

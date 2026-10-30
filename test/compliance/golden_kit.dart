@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod/misc.dart' show Override;
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
+import 'package:lingafriq/theme/lingafriq_fonts.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 
 import '../golden/golden_harness.dart';
@@ -43,7 +44,7 @@ const goldenVariants = <GoldenVariant>[
 Future<ByteData> _bytes(String path) =>
     io.File(path).readAsBytes().then(ByteData.sublistView);
 
-/// Loads real glyph fonts (Roboto, Material icons, Noto Sans Arabic, Lato)
+/// Loads real glyph fonts (Roboto, Material icons, the bundled SPEC families)
 /// so goldens show text, icons and Arabic instead of boxes.
 Future<void> loadComplianceFonts(String testPath) async {
   GoogleFonts.config.allowRuntimeFetching = false;
@@ -59,24 +60,38 @@ Future<void> loadComplianceFonts(String testPath) async {
         ..addFont(_bytes('$sdk/Roboto-Medium.ttf'))
         ..addFont(_bytes('$sdk/Roboto-Bold.ttf')))
       .load();
-  // 'Noto Sans' heads PanAfricanTypography's fallback list; on devices the
-  // OS supplies Arabic glyphs there, so tests register Noto Sans Arabic under
-  // that name too (only used for glyphs Lato lacks).
-  for (final family in ['Noto Sans Arabic', 'Noto Sans']) {
-    await (FontLoader(
-      family,
-    )..addFont(_bytes('test/fonts/NotoSansArabic.ttf'))).load();
+  // The app's bundled SPEC families (pubspec fonts block).
+  const dir = 'assets/fonts/lingafriq';
+  final families = <String, List<String>>{
+    LingAfriqFonts.display: [
+      'Nunito-Bold-LatinAfrica',
+      'Nunito-ExtraBold-LatinAfrica',
+      'Nunito-Black-LatinAfrica',
+    ],
+    LingAfriqFonts.text: [
+      'NotoSans-Regular-LatinAfrica',
+      'NotoSans-Medium-LatinAfrica',
+      'NotoSans-SemiBold-LatinAfrica',
+      'NotoSans-Bold-LatinAfrica',
+    ],
+    LingAfriqFonts.arabic: ['NotoSansArabic-Regular', 'NotoSansArabic-Bold'],
+    // Legacy name some screens still list as a fallback.
+    'Noto Sans Arabic': ['NotoSansArabic-Regular', 'NotoSansArabic-Bold'],
+  };
+  for (final e in families.entries) {
+    final loader = FontLoader(e.key);
+    for (final f in e.value) {
+      loader.addFont(_bytes('$dir/$f.ttf'));
+    }
+    await loader.load();
   }
-  await GoogleFonts.pendingFonts([
-    for (final w in [FontWeight.w400, FontWeight.w600, FontWeight.w700])
-      GoogleFonts.lato(fontWeight: w),
-  ]);
 }
 
 ThemeData complianceTheme() => ThemeData(
   useMaterial3: true,
-  fontFamily: 'Roboto',
-  fontFamilyFallback: const ['Noto Sans Arabic'],
+  fontFamily: LingAfriqFonts.text,
+  fontFamilyFallback: LingAfriqFonts.textFallback,
+  textTheme: LingAfriqFonts.textTheme(),
   colorScheme: ColorScheme.fromSeed(seedColor: PanAfricanColors.primary),
 );
 

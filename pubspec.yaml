@@ -200,6 +200,7 @@ flutter:
     - assets/images/
     - assets/alphabets/
     - assets/fonts/
+    - assets/fonts/lingafriq/licenses/
     - assets/google_fonts/
     - assets/data/audio_manifest.json
     - assets/data/sound/clicks_vowels.json
@@ -226,6 +227,28 @@ flutter:
 
 
   fonts:
+    - family: LingAfriqDisplay
+      fonts:
+        - {asset: assets/fonts/lingafriq/Nunito-Bold-LatinAfrica.ttf, weight: 700}
+        - {asset: assets/fonts/lingafriq/Nunito-ExtraBold-LatinAfrica.ttf, weight: 800}
+        - {asset: assets/fonts/lingafriq/Nunito-Black-LatinAfrica.ttf, weight: 900}
+    - family: LingAfriqText
+      fonts:
+        - {asset: assets/fonts/lingafriq/NotoSans-Regular-LatinAfrica.ttf, weight: 400}
+        - {asset: assets/fonts/lingafriq/NotoSans-Medium-LatinAfrica.ttf, weight: 500}
+        - {asset: assets/fonts/lingafriq/NotoSans-SemiBold-LatinAfrica.ttf, weight: 600}
+        - {asset: assets/fonts/lingafriq/NotoSans-Bold-LatinAfrica.ttf, weight: 700}
+    - family: LingAfriqArabic
+      fonts:
+        - {asset: assets/fonts/lingafriq/NotoSansArabic-Regular.ttf, weight: 400}
+        - {asset: assets/fonts/lingafriq/NotoSansArabic-Bold.ttf, weight: 700}
+    - {family: NotoSansEthiopic, fonts: [{asset: assets/fonts/lingafriq/NotoSansEthiopic-Regular.ttf}]}
+    - {family: NotoSansTifinagh, fonts: [{asset: assets/fonts/lingafriq/NotoSansTifinagh-Regular.ttf}]}
+    - {family: NotoSansNKo, fonts: [{asset: assets/fonts/lingafriq/NotoSansNKo-Regular.ttf}]}
+    - {family: NotoSansVai, fonts: [{asset: assets/fonts/lingafriq/NotoSansVai-Regular.ttf}]}
+    - {family: NotoSansAdlam, fonts: [{asset: assets/fonts/lingafriq/NotoSansAdlam-Regular.ttf}]}
+    - {family: NotoSansOsmanya, fonts: [{asset: assets/fonts/lingafriq/NotoSansOsmanya-Regular.ttf}]}
+    - {family: NotoSansBamum, fonts: [{asset: assets/fonts/lingafriq/NotoSansBamum-Regular.ttf}]}
     - family: dosis
       fonts:
         - asset: assets/fonts/Dosis-Regular.ttf

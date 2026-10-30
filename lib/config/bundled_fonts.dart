@@ -12,13 +12,26 @@ const List<String> kBundledFontFamilies = [
   'Cormorant Garamond',
   'IM Fell English',
   'JetBrains Mono',
-  'Lato',
   'Libre Baskerville',
-  'Nunito',
   'Philosopher',
   'Playfair Display',
   'Plus Jakarta Sans',
 ];
+
+/// Families bundled under assets/fonts/lingafriq/ (typography SPEC.md),
+/// keyed to their OFL licence file in assets/fonts/lingafriq/licenses/.
+const Map<String, String> kLingAfriqFontLicences = {
+  'Nunito': 'nunito',
+  'Noto Sans': 'notosans',
+  'Noto Sans Arabic': 'notosansarabic',
+  'Noto Sans Ethiopic': 'notosansethiopic',
+  'Noto Sans Tifinagh': 'notosanstifinagh',
+  'Noto Sans NKo': 'notosansnko',
+  'Noto Sans Vai': 'notosansvai',
+  'Noto Sans Adlam': 'notosansadlam',
+  'Noto Sans Osmanya': 'notosansosmanya',
+  'Noto Sans Bamum': 'notosansbamum',
+};
 
 /// Call once before [runApp].
 void configureBundledFonts() {
@@ -33,5 +46,11 @@ Stream<LicenseEntry> _fontLicences() async* {
       'assets/google_fonts/OFL-$file.txt',
     );
     yield LicenseEntryWithLineBreaks(<String>[family], text);
+  }
+  for (final e in kLingAfriqFontLicences.entries) {
+    final text = await rootBundle.loadString(
+      'assets/fonts/lingafriq/licenses/OFL-${e.value}.txt',
+    );
+    yield LicenseEntryWithLineBreaks(<String>[e.key], text);
   }
 }

@@ -91,4 +91,29 @@ void main() {
       );
     }
   });
+
+  test('SPEC families ship their OFL licence', () async {
+    final entries = await LicenseRegistry.licenses.toList();
+    for (final family in kLingAfriqFontLicences.keys) {
+      expect(
+        entries.any((e) => e.packages.contains(family)),
+        isTrue,
+        reason: family,
+      );
+    }
+  });
+
+  test('retired Lato/Nunito Google Fonts files are gone', () {
+    final left = Directory('assets/google_fonts')
+        .listSync()
+        .map((f) => f.uri.pathSegments.last)
+        .where(
+          (n) =>
+              n.startsWith('Lato') ||
+              n.startsWith('Nunito') ||
+              n == 'OFL-Lato.txt' ||
+              n == 'OFL-Nunito.txt',
+        );
+    expect(left, isEmpty);
+  });
 }
