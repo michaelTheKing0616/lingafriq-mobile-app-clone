@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lingafriq/screens/guardian/approvals_screen.dart';
 import 'package:lingafriq/screens/guardian/family_tools_section.dart';
@@ -47,6 +50,18 @@ class _Approvals extends GuardianApprovalService {
   ];
 }
 
+class _ExplainerState extends GuardianMessagingExplainerService {
+  _ExplainerState(this.mode);
+  final String mode;
+  @override
+  Future<GuardianMessagingExplainer> fetchExplainer() {
+    if (mode == 'loading')
+      return Completer<GuardianMessagingExplainer>().future;
+    if (mode == 'offline') throw const GuardianOfflineException();
+    throw GuardianApiException(message: null);
+  }
+}
+
 class _Explainer extends GuardianMessagingExplainerService {
   @override
   Future<GuardianMessagingExplainer> fetchExplainer() async =>
@@ -91,6 +106,82 @@ void main() {
     () => loadComplianceFonts('test/guarded/family_screens_golden_test.dart'),
   );
 
+  testWidgets('messaging guide and circles show Arabic copy, no English', (
+    t,
+  ) async {
+    final ar = goldenVariants[1];
+    await pumpVariant(
+      t,
+      ar,
+      GuardianMessagingExplainerScreen(explainerService: _Explainer()),
+    );
+    expect(find.text('كيف تعمل الرسائل للمتعلمين الصغار'), findsOneWidget);
+    expect(find.text('ما قد يراجعه المشرفون'), findsOneWidget);
+    expect(find.text('Reported messages'), findsNothing);
+    await pumpVariant(t, ar, const CirclesScreen(fetchCircles: _circles));
+    expect(find.text('حلقاتك'), findsOneWidget);
+    expect(find.text('12 من 50 أعضاء · مفتوحة'), findsOneWidget);
+    expect(find.textContaining('members'), findsNothing);
+  });
+
+  testWidgets('messaging guide title wraps at 320 + 200% + Arabic', (t) async {
+    await pumpVariant(
+      t,
+      goldenVariants.last,
+      GuardianMessagingExplainerScreen(explainerService: _Explainer()),
+    );
+    final title = find.text('كيف تعمل الرسائل للمتعلمين الصغار');
+    expect(t.renderObject<RenderParagraph>(title).didExceedMaxLines, isFalse);
+    expect(
+      find.descendant(of: find.byType(AppBar), matching: title),
+      findsNothing,
+    );
+    expectNoLayoutErrors(t);
+  });
+
+  for (final v in [goldenVariants.first, goldenVariants.last]) {
+    for (final mode in ['loading', 'error', 'offline']) {
+      testWidgets('messaging guide $mode ${v.name}', (t) async {
+        await pumpVariant(
+          t,
+          v,
+          GuardianMessagingExplainerScreen(
+            explainerService: _ExplainerState(mode),
+          ),
+          settle: mode != 'loading',
+        );
+        if (mode == 'loading') await t.pump(const Duration(milliseconds: 100));
+        expectNoLayoutErrors(t);
+        await expectLater(
+          find.byType(GuardianMessagingExplainerScreen),
+          matchesGoldenFile('goldens/messaging_guide_${mode}_${v.name}.png'),
+        );
+      });
+    }
+    final circleStates = <String, Future<Object?> Function()>{
+      'loading': () => Completer<Object?>().future,
+      'error': () async => {'ok': false},
+      'offline': () async => throw Exception('offline'),
+      'empty': () async => {'ok': true, 'circles': []},
+    };
+    circleStates.forEach((mode, fetch) {
+      testWidgets('circles $mode ${v.name}', (t) async {
+        await pumpVariant(
+          t,
+          v,
+          CirclesScreen(fetchCircles: fetch),
+          settle: mode != 'loading',
+        );
+        if (mode == 'loading') await t.pump(const Duration(milliseconds: 100));
+        expectNoLayoutErrors(t);
+        await expectLater(
+          find.byType(CirclesScreen),
+          matchesGoldenFile('goldens/circles_${mode}_${v.name}.png'),
+        );
+      });
+    });
+  }
+
   for (final v in goldenVariants) {
     testWidgets('family hub shows Family tools ${v.name}', (t) async {
       await pumpVariant(
@@ -132,7 +223,14 @@ void main() {
         v,
         GuardianMessagingExplainerScreen(explainerService: _Explainer()),
       );
-      expect(find.text('Reported messages'), findsOneWidget);
+      expect(
+        find.text(
+          v.locale.languageCode == 'ar'
+              ? 'البلاغات من المتعلمين أو أولياء الأمور'
+              : 'Reported messages',
+        ),
+        findsOneWidget,
+      );
       expectNoLayoutErrors(t);
       await expectLater(
         find.byType(GuardianMessagingExplainerScreen),

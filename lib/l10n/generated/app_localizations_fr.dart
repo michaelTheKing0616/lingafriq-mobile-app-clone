@@ -3519,4 +3519,89 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get gtpLocked =>
       'Bloqué jusqu’à la confirmation du consentement par l’école';
+
+  @override
+  String get gmeTitle =>
+      'Comment fonctionnent les messages des jeunes apprenants';
+
+  @override
+  String get gmeBody =>
+      'Les messages des apprenants de moins de 18 ans ne sont pas chiffrés de bout en bout, afin que les contrôles automatiques et les modérateurs puissent intervenir avant qu’un contenu nuisible soit livré.';
+
+  @override
+  String get gmeModHeading => 'Ce que les modérateurs peuvent examiner';
+
+  @override
+  String get gmeMod1 =>
+      'Le texte des messages dans les discussions que vous avez approuvées';
+
+  @override
+  String get gmeMod2 => 'Les signaux de sécurité du filtrage automatique';
+
+  @override
+  String get gmeMod3 => 'Les signalements des apprenants ou des tuteurs';
+
+  @override
+  String get gmeTradeoff =>
+      'Les discussions chiffrées entre adultes échappent à la modération ; les comptes enfants restent sur une messagerie modérée.';
+
+  @override
+  String get gmeLoadError =>
+      'Impossible de charger ce guide pour le moment. Tirez pour actualiser ou réessayez une fois en ligne.';
+
+  @override
+  String get gmeOffline =>
+      'Vous êtes hors ligne. Voici la dernière explication enregistrée.';
+
+  @override
+  String get gmeLoading => 'Chargement du guide de messagerie';
+
+  @override
+  String get gmeRetry => 'Réessayer';
+
+  @override
+  String get gmeTileTitle => 'Comment les messages des apprenants restent sûrs';
+
+  @override
+  String get gmeTileSubtitle =>
+      'Pourquoi les discussions sont modérées et non chiffrées';
+
+  @override
+  String get gcirTitle => 'Vos cercles';
+
+  @override
+  String get gcirLoadError =>
+      'Impossible de charger vos cercles pour le moment.';
+
+  @override
+  String get gcirOffline =>
+      'Vous êtes hors ligne. Vos cercles apparaîtront à la reconnexion.';
+
+  @override
+  String get gcirRetry => 'Réessayer';
+
+  @override
+  String get gcirEmpty =>
+      'Créez un cercle d’étude ou rejoignez un village linguistique pour apprendre ensemble.';
+
+  @override
+  String get gcirEmptyTitle => 'Aucun cercle pour l’instant';
+
+  @override
+  String gcirOpen(int count, int max) {
+    return '$count membres sur $max · Ouvert';
+  }
+
+  @override
+  String gcirFull(int count) {
+    return 'Complet · $count membres';
+  }
+
+  @override
+  String gcirOpensAt(int count, int min) {
+    return '$count membres · Ouverture à $min';
+  }
+
+  @override
+  String get gcirFallbackName => 'Cercle';
 }

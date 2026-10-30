@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/services/guardian_link_service.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
@@ -31,18 +32,26 @@ class GuardianMessagingExplainer {
       }
     }
     return GuardianMessagingExplainer(
-      title: json['title']?.toString() ?? GuardianMessagingExplainerScreen.fallbackTitle,
-      body: json['body']?.toString() ?? GuardianMessagingExplainerScreen.fallbackBody,
-      moderatorsSee: items.isEmpty ? GuardianMessagingExplainerScreen.fallbackModeratorsSee : items,
+      title:
+          json['title']?.toString() ??
+          GuardianMessagingExplainerScreen.fallbackTitle,
+      body:
+          json['body']?.toString() ??
+          GuardianMessagingExplainerScreen.fallbackBody,
+      moderatorsSee: items.isEmpty
+          ? GuardianMessagingExplainerScreen.fallbackModeratorsSee
+          : items,
       e2eeTradeoff:
-          json['e2ee_tradeoff']?.toString() ?? GuardianMessagingExplainerScreen.fallbackTradeoff,
+          json['e2ee_tradeoff']?.toString() ??
+          GuardianMessagingExplainerScreen.fallbackTradeoff,
     );
   }
 }
 
 class GuardianMessagingExplainerService {
-  GuardianMessagingExplainerService({Future<Map<String, dynamic>> Function(String path)? get})
-      : _get = get ?? _defaultGet;
+  GuardianMessagingExplainerService({
+    Future<Map<String, dynamic>> Function(String path)? get,
+  }) : _get = get ?? _defaultGet;
 
   final Future<Map<String, dynamic>> Function(String path) _get;
 
@@ -81,14 +90,18 @@ class GuardianMessagingExplainerHubTile extends StatelessWidget {
   final GuardianMessagingExplainerService? explainerService;
 
   static const String tileTitle = 'How learner messages stay safe';
-  static const String tileSubtitle = 'Why chats are moderated and not encrypted';
+  static const String tileSubtitle =
+      'Why chats are moderated and not encrypted';
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final l = AppLocalizations.of(context);
+    final title = l?.gmeTileTitle ?? tileTitle;
+    final subtitle = l?.gmeTileSubtitle ?? tileSubtitle;
     return Semantics(
       button: true,
-      label: '$tileTitle. $tileSubtitle',
+      label: '$title. $subtitle',
       child: Material(
         color: colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(PanAfricanRadius.md),
@@ -107,20 +120,25 @@ class GuardianMessagingExplainerHubTile extends StatelessWidget {
             padding: EdgeInsets.all(PanAfricanSpacing.md.w),
             child: Row(
               children: [
-                Icon(Icons.shield_outlined, color: colorScheme.primary, size: 28.sp),
+                Icon(
+                  Icons.shield_outlined,
+                  color: colorScheme.primary,
+                  size: 28.sp,
+                ),
                 SizedBox(width: PanAfricanSpacing.md.w),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        tileTitle,
-                        style: PanAfricanTypography.titleSmall(context)
-                            .copyWith(fontWeight: FontWeight.w700),
+                        title,
+                        style: PanAfricanTypography.titleSmall(
+                          context,
+                        ).copyWith(fontWeight: FontWeight.w700),
                       ),
                       SizedBox(height: PanAfricanSpacing.xs.h),
                       Text(
-                        tileSubtitle,
+                        subtitle,
                         style: PanAfricanTypography.bodySmall(context).copyWith(
                           color: colorScheme.onSurfaceVariant,
                           height: 1.4,
@@ -140,10 +158,7 @@ class GuardianMessagingExplainerHubTile extends StatelessWidget {
 }
 
 class GuardianMessagingExplainerScreen extends HookConsumerWidget {
-  const GuardianMessagingExplainerScreen({
-    super.key,
-    this.explainerService,
-  });
+  const GuardianMessagingExplainerScreen({super.key, this.explainerService});
 
   final GuardianMessagingExplainerService? explainerService;
 
@@ -204,41 +219,74 @@ class GuardianMessagingExplainerScreen extends HookConsumerWidget {
       return null;
     }, const []);
 
-    final content = explainer.value;
+    // The server copy is English only; other locales show the same guide
+    // from the app's translations so the page never mixes languages.
+    final l = AppLocalizations.of(context);
+    final english = Localizations.localeOf(context).languageCode == 'en';
+    final serverContent = explainer.value;
+    final content = serverContent == null
+        ? null
+        : (english || l == null)
+        ? serverContent
+        : GuardianMessagingExplainer(
+            title: l.gmeTitle,
+            body: l.gmeBody,
+            moderatorsSee: [l.gmeMod1, l.gmeMod2, l.gmeMod3],
+            e2eeTradeoff: l.gmeTradeoff,
+          );
+    final offlineText = l?.gmeOffline ?? offlineBanner;
+    final errorMessage = (english || l == null)
+        ? (errorText.value ?? loadError)
+        : l.gmeLoadError;
+    // Title lives in the body so it wraps at 320dp / 200% / Arabic.
+    final title = content?.title ?? l?.gmeTitle ?? fallbackTitle;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(content?.title ?? fallbackTitle),
-      ),
+      appBar: AppBar(),
       body: ResponsiveSafeArea(
         child: RefreshIndicator(
           onRefresh: load,
           child: ListView(
             padding: EdgeInsets.all(PanAfricanSpacing.lg.w),
             children: [
+              Semantics(
+                header: true,
+                child: Text(
+                  title,
+                  style: PanAfricanTypography.headlineSmall(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.w700),
+                ),
+              ),
+              SizedBox(height: PanAfricanSpacing.md.h),
               if (offline.value)
-                _OfflineBanner(label: offlineBanner, colorScheme: colorScheme),
+                _OfflineBanner(label: offlineText, colorScheme: colorScheme),
               if (uiState.value == _ExplainerUiState.loading)
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.xxl.h),
+                  padding: EdgeInsets.symmetric(
+                    vertical: PanAfricanSpacing.xxl.h,
+                  ),
                   child: Center(
                     child: Semantics(
-                      label: 'Loading messaging guide',
+                      label: l?.gmeLoading ?? 'Loading messaging guide',
                       child: const CircularProgressIndicator(),
                     ),
                   ),
                 )
               else if (uiState.value == _ExplainerUiState.error)
-                _ErrorPanel(message: errorText.value ?? loadError, onRetry: load)
+                _ErrorPanel(message: errorMessage, onRetry: load)
               else if (content != null) ...[
                 Text(
                   content.body,
-                  style: PanAfricanTypography.bodyLarge(context).copyWith(height: 1.45),
+                  style: PanAfricanTypography.bodyLarge(
+                    context,
+                  ).copyWith(height: 1.45),
                 ),
                 SizedBox(height: PanAfricanSpacing.lg.h),
                 Text(
-                  'What moderators may review',
-                  style: PanAfricanTypography.titleSmall(context)
-                      .copyWith(fontWeight: FontWeight.w700),
+                  l?.gmeModHeading ?? 'What moderators may review',
+                  style: PanAfricanTypography.titleSmall(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.w700),
                 ),
                 SizedBox(height: PanAfricanSpacing.sm.h),
                 ...content.moderatorsSee.map(
@@ -247,13 +295,18 @@ class GuardianMessagingExplainerScreen extends HookConsumerWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(Icons.check_circle_outline,
-                            size: 20.sp, color: colorScheme.primary),
+                        Icon(
+                          Icons.check_circle_outline,
+                          size: 20.sp,
+                          color: colorScheme.primary,
+                        ),
                         SizedBox(width: PanAfricanSpacing.sm.w),
                         Expanded(
                           child: Text(
                             line,
-                            style: PanAfricanTypography.bodyMedium(context).copyWith(height: 1.4),
+                            style: PanAfricanTypography.bodyMedium(
+                              context,
+                            ).copyWith(height: 1.4),
                           ),
                         ),
                       ],
@@ -270,7 +323,9 @@ class GuardianMessagingExplainerScreen extends HookConsumerWidget {
                     padding: EdgeInsets.all(PanAfricanSpacing.md.w),
                     child: Text(
                       content.e2eeTradeoff,
-                      style: PanAfricanTypography.bodyMedium(context).copyWith(height: 1.45),
+                      style: PanAfricanTypography.bodyMedium(
+                        context,
+                      ).copyWith(height: 1.45),
                     ),
                   ),
                 ),
@@ -323,7 +378,7 @@ class _ErrorPanel extends StatelessWidget {
         SizedBox(height: PanAfricanSpacing.md.h),
         FilledButton(
           onPressed: onRetry,
-          child: const Text('Try again'),
+          child: Text(AppLocalizations.of(context)?.gmeRetry ?? 'Try again'),
         ),
       ],
     );

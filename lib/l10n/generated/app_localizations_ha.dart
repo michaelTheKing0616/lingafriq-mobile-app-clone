@@ -3480,4 +3480,85 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get gtpLocked => 'Locked until the school confirms consent';
+
+  @override
+  String get gmeTitle => 'How messages work for young learners';
+
+  @override
+  String get gmeBody =>
+      'Messages from learners under 18 are not end-to-end encrypted so automated checks and moderators can help before harmful content is delivered.';
+
+  @override
+  String get gmeModHeading => 'What moderators may review';
+
+  @override
+  String get gmeMod1 => 'Message text in chats you approved';
+
+  @override
+  String get gmeMod2 => 'Safety signals from automated screening';
+
+  @override
+  String get gmeMod3 => 'Reports from learners or guardians';
+
+  @override
+  String get gmeTradeoff =>
+      'Adult encrypted chats hide content from moderation; child accounts stay on moderated messaging.';
+
+  @override
+  String get gmeLoadError =>
+      'We could not load this guide right now. Pull to refresh or try again when you are online.';
+
+  @override
+  String get gmeOffline =>
+      'You are offline. Showing the last saved explanation.';
+
+  @override
+  String get gmeLoading => 'Loading messaging guide';
+
+  @override
+  String get gmeRetry => 'Try again';
+
+  @override
+  String get gmeTileTitle => 'How learner messages stay safe';
+
+  @override
+  String get gmeTileSubtitle => 'Why chats are moderated and not encrypted';
+
+  @override
+  String get gcirTitle => 'Your circles';
+
+  @override
+  String get gcirLoadError => 'We could not load your circles right now.';
+
+  @override
+  String get gcirOffline =>
+      'You are offline. Your circles will appear when you reconnect.';
+
+  @override
+  String get gcirRetry => 'Try again';
+
+  @override
+  String get gcirEmpty =>
+      'Start a study circle or join a language village to learn together.';
+
+  @override
+  String get gcirEmptyTitle => 'No circles yet';
+
+  @override
+  String gcirOpen(int count, int max) {
+    return '$count of $max members · Open';
+  }
+
+  @override
+  String gcirFull(int count) {
+    return 'Full · $count members';
+  }
+
+  @override
+  String gcirOpensAt(int count, int min) {
+    return '$count members · Opens at $min';
+  }
+
+  @override
+  String get gcirFallbackName => 'Circle';
 }

@@ -6047,6 +6047,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Locked until the school confirms consent'**
   String get gtpLocked;
+
+  /// gmeTitle
+  ///
+  /// In en, this message translates to:
+  /// **'How messages work for young learners'**
+  String get gmeTitle;
+
+  /// gmeBody
+  ///
+  /// In en, this message translates to:
+  /// **'Messages from learners under 18 are not end-to-end encrypted so automated checks and moderators can help before harmful content is delivered.'**
+  String get gmeBody;
+
+  /// gmeModHeading
+  ///
+  /// In en, this message translates to:
+  /// **'What moderators may review'**
+  String get gmeModHeading;
+
+  /// gmeMod1
+  ///
+  /// In en, this message translates to:
+  /// **'Message text in chats you approved'**
+  String get gmeMod1;
+
+  /// gmeMod2
+  ///
+  /// In en, this message translates to:
+  /// **'Safety signals from automated screening'**
+  String get gmeMod2;
+
+  /// gmeMod3
+  ///
+  /// In en, this message translates to:
+  /// **'Reports from learners or guardians'**
+  String get gmeMod3;
+
+  /// gmeTradeoff
+  ///
+  /// In en, this message translates to:
+  /// **'Adult encrypted chats hide content from moderation; child accounts stay on moderated messaging.'**
+  String get gmeTradeoff;
+
+  /// gmeLoadError
+  ///
+  /// In en, this message translates to:
+  /// **'We could not load this guide right now. Pull to refresh or try again when you are online.'**
+  String get gmeLoadError;
+
+  /// gmeOffline
+  ///
+  /// In en, this message translates to:
+  /// **'You are offline. Showing the last saved explanation.'**
+  String get gmeOffline;
+
+  /// gmeLoading
+  ///
+  /// In en, this message translates to:
+  /// **'Loading messaging guide'**
+  String get gmeLoading;
+
+  /// gmeRetry
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get gmeRetry;
+
+  /// gmeTileTitle
+  ///
+  /// In en, this message translates to:
+  /// **'How learner messages stay safe'**
+  String get gmeTileTitle;
+
+  /// gmeTileSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Why chats are moderated and not encrypted'**
+  String get gmeTileSubtitle;
+
+  /// gcirTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Your circles'**
+  String get gcirTitle;
+
+  /// gcirLoadError
+  ///
+  /// In en, this message translates to:
+  /// **'We could not load your circles right now.'**
+  String get gcirLoadError;
+
+  /// gcirOffline
+  ///
+  /// In en, this message translates to:
+  /// **'You are offline. Your circles will appear when you reconnect.'**
+  String get gcirOffline;
+
+  /// gcirRetry
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get gcirRetry;
+
+  /// gcirEmpty
+  ///
+  /// In en, this message translates to:
+  /// **'Start a study circle or join a language village to learn together.'**
+  String get gcirEmpty;
+
+  /// gcirEmptyTitle
+  ///
+  /// In en, this message translates to:
+  /// **'No circles yet'**
+  String get gcirEmptyTitle;
+
+  /// gcirOpen
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of {max} members · Open'**
+  String gcirOpen(int count, int max);
+
+  /// gcirFull
+  ///
+  /// In en, this message translates to:
+  /// **'Full · {count} members'**
+  String gcirFull(int count);
+
+  /// gcirOpensAt
+  ///
+  /// In en, this message translates to:
+  /// **'{count} members · Opens at {min}'**
+  String gcirOpensAt(int count, int min);
+
+  /// gcirFallbackName
+  ///
+  /// In en, this message translates to:
+  /// **'Circle'**
+  String get gcirFallbackName;
 }
 
 class _AppLocalizationsDelegate

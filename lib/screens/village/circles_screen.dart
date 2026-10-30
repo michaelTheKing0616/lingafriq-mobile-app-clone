@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
@@ -18,6 +19,7 @@ class CirclesScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final circles = useState<List<Map<String, dynamic>>>([]);
     final loading = useState(true);
+    // Error kind: 'load' or 'offline'; text is resolved at build time.
     final error = useState<String?>(null);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -33,11 +35,10 @@ class CirclesScreen extends HookConsumerWidget {
               .map((e) => Map<String, dynamic>.from(e as Map))
               .toList();
         } else {
-          error.value = 'We could not load your circles right now.';
+          error.value = 'load';
         }
       } catch (_) {
-        error.value =
-            'You are offline. Your circles will appear when you reconnect.';
+        error.value = 'offline';
       } finally {
         loading.value = false;
       }
@@ -54,7 +55,7 @@ class CirclesScreen extends HookConsumerWidget {
           : PanAfricanColors.backgroundLight,
       appBar: AppBar(
         title: Text(
-          'Your circles',
+          AppLocalizations.of(context)?.gcirTitle ?? 'Your circles',
           style: PanAfricanTypography.titleLarge(context),
         ),
       ),
@@ -80,6 +81,7 @@ class CirclesScreen extends HookConsumerWidget {
     List<Map<String, dynamic>> circles,
     Future<void> Function() reload,
   ) {
+    final l = AppLocalizations.of(context);
     if (loading && circles.isEmpty) {
       return ListView(
         physics: const AlwaysScrollableScrollPhysics(),
@@ -94,17 +96,25 @@ class CirclesScreen extends HookConsumerWidget {
         physics: const AlwaysScrollableScrollPhysics(),
         padding: EdgeInsets.all(PanAfricanSpacing.lg),
         children: [
-          Text(error, style: PanAfricanTypography.bodyLarge(context)),
+          Text(
+            error == 'offline'
+                ? (l?.gcirOffline ??
+                      'You are offline. Your circles will appear when you reconnect.')
+                : (l?.gcirLoadError ??
+                      'We could not load your circles right now.'),
+            style: PanAfricanTypography.bodyLarge(context),
+          ),
           SizedBox(height: PanAfricanSpacing.md),
           Semantics(
             button: true,
-            label: 'Try again',
+            label: l?.gcirRetry ?? 'Try again',
+            excludeSemantics: true,
             child: FilledButton(
               onPressed: () {
                 HapticFeedback.lightImpact();
                 reload();
               },
-              child: const Text('Try again'),
+              child: Text(l?.gcirRetry ?? 'Try again'),
             ),
           ),
         ],
@@ -115,8 +125,22 @@ class CirclesScreen extends HookConsumerWidget {
         physics: const AlwaysScrollableScrollPhysics(),
         padding: EdgeInsets.all(PanAfricanSpacing.lg),
         children: [
+          Icon(
+            Icons.groups_outlined,
+            size: 48,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          SizedBox(height: PanAfricanSpacing.md),
           Text(
-            'Start a study circle or join a language village to learn together.',
+            l?.gcirEmptyTitle ?? 'No circles yet',
+            textAlign: TextAlign.center,
+            style: PanAfricanTypography.titleMedium(context),
+          ),
+          SizedBox(height: PanAfricanSpacing.xs),
+          Text(
+            l?.gcirEmpty ??
+                'Start a study circle or join a language village to learn together.',
+            textAlign: TextAlign.center,
             style: PanAfricanTypography.bodyLarge(context),
           ),
         ],
@@ -132,16 +156,18 @@ class CirclesScreen extends HookConsumerWidget {
       separatorBuilder: (_, __) => SizedBox(height: PanAfricanSpacing.xs),
       itemBuilder: (context, index) {
         final c = circles[index];
-        final name = c['name']?.toString() ?? 'Circle';
+        final name = c['name']?.toString() ?? l?.gcirFallbackName ?? 'Circle';
         final status = c['status']?.toString() ?? 'draft';
-        final count = c['member_count'] ?? 0;
-        final max = c['max_members'] ?? 50;
+        final count = (c['member_count'] as num?)?.toInt() ?? 0;
+        final max = (c['max_members'] as num?)?.toInt() ?? 50;
+        final minOpen = (c['min_open'] as num?)?.toInt() ?? 5;
         final id = c['id']?.toString() ?? '';
         final subtitle = status == 'open'
-            ? '$count of $max members · Open'
+            ? (l?.gcirOpen(count, max) ?? '$count of $max members · Open')
             : status == 'full'
-            ? 'Full — $count members'
-            : '$count members · Opens at ${c['min_open'] ?? 5}';
+            ? (l?.gcirFull(count) ?? 'Full · $count members')
+            : (l?.gcirOpensAt(count, minOpen) ??
+                  '$count members · Opens at $minOpen');
 
         return Semantics(
           button: true,

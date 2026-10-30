@@ -4612,5 +4612,118 @@
   "gtpLocked": "Locked until the school confirms consent",
   "@gtpLocked": {
     "description": "gtpLocked"
+  },
+  "gmeTitle": "How messages work for young learners",
+  "@gmeTitle": {
+    "description": "gmeTitle"
+  },
+  "gmeBody": "Messages from learners under 18 are not end-to-end encrypted so automated checks and moderators can help before harmful content is delivered.",
+  "@gmeBody": {
+    "description": "gmeBody"
+  },
+  "gmeModHeading": "What moderators may review",
+  "@gmeModHeading": {
+    "description": "gmeModHeading"
+  },
+  "gmeMod1": "Message text in chats you approved",
+  "@gmeMod1": {
+    "description": "gmeMod1"
+  },
+  "gmeMod2": "Safety signals from automated screening",
+  "@gmeMod2": {
+    "description": "gmeMod2"
+  },
+  "gmeMod3": "Reports from learners or guardians",
+  "@gmeMod3": {
+    "description": "gmeMod3"
+  },
+  "gmeTradeoff": "Adult encrypted chats hide content from moderation; child accounts stay on moderated messaging.",
+  "@gmeTradeoff": {
+    "description": "gmeTradeoff"
+  },
+  "gmeLoadError": "We could not load this guide right now. Pull to refresh or try again when you are online.",
+  "@gmeLoadError": {
+    "description": "gmeLoadError"
+  },
+  "gmeOffline": "You are offline. Showing the last saved explanation.",
+  "@gmeOffline": {
+    "description": "gmeOffline"
+  },
+  "gmeLoading": "Loading messaging guide",
+  "@gmeLoading": {
+    "description": "gmeLoading"
+  },
+  "gmeRetry": "Try again",
+  "@gmeRetry": {
+    "description": "gmeRetry"
+  },
+  "gmeTileTitle": "How learner messages stay safe",
+  "@gmeTileTitle": {
+    "description": "gmeTileTitle"
+  },
+  "gmeTileSubtitle": "Why chats are moderated and not encrypted",
+  "@gmeTileSubtitle": {
+    "description": "gmeTileSubtitle"
+  },
+  "gcirTitle": "Your circles",
+  "@gcirTitle": {
+    "description": "gcirTitle"
+  },
+  "gcirLoadError": "We could not load your circles right now.",
+  "@gcirLoadError": {
+    "description": "gcirLoadError"
+  },
+  "gcirOffline": "You are offline. Your circles will appear when you reconnect.",
+  "@gcirOffline": {
+    "description": "gcirOffline"
+  },
+  "gcirRetry": "Try again",
+  "@gcirRetry": {
+    "description": "gcirRetry"
+  },
+  "gcirEmpty": "Start a study circle or join a language village to learn together.",
+  "@gcirEmpty": {
+    "description": "gcirEmpty"
+  },
+  "gcirEmptyTitle": "No circles yet",
+  "@gcirEmptyTitle": {
+    "description": "gcirEmptyTitle"
+  },
+  "gcirOpen": "{count} of {max} members · Open",
+  "@gcirOpen": {
+    "description": "gcirOpen",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "gcirFull": "Full · {count} members",
+  "@gcirFull": {
+    "description": "gcirFull",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gcirOpensAt": "{count} members · Opens at {min}",
+  "@gcirOpensAt": {
+    "description": "gcirOpensAt",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "gcirFallbackName": "Circle",
+  "@gcirFallbackName": {
+    "description": "gcirFallbackName"
   }
 }

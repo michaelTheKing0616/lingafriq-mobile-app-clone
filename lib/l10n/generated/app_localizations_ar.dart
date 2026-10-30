@@ -3535,4 +3535,83 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get gtpLocked => 'مقفل حتى تؤكد المدرسة الموافقة';
+
+  @override
+  String get gmeTitle => 'كيف تعمل الرسائل للمتعلمين الصغار';
+
+  @override
+  String get gmeBody =>
+      'رسائل المتعلمين دون 18 عامًا ليست مشفرة من طرف إلى طرف، حتى تتمكن الفحوصات الآلية والمشرفون من التدخل قبل وصول أي محتوى ضار.';
+
+  @override
+  String get gmeModHeading => 'ما قد يراجعه المشرفون';
+
+  @override
+  String get gmeMod1 => 'نص الرسائل في المحادثات التي وافقت عليها';
+
+  @override
+  String get gmeMod2 => 'إشارات الأمان من الفحص الآلي';
+
+  @override
+  String get gmeMod3 => 'البلاغات من المتعلمين أو أولياء الأمور';
+
+  @override
+  String get gmeTradeoff =>
+      'المحادثات المشفرة بين البالغين تخفي المحتوى عن الإشراف؛ أما حسابات الأطفال فتبقى على مراسلة خاضعة للإشراف.';
+
+  @override
+  String get gmeLoadError =>
+      'تعذّر تحميل هذا الدليل الآن. اسحب للتحديث أو حاول مرة أخرى عند الاتصال.';
+
+  @override
+  String get gmeOffline => 'أنت غير متصل. نعرض آخر شرح محفوظ.';
+
+  @override
+  String get gmeLoading => 'جارٍ تحميل دليل الرسائل';
+
+  @override
+  String get gmeRetry => 'حاول مرة أخرى';
+
+  @override
+  String get gmeTileTitle => 'كيف تبقى رسائل المتعلمين آمنة';
+
+  @override
+  String get gmeTileSubtitle => 'لماذا تخضع المحادثات للإشراف ولا تُشفَّر';
+
+  @override
+  String get gcirTitle => 'حلقاتك';
+
+  @override
+  String get gcirLoadError => 'تعذّر تحميل حلقاتك الآن.';
+
+  @override
+  String get gcirOffline => 'أنت غير متصل. ستظهر حلقاتك عند إعادة الاتصال.';
+
+  @override
+  String get gcirRetry => 'حاول مرة أخرى';
+
+  @override
+  String get gcirEmpty =>
+      'ابدأ حلقة دراسة أو انضم إلى قرية لغوية لتتعلموا معًا.';
+
+  @override
+  String get gcirEmptyTitle => 'لا توجد حلقات بعد';
+
+  @override
+  String gcirOpen(int count, int max) {
+    return '$count من $max أعضاء · مفتوحة';
+  }
+
+  @override
+  String gcirFull(int count) {
+    return 'مكتملة · $count أعضاء';
+  }
+
+  @override
+  String gcirOpensAt(int count, int min) {
+    return '$count أعضاء · تُفتح عند $min';
+  }
+
+  @override
+  String get gcirFallbackName => 'حلقة';
 }
