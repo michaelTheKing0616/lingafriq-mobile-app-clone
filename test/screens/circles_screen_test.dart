@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/screens/village/circles_screen.dart';
 
 void main() {
@@ -12,6 +13,8 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: MediaQuery(
           data: const MediaQueryData(size: Size(390, 844)),
           child: ScreenUtilInit(
