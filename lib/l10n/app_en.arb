@@ -4429,7 +4429,16 @@
         "type": "int"
       }
     }
+  },  "gdmHeld": "{count, plural, =1{1 photo or voice note waiting for a moderator} other{{count} photos or voice notes waiting for a moderator}}",
+  "@gdmHeld": {
+    "description": "gdmHeld",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
+
   "gdmStop": "Stop messages",
   "@gdmStop": {
     "description": "gdmStop"

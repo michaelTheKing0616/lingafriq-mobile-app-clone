@@ -39,6 +39,11 @@ void main() {
       expect(find.text('14 messages'), findsOneWidget);
       expect(find.text('1 report'), findsOneWidget);
       expect(find.text('2 messages stopped by safety checks'), findsOneWidget);
+      expect(
+        find.text('1 photo or voice note waiting for a moderator'),
+        findsOneWidget,
+      );
+      expect(find.textContaining('waiting for a moderator'), findsOneWidget);
       expect(find.text('Unknown user'), findsOneWidget);
       expect(find.text('Messages stopped'), findsOneWidget);
       expect(f.calls.single.path, '/api/v2/guardian/children/7/dm-threads');

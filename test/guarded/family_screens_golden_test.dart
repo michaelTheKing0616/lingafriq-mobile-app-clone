@@ -226,7 +226,7 @@ void main() {
       expect(
         find.text(
           v.locale.languageCode == 'ar'
-              ? 'البلاغات من المتعلمين أو أولياء الأمور'
+              ? 'كيف تعمل الرسائل للمتعلمين الصغار'
               : 'Reported messages',
         ),
         findsOneWidget,

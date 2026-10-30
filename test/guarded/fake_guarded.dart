@@ -42,6 +42,7 @@ const threadsJson = {
       'message_count': 3,
       'report_count': 1,
       'blocked_message_count': 2,
+      'held_media_count': 1,
       'revoked': false,
     },
     {

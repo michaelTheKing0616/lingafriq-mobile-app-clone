@@ -32,6 +32,7 @@ class ChildDmThread {
     required this.messageCount,
     required this.reportCount,
     required this.blockedMessageCount,
+    this.heldMediaCount = 0,
     required this.revoked,
   });
 
@@ -47,6 +48,7 @@ class ChildDmThread {
     messageCount: _int(j['message_count']),
     reportCount: _int(j['report_count']),
     blockedMessageCount: _int(j['blocked_message_count']),
+    heldMediaCount: _int(j['held_media_count']),
     revoked: j['revoked'] == true,
   );
 
@@ -57,6 +59,9 @@ class ChildDmThread {
   final int messageCount;
   final int reportCount;
   final int blockedMessageCount;
+
+  /// Photos/voice notes held for a moderator before delivery.
+  final int heldMediaCount;
   final bool revoked;
 
   ChildDmThread copyWith({bool? revoked}) => ChildDmThread(
@@ -67,6 +72,7 @@ class ChildDmThread {
     messageCount: messageCount,
     reportCount: reportCount,
     blockedMessageCount: blockedMessageCount,
+    heldMediaCount: heldMediaCount,
     revoked: revoked ?? this.revoked,
   );
 }

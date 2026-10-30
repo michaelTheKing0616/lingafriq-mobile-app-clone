@@ -3400,6 +3400,17 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String gdmHeld(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count صور أو رسائل صوتية بانتظار المشرف',
+      one: 'صورة أو رسالة صوتية واحدة بانتظار المشرف',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get gdmStop => 'إيقاف الرسائل';
 
   @override

@@ -3342,6 +3342,17 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String gdmHeld(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count photos or voice notes waiting for a moderator',
+      one: '1 photo or voice note waiting for a moderator',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get gdmStop => 'Stop messages';
 
   @override

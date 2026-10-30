@@ -258,6 +258,11 @@ class _ThreadCard extends StatelessWidget {
                     text: l.gdmBlocked(thread.blockedMessageCount),
                     warn: true,
                   ),
+                if (thread.heldMediaCount > 0)
+                  _Pill(
+                    icon: Icons.hourglass_top_outlined,
+                    text: l.gdmHeld(thread.heldMediaCount),
+                  ),
               ],
             ),
             if (when != null) ...[

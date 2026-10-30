@@ -5796,6 +5796,12 @@ abstract class AppLocalizations {
   /// **'{count, plural, =1{1 message stopped by safety checks} other{{count} messages stopped by safety checks}}'**
   String gdmBlocked(int count);
 
+  /// gdmHeld
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 photo or voice note waiting for a moderator} other{{count} photos or voice notes waiting for a moderator}}'**
+  String gdmHeld(int count);
+
   /// gdmStop
   ///
   /// In en, this message translates to:

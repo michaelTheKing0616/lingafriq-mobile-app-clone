@@ -811,6 +811,7 @@
   "gdmMessages": "{count, plural, =0{لا رسائل} =1{رسالة واحدة} =2{رسالتان} few{{count} رسائل} many{{count} رسالة} other{{count} رسالة}}",
   "gdmReports": "{count, plural, =0{لا بلاغات} =1{بلاغ واحد} =2{بلاغان} few{{count} بلاغات} many{{count} بلاغًا} other{{count} بلاغ}}",
   "gdmBlocked": "{count, plural, =1{أُوقفت رسالة واحدة بفحوص الأمان} other{أُوقفت {count} رسائل بفحوص الأمان}}",
+  "gdmHeld": "{count, plural, =1{صورة أو رسالة صوتية واحدة بانتظار المشرف} other{{count} صور أو رسائل صوتية بانتظار المشرف}}",
   "gdmStop": "إيقاف الرسائل",
   "gdmAllow": "السماح مرة أخرى",
   "gdmStopped": "الرسائل موقوفة",
