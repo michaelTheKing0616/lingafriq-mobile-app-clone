@@ -273,6 +273,7 @@ void main() {
                 childUserId: 100,
                 status: 'verifying',
                 regime: 'NDPA_2023',
+                childName: 'Ada',
               ),
             ],
           ),
@@ -281,15 +282,12 @@ void main() {
     );
     await tester.pumpAndSettle();
     await tester.scrollUntilVisible(
-      find.text('Learner #100'),
+      find.text('Ada'),
       400,
       scrollable: _hubScrollable(),
     );
-    expect(find.text('Learner #100'), findsOneWidget);
-    expect(
-      find.bySemanticsLabel('Learner 100, Needs your consent'),
-      findsOneWidget,
-    );
+    expect(find.text('Ada'), findsOneWidget);
+    expect(find.bySemanticsLabel('Ada, Needs your consent'), findsOneWidget);
     handle.dispose();
   });
 
@@ -589,13 +587,13 @@ void main() {
     );
     await tester.pumpAndSettle();
     await tester.scrollUntilVisible(
-      find.text('Learner #7'),
+      find.text('Your learner'),
       400,
       scrollable: _hubScrollable(),
     );
     // Family tools tiles use the same chevrons, so check the learner tile.
     final tile = find.ancestor(
-      of: find.text('Learner #7'),
+      of: find.text('Your learner'),
       matching: find.byType(ListTile),
     );
     expect(
@@ -675,7 +673,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text(GuardianLinkScreen.offlineBanner), findsOneWidget);
-    expect(find.text('Learner #42'), findsOneWidget);
+    expect(find.text('Your learner'), findsOneWidget);
 
     await expectLater(
       find.byType(GuardianLinkScreen),

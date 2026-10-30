@@ -7,8 +7,10 @@ import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/screens/chat/tribe_chat_screen.dart';
+import 'package:lingafriq/screens/classroom/class_code_join_sheet.dart';
 
-/// Village circles list — reference: WhatsApp Communities member list + Discord server sidebar.
+/// Village circles list. Reference pack: docs/design/references/circles (recoloured, own copy).
+/// Uses the app theme text styles so it matches the screens around it.
 class CirclesScreen extends HookConsumerWidget {
   const CirclesScreen({super.key, this.fetchCircles});
 
@@ -54,10 +56,7 @@ class CirclesScreen extends HookConsumerWidget {
           ? PanAfricanColors.backgroundDark
           : PanAfricanColors.backgroundLight,
       appBar: AppBar(
-        title: Text(
-          AppLocalizations.of(context)?.gcirTitle ?? 'Your circles',
-          style: PanAfricanTypography.titleLarge(context),
-        ),
+        title: Text(AppLocalizations.of(context)?.gcirTitle ?? 'Your circles'),
       ),
       body: ResponsiveSafeArea(
         child: RefreshIndicator(
@@ -81,40 +80,79 @@ class CirclesScreen extends HookConsumerWidget {
     List<Map<String, dynamic>> circles,
     Future<void> Function() reload,
   ) {
-    final l = AppLocalizations.of(context);
+    final l = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final text = theme.textTheme;
+    const pad = EdgeInsets.all(16);
     if (loading && circles.isEmpty) {
-      return ListView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        children: [
-          SizedBox(height: MediaQuery.sizeOf(context).height * 0.3),
-          const Center(child: CircularProgressIndicator()),
-        ],
+      // Skeleton rows at the final card height.
+      return Semantics(
+        key: const ValueKey('gcir-loading'),
+        label: l.gcirLoading,
+        liveRegion: true,
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: pad,
+          children: List.generate(
+            4,
+            (_) => Container(
+              height: 76,
+              margin: const EdgeInsets.only(bottom: 12),
+              decoration: BoxDecoration(
+                color: scheme.surfaceContainerHighest,
+                borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+              ),
+            ),
+          ),
+        ),
       );
     }
     if (error != null && circles.isEmpty) {
       return ListView(
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: EdgeInsets.all(PanAfricanSpacing.lg),
+        padding: pad,
         children: [
-          Text(
-            error == 'offline'
-                ? (l?.gcirOffline ??
-                      'You are offline. Your circles will appear when you reconnect.')
-                : (l?.gcirLoadError ??
-                      'We could not load your circles right now.'),
-            style: PanAfricanTypography.bodyLarge(context),
+          Container(
+            key: const ValueKey('gcir-error'),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: error == 'offline'
+                  ? scheme.secondaryContainer
+                  : scheme.errorContainer,
+              borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(
+                  error == 'offline'
+                      ? Icons.cloud_off_outlined
+                      : Icons.error_outline,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    error == 'offline' ? l.gcirOffline : l.gcirLoadError,
+                    style: text.bodyLarge,
+                  ),
+                ),
+              ],
+            ),
           ),
-          SizedBox(height: PanAfricanSpacing.md),
-          Semantics(
-            button: true,
-            label: l?.gcirRetry ?? 'Try again',
-            excludeSemantics: true,
-            child: FilledButton(
-              onPressed: () {
-                HapticFeedback.lightImpact();
-                reload();
-              },
-              child: Text(l?.gcirRetry ?? 'Try again'),
+          const SizedBox(height: 16),
+          Align(
+            alignment: AlignmentDirectional.centerEnd,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: 48),
+              child: FilledButton.icon(
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  reload();
+                },
+                icon: const Icon(Icons.refresh),
+                label: Text(l.gcirRetry),
+              ),
             ),
           ),
         ],
@@ -122,61 +160,109 @@ class CirclesScreen extends HookConsumerWidget {
     }
     if (circles.isEmpty) {
       return ListView(
+        key: const ValueKey('gcir-empty'),
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: EdgeInsets.all(PanAfricanSpacing.lg),
+        padding: const EdgeInsets.fromLTRB(24, 48, 24, 24),
         children: [
-          Icon(
-            Icons.groups_outlined,
-            size: 48,
-            color: Theme.of(context).colorScheme.primary,
+          Center(
+            child: Container(
+              width: 96,
+              height: 96,
+              decoration: BoxDecoration(
+                color: scheme.primaryContainer,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.groups_outlined,
+                size: 48,
+                color: scheme.onPrimaryContainer,
+              ),
+            ),
           ),
-          SizedBox(height: PanAfricanSpacing.md),
-          Text(
-            l?.gcirEmptyTitle ?? 'No circles yet',
-            textAlign: TextAlign.center,
-            style: PanAfricanTypography.titleMedium(context),
+          const SizedBox(height: 24),
+          Semantics(
+            header: true,
+            child: Text(
+              l.gcirEmptyTitle,
+              textAlign: TextAlign.center,
+              style: text.titleLarge?.copyWith(fontWeight: FontWeight.w700),
+            ),
           ),
-          SizedBox(height: PanAfricanSpacing.xs),
+          const SizedBox(height: 8),
           Text(
-            l?.gcirEmpty ??
-                'Start a study circle or join a language village to learn together.',
+            l.gcirEmpty,
             textAlign: TextAlign.center,
-            style: PanAfricanTypography.bodyLarge(context),
+            style: text.bodyLarge?.copyWith(color: scheme.onSurfaceVariant),
+          ),
+          const SizedBox(height: 24),
+          ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 48),
+            child: FilledButton.icon(
+              key: const ValueKey('gcir-join-code'),
+              onPressed: () =>
+                  ClassCodeJoinSheet.show(context, onJoined: reload),
+              icon: const Icon(Icons.vpn_key_outlined),
+              label: Text(l.gcirJoinWithCode),
+            ),
+          ),
+          const SizedBox(height: 12),
+          ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 48),
+            child: OutlinedButton.icon(
+              key: const ValueKey('gcir-explore'),
+              onPressed: () => Navigator.of(context).pushNamed('/villages'),
+              icon: const Icon(Icons.explore_outlined),
+              label: Text(l.gcirExplore),
+            ),
           ),
         ],
       );
     }
+    final palette = [
+      scheme.primaryContainer,
+      scheme.secondaryContainer,
+      scheme.tertiaryContainer,
+    ];
+    final onPalette = [
+      scheme.onPrimaryContainer,
+      scheme.onSecondaryContainer,
+      scheme.onTertiaryContainer,
+    ];
     return ListView.separated(
       physics: const AlwaysScrollableScrollPhysics(),
-      padding: EdgeInsets.symmetric(
-        vertical: PanAfricanSpacing.sm,
-        horizontal: PanAfricanSpacing.md,
-      ),
+      padding: pad,
       itemCount: circles.length,
-      separatorBuilder: (_, __) => SizedBox(height: PanAfricanSpacing.xs),
+      separatorBuilder: (_, __) => const SizedBox(height: 12),
       itemBuilder: (context, index) {
         final c = circles[index];
-        final name = c['name']?.toString() ?? l?.gcirFallbackName ?? 'Circle';
+        final name = c['name']?.toString() ?? l.gcirFallbackName;
         final status = c['status']?.toString() ?? 'draft';
         final count = (c['member_count'] as num?)?.toInt() ?? 0;
         final max = (c['max_members'] as num?)?.toInt() ?? 50;
         final minOpen = (c['min_open'] as num?)?.toInt() ?? 5;
         final id = c['id']?.toString() ?? '';
-        final subtitle = status == 'open'
-            ? (l?.gcirOpen(count, max) ?? '$count of $max members · Open')
+        final open = status == 'open';
+        final subtitle = open
+            ? l.gcirOpen(count, max)
             : status == 'full'
-            ? (l?.gcirFull(count) ?? 'Full · $count members')
-            : (l?.gcirOpensAt(count, minOpen) ??
-                  '$count members · Opens at $minOpen');
+            ? l.gcirFull(count)
+            : l.gcirOpensAt(count, minOpen);
+        final pill = open
+            ? l.gcirPillOpen
+            : status == 'full'
+            ? l.gcirPillFull
+            : l.gcirPillSoon;
+        final tile = palette[index % palette.length];
+        final onTile = onPalette[index % onPalette.length];
 
         return Semantics(
           button: true,
-          label: '$name, $subtitle',
-          child: Material(
-            color: Theme.of(context).colorScheme.surfaceContainerHighest,
-            borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+          label: '$name, $subtitle, $pill',
+          excludeSemantics: true,
+          child: Card(
+            margin: EdgeInsets.zero,
+            clipBehavior: Clip.antiAlias,
             child: InkWell(
-              borderRadius: BorderRadius.circular(PanAfricanRadius.md),
               onTap: id.isEmpty
                   ? null
                   : () {
@@ -192,41 +278,91 @@ class CirclesScreen extends HookConsumerWidget {
                       );
                     },
               child: Padding(
-                padding: EdgeInsets.all(PanAfricanSpacing.md),
+                padding: const EdgeInsets.all(16),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CircleAvatar(
-                      backgroundColor: PanAfricanColors.primary,
+                    Container(
+                      width: 48,
+                      height: 48,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: tile,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                       child: Text(
-                        name.isNotEmpty ? name[0].toUpperCase() : '?',
-                        style: PanAfricanTypography.labelLarge(context)
-                            .copyWith(
-                              color: Theme.of(context).colorScheme.onPrimary,
-                            ),
+                        name.characters.isNotEmpty
+                            ? name.characters.first.toUpperCase()
+                            : '?',
+                        style: text.titleLarge?.copyWith(
+                          color: onTile,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
-                    SizedBox(width: PanAfricanSpacing.md),
+                    const SizedBox(width: 16),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             name,
-                            style: PanAfricanTypography.titleMedium(context),
+                            style: text.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
-                          SizedBox(height: PanAfricanSpacing.xxs),
+                          const SizedBox(height: 4),
                           Text(
                             subtitle,
-                            style: PanAfricanTypography.bodySmall(context),
+                            style: text.bodyMedium?.copyWith(
+                              color: scheme.onSurfaceVariant,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: open
+                                  ? scheme.primaryContainer
+                                  : scheme.surfaceContainerHighest,
+                              borderRadius: BorderRadius.circular(999),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  open
+                                      ? Icons.lock_open_outlined
+                                      : Icons.lock_outline,
+                                  size: 16,
+                                  color: open
+                                      ? scheme.onPrimaryContainer
+                                      : scheme.onSurfaceVariant,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  pill,
+                                  style: text.labelMedium?.copyWith(
+                                    color: open
+                                        ? scheme.onPrimaryContainer
+                                        : scheme.onSurfaceVariant,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
                     ),
-                    if (status == 'pending-approval')
-                      Icon(
-                        Icons.hourglass_top,
-                        color: Theme.of(context).colorScheme.error,
-                      ),
+                    Icon(
+                      Directionality.of(context) == TextDirection.rtl
+                          ? Icons.chevron_left
+                          : Icons.chevron_right,
+                      color: scheme.onSurfaceVariant,
+                    ),
                   ],
                 ),
               ),

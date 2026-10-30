@@ -2,13 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/screens/guardian/messaging_explainer_screen.dart';
 import 'package:lingafriq/services/guardian_link_service.dart';
 
 Widget _wrap(Widget child) {
   return ScreenUtilInit(
     designSize: const Size(390, 844),
-    builder: (_, __) => ProviderScope(child: MaterialApp(home: child)),
+    builder: (_, __) => ProviderScope(
+      child: MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: child,
+      ),
+    ),
   );
 }
 
@@ -27,62 +34,53 @@ class _FakeExplainerService extends GuardianMessagingExplainerService {
   }
 }
 
+const _guideTexts = [
+  'How messages work for young learners',
+  'Messages are checked first',
+  'Photos, voice notes and links wait for review',
+  'You can stop a contact',
+  'Teachers need your approval',
+];
+
+GuardianMessagingExplainer _payload(String body) => GuardianMessagingExplainer(
+  title: 'Server title',
+  body: body,
+  moderatorsSee: const [],
+  e2eeTradeoff: 'Server tradeoff',
+);
+
 void main() {
-  testWidgets('shows explainer copy from service', (tester) async {
+  testWidgets('online shows the bundled guide with every section', (
+    tester,
+  ) async {
     await tester.pumpWidget(
       _wrap(
         GuardianMessagingExplainerScreen(
-          explainerService: _FakeExplainerService(
-            GuardianMessagingExplainer(
-              title: 'Test title',
-              body: 'Test body about moderation.',
-              moderatorsSee: const ['Line one'],
-              e2eeTradeoff: 'Tradeoff copy.',
-            ),
-          ),
+          explainerService: _FakeExplainerService(_payload('Server body')),
         ),
       ),
     );
     await tester.pumpAndSettle();
-    expect(find.text('Test body about moderation.'), findsOneWidget);
-    expect(find.text('Line one'), findsOneWidget);
-    expect(find.text('Tradeoff copy.'), findsOneWidget);
+    for (final text in _guideTexts) {
+      await tester.scrollUntilVisible(
+        find.text(text),
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
+      expect(find.text(text), findsOneWidget, reason: text);
+    }
+    // Server wording never replaces the reviewed, translated guide.
+    expect(find.text('Server body'), findsNothing);
   });
 
-  testWidgets('hub tile opens explainer screen', (tester) async {
-    final fake = _FakeExplainerService(
-      GuardianMessagingExplainer(
-        title: 'T',
-        body: 'B',
-        moderatorsSee: const [],
-        e2eeTradeoff: 'E',
-      ),
-    );
-    await tester.pumpWidget(
-      _wrap(
-        Scaffold(
-          body: ListView(
-            children: [GuardianMessagingExplainerHubTile(explainerService: fake)],
-          ),
-        ),
-      ),
-    );
-    await tester.tap(find.text(GuardianMessagingExplainerHubTile.tileTitle));
-    await tester.pumpAndSettle();
-    expect(find.text('B'), findsOneWidget);
-  });
-
-  testWidgets('offline shows banner and saved fallback guide', (tester) async {
+  testWidgets('offline shows the banner and exactly the same guide', (
+    tester,
+  ) async {
     await tester.pumpWidget(
       _wrap(
         GuardianMessagingExplainerScreen(
           explainerService: _FakeExplainerService(
-            GuardianMessagingExplainer(
-              title: 'unused',
-              body: 'unused',
-              moderatorsSee: const [],
-              e2eeTradeoff: 'unused',
-            ),
+            _payload('unused'),
             throwsOffline: true,
           ),
         ),
@@ -90,12 +88,34 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(
-      find.text(GuardianMessagingExplainerScreen.offlineBanner),
+      find.text('You are offline. Showing the last saved explanation.'),
       findsOneWidget,
     );
-    expect(
-      find.text(GuardianMessagingExplainerScreen.fallbackBody),
-      findsOneWidget,
+    for (final text in _guideTexts) {
+      await tester.scrollUntilVisible(
+        find.text(text),
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
+      expect(find.text(text), findsOneWidget, reason: text);
+    }
+  });
+
+  testWidgets('hub tile opens explainer screen', (tester) async {
+    final fake = _FakeExplainerService(_payload('B'));
+    await tester.pumpWidget(
+      _wrap(
+        Scaffold(
+          body: ListView(
+            children: [
+              GuardianMessagingExplainerHubTile(explainerService: fake),
+            ],
+          ),
+        ),
+      ),
     );
+    await tester.tap(find.text(GuardianMessagingExplainerHubTile.tileTitle));
+    await tester.pumpAndSettle();
+    expect(find.text('How messages work for young learners'), findsOneWidget);
   });
 }

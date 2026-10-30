@@ -206,10 +206,9 @@ class GuardianMessagingExplainerScreen extends HookConsumerWidget {
         );
         uiState.value = _ExplainerUiState.loaded;
       } on GuardianApiException catch (e) {
-        errorText.value = e.message ?? loadError;
+        errorText.value = e.message;
         uiState.value = _ExplainerUiState.error;
       } catch (_) {
-        errorText.value = loadError;
         uiState.value = _ExplainerUiState.error;
       }
     }
@@ -219,27 +218,61 @@ class GuardianMessagingExplainerScreen extends HookConsumerWidget {
       return null;
     }, const []);
 
-    // The server copy is English only; other locales show the same guide
-    // from the app's translations so the page never mixes languages.
-    final l = AppLocalizations.of(context);
-    final english = Localizations.localeOf(context).languageCode == 'en';
-    final serverContent = explainer.value;
-    final content = serverContent == null
-        ? null
-        : (english || l == null)
-        ? serverContent
-        : GuardianMessagingExplainer(
-            title: l.gmeTitle,
-            body: l.gmeBody,
-            moderatorsSee: [l.gmeMod1, l.gmeMod2, l.gmeMod3],
-            e2eeTradeoff: l.gmeTradeoff,
-          );
-    final offlineText = l?.gmeOffline ?? offlineBanner;
-    final errorMessage = (english || l == null)
-        ? (errorText.value ?? loadError)
-        : l.gmeLoadError;
-    // Title lives in the body so it wraps at 320dp / 200% / Arabic.
-    final title = content?.title ?? l?.gmeTitle ?? fallbackTitle;
+    // One guide for every state and locale: the bundled, translated copy.
+    // The server call only confirms the policy is reachable, so online and
+    // offline show the same title and text.
+    final l = AppLocalizations.of(context)!;
+    final title = l.gmeTitle;
+    final sections = <(IconData, String, String)>[
+      (Icons.fact_check_outlined, l.gmeSecCheckedTitle, l.gmeBody),
+      (Icons.photo_library_outlined, l.gmeSecHeldTitle, l.gmeSecHeldBody),
+      (Icons.front_hand_outlined, l.gmeSecStopTitle, l.gmeSecStopBody),
+      (Icons.school_outlined, l.gmeSecTeacherTitle, l.gmeSecTeacherBody),
+    ];
+    Widget section((IconData, String, String) s) => Padding(
+      padding: EdgeInsets.only(bottom: PanAfricanSpacing.md.h),
+      child: Card(
+        margin: EdgeInsets.zero,
+        child: Padding(
+          padding: EdgeInsets.all(PanAfricanSpacing.md.w),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CircleAvatar(
+                radius: 20,
+                backgroundColor: colorScheme.primaryContainer,
+                child: Icon(s.$1, color: colorScheme.onPrimaryContainer),
+              ),
+              SizedBox(width: PanAfricanSpacing.md.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Semantics(
+                      header: true,
+                      child: Text(
+                        s.$2,
+                        style: PanAfricanTypography.titleSmall(
+                          context,
+                        ).copyWith(fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                    SizedBox(height: PanAfricanSpacing.xs.h),
+                    Text(
+                      s.$3,
+                      style: PanAfricanTypography.bodyMedium(
+                        context,
+                      ).copyWith(height: 1.45),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    final loading = uiState.value == _ExplainerUiState.loading;
     return Scaffold(
       appBar: AppBar(),
       body: ResponsiveSafeArea(
@@ -248,6 +281,7 @@ class GuardianMessagingExplainerScreen extends HookConsumerWidget {
           child: ListView(
             padding: EdgeInsets.all(PanAfricanSpacing.lg.w),
             children: [
+              // Title lives in the body so it wraps at 320dp / 200% / Arabic.
               Semantics(
                 header: true,
                 child: Text(
@@ -259,37 +293,45 @@ class GuardianMessagingExplainerScreen extends HookConsumerWidget {
               ),
               SizedBox(height: PanAfricanSpacing.md.h),
               if (offline.value)
-                _OfflineBanner(label: offlineText, colorScheme: colorScheme),
-              if (uiState.value == _ExplainerUiState.loading)
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: PanAfricanSpacing.xxl.h,
-                  ),
-                  child: Center(
-                    child: Semantics(
-                      label: l?.gmeLoading ?? 'Loading messaging guide',
-                      child: const CircularProgressIndicator(),
+                _OfflineBanner(label: l.gmeOffline, colorScheme: colorScheme),
+              if (uiState.value == _ExplainerUiState.error)
+                _ErrorPanel(message: l.gmeLoadError, onRetry: load),
+              if (loading)
+                Semantics(
+                  key: const ValueKey('gme-loading'),
+                  label: l.gmeLoading,
+                  liveRegion: true,
+                  child: ExcludeSemantics(
+                    child: Column(
+                      children: List.generate(
+                        4,
+                        (_) => Container(
+                          height: 96,
+                          margin: EdgeInsets.only(
+                            bottom: PanAfricanSpacing.md.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: colorScheme.surfaceContainerHighest,
+                            borderRadius: BorderRadius.circular(
+                              PanAfricanRadius.md,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 )
-              else if (uiState.value == _ExplainerUiState.error)
-                _ErrorPanel(message: errorMessage, onRetry: load)
-              else if (content != null) ...[
+              else ...[
+                ...sections.map(section),
+                SizedBox(height: PanAfricanSpacing.sm.h),
                 Text(
-                  content.body,
-                  style: PanAfricanTypography.bodyLarge(
-                    context,
-                  ).copyWith(height: 1.45),
-                ),
-                SizedBox(height: PanAfricanSpacing.lg.h),
-                Text(
-                  l?.gmeModHeading ?? 'What moderators may review',
+                  l.gmeModHeading,
                   style: PanAfricanTypography.titleSmall(
                     context,
                   ).copyWith(fontWeight: FontWeight.w700),
                 ),
                 SizedBox(height: PanAfricanSpacing.sm.h),
-                ...content.moderatorsSee.map(
+                ...[l.gmeMod1, l.gmeMod2, l.gmeMod3].map(
                   (line) => Padding(
                     padding: EdgeInsets.only(bottom: PanAfricanSpacing.sm.h),
                     child: Row(
@@ -297,7 +339,7 @@ class GuardianMessagingExplainerScreen extends HookConsumerWidget {
                       children: [
                         Icon(
                           Icons.check_circle_outline,
-                          size: 20.sp,
+                          size: 20,
                           color: colorScheme.primary,
                         ),
                         SizedBox(width: PanAfricanSpacing.sm.w),
@@ -313,19 +355,33 @@ class GuardianMessagingExplainerScreen extends HookConsumerWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: PanAfricanSpacing.lg.h),
+                SizedBox(height: PanAfricanSpacing.md.h),
                 DecoratedBox(
                   decoration: BoxDecoration(
-                    color: colorScheme.errorContainer.withValues(alpha: 0.35),
+                    color: colorScheme.secondaryContainer,
                     borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                   ),
                   child: Padding(
                     padding: EdgeInsets.all(PanAfricanSpacing.md.w),
-                    child: Text(
-                      content.e2eeTradeoff,
-                      style: PanAfricanTypography.bodyMedium(
-                        context,
-                      ).copyWith(height: 1.45),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(
+                          Icons.lock_outline,
+                          color: colorScheme.onSecondaryContainer,
+                        ),
+                        SizedBox(width: PanAfricanSpacing.sm.w),
+                        Expanded(
+                          child: Text(
+                            l.gmeTradeoff,
+                            style: PanAfricanTypography.bodyMedium(context)
+                                .copyWith(
+                                  height: 1.45,
+                                  color: colorScheme.onSecondaryContainer,
+                                ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -372,15 +428,36 @@ class _ErrorPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(message, style: PanAfricanTypography.bodyMedium(context)),
-        SizedBox(height: PanAfricanSpacing.md.h),
-        FilledButton(
-          onPressed: onRetry,
-          child: Text(AppLocalizations.of(context)?.gmeRetry ?? 'Try again'),
-        ),
-      ],
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      key: const ValueKey('gme-error'),
+      margin: EdgeInsets.only(bottom: PanAfricanSpacing.md.h),
+      padding: EdgeInsets.all(PanAfricanSpacing.md.w),
+      decoration: BoxDecoration(
+        color: scheme.errorContainer,
+        borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            message,
+            style: PanAfricanTypography.bodyMedium(
+              context,
+            ).copyWith(color: scheme.onErrorContainer),
+          ),
+          SizedBox(height: PanAfricanSpacing.sm.h),
+          Align(
+            alignment: AlignmentDirectional.centerEnd,
+            child: FilledButton(
+              onPressed: onRetry,
+              child: Text(
+                AppLocalizations.of(context)?.gmeRetry ?? 'Try again',
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

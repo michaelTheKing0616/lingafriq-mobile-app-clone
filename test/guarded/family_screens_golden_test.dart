@@ -19,7 +19,12 @@ class _HubService extends GuardianLinkService {
 
   @override
   Future<List<GuardianHubLink>> fetchHubLinks() async => [
-    GuardianHubLink(childUserId: 42, status: 'active', regime: 'NDPA_2023'),
+    GuardianHubLink(
+      childUserId: 42,
+      status: 'active',
+      regime: 'NDPA_2023',
+      childName: 'Ada',
+    ),
   ];
 }
 
@@ -29,6 +34,7 @@ class _Approvals extends GuardianApprovalService {
     GuardianGroupJoinRequestRow(
       requestId: 'r1',
       childUserId: 42,
+      childName: 'Ada',
       groupKind: 'classroom',
       groupName: 'Yoruba 201',
       memberCount: 12,
@@ -40,6 +46,7 @@ class _Approvals extends GuardianApprovalService {
     GuardianGroupJoinRequestRow(
       requestId: 'r2',
       childUserId: 42,
+      childName: 'Ada',
       groupKind: 'circle',
       groupName: 'Study circle',
       memberCount: 5,
@@ -50,13 +57,27 @@ class _Approvals extends GuardianApprovalService {
   ];
 }
 
+class _ApprovalsState extends GuardianApprovalService {
+  _ApprovalsState(this.mode);
+  final String mode;
+  @override
+  Future<List<GuardianGroupJoinRequestRow>> fetchApprovals() {
+    if (mode == 'loading') {
+      return Completer<List<GuardianGroupJoinRequestRow>>().future;
+    }
+    if (mode == 'empty') return Future.value(const []);
+    throw GuardianApiException(message: null);
+  }
+}
+
 class _ExplainerState extends GuardianMessagingExplainerService {
   _ExplainerState(this.mode);
   final String mode;
   @override
   Future<GuardianMessagingExplainer> fetchExplainer() {
-    if (mode == 'loading')
+    if (mode == 'loading') {
       return Completer<GuardianMessagingExplainer>().future;
+    }
     if (mode == 'offline') throw const GuardianOfflineException();
     throw GuardianApiException(message: null);
   }
@@ -158,6 +179,23 @@ void main() {
         );
       });
     }
+    for (final mode in ['loading', 'empty', 'error']) {
+      testWidgets('guardian approvals $mode ${v.name}', (t) async {
+        await pumpVariant(
+          t,
+          v,
+          GuardianApprovalsScreen(approvalService: _ApprovalsState(mode)),
+          settle: mode != 'loading',
+        );
+        if (mode == 'loading') await t.pump(const Duration(milliseconds: 100));
+        expect(find.byKey(ValueKey('gap-$mode')), findsOneWidget);
+        expectNoLayoutErrors(t);
+        await expectLater(
+          find.byType(GuardianApprovalsScreen),
+          matchesGoldenFile('goldens/guardian_approvals_${mode}_${v.name}.png'),
+        );
+      });
+    }
     final circleStates = <String, Future<Object?> Function()>{
       'loading': () => Completer<Object?>().future,
       'error': () async => {'ok': false},
@@ -196,6 +234,11 @@ void main() {
       );
       await t.pumpAndSettle();
       expect(find.byType(FamilyToolsSection), findsOneWidget);
+      final ar = v.locale.languageCode == 'ar';
+      expect(find.text(ar ? 'مركز العائلة' : 'Family hub'), findsOneWidget);
+      expect(find.text('Family hub'), ar ? findsNothing : findsOneWidget);
+      expect(find.textContaining('Ada'), findsWidgets);
+      expect(find.textContaining('#42'), findsNothing);
       expectNoLayoutErrors(t);
       await expectLater(
         find.byType(GuardianLinkScreen),
@@ -209,7 +252,7 @@ void main() {
         v,
         GuardianApprovalsScreen(approvalService: _Approvals()),
       );
-      expect(find.text('Yoruba 201'), findsWidgets);
+      expect(find.textContaining('Yoruba 201'), findsWidgets);
       expectNoLayoutErrors(t);
       await expectLater(
         find.byType(GuardianApprovalsScreen),
@@ -227,7 +270,7 @@ void main() {
         find.text(
           v.locale.languageCode == 'ar'
               ? 'كيف تعمل الرسائل للمتعلمين الصغار'
-              : 'Reported messages',
+              : 'Messages are checked first',
         ),
         findsOneWidget,
       );

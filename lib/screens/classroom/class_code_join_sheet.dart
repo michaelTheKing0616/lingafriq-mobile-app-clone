@@ -34,6 +34,16 @@ class _ClassCodeJoinSheetState extends State<ClassCodeJoinSheet> {
   ClassJoinOutcome? _outcome;
   bool _empty = false;
 
+  /// Class codes are 4–16 letters, numbers or dashes (no spaces or symbols).
+  static final _codePattern = RegExp(r'^[A-Za-z0-9-]{4,16}$');
+  bool get _valid => _codePattern.hasMatch(_controller.text.trim());
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() => setState(() {}));
+  }
+
   @override
   void dispose() {
     _controller.dispose();
@@ -42,8 +52,8 @@ class _ClassCodeJoinSheetState extends State<ClassCodeJoinSheet> {
 
   Future<void> _submit() async {
     final code = _controller.text.trim();
-    if (code.isEmpty) {
-      setState(() => _empty = true);
+    if (code.isEmpty || !_valid) {
+      setState(() => _empty = code.isEmpty);
       return;
     }
     setState(() {
@@ -68,11 +78,16 @@ class _ClassCodeJoinSheetState extends State<ClassCodeJoinSheet> {
     final done =
         _outcome == ClassJoinOutcome.joined ||
         _outcome == ClassJoinOutcome.waitingForGuardian;
+    // Guardian / age guidance is a next step, not a mistake: shown as a calm
+    // info panel. Only real problems with the code use the field error style.
+    final guidance = switch (_outcome) {
+      ClassJoinOutcome.needsGuardianLink => l.gccNeedLink,
+      ClassJoinOutcome.needsAgeCheck => l.gccNeedAge,
+      _ => null,
+    };
     String? error;
     if (_empty) error = l.gccEmpty;
     error ??= switch (_outcome) {
-      ClassJoinOutcome.needsGuardianLink => l.gccNeedLink,
-      ClassJoinOutcome.needsAgeCheck => l.gccNeedAge,
       ClassJoinOutcome.notFound => l.gccNotFound,
       ClassJoinOutcome.alreadyMember => l.gccAlready,
       ClassJoinOutcome.error => l.gccError,
@@ -147,12 +162,23 @@ class _ClassCodeJoinSheetState extends State<ClassCodeJoinSheet> {
               onSubmitted: (_) => _submit(),
               decoration: InputDecoration(
                 labelText: l.gccLabel,
+                helperText: l.gccFormatHint,
+                helperMaxLines: 3,
                 border: const OutlineInputBorder(),
                 errorText: error,
                 errorMaxLines: 4,
                 counterText: '',
               ),
             ),
+            if (guidance != null) ...[
+              const SizedBox(height: 12),
+              _Status(
+                key: const ValueKey('gcc-guidance'),
+                icon: Icons.info_outline,
+                title: guidance,
+                tone: _Tone.info,
+              ),
+            ],
           ],
           if (_outcome == ClassJoinOutcome.needsGuardianLink) ...[
             const SizedBox(height: 12),
@@ -176,12 +202,22 @@ class _ClassCodeJoinSheetState extends State<ClassCodeJoinSheet> {
                   )
                 : FilledButton(
                     key: const ValueKey('gcc-submit'),
-                    onPressed: _busy ? null : _submit,
+                    onPressed: _busy || !_valid ? null : _submit,
                     child: _busy
-                        ? const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(strokeWidth: 2),
+                        ? Row(
+                            key: const ValueKey('gcc-checking'),
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Flexible(child: Text(l.gccChecking)),
+                            ],
                           )
                         : Text(l.gccSubmit),
                   ),
@@ -192,32 +228,42 @@ class _ClassCodeJoinSheetState extends State<ClassCodeJoinSheet> {
   }
 }
 
+enum _Tone { success, info }
+
 class _Status extends StatelessWidget {
   const _Status({
     super.key,
     required this.icon,
     required this.title,
     this.body,
+    this.tone = _Tone.success,
   });
   final IconData icon;
   final String title;
   final String? body;
+  final _Tone tone;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final bg = tone == _Tone.info
+        ? theme.colorScheme.secondaryContainer
+        : theme.colorScheme.primaryContainer;
+    final fg = tone == _Tone.info
+        ? theme.colorScheme.onSecondaryContainer
+        : theme.colorScheme.onPrimaryContainer;
     return Semantics(
       liveRegion: true,
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: theme.colorScheme.primaryContainer,
+          color: bg,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(icon, color: theme.colorScheme.onPrimaryContainer),
+            Icon(icon, color: fg),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -225,17 +271,13 @@ class _Status extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: theme.colorScheme.onPrimaryContainer,
-                    ),
+                    style: theme.textTheme.titleMedium?.copyWith(color: fg),
                   ),
                   if (body != null) ...[
                     const SizedBox(height: 4),
                     Text(
                       body!,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onPrimaryContainer,
-                      ),
+                      style: theme.textTheme.bodyMedium?.copyWith(color: fg),
                     ),
                   ],
                 ],

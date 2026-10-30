@@ -3,7 +3,8 @@ import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/services/guarded_messaging_service.dart';
 
 /// Teacher view: students waiting for a guardian, and per-student teacher-message approval
-/// for school accounts. Plain functional layout (no family/safety reference pack yet).
+/// for school accounts. Reference pack: docs/design/references/teacher-requests
+/// (recoloured, own copy). Turning messages on or off asks for confirmation.
 class ClassroomStudentRequestsScreen extends StatefulWidget {
   const ClassroomStudentRequestsScreen({
     super.key,
@@ -29,6 +30,7 @@ class _ClassroomStudentRequestsScreenState
   int? _errorStatus;
   final Set<int> _busy = {};
   final Map<int, bool> _dm = {};
+  final Map<int, DateTime?> _expiry = {};
 
   @override
   void initState() {
@@ -51,6 +53,13 @@ class _ClassroomStudentRequestsScreenState
           ..addEntries(
             d.school.map((s) => MapEntry(s.studentUserId, s.teacherDmApproved)),
           );
+        _expiry
+          ..clear()
+          ..addEntries(
+            d.school.map(
+              (s) => MapEntry(s.studentUserId, s.teacherDmExpiresAt),
+            ),
+          );
       });
     } on GuardedLoadException catch (e) {
       if (mounted) setState(() => _errorStatus = e.status);
@@ -59,13 +68,41 @@ class _ClassroomStudentRequestsScreenState
     }
   }
 
+  Future<void> _confirmDm(int id, String name, bool on) async {
+    final l = AppLocalizations.of(context)!;
+    final yes = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        key: const ValueKey('gtp-dm-confirm'),
+        title: Text(on ? l.gtpDmOnTitle(name) : l.gtpDmOffTitle(name)),
+        content: Text(on ? l.gtpDmOnBody : l.gtpDmOffBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: Text(l.gapCancel),
+          ),
+          FilledButton(
+            key: const ValueKey('gtp-dm-confirm-yes'),
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: Text(on ? l.gtpDmOnAction : l.gtpDmOffAction),
+          ),
+        ],
+      ),
+    );
+    if (yes == true && mounted) await _setDm(id, on);
+  }
+
   Future<void> _setDm(int id, bool on) async {
     setState(() => _busy.add(id));
     final ok = await _service.setTeacherDm(widget.tribeId, id, approved: on);
     if (!mounted) return;
     setState(() {
       _busy.remove(id);
-      if (ok) _dm[id] = on;
+      if (ok) {
+        _dm[id] = on;
+        // Server approvals last a year; show that until the next refresh.
+        _expiry[id] = on ? DateTime.now().add(const Duration(days: 365)) : null;
+      }
     });
     if (!ok) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -82,6 +119,7 @@ class _ClassroomStudentRequestsScreenState
     Widget body;
     if (_errorStatus != null) {
       body = ListView(
+        key: const ValueKey('gtp-error'),
         padding: const EdgeInsets.all(32),
         children: [
           Icon(Icons.info_outline, size: 48, color: theme.colorScheme.primary),
@@ -100,7 +138,27 @@ class _ClassroomStudentRequestsScreenState
         ],
       );
     } else if (_data == null) {
-      body = const Center(child: CircularProgressIndicator());
+      body = Semantics(
+        key: const ValueKey('gtp-loading'),
+        label: l.gtpLoading,
+        liveRegion: true,
+        child: ExcludeSemantics(
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+            children: List.generate(
+              4,
+              (_) => Container(
+                height: 72,
+                margin: const EdgeInsets.only(bottom: 12),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceContainerHighest,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
     } else if (_data!.waiting.isEmpty && _data!.school.isEmpty) {
       body = ListView(
         key: const ValueKey('gtp-empty'),
@@ -175,7 +233,16 @@ class _ClassroomStudentRequestsScreenState
                       ),
                     ),
                     subtitle: Text(
-                      s.accountActive ? l.gtpTeacherDm : l.gtpLocked,
+                      !s.accountActive
+                          ? l.gtpLocked
+                          : (_dm[s.studentUserId] ?? false) &&
+                                _expiry[s.studentUserId] != null
+                          ? l.gtpDmUntil(
+                              loc.formatMediumDate(
+                                _expiry[s.studentUserId]!.toLocal(),
+                              ),
+                            )
+                          : l.gtpTeacherDm,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
                       ),
@@ -184,7 +251,11 @@ class _ClassroomStudentRequestsScreenState
                     onChanged:
                         !s.accountActive || _busy.contains(s.studentUserId)
                         ? null
-                        : (v) => _setDm(s.studentUserId, v),
+                        : (v) => _confirmDm(
+                            s.studentUserId,
+                            s.name ?? l.gtpStudent(s.studentUserId),
+                            v,
+                          ),
                   ),
                 ),
               ),

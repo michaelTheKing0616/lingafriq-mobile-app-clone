@@ -3572,4 +3572,267 @@ class AppLocalizationsTw extends AppLocalizations {
 
   @override
   String get gcirFallbackName => 'Circle';
+
+  @override
+  String get gapTitle => 'Group approvals';
+
+  @override
+  String get gapLearnerFallback => 'Your learner';
+
+  @override
+  String get gapDenyConfirmTitle => 'Deny this request?';
+
+  @override
+  String gapDenyConfirmBody(String child, String group) {
+    return '$child will not join $group. They can ask again later.';
+  }
+
+  @override
+  String get gapCancel => 'Cancel';
+
+  @override
+  String get gapDeny => 'Deny';
+
+  @override
+  String get gapApprove => 'Approve';
+
+  @override
+  String get gapRevoke => 'Revoke';
+
+  @override
+  String gapApprovedToast(String group) {
+    return 'Approved: $group';
+  }
+
+  @override
+  String gapDeniedToast(String group) {
+    return 'Denied: $group';
+  }
+
+  @override
+  String gapRevokedToast(String group) {
+    return 'Approval revoked: $group';
+  }
+
+  @override
+  String get gapActionFailed => 'That did not go through. Please try again.';
+
+  @override
+  String get gapReview => 'Needs your review';
+
+  @override
+  String get gapDecided => 'Decided';
+
+  @override
+  String get gapLoadError =>
+      'Approvals could not load. Check your connection and try again.';
+
+  @override
+  String get gapEmptyTitle => 'No requests right now';
+
+  @override
+  String get gapEmptyBody =>
+      'When your learner asks to join a circle or class, it will appear here for you to approve or deny.';
+
+  @override
+  String get gapRefresh => 'Refresh';
+
+  @override
+  String get gapOffline => 'You are offline. Showing the last list we loaded.';
+
+  @override
+  String get gapLoading => 'Loading approvals';
+
+  @override
+  String get gapRetry => 'Try again';
+
+  @override
+  String get gapStatusApproved => 'Approved';
+
+  @override
+  String get gapStatusExpired => 'Expired';
+
+  @override
+  String get gapStatusRevoked => 'Revoked';
+
+  @override
+  String get gapStatusDenied => 'Denied';
+
+  @override
+  String get gapStatusReapprove => 'Approve again';
+
+  @override
+  String get gapStatusWaiting => 'Waiting for you';
+
+  @override
+  String get gapModerated => 'Messages are checked by moderators';
+
+  @override
+  String get gapApprovalRequired => 'Joining needs your approval';
+
+  @override
+  String get gapOpenCommunity => 'Open community';
+
+  @override
+  String get gapKindCircle => 'Circle';
+
+  @override
+  String get gapKindClassroom => 'Class';
+
+  @override
+  String gapWhyCircle(String child, String group) {
+    return '$child wants to join the circle $group';
+  }
+
+  @override
+  String gapWhyClass(String child, String group) {
+    return '$child wants to join the class $group';
+  }
+
+  @override
+  String gapMembers(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count members',
+      one: '1 member',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String gapAdults(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count adults',
+      one: '1 adult',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String gapExpires(String date) {
+    return 'Approval ends $date';
+  }
+
+  @override
+  String get gccFormatHint => '4–16 letters or numbers, from your teacher';
+
+  @override
+  String get gccChecking => 'Checking the code…';
+
+  @override
+  String get gcirLoading => 'Loading circles';
+
+  @override
+  String get gcirJoinWithCode => 'Join with a class code';
+
+  @override
+  String get gcirExplore => 'Explore villages';
+
+  @override
+  String get gcirPillOpen => 'Open';
+
+  @override
+  String get gcirPillFull => 'Full';
+
+  @override
+  String get gcirPillSoon => 'Starting soon';
+
+  @override
+  String get gdmLoading => 'Loading contacts';
+
+  @override
+  String gdmTitleFor(String name) {
+    return 'Who is messaging $name';
+  }
+
+  @override
+  String get gfamHubTitle => 'Family hub';
+
+  @override
+  String get gfamModeHub => 'Guardian hub';
+
+  @override
+  String get gfamModeInvite => 'Learner invite';
+
+  @override
+  String get gfamStatusActive => 'Approved';
+
+  @override
+  String get gfamStatusVerifying => 'Needs your consent';
+
+  @override
+  String get gfamStatusWithdrawn => 'Consent withdrawn';
+
+  @override
+  String gfamWhoMessagesName(String name) {
+    return 'Who messages $name';
+  }
+
+  @override
+  String get gfamWhoMessagesYours => 'Who messages your learner';
+
+  @override
+  String get gmeSecCheckedTitle => 'Messages are checked first';
+
+  @override
+  String get gmeSecHeldTitle => 'Photos, voice notes and links wait for review';
+
+  @override
+  String get gmeSecHeldBody =>
+      'When an adult sends a photo, voice note or link to a young learner, it is held until a moderator checks it. Your learner sees it only after it is cleared.';
+
+  @override
+  String get gmeSecStopTitle => 'You can stop a contact';
+
+  @override
+  String get gmeSecStopBody =>
+      'In Family hub, open Messages and choose Stop. That person can no longer message your learner.';
+
+  @override
+  String get gmeSecTeacherTitle => 'Teachers need your approval';
+
+  @override
+  String get gmeSecTeacherBody =>
+      'A teacher can message your learner only in a class you approved, or when the school has consent and the teacher turns on messages. That permission ends on its expiry date.';
+
+  @override
+  String gtpDmOnTitle(String name) {
+    return 'Turn on messages with $name?';
+  }
+
+  @override
+  String gtpDmOffTitle(String name) {
+    return 'Turn off messages with $name?';
+  }
+
+  @override
+  String get gtpDmOnBody =>
+      'The school\'s consent covers this. Messages stay moderated, and this lasts one year unless you turn it off.';
+
+  @override
+  String get gtpDmOffBody =>
+      'You will no longer be able to message this student directly.';
+
+  @override
+  String get gtpDmOnAction => 'Turn on';
+
+  @override
+  String get gtpDmOffAction => 'Turn off';
+
+  @override
+  String gtpDmUntil(String date) {
+    return 'Messages on until $date';
+  }
+
+  @override
+  String get gtpLoading => 'Loading students';
+
+  @override
+  String get gfamModeHubLabel => 'Guardian hub, show linked learners';
+
+  @override
+  String get gfamModeInviteLabel => 'Learner invite, create a code to share';
 }

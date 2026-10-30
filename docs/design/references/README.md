@@ -39,3 +39,14 @@ All checks dated 2026-10-28 (Africa/Lagos). Each pack has REFERENCE.md + SOURCES
 | paywall | Duolingo Super upsell set + Spotify NG ₦ plan facts | Super prices, other apps' plan screens, mobile-money checkout |
 | profile-progress | profile, achievements, league, Wrapped 2025 recap | achievement detail, share export |
 Google Play (gl=NG) checks are in each pack's SOURCES.md. Personal names in the captures are redacted.
+
+## New screens (2026-10-30)
+| Pack | Real captures | Still pattern-based |
+|-|-|-|
+| guardian-approvals | 4: Family Link approvals and alerts, Qustodio co-guardian invite, MS Family Safety allow/block lists | the request card itself, approver identity footer, audit row, offline queue |
+| contact-oversight | 4: Qustodio contact rows with counts and social activity, Bark alert, Family Link contacts row | stop/allow-again control, held-media pill |
+| circles | 7: WhatsApp list/group, Discord, Duolingo friends (redacted), Classroom member-count cards | open/closed pill, empty state with an action, WhatsApp Communities |
+| teacher-requests | 5: ClassDojo class view/messaging, Seesaw translated messaging, Classroom assignment/private comments | request card, teacher-messages toggle with expiry |
+| family-hub | 7: Family Link, MS Family Safety, Life360, Qustodio, Duolingo plan | Family tools grid, "Needs you" strip |
+| class-code-join | 3: Kahoot home, Classroom class list, ClassDojo class view | the whole code sheet: joining, success and waiting-for-guardian states (see browser-needed.md) |
+All new packs cite NDPA 2023 s.31 and GAID 2025 (checked 2026-10-30). Browser-needed list: ../browser-needed.md

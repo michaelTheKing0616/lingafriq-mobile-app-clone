@@ -81,6 +81,7 @@ const requestsJson = {
       'student_name': 'Zainab',
       'account_status': 'active',
       'teacher_dm_approved': true,
+      'teacher_dm_expires_at': '2027-06-30T00:00:00.000Z',
     },
     {
       'student_user_id': 33,

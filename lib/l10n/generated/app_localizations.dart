@@ -6191,6 +6191,438 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Circle'**
   String get gcirFallbackName;
+
+  /// gapTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Group approvals'**
+  String get gapTitle;
+
+  /// gapLearnerFallback
+  ///
+  /// In en, this message translates to:
+  /// **'Your learner'**
+  String get gapLearnerFallback;
+
+  /// gapDenyConfirmTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Deny this request?'**
+  String get gapDenyConfirmTitle;
+
+  /// gapDenyConfirmBody
+  ///
+  /// In en, this message translates to:
+  /// **'{child} will not join {group}. They can ask again later.'**
+  String gapDenyConfirmBody(String child, String group);
+
+  /// gapCancel
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get gapCancel;
+
+  /// gapDeny
+  ///
+  /// In en, this message translates to:
+  /// **'Deny'**
+  String get gapDeny;
+
+  /// gapApprove
+  ///
+  /// In en, this message translates to:
+  /// **'Approve'**
+  String get gapApprove;
+
+  /// gapRevoke
+  ///
+  /// In en, this message translates to:
+  /// **'Revoke'**
+  String get gapRevoke;
+
+  /// gapApprovedToast
+  ///
+  /// In en, this message translates to:
+  /// **'Approved: {group}'**
+  String gapApprovedToast(String group);
+
+  /// gapDeniedToast
+  ///
+  /// In en, this message translates to:
+  /// **'Denied: {group}'**
+  String gapDeniedToast(String group);
+
+  /// gapRevokedToast
+  ///
+  /// In en, this message translates to:
+  /// **'Approval revoked: {group}'**
+  String gapRevokedToast(String group);
+
+  /// gapActionFailed
+  ///
+  /// In en, this message translates to:
+  /// **'That did not go through. Please try again.'**
+  String get gapActionFailed;
+
+  /// gapReview
+  ///
+  /// In en, this message translates to:
+  /// **'Needs your review'**
+  String get gapReview;
+
+  /// gapDecided
+  ///
+  /// In en, this message translates to:
+  /// **'Decided'**
+  String get gapDecided;
+
+  /// gapLoadError
+  ///
+  /// In en, this message translates to:
+  /// **'Approvals could not load. Check your connection and try again.'**
+  String get gapLoadError;
+
+  /// gapEmptyTitle
+  ///
+  /// In en, this message translates to:
+  /// **'No requests right now'**
+  String get gapEmptyTitle;
+
+  /// gapEmptyBody
+  ///
+  /// In en, this message translates to:
+  /// **'When your learner asks to join a circle or class, it will appear here for you to approve or deny.'**
+  String get gapEmptyBody;
+
+  /// gapRefresh
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get gapRefresh;
+
+  /// gapOffline
+  ///
+  /// In en, this message translates to:
+  /// **'You are offline. Showing the last list we loaded.'**
+  String get gapOffline;
+
+  /// gapLoading
+  ///
+  /// In en, this message translates to:
+  /// **'Loading approvals'**
+  String get gapLoading;
+
+  /// gapRetry
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get gapRetry;
+
+  /// gapStatusApproved
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get gapStatusApproved;
+
+  /// gapStatusExpired
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get gapStatusExpired;
+
+  /// gapStatusRevoked
+  ///
+  /// In en, this message translates to:
+  /// **'Revoked'**
+  String get gapStatusRevoked;
+
+  /// gapStatusDenied
+  ///
+  /// In en, this message translates to:
+  /// **'Denied'**
+  String get gapStatusDenied;
+
+  /// gapStatusReapprove
+  ///
+  /// In en, this message translates to:
+  /// **'Approve again'**
+  String get gapStatusReapprove;
+
+  /// gapStatusWaiting
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for you'**
+  String get gapStatusWaiting;
+
+  /// gapModerated
+  ///
+  /// In en, this message translates to:
+  /// **'Messages are checked by moderators'**
+  String get gapModerated;
+
+  /// gapApprovalRequired
+  ///
+  /// In en, this message translates to:
+  /// **'Joining needs your approval'**
+  String get gapApprovalRequired;
+
+  /// gapOpenCommunity
+  ///
+  /// In en, this message translates to:
+  /// **'Open community'**
+  String get gapOpenCommunity;
+
+  /// gapKindCircle
+  ///
+  /// In en, this message translates to:
+  /// **'Circle'**
+  String get gapKindCircle;
+
+  /// gapKindClassroom
+  ///
+  /// In en, this message translates to:
+  /// **'Class'**
+  String get gapKindClassroom;
+
+  /// gapWhyCircle
+  ///
+  /// In en, this message translates to:
+  /// **'{child} wants to join the circle {group}'**
+  String gapWhyCircle(String child, String group);
+
+  /// gapWhyClass
+  ///
+  /// In en, this message translates to:
+  /// **'{child} wants to join the class {group}'**
+  String gapWhyClass(String child, String group);
+
+  /// gapMembers
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 member} other{{count} members}}'**
+  String gapMembers(int count);
+
+  /// gapAdults
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 adult} other{{count} adults}}'**
+  String gapAdults(int count);
+
+  /// gapExpires
+  ///
+  /// In en, this message translates to:
+  /// **'Approval ends {date}'**
+  String gapExpires(String date);
+
+  /// gccFormatHint
+  ///
+  /// In en, this message translates to:
+  /// **'4–16 letters or numbers, from your teacher'**
+  String get gccFormatHint;
+
+  /// gccChecking
+  ///
+  /// In en, this message translates to:
+  /// **'Checking the code…'**
+  String get gccChecking;
+
+  /// gcirLoading
+  ///
+  /// In en, this message translates to:
+  /// **'Loading circles'**
+  String get gcirLoading;
+
+  /// gcirJoinWithCode
+  ///
+  /// In en, this message translates to:
+  /// **'Join with a class code'**
+  String get gcirJoinWithCode;
+
+  /// gcirExplore
+  ///
+  /// In en, this message translates to:
+  /// **'Explore villages'**
+  String get gcirExplore;
+
+  /// gcirPillOpen
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get gcirPillOpen;
+
+  /// gcirPillFull
+  ///
+  /// In en, this message translates to:
+  /// **'Full'**
+  String get gcirPillFull;
+
+  /// gcirPillSoon
+  ///
+  /// In en, this message translates to:
+  /// **'Starting soon'**
+  String get gcirPillSoon;
+
+  /// gdmLoading
+  ///
+  /// In en, this message translates to:
+  /// **'Loading contacts'**
+  String get gdmLoading;
+
+  /// gdmTitleFor
+  ///
+  /// In en, this message translates to:
+  /// **'Who is messaging {name}'**
+  String gdmTitleFor(String name);
+
+  /// gfamHubTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Family hub'**
+  String get gfamHubTitle;
+
+  /// gfamModeHub
+  ///
+  /// In en, this message translates to:
+  /// **'Guardian hub'**
+  String get gfamModeHub;
+
+  /// gfamModeInvite
+  ///
+  /// In en, this message translates to:
+  /// **'Learner invite'**
+  String get gfamModeInvite;
+
+  /// gfamStatusActive
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get gfamStatusActive;
+
+  /// gfamStatusVerifying
+  ///
+  /// In en, this message translates to:
+  /// **'Needs your consent'**
+  String get gfamStatusVerifying;
+
+  /// gfamStatusWithdrawn
+  ///
+  /// In en, this message translates to:
+  /// **'Consent withdrawn'**
+  String get gfamStatusWithdrawn;
+
+  /// gfamWhoMessagesName
+  ///
+  /// In en, this message translates to:
+  /// **'Who messages {name}'**
+  String gfamWhoMessagesName(String name);
+
+  /// gfamWhoMessagesYours
+  ///
+  /// In en, this message translates to:
+  /// **'Who messages your learner'**
+  String get gfamWhoMessagesYours;
+
+  /// gmeSecCheckedTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Messages are checked first'**
+  String get gmeSecCheckedTitle;
+
+  /// gmeSecHeldTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Photos, voice notes and links wait for review'**
+  String get gmeSecHeldTitle;
+
+  /// gmeSecHeldBody
+  ///
+  /// In en, this message translates to:
+  /// **'When an adult sends a photo, voice note or link to a young learner, it is held until a moderator checks it. Your learner sees it only after it is cleared.'**
+  String get gmeSecHeldBody;
+
+  /// gmeSecStopTitle
+  ///
+  /// In en, this message translates to:
+  /// **'You can stop a contact'**
+  String get gmeSecStopTitle;
+
+  /// gmeSecStopBody
+  ///
+  /// In en, this message translates to:
+  /// **'In Family hub, open Messages and choose Stop. That person can no longer message your learner.'**
+  String get gmeSecStopBody;
+
+  /// gmeSecTeacherTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Teachers need your approval'**
+  String get gmeSecTeacherTitle;
+
+  /// gmeSecTeacherBody
+  ///
+  /// In en, this message translates to:
+  /// **'A teacher can message your learner only in a class you approved, or when the school has consent and the teacher turns on messages. That permission ends on its expiry date.'**
+  String get gmeSecTeacherBody;
+
+  /// gtpDmOnTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on messages with {name}?'**
+  String gtpDmOnTitle(String name);
+
+  /// gtpDmOffTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off messages with {name}?'**
+  String gtpDmOffTitle(String name);
+
+  /// gtpDmOnBody
+  ///
+  /// In en, this message translates to:
+  /// **'The school\'s consent covers this. Messages stay moderated, and this lasts one year unless you turn it off.'**
+  String get gtpDmOnBody;
+
+  /// gtpDmOffBody
+  ///
+  /// In en, this message translates to:
+  /// **'You will no longer be able to message this student directly.'**
+  String get gtpDmOffBody;
+
+  /// gtpDmOnAction
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on'**
+  String get gtpDmOnAction;
+
+  /// gtpDmOffAction
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off'**
+  String get gtpDmOffAction;
+
+  /// gtpDmUntil
+  ///
+  /// In en, this message translates to:
+  /// **'Messages on until {date}'**
+  String gtpDmUntil(String date);
+
+  /// gtpLoading
+  ///
+  /// In en, this message translates to:
+  /// **'Loading students'**
+  String get gtpLoading;
+
+  /// gfamModeHubLabel
+  ///
+  /// In en, this message translates to:
+  /// **'Guardian hub, show linked learners'**
+  String get gfamModeHubLabel;
+
+  /// gfamModeInviteLabel
+  ///
+  /// In en, this message translates to:
+  /// **'Learner invite, create a code to share'**
+  String get gfamModeInviteLabel;
 }
 
 class _AppLocalizationsDelegate

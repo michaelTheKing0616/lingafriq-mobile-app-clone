@@ -3615,4 +3615,271 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get gcirFallbackName => 'Cercle';
+
+  @override
+  String get gapTitle => 'Approbations de groupe';
+
+  @override
+  String get gapLearnerFallback => 'Votre apprenant';
+
+  @override
+  String get gapDenyConfirmTitle => 'Refuser cette demande ?';
+
+  @override
+  String gapDenyConfirmBody(String child, String group) {
+    return '$child ne rejoindra pas $group. Une nouvelle demande reste possible plus tard.';
+  }
+
+  @override
+  String get gapCancel => 'Annuler';
+
+  @override
+  String get gapDeny => 'Refuser';
+
+  @override
+  String get gapApprove => 'Approuver';
+
+  @override
+  String get gapRevoke => 'Révoquer';
+
+  @override
+  String gapApprovedToast(String group) {
+    return 'Approuvé : $group';
+  }
+
+  @override
+  String gapDeniedToast(String group) {
+    return 'Refusé : $group';
+  }
+
+  @override
+  String gapRevokedToast(String group) {
+    return 'Approbation révoquée : $group';
+  }
+
+  @override
+  String get gapActionFailed => 'Cela n\'a pas abouti. Veuillez réessayer.';
+
+  @override
+  String get gapReview => 'À examiner';
+
+  @override
+  String get gapDecided => 'Décidé';
+
+  @override
+  String get gapLoadError =>
+      'Impossible de charger les approbations. Vérifiez votre connexion et réessayez.';
+
+  @override
+  String get gapEmptyTitle => 'Aucune demande pour l\'instant';
+
+  @override
+  String get gapEmptyBody =>
+      'Quand votre apprenant demande à rejoindre un cercle ou une classe, la demande apparaît ici.';
+
+  @override
+  String get gapRefresh => 'Actualiser';
+
+  @override
+  String get gapOffline =>
+      'Vous êtes hors ligne. Dernière liste chargée affichée.';
+
+  @override
+  String get gapLoading => 'Chargement des approbations';
+
+  @override
+  String get gapRetry => 'Réessayer';
+
+  @override
+  String get gapStatusApproved => 'Approuvé';
+
+  @override
+  String get gapStatusExpired => 'Expiré';
+
+  @override
+  String get gapStatusRevoked => 'Révoqué';
+
+  @override
+  String get gapStatusDenied => 'Refusé';
+
+  @override
+  String get gapStatusReapprove => 'À réapprouver';
+
+  @override
+  String get gapStatusWaiting => 'En attente de vous';
+
+  @override
+  String get gapModerated => 'Messages vérifiés par des modérateurs';
+
+  @override
+  String get gapApprovalRequired => 'Votre accord est requis pour rejoindre';
+
+  @override
+  String get gapOpenCommunity => 'Communauté ouverte';
+
+  @override
+  String get gapKindCircle => 'Cercle';
+
+  @override
+  String get gapKindClassroom => 'Classe';
+
+  @override
+  String gapWhyCircle(String child, String group) {
+    return '$child veut rejoindre le cercle $group';
+  }
+
+  @override
+  String gapWhyClass(String child, String group) {
+    return '$child veut rejoindre la classe $group';
+  }
+
+  @override
+  String gapMembers(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count membres',
+      one: '1 membre',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String gapAdults(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count adultes',
+      one: '1 adulte',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String gapExpires(String date) {
+    return 'L\'approbation prend fin le $date';
+  }
+
+  @override
+  String get gccFormatHint =>
+      '4 à 16 lettres ou chiffres, donnés par votre enseignant';
+
+  @override
+  String get gccChecking => 'Vérification du code…';
+
+  @override
+  String get gcirLoading => 'Chargement des cercles';
+
+  @override
+  String get gcirJoinWithCode => 'Rejoindre avec un code de classe';
+
+  @override
+  String get gcirExplore => 'Explorer les villages';
+
+  @override
+  String get gcirPillOpen => 'Ouvert';
+
+  @override
+  String get gcirPillFull => 'Complet';
+
+  @override
+  String get gcirPillSoon => 'Bientôt';
+
+  @override
+  String get gdmLoading => 'Chargement des contacts';
+
+  @override
+  String gdmTitleFor(String name) {
+    return 'Qui écrit à $name';
+  }
+
+  @override
+  String get gfamHubTitle => 'Espace famille';
+
+  @override
+  String get gfamModeHub => 'Espace tuteur';
+
+  @override
+  String get gfamModeInvite => 'Invitation de l\'apprenant';
+
+  @override
+  String get gfamStatusActive => 'Approuvé';
+
+  @override
+  String get gfamStatusVerifying => 'Votre consentement est requis';
+
+  @override
+  String get gfamStatusWithdrawn => 'Consentement retiré';
+
+  @override
+  String gfamWhoMessagesName(String name) {
+    return 'Qui écrit à $name';
+  }
+
+  @override
+  String get gfamWhoMessagesYours => 'Qui écrit à votre apprenant';
+
+  @override
+  String get gmeSecCheckedTitle => 'Les messages sont vérifiés en premier';
+
+  @override
+  String get gmeSecHeldTitle =>
+      'Photos, notes vocales et liens attendent une vérification';
+
+  @override
+  String get gmeSecHeldBody =>
+      'Quand un adulte envoie une photo, une note vocale ou un lien à un jeune apprenant, l\'envoi est retenu jusqu\'à sa vérification par un modérateur.';
+
+  @override
+  String get gmeSecStopTitle => 'Vous pouvez bloquer un contact';
+
+  @override
+  String get gmeSecStopBody =>
+      'Dans l\'espace famille, ouvrez Messages et choisissez Arrêter. Cette personne ne pourra plus écrire à votre apprenant.';
+
+  @override
+  String get gmeSecTeacherTitle => 'Les enseignants ont besoin de votre accord';
+
+  @override
+  String get gmeSecTeacherBody =>
+      'Un enseignant ne peut écrire à votre apprenant que dans une classe que vous avez approuvée, ou si l\'école a le consentement et que l\'enseignant active les messages. Cette autorisation prend fin à sa date d\'expiration.';
+
+  @override
+  String gtpDmOnTitle(String name) {
+    return 'Activer les messages avec $name ?';
+  }
+
+  @override
+  String gtpDmOffTitle(String name) {
+    return 'Désactiver les messages avec $name ?';
+  }
+
+  @override
+  String get gtpDmOnBody =>
+      'Le consentement de l\'école couvre cela. Les messages restent modérés, pendant un an sauf si vous désactivez.';
+
+  @override
+  String get gtpDmOffBody =>
+      'Vous ne pourrez plus écrire directement à cet élève.';
+
+  @override
+  String get gtpDmOnAction => 'Activer';
+
+  @override
+  String get gtpDmOffAction => 'Désactiver';
+
+  @override
+  String gtpDmUntil(String date) {
+    return 'Messages actifs jusqu\'au $date';
+  }
+
+  @override
+  String get gtpLoading => 'Chargement des élèves';
+
+  @override
+  String get gfamModeHubLabel => 'Espace tuteur, afficher les apprenants liés';
+
+  @override
+  String get gfamModeInviteLabel =>
+      'Invitation de l\'apprenant, créer un code à partager';
 }

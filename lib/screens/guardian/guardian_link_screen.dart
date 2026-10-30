@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -399,7 +400,9 @@ class GuardianLinkScreen extends HookConsumerWidget {
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        title: const Text(guardianLinkTitle),
+        title: Text(
+          AppLocalizations.of(context)?.gfamHubTitle ?? guardianLinkTitle,
+        ),
         centerTitle: false,
         actions: [
           Padding(
@@ -453,6 +456,11 @@ class GuardianLinkScreen extends HookConsumerWidget {
                     for (final link in links.value)
                       if (link.status == 'active') link.childUserId,
                   ],
+                  childNames: {
+                    for (final link in links.value)
+                      if (link.childName != null)
+                        link.childUserId: link.childName!,
+                  },
                 ),
             ],
           ),
@@ -480,17 +488,24 @@ class _ModeToggle extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           _ModeToggleSegment(
-            tooltip: 'Guardian hub',
+            tooltip:
+                AppLocalizations.of(context)?.gfamModeHub ?? 'Guardian hub',
             icon: Icons.family_restroom_outlined,
             selected: !showChildInvite,
-            semanticsLabel: 'Guardian hub, show linked learners',
+            semanticsLabel:
+                AppLocalizations.of(context)?.gfamModeHubLabel ??
+                'Guardian hub, show linked learners',
             onTap: () => onChanged(false),
           ),
           _ModeToggleSegment(
-            tooltip: 'Learner invite',
+            tooltip:
+                AppLocalizations.of(context)?.gfamModeInvite ??
+                'Learner invite',
             icon: Icons.qr_code_2_outlined,
             selected: showChildInvite,
-            semanticsLabel: 'Learner invite, create a code to share',
+            semanticsLabel:
+                AppLocalizations.of(context)?.gfamModeInviteLabel ??
+                'Learner invite',
             onTap: () => onChanged(true),
           ),
         ],
@@ -655,12 +670,14 @@ class _LearnerLinkTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     final statusLabel = switch (link.status) {
-      'active' => 'Approved',
-      'verifying' => 'Needs your consent',
-      'withdrawn' => 'Consent withdrawn',
+      'active' => l.gfamStatusActive,
+      'verifying' => l.gfamStatusVerifying,
+      'withdrawn' => l.gfamStatusWithdrawn,
       _ => link.status,
     };
+    final name = link.childName ?? l.gapLearnerFallback;
     final isRtl = Directionality.of(context) == TextDirection.rtl;
     return Semantics(
       // `container: true` + an explicit `onTap` give this node its own
@@ -669,7 +686,7 @@ class _LearnerLinkTile extends StatelessWidget {
       // the tappable ListTile announces its own (less clear) auto label.
       container: true,
       button: true,
-      label: 'Learner ${link.childUserId}, $statusLabel',
+      label: '$name, $statusLabel',
       onTap: onTap,
       child: Card(
         margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm.h),
@@ -687,7 +704,7 @@ class _LearnerLinkTile extends StatelessWidget {
                 color: colorScheme.onPrimaryContainer,
               ),
             ),
-            title: Text('Learner #${link.childUserId}'),
+            title: Text(name),
             subtitle: Text('$statusLabel · ${link.regime ?? 'Policy'}'),
             trailing: Icon(isRtl ? Icons.chevron_left : Icons.chevron_right),
             onTap: onTap,

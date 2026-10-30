@@ -94,11 +94,15 @@ class SchoolStudent {
     this.name,
     required this.accountActive,
     required this.teacherDmApproved,
+    this.teacherDmExpiresAt,
   });
   final int studentUserId;
   final String? name;
   final bool accountActive;
   final bool teacherDmApproved;
+
+  /// When the teacher-message approval lapses (shown to the teacher).
+  final DateTime? teacherDmExpiresAt;
 }
 
 class ClassroomStudentRequests {
@@ -203,6 +207,9 @@ class GuardedMessagingService {
             name: e['student_name']?.toString(),
             accountActive: e['account_status'] == 'active',
             teacherDmApproved: e['teacher_dm_approved'] == true,
+            teacherDmExpiresAt: DateTime.tryParse(
+              '${e['teacher_dm_expires_at'] ?? ''}',
+            ),
           ),
         )
         .toList();

@@ -3,15 +3,20 @@ import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/services/guarded_messaging_service.dart';
 
 /// Guardian view: who is messaging a linked learner. Metadata only, never message text.
-/// Plain functional layout (no family/safety reference pack yet; see HANDOFF.md).
+/// Reference pack: docs/design/references/contact-oversight (recoloured, own copy).
+/// Icons scale with the text size ([_icon]) so they stay legible at 200%.
 class GuardianChildMessagesScreen extends StatefulWidget {
   const GuardianChildMessagesScreen({
     super.key,
     required this.childUserId,
+    this.childName,
     this.service,
   });
 
   final int childUserId;
+
+  /// The learner's name from the guardian's link; used in the title.
+  final String? childName;
   final GuardedMessagingService? service;
 
   @override
@@ -106,7 +111,28 @@ class _GuardianChildMessagesScreenState
         action: OutlinedButton(onPressed: _load, child: Text(l.gdmRetry)),
       );
     } else if (_threads == null) {
-      body = const Center(child: CircularProgressIndicator());
+      // Skeleton cards at the final card height, announced to screen readers.
+      body = Semantics(
+        key: const ValueKey('gdm-loading'),
+        label: l.gdmLoading,
+        liveRegion: true,
+        child: ExcludeSemantics(
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+            children: List.generate(
+              3,
+              (_) => Container(
+                height: 132,
+                margin: const EdgeInsets.only(bottom: 12),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceContainerHighest,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
     } else if (_threads!.isEmpty) {
       body = _Centered(
         icon: Icons.forum_outlined,
@@ -140,7 +166,9 @@ class _GuardianChildMessagesScreenState
             child: Semantics(
               header: true,
               child: Text(
-                l.gdmTitle,
+                widget.childName == null
+                    ? l.gdmTitle
+                    : l.gdmTitleFor(widget.childName!),
                 style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
@@ -154,7 +182,7 @@ class _GuardianChildMessagesScreenState
               children: [
                 Icon(
                   Icons.visibility_off_outlined,
-                  size: 20,
+                  size: _icon(context, 20),
                   color: theme.colorScheme.primary,
                 ),
                 const SizedBox(width: 8),
@@ -208,10 +236,12 @@ class _ThreadCard extends StatelessWidget {
               children: [
                 CircleAvatar(
                   backgroundColor: scheme.primaryContainer,
+                  radius: _icon(context, 20),
                   child: Icon(
                     thread.role == PeerRole.teacher
                         ? Icons.school_outlined
                         : Icons.person_outline,
+                    size: _icon(context, 24),
                     color: scheme.onPrimaryContainer,
                   ),
                 ),
@@ -278,7 +308,7 @@ class _ThreadCard extends StatelessWidget {
                     ? OutlinedButton.icon(
                         key: ValueKey('gdm-allow-${thread.peerUserId}'),
                         onPressed: busy ? null : onToggle,
-                        icon: const Icon(Icons.undo),
+                        icon: Icon(Icons.undo, size: _icon(context, 18)),
                         label: Text(l.gdmAllow),
                       )
                     // One Stop style on every card; flags are shown by the pills.
@@ -289,7 +319,7 @@ class _ThreadCard extends StatelessWidget {
                           side: BorderSide(color: scheme.error),
                         ),
                         onPressed: busy ? null : onToggle,
-                        icon: const Icon(Icons.block),
+                        icon: Icon(Icons.block, size: _icon(context, 18)),
                         label: Text(l.gdmStop),
                       ),
               ),
@@ -330,7 +360,7 @@ class _Pill extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 16, color: fg),
+          Icon(icon, size: _icon(context, 16), color: fg),
           const SizedBox(width: 6),
           Flexible(
             child: Text(
@@ -364,7 +394,7 @@ class _Centered extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(32),
       children: [
-        Icon(icon, size: 48, color: theme.colorScheme.primary),
+        Icon(icon, size: _icon(context, 48), color: theme.colorScheme.primary),
         const SizedBox(height: 16),
         Text(
           title,
@@ -387,3 +417,7 @@ class _Centered extends StatelessWidget {
     );
   }
 }
+
+/// Icon size that follows the user's text scale (capped at 2x).
+double _icon(BuildContext context, double base) =>
+    MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 2).scale(base);

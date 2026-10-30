@@ -8,21 +8,9 @@ const String guardianApiBasePath = '/api/v2/guardian';
 
 const String guardianPendingOpsPrefsKey = 'guardian_link_pending_ops_v1';
 
-enum GuardianLinkUiState {
-  loading,
-  empty,
-  loaded,
-  error,
-  offline,
-}
+enum GuardianLinkUiState { loading, empty, loaded, error, offline }
 
-enum GuardianSubmitState {
-  idle,
-  submitting,
-  sent,
-  queuedOffline,
-  error,
-}
+enum GuardianSubmitState { idle, submitting, sent, queuedOffline, error }
 
 class GuardianHubLink {
   GuardianHubLink({
@@ -32,9 +20,13 @@ class GuardianHubLink {
     this.policyVersion,
     this.consentedAt,
     this.withdrawnAt,
+    this.childName,
   });
 
   final int childUserId;
+
+  /// Learner's first name (or username) for the guardian's own live link.
+  final String? childName;
   final String status;
   final String? regime;
   final String? policyVersion;
@@ -54,19 +46,24 @@ class GuardianHubLink {
       policyVersion: json['policy_version'] as String?,
       consentedAt: parse(json['consented_at'] as String?),
       withdrawnAt: parse(json['withdrawn_at'] as String?),
+      childName: (json['child_name']?.toString().trim().isNotEmpty ?? false)
+          ? json['child_name'].toString().trim()
+          : null,
     );
   }
 }
 
-typedef GuardianPost = Future<Map<String, dynamic>> Function(
-  String path, {
-  Map<String, Object?>? data,
-});
+typedef GuardianPost =
+    Future<Map<String, dynamic>> Function(
+      String path, {
+      Map<String, Object?>? data,
+    });
 
 typedef GuardianGet = Future<Map<String, dynamic>> Function(String path);
 
 typedef GuardianPendingLoad = Future<List<Map<String, dynamic>>> Function();
-typedef GuardianPendingSave = Future<void> Function(List<Map<String, dynamic>> pending);
+typedef GuardianPendingSave =
+    Future<void> Function(List<Map<String, dynamic>> pending);
 
 class GuardianLinkService {
   GuardianLinkService({
@@ -75,11 +72,11 @@ class GuardianLinkService {
     Future<bool> Function()? isOnline,
     GuardianPendingLoad? loadPending,
     GuardianPendingSave? savePending,
-  })  : _post = post ?? _defaultPost,
-        _get = get ?? _defaultGet,
-        _isOnline = isOnline ?? (() async => true),
-        _loadPendingFn = loadPending ?? _defaultLoadPending,
-        _savePendingFn = savePending ?? _defaultSavePending;
+  }) : _post = post ?? _defaultPost,
+       _get = get ?? _defaultGet,
+       _isOnline = isOnline ?? (() async => true),
+       _loadPendingFn = loadPending ?? _defaultLoadPending,
+       _savePendingFn = savePending ?? _defaultSavePending;
 
   final GuardianPost _post;
   final GuardianGet _get;
@@ -136,7 +133,8 @@ class GuardianLinkService {
     try {
       final json = await _post(path);
       if (json['ok'] == true && json['invite_token'] is String) {
-        final expires = DateTime.tryParse(json['expires_at']?.toString() ?? '') ??
+        final expires =
+            DateTime.tryParse(json['expires_at']?.toString() ?? '') ??
             DateTime.now().add(const Duration(days: 7));
         onSuccess(json['invite_token'] as String, expires);
         return GuardianSubmitState.sent;
@@ -177,10 +175,10 @@ class GuardianLinkService {
     );
   }
 
-  Future<GuardianSubmitState> withdrawConsent({required int childUserId}) async {
-    final body = <String, Object?>{
-      'child_user_id': childUserId,
-    };
+  Future<GuardianSubmitState> withdrawConsent({
+    required int childUserId,
+  }) async {
+    final body = <String, Object?>{'child_user_id': childUserId};
     return _submitWithOfflineQueue(
       path: '$guardianApiBasePath/withdraw',
       body: body,
@@ -254,13 +252,18 @@ class GuardianLinkService {
     try {
       final decoded = jsonDecode(raw);
       if (decoded is List) {
-        return decoded.whereType<Map>().map((e) => Map<String, dynamic>.from(e)).toList();
+        return decoded
+            .whereType<Map>()
+            .map((e) => Map<String, dynamic>.from(e))
+            .toList();
       }
     } catch (_) {}
     return [];
   }
 
-  static Future<void> _defaultSavePending(List<Map<String, dynamic>> rows) async {
+  static Future<void> _defaultSavePending(
+    List<Map<String, dynamic>> rows,
+  ) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(guardianPendingOpsPrefsKey, jsonEncode(rows));
   }

@@ -4,9 +4,16 @@ import 'package:lingafriq/l10n/generated/app_localizations.dart';
 /// Family hub entries: group approvals, messaging guide, circles, and per-learner
 /// "who is messaging" views. Uses the named routes registered in `my_app.dart`.
 class FamilyToolsSection extends StatelessWidget {
-  const FamilyToolsSection({super.key, required this.activeChildIds});
+  const FamilyToolsSection({
+    super.key,
+    required this.activeChildIds,
+    this.childNames = const {},
+  });
 
   final List<int> activeChildIds;
+
+  /// Real names by learner id (from the guardian's links); never "Learner #id".
+  final Map<int, String> childNames;
 
   static const routeApprovals = '/guardian-approvals';
   static const routeGuide = '/guardian-messaging-guide';
@@ -58,10 +65,16 @@ class FamilyToolsSection extends StatelessWidget {
           tile(
             key: ValueKey('family-tools-messages-$id'),
             icon: Icons.forum_outlined,
-            title: l.gfamWhoMessages(id),
-            onTap: () => Navigator.of(
-              context,
-            ).pushNamed(routeChildMessages, arguments: {'childUserId': id}),
+            title: childNames[id] == null
+                ? l.gfamWhoMessagesYours
+                : l.gfamWhoMessagesName(childNames[id]!),
+            onTap: () => Navigator.of(context).pushNamed(
+              routeChildMessages,
+              arguments: {
+                'childUserId': id,
+                if (childNames[id] != null) 'childName': childNames[id],
+              },
+            ),
           ),
         tile(
           key: const ValueKey('family-tools-approvals'),

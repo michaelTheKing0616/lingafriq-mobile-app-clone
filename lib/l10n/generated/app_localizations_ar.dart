@@ -3625,4 +3625,272 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get gcirFallbackName => 'حلقة';
+
+  @override
+  String get gapTitle => 'موافقات المجموعات';
+
+  @override
+  String get gapLearnerFallback => 'متعلّمك';
+
+  @override
+  String get gapDenyConfirmTitle => 'هل ترفض هذا الطلب؟';
+
+  @override
+  String gapDenyConfirmBody(String child, String group) {
+    return 'لن ينضم $child إلى $group. يمكنه الطلب مرة أخرى لاحقًا.';
+  }
+
+  @override
+  String get gapCancel => 'إلغاء';
+
+  @override
+  String get gapDeny => 'رفض';
+
+  @override
+  String get gapApprove => 'موافقة';
+
+  @override
+  String get gapRevoke => 'إلغاء الموافقة';
+
+  @override
+  String gapApprovedToast(String group) {
+    return 'تمت الموافقة: $group';
+  }
+
+  @override
+  String gapDeniedToast(String group) {
+    return 'تم الرفض: $group';
+  }
+
+  @override
+  String gapRevokedToast(String group) {
+    return 'أُلغيت الموافقة: $group';
+  }
+
+  @override
+  String get gapActionFailed => 'لم يكتمل الإجراء. يُرجى المحاولة مرة أخرى.';
+
+  @override
+  String get gapReview => 'بانتظار مراجعتك';
+
+  @override
+  String get gapDecided => 'تم البتّ فيها';
+
+  @override
+  String get gapLoadError =>
+      'تعذّر تحميل الموافقات. تحقّق من اتصالك وحاول مرة أخرى.';
+
+  @override
+  String get gapEmptyTitle => 'لا توجد طلبات حاليًا';
+
+  @override
+  String get gapEmptyBody =>
+      'عندما يطلب متعلّمك الانضمام إلى حلقة أو صف، سيظهر الطلب هنا لتوافق عليه أو ترفضه.';
+
+  @override
+  String get gapRefresh => 'تحديث';
+
+  @override
+  String get gapOffline => 'أنت غير متصل. نعرض آخر قائمة تم تحميلها.';
+
+  @override
+  String get gapLoading => 'جارٍ تحميل الموافقات';
+
+  @override
+  String get gapRetry => 'إعادة المحاولة';
+
+  @override
+  String get gapStatusApproved => 'مقبول';
+
+  @override
+  String get gapStatusExpired => 'منتهي';
+
+  @override
+  String get gapStatusRevoked => 'ملغى';
+
+  @override
+  String get gapStatusDenied => 'مرفوض';
+
+  @override
+  String get gapStatusReapprove => 'تحتاج موافقة جديدة';
+
+  @override
+  String get gapStatusWaiting => 'بانتظارك';
+
+  @override
+  String get gapModerated => 'تُراجع الرسائل من قبل المشرفين';
+
+  @override
+  String get gapApprovalRequired => 'الانضمام يتطلب موافقتك';
+
+  @override
+  String get gapOpenCommunity => 'مجتمع مفتوح';
+
+  @override
+  String get gapKindCircle => 'حلقة';
+
+  @override
+  String get gapKindClassroom => 'صف';
+
+  @override
+  String gapWhyCircle(String child, String group) {
+    return 'يريد $child الانضمام إلى حلقة $group';
+  }
+
+  @override
+  String gapWhyClass(String child, String group) {
+    return 'يريد $child الانضمام إلى صف $group';
+  }
+
+  @override
+  String gapMembers(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count عضوًا',
+      few: '$count أعضاء',
+      two: 'عضوان',
+      one: 'عضو واحد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String gapAdults(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count بالغًا',
+      few: '$count بالغين',
+      two: 'بالغان',
+      one: 'بالغ واحد',
+      zero: 'لا بالغين',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String gapExpires(String date) {
+    return 'تنتهي الموافقة في $date';
+  }
+
+  @override
+  String get gccFormatHint => 'من 4 إلى 16 حرفًا أو رقمًا، من معلّمك';
+
+  @override
+  String get gccChecking => 'جارٍ التحقق من الرمز…';
+
+  @override
+  String get gcirLoading => 'جارٍ تحميل الحلقات';
+
+  @override
+  String get gcirJoinWithCode => 'انضم برمز الصف';
+
+  @override
+  String get gcirExplore => 'استكشف القرى';
+
+  @override
+  String get gcirPillOpen => 'مفتوحة';
+
+  @override
+  String get gcirPillFull => 'ممتلئة';
+
+  @override
+  String get gcirPillSoon => 'تبدأ قريبًا';
+
+  @override
+  String get gdmLoading => 'جارٍ تحميل جهات الاتصال';
+
+  @override
+  String gdmTitleFor(String name) {
+    return 'من يراسل $name';
+  }
+
+  @override
+  String get gfamHubTitle => 'مركز العائلة';
+
+  @override
+  String get gfamModeHub => 'مركز وليّ الأمر';
+
+  @override
+  String get gfamModeInvite => 'دعوة المتعلّم';
+
+  @override
+  String get gfamStatusActive => 'مقبول';
+
+  @override
+  String get gfamStatusVerifying => 'يحتاج إلى موافقتك';
+
+  @override
+  String get gfamStatusWithdrawn => 'سُحبت الموافقة';
+
+  @override
+  String gfamWhoMessagesName(String name) {
+    return 'من يراسل $name';
+  }
+
+  @override
+  String get gfamWhoMessagesYours => 'من يراسل متعلّمك';
+
+  @override
+  String get gmeSecCheckedTitle => 'تُفحص الرسائل أولًا';
+
+  @override
+  String get gmeSecHeldTitle =>
+      'الصور والرسائل الصوتية والروابط تنتظر المراجعة';
+
+  @override
+  String get gmeSecHeldBody =>
+      'عندما يرسل شخص بالغ صورة أو رسالة صوتية أو رابطًا إلى متعلّم صغير، يُحجز حتى يراجعه مشرف. لا يراه متعلّمك إلا بعد الموافقة عليه.';
+
+  @override
+  String get gmeSecStopTitle => 'يمكنك إيقاف جهة اتصال';
+
+  @override
+  String get gmeSecStopBody =>
+      'في مركز العائلة، افتح الرسائل واختر إيقاف. لن يتمكن ذلك الشخص من مراسلة متعلّمك بعد ذلك.';
+
+  @override
+  String get gmeSecTeacherTitle => 'يحتاج المعلّمون إلى موافقتك';
+
+  @override
+  String get gmeSecTeacherBody =>
+      'لا يمكن للمعلّم مراسلة متعلّمك إلا في صف وافقت عليه، أو عندما تملك المدرسة الموافقة ويفعّل المعلّم الرسائل. ينتهي هذا الإذن في تاريخ انتهائه.';
+
+  @override
+  String gtpDmOnTitle(String name) {
+    return 'هل تفعّل الرسائل مع $name؟';
+  }
+
+  @override
+  String gtpDmOffTitle(String name) {
+    return 'هل توقف الرسائل مع $name؟';
+  }
+
+  @override
+  String get gtpDmOnBody =>
+      'تغطي موافقة المدرسة ذلك. تبقى الرسائل خاضعة للمراجعة، ويستمر ذلك عامًا واحدًا ما لم توقفه.';
+
+  @override
+  String get gtpDmOffBody => 'لن تتمكن بعد ذلك من مراسلة هذا الطالب مباشرة.';
+
+  @override
+  String get gtpDmOnAction => 'تفعيل';
+
+  @override
+  String get gtpDmOffAction => 'إيقاف';
+
+  @override
+  String gtpDmUntil(String date) {
+    return 'الرسائل مفعّلة حتى $date';
+  }
+
+  @override
+  String get gtpLoading => 'جارٍ تحميل الطلاب';
+
+  @override
+  String get gfamModeHubLabel => 'مركز وليّ الأمر، عرض المتعلّمين المرتبطين';
+
+  @override
+  String get gfamModeInviteLabel => 'دعوة المتعلّم، إنشاء رمز للمشاركة';
 }

@@ -409,7 +409,8 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
       final args = settings.arguments;
       final id = args is Map ? int.tryParse('${args['childUserId']}') : null;
       if (id == null) return const GuardianLinkScreen();
-      return GuardianChildMessagesScreen(childUserId: id);
+      final name = args is Map ? args['childName']?.toString() : null;
+      return GuardianChildMessagesScreen(childUserId: id, childName: name);
     },
     'classroom-student-requests-v2': (ctx) {
       final p = ClassroomV2RouteArgs.parse(settings.arguments);

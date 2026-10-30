@@ -4429,7 +4429,8 @@
         "type": "int"
       }
     }
-  },  "gdmHeld": "{count, plural, =1{1 photo or voice note waiting for a moderator} other{{count} photos or voice notes waiting for a moderator}}",
+  },
+  "gdmHeld": "{count, plural, =1{1 photo or voice note waiting for a moderator} other{{count} photos or voice notes waiting for a moderator}}",
   "@gdmHeld": {
     "description": "gdmHeld",
     "placeholders": {
@@ -4438,7 +4439,6 @@
       }
     }
   },
-
   "gdmStop": "Stop messages",
   "@gdmStop": {
     "description": "gdmStop"
@@ -4734,5 +4734,372 @@
   "gcirFallbackName": "Circle",
   "@gcirFallbackName": {
     "description": "gcirFallbackName"
+  },
+  "gapTitle": "Group approvals",
+  "@gapTitle": {
+    "description": "gapTitle"
+  },
+  "gapLearnerFallback": "Your learner",
+  "@gapLearnerFallback": {
+    "description": "gapLearnerFallback"
+  },
+  "gapDenyConfirmTitle": "Deny this request?",
+  "@gapDenyConfirmTitle": {
+    "description": "gapDenyConfirmTitle"
+  },
+  "gapDenyConfirmBody": "{child} will not join {group}. They can ask again later.",
+  "@gapDenyConfirmBody": {
+    "description": "gapDenyConfirmBody",
+    "placeholders": {
+      "child": {
+        "type": "String"
+      },
+      "group": {
+        "type": "String"
+      }
+    }
+  },
+  "gapCancel": "Cancel",
+  "@gapCancel": {
+    "description": "gapCancel"
+  },
+  "gapDeny": "Deny",
+  "@gapDeny": {
+    "description": "gapDeny"
+  },
+  "gapApprove": "Approve",
+  "@gapApprove": {
+    "description": "gapApprove"
+  },
+  "gapRevoke": "Revoke",
+  "@gapRevoke": {
+    "description": "gapRevoke"
+  },
+  "gapApprovedToast": "Approved: {group}",
+  "@gapApprovedToast": {
+    "description": "gapApprovedToast",
+    "placeholders": {
+      "group": {
+        "type": "String"
+      }
+    }
+  },
+  "gapDeniedToast": "Denied: {group}",
+  "@gapDeniedToast": {
+    "description": "gapDeniedToast",
+    "placeholders": {
+      "group": {
+        "type": "String"
+      }
+    }
+  },
+  "gapRevokedToast": "Approval revoked: {group}",
+  "@gapRevokedToast": {
+    "description": "gapRevokedToast",
+    "placeholders": {
+      "group": {
+        "type": "String"
+      }
+    }
+  },
+  "gapActionFailed": "That did not go through. Please try again.",
+  "@gapActionFailed": {
+    "description": "gapActionFailed"
+  },
+  "gapReview": "Needs your review",
+  "@gapReview": {
+    "description": "gapReview"
+  },
+  "gapDecided": "Decided",
+  "@gapDecided": {
+    "description": "gapDecided"
+  },
+  "gapLoadError": "Approvals could not load. Check your connection and try again.",
+  "@gapLoadError": {
+    "description": "gapLoadError"
+  },
+  "gapEmptyTitle": "No requests right now",
+  "@gapEmptyTitle": {
+    "description": "gapEmptyTitle"
+  },
+  "gapEmptyBody": "When your learner asks to join a circle or class, it will appear here for you to approve or deny.",
+  "@gapEmptyBody": {
+    "description": "gapEmptyBody"
+  },
+  "gapRefresh": "Refresh",
+  "@gapRefresh": {
+    "description": "gapRefresh"
+  },
+  "gapOffline": "You are offline. Showing the last list we loaded.",
+  "@gapOffline": {
+    "description": "gapOffline"
+  },
+  "gapLoading": "Loading approvals",
+  "@gapLoading": {
+    "description": "gapLoading"
+  },
+  "gapRetry": "Try again",
+  "@gapRetry": {
+    "description": "gapRetry"
+  },
+  "gapStatusApproved": "Approved",
+  "@gapStatusApproved": {
+    "description": "gapStatusApproved"
+  },
+  "gapStatusExpired": "Expired",
+  "@gapStatusExpired": {
+    "description": "gapStatusExpired"
+  },
+  "gapStatusRevoked": "Revoked",
+  "@gapStatusRevoked": {
+    "description": "gapStatusRevoked"
+  },
+  "gapStatusDenied": "Denied",
+  "@gapStatusDenied": {
+    "description": "gapStatusDenied"
+  },
+  "gapStatusReapprove": "Approve again",
+  "@gapStatusReapprove": {
+    "description": "gapStatusReapprove"
+  },
+  "gapStatusWaiting": "Waiting for you",
+  "@gapStatusWaiting": {
+    "description": "gapStatusWaiting"
+  },
+  "gapModerated": "Messages are checked by moderators",
+  "@gapModerated": {
+    "description": "gapModerated"
+  },
+  "gapApprovalRequired": "Joining needs your approval",
+  "@gapApprovalRequired": {
+    "description": "gapApprovalRequired"
+  },
+  "gapOpenCommunity": "Open community",
+  "@gapOpenCommunity": {
+    "description": "gapOpenCommunity"
+  },
+  "gapKindCircle": "Circle",
+  "@gapKindCircle": {
+    "description": "gapKindCircle"
+  },
+  "gapKindClassroom": "Class",
+  "@gapKindClassroom": {
+    "description": "gapKindClassroom"
+  },
+  "gapWhyCircle": "{child} wants to join the circle {group}",
+  "@gapWhyCircle": {
+    "description": "gapWhyCircle",
+    "placeholders": {
+      "child": {
+        "type": "String"
+      },
+      "group": {
+        "type": "String"
+      }
+    }
+  },
+  "gapWhyClass": "{child} wants to join the class {group}",
+  "@gapWhyClass": {
+    "description": "gapWhyClass",
+    "placeholders": {
+      "child": {
+        "type": "String"
+      },
+      "group": {
+        "type": "String"
+      }
+    }
+  },
+  "gapMembers": "{count, plural, =1{1 member} other{{count} members}}",
+  "@gapMembers": {
+    "description": "gapMembers",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gapAdults": "{count, plural, =1{1 adult} other{{count} adults}}",
+  "@gapAdults": {
+    "description": "gapAdults",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gapExpires": "Approval ends {date}",
+  "@gapExpires": {
+    "description": "gapExpires",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "gccFormatHint": "4–16 letters or numbers, from your teacher",
+  "@gccFormatHint": {
+    "description": "gccFormatHint"
+  },
+  "gccChecking": "Checking the code…",
+  "@gccChecking": {
+    "description": "gccChecking"
+  },
+  "gcirLoading": "Loading circles",
+  "@gcirLoading": {
+    "description": "gcirLoading"
+  },
+  "gcirJoinWithCode": "Join with a class code",
+  "@gcirJoinWithCode": {
+    "description": "gcirJoinWithCode"
+  },
+  "gcirExplore": "Explore villages",
+  "@gcirExplore": {
+    "description": "gcirExplore"
+  },
+  "gcirPillOpen": "Open",
+  "@gcirPillOpen": {
+    "description": "gcirPillOpen"
+  },
+  "gcirPillFull": "Full",
+  "@gcirPillFull": {
+    "description": "gcirPillFull"
+  },
+  "gcirPillSoon": "Starting soon",
+  "@gcirPillSoon": {
+    "description": "gcirPillSoon"
+  },
+  "gdmLoading": "Loading contacts",
+  "@gdmLoading": {
+    "description": "gdmLoading"
+  },
+  "gdmTitleFor": "Who is messaging {name}",
+  "@gdmTitleFor": {
+    "description": "gdmTitleFor",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "gfamHubTitle": "Family hub",
+  "@gfamHubTitle": {
+    "description": "gfamHubTitle"
+  },
+  "gfamModeHub": "Guardian hub",
+  "@gfamModeHub": {
+    "description": "gfamModeHub"
+  },
+  "gfamModeInvite": "Learner invite",
+  "@gfamModeInvite": {
+    "description": "gfamModeInvite"
+  },
+  "gfamStatusActive": "Approved",
+  "@gfamStatusActive": {
+    "description": "gfamStatusActive"
+  },
+  "gfamStatusVerifying": "Needs your consent",
+  "@gfamStatusVerifying": {
+    "description": "gfamStatusVerifying"
+  },
+  "gfamStatusWithdrawn": "Consent withdrawn",
+  "@gfamStatusWithdrawn": {
+    "description": "gfamStatusWithdrawn"
+  },
+  "gfamWhoMessagesName": "Who messages {name}",
+  "@gfamWhoMessagesName": {
+    "description": "gfamWhoMessagesName",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "gfamWhoMessagesYours": "Who messages your learner",
+  "@gfamWhoMessagesYours": {
+    "description": "gfamWhoMessagesYours"
+  },
+  "gmeSecCheckedTitle": "Messages are checked first",
+  "@gmeSecCheckedTitle": {
+    "description": "gmeSecCheckedTitle"
+  },
+  "gmeSecHeldTitle": "Photos, voice notes and links wait for review",
+  "@gmeSecHeldTitle": {
+    "description": "gmeSecHeldTitle"
+  },
+  "gmeSecHeldBody": "When an adult sends a photo, voice note or link to a young learner, it is held until a moderator checks it. Your learner sees it only after it is cleared.",
+  "@gmeSecHeldBody": {
+    "description": "gmeSecHeldBody"
+  },
+  "gmeSecStopTitle": "You can stop a contact",
+  "@gmeSecStopTitle": {
+    "description": "gmeSecStopTitle"
+  },
+  "gmeSecStopBody": "In Family hub, open Messages and choose Stop. That person can no longer message your learner.",
+  "@gmeSecStopBody": {
+    "description": "gmeSecStopBody"
+  },
+  "gmeSecTeacherTitle": "Teachers need your approval",
+  "@gmeSecTeacherTitle": {
+    "description": "gmeSecTeacherTitle"
+  },
+  "gmeSecTeacherBody": "A teacher can message your learner only in a class you approved, or when the school has consent and the teacher turns on messages. That permission ends on its expiry date.",
+  "@gmeSecTeacherBody": {
+    "description": "gmeSecTeacherBody"
+  },
+  "gtpDmOnTitle": "Turn on messages with {name}?",
+  "@gtpDmOnTitle": {
+    "description": "gtpDmOnTitle",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "gtpDmOffTitle": "Turn off messages with {name}?",
+  "@gtpDmOffTitle": {
+    "description": "gtpDmOffTitle",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "gtpDmOnBody": "The school's consent covers this. Messages stay moderated, and this lasts one year unless you turn it off.",
+  "@gtpDmOnBody": {
+    "description": "gtpDmOnBody"
+  },
+  "gtpDmOffBody": "You will no longer be able to message this student directly.",
+  "@gtpDmOffBody": {
+    "description": "gtpDmOffBody"
+  },
+  "gtpDmOnAction": "Turn on",
+  "@gtpDmOnAction": {
+    "description": "gtpDmOnAction"
+  },
+  "gtpDmOffAction": "Turn off",
+  "@gtpDmOffAction": {
+    "description": "gtpDmOffAction"
+  },
+  "gtpDmUntil": "Messages on until {date}",
+  "@gtpDmUntil": {
+    "description": "gtpDmUntil",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "gtpLoading": "Loading students",
+  "@gtpLoading": {
+    "description": "gtpLoading"
+  },
+  "gfamModeHubLabel": "Guardian hub, show linked learners",
+  "@gfamModeHubLabel": {
+    "description": "gfamModeHubLabel"
+  },
+  "gfamModeInviteLabel": "Learner invite, create a code to share",
+  "@gfamModeInviteLabel": {
+    "description": "gfamModeInviteLabel"
   }
 }
