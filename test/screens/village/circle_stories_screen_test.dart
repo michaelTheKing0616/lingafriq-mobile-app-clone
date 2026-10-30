@@ -7,8 +7,12 @@ import 'package:lingafriq/screens/village/circle_stories_screen.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('CircleStoriesScreen shows copy warning and empty state', (tester) async {
-    await tester.binding.setSurfaceSize(const Size(390, 844));
+  testWidgets('CircleStoriesScreen shows copy warning and empty state', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
     await ScreenUtil.ensureScreenSize();
 
     await tester.pumpWidget(
@@ -39,7 +43,9 @@ void main() {
   });
 
   testWidgets('CircleStoriesScreen lists story row', (tester) async {
-    await tester.binding.setSurfaceSize(const Size(390, 844));
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
     await ScreenUtil.ensureScreenSize();
 
     await tester.pumpWidget(

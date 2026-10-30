@@ -581,6 +581,13 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(tester.takeException(), isNull);
+      // The title is now a body headline, so the first card may start below
+      // the fold at 3.0x.
+      await tester.scrollUntilVisible(
+        find.text('Approve'),
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
       expect(find.text('Approve'), findsOneWidget);
 
       await tester.scrollUntilVisible(
