@@ -3775,7 +3775,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get gccFormatHint => 'من 4 إلى 16 حرفًا أو رقمًا، من معلّمك';
+  String get gccFormatHint => 'من 6 إلى 8 أحرف أو أرقام، من معلّمك';
 
   @override
   String get gccChecking => 'جارٍ التحقق من الرمز…';
@@ -4032,4 +4032,50 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get gdmUndo => 'تراجع';
+
+  @override
+  String get gccCheck => 'تحقّق من الرمز';
+
+  @override
+  String get gccPreviewTitle => 'هل هذا فصلك؟';
+
+  @override
+  String gccPreviewTeacher(String name) {
+    return 'المعلّم: $name';
+  }
+
+  @override
+  String gccPreviewMembers(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count متعلمين',
+      one: 'متعلم واحد',
+      zero: 'لا متعلمين بعد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get gccPreviewChange => 'استخدم رمزًا آخر';
+
+  @override
+  String get gtpVerified => 'موثّق من المدرسة';
+
+  @override
+  String gtpAllowUntil(String date) {
+    return 'مسموح حتى $date';
+  }
+
+  @override
+  String gtpExpiresIn(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'ينتهي خلال $count أيام',
+      one: 'ينتهي خلال يوم واحد',
+      zero: 'ينتهي اليوم',
+    );
+    return '$_temp0';
+  }
 }

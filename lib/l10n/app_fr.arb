@@ -914,7 +914,7 @@
   "gapMembers": "{count, plural, =1{1 membre} other{{count} membres}}",
   "gapAdults": "{count, plural, =1{1 adulte} other{{count} adultes}}",
   "gapExpires": "L'approbation prend fin le {date}",
-  "gccFormatHint": "4 à 16 lettres ou chiffres, donnés par votre enseignant",
+  "gccFormatHint": "6 à 8 lettres ou chiffres, donnés par votre enseignant",
   "gccChecking": "Vérification du code…",
   "gcirLoading": "Chargement des cercles",
   "gcirJoinWithCode": "Rejoindre avec un code de classe",
@@ -984,5 +984,13 @@
   "gdmFilterMedia": "Médias en attente",
   "gdmFilterEmpty": "Aucun contact ne correspond à ce filtre.",
   "gdmStoppedToast": "{name} ne peut plus écrire à votre apprenant",
-  "gdmUndo": "Annuler"
+  "gdmUndo": "Annuler",
+  "gccCheck": "Vérifier le code",
+  "gccPreviewTitle": "Est-ce votre classe ?",
+  "gccPreviewTeacher": "Enseignant : {name}",
+  "gccPreviewMembers": "{count, plural, =0{Aucun apprenant pour l’instant} =1{1 apprenant} other{{count} apprenants}}",
+  "gccPreviewChange": "Utiliser un autre code",
+  "gtpVerified": "Vérifié par l’école",
+  "gtpAllowUntil": "Autorisé jusqu’au {date}",
+  "gtpExpiresIn": "{count, plural, =0{Expire aujourd’hui} =1{Expire dans 1 jour} other{Expire dans {count} jours}}"
 }

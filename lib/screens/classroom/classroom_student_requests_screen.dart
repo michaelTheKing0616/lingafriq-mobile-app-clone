@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/services/guarded_messaging_service.dart';
+import 'package:lingafriq/theme/guarded_theme.dart';
 
 /// Teacher view: students waiting for a guardian, and per-student teacher-message approval
 /// for school accounts. Reference pack: docs/design/references/teacher-requests
@@ -11,10 +12,14 @@ class ClassroomStudentRequestsScreen extends StatefulWidget {
     required this.tribeId,
     this.tribeName,
     this.service,
+    this.now,
   });
 
   final String tribeId;
   final String? tribeName;
+
+  /// Clock for "Expires in N days" (tests pin it).
+  final DateTime Function()? now;
   final GuardedMessagingService? service;
 
   @override
@@ -114,8 +119,9 @@ class _ClassroomStudentRequestsScreenState
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
+    final theme = guardedTheme(Theme.of(context));
     final loc = MaterialLocalizations.of(context);
+    final now = widget.now?.call() ?? DateTime.now();
     Widget body;
     if (_errorStatus != null) {
       body = ListView(
@@ -259,20 +265,12 @@ class _ClassroomStudentRequestsScreenState
                         color: theme.colorScheme.onSurface,
                       ),
                     ),
-                    subtitle: Text(
-                      !s.accountActive
-                          ? l.gtpLocked
-                          : (_dm[s.studentUserId] ?? false) &&
-                                _expiry[s.studentUserId] != null
-                          ? l.gtpDmUntil(
-                              loc.formatMediumDate(
-                                _expiry[s.studentUserId]!.toLocal(),
-                              ),
-                            )
-                          : l.gtpTeacherDm,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
+                    subtitle: _SchoolRowDetails(
+                      student: s,
+                      on: _dm[s.studentUserId] ?? false,
+                      expiry: _expiry[s.studentUserId],
+                      now: now,
+                      formatDate: (d) => loc.formatMediumDate(d.toLocal()),
                     ),
                     value: _dm[s.studentUserId] ?? false,
                     onChanged:
@@ -292,38 +290,142 @@ class _ClassroomStudentRequestsScreenState
     }
     // Title and class name live in the body so they wrap at 320dp, 200%
     // and in Arabic instead of being cut off in the app bar.
-    return Scaffold(
-      appBar: AppBar(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Semantics(
-                  header: true,
-                  child: Text(
+    return Theme(
+      data: theme,
+      child: Scaffold(
+        appBar: AppBar(),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GuardedHeadline(
                     l.gtpTitle,
+                    key: const ValueKey('gtp-title'),
                     style: theme.textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                ),
-                if (widget.tribeName != null)
-                  Text(
-                    widget.tribeName!,
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
+                  if (widget.tribeName != null)
+                    Text(
+                      widget.tribeName!,
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
                     ),
-                  ),
-              ],
+                ],
+              ),
+            ),
+            Expanded(child: body),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Status line plus chips: "Verified by school", "Allow until …",
+/// "Expires in N days". Text stays full contrast even when the switch is off.
+class _SchoolRowDetails extends StatelessWidget {
+  const _SchoolRowDetails({
+    required this.student,
+    required this.on,
+    required this.expiry,
+    required this.now,
+    required this.formatDate,
+  });
+
+  final SchoolStudent student;
+  final bool on;
+  final DateTime? expiry;
+  final DateTime now;
+  final String Function(DateTime) formatDate;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final id = student.studentUserId;
+    final days = expiry == null
+        ? null
+        : (expiry!.difference(now).inHours / 24).ceil().clamp(0, 9999);
+    Widget chip(
+      String key,
+      IconData icon,
+      String text, {
+      bool strong = false,
+    }) => Container(
+      key: ValueKey('$key-$id'),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: strong
+            ? scheme.primaryContainer
+            : scheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            size: 16,
+            color: strong ? scheme.onPrimaryContainer : scheme.onSurface,
+          ),
+          const SizedBox(width: 4),
+          Flexible(
+            child: Text(
+              text,
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: strong ? scheme.onPrimaryContainer : scheme.onSurface,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
-          Expanded(child: body),
         ],
       ),
+    );
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          student.accountActive ? l.gtpTeacherDm : l.gtpLocked,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: scheme.onSurfaceVariant,
+          ),
+        ),
+        if (student.accountActive || (on && expiry != null)) ...[
+          const SizedBox(height: 6),
+          Wrap(
+            spacing: 6,
+            runSpacing: 6,
+            children: [
+              if (student.accountActive)
+                chip(
+                  'gtp-verified',
+                  Icons.verified_outlined,
+                  l.gtpVerified,
+                  strong: true,
+                ),
+              if (on && expiry != null) ...[
+                chip(
+                  'gtp-until',
+                  Icons.event_available_outlined,
+                  l.gtpAllowUntil(formatDate(expiry!)),
+                ),
+                chip(
+                  'gtp-expires',
+                  Icons.timer_outlined,
+                  l.gtpExpiresIn(days!),
+                ),
+              ],
+            ],
+          ),
+        ],
+      ],
     );
   }
 }

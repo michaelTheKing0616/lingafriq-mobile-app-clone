@@ -6417,7 +6417,7 @@ abstract class AppLocalizations {
   /// gccFormatHint
   ///
   /// In en, this message translates to:
-  /// **'4–16 letters or numbers, from your teacher'**
+  /// **'6–8 letters or numbers, from your teacher'**
   String get gccFormatHint;
 
   /// gccChecking
@@ -6839,6 +6839,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Undo'**
   String get gdmUndo;
+
+  /// gccCheck
+  ///
+  /// In en, this message translates to:
+  /// **'Check code'**
+  String get gccCheck;
+
+  /// gccPreviewTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Is this your class?'**
+  String get gccPreviewTitle;
+
+  /// gccPreviewTeacher
+  ///
+  /// In en, this message translates to:
+  /// **'Teacher: {name}'**
+  String gccPreviewTeacher(String name);
+
+  /// gccPreviewMembers
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No learners yet} =1{1 learner} other{{count} learners}}'**
+  String gccPreviewMembers(int count);
+
+  /// gccPreviewChange
+  ///
+  /// In en, this message translates to:
+  /// **'Use a different code'**
+  String get gccPreviewChange;
+
+  /// gtpVerified
+  ///
+  /// In en, this message translates to:
+  /// **'Verified by school'**
+  String get gtpVerified;
+
+  /// gtpAllowUntil
+  ///
+  /// In en, this message translates to:
+  /// **'Allow until {date}'**
+  String gtpAllowUntil(String date);
+
+  /// gtpExpiresIn
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Expires today} =1{Expires in 1 day} other{Expires in {count} days}}'**
+  String gtpExpiresIn(int count);
 }
 
 class _AppLocalizationsDelegate

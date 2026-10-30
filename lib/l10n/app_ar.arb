@@ -914,7 +914,7 @@
   "gapMembers": "{count, plural, =1{عضو واحد} =2{عضوان} few{{count} أعضاء} other{{count} عضوًا}}",
   "gapAdults": "{count, plural, =0{لا بالغين} =1{بالغ واحد} =2{بالغان} few{{count} بالغين} other{{count} بالغًا}}",
   "gapExpires": "تنتهي الموافقة في {date}",
-  "gccFormatHint": "من 4 إلى 16 حرفًا أو رقمًا، من معلّمك",
+  "gccFormatHint": "من 6 إلى 8 أحرف أو أرقام، من معلّمك",
   "gccChecking": "جارٍ التحقق من الرمز…",
   "gcirLoading": "جارٍ تحميل الحلقات",
   "gcirJoinWithCode": "انضم برمز الصف",
@@ -984,5 +984,13 @@
   "gdmFilterMedia": "وسائط بانتظار المراجعة",
   "gdmFilterEmpty": "لا توجد جهات اتصال مطابقة لهذا الفلتر.",
   "gdmStoppedToast": "لم يعد بإمكان {name} مراسلة المتعلم",
-  "gdmUndo": "تراجع"
+  "gdmUndo": "تراجع",
+  "gccCheck": "تحقّق من الرمز",
+  "gccPreviewTitle": "هل هذا فصلك؟",
+  "gccPreviewTeacher": "المعلّم: {name}",
+  "gccPreviewMembers": "{count, plural, =0{لا متعلمين بعد} =1{متعلم واحد} other{{count} متعلمين}}",
+  "gccPreviewChange": "استخدم رمزًا آخر",
+  "gtpVerified": "موثّق من المدرسة",
+  "gtpAllowUntil": "مسموح حتى {date}",
+  "gtpExpiresIn": "{count, plural, =0{ينتهي اليوم} =1{ينتهي خلال يوم واحد} other{ينتهي خلال {count} أيام}}"
 }

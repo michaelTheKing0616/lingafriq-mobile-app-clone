@@ -240,6 +240,35 @@ class GuardedMessagingService {
     return r.ok;
   }
 
+  /// Class card shown before joining: POST /api/tribes/classrooms/preview.
+  /// Returns null when the preview is unavailable (offline, older server),
+  /// so the sheet falls back to joining directly; throws nothing.
+  Future<ClassPreviewResult?> previewClass(String code) async {
+    try {
+      final r = await _request(
+        'POST',
+        '/api/tribes/classrooms/preview',
+        data: {'code': code.trim()},
+      );
+      if (r.status == 404 && r.body['ok'] == false) {
+        return const ClassPreviewResult.notFound();
+      }
+      if (!r.ok || r.body['ok'] != true) return null;
+      final name = r.body['class_name']?.toString().trim() ?? '';
+      if (name.isEmpty) return null;
+      final teacher = r.body['teacher_name']?.toString().trim();
+      return ClassPreviewResult(
+        className: name,
+        teacherName: teacher == null || teacher.isEmpty ? null : teacher,
+        memberCount: _int(r.body['member_count']),
+        languageTag: r.body['language_tag']?.toString(),
+        isMember: r.body['is_member'] == true,
+      );
+    } catch (_) {
+      return null;
+    }
+  }
+
   Future<ClassJoinOutcome> joinClassByCode(String code) async =>
       (await joinClass(code)).outcome;
 
@@ -272,4 +301,32 @@ class GuardedMessagingService {
       _ => ClassJoinOutcome.error,
     };
   }
+}
+
+/// What a class code points at, shown before the learner joins.
+class ClassPreviewResult {
+  const ClassPreviewResult({
+    required this.className,
+    this.teacherName,
+    this.memberCount = 0,
+    this.languageTag,
+    this.isMember = false,
+  }) : found = true;
+
+  const ClassPreviewResult.notFound()
+    : found = false,
+      className = '',
+      teacherName = null,
+      memberCount = 0,
+      languageTag = null,
+      isMember = false;
+
+  final bool found;
+  final String className;
+
+  /// Null when the teacher's name is withheld (minor / unknown age).
+  final String? teacherName;
+  final int memberCount;
+  final String? languageTag;
+  final bool isMember;
 }

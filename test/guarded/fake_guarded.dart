@@ -44,6 +44,7 @@ const threadsJson = {
       'blocked_message_count': 2,
       'held_media_count': 1,
       'revoked': false,
+      'first_message_at': '2026-10-26T08:00:00Z',
     },
     {
       'peer_user_id': 13,

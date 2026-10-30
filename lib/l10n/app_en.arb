@@ -4937,7 +4937,7 @@
       }
     }
   },
-  "gccFormatHint": "4–16 letters or numbers, from your teacher",
+  "gccFormatHint": "6–8 letters or numbers, from your teacher",
   "@gccFormatHint": {
     "description": "gccFormatHint"
   },
@@ -5294,5 +5294,57 @@
   "gdmUndo": "Undo",
   "@gdmUndo": {
     "description": "gdmUndo"
+  },
+  "gccCheck": "Check code",
+  "@gccCheck": {
+    "description": "gccCheck"
+  },
+  "gccPreviewTitle": "Is this your class?",
+  "@gccPreviewTitle": {
+    "description": "gccPreviewTitle"
+  },
+  "gccPreviewTeacher": "Teacher: {name}",
+  "@gccPreviewTeacher": {
+    "description": "gccPreviewTeacher",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "gccPreviewMembers": "{count, plural, =0{No learners yet} =1{1 learner} other{{count} learners}}",
+  "@gccPreviewMembers": {
+    "description": "gccPreviewMembers",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gccPreviewChange": "Use a different code",
+  "@gccPreviewChange": {
+    "description": "gccPreviewChange"
+  },
+  "gtpVerified": "Verified by school",
+  "@gtpVerified": {
+    "description": "gtpVerified"
+  },
+  "gtpAllowUntil": "Allow until {date}",
+  "@gtpAllowUntil": {
+    "description": "gtpAllowUntil",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "gtpExpiresIn": "{count, plural, =0{Expires today} =1{Expires in 1 day} other{Expires in {count} days}}",
+  "@gtpExpiresIn": {
+    "description": "gtpExpiresIn",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }

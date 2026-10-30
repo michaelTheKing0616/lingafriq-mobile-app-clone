@@ -3762,7 +3762,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get gccFormatHint =>
-      '4 à 16 lettres ou chiffres, donnés par votre enseignant';
+      '6 à 8 lettres ou chiffres, donnés par votre enseignant';
 
   @override
   String get gccChecking => 'Vérification du code…';
@@ -4024,4 +4024,50 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get gdmUndo => 'Annuler';
+
+  @override
+  String get gccCheck => 'Vérifier le code';
+
+  @override
+  String get gccPreviewTitle => 'Est-ce votre classe ?';
+
+  @override
+  String gccPreviewTeacher(String name) {
+    return 'Enseignant : $name';
+  }
+
+  @override
+  String gccPreviewMembers(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count apprenants',
+      one: '1 apprenant',
+      zero: 'Aucun apprenant pour l’instant',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get gccPreviewChange => 'Utiliser un autre code';
+
+  @override
+  String get gtpVerified => 'Vérifié par l’école';
+
+  @override
+  String gtpAllowUntil(String date) {
+    return 'Autorisé jusqu’au $date';
+  }
+
+  @override
+  String gtpExpiresIn(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Expire dans $count jours',
+      one: 'Expire dans 1 jour',
+      zero: 'Expire aujourd’hui',
+    );
+    return '$_temp0';
+  }
 }
