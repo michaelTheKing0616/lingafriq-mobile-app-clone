@@ -145,6 +145,18 @@ Future<void> expectLastButtonReachable(
     st.position.jumpTo(st.position.maxScrollExtent);
     await tester.pump(const Duration(milliseconds: 100));
   }
+  // The offline notice's Retry scrolls with the body at large text; it is
+  // not the step's last action.
+  final notice = find.byKey(const ValueKey('step-offline-notice'));
+  final inNotice = notice.evaluate().isEmpty
+      ? <Element>{}
+      : find
+            .descendant(
+              of: notice,
+              matching: find.byWidgetPredicate((_) => true),
+            )
+            .evaluate()
+            .toSet();
   final buttons = find.descendant(
     of: body,
     matching: find.byWidgetPredicate(
@@ -154,6 +166,7 @@ Future<void> expectLastButtonReachable(
   Element? last;
   var lowest = double.negativeInfinity;
   for (final e in buttons.evaluate()) {
+    if (inNotice.contains(e)) continue;
     final box = e.renderObject as RenderBox?;
     if (box == null || !box.hasSize) continue;
     final b = box.localToGlobal(Offset.zero).dy + box.size.height;

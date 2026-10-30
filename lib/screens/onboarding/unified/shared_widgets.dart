@@ -94,6 +94,12 @@ class _StepScaffold extends HookConsumerWidget {
       return false;
     }
 
+    // Question steps at large text scroll the notice with the header and body.
+    final scrollNotice = offline && !pinHeader;
+    final notice = _OfflineNotice(
+      key: const ValueKey('step-offline-notice'),
+      onRetry: () => ref.invalidate(onboardingOnlineProvider),
+    );
     return Container(
       color: ModernGriotColors.surface,
       child: ResponsiveSafeArea(
@@ -101,10 +107,9 @@ class _StepScaffold extends HookConsumerWidget {
           builder: (context, viewport) => Column(
             children: [
               SizedBox(height: ModernGriotSpacing.xxl.h),
-              if (offline)
-                _OfflineNotice(
-                  onRetry: () => ref.invalidate(onboardingOnlineProvider),
-                ),
+              // At large text the notice scrolls with the body (below) so it
+              // cannot starve the body and push the CTA off screen.
+              if (offline && !scrollNotice) notice,
               if (header != null && pinHeader)
                 ConstrainedBox(
                   constraints: BoxConstraints(
@@ -167,11 +172,17 @@ class _StepScaffold extends HookConsumerWidget {
                                       constraints.maxHeight - bottomInset,
                                     ),
                                   ),
-                                  child: header != null && !pinHeader
+                                  child:
+                                      (header != null && !pinHeader) ||
+                                          scrollNotice
                                       ? Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.stretch,
-                                          children: [header!, child],
+                                          children: [
+                                            if (scrollNotice) notice,
+                                            ?header,
+                                            child,
+                                          ],
                                         )
                                       : child,
                                 ),
@@ -537,7 +548,7 @@ class _QuestionHeader extends StatelessWidget {
 /// In-flow offline notice. Answers are saved on the device either way, so
 /// this is reassurance, not an error: no red, no blocking.
 class _OfflineNotice extends StatelessWidget {
-  const _OfflineNotice({required this.onRetry});
+  const _OfflineNotice({super.key, required this.onRetry});
 
   final VoidCallback onRetry;
 
