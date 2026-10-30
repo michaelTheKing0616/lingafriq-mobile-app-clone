@@ -20,7 +20,8 @@ class ClassroomRosterScreen extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<ClassroomRosterScreen> createState() => _ClassroomRosterScreenState();
+  ConsumerState<ClassroomRosterScreen> createState() =>
+      _ClassroomRosterScreenState();
 }
 
 class _ClassroomRosterScreenState extends ConsumerState<ClassroomRosterScreen> {
@@ -44,10 +45,14 @@ class _ClassroomRosterScreenState extends ConsumerState<ClassroomRosterScreen> {
       _error = null;
     });
     try {
-      final res = await ref.read(classroomServiceProvider).getRosterV2(widget.tribeId);
+      final res = await ref
+          .read(classroomServiceProvider)
+          .getRosterV2(widget.tribeId);
       if (!mounted) return;
       final classroom = Map<String, dynamic>.from(res['classroom'] ?? const {});
-      final privacy = Map<String, dynamic>.from(classroom['privacy'] ?? const {});
+      final privacy = Map<String, dynamic>.from(
+        classroom['privacy'] ?? const {},
+      );
       setState(() {
         _data = res;
         _shareEmails = privacy['share_roster_emails'] == true;
@@ -56,7 +61,8 @@ class _ClassroomRosterScreenState extends ConsumerState<ClassroomRosterScreen> {
     } catch (e) {
       if (mounted) ErrorHandler.showError(context, e);
       setState(() {
-        _error = 'We couldn\'t load your class list. Pull to refresh or try again.';
+        _error =
+            'We couldn\'t load your class list. Pull to refresh or try again.';
         _loading = false;
       });
     }
@@ -77,7 +83,12 @@ class _ClassroomRosterScreenState extends ConsumerState<ClassroomRosterScreen> {
     if (bytes == null) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Could not read that file.', style: PanAfricanTypography.bodyMedium(context))),
+          SnackBar(
+            content: Text(
+              'Could not read that file.',
+              style: PanAfricanTypography.bodyMedium(context),
+            ),
+          ),
         );
       }
       return;
@@ -85,11 +96,15 @@ class _ClassroomRosterScreenState extends ConsumerState<ClassroomRosterScreen> {
     setState(() => _importing = true);
     try {
       final csv = String.fromCharCodes(bytes);
-      final result = await ref.read(classroomServiceProvider).importRosterCsvV2(widget.tribeId, csv);
+      final result = await ref
+          .read(classroomServiceProvider)
+          .importRosterCsvV2(widget.tribeId, csv);
       if (!mounted) return;
       final feedback = summarizeRosterImportResult(result);
       setState(() {
-        _importErrors = List<Map<String, dynamic>>.from(feedback['errors'] as List);
+        _importErrors = List<Map<String, dynamic>>.from(
+          feedback['errors'] as List,
+        );
         _importSummary = feedback['summary'] as String;
         _importing = false;
       });
@@ -104,8 +119,12 @@ class _ClassroomRosterScreenState extends ConsumerState<ClassroomRosterScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final roster = List<Map<String, dynamic>>.from(_data?['roster'] ?? const []);
-    final classroom = Map<String, dynamic>.from(_data?['classroom'] ?? const {});
+    final roster = List<Map<String, dynamic>>.from(
+      _data?['roster'] ?? const [],
+    );
+    final classroom = Map<String, dynamic>.from(
+      _data?['classroom'] ?? const {},
+    );
     final classroomCode = classroom['classroom_code']?.toString();
 
     return Scaffold(
@@ -121,7 +140,10 @@ class _ClassroomRosterScreenState extends ConsumerState<ClassroomRosterScreen> {
             icon: const Icon(Icons.how_to_reg_outlined),
             onPressed: () => Navigator.of(context).push<void>(
               MaterialPageRoute<void>(
-                builder: (_) => ClassroomStudentRequestsScreen(tribeId: widget.tribeId, tribeName: widget.tribeName),
+                builder: (_) => ClassroomStudentRequestsScreen(
+                  tribeId: widget.tribeId,
+                  tribeName: widget.tribeName,
+                ),
               ),
             ),
           ),
@@ -131,7 +153,10 @@ class _ClassroomRosterScreenState extends ConsumerState<ClassroomRosterScreen> {
                 ? SizedBox(
                     width: 22,
                     height: 22,
-                    child: CircularProgressIndicator(strokeWidth: 2, color: Theme.of(context).colorScheme.onSurface),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                   )
                 : const Icon(Icons.upload_file_rounded),
             onPressed: _importing ? null : _importCsv,
@@ -145,7 +170,10 @@ class _ClassroomRosterScreenState extends ConsumerState<ClassroomRosterScreen> {
                 Clipboard.setData(ClipboardData(text: classroomCode));
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Class code copied', style: PanAfricanTypography.bodyMedium(context)),
+                    content: Text(
+                      'Class code copied',
+                      style: PanAfricanTypography.bodyMedium(context),
+                    ),
                   ),
                 );
               },
@@ -155,53 +183,67 @@ class _ClassroomRosterScreenState extends ConsumerState<ClassroomRosterScreen> {
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _error != null
-              ? Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(PanAfricanSpacing.lg),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(_error!, style: PanAfricanTypography.bodyLarge(context)),
-                        SizedBox(height: PanAfricanSpacing.md),
-                        FilledButton(onPressed: _load, child: const Text('Retry')),
-                      ],
+          ? Center(
+              child: Padding(
+                padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      _error!,
+                      style: PanAfricanTypography.bodyLarge(context),
                     ),
-                  ),
-                )
-              : RefreshIndicator(
-                  color: PanAfricanColors.primary,
-                  onRefresh: _load,
-                  child: ListView.separated(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    padding: EdgeInsets.all(PanAfricanSpacing.md),
-                    itemCount: roster.length + 1,
-                    separatorBuilder: (_, __) => SizedBox(height: PanAfricanSpacing.sm),
-                    itemBuilder: (context, index) {
-                      if (index == 0) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            _HeaderCard(
-                              isDark: isDark,
-                              classroomCode: classroomCode,
-                              count: roster.length,
-                            ),
-                            if (_importSummary != null) ...[
-                              SizedBox(height: PanAfricanSpacing.sm),
-                              _ImportBanner(message: _importSummary!, isDark: isDark),
-                            ],
-                            if (_importErrors.isNotEmpty) ...[
-                              SizedBox(height: PanAfricanSpacing.sm),
-                              _ImportErrorsList(errors: _importErrors, isDark: isDark),
-                            ],
-                          ],
-                        );
-                      }
-                      final m = roster[index - 1];
-      return _RosterCard(isDark: isDark, member: m, showEmail: _shareEmails);
-                    },
-                  ),
+                    SizedBox(height: PanAfricanSpacing.md),
+                    FilledButton(onPressed: _load, child: const Text('Retry')),
+                  ],
                 ),
+              ),
+            )
+          : RefreshIndicator(
+              color: PanAfricanColors.primary,
+              onRefresh: _load,
+              child: ListView.separated(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.all(PanAfricanSpacing.md),
+                itemCount: roster.length + 1,
+                separatorBuilder: (_, __) =>
+                    SizedBox(height: PanAfricanSpacing.sm),
+                itemBuilder: (context, index) {
+                  if (index == 0) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        _HeaderCard(
+                          isDark: isDark,
+                          classroomCode: classroomCode,
+                          count: roster.length,
+                        ),
+                        if (_importSummary != null) ...[
+                          SizedBox(height: PanAfricanSpacing.sm),
+                          _ImportBanner(
+                            message: _importSummary!,
+                            isDark: isDark,
+                          ),
+                        ],
+                        if (_importErrors.isNotEmpty) ...[
+                          SizedBox(height: PanAfricanSpacing.sm),
+                          _ImportErrorsList(
+                            errors: _importErrors,
+                            isDark: isDark,
+                          ),
+                        ],
+                      ],
+                    );
+                  }
+                  final m = roster[index - 1];
+                  return _RosterCard(
+                    isDark: isDark,
+                    member: m,
+                    showEmail: _shareEmails,
+                  );
+                },
+              ),
+            ),
     );
   }
 }
@@ -224,15 +266,25 @@ class _HeaderCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         borderRadius: PanAfricanRadius.lgBR,
-        border: Border.all(color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight),
+        border: Border.all(
+          color: isDark
+              ? PanAfricanColors.borderDark
+              : PanAfricanColors.borderLight,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Learners: $count', style: PanAfricanTypography.titleMedium(context)),
+          Text(
+            'Learners: $count',
+            style: PanAfricanTypography.titleMedium(context),
+          ),
           if (classroomCode != null && classroomCode!.isNotEmpty) ...[
             SizedBox(height: PanAfricanSpacing.xs),
-            Text('Join code: $classroomCode', style: PanAfricanTypography.bodySmall(context)),
+            Text(
+              'Join code: $classroomCode',
+              style: PanAfricanTypography.bodySmall(context),
+            ),
           ],
         ],
       ),
@@ -273,16 +325,25 @@ class _ImportErrorsList extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(PanAfricanSpacing.md),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.errorContainer.withValues(alpha: 0.25),
+        color: Theme.of(
+          context,
+        ).colorScheme.errorContainer.withValues(alpha: 0.25),
         borderRadius: PanAfricanRadius.lgBR,
-        border: Border.all(color: Theme.of(context).colorScheme.error.withValues(alpha: 0.4)),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.error.withValues(alpha: 0.4),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Fix these rows in your spreadsheet', style: PanAfricanTypography.titleSmall(context)),
+          Text(
+            'Fix these rows in your spreadsheet',
+            style: PanAfricanTypography.titleSmall(context),
+          ),
           SizedBox(height: PanAfricanSpacing.xs),
-          ...errors.take(8).map(
+          ...errors
+              .take(8)
+              .map(
                 (e) => Padding(
                   padding: EdgeInsets.only(bottom: PanAfricanSpacing.xxxs),
                   child: Text(
@@ -298,7 +359,11 @@ class _ImportErrorsList extends StatelessWidget {
 }
 
 class _RosterCard extends StatelessWidget {
-  const _RosterCard({required this.isDark, required this.member, required this.showEmail});
+  const _RosterCard({
+    required this.isDark,
+    required this.member,
+    required this.showEmail,
+  });
 
   final bool isDark;
   final Map<String, dynamic> member;
@@ -316,7 +381,11 @@ class _RosterCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         borderRadius: PanAfricanRadius.lgBR,
-        border: Border.all(color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight),
+        border: Border.all(
+          color: isDark
+              ? PanAfricanColors.borderDark
+              : PanAfricanColors.borderLight,
+        ),
         boxShadow: PanAfricanShadows.sm,
       ),
       child: Row(
@@ -338,14 +407,20 @@ class _RosterCard extends StatelessWidget {
               children: [
                 Text(username, style: PanAfricanTypography.titleSmall(context)),
                 if (globalId != null && globalId.isNotEmpty)
-                  Text('@$globalId', style: PanAfricanTypography.labelSmall(context)),
+                  Text(
+                    '@$globalId',
+                    style: PanAfricanTypography.labelSmall(context),
+                  ),
                 if (showEmail && email != null && email.isNotEmpty)
                   Text(email, style: PanAfricanTypography.labelSmall(context)),
               ],
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.sm, vertical: PanAfricanSpacing.xxxs),
+            padding: EdgeInsets.symmetric(
+              horizontal: PanAfricanSpacing.sm,
+              vertical: PanAfricanSpacing.xxxs,
+            ),
             decoration: BoxDecoration(
               color: PanAfricanColors.primaryContainer,
               borderRadius: PanAfricanRadius.roundBR,
@@ -363,4 +438,3 @@ class _RosterCard extends StatelessWidget {
     );
   }
 }
-

@@ -89,7 +89,8 @@ import 'screens/classroom/classroom_v2_route_args.dart';
 import 'screens/classroom/speaker_queue_screen.dart';
 import 'screens/tabs_view/profile/app_policy_screen.dart';
 import 'screens/lesson/lesson_flow_screen.dart';
-import 'screens/grammar/grammar_hub_screen.dart' show GrammarHubScreen, GrammarTopic;
+import 'screens/grammar/grammar_hub_screen.dart'
+    show GrammarHubScreen, GrammarTopic;
 import 'screens/grammar/grammar_lesson_screen.dart';
 import 'screens/grammar/grammar_exercise_screen.dart';
 import 'screens/social/social_hub_screen.dart';
@@ -204,7 +205,7 @@ class MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
     final themeMode = ref.watch(themeModeProvider);
     // Listen to locale changes to trigger UI rebuild
     final localeNotifier = DynamicLocalizationService.localeNotifier;
-    
+
     return ScreenUtilInit(
       designSize: const Size(428, 926),
       minTextAdapt: true,
@@ -228,11 +229,13 @@ class MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
                 // Use DynamicLocalizationService to resolve locale
                 if (locale != null) {
                   final languageCode = locale.languageCode.toLowerCase();
-                  final supported = DynamicLocalizationService.getSupportedLanguages()
-                      .firstWhere(
-                        (lang) => lang.code == languageCode,
-                        orElse: () => DynamicLocalizationService.currentLanguage,
-                      );
+                  final supported =
+                      DynamicLocalizationService.getSupportedLanguages()
+                          .firstWhere(
+                            (lang) => lang.code == languageCode,
+                            orElse: () =>
+                                DynamicLocalizationService.currentLanguage,
+                          );
                   return Locale(supported.code);
                 }
                 return DynamicLocalizationService.currentLocale;
@@ -249,9 +252,13 @@ class MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
                   child: AnnotatedRegion<SystemUiOverlayStyle>(
                     value: SystemUiOverlayStyle(
                       statusBarColor: Colors.transparent,
-                      statusBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
+                      statusBarIconBrightness: context.isDarkMode
+                          ? Brightness.light
+                          : Brightness.dark,
                       systemNavigationBarColor: Colors.transparent,
-                      systemNavigationBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
+                      systemNavigationBarIconBrightness: context.isDarkMode
+                          ? Brightness.light
+                          : Brightness.dark,
                     ),
                     child: _Unfocus(child: child),
                   ),
@@ -268,7 +275,10 @@ class MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
 }
 
 /// Missing/invalid named-route arguments: [AppBar] + scrollable detail so users can pop.
-Widget _namedRouteArgumentIssueScaffold(BuildContext context, String detailMessage) {
+Widget _namedRouteArgumentIssueScaffold(
+  BuildContext context,
+  String detailMessage,
+) {
   final l10n = AppLocalizations.of(context)!;
   return Scaffold(
     appBar: AppBar(title: Text(l10n.errorOccurred)),
@@ -289,29 +299,34 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
   final routes = <String, WidgetBuilder>{
     'ai_chat_select': (_) => const AIModeSelectionScreen(),
     'passkey-sign-in': (_) => PasskeyAccountScreen(
-          mode: PasskeyMode.signIn,
-          email: settings.arguments is String ? settings.arguments as String : null,
-        ),
-    'passkey-manage': (_) => const PasskeyAccountScreen(mode: PasskeyMode.manage),
+      mode: PasskeyMode.signIn,
+      email: settings.arguments is String ? settings.arguments as String : null,
+    ),
+    'passkey-manage': (_) =>
+        const PasskeyAccountScreen(mode: PasskeyMode.manage),
     'sign-in-options': (_) => const SignInOptionsScreen(
-          googleIdToken: DeviceIdentity.googleIdToken,
-          appleIdToken: DeviceIdentity.appleIdToken,
-        ),
+      googleIdToken: DeviceIdentity.googleIdToken,
+      appleIdToken: DeviceIdentity.appleIdToken,
+    ),
     'polie_mode_selection': (_) => const PolieModeSelectionScreen(),
     'curriculum': (_) => const LessonsMapEntryScreen(),
     'authentic-path': (_) => const AuthenticCurriculumEntryScreen(),
     'native-content-review': (_) => const NativeContentReviewScreen(),
     'games': (_) => const GamesScreenMaterial3(),
+
     /// Legacy flow: languages from `getLanguages()` API, then [GameTypesScreen].
     'games_api_languages': (_) => const GamesScreen(),
+
     /// Full static catalog (35+ games) with hub-aligned [AppLanguage] dropdown.
     'games_enhanced_catalog': (_) => const GamesScreenEnhanced(),
     'daily_goals': (_) => const DailyGoalsScreen(),
     'progress': (_) => const ProgressDashboardScreen(),
     'achievements': (_) => const AchievementsScreen(),
-    'badges': (_) => const AchievementsScreen(), // Badges tab within Achievements
+    'badges': (_) =>
+        const AchievementsScreen(), // Badges tab within Achievements
     'leaderboard': (_) => const LeaderboardScreen(),
-    'tribe': (_) => const TribeVsTribeScreen(), // No separate TribeScreen; reuse
+    'tribe': (_) =>
+        const TribeVsTribeScreen(), // No separate TribeScreen; reuse
     'tribe_vs_tribe': (_) => const TribeVsTribeScreen(),
     'tribe-selection': (_) => const TribeSelectionScreen(),
     'tribe_selection': (_) => const TribeSelectionScreen(),
@@ -332,7 +347,8 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
         roomName: args?['roomName']?.toString(),
         livekitToken: args?['livekitToken']?.toString(),
         livekitUrl: args?['livekitUrl']?.toString(),
-        languageTag: args?['language']?.toString() ?? args?['languageTag']?.toString(),
+        languageTag:
+            args?['language']?.toString() ?? args?['languageTag']?.toString(),
       );
     },
     'session-summary': (_) => const SessionSummaryScreen(),
@@ -373,7 +389,8 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'settings': (_) => const SettingsScreenMaterial3(),
     'stitch-hub': (_) => const StitchNavigationHubScreen(),
     'private-chat-inbox': (_) => const ChatListScreen(),
-    'call-history': (_) => const AgePolicyRouteShell(child: CallHistoryScreen()),
+    'call-history': (_) =>
+        const AgePolicyRouteShell(child: CallHistoryScreen()),
     'live-classroom': (_) {
       final args = settings.arguments as Map<String, dynamic>?;
       return LiveClassroomScreenMaterial3(
@@ -397,9 +414,15 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'classroom-student-requests-v2': (ctx) {
       final p = ClassroomV2RouteArgs.parse(settings.arguments);
       if (p.tribeId == null) {
-        return ClassroomV2RouteArgs.missingTribeIdScaffold(ctx, '/classroom-student-requests-v2');
+        return ClassroomV2RouteArgs.missingTribeIdScaffold(
+          ctx,
+          '/classroom-student-requests-v2',
+        );
       }
-      return ClassroomStudentRequestsScreen(tribeId: p.tribeId!, tribeName: p.tribeName);
+      return ClassroomStudentRequestsScreen(
+        tribeId: p.tribeId!,
+        tribeName: p.tribeName,
+      );
     },
     'classroom-notes': (_) {
       final args = settings.arguments as Map<String, dynamic>?;
@@ -418,23 +441,38 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'classroom-roster-v2': (ctx) {
       final p = ClassroomV2RouteArgs.parse(settings.arguments);
       if (p.tribeId == null) {
-        return ClassroomV2RouteArgs.missingTribeIdScaffold(ctx, '/classroom-roster-v2');
+        return ClassroomV2RouteArgs.missingTribeIdScaffold(
+          ctx,
+          '/classroom-roster-v2',
+        );
       }
       return ClassroomRosterScreen(tribeId: p.tribeId!, tribeName: p.tribeName);
     },
     'classroom-assignments-v2': (ctx) {
       final p = ClassroomV2RouteArgs.parse(settings.arguments);
       if (p.tribeId == null) {
-        return ClassroomV2RouteArgs.missingTribeIdScaffold(ctx, '/classroom-assignments-v2');
+        return ClassroomV2RouteArgs.missingTribeIdScaffold(
+          ctx,
+          '/classroom-assignments-v2',
+        );
       }
-      return ClassroomAssignmentsScreen(tribeId: p.tribeId!, tribeName: p.tribeName);
+      return ClassroomAssignmentsScreen(
+        tribeId: p.tribeId!,
+        tribeName: p.tribeName,
+      );
     },
     'classroom-privacy-v2': (ctx) {
       final p = ClassroomV2RouteArgs.parse(settings.arguments);
       if (p.tribeId == null) {
-        return ClassroomV2RouteArgs.missingTribeIdScaffold(ctx, '/classroom-privacy-v2');
+        return ClassroomV2RouteArgs.missingTribeIdScaffold(
+          ctx,
+          '/classroom-privacy-v2',
+        );
       }
-      return ClassroomPrivacyScreen(tribeId: p.tribeId!, tribeName: p.tribeName);
+      return ClassroomPrivacyScreen(
+        tribeId: p.tribeId!,
+        tribeName: p.tribeName,
+      );
     },
     'features_guide': (_) {
       final args = settings.arguments;
@@ -450,8 +488,14 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     // Lesson Flow
     'lesson-flow': (ctx) {
       final args = settings.arguments as Map<String, dynamic>?;
-      if (args == null || args['lessonId'] == null || args['sectionLessons'] == null || args['lessonTitle'] == null) {
-        return _namedRouteArgumentIssueScaffold(ctx, 'Missing required arguments for LessonFlowScreen');
+      if (args == null ||
+          args['lessonId'] == null ||
+          args['sectionLessons'] == null ||
+          args['lessonTitle'] == null) {
+        return _namedRouteArgumentIssueScaffold(
+          ctx,
+          'Missing required arguments for LessonFlowScreen',
+        );
       }
       return LessonFlowScreen(
         lessonId: args['lessonId'] as int,
@@ -465,14 +509,22 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'grammar-lesson': (ctx) {
       final args = settings.arguments as Map<String, dynamic>?;
       if (args == null || args['topic'] == null) {
-        return _namedRouteArgumentIssueScaffold(ctx, 'Missing required arguments for GrammarLessonScreen');
+        return _namedRouteArgumentIssueScaffold(
+          ctx,
+          'Missing required arguments for GrammarLessonScreen',
+        );
       }
       return GrammarLessonScreen(topic: args['topic'] as GrammarTopic);
     },
     'grammar-exercise': (ctx) {
       final args = settings.arguments as Map<String, dynamic>?;
-      if (args == null || args['topicId'] == null || args['topicName'] == null) {
-        return _namedRouteArgumentIssueScaffold(ctx, 'Missing required arguments for GrammarExerciseScreen');
+      if (args == null ||
+          args['topicId'] == null ||
+          args['topicName'] == null) {
+        return _namedRouteArgumentIssueScaffold(
+          ctx,
+          'Missing required arguments for GrammarExerciseScreen',
+        );
       }
       return GrammarExerciseScreen(
         topicId: args['topicId'] as String,
@@ -484,7 +536,10 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'friend-profile': (ctx) {
       final args = settings.arguments as Map<String, dynamic>?;
       if (args == null || args['friendId'] == null) {
-        return _namedRouteArgumentIssueScaffold(ctx, 'Missing required arguments for FriendProfileScreen');
+        return _namedRouteArgumentIssueScaffold(
+          ctx,
+          'Missing required arguments for FriendProfileScreen',
+        );
       }
       return FriendProfileScreen(friendId: args['friendId'] as String);
     },
@@ -494,7 +549,9 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     },
     'share-progress': (_) {
       final args = settings.arguments as Map<String, dynamic>?;
-      return ShareProgressScreen(cardType: args?['cardType'] as String? ?? 'daily_streak');
+      return ShareProgressScreen(
+        cardType: args?['cardType'] as String? ?? 'daily_streak',
+      );
     },
     // Content
     'conversation-scenarios': (_) {
@@ -514,7 +571,9 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'speak-engine-lab': (_) => const SpeakEngineLabScreen(),
     'tone-rhythm-trainer': (_) {
       final raw = settings.arguments;
-      final map = raw is Map ? Map<String, dynamic>.from(raw) : <String, dynamic>{};
+      final map = raw is Map
+          ? Map<String, dynamic>.from(raw)
+          : <String, dynamic>{};
       final lang = map['language']?.toString().trim();
       final language = (lang == null || lang.isEmpty) ? 'yoruba' : lang;
       final et = map['expectedText']?.toString().trim();
@@ -525,13 +584,19 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     },
     'phrase-dna-templates': (_) {
       final raw = settings.arguments;
-      final map = raw is Map ? Map<String, dynamic>.from(raw) : <String, dynamic>{};
+      final map = raw is Map
+          ? Map<String, dynamic>.from(raw)
+          : <String, dynamic>{};
       final lang = map['language']?.toString().trim();
-      return PhraseDnaTemplatesScreen(language: (lang == null || lang.isEmpty) ? null : lang);
+      return PhraseDnaTemplatesScreen(
+        language: (lang == null || lang.isEmpty) ? null : lang,
+      );
     },
     'synthetic-voice-styles': (_) {
       final raw = settings.arguments;
-      final map = raw is Map ? Map<String, dynamic>.from(raw) : <String, dynamic>{};
+      final map = raw is Map
+          ? Map<String, dynamic>.from(raw)
+          : <String, dynamic>{};
       final lang = map['language']?.toString().trim() ?? 'yoruba';
       return SyntheticVoiceStylesScreen(language: lang);
     },
@@ -545,7 +610,10 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     },
     'passport-proctored': (_) {
       final p = PassportRouteArgs.parseProctored(settings.arguments);
-      return PassportProctoredSessionScreen(language: p.language, proctorMode: p.proctorMode);
+      return PassportProctoredSessionScreen(
+        language: p.language,
+        proctorMode: p.proctorMode,
+      );
     },
     'passport-credential': (ctx) {
       final p = PassportRouteArgs.parseCredential(settings.arguments);
@@ -568,7 +636,9 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
       final args = settings.arguments as Map<String, dynamic>?;
       final character = args?['character']?.toString().trim();
       return _StrokePracticeRouteScreen(
-        character: (character == null || character.isEmpty) ? '\u1200' : character,
+        character: (character == null || character.isEmpty)
+            ? '\u1200'
+            : character,
         romanization: args?['romanization']?.toString().trim() ?? '',
       );
     },
@@ -661,14 +731,17 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'wa-media-gallery': (_) => const WaMediaGalleryScreen(),
     // Snapchat upgrade screens
     'snap-inbox': (_) => const AgePolicyRouteShell(child: SnapInboxScreen()),
-    'snap-story-feed': (_) => const AgePolicyRouteShell(child: SnapStoryFeedScreen()),
+    'snap-story-feed': (_) =>
+        const AgePolicyRouteShell(child: SnapStoryFeedScreen()),
     'snap-camera': (_) => const AgePolicyRouteShell(child: SnapCameraScreen()),
-    'snap-streaks': (_) => const AgePolicyRouteShell(child: SnapStreaksScreen()),
+    'snap-streaks': (_) =>
+        const AgePolicyRouteShell(child: SnapStreaksScreen()),
     'snap-viewer': (ctx) {
       final args = settings.arguments as Map<String, dynamic>?;
       final snapId = args?['snapId']?.toString();
       final storyId = args?['storyId']?.toString();
-      if ((snapId == null || snapId.isEmpty) && (storyId == null || storyId.isEmpty)) {
+      if ((snapId == null || snapId.isEmpty) &&
+          (storyId == null || storyId.isEmpty)) {
         return _namedRouteArgumentIssueScaffold(
           ctx,
           'Missing required arguments for SnapViewerScreen',
@@ -753,7 +826,8 @@ class _ScriptTrackRouteScreen extends StatefulWidget {
   final String languageCode;
 
   @override
-  State<_ScriptTrackRouteScreen> createState() => _ScriptTrackRouteScreenState();
+  State<_ScriptTrackRouteScreen> createState() =>
+      _ScriptTrackRouteScreenState();
 }
 
 class _ScriptTrackRouteScreenState extends State<_ScriptTrackRouteScreen> {
@@ -770,7 +844,9 @@ class _ScriptTrackRouteScreenState extends State<_ScriptTrackRouteScreen> {
   Future<void> _load() async {
     try {
       final catalog = await loadScriptTracksCatalogFromAsset();
-      final lessonsJson = await rootBundle.loadString('assets/data/scripts/fidel_geez_lessons.json');
+      final lessonsJson = await rootBundle.loadString(
+        'assets/data/scripts/fidel_geez_lessons.json',
+      );
       final lessons = loadScriptLessonsFromJson(lessonsJson);
       final view = resolveScriptTrack(
         catalog: catalog,
@@ -801,7 +877,9 @@ class _ScriptTrackRouteScreenState extends State<_ScriptTrackRouteScreen> {
       return _namedRouteArgumentIssueScaffold(context, _error!);
     }
     if (view == null) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator.adaptive()));
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator.adaptive()),
+      );
     }
     return Scaffold(
       appBar: AppBar(title: const Text('Script track')),
@@ -809,7 +887,8 @@ class _ScriptTrackRouteScreenState extends State<_ScriptTrackRouteScreen> {
         child: ScriptTrackPanel(
           view: view,
           selectedLessonId: _selectedLessonId,
-          onOpenLesson: (lesson) => setState(() => _selectedLessonId = lesson.lessonId),
+          onOpenLesson: (lesson) =>
+              setState(() => _selectedLessonId = lesson.lessonId),
         ),
       ),
     );
@@ -833,10 +912,7 @@ class _StrokePracticeRouteScreen extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            StrokeOrderView(
-              character: character,
-              romanization: romanization,
-            ),
+            StrokeOrderView(character: character, romanization: romanization),
             const SizedBox(height: 16),
             HandwritingPracticePanel(character: character),
           ],

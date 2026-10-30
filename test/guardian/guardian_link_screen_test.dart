@@ -1,16 +1,29 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/screens/guardian/guardian_link_screen.dart';
 import 'package:lingafriq/services/guardian_link_service.dart';
 
 Widget _wrap(Widget child) {
   return ScreenUtilInit(
     designSize: const Size(390, 844),
-    builder: (_, __) => ProviderScope(child: MaterialApp(home: child)),
+    builder: (_, __) => ProviderScope(
+      child: MaterialApp(
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: child,
+      ),
+    ),
   );
 }
 
@@ -88,7 +101,9 @@ class _ScriptedGuardianService extends GuardianLinkService {
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('loading state shows a spinner with an accessible label', (tester) async {
+  testWidgets('loading state shows a spinner with an accessible label', (
+    tester,
+  ) async {
     final handle = tester.ensureSemantics();
     tester.view.physicalSize = const Size(390, 844);
     tester.view.devicePixelRatio = 1.0;
@@ -138,7 +153,9 @@ void main() {
     expect(find.textContaining('invite code'), findsWidgets);
   });
 
-  testWidgets('error state shows a retry affordance that reloads the hub', (tester) async {
+  testWidgets('error state shows a retry affordance that reloads the hub', (
+    tester,
+  ) async {
     tester.view.physicalSize = const Size(390, 844);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
@@ -150,7 +167,9 @@ void main() {
       _wrap(
         GuardianLinkScreen(
           guardianLinkService: _ScriptedGuardianService(
-            hubError: GuardianApiException(message: 'Server hiccup. Try again.'),
+            hubError: GuardianApiException(
+              message: 'Server hiccup. Try again.',
+            ),
           ),
         ),
       ),
@@ -159,7 +178,9 @@ void main() {
     expect(find.text('Server hiccup. Try again.'), findsOneWidget);
     expect(find.text('Try again'), findsOneWidget);
 
-    final retryButtonSize = tester.getSize(find.widgetWithText(FilledButton, 'Try again'));
+    final retryButtonSize = tester.getSize(
+      find.widgetWithText(FilledButton, 'Try again'),
+    );
     expect(retryButtonSize.height, greaterThanOrEqualTo(48));
 
     await tester.tap(find.text('Try again'));
@@ -169,7 +190,9 @@ void main() {
     expect(find.text('Server hiccup. Try again.'), findsOneWidget);
   });
 
-  testWidgets('offline with no cached links shows the offline banner', (tester) async {
+  testWidgets('offline with no cached links shows the offline banner', (
+    tester,
+  ) async {
     tester.view.physicalSize = const Size(390, 844);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
@@ -188,6 +211,50 @@ void main() {
     expect(find.text(GuardianLinkScreen.offlineBanner), findsOneWidget);
   });
 
+  testWidgets('family tools list a messages entry per active learner only', (
+    tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(390, 1600));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await ScreenUtil.ensureScreenSize();
+    await tester.pumpWidget(
+      _wrap(
+        GuardianLinkScreen(
+          guardianLinkService: _ScriptedGuardianService(
+            hubLinks: [
+              GuardianHubLink(
+                childUserId: 7,
+                status: 'active',
+                regime: 'GDPR_ART_8',
+              ),
+              GuardianHubLink(
+                childUserId: 8,
+                status: 'verifying',
+                regime: 'GDPR_ART_8',
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.byKey(const ValueKey('family-tools-circles')),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(
+      find.byKey(const ValueKey('family-tools-messages-7')),
+      findsOneWidget,
+    );
+    expect(find.byKey(const ValueKey('family-tools-messages-8')), findsNothing);
+    expect(
+      find.byKey(const ValueKey('family-tools-approvals')),
+      findsOneWidget,
+    );
+    expect(find.byKey(const ValueKey('family-tools-guide')), findsOneWidget);
+  });
+
   testWidgets('linked learner tile is tappable with semantics', (tester) async {
     final handle = tester.ensureSemantics();
     tester.view.physicalSize = const Size(390, 844);
@@ -202,7 +269,11 @@ void main() {
         GuardianLinkScreen(
           guardianLinkService: _ScriptedGuardianService(
             hubLinks: [
-              GuardianHubLink(childUserId: 100, status: 'verifying', regime: 'NDPA_2023'),
+              GuardianHubLink(
+                childUserId: 100,
+                status: 'verifying',
+                regime: 'NDPA_2023',
+              ),
             ],
           ),
         ),
@@ -215,11 +286,16 @@ void main() {
       scrollable: _hubScrollable(),
     );
     expect(find.text('Learner #100'), findsOneWidget);
-    expect(find.bySemanticsLabel('Learner 100, Needs your consent'), findsOneWidget);
+    expect(
+      find.bySemanticsLabel('Learner 100, Needs your consent'),
+      findsOneWidget,
+    );
     handle.dispose();
   });
 
-  testWidgets('child-invite view creates and displays a copyable code', (tester) async {
+  testWidgets('child-invite view creates and displays a copyable code', (
+    tester,
+  ) async {
     tester.view.physicalSize = const Size(390, 844);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
@@ -231,7 +307,9 @@ void main() {
       _wrap(
         GuardianLinkScreen(
           initialChildInviteMode: true,
-          guardianLinkService: _ScriptedGuardianService(createInviteToken: 'XYZ-9988'),
+          guardianLinkService: _ScriptedGuardianService(
+            createInviteToken: 'XYZ-9988',
+          ),
         ),
       ),
     );
@@ -243,39 +321,51 @@ void main() {
 
     expect(find.text('XYZ-9988'), findsOneWidget);
     expect(find.text('Copy code'), findsOneWidget);
-    expect(find.bySemanticsLabel(RegExp(r'^Invite code XYZ-9988')), findsOneWidget);
-  });
-
-  testWidgets('child-invite view surfaces an error when invite creation fails', (tester) async {
-    tester.view.physicalSize = const Size(390, 844);
-    tester.view.devicePixelRatio = 1.0;
-    addTearDown(tester.view.resetPhysicalSize);
-    addTearDown(tester.view.resetDevicePixelRatio);
-    await tester.binding.setSurfaceSize(const Size(390, 844));
-    addTearDown(() => tester.binding.setSurfaceSize(null));
-    await ScreenUtil.ensureScreenSize();
-    await tester.pumpWidget(
-      _wrap(
-        GuardianLinkScreen(
-          initialChildInviteMode: true,
-          guardianLinkService: _ScriptedGuardianService(createInviteFails: true),
-        ),
-      ),
-    );
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.text('Create invite code'));
-    await tester.pumpAndSettle();
-
     expect(
-      find.text('We could not create an invite right now. Try again in a moment.'),
+      find.bySemanticsLabel(RegExp(r'^Invite code XYZ-9988')),
       findsOneWidget,
     );
-    // No silent failure: the create button must still be present to retry.
-    expect(find.text('Create invite code'), findsOneWidget);
   });
 
-  testWidgets('Link learner stays disabled until both fields are filled', (tester) async {
+  testWidgets(
+    'child-invite view surfaces an error when invite creation fails',
+    (tester) async {
+      tester.view.physicalSize = const Size(390, 844);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.binding.setSurfaceSize(const Size(390, 844));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      await ScreenUtil.ensureScreenSize();
+      await tester.pumpWidget(
+        _wrap(
+          GuardianLinkScreen(
+            initialChildInviteMode: true,
+            guardianLinkService: _ScriptedGuardianService(
+              createInviteFails: true,
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Create invite code'));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text(
+          'We could not create an invite right now. Try again in a moment.',
+        ),
+        findsOneWidget,
+      );
+      // No silent failure: the create button must still be present to retry.
+      expect(find.text('Create invite code'), findsOneWidget);
+    },
+  );
+
+  testWidgets('Link learner stays disabled until both fields are filled', (
+    tester,
+  ) async {
     tester.view.physicalSize = const Size(390, 844);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
@@ -285,15 +375,14 @@ void main() {
     await ScreenUtil.ensureScreenSize();
     await tester.pumpWidget(
       _wrap(
-        GuardianLinkScreen(
-          guardianLinkService: _ScriptedGuardianService(),
-        ),
+        GuardianLinkScreen(guardianLinkService: _ScriptedGuardianService()),
       ),
     );
     await tester.pumpAndSettle();
 
-    FilledButton linkButton() =>
-        tester.widget<FilledButton>(find.widgetWithText(FilledButton, 'Link learner'));
+    FilledButton linkButton() => tester.widget<FilledButton>(
+      find.widgetWithText(FilledButton, 'Link learner'),
+    );
     expect(linkButton().onPressed, isNull);
 
     await tester.scrollUntilVisible(
@@ -301,9 +390,16 @@ void main() {
       400,
       scrollable: _hubScrollable(),
     );
-    await tester.enterText(find.widgetWithText(TextField, 'Invite code'), 'tok-1');
+    await tester.enterText(
+      find.widgetWithText(TextField, 'Invite code'),
+      'tok-1',
+    );
     await tester.pump();
-    expect(linkButton().onPressed, isNull, reason: 'guardian name is still empty');
+    expect(
+      linkButton().onPressed,
+      isNull,
+      reason: 'guardian name is still empty',
+    );
 
     await tester.enterText(
       find.widgetWithText(TextField, GuardianLinkScreen.guardianYourNameHint),
@@ -313,7 +409,9 @@ void main() {
     expect(linkButton().onPressed, isNotNull);
   });
 
-  testWidgets('accept-invite success clears the form and reloads the hub', (tester) async {
+  testWidgets('accept-invite success clears the form and reloads the hub', (
+    tester,
+  ) async {
     tester.view.physicalSize = const Size(390, 844);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
@@ -321,7 +419,9 @@ void main() {
     await tester.binding.setSurfaceSize(const Size(390, 844));
     addTearDown(() => tester.binding.setSurfaceSize(null));
     await ScreenUtil.ensureScreenSize();
-    final service = _ScriptedGuardianService(acceptInviteState: GuardianSubmitState.sent);
+    final service = _ScriptedGuardianService(
+      acceptInviteState: GuardianSubmitState.sent,
+    );
     await tester.pumpWidget(
       _wrap(GuardianLinkScreen(guardianLinkService: service)),
     );
@@ -332,7 +432,10 @@ void main() {
       400,
       scrollable: _hubScrollable(),
     );
-    await tester.enterText(find.widgetWithText(TextField, 'Invite code'), 'tok-1');
+    await tester.enterText(
+      find.widgetWithText(TextField, 'Invite code'),
+      'tok-1',
+    );
     await tester.enterText(
       find.widgetWithText(TextField, GuardianLinkScreen.guardianYourNameHint),
       'Ada',
@@ -343,13 +446,19 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(service.acceptInviteCalls, 1);
-    expect(find.text('Check the code and your name, then try again.'), findsNothing);
-    final tokenField =
-        tester.widget<TextField>(find.widgetWithText(TextField, 'Invite code'));
+    expect(
+      find.text('Check the code and your name, then try again.'),
+      findsNothing,
+    );
+    final tokenField = tester.widget<TextField>(
+      find.widgetWithText(TextField, 'Invite code'),
+    );
     expect(tokenField.controller?.text, isEmpty);
   });
 
-  testWidgets('accept-invite error is shown inline, not silently dropped', (tester) async {
+  testWidgets('accept-invite error is shown inline, not silently dropped', (
+    tester,
+  ) async {
     tester.view.physicalSize = const Size(390, 844);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
@@ -373,7 +482,10 @@ void main() {
       400,
       scrollable: _hubScrollable(),
     );
-    await tester.enterText(find.widgetWithText(TextField, 'Invite code'), 'bad-tok');
+    await tester.enterText(
+      find.widgetWithText(TextField, 'Invite code'),
+      'bad-tok',
+    );
     await tester.enterText(
       find.widgetWithText(TextField, GuardianLinkScreen.guardianYourNameHint),
       'Ada',
@@ -383,48 +495,59 @@ void main() {
     await tester.tap(find.text('Link learner'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Check the code and your name, then try again.'), findsOneWidget);
-  });
-
-  testWidgets('accept-invite queued-offline tells the guardian what happens next', (tester) async {
-    tester.view.physicalSize = const Size(390, 844);
-    tester.view.devicePixelRatio = 1.0;
-    addTearDown(tester.view.resetPhysicalSize);
-    addTearDown(tester.view.resetDevicePixelRatio);
-    await tester.binding.setSurfaceSize(const Size(390, 844));
-    addTearDown(() => tester.binding.setSurfaceSize(null));
-    await ScreenUtil.ensureScreenSize();
-    await tester.pumpWidget(
-      _wrap(
-        GuardianLinkScreen(
-          guardianLinkService: _ScriptedGuardianService(
-            acceptInviteState: GuardianSubmitState.queuedOffline,
-          ),
-        ),
-      ),
-    );
-    await tester.pumpAndSettle();
-
-    await tester.scrollUntilVisible(
-      find.widgetWithText(TextField, 'Invite code'),
-      400,
-      scrollable: _hubScrollable(),
-    );
-    await tester.enterText(find.widgetWithText(TextField, 'Invite code'), 'tok-2');
-    await tester.enterText(
-      find.widgetWithText(TextField, GuardianLinkScreen.guardianYourNameHint),
-      'Bola',
-    );
-    await tester.pump();
-
-    await tester.tap(find.text('Link learner'));
-    await tester.pumpAndSettle();
-
     expect(
-      find.text('Saved on this device. We will finish linking when you are online.'),
+      find.text('Check the code and your name, then try again.'),
       findsOneWidget,
     );
   });
+
+  testWidgets(
+    'accept-invite queued-offline tells the guardian what happens next',
+    (tester) async {
+      tester.view.physicalSize = const Size(390, 844);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.binding.setSurfaceSize(const Size(390, 844));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      await ScreenUtil.ensureScreenSize();
+      await tester.pumpWidget(
+        _wrap(
+          GuardianLinkScreen(
+            guardianLinkService: _ScriptedGuardianService(
+              acceptInviteState: GuardianSubmitState.queuedOffline,
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.scrollUntilVisible(
+        find.widgetWithText(TextField, 'Invite code'),
+        400,
+        scrollable: _hubScrollable(),
+      );
+      await tester.enterText(
+        find.widgetWithText(TextField, 'Invite code'),
+        'tok-2',
+      );
+      await tester.enterText(
+        find.widgetWithText(TextField, GuardianLinkScreen.guardianYourNameHint),
+        'Bola',
+      );
+      await tester.pump();
+
+      await tester.tap(find.text('Link learner'));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text(
+          'Saved on this device. We will finish linking when you are online.',
+        ),
+        findsOneWidget,
+      );
+    },
+  );
 
   testWidgets('RTL flips the learner tile chevron direction', (tester) async {
     tester.view.physicalSize = const Size(390, 844);
@@ -439,12 +562,23 @@ void main() {
         designSize: const Size(390, 844),
         builder: (_, __) => ProviderScope(
           child: MaterialApp(
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
             home: Directionality(
               textDirection: TextDirection.rtl,
               child: GuardianLinkScreen(
                 guardianLinkService: _ScriptedGuardianService(
                   hubLinks: [
-                    GuardianHubLink(childUserId: 7, status: 'active', regime: 'GDPR_ART_8'),
+                    GuardianHubLink(
+                      childUserId: 7,
+                      status: 'active',
+                      regime: 'GDPR_ART_8',
+                    ),
                   ],
                 ),
               ),
@@ -459,11 +593,21 @@ void main() {
       400,
       scrollable: _hubScrollable(),
     );
-    expect(find.byIcon(Icons.chevron_left), findsOneWidget);
+    // Family tools tiles use the same chevrons, so check the learner tile.
+    final tile = find.ancestor(
+      of: find.text('Learner #7'),
+      matching: find.byType(ListTile),
+    );
+    expect(
+      find.descendant(of: tile, matching: find.byIcon(Icons.chevron_left)),
+      findsOneWidget,
+    );
     expect(find.byIcon(Icons.chevron_right), findsNothing);
   });
 
-  testWidgets('mode toggle segments meet the 48dp minimum tap target', (tester) async {
+  testWidgets('mode toggle segments meet the 48dp minimum tap target', (
+    tester,
+  ) async {
     tester.view.physicalSize = const Size(390, 844);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
@@ -479,8 +623,12 @@ void main() {
     await tester.pumpAndSettle();
 
     final handle = tester.ensureSemantics();
-    final hubSegment = find.bySemanticsLabel('Guardian hub, show linked learners');
-    final inviteSegment = find.bySemanticsLabel('Learner invite, create a code to share');
+    final hubSegment = find.bySemanticsLabel(
+      'Guardian hub, show linked learners',
+    );
+    final inviteSegment = find.bySemanticsLabel(
+      'Learner invite, create a code to share',
+    );
     expect(hubSegment, findsOneWidget);
     expect(inviteSegment, findsOneWidget);
     expect(tester.getSize(hubSegment).height, greaterThanOrEqualTo(48));
@@ -492,7 +640,9 @@ void main() {
     expect(find.text('Create invite code'), findsOneWidget);
   });
 
-  testWidgets('golden: loaded hub with offline banner and a linked learner', (tester) async {
+  testWidgets('golden: loaded hub with offline banner and a linked learner', (
+    tester,
+  ) async {
     tester.view.physicalSize = const Size(390, 844);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
@@ -518,7 +668,9 @@ void main() {
     // the same `onRefresh` callback the pull-to-refresh gesture uses,
     // instead of only ever testing the "online from the first load" case.
     service.hubOffline = true;
-    final indicator = tester.widget<RefreshIndicator>(find.byType(RefreshIndicator));
+    final indicator = tester.widget<RefreshIndicator>(
+      find.byType(RefreshIndicator),
+    );
     await indicator.onRefresh();
     await tester.pumpAndSettle();
 

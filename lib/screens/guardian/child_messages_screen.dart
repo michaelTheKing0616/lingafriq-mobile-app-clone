@@ -5,17 +5,24 @@ import 'package:lingafriq/services/guarded_messaging_service.dart';
 /// Guardian view: who is messaging a linked learner. Metadata only, never message text.
 /// Plain functional layout (no family/safety reference pack yet; see HANDOFF.md).
 class GuardianChildMessagesScreen extends StatefulWidget {
-  const GuardianChildMessagesScreen({super.key, required this.childUserId, this.service});
+  const GuardianChildMessagesScreen({
+    super.key,
+    required this.childUserId,
+    this.service,
+  });
 
   final int childUserId;
   final GuardedMessagingService? service;
 
   @override
-  State<GuardianChildMessagesScreen> createState() => _GuardianChildMessagesScreenState();
+  State<GuardianChildMessagesScreen> createState() =>
+      _GuardianChildMessagesScreenState();
 }
 
-class _GuardianChildMessagesScreenState extends State<GuardianChildMessagesScreen> {
-  late final GuardedMessagingService _service = widget.service ?? GuardedMessagingService();
+class _GuardianChildMessagesScreenState
+    extends State<GuardianChildMessagesScreen> {
+  late final GuardedMessagingService _service =
+      widget.service ?? GuardedMessagingService();
   List<ChildDmThread>? _threads;
   bool _error = false;
   final Set<int> _busy = {};
@@ -50,7 +57,10 @@ class _GuardianChildMessagesScreenState extends State<GuardianChildMessagesScree
           title: Text(l.gdmStopConfirmTitle(t.peerName ?? l.gdmUnknownName)),
           content: Text(l.gdmStopConfirmBody),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(l.gdmCancel)),
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: Text(l.gdmCancel),
+            ),
             FilledButton(
               key: const ValueKey('gdm-confirm-stop'),
               onPressed: () => Navigator.pop(ctx, true),
@@ -62,16 +72,25 @@ class _GuardianChildMessagesScreenState extends State<GuardianChildMessagesScree
       if (ok != true) return;
     }
     setState(() => _busy.add(peer));
-    final done = await _service.setPeerStopped(widget.childUserId, peer, stopped: !t.revoked);
+    final done = await _service.setPeerStopped(
+      widget.childUserId,
+      peer,
+      stopped: !t.revoked,
+    );
     if (!mounted) return;
     setState(() {
       _busy.remove(peer);
       if (done) {
-        _threads = [for (final x in _threads!) x.peerUserId == peer ? x.copyWith(revoked: !t.revoked) : x];
+        _threads = [
+          for (final x in _threads!)
+            x.peerUserId == peer ? x.copyWith(revoked: !t.revoked) : x,
+        ];
       }
     });
     if (!done) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.gdmActionFailed)));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l.gdmActionFailed)));
     }
   }
 
@@ -89,7 +108,11 @@ class _GuardianChildMessagesScreenState extends State<GuardianChildMessagesScree
     } else if (_threads == null) {
       body = const Center(child: CircularProgressIndicator());
     } else if (_threads!.isEmpty) {
-      body = _Centered(icon: Icons.forum_outlined, title: l.gdmEmptyTitle, body: l.gdmEmptyBody);
+      body = _Centered(
+        icon: Icons.forum_outlined,
+        title: l.gdmEmptyTitle,
+        body: l.gdmEmptyBody,
+      );
     } else {
       body = RefreshIndicator(
         onRefresh: _load,
@@ -115,9 +138,15 @@ class _GuardianChildMessagesScreenState extends State<GuardianChildMessagesScree
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.visibility_off_outlined, size: 20, color: theme.colorScheme.primary),
+                Icon(
+                  Icons.visibility_off_outlined,
+                  size: 20,
+                  color: theme.colorScheme.primary,
+                ),
                 const SizedBox(width: 8),
-                Expanded(child: Text(l.gdmIntro, style: theme.textTheme.bodyMedium)),
+                Expanded(
+                  child: Text(l.gdmIntro, style: theme.textTheme.bodyMedium),
+                ),
               ],
             ),
           ),
@@ -129,7 +158,11 @@ class _GuardianChildMessagesScreenState extends State<GuardianChildMessagesScree
 }
 
 class _ThreadCard extends StatelessWidget {
-  const _ThreadCard({required this.thread, required this.busy, required this.onToggle});
+  const _ThreadCard({
+    required this.thread,
+    required this.busy,
+    required this.onToggle,
+  });
 
   final ChildDmThread thread;
   final bool busy;
@@ -147,7 +180,9 @@ class _ThreadCard extends StatelessWidget {
     };
     final when = thread.lastActivityAt == null
         ? null
-        : MaterialLocalizations.of(context).formatMediumDate(thread.lastActivityAt!.toLocal());
+        : MaterialLocalizations.of(
+            context,
+          ).formatMediumDate(thread.lastActivityAt!.toLocal());
     final flagged = thread.reportCount > 0 || thread.blockedMessageCount > 0;
     return Card(
       margin: EdgeInsets.zero,
@@ -161,7 +196,9 @@ class _ThreadCard extends StatelessWidget {
                 CircleAvatar(
                   backgroundColor: scheme.primaryContainer,
                   child: Icon(
-                    thread.role == PeerRole.teacher ? Icons.school_outlined : Icons.person_outline,
+                    thread.role == PeerRole.teacher
+                        ? Icons.school_outlined
+                        : Icons.person_outline,
                     color: scheme.onPrimaryContainer,
                   ),
                 ),
@@ -172,10 +209,17 @@ class _ThreadCard extends StatelessWidget {
                     children: [
                       Text(
                         thread.peerName ?? l.gdmUnknownName,
-                        style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                       const SizedBox(height: 2),
-                      Text(role, style: theme.textTheme.bodySmall?.copyWith(color: scheme.onSurfaceVariant)),
+                      Text(
+                        role,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: scheme.onSurfaceVariant,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -186,14 +230,21 @@ class _ThreadCard extends StatelessWidget {
               spacing: 8,
               runSpacing: 8,
               children: [
-                _Pill(icon: Icons.chat_bubble_outline, text: l.gdmMessages(thread.messageCount)),
+                _Pill(
+                  icon: Icons.chat_bubble_outline,
+                  text: l.gdmMessages(thread.messageCount),
+                ),
                 _Pill(
                   icon: Icons.flag_outlined,
                   text: l.gdmReports(thread.reportCount),
                   warn: thread.reportCount > 0,
                 ),
                 if (thread.blockedMessageCount > 0)
-                  _Pill(icon: Icons.shield_outlined, text: l.gdmBlocked(thread.blockedMessageCount), warn: true),
+                  _Pill(
+                    icon: Icons.shield_outlined,
+                    text: l.gdmBlocked(thread.blockedMessageCount),
+                    warn: true,
+                  ),
               ],
             ),
             if (when != null) ...[
@@ -213,18 +264,18 @@ class _ThreadCard extends StatelessWidget {
                         label: Text(l.gdmAllow),
                       )
                     : flagged
-                        ? FilledButton.icon(
-                            key: ValueKey('gdm-stop-${thread.peerUserId}'),
-                            onPressed: busy ? null : onToggle,
-                            icon: const Icon(Icons.block),
-                            label: Text(l.gdmStop),
-                          )
-                        : OutlinedButton.icon(
-                            key: ValueKey('gdm-stop-${thread.peerUserId}'),
-                            onPressed: busy ? null : onToggle,
-                            icon: const Icon(Icons.block),
-                            label: Text(l.gdmStop),
-                          ),
+                    ? FilledButton.icon(
+                        key: ValueKey('gdm-stop-${thread.peerUserId}'),
+                        onPressed: busy ? null : onToggle,
+                        icon: const Icon(Icons.block),
+                        label: Text(l.gdmStop),
+                      )
+                    : OutlinedButton.icon(
+                        key: ValueKey('gdm-stop-${thread.peerUserId}'),
+                        onPressed: busy ? null : onToggle,
+                        icon: const Icon(Icons.block),
+                        label: Text(l.gdmStop),
+                      ),
               ),
             ),
             if (thread.revoked)
@@ -232,7 +283,9 @@ class _ThreadCard extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 4),
                 child: Text(
                   l.gdmStopped,
-                  style: theme.textTheme.labelMedium?.copyWith(color: scheme.error),
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: scheme.error,
+                  ),
                 ),
               ),
           ],
@@ -263,7 +316,14 @@ class _Pill extends StatelessWidget {
         children: [
           Icon(icon, size: 16, color: fg),
           const SizedBox(width: 6),
-          Flexible(child: Text(text, style: Theme.of(context).textTheme.labelMedium?.copyWith(color: fg))),
+          Flexible(
+            child: Text(
+              text,
+              style: Theme.of(
+                context,
+              ).textTheme.labelMedium?.copyWith(color: fg),
+            ),
+          ),
         ],
       ),
     );
@@ -271,7 +331,12 @@ class _Pill extends StatelessWidget {
 }
 
 class _Centered extends StatelessWidget {
-  const _Centered({required this.icon, required this.title, this.body, this.action});
+  const _Centered({
+    required this.icon,
+    required this.title,
+    this.body,
+    this.action,
+  });
   final IconData icon;
   final String title;
   final String? body;
@@ -285,12 +350,23 @@ class _Centered extends StatelessWidget {
       children: [
         Icon(icon, size: 48, color: theme.colorScheme.primary),
         const SizedBox(height: 16),
-        Text(title, textAlign: TextAlign.center, style: theme.textTheme.titleMedium),
+        Text(
+          title,
+          textAlign: TextAlign.center,
+          style: theme.textTheme.titleMedium,
+        ),
         if (body != null) ...[
           const SizedBox(height: 8),
-          Text(body!, textAlign: TextAlign.center, style: theme.textTheme.bodyMedium),
+          Text(
+            body!,
+            textAlign: TextAlign.center,
+            style: theme.textTheme.bodyMedium,
+          ),
         ],
-        if (action != null) ...[const SizedBox(height: 16), Center(child: action!)],
+        if (action != null) ...[
+          const SizedBox(height: 16),
+          Center(child: action!),
+        ],
       ],
     );
   }

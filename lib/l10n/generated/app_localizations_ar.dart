@@ -3329,7 +3329,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get gdmTitle => 'من يراسل متعلمك';
 
   @override
-  String get gdmIntro => 'ترى من وتى وأي بلاغات. لا ترى نص الرسائل أبدًا.';
+  String get gdmIntro => 'ترى من ومتى وأي بلاغات. لا ترى نص الرسائل أبدًا.';
 
   @override
   String get gdmEmptyTitle => 'لا توجد رسائل خاصة بعد';

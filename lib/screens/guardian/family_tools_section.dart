@@ -18,7 +18,13 @@ class FamilyToolsSection extends StatelessWidget {
     final l = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final rtl = Directionality.of(context) == TextDirection.rtl;
-    Widget tile({required Key key, required IconData icon, required String title, String? sub, required VoidCallback onTap}) {
+    Widget tile({
+      required Key key,
+      required IconData icon,
+      required String title,
+      String? sub,
+      required VoidCallback onTap,
+    }) {
       return Card(
         key: key,
         margin: const EdgeInsets.only(bottom: 8),
@@ -40,7 +46,12 @@ class FamilyToolsSection extends StatelessWidget {
         const SizedBox(height: 24),
         Semantics(
           header: true,
-          child: Text(l.gfamToolsTitle, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
+          child: Text(
+            l.gfamToolsTitle,
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
         ),
         const SizedBox(height: 8),
         for (final id in activeChildIds)
@@ -48,7 +59,9 @@ class FamilyToolsSection extends StatelessWidget {
             key: ValueKey('family-tools-messages-$id'),
             icon: Icons.forum_outlined,
             title: l.gfamWhoMessages(id),
-            onTap: () => Navigator.of(context).pushNamed(routeChildMessages, arguments: {'childUserId': id}),
+            onTap: () => Navigator.of(
+              context,
+            ).pushNamed(routeChildMessages, arguments: {'childUserId': id}),
           ),
         tile(
           key: const ValueKey('family-tools-approvals'),

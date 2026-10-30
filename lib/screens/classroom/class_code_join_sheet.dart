@@ -10,7 +10,11 @@ class ClassCodeJoinSheet extends StatefulWidget {
   final GuardedMessagingService? service;
   final VoidCallback? onJoined;
 
-  static Future<void> show(BuildContext context, {GuardedMessagingService? service, VoidCallback? onJoined}) {
+  static Future<void> show(
+    BuildContext context, {
+    GuardedMessagingService? service,
+    VoidCallback? onJoined,
+  }) {
     return showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -24,7 +28,8 @@ class ClassCodeJoinSheet extends StatefulWidget {
 }
 
 class _ClassCodeJoinSheetState extends State<ClassCodeJoinSheet> {
-  late final GuardedMessagingService _service = widget.service ?? GuardedMessagingService();
+  late final GuardedMessagingService _service =
+      widget.service ?? GuardedMessagingService();
   final _controller = TextEditingController();
   bool _busy = false;
   ClassJoinOutcome? _outcome;
@@ -61,7 +66,9 @@ class _ClassCodeJoinSheetState extends State<ClassCodeJoinSheet> {
     final l = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final inset = MediaQuery.of(context).viewInsets.bottom;
-    final done = _outcome == ClassJoinOutcome.joined || _outcome == ClassJoinOutcome.waitingForGuardian;
+    final done =
+        _outcome == ClassJoinOutcome.joined ||
+        _outcome == ClassJoinOutcome.waitingForGuardian;
     String? error;
     if (_empty) error = l.gccEmpty;
     error ??= switch (_outcome) {
@@ -78,7 +85,12 @@ class _ClassCodeJoinSheetState extends State<ClassCodeJoinSheet> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(l.gccTitle, style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700)),
+          Text(
+            l.gccTitle,
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
           const SizedBox(height: 8),
           if (_outcome == ClassJoinOutcome.waitingForGuardian)
             _Status(
@@ -110,6 +122,7 @@ class _ClassCodeJoinSheetState extends State<ClassCodeJoinSheet> {
                 border: const OutlineInputBorder(),
                 errorText: error,
                 errorMaxLines: 4,
+                counterText: '',
               ),
             ),
           ],
@@ -117,12 +130,19 @@ class _ClassCodeJoinSheetState extends State<ClassCodeJoinSheet> {
           ConstrainedBox(
             constraints: const BoxConstraints(minHeight: 48),
             child: done
-                ? FilledButton(onPressed: () => Navigator.of(context).maybePop(), child: Text(l.gccDone))
+                ? FilledButton(
+                    onPressed: () => Navigator.of(context).maybePop(),
+                    child: Text(l.gccDone),
+                  )
                 : FilledButton(
                     key: const ValueKey('gcc-submit'),
                     onPressed: _busy ? null : _submit,
                     child: _busy
-                        ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
                         : Text(l.gccSubmit),
                   ),
           ),
@@ -133,7 +153,12 @@ class _ClassCodeJoinSheetState extends State<ClassCodeJoinSheet> {
 }
 
 class _Status extends StatelessWidget {
-  const _Status({super.key, required this.icon, required this.title, this.body});
+  const _Status({
+    super.key,
+    required this.icon,
+    required this.title,
+    this.body,
+  });
   final IconData icon;
   final String title;
   final String? body;
@@ -160,13 +185,17 @@ class _Status extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: theme.textTheme.titleMedium?.copyWith(color: theme.colorScheme.onPrimaryContainer),
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: theme.colorScheme.onPrimaryContainer,
+                    ),
                   ),
                   if (body != null) ...[
                     const SizedBox(height: 4),
                     Text(
                       body!,
-                      style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onPrimaryContainer),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onPrimaryContainer,
+                      ),
                     ),
                   ],
                 ],

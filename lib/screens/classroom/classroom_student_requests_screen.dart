@@ -17,11 +17,14 @@ class ClassroomStudentRequestsScreen extends StatefulWidget {
   final GuardedMessagingService? service;
 
   @override
-  State<ClassroomStudentRequestsScreen> createState() => _ClassroomStudentRequestsScreenState();
+  State<ClassroomStudentRequestsScreen> createState() =>
+      _ClassroomStudentRequestsScreenState();
 }
 
-class _ClassroomStudentRequestsScreenState extends State<ClassroomStudentRequestsScreen> {
-  late final GuardedMessagingService _service = widget.service ?? GuardedMessagingService();
+class _ClassroomStudentRequestsScreenState
+    extends State<ClassroomStudentRequestsScreen> {
+  late final GuardedMessagingService _service =
+      widget.service ?? GuardedMessagingService();
   ClassroomStudentRequests? _data;
   int? _errorStatus;
   final Set<int> _busy = {};
@@ -45,7 +48,9 @@ class _ClassroomStudentRequestsScreenState extends State<ClassroomStudentRequest
         _data = d;
         _dm
           ..clear()
-          ..addEntries(d.school.map((s) => MapEntry(s.studentUserId, s.teacherDmApproved)));
+          ..addEntries(
+            d.school.map((s) => MapEntry(s.studentUserId, s.teacherDmApproved)),
+          );
       });
     } on GuardedLoadException catch (e) {
       if (mounted) setState(() => _errorStatus = e.status);
@@ -63,8 +68,9 @@ class _ClassroomStudentRequestsScreenState extends State<ClassroomStudentRequest
       if (ok) _dm[id] = on;
     });
     if (!ok) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.gdmActionFailed)));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context)!.gdmActionFailed)),
+      );
     }
   }
 
@@ -87,7 +93,9 @@ class _ClassroomStudentRequestsScreenState extends State<ClassroomStudentRequest
           ),
           if (_errorStatus != 403) ...[
             const SizedBox(height: 16),
-            Center(child: OutlinedButton(onPressed: _load, child: Text(l.gdmRetry))),
+            Center(
+              child: OutlinedButton(onPressed: _load, child: Text(l.gdmRetry)),
+            ),
           ],
         ],
       );
@@ -111,7 +119,11 @@ class _ClassroomStudentRequestsScreenState extends State<ClassroomStudentRequest
                     title: Text(p.name ?? l.gtpStudent(p.studentUserId)),
                     subtitle: p.submittedAt == null
                         ? null
-                        : Text(l.gtpSince(loc.formatMediumDate(p.submittedAt!.toLocal()))),
+                        : Text(
+                            l.gtpSince(
+                              loc.formatMediumDate(p.submittedAt!.toLocal()),
+                            ),
+                          ),
                   ),
                 ),
               ),
@@ -126,9 +138,12 @@ class _ClassroomStudentRequestsScreenState extends State<ClassroomStudentRequest
                     key: ValueKey('gtp-dm-${s.studentUserId}'),
                     secondary: const Icon(Icons.school_outlined),
                     title: Text(s.name ?? l.gtpStudent(s.studentUserId)),
-                    subtitle: Text(s.accountActive ? l.gtpTeacherDm : l.gtpPendingConsent),
+                    subtitle: Text(
+                      s.accountActive ? l.gtpTeacherDm : l.gtpPendingConsent,
+                    ),
                     value: _dm[s.studentUserId] ?? false,
-                    onChanged: !s.accountActive || _busy.contains(s.studentUserId)
+                    onChanged:
+                        !s.accountActive || _busy.contains(s.studentUserId)
                         ? null
                         : (v) => _setDm(s.studentUserId, v),
                   ),
@@ -139,7 +154,13 @@ class _ClassroomStudentRequestsScreenState extends State<ClassroomStudentRequest
       );
     }
     return Scaffold(
-      appBar: AppBar(title: Text(widget.tribeName == null ? l.gtpTitle : '${l.gtpTitle} · ${widget.tribeName}')),
+      appBar: AppBar(
+        title: Text(
+          widget.tribeName == null
+              ? l.gtpTitle
+              : '${l.gtpTitle} · ${widget.tribeName}',
+        ),
+      ),
       body: body,
     );
   }
@@ -160,10 +181,20 @@ class _Header extends StatelessWidget {
         children: [
           Semantics(
             header: true,
-            child: Text(title, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
+            child: Text(
+              title,
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
           ),
           const SizedBox(height: 4),
-          Text(help, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+          Text(
+            help,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
         ],
       ),
     );
@@ -176,7 +207,7 @@ class _EmptyLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        child: Text(text, style: Theme.of(context).textTheme.bodyMedium),
-      );
+    padding: const EdgeInsets.symmetric(vertical: 12),
+    child: Text(text, style: Theme.of(context).textTheme.bodyMedium),
+  );
 }

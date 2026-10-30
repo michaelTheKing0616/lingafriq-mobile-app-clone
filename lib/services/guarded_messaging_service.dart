@@ -3,11 +3,12 @@ import 'package:lingafriq/utils/api_service.dart';
 
 /// Guarded adult <-> learner messaging: guardian thread view, teacher student requests,
 /// and joining a class by code. Backend: node-backend `guardedMessaging.service.ts`.
-typedef GuardedRequest = Future<GuardedResponse> Function(
-  String method,
-  String path, {
-  Map<String, Object?>? data,
-});
+typedef GuardedRequest =
+    Future<GuardedResponse> Function(
+      String method,
+      String path, {
+      Map<String, Object?>? data,
+    });
 
 class GuardedResponse {
   const GuardedResponse(this.status, this.body);
@@ -16,7 +17,8 @@ class GuardedResponse {
   bool get ok => status >= 200 && status < 300;
 }
 
-DateTime? _date(Object? raw) => raw == null ? null : DateTime.tryParse(raw.toString());
+DateTime? _date(Object? raw) =>
+    raw == null ? null : DateTime.tryParse(raw.toString());
 int _int(Object? raw) => raw is num ? raw.toInt() : int.tryParse('$raw') ?? 0;
 
 enum PeerRole { teacher, classmate, contact }
@@ -34,19 +36,19 @@ class ChildDmThread {
   });
 
   factory ChildDmThread.fromJson(Map<String, dynamic> j) => ChildDmThread(
-        peerUserId: j['peer_user_id'] == null ? null : _int(j['peer_user_id']),
-        peerName: j['peer_name']?.toString(),
-        role: switch (j['role']) {
-          'teacher' => PeerRole.teacher,
-          'classmate' => PeerRole.classmate,
-          _ => PeerRole.contact,
-        },
-        lastActivityAt: _date(j['last_activity_at']),
-        messageCount: _int(j['message_count']),
-        reportCount: _int(j['report_count']),
-        blockedMessageCount: _int(j['blocked_message_count']),
-        revoked: j['revoked'] == true,
-      );
+    peerUserId: j['peer_user_id'] == null ? null : _int(j['peer_user_id']),
+    peerName: j['peer_name']?.toString(),
+    role: switch (j['role']) {
+      'teacher' => PeerRole.teacher,
+      'classmate' => PeerRole.classmate,
+      _ => PeerRole.contact,
+    },
+    lastActivityAt: _date(j['last_activity_at']),
+    messageCount: _int(j['message_count']),
+    reportCount: _int(j['report_count']),
+    blockedMessageCount: _int(j['blocked_message_count']),
+    revoked: j['revoked'] == true,
+  );
 
   final int? peerUserId;
   final String? peerName;
@@ -58,19 +60,23 @@ class ChildDmThread {
   final bool revoked;
 
   ChildDmThread copyWith({bool? revoked}) => ChildDmThread(
-        peerUserId: peerUserId,
-        peerName: peerName,
-        role: role,
-        lastActivityAt: lastActivityAt,
-        messageCount: messageCount,
-        reportCount: reportCount,
-        blockedMessageCount: blockedMessageCount,
-        revoked: revoked ?? this.revoked,
-      );
+    peerUserId: peerUserId,
+    peerName: peerName,
+    role: role,
+    lastActivityAt: lastActivityAt,
+    messageCount: messageCount,
+    reportCount: reportCount,
+    blockedMessageCount: blockedMessageCount,
+    revoked: revoked ?? this.revoked,
+  );
 }
 
 class PendingStudent {
-  const PendingStudent({required this.studentUserId, this.name, this.submittedAt});
+  const PendingStudent({
+    required this.studentUserId,
+    this.name,
+    this.submittedAt,
+  });
   final int studentUserId;
   final String? name;
   final DateTime? submittedAt;
@@ -111,7 +117,8 @@ class GuardedLoadException implements Exception {
 }
 
 class GuardedMessagingService {
-  GuardedMessagingService({GuardedRequest? request}) : _request = request ?? _defaultRequest;
+  GuardedMessagingService({GuardedRequest? request})
+    : _request = request ?? _defaultRequest;
 
   final GuardedRequest _request;
 
@@ -121,9 +128,14 @@ class GuardedMessagingService {
     Map<String, Object?>? data,
   }) async {
     try {
-      final r = method == 'GET' ? await ApiService.get(path) : await ApiService.post(path, data: data);
+      final r = method == 'GET'
+          ? await ApiService.get(path)
+          : await ApiService.post(path, data: data);
       final body = r.data;
-      return GuardedResponse(r.statusCode ?? 200, body is Map<String, dynamic> ? body : <String, dynamic>{});
+      return GuardedResponse(
+        r.statusCode ?? 200,
+        body is Map<String, dynamic> ? body : <String, dynamic>{},
+      );
     } on DioException catch (e) {
       final body = e.response?.data;
       return GuardedResponse(
@@ -134,15 +146,24 @@ class GuardedMessagingService {
   }
 
   Future<List<ChildDmThread>> childThreads(int childUserId) async {
-    final r = await _request('GET', '/api/v2/guardian/children/$childUserId/dm-threads');
-    if (!r.ok || r.body['threads'] is! List) throw GuardedLoadException(r.status);
+    final r = await _request(
+      'GET',
+      '/api/v2/guardian/children/$childUserId/dm-threads',
+    );
+    if (!r.ok || r.body['threads'] is! List) {
+      throw GuardedLoadException(r.status);
+    }
     return (r.body['threads'] as List)
         .whereType<Map>()
         .map((e) => ChildDmThread.fromJson(Map<String, dynamic>.from(e)))
         .toList();
   }
 
-  Future<bool> setPeerStopped(int childUserId, int peerUserId, {required bool stopped}) async {
+  Future<bool> setPeerStopped(
+    int childUserId,
+    int peerUserId, {
+    required bool stopped,
+  }) async {
     final action = stopped ? 'revoke-peer' : 'restore-peer';
     final r = await _request(
       'POST',
@@ -153,36 +174,54 @@ class GuardedMessagingService {
   }
 
   Future<ClassroomStudentRequests> studentRequests(String tribeId) async {
-    final r = await _request('GET', '/api/v2/classroom/guarded/$tribeId/pending-students');
+    final r = await _request(
+      'GET',
+      '/api/v2/classroom/guarded/$tribeId/pending-students',
+    );
     if (!r.ok) throw GuardedLoadException(r.status);
     final waiting = (r.body['waiting_for_guardian'] as List? ?? const [])
         .whereType<Map>()
-        .map((e) => PendingStudent(
-              studentUserId: _int(e['student_user_id']),
-              name: e['student_name']?.toString(),
-              submittedAt: _date(e['submitted_at']),
-            ))
+        .map(
+          (e) => PendingStudent(
+            studentUserId: _int(e['student_user_id']),
+            name: e['student_name']?.toString(),
+            submittedAt: _date(e['submitted_at']),
+          ),
+        )
         .toList();
     final school = (r.body['school_students'] as List? ?? const [])
         .whereType<Map>()
-        .map((e) => SchoolStudent(
-              studentUserId: _int(e['student_user_id']),
-              name: e['student_name']?.toString(),
-              accountActive: e['account_status'] == 'active',
-              teacherDmApproved: e['teacher_dm_approved'] == true,
-            ))
+        .map(
+          (e) => SchoolStudent(
+            studentUserId: _int(e['student_user_id']),
+            name: e['student_name']?.toString(),
+            accountActive: e['account_status'] == 'active',
+            teacherDmApproved: e['teacher_dm_approved'] == true,
+          ),
+        )
         .toList();
     return ClassroomStudentRequests(waiting: waiting, school: school);
   }
 
-  Future<bool> setTeacherDm(String tribeId, int studentUserId, {required bool approved}) async {
+  Future<bool> setTeacherDm(
+    String tribeId,
+    int studentUserId, {
+    required bool approved,
+  }) async {
     final action = approved ? 'approve-teacher-dm' : 'revoke-teacher-dm';
-    final r = await _request('POST', '/api/v2/classroom/guarded/$tribeId/students/$studentUserId/$action');
+    final r = await _request(
+      'POST',
+      '/api/v2/classroom/guarded/$tribeId/students/$studentUserId/$action',
+    );
     return r.ok;
   }
 
   Future<ClassJoinOutcome> joinClassByCode(String code) async {
-    final r = await _request('POST', '/api/tribes/classrooms/join', data: {'code': code.trim()});
+    final r = await _request(
+      'POST',
+      '/api/tribes/classrooms/join',
+      data: {'code': code.trim()},
+    );
     if (r.status == 201 || r.status == 200) return ClassJoinOutcome.joined;
     if (r.status == 202) return ClassJoinOutcome.waitingForGuardian;
     if (r.status == 404) return ClassJoinOutcome.notFound;

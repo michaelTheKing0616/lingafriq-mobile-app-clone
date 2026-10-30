@@ -103,8 +103,11 @@ class GuardianLinkScreen extends HookConsumerWidget {
     // Rebuild on every keystroke in either field so "Link learner" only
     // enables once both are filled in — avoids a round-trip that can only
     // ever fail (AC: validate at the boundary, no silent/empty submits).
-    useListenable(Listenable.merge([acceptTokenController, guardianNameController]));
-    final canSubmitAccept = acceptTokenController.text.trim().isNotEmpty &&
+    useListenable(
+      Listenable.merge([acceptTokenController, guardianNameController]),
+    );
+    final canSubmitAccept =
+        acceptTokenController.text.trim().isNotEmpty &&
         guardianNameController.text.trim().isNotEmpty;
 
     Future<void> loadHub() async {
@@ -115,12 +118,17 @@ class GuardianLinkScreen extends HookConsumerWidget {
         await service.flushPending();
         final fetched = await service.fetchHubLinks();
         links.value = fetched;
-        hubState.value = fetched.isEmpty ? GuardianLinkUiState.empty : GuardianLinkUiState.loaded;
+        hubState.value = fetched.isEmpty
+            ? GuardianLinkUiState.empty
+            : GuardianLinkUiState.loaded;
       } on GuardianOfflineException {
         isOffline.value = true;
-        hubState.value = links.value.isEmpty ? GuardianLinkUiState.offline : GuardianLinkUiState.loaded;
+        hubState.value = links.value.isEmpty
+            ? GuardianLinkUiState.offline
+            : GuardianLinkUiState.loaded;
       } on GuardianApiException catch (e) {
-        errorMessage.value = e.message ?? 'We could not load your family hub. Try again.';
+        errorMessage.value =
+            e.message ?? 'We could not load your family hub. Try again.';
         hubState.value = GuardianLinkUiState.error;
       } catch (_) {
         errorMessage.value = 'We could not load your family hub. Try again.';
@@ -192,7 +200,10 @@ class GuardianLinkScreen extends HookConsumerWidget {
       key: const ValueKey('guardian-link-invite-section'),
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const _SectionHeader(title: childInviteTitle, subtitle: childInviteBody),
+        const _SectionHeader(
+          title: childInviteTitle,
+          subtitle: childInviteBody,
+        ),
         SizedBox(height: PanAfricanSpacing.md.h),
         if (inviteToken.value == null)
           SizedBox(
@@ -205,7 +216,9 @@ class GuardianLinkScreen extends HookConsumerWidget {
                     ? SizedBox(
                         width: _inlineSpinnerSizeSmall.w,
                         height: _inlineSpinnerSizeSmall.w,
-                        child: const CircularProgressIndicator(strokeWidth: _inlineSpinnerStrokeWidth),
+                        child: const CircularProgressIndicator(
+                          strokeWidth: _inlineSpinnerStrokeWidth,
+                        ),
                       )
                     : const Icon(Icons.qr_code_2_outlined),
                 label: const Text('Create invite code'),
@@ -224,7 +237,9 @@ class GuardianLinkScreen extends HookConsumerWidget {
             liveRegion: true,
             child: Text(
               inviteErrorMessage.value!,
-              style: PanAfricanTypography.bodyMedium(context).copyWith(color: colorScheme.error),
+              style: PanAfricanTypography.bodyMedium(
+                context,
+              ).copyWith(color: colorScheme.error),
             ),
           ),
         ],
@@ -242,10 +257,14 @@ class GuardianLinkScreen extends HookConsumerWidget {
         );
       }
       if (hubState.value == GuardianLinkUiState.error) {
-        return _ErrorPanel(message: errorMessage.value ?? 'Something went wrong.', onRetry: loadHub);
+        return _ErrorPanel(
+          message: errorMessage.value ?? 'Something went wrong.',
+          onRetry: loadHub,
+        );
       }
       if (hubState.value == GuardianLinkUiState.empty ||
-          (hubState.value == GuardianLinkUiState.offline && links.value.isEmpty)) {
+          (hubState.value == GuardianLinkUiState.offline &&
+              links.value.isEmpty)) {
         return _EmptyHubPanel(
           title: guardianHubEmptyTitle,
           body: guardianHubEmptyBody,
@@ -260,7 +279,9 @@ class GuardianLinkScreen extends HookConsumerWidget {
           children: [
             Text(
               'Linked learners',
-              style: PanAfricanTypography.titleMedium(context).copyWith(fontWeight: FontWeight.w700),
+              style: PanAfricanTypography.titleMedium(
+                context,
+              ).copyWith(fontWeight: FontWeight.w700),
             ),
             SizedBox(height: PanAfricanSpacing.sm.h),
             ...links.value.map(
@@ -332,12 +353,17 @@ class GuardianLinkScreen extends HookConsumerWidget {
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: _minTouchTarget.h),
             child: FilledButton(
-              onPressed: (!canSubmitAccept || acceptSubmitting.value) ? null : acceptInvite,
+              onPressed: (!canSubmitAccept || acceptSubmitting.value)
+                  ? null
+                  : acceptInvite,
               child: acceptSubmitting.value
                   ? SizedBox(
                       width: _inlineSpinnerSizeLarge.w,
                       height: _inlineSpinnerSizeLarge.w,
-                      child: const CircularProgressIndicator(strokeWidth: _inlineSpinnerStrokeWidth, color: Colors.white),
+                      child: const CircularProgressIndicator(
+                        strokeWidth: _inlineSpinnerStrokeWidth,
+                        color: Colors.white,
+                      ),
                     )
                   : const Text('Link learner'),
             ),
@@ -349,9 +375,9 @@ class GuardianLinkScreen extends HookConsumerWidget {
             liveRegion: true,
             child: Text(
               'Saved on this device. We will finish linking when you are online.',
-              style: PanAfricanTypography.bodyMedium(context).copyWith(
-                color: colorScheme.primary,
-              ),
+              style: PanAfricanTypography.bodyMedium(
+                context,
+              ).copyWith(color: colorScheme.primary),
             ),
           ),
         ],
@@ -361,7 +387,9 @@ class GuardianLinkScreen extends HookConsumerWidget {
             liveRegion: true,
             child: Text(
               'Check the code and your name, then try again.',
-              style: PanAfricanTypography.bodyMedium(context).copyWith(color: colorScheme.error),
+              style: PanAfricanTypography.bodyMedium(
+                context,
+              ).copyWith(color: colorScheme.error),
             ),
           ),
         ],
@@ -405,14 +433,19 @@ class GuardianLinkScreen extends HookConsumerWidget {
                         label: offlineBanner,
                         colorScheme: colorScheme,
                       )
-                    : const SizedBox.shrink(key: ValueKey('offline-banner-hidden')),
+                    : const SizedBox.shrink(
+                        key: ValueKey('offline-banner-hidden'),
+                      ),
               ),
               AnimatedSwitcher(
                 duration: reducedMotion ? Duration.zero : _crossFadeDuration,
                 switchInCurve: Curves.easeOut,
                 switchOutCurve: Curves.easeIn,
-                transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child),
-                child: showChildInvite.value ? childInviteSection : guardianSection,
+                transitionBuilder: (child, animation) =>
+                    FadeTransition(opacity: animation, child: child),
+                child: showChildInvite.value
+                    ? childInviteSection
+                    : guardianSection,
               ),
               if (!showChildInvite.value)
                 FamilyToolsSection(
@@ -484,7 +517,9 @@ class _ModeToggleSegment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final foreground = selected ? colorScheme.onPrimaryContainer : colorScheme.onSurfaceVariant;
+    final foreground = selected
+        ? colorScheme.onPrimaryContainer
+        : colorScheme.onSurfaceVariant;
     return Semantics(
       button: true,
       selected: selected,
@@ -502,7 +537,11 @@ class _ModeToggleSegment extends StatelessWidget {
               height: _minTouchTarget.h,
               child: Center(
                 child: ExcludeSemantics(
-                  child: Icon(icon, size: _toggleIconSize.sp, color: foreground),
+                  child: Icon(
+                    icon,
+                    size: _toggleIconSize.sp,
+                    color: foreground,
+                  ),
                 ),
               ),
             ),
@@ -568,7 +607,11 @@ class _EmptyHubPanel extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ExcludeSemantics(
-            child: Icon(Icons.shield_outlined, size: _emptyStateIconSize.sp, color: colorScheme.primary),
+            child: Icon(
+              Icons.shield_outlined,
+              size: _emptyStateIconSize.sp,
+              color: colorScheme.primary,
+            ),
           ),
           SizedBox(height: PanAfricanSpacing.md.h),
           Text(title, style: PanAfricanTypography.titleMedium(context)),
@@ -590,15 +633,12 @@ class _EmptyHubPanel extends StatelessWidget {
             tween: Tween(begin: _emptyPanelScaleInBegin, end: 1),
             duration: _emptyPanelScaleInDuration,
             curve: Curves.easeOutCubic,
-            builder: (_, scale, child) => Transform.scale(scale: scale, child: child),
+            builder: (_, scale, child) =>
+                Transform.scale(scale: scale, child: child),
             child: content,
           );
 
-    return Semantics(
-      container: true,
-      label: '$title. $body',
-      child: presented,
-    );
+    return Semantics(container: true, label: '$title. $body', child: presented);
   }
 }
 
@@ -642,7 +682,10 @@ class _LearnerLinkTile extends StatelessWidget {
             ),
             leading: CircleAvatar(
               backgroundColor: colorScheme.primaryContainer,
-              child: Icon(Icons.person_outline, color: colorScheme.onPrimaryContainer),
+              child: Icon(
+                Icons.person_outline,
+                color: colorScheme.onPrimaryContainer,
+              ),
             ),
             title: Text('Learner #${link.childUserId}'),
             subtitle: Text('$statusLabel · ${link.regime ?? 'Policy'}'),
@@ -670,10 +713,14 @@ class _InviteCodeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final expiryLabel = expiresAt == null
         ? null
-        : MaterialLocalizations.of(context).formatShortDate(expiresAt!.toLocal());
+        : MaterialLocalizations.of(
+            context,
+          ).formatShortDate(expiresAt!.toLocal());
     return Semantics(
       container: true,
-      label: expiryLabel == null ? 'Invite code $token' : 'Invite code $token. Expires $expiryLabel.',
+      label: expiryLabel == null
+          ? 'Invite code $token'
+          : 'Invite code $token. Expires $expiryLabel.',
       child: Container(
         padding: EdgeInsets.all(PanAfricanSpacing.lg.w),
         decoration: BoxDecoration(
@@ -702,9 +749,9 @@ class _InviteCodeCard extends StatelessWidget {
               ExcludeSemantics(
                 child: Text(
                   'Expires $expiryLabel',
-                  style: PanAfricanTypography.bodySmall(context).copyWith(
-                    color: colorScheme.onSurfaceVariant,
-                  ),
+                  style: PanAfricanTypography.bodySmall(
+                    context,
+                  ).copyWith(color: colorScheme.onSurfaceVariant),
                 ),
               ),
             ],
@@ -763,15 +810,17 @@ class _BannerChip extends StatelessWidget {
             padding: EdgeInsets.all(PanAfricanSpacing.md.w),
             child: Row(
               children: [
-                ExcludeSemantics(child: Icon(icon, color: colorScheme.onErrorContainer)),
+                ExcludeSemantics(
+                  child: Icon(icon, color: colorScheme.onErrorContainer),
+                ),
                 SizedBox(width: PanAfricanSpacing.sm.w),
                 Expanded(
                   child: ExcludeSemantics(
                     child: Text(
                       label,
-                      style: PanAfricanTypography.bodySmall(context).copyWith(
-                        color: colorScheme.onErrorContainer,
-                      ),
+                      style: PanAfricanTypography.bodySmall(
+                        context,
+                      ).copyWith(color: colorScheme.onErrorContainer),
                     ),
                   ),
                 ),
@@ -801,7 +850,10 @@ class _ErrorPanel extends StatelessWidget {
           width: double.infinity,
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: _minTouchTarget.h),
-            child: FilledButton(onPressed: onRetry, child: const Text('Try again')),
+            child: FilledButton(
+              onPressed: onRetry,
+              child: const Text('Try again'),
+            ),
           ),
         ),
       ],

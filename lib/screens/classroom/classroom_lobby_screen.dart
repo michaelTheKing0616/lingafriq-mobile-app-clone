@@ -16,7 +16,8 @@ class ClassroomLobbyScreen extends ConsumerStatefulWidget {
   static const _filters = ['All', 'Starting Soon', 'My Languages'];
 
   @override
-  ConsumerState<ClassroomLobbyScreen> createState() => _ClassroomLobbyScreenState();
+  ConsumerState<ClassroomLobbyScreen> createState() =>
+      _ClassroomLobbyScreenState();
 }
 
 class _ClassroomLobbyScreenState extends ConsumerState<ClassroomLobbyScreen> {
@@ -36,8 +37,12 @@ class _ClassroomLobbyScreenState extends ConsumerState<ClassroomLobbyScreen> {
       _error = null;
     });
     try {
-      final tribes = await ref.read(tribesServiceProvider).getAllTribes(includeClassrooms: true);
-      final classrooms = tribes.where((t) => t['is_classroom'] == true).toList();
+      final tribes = await ref
+          .read(tribesServiceProvider)
+          .getAllTribes(includeClassrooms: true);
+      final classrooms = tribes
+          .where((t) => t['is_classroom'] == true)
+          .toList();
       setState(() {
         _rooms = classrooms.map(_RoomData.fromTribe).toList();
         if (_rooms.isEmpty && tribes.isNotEmpty) {
@@ -101,9 +106,14 @@ class _ClassroomLobbyScreenState extends ConsumerState<ClassroomLobbyScreen> {
                           constraints: const BoxConstraints(minHeight: 48),
                           child: FilledButton.tonalIcon(
                             key: const ValueKey('lobby-enter-class-code'),
-                            onPressed: () => ClassCodeJoinSheet.show(context, onJoined: _load),
+                            onPressed: () => ClassCodeJoinSheet.show(
+                              context,
+                              onJoined: _load,
+                            ),
                             icon: const Icon(Icons.vpn_key_outlined),
-                            label: Text(AppLocalizations.of(context)!.gccJoinButton),
+                            label: Text(
+                              AppLocalizations.of(context)!.gccJoinButton,
+                            ),
                           ),
                         ),
                       ),
@@ -113,7 +123,12 @@ class _ClassroomLobbyScreenState extends ConsumerState<ClassroomLobbyScreen> {
                       if (_error != null)
                         Padding(
                           padding: EdgeInsets.only(bottom: 12.h),
-                          child: Text(_error!, style: TextStyle(color: Theme.of(context).colorScheme.error)),
+                          child: Text(
+                            _error!,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                          ),
                         ),
                     ],
                   ),
@@ -220,10 +235,7 @@ class _RoomCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              if (room.isLive) ...[
-                _LivePulseBadge(),
-                SizedBox(width: 6.w),
-              ],
+              if (room.isLive) ...[_LivePulseBadge(), SizedBox(width: 6.w)],
               if (room.isTrending)
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
@@ -234,9 +246,11 @@ class _RoomCard extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.trending_up_rounded,
-                          size: 12.sp,
-                          color: ModernGriotColors.onSecondaryContainer),
+                      Icon(
+                        Icons.trending_up_rounded,
+                        size: 12.sp,
+                        color: ModernGriotColors.onSecondaryContainer,
+                      ),
                       SizedBox(width: 3.w),
                       Text(
                         'HOT',
@@ -371,7 +385,9 @@ class _LivePulseBadgeState extends State<_LivePulseBadge>
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
           decoration: BoxDecoration(
-            color: const Color(0xFFE53935).withAlpha((200 + 55 * _ctrl.value).round()),
+            color: const Color(
+              0xFFE53935,
+            ).withAlpha((200 + 55 * _ctrl.value).round()),
             borderRadius: ModernGriotRadius.borderPill,
             boxShadow: [
               BoxShadow(
