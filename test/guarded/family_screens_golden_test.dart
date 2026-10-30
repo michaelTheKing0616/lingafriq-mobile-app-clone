@@ -110,6 +110,13 @@ Future<Object?> _circles() async => {
       'status': 'open',
       'member_count': 12,
       'max_members': 50,
+      'last_activity_at': '2026-10-29T09:00:00Z',
+      'member_preview': [
+        {'initial': 'A', 'is_me': true},
+        {'initial': 'T', 'is_me': false},
+        {'initial': 'K', 'is_me': false},
+        {'initial': 'Z', 'is_me': false},
+      ],
     },
     {
       'id': 'c2',
@@ -211,6 +218,9 @@ void main() {
           settle: mode != 'loading',
         );
         if (mode == 'loading') await t.pump(const Duration(milliseconds: 100));
+        if (mode == 'error' || mode == 'offline') {
+          expect(find.byKey(const ValueKey('gcir-error-art')), findsOneWidget);
+        }
         expectNoLayoutErrors(t);
         await expectLater(
           find.byType(CirclesScreen),
@@ -253,6 +263,7 @@ void main() {
         GuardianApprovalsScreen(approvalService: _Approvals()),
       );
       expect(find.textContaining('Yoruba 201'), findsWidgets);
+      expect(find.byKey(const ValueKey('gap-title')), findsOneWidget);
       expectNoLayoutErrors(t);
       await expectLater(
         find.byType(GuardianApprovalsScreen),
@@ -284,6 +295,9 @@ void main() {
     testWidgets('circles ${v.name}', (t) async {
       await pumpVariant(t, v, const CirclesScreen(fetchCircles: _circles));
       expect(find.text('Yoruba beginners'), findsOneWidget);
+      // Member faces (initials only) and the "+8" overflow chip.
+      expect(find.byKey(const ValueKey('gcir-faces')), findsOneWidget);
+      expect(find.text('+8'), findsOneWidget);
       expectNoLayoutErrors(t);
       await expectLater(
         find.byType(CirclesScreen),

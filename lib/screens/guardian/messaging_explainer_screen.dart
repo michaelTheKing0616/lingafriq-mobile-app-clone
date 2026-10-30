@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/theme/lingafriq_fonts.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -229,49 +230,59 @@ class GuardianMessagingExplainerScreen extends HookConsumerWidget {
       (Icons.front_hand_outlined, l.gmeSecStopTitle, l.gmeSecStopBody),
       (Icons.school_outlined, l.gmeSecTeacherTitle, l.gmeSecTeacherBody),
     ];
-    Widget section((IconData, String, String) s) => Padding(
-      padding: EdgeInsets.only(bottom: PanAfricanSpacing.md.h),
-      child: Card(
-        margin: EdgeInsets.zero,
-        child: Padding(
-          padding: EdgeInsets.all(PanAfricanSpacing.md.w),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CircleAvatar(
+    // Scannable cards: each topic shows its title; the detail opens on tap
+    // (the first one starts open) instead of a wall of text.
+    Widget section((IconData, String, String) s, {bool open = false}) =>
+        Padding(
+          padding: EdgeInsets.only(bottom: PanAfricanSpacing.sm.h),
+          child: Card(
+            margin: EdgeInsets.zero,
+            clipBehavior: Clip.antiAlias,
+            child: ExpansionTile(
+              key: PageStorageKey<String>('gme-${s.$2}'),
+              initiallyExpanded: open,
+              shape: const Border(),
+              collapsedShape: const Border(),
+              tilePadding: EdgeInsets.symmetric(
+                horizontal: PanAfricanSpacing.md.w,
+                vertical: PanAfricanSpacing.xs.h,
+              ),
+              childrenPadding: EdgeInsetsDirectional.fromSTEB(
+                PanAfricanSpacing.md.w,
+                0,
+                PanAfricanSpacing.md.w,
+                PanAfricanSpacing.md.h,
+              ),
+              expandedCrossAxisAlignment: CrossAxisAlignment.start,
+              leading: CircleAvatar(
                 radius: 20,
                 backgroundColor: colorScheme.primaryContainer,
                 child: Icon(s.$1, color: colorScheme.onPrimaryContainer),
               ),
-              SizedBox(width: PanAfricanSpacing.md.w),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Semantics(
-                      header: true,
-                      child: Text(
-                        s.$2,
-                        style: PanAfricanTypography.titleSmall(
-                          context,
-                        ).copyWith(fontWeight: FontWeight.w700),
-                      ),
-                    ),
-                    SizedBox(height: PanAfricanSpacing.xs.h),
-                    Text(
-                      s.$3,
-                      style: PanAfricanTypography.bodyMedium(
-                        context,
-                      ).copyWith(height: 1.45),
-                    ),
-                  ],
+              title: Semantics(
+                header: true,
+                child: Text(
+                  s.$2,
+                  style: LingAfriqFonts.displayStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: colorScheme.onSurface,
+                  ),
                 ),
               ),
-            ],
+              children: [
+                Text(
+                  s.$3,
+                  style: LingAfriqFonts.textStyle(
+                    fontSize: 15,
+                    height: LingAfriqFonts.bodyMinHeight,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
-    );
+        );
     final loading = uiState.value == _ExplainerUiState.loading;
     return Scaffold(
       appBar: AppBar(),
@@ -322,7 +333,8 @@ class GuardianMessagingExplainerScreen extends HookConsumerWidget {
                   ),
                 )
               else ...[
-                ...sections.map(section),
+                for (var i = 0; i < sections.length; i++)
+                  section(sections[i], open: i == 0),
                 SizedBox(height: PanAfricanSpacing.sm.h),
                 Text(
                   l.gmeModHeading,
@@ -348,7 +360,7 @@ class GuardianMessagingExplainerScreen extends HookConsumerWidget {
                             line,
                             style: PanAfricanTypography.bodyMedium(
                               context,
-                            ).copyWith(height: 1.4),
+                            ).copyWith(height: LingAfriqFonts.bodyMinHeight),
                           ),
                         ),
                       ],

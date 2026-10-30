@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/theme/lingafriq_fonts.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -327,7 +328,9 @@ class GuardianApprovalsScreen extends HookConsumerWidget {
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
-      appBar: AppBar(title: Text(l.gapTitle)),
+      // The title lives in the body (display face, wraps) so it is never
+      // cut off in the app bar at 320dp / 200% / Arabic.
+      appBar: AppBar(),
       body: ResponsiveSafeArea(
         child: RefreshIndicator(
           onRefresh: load,
@@ -337,6 +340,19 @@ class GuardianApprovalsScreen extends HookConsumerWidget {
               vertical: PanAfricanSpacing.md.h,
             ),
             children: [
+              Semantics(
+                header: true,
+                child: Text(
+                  l.gapTitle,
+                  key: const ValueKey('gap-title'),
+                  style: LingAfriqFonts.displayStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w800,
+                    color: colorScheme.onSurface,
+                  ),
+                ),
+              ),
+              SizedBox(height: PanAfricanSpacing.md.h),
               if (isOffline.value)
                 Padding(
                   padding: EdgeInsets.only(bottom: PanAfricanSpacing.md.h),

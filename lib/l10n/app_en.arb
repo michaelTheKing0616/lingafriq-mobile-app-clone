@@ -5101,5 +5101,55 @@
   "gfamModeInviteLabel": "Learner invite, create a code to share",
   "@gfamModeInviteLabel": {
     "description": "gfamModeInviteLabel"
+  },
+  "gfamInviteSectionTitle": "Learner waiting for you?",
+  "@gfamInviteSectionTitle": {
+    "description": "Guardian hub (family) screen text."
+  },
+  "gfamAcceptInviteHint": "Paste the invite code from their LingAfriq app.",
+  "@gfamAcceptInviteHint": {
+    "description": "Guardian hub (family) screen text."
+  },
+  "gfamInviteCodeLabel": "Invite code",
+  "@gfamInviteCodeLabel": {
+    "description": "Guardian hub (family) screen text."
+  },
+  "gfamYourNameHint": "Your name (shown to the learner)",
+  "@gfamYourNameHint": {
+    "description": "Guardian hub (family) screen text."
+  },
+  "gfamLinkedLearners": "Linked learners",
+  "@gfamLinkedLearners": {
+    "description": "Guardian hub (family) screen text."
+  },
+  "gfamLinkLearner": "Link learner",
+  "@gfamLinkLearner": {
+    "description": "Guardian hub (family) screen text."
+  },
+  "gdmEmptyAction": "How messaging works",
+  "@gdmEmptyAction": {
+    "description": "Guarded family screens."
+  },
+  "gccJoinedNamed": "You joined {className}",
+  "@gccJoinedNamed": {
+    "description": "Class code sheet success state.",
+    "placeholders": {
+      "className": {
+        "type": "String"
+      }
+    }
+  },
+  "gccJoinedNext": "Your teacher can now share lessons and messages with you here.",
+  "@gccJoinedNext": {
+    "description": "Class code sheet success state."
+  },
+  "gcirLastActivity": "Last activity {date}",
+  "@gcirLastActivity": {
+    "description": "Circles list row activity line.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
   }
 }

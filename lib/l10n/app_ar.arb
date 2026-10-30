@@ -948,5 +948,15 @@
   "gtpDmUntil": "الرسائل مفعّلة حتى {date}",
   "gtpLoading": "جارٍ تحميل الطلاب",
   "gfamModeHubLabel": "مركز وليّ الأمر، عرض المتعلّمين المرتبطين",
-  "gfamModeInviteLabel": "دعوة المتعلّم، إنشاء رمز للمشاركة"
+  "gfamModeInviteLabel": "دعوة المتعلّم، إنشاء رمز للمشاركة",
+  "gfamInviteSectionTitle": "هل ينتظرك متعلّم؟",
+  "gfamAcceptInviteHint": "الصق رمز الدعوة من تطبيق LingAfriq الخاص به.",
+  "gfamInviteCodeLabel": "رمز الدعوة",
+  "gfamYourNameHint": "اسمك (يظهر للمتعلّم)",
+  "gfamLinkedLearners": "المتعلّمون المرتبطون",
+  "gfamLinkLearner": "اربط المتعلّم",
+  "gdmEmptyAction": "كيف تعمل الرسائل",
+  "gccJoinedNamed": "انضممت إلى {className}",
+  "gccJoinedNext": "يمكن لمعلّمك الآن مشاركة الدروس والرسائل معك هنا.",
+  "gcirLastActivity": "آخر نشاط {date}"
 }

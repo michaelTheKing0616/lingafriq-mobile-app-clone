@@ -229,12 +229,27 @@ class GuardedMessagingService {
     return r.ok;
   }
 
-  Future<ClassJoinOutcome> joinClassByCode(String code) async {
+  Future<ClassJoinOutcome> joinClassByCode(String code) async =>
+      (await joinClass(code)).outcome;
+
+  /// Like [joinClassByCode], plus the class name the server confirmed (so
+  /// the success state can say which class was joined).
+  Future<({ClassJoinOutcome outcome, String? className})> joinClass(
+    String code,
+  ) async {
     final r = await _request(
       'POST',
       '/api/tribes/classrooms/join',
       data: {'code': code.trim()},
     );
+    final name = r.body['class_name'];
+    final className = name is String && name.trim().isNotEmpty
+        ? name.trim()
+        : null;
+    return (outcome: _classOutcome(r), className: className);
+  }
+
+  ClassJoinOutcome _classOutcome(GuardedResponse r) {
     if (r.status == 201 || r.status == 200) return ClassJoinOutcome.joined;
     if (r.status == 202) return ClassJoinOutcome.waitingForGuardian;
     if (r.status == 404) return ClassJoinOutcome.notFound;

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/services/guarded_messaging_service.dart';
+import 'package:lingafriq/theme/lingafriq_fonts.dart';
 
 /// Bottom sheet: enter a class code -> POST /api/tribes/classrooms/join.
 /// 202 shows "waiting for guardian"; guardian_link_required / age_verification_required get clear copy.
@@ -32,6 +34,7 @@ class _ClassCodeJoinSheetState extends State<ClassCodeJoinSheet> {
   final _controller = TextEditingController();
   bool _busy = false;
   ClassJoinOutcome? _outcome;
+  String? _className;
   bool _empty = false;
 
   /// Class codes are 4–16 letters, numbers or dashes (no spaces or symbols).
@@ -61,13 +64,14 @@ class _ClassCodeJoinSheetState extends State<ClassCodeJoinSheet> {
       _empty = false;
       _outcome = null;
     });
-    final r = await _service.joinClassByCode(code);
+    final r = await _service.joinClass(code);
     if (!mounted) return;
     setState(() {
       _busy = false;
-      _outcome = r;
+      _outcome = r.outcome;
+      _className = r.className;
     });
-    if (r == ClassJoinOutcome.joined) widget.onJoined?.call();
+    if (r.outcome == ClassJoinOutcome.joined) widget.onJoined?.call();
   }
 
   @override
@@ -146,30 +150,117 @@ class _ClassCodeJoinSheetState extends State<ClassCodeJoinSheet> {
             _Status(
               key: const ValueKey('gcc-joined'),
               icon: Icons.check_circle_outline,
-              title: l.gccJoined,
+              title: _className == null
+                  ? l.gccJoined
+                  : l.gccJoinedNamed(_className!),
+              body: l.gccJoinedNext,
             )
           else ...[
             Text(l.gccHint, style: theme.textTheme.bodyMedium),
             const SizedBox(height: 16),
-            TextField(
-              key: const ValueKey('gcc-field'),
-              controller: _controller,
-              textCapitalization: TextCapitalization.characters,
-              autocorrect: false,
-              maxLength: 40,
-              enabled: !_busy,
-              textInputAction: TextInputAction.done,
-              onSubmitted: (_) => _submit(),
-              decoration: InputDecoration(
-                labelText: l.gccLabel,
-                helperText: l.gccFormatHint,
-                helperMaxLines: 3,
-                border: const OutlineInputBorder(),
-                errorText: error,
-                errorMaxLines: 4,
-                counterText: '',
+            // Label sits above the field (no floating label), so it never
+            // collides with the code at 320dp / 200% / RTL.
+            Text(
+              l.gccLabel,
+              style: theme.textTheme.labelLarge?.copyWith(
+                fontWeight: FontWeight.w700,
               ),
             ),
+            const SizedBox(height: 8),
+            // Codes are Latin letters/digits: always LTR, big and spaced so a
+            // child can check each character (Kahoot / Classroom style).
+            Directionality(
+              textDirection: TextDirection.ltr,
+              child: TextField(
+                key: const ValueKey('gcc-field'),
+                controller: _controller,
+                textCapitalization: TextCapitalization.characters,
+                autocorrect: false,
+                enableSuggestions: false,
+                maxLength: 16,
+                enabled: !_busy,
+                textAlign: TextAlign.center,
+                textInputAction: TextInputAction.done,
+                onSubmitted: (_) => _submit(),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'[A-Za-z0-9-]')),
+                  _UpperCase(),
+                ],
+                style: LingAfriqFonts.displayStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 4,
+                  color: theme.colorScheme.onSurface,
+                ),
+                decoration: InputDecoration(
+                  hintText: 'ABC123',
+                  hintStyle: LingAfriqFonts.displayStyle(
+                    fontSize: 28,
+                    letterSpacing: 4,
+                    color: theme.colorScheme.onSurfaceVariant.withValues(
+                      alpha: 0.35,
+                    ),
+                  ),
+                  filled: true,
+                  fillColor: theme.colorScheme.surfaceContainerHighest,
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 16,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: BorderSide(
+                      color: theme.colorScheme.primary,
+                      width: 2,
+                    ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: BorderSide(
+                      color: theme.colorScheme.error,
+                      width: 2,
+                    ),
+                  ),
+                  counterText: '',
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            if (error != null)
+              Semantics(
+                liveRegion: true,
+                child: Row(
+                  key: const ValueKey('gcc-error'),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.error_outline,
+                      size: 20,
+                      color: theme.colorScheme.error,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        error,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.error,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            else
+              Text(
+                l.gccFormatHint,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
             if (guidance != null) ...[
               const SizedBox(height: 12),
               _Status(
@@ -229,6 +320,14 @@ class _ClassCodeJoinSheetState extends State<ClassCodeJoinSheet> {
 }
 
 enum _Tone { success, info }
+
+class _UpperCase extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) => newValue.copyWith(text: newValue.text.toUpperCase());
+}
 
 class _Status extends StatelessWidget {
   const _Status({

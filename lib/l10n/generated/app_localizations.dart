@@ -6623,6 +6623,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Learner invite, create a code to share'**
   String get gfamModeInviteLabel;
+
+  /// Guardian hub (family) screen text.
+  ///
+  /// In en, this message translates to:
+  /// **'Learner waiting for you?'**
+  String get gfamInviteSectionTitle;
+
+  /// Guardian hub (family) screen text.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste the invite code from their LingAfriq app.'**
+  String get gfamAcceptInviteHint;
+
+  /// Guardian hub (family) screen text.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite code'**
+  String get gfamInviteCodeLabel;
+
+  /// Guardian hub (family) screen text.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name (shown to the learner)'**
+  String get gfamYourNameHint;
+
+  /// Guardian hub (family) screen text.
+  ///
+  /// In en, this message translates to:
+  /// **'Linked learners'**
+  String get gfamLinkedLearners;
+
+  /// Guardian hub (family) screen text.
+  ///
+  /// In en, this message translates to:
+  /// **'Link learner'**
+  String get gfamLinkLearner;
+
+  /// Guarded family screens.
+  ///
+  /// In en, this message translates to:
+  /// **'How messaging works'**
+  String get gdmEmptyAction;
+
+  /// Class code sheet success state.
+  ///
+  /// In en, this message translates to:
+  /// **'You joined {className}'**
+  String gccJoinedNamed(String className);
+
+  /// Class code sheet success state.
+  ///
+  /// In en, this message translates to:
+  /// **'Your teacher can now share lessons and messages with you here.'**
+  String get gccJoinedNext;
+
+  /// Circles list row activity line.
+  ///
+  /// In en, this message translates to:
+  /// **'Last activity {date}'**
+  String gcirLastActivity(String date);
 }
 
 class _AppLocalizationsDelegate

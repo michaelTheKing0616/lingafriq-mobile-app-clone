@@ -113,36 +113,26 @@ class CirclesScreen extends HookConsumerWidget {
         physics: const AlwaysScrollableScrollPhysics(),
         padding: pad,
         children: [
-          Container(
-            key: const ValueKey('gcir-error'),
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: error == 'offline'
-                  ? scheme.secondaryContainer
-                  : scheme.errorContainer,
-              borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+          const SizedBox(height: 32),
+          Center(
+            child: _ErrorIllustration(
+              offline: error == 'offline',
+              scheme: scheme,
             ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  error == 'offline'
-                      ? Icons.cloud_off_outlined
-                      : Icons.error_outline,
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    error == 'offline' ? l.gcirOffline : l.gcirLoadError,
-                    style: text.bodyLarge,
-                  ),
-                ),
-              ],
+          ),
+          const SizedBox(height: 24),
+          Semantics(
+            liveRegion: true,
+            child: Text(
+              error == 'offline' ? l.gcirOffline : l.gcirLoadError,
+              key: const ValueKey('gcir-error'),
+              textAlign: TextAlign.center,
+              style: text.titleMedium?.copyWith(fontWeight: FontWeight.w700),
             ),
           ),
           const SizedBox(height: 16),
           Align(
-            alignment: AlignmentDirectional.centerEnd,
+            alignment: Alignment.center,
             child: ConstrainedBox(
               constraints: const BoxConstraints(minHeight: 48),
               child: FilledButton.icon(
@@ -252,6 +242,15 @@ class CirclesScreen extends HookConsumerWidget {
             : status == 'full'
             ? l.gcirPillFull
             : l.gcirPillSoon;
+        final preview = (c['member_preview'] is List)
+            ? (c['member_preview'] as List)
+                  .whereType<Map>()
+                  .map((m) => Map<String, dynamic>.from(m))
+                  .toList()
+            : const <Map<String, dynamic>>[];
+        final lastActivity = DateTime.tryParse(
+          c['last_activity_at']?.toString() ?? '',
+        )?.toLocal();
         final tile = palette[index % palette.length];
         final onTile = onPalette[index % onPalette.length];
 
@@ -318,6 +317,27 @@ class CirclesScreen extends HookConsumerWidget {
                               color: scheme.onSurfaceVariant,
                             ),
                           ),
+                          if (lastActivity != null) ...[
+                            const SizedBox(height: 2),
+                            Text(
+                              l.gcirLastActivity(
+                                MaterialLocalizations.of(
+                                  context,
+                                ).formatShortDate(lastActivity),
+                              ),
+                              style: text.bodySmall?.copyWith(
+                                color: scheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ],
+                          if (preview.isNotEmpty) ...[
+                            const SizedBox(height: 8),
+                            _MemberFaces(
+                              members: preview,
+                              extra: count - preview.length,
+                              scheme: scheme,
+                            ),
+                          ],
                           const SizedBox(height: 8),
                           Container(
                             padding: const EdgeInsets.symmetric(
@@ -370,6 +390,143 @@ class CirclesScreen extends HookConsumerWidget {
           ),
         );
       },
+    );
+  }
+}
+
+/// Overlapping initials for the first few members ("you" ringed in primary),
+/// plus a "+N" chip. Initials only: no names or photos of other learners.
+class _MemberFaces extends StatelessWidget {
+  const _MemberFaces({
+    required this.members,
+    required this.extra,
+    required this.scheme,
+  });
+
+  final List<Map<String, dynamic>> members;
+  final int extra;
+  final ColorScheme scheme;
+
+  @override
+  Widget build(BuildContext context) {
+    const size = 28.0;
+    const step = 20.0;
+    final faces = members.length + (extra > 0 ? 1 : 0);
+    final style = Theme.of(context).textTheme.labelMedium;
+    Widget face(Widget child, Color bg, {bool me = false}) => Container(
+      width: size,
+      height: size,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: bg,
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: me ? scheme.primary : scheme.surface,
+          width: 2,
+        ),
+      ),
+      child: child,
+    );
+    return ExcludeSemantics(
+      child: MediaQuery.withNoTextScaling(
+        child: SizedBox(
+          key: const ValueKey('gcir-faces'),
+          height: size,
+          width: size + step * (faces - 1),
+          child: Stack(
+            children: [
+              for (var i = 0; i < members.length; i++)
+                PositionedDirectional(
+                  start: step * i,
+                  child: face(
+                    Text(
+                      members[i]['initial']?.toString() ?? '?',
+                      style: style?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: scheme.onSecondaryContainer,
+                      ),
+                    ),
+                    scheme.secondaryContainer,
+                    me: members[i]['is_me'] == true,
+                  ),
+                ),
+              if (extra > 0)
+                PositionedDirectional(
+                  start: step * members.length,
+                  child: face(
+                    Text(
+                      '+$extra',
+                      style: style?.copyWith(
+                        fontSize: 10,
+                        color: scheme.onSurfaceVariant,
+                      ),
+                    ),
+                    scheme.surfaceContainerHighest,
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Own-art error illustration: the circle badge with a broken-link or
+/// offline mark, instead of a bare banner.
+class _ErrorIllustration extends StatelessWidget {
+  const _ErrorIllustration({required this.offline, required this.scheme});
+
+  final bool offline;
+  final ColorScheme scheme;
+
+  @override
+  Widget build(BuildContext context) {
+    return ExcludeSemantics(
+      child: SizedBox(
+        key: const ValueKey('gcir-error-art'),
+        width: 120,
+        height: 120,
+        child: Stack(
+          children: [
+            Container(
+              width: 112,
+              height: 112,
+              decoration: BoxDecoration(
+                color: scheme.surfaceContainerHighest,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.groups_outlined,
+                size: 56,
+                color: scheme.onSurfaceVariant,
+              ),
+            ),
+            PositionedDirectional(
+              end: 0,
+              bottom: 0,
+              child: Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: offline
+                      ? scheme.secondaryContainer
+                      : scheme.errorContainer,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: scheme.surface, width: 3),
+                ),
+                child: Icon(
+                  offline ? Icons.cloud_off_outlined : Icons.link_off,
+                  size: 24,
+                  color: offline
+                      ? scheme.onSecondaryContainer
+                      : scheme.onErrorContainer,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

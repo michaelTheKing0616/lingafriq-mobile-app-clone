@@ -948,5 +948,15 @@
   "gtpDmUntil": "Messages actifs jusqu'au {date}",
   "gtpLoading": "Chargement des élèves",
   "gfamModeHubLabel": "Espace tuteur, afficher les apprenants liés",
-  "gfamModeInviteLabel": "Invitation de l'apprenant, créer un code à partager"
+  "gfamModeInviteLabel": "Invitation de l'apprenant, créer un code à partager",
+  "gfamInviteSectionTitle": "Un apprenant vous attend ?",
+  "gfamAcceptInviteHint": "Collez le code d'invitation de son appli LingAfriq.",
+  "gfamInviteCodeLabel": "Code d'invitation",
+  "gfamYourNameHint": "Votre nom (visible par l'apprenant)",
+  "gfamLinkedLearners": "Apprenants liés",
+  "gfamLinkLearner": "Lier l'apprenant",
+  "gdmEmptyAction": "Comment fonctionnent les messages",
+  "gccJoinedNamed": "Vous avez rejoint {className}",
+  "gccJoinedNext": "Votre enseignant peut maintenant partager des leçons et des messages avec vous ici.",
+  "gcirLastActivity": "Dernière activité {date}"
 }

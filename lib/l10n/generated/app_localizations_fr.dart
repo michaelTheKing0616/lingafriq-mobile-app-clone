@@ -3882,4 +3882,40 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get gfamModeInviteLabel =>
       'Invitation de l\'apprenant, créer un code à partager';
+
+  @override
+  String get gfamInviteSectionTitle => 'Un apprenant vous attend ?';
+
+  @override
+  String get gfamAcceptInviteHint =>
+      'Collez le code d\'invitation de son appli LingAfriq.';
+
+  @override
+  String get gfamInviteCodeLabel => 'Code d\'invitation';
+
+  @override
+  String get gfamYourNameHint => 'Votre nom (visible par l\'apprenant)';
+
+  @override
+  String get gfamLinkedLearners => 'Apprenants liés';
+
+  @override
+  String get gfamLinkLearner => 'Lier l\'apprenant';
+
+  @override
+  String get gdmEmptyAction => 'Comment fonctionnent les messages';
+
+  @override
+  String gccJoinedNamed(String className) {
+    return 'Vous avez rejoint $className';
+  }
+
+  @override
+  String get gccJoinedNext =>
+      'Votre enseignant peut maintenant partager des leçons et des messages avec vous ici.';
+
+  @override
+  String gcirLastActivity(String date) {
+    return 'Dernière activité $date';
+  }
 }

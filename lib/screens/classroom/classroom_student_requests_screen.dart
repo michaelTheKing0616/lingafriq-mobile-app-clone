@@ -122,7 +122,30 @@ class _ClassroomStudentRequestsScreenState
         key: const ValueKey('gtp-error'),
         padding: const EdgeInsets.all(32),
         children: [
-          Icon(Icons.info_outline, size: 48, color: theme.colorScheme.primary),
+          // A real error badge: "not your class" is a lock, anything else is
+          // a connection problem, never a neutral info icon.
+          Center(
+            child: Container(
+              key: const ValueKey('gtp-error-icon'),
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                color: _errorStatus == 403
+                    ? theme.colorScheme.secondaryContainer
+                    : theme.colorScheme.errorContainer,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                _errorStatus == 403
+                    ? Icons.lock_outline
+                    : Icons.cloud_off_outlined,
+                size: 40,
+                color: _errorStatus == 403
+                    ? theme.colorScheme.onSecondaryContainer
+                    : theme.colorScheme.onErrorContainer,
+              ),
+            ),
+          ),
           const SizedBox(height: 16),
           Text(
             _errorStatus == 403 ? l.gtpNotTeacher : l.gtpError,
@@ -132,7 +155,11 @@ class _ClassroomStudentRequestsScreenState
           if (_errorStatus != 403) ...[
             const SizedBox(height: 16),
             Center(
-              child: OutlinedButton(onPressed: _load, child: Text(l.gdmRetry)),
+              child: OutlinedButton.icon(
+                onPressed: _load,
+                icon: const Icon(Icons.refresh),
+                label: Text(l.gdmRetry),
+              ),
             ),
           ],
         ],

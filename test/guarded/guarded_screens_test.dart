@@ -96,6 +96,8 @@ void main() {
         find.byKey(const ValueKey('gdm-allow-13')),
         200,
       );
+      await t.ensureVisible(find.byKey(const ValueKey('gdm-allow-13')));
+      await t.pumpAndSettle();
       await t.tap(find.byKey(const ValueKey('gdm-allow-13')));
       await t.pumpAndSettle();
       expect(f.calls.last.path, '/api/v2/guardian/children/7/restore-peer');
@@ -288,7 +290,7 @@ void main() {
       await t.pump();
       await t.tap(find.byKey(const ValueKey('gcc-submit')));
       await t.pumpAndSettle();
-      expect(f.calls.single.data, {'code': 'yor201'});
+      expect(f.calls.single.data, {'code': 'YOR201'});
       expect(find.byKey(const ValueKey('gcc-waiting')), findsOneWidget);
       expect(find.text('Waiting for your guardian'), findsOneWidget);
     });
@@ -356,11 +358,23 @@ void main() {
       await t.tap(find.byKey(const ValueKey('gcc-submit')));
       await t.pumpAndSettle();
       expect(f.calls, isEmpty);
-      for (final bad in ['AB', 'AB C1', 'ABC!23', 'A' * 17]) {
+      for (final bad in ['AB', 'a b', '!!', '-']) {
         await t.enterText(find.byKey(const ValueKey('gcc-field')), bad);
         await t.pump();
         expect(submit(t).onPressed, isNull, reason: bad);
       }
+      // The field sanitises as you type: drops symbols/spaces, uppercases,
+      // and caps length at 16.
+      String fieldText() => t
+          .widget<TextField>(find.byKey(const ValueKey('gcc-field')))
+          .controller!
+          .text;
+      await t.enterText(find.byKey(const ValueKey('gcc-field')), 'abc!2 3');
+      await t.pump();
+      expect(fieldText(), 'ABC23');
+      await t.enterText(find.byKey(const ValueKey('gcc-field')), 'A' * 17);
+      await t.pump();
+      expect(fieldText().length, 16);
       await t.enterText(find.byKey(const ValueKey('gcc-field')), 'yor-201');
       await t.pump();
       expect(submit(t).onPressed, isNotNull);
@@ -457,12 +471,19 @@ void main() {
         );
       });
       testWidgets('golden success ${v.name}', (t) async {
-        await pumpSheet(t, const GuardedResponse(201, {}), v: v);
-        await t.enterText(find.byKey(const ValueKey('gcc-field')), 'YOR201');
+        await pumpSheet(
+          t,
+          const GuardedResponse(201, {'class_name': 'JSS2 Yoruba'}),
+          v: v,
+        );
+        await t.enterText(find.byKey(const ValueKey('gcc-field')), 'yor201');
         await t.pump();
+        expect(find.text('YOR201'), findsOneWidget);
         await t.tap(find.byKey(const ValueKey('gcc-submit')));
         await t.pumpAndSettle();
         expectNoLayoutErrors(t);
+        // The success state names the class the server confirmed.
+        expect(find.textContaining('JSS2 Yoruba'), findsOneWidget);
         await expectLater(
           find.byType(ClassCodeJoinSheet),
           matchesGoldenFile('goldens/class_code_success_${v.name}.png'),

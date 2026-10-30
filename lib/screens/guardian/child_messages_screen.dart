@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
+import 'package:lingafriq/screens/guardian/messaging_explainer_screen.dart';
 import 'package:lingafriq/services/guarded_messaging_service.dart';
 
 /// Guardian view: who is messaging a linked learner. Metadata only, never message text.
@@ -138,6 +139,16 @@ class _GuardianChildMessagesScreenState
         icon: Icons.forum_outlined,
         title: l.gdmEmptyTitle,
         body: l.gdmEmptyBody,
+        action: FilledButton.icon(
+          key: const ValueKey('gdm-empty-guide'),
+          onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (_) => const GuardianMessagingExplainerScreen(),
+            ),
+          ),
+          icon: const Icon(Icons.menu_book_outlined),
+          label: Text(l.gdmEmptyAction),
+        ),
       );
     } else {
       body = RefreshIndicator(
@@ -300,40 +311,37 @@ class _ThreadCard extends StatelessWidget {
               Text(l.gdmLastActive(when), style: theme.textTheme.bodySmall),
             ],
             const SizedBox(height: 12),
-            Align(
-              alignment: AlignmentDirectional.centerEnd,
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(minHeight: 48),
-                child: thread.revoked
-                    ? OutlinedButton.icon(
-                        key: ValueKey('gdm-allow-${thread.peerUserId}'),
-                        onPressed: busy ? null : onToggle,
-                        icon: Icon(Icons.undo, size: _icon(context, 18)),
-                        label: Text(l.gdmAllow),
-                      )
-                    // One Stop style on every card; flags are shown by the pills.
-                    : OutlinedButton.icon(
-                        key: ValueKey('gdm-stop-${thread.peerUserId}'),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: scheme.error,
-                          side: BorderSide(color: scheme.error),
+            Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                if (thread.revoked)
+                  _Pill(icon: Icons.block, text: l.gdmStopped, warn: true),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(minHeight: 48),
+                  child: thread.revoked
+                      ? OutlinedButton.icon(
+                          key: ValueKey('gdm-allow-${thread.peerUserId}'),
+                          onPressed: busy ? null : onToggle,
+                          icon: Icon(Icons.undo, size: _icon(context, 18)),
+                          label: Text(l.gdmAllow),
+                        )
+                      // One Stop style on every card; flags are shown by the pills.
+                      : OutlinedButton.icon(
+                          key: ValueKey('gdm-stop-${thread.peerUserId}'),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: scheme.error,
+                            side: BorderSide(color: scheme.error),
+                          ),
+                          onPressed: busy ? null : onToggle,
+                          icon: Icon(Icons.block, size: _icon(context, 18)),
+                          label: Text(l.gdmStop),
                         ),
-                        onPressed: busy ? null : onToggle,
-                        icon: Icon(Icons.block, size: _icon(context, 18)),
-                        label: Text(l.gdmStop),
-                      ),
-              ),
-            ),
-            if (thread.revoked)
-              Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: Text(
-                  l.gdmStopped,
-                  style: theme.textTheme.labelMedium?.copyWith(
-                    color: scheme.error,
-                  ),
                 ),
-              ),
+              ],
+            ),
           ],
         ),
       ),

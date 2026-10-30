@@ -279,7 +279,8 @@ class GuardianLinkScreen extends HookConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Linked learners',
+              AppLocalizations.of(context)?.gfamLinkedLearners ??
+                  'Linked learners',
               style: PanAfricanTypography.titleMedium(
                 context,
               ).copyWith(fontWeight: FontWeight.w700),
@@ -315,9 +316,13 @@ class GuardianLinkScreen extends HookConsumerWidget {
             child: buildHubContent(),
           ),
         ),
-        const _SectionHeader(
-          title: guardianInviteSectionTitle,
-          subtitle: guardianAcceptInviteHint,
+        _SectionHeader(
+          title:
+              AppLocalizations.of(context)?.gfamInviteSectionTitle ??
+              guardianInviteSectionTitle,
+          subtitle:
+              AppLocalizations.of(context)?.gfamAcceptInviteHint ??
+              guardianAcceptInviteHint,
         ),
         SizedBox(height: PanAfricanSpacing.sm.h),
         TextField(
@@ -326,7 +331,9 @@ class GuardianLinkScreen extends HookConsumerWidget {
           textCapitalization: TextCapitalization.characters,
           autofillHints: const [AutofillHints.oneTimeCode],
           decoration: InputDecoration(
-            labelText: 'Invite code',
+            labelText:
+                AppLocalizations.of(context)?.gfamInviteCodeLabel ??
+                'Invite code',
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
             ),
@@ -340,7 +347,9 @@ class GuardianLinkScreen extends HookConsumerWidget {
           textCapitalization: TextCapitalization.words,
           autofillHints: const [AutofillHints.name],
           decoration: InputDecoration(
-            labelText: guardianYourNameHint,
+            labelText:
+                AppLocalizations.of(context)?.gfamYourNameHint ??
+                guardianYourNameHint,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
             ),
@@ -366,7 +375,10 @@ class GuardianLinkScreen extends HookConsumerWidget {
                         color: Colors.white,
                       ),
                     )
-                  : const Text('Link learner'),
+                  : Text(
+                      AppLocalizations.of(context)?.gfamLinkLearner ??
+                          'Link learner',
+                    ),
             ),
           ),
         ),

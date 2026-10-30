@@ -3893,4 +3893,40 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get gfamModeInviteLabel => 'دعوة المتعلّم، إنشاء رمز للمشاركة';
+
+  @override
+  String get gfamInviteSectionTitle => 'هل ينتظرك متعلّم؟';
+
+  @override
+  String get gfamAcceptInviteHint =>
+      'الصق رمز الدعوة من تطبيق LingAfriq الخاص به.';
+
+  @override
+  String get gfamInviteCodeLabel => 'رمز الدعوة';
+
+  @override
+  String get gfamYourNameHint => 'اسمك (يظهر للمتعلّم)';
+
+  @override
+  String get gfamLinkedLearners => 'المتعلّمون المرتبطون';
+
+  @override
+  String get gfamLinkLearner => 'اربط المتعلّم';
+
+  @override
+  String get gdmEmptyAction => 'كيف تعمل الرسائل';
+
+  @override
+  String gccJoinedNamed(String className) {
+    return 'انضممت إلى $className';
+  }
+
+  @override
+  String get gccJoinedNext =>
+      'يمكن لمعلّمك الآن مشاركة الدروس والرسائل معك هنا.';
+
+  @override
+  String gcirLastActivity(String date) {
+    return 'آخر نشاط $date';
+  }
 }
