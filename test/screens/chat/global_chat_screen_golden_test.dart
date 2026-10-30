@@ -370,11 +370,42 @@ void main() {
         overrides: _o(repo: repo),
       );
       expect(find.byKey(const Key('gc-error')), findsOneWidget);
+      // A chat that failed to load cannot be typed into or sent to.
+      expect(
+        t.widget<TextField>(find.byKey(const Key('gc-input'))).enabled,
+        isFalse,
+      );
+      expect(
+        t.widget<IconButton>(find.byKey(const Key('gc-send'))).onPressed,
+        isNull,
+      );
       await _golden(t, 'error');
       repo.fetchFails = false;
       await t.tap(find.text('Retry'));
       await t.pumpAndSettle();
       expect(find.byKey(const Key('gc-list')), findsOneWidget);
+      expect(
+        t.widget<TextField>(find.byKey(const Key('gc-input'))).enabled,
+        isTrue,
+      );
+    });
+
+    testWidgets('320 + 200% text: find-user icon stays in the app bar', (
+      t,
+    ) async {
+      await pumpVariant(
+        t,
+        goldenVariants[4],
+        const GlobalChatScreenMaterial3(),
+        overrides: _o(),
+      );
+      final icon = find.byKey(const Key('gc-find'));
+      expect(icon, findsOneWidget);
+      final r = t.getRect(icon);
+      final screen = t.getRect(find.byType(GlobalChatScreenMaterial3));
+      expect(r.left, greaterThanOrEqualTo(screen.left));
+      expect(r.right, lessThanOrEqualTo(screen.right));
+      expect(r.width, greaterThanOrEqualTo(44)); // tap target
     });
 
     testWidgets('offline shows saved messages with a banner', (t) async {

@@ -597,13 +597,13 @@ class _ChatViewState extends ConsumerState<_ChatView> {
           ],
         ),
         actions: [
-          if (!compact)
-            IconButton(
-              key: const Key('gc-find'),
-              tooltip: l.gcFindUser,
-              icon: const Icon(Icons.person_search_outlined),
-              onPressed: _findUser,
-            ),
+          // Kept visible at every text size; only the label-less icon shows.
+          IconButton(
+            key: const Key('gc-find'),
+            tooltip: l.gcFindUser,
+            icon: const Icon(Icons.person_search_outlined),
+            onPressed: _findUser,
+          ),
           PopupMenuButton<String>(
             key: const Key('gc-more'),
             tooltip: l.gcMore,
@@ -626,8 +626,6 @@ class _ChatViewState extends ConsumerState<_ChatView> {
               }
             },
             itemBuilder: (_) => [
-              if (compact)
-                PopupMenuItem(value: 'find', child: Text(l.gcFindUser)),
               PopupMenuItem(value: 'refresh', child: Text(l.gcRefresh)),
               PopupMenuItem(value: 'manage', child: Text(l.gcMutedBlocked)),
               PopupMenuItem(value: 'rules', child: Text(l.gcGuidelines)),
@@ -680,6 +678,8 @@ class _ChatViewState extends ConsumerState<_ChatView> {
             compact: compact,
             controller: _input,
             sending: s.sending,
+            // No sending into a chat that failed to load.
+            enabled: s.load != ChatLoad.error,
             onSend: () => _send(),
             l: l,
           ),
@@ -1343,8 +1343,10 @@ class _Composer extends StatelessWidget {
     required this.onSend,
     required this.l,
     required this.compact,
+    this.enabled = true,
   });
   final bool compact;
+  final bool enabled;
   final TextEditingController controller;
   final bool sending;
   final VoidCallback onSend;
@@ -1371,10 +1373,11 @@ class _Composer extends StatelessWidget {
                   child: TextField(
                     key: const Key('gc-input'),
                     controller: controller,
+                    enabled: enabled,
                     minLines: 1,
                     maxLines: 4,
                     textInputAction: TextInputAction.send,
-                    onSubmitted: (_) => onSend(),
+                    onSubmitted: (_) => enabled ? onSend() : null,
                     style: const TextStyle(color: _ink),
                     decoration: InputDecoration(
                       // Large text: the short hint fits instead of being cut.
@@ -1412,7 +1415,7 @@ class _Composer extends StatelessWidget {
                           key: const Key('gc-send'),
                           tooltip: l.gcSend,
                           style: IconButton.styleFrom(backgroundColor: _navy),
-                          onPressed: onSend,
+                          onPressed: enabled ? onSend : null,
                           icon: const Icon(
                             Icons.send_rounded,
                             color: Colors.white,

@@ -279,6 +279,11 @@ Work is continuous on `cloud-handoff`. Do not pause between cards. The key files
   - Each channel has a hero at its start: accent badge, "Welcome to #channel", rules line, and a native greeting.
   - New messages fade and rise in; nothing animates under reduce motion.
 
+### Global chat R4 (review 595881fab)
+- Backend node-backend 768e85b (P1-021e): forward/star/starred/reactions/reports check access to the source message (room membership; Global only for adults; blocks either way). Forward applies the POST /chat/private rules to every target. Typing and classroom hand-raises require membership. Presence is visible only for yourself and contacts. Status-by-id uses the feed's minors filter. Search text is literal and capped at 100 chars. `type=all` again includes group rooms you belong to.
+- Brand tokens: Global chat follows the theme of screens that already passed (navy `0xFF2E3A87` + Roboto). The pack note's Gold/Coral/Nunito Black was not applied. A brand-wide change belongs in the theme, not in one screen.
+- The find-user icon now stays in the app bar at 200% text. The composer is disabled while the chat is in the error state; in the locked state it is not shown at all.
+
 ### Global chat R3 (review 7479726c8)
 - **Backend (node-backend c6e14fb):**
   - `GET /chat/messages/search`: global search is adults-only (403 `age_restricted`). `type=all` returns only your own conversations, plus Global chat for adults.
