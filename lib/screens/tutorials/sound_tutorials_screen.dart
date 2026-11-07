@@ -45,7 +45,6 @@ class _SoundTutorialsScreenState extends State<SoundTutorialsScreen> {
 
   void _openEntry(SoundTutorialEntry entry) {
     if (entry.hasNativeVideo) {
-      final uri = entry.nativeVideoUri!.trim();
       final caption = entry.caption?.trim() ?? '';
       if (caption.isEmpty) {
         setState(() {

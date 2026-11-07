@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_args.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_conversation_composer.dart';
 
 Widget buildPolieConversationModeSurface(PolieModeSurfaceArgs a) {
   final layout = a.layout();
-      final l10n = AppLocalizations.of(a.context)!;
       return Container(
         key: a.key,
         color: const Color(0xFFF5F0E8),

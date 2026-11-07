@@ -60,14 +60,14 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: QualityReportScreen(
-          loader: () async => QualityReportPayload(
+          loader: () async => const QualityReportPayload(
             minSampleSize: 30,
             publishedAt: '2026-10-26T00:00:00.000Z',
             languages: [
               LanguageQualityRates(
                 language: 'yo',
                 labels: [
-                  const QualityLabelRate(
+                  QualityLabelRate(
                     qualityLabel: 'Beta',
                     sampleCount: 5,
                     errorCount: 0,
@@ -91,14 +91,14 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: QualityReportScreen(
-          loader: () async => QualityReportPayload(
+          loader: () async => const QualityReportPayload(
             minSampleSize: 30,
             publishedAt: '2026-10-26T00:00:00.000Z',
             languages: [
               LanguageQualityRates(
                 language: 'sw',
                 labels: [
-                  const QualityLabelRate(
+                  QualityLabelRate(
                     qualityLabel: 'Beta',
                     sampleCount: 40,
                     errorCount: 2,

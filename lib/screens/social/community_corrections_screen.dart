@@ -372,7 +372,7 @@ class _NativeBadge extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.verified, size: 14, color: PanAfricanColors.accent),
+          const Icon(Icons.verified, size: 14, color: PanAfricanColors.accent),
           SizedBox(width: PanAfricanSpacing.xs),
           Text(
             reputationLabel,

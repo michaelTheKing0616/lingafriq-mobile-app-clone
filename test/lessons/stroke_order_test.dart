@@ -104,7 +104,7 @@ void main() {
 
     test('too few points is unsure', () {
       final result = recognizeHandwriting(
-        attempt: HandwritingAttempt(points: const [Offset(1, 1)]),
+        attempt: const HandwritingAttempt(points: [Offset(1, 1)]),
         character: glyph,
         catalog: catalog,
       );

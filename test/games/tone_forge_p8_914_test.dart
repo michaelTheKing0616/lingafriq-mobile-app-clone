@@ -9,8 +9,8 @@ void main() {
     final featured = AllGamesRegistry.featuredOnShelf(ArcadeSkillShelf.tone);
     expect(featured, isNotNull);
     expect(featured!.gameId, AllGamesRegistry.toneForgeGameId);
-    expect(featured!.featured, isTrue);
-    expect(featured!.elevationCardId, 'P8-914');
+    expect(featured.featured, isTrue);
+    expect(featured.elevationCardId, 'P8-914');
   });
 
   test('registry defines tone_forge manifest', () {
@@ -42,11 +42,11 @@ void main() {
   });
 
   test('inventory scoring uses per-language levels', () {
-    final model = ToneLanguageModel(
+    final model = const ToneLanguageModel(
       languageCode: 'yo',
       systemId: 'yo_hml',
-      levels: const ['H', 'M', 'L'],
-      contourKinds: const ['level'],
+      levels: ['H', 'M', 'L'],
+      contourKinds: ['level'],
       sourceId: 'test',
     );
     final score = scoreToneInventoryChoice(

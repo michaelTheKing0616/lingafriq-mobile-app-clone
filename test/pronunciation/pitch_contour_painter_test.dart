@@ -33,7 +33,7 @@ void main() {
   group('semitoneAxisBounds', () {
     test('pads flat contours', () {
       final bounds = semitoneAxisBounds([
-        SyllableContourSegment(
+        const SyllableContourSegment(
           label: 'a',
           nativeSemitones: [5, 5],
           learnerSemitones: [5],

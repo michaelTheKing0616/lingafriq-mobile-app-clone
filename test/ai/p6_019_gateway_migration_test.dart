@@ -1,5 +1,4 @@
 // P6-019 spec tests: client uses gateway only; no provider keys in allowlisted sources.
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';

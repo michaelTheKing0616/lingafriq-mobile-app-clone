@@ -73,7 +73,6 @@ String? gameLexiconPrimaryAudioUri(VerifiedLexeme lexeme) {
   return null;
 }
 
-@visibleForTesting
 GameLexiconPoolItem verifiedLexemeToPoolItem(VerifiedLexeme lexeme) {
   final form = lexeme.standardOrthography.trim().isNotEmpty
       ? lexeme.standardOrthography.trim()

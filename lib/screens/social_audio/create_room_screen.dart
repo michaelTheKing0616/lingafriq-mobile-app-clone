@@ -162,7 +162,7 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text('Create practice room', style: Theme.of(context).textTheme.titleLarge),
-            Text('Host a Clubhouse-style session', style: TextStyle(fontSize: 12, color: PanAfricanColors.textSecondary)),
+            const Text('Host a Clubhouse-style session', style: const TextStyle(fontSize: 12, color: PanAfricanColors.textSecondary)),
           ],
         ),
       ),

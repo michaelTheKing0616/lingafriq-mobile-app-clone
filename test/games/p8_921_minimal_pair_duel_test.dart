@@ -6,11 +6,11 @@ import 'package:lingafriq/games/minimal_pair_duel/minimal_pair_duel_game.dart';
 import 'package:lingafriq/lessons/tone_perception_drill.dart';
 
 TonePerceptionDrillSpec _yoFixtureDrill() {
-  return TonePerceptionDrillSpec(
+  return const TonePerceptionDrillSpec(
     id: 'yo.tone.oko_hoe_vehicle',
     promptGlossEn: 'Which word means vehicle?',
     correctOptionId: 'yo.lex.ọkọ.vehicle',
-    options: const [
+    options: [
       TonePerceptionOption(
         id: 'yo.lex.ọkọ.hoe',
         form: 'ọkọ́',

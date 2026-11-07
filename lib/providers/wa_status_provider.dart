@@ -108,7 +108,7 @@ class WaStatusNotifier extends Notifier<WaStatusState> {
         state = state.copyWith(errorMessage: 'Upload succeeded but no URL was returned.');
         return false;
       }
-      return createStatus(
+      return await createStatus(
         mediaType: mediaKind,
         mediaUrl: url,
         text: caption ?? '',

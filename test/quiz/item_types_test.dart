@@ -102,10 +102,10 @@ void main() {
   });
 
   testWidgets('tone identification grades the lexeme pattern', (tester) async {
-    await tester.pumpWidget(_host(ToneIdItem(
+    await tester.pumpWidget(_host(const ToneIdItem(
       prompt: 'ọkọ̀',
-      tonePattern: const ['M', 'L'],
-      choices: const [
+      tonePattern: ['M', 'L'],
+      choices: [
         ToneChoice(label: 'M L', pattern: ['M', 'L']),
         ToneChoice(label: 'H L', pattern: ['H', 'L']),
       ],

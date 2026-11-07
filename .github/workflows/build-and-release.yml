@@ -91,7 +91,9 @@ jobs:
       - name: 🐦 Setup Flutter
         uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
         with:
-          flutter-version: '3.35.0'
+          # Stable 3.47.9 (2026-10-29, Dart 3.13.7). Lockfile requires
+          # Flutter >=3.44.0 and Dart >=3.12.0. 3.50 was still beta on 2026-11-07.
+          flutter-version: '3.47.9'
 
       - name: 🔧 Install CMake (required for rive_common native builds)
         run: sudo apt-get update && sudo apt-get install -y cmake
@@ -337,7 +339,7 @@ jobs:
       - name: 🐦 Setup Flutter
         uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
         with:
-          flutter-version: '3.35.0'
+          flutter-version: '3.47.9'
 
       - name: 📦 Get Flutter dependencies
         run: flutter pub get
@@ -878,7 +880,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
         with:
-          flutter-version: '3.35.0'
+          flutter-version: '3.47.9'
           channel: stable
 
       - name: Install CMake
@@ -909,7 +911,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
         with:
-          flutter-version: '3.35.0'
+          flutter-version: '3.47.9'
           channel: stable
 
       - name: Get Flutter dependencies

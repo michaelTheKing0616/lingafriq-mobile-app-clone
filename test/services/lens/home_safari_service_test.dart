@@ -134,9 +134,9 @@ void main() {
       await tester.pumpWidget(
         ScreenUtilInit(
           designSize: const Size(390, 844),
-          builder: (_, __) => MaterialApp(
-            home: Scaffold(
-              body: HomeSafariCard(snapshot: snap),
+          builder: (_, __) => const MaterialApp(
+            home: const Scaffold(
+              body: const HomeSafariCard(snapshot: snap),
             ),
           ),
         ),

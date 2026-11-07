@@ -4,8 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/games/circles/circle_goal_screen.dart';
 import 'package:lingafriq/games/circles/circle_goal_service.dart';
 import 'package:lingafriq/games/gamekit/game_meta_layer.dart';
-import 'package:lingafriq/games/gamekit/game_result.dart';
-import 'package:lingafriq/games/gamekit/game_scoring.dart';
 import 'package:lingafriq/games/gamekit/game_session.dart';
 import 'package:lingafriq/learning/core/bkt_mastery.dart';
 import 'package:lingafriq/services/cultural_mastery_service.dart';
@@ -38,10 +36,10 @@ void main() {
       await tester.pumpWidget(
         ScreenUtilInit(
           designSize: const Size(390, 844),
-          builder: (_, __) => MaterialApp(
+          builder: (_, __) => const MaterialApp(
             home: CircleGoalScreen(
               groupId: 'g1',
-              initialSnapshot: const CircleWordGoalSnapshot(
+              initialSnapshot: CircleWordGoalSnapshot(
                 empty: false,
                 goalWords: 20,
                 progressWords: 8,
@@ -62,15 +60,15 @@ void main() {
       await tester.pumpWidget(
         ScreenUtilInit(
           designSize: const Size(390, 844),
-          builder: (_, __) => MaterialApp(
+          builder: (_, __) => const MaterialApp(
             home: CircleGoalScreen(
               groupId: 'g1',
-              initialSnapshot: const CircleWordGoalSnapshot(
+              initialSnapshot: CircleWordGoalSnapshot(
                 empty: false,
                 goalWords: 5,
                 progressWords: 5,
                 complete: true,
-                members: const [],
+                members: [],
               ),
             ),
           ),
@@ -84,14 +82,14 @@ void main() {
       await tester.pumpWidget(
         ScreenUtilInit(
           designSize: const Size(390, 844),
-          builder: (_, __) => MaterialApp(
+          builder: (_, __) => const MaterialApp(
             home: CircleGoalScreen(
               groupId: 'g1',
-              initialSnapshot: const CircleWordGoalSnapshot(
+              initialSnapshot: CircleWordGoalSnapshot(
                 empty: true,
                 goalWords: 0,
                 progressWords: 0,
-                members: const [],
+                members: [],
               ),
             ),
           ),

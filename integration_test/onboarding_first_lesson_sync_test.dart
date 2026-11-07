@@ -79,7 +79,7 @@ void main() {
           Variable.withString('outbox-1'),
           Variable.withString('learning_event:fresh-install'),
           Variable.withString('pending'),
-          Variable<int>(0),
+          const Variable<int>(0),
           Variable.withInt(0),
           Variable.withString(payload),
         ],
