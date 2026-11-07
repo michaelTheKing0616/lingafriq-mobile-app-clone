@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/services/guarded_messaging_service.dart';
 import 'package:lingafriq/theme/guarded_theme.dart';
+import 'package:lingafriq/theme/lingafriq_fonts.dart';
 
 /// Teacher view: students waiting for a guardian, and per-student teacher-message approval
 /// for school accounts. Reference pack: docs/design/references/teacher-requests
@@ -162,6 +163,18 @@ class _ClassroomStudentRequestsScreenState
             Center(
               child: OutlinedButton.icon(
                 onPressed: _load,
+                // The app outlined-button theme pins Nunito weight 600 with
+                // no Arabic fallback, and a terracotta foreground. At 200%
+                // the Arabic label kept its layout box but painted no glyphs.
+                // This screen's action colour is the guarded navy token.
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: theme.colorScheme.primary,
+                  iconColor: theme.colorScheme.primary,
+                  textStyle: theme.textTheme.labelLarge?.copyWith(
+                    fontFamily: LingAfriqFonts.display,
+                    fontFamilyFallback: LingAfriqFonts.fallback,
+                  ),
+                ),
                 icon: const Icon(Icons.refresh),
                 label: Text(l.gdmRetry),
               ),
