@@ -281,12 +281,18 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
+    // The family overview and the link tile both show the name. The tile is
+    // the tappable row; its semantics label is the accessible name.
+    final tileName = find.descendant(
+      of: find.byType(ListTile),
+      matching: find.text('Ada'),
+    );
     await tester.scrollUntilVisible(
-      find.text('Ada'),
+      tileName,
       400,
       scrollable: _hubScrollable(),
     );
-    expect(find.text('Ada'), findsOneWidget);
+    expect(tileName, findsOneWidget);
     expect(find.bySemanticsLabel('Ada, Needs your consent'), findsOneWidget);
     handle.dispose();
   });
@@ -586,14 +592,19 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
+    // Family overview repeats the fallback name. The chevron under test is
+    // the one on the learner ListTile, not the family-tools row.
+    final tileName = find.descendant(
+      of: find.byType(ListTile),
+      matching: find.text('Your learner'),
+    );
     await tester.scrollUntilVisible(
-      find.text('Your learner'),
+      tileName,
       400,
       scrollable: _hubScrollable(),
     );
-    // Family tools tiles use the same chevrons, so check the learner tile.
     final tile = find.ancestor(
-      of: find.text('Your learner'),
+      of: tileName,
       matching: find.byType(ListTile),
     );
     expect(

@@ -8,6 +8,8 @@ import 'package:lingafriq/models/game/game_content_failure.dart';
 import 'package:lingafriq/models/game/game_content_models.dart';
 import 'package:lingafriq/models/verified_lexeme.dart';
 
+import '../support/app_repo_root.dart';
+
 VerifiedLexeme _lexeme({
   required String id,
   String? audioUri,
@@ -118,9 +120,7 @@ void main() {
   });
 
   test('gamekit allowlist files do not reference bundled game_content.json', () {
-    final root = Directory.current.path.endsWith('lingafriq-mobile-app-clone')
-        ? Directory.current
-        : Directory('lingafriq-mobile-app-clone');
+    final root = Directory(appRepoRoot());
     final targets = [
       'lib/games/gamekit/batch_game_factory.dart',
       'lib/games/gamekit/game_factory_helper.dart',
