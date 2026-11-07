@@ -139,9 +139,6 @@ Map<String, dynamic>? tryParseJson(String raw) {
 dynamic polieJsonField(Map<String, dynamic>? map, String key, dynamic fallback) =>
     map?[key] ?? fallback;
 
-dynamic _n(Map<String, dynamic>? map, String key, dynamic fallback) =>
-    polieJsonField(map, key, fallback);
-
 /// Cleans LLM output for safe display. Default fallback is empty string so the
 /// UI can render a proper empty/error state instead of a meaningless "-".
 /// Callers that need a placeholder must pass it explicitly.

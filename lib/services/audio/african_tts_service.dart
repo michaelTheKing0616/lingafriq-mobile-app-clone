@@ -512,6 +512,3 @@ class AfricanTtsService {
 
 /// Convenience accessor for places that previously held a [FlutterTts] field.
 final africanTtsService = AfricanTtsService();
-
-// Unused import guard (audio bytes typed for clarity).
-typedef _UnusedUint8List = Uint8List;

@@ -684,7 +684,13 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text(GuardianLinkScreen.offlineBanner), findsOneWidget);
-    expect(find.text('Your learner'), findsOneWidget);
+    // The family overview repeats this fallback name. The assertion is the
+    // linked-learner row: exactly one ListTile title, then the golden.
+    final learnerTitle = find.descendant(
+      of: find.byType(ListTile),
+      matching: find.text('Your learner'),
+    );
+    expect(learnerTitle, findsOneWidget);
 
     await expectLater(
       find.byType(GuardianLinkScreen),
