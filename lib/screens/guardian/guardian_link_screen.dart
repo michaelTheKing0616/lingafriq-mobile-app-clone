@@ -92,7 +92,7 @@ class GuardianLinkScreen extends HookConsumerWidget {
   static const String childInviteBody =
       'Copy this code and send it to a parent or guardian. It expires in seven days.';
   static const String offlineBanner =
-      'You are offline. We will sync guardian actions when you are back online.';
+      'You are offline. Some actions need an internet connection.';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -885,6 +885,9 @@ class _BannerChip extends StatelessWidget {
                   child: ExcludeSemantics(
                     child: Text(
                       label,
+                      // English-only copy. An RTL parent was moving the
+                      // final period to the start of the line.
+                      textDirection: TextDirection.ltr,
                       style: PanAfricanTypography.bodySmall(
                         context,
                       ).copyWith(color: colorScheme.onErrorContainer),
