@@ -9,6 +9,7 @@ import 'package:lingafriq/screens/guardian/consent_screen.dart';
 import 'package:lingafriq/screens/guardian/family_tools_section.dart';
 import 'package:lingafriq/services/guardian_link_service.dart';
 import 'package:lingafriq/theme/guarded_theme.dart';
+import 'package:lingafriq/theme/lingafriq_fonts.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/bidi_text.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
@@ -389,6 +390,24 @@ class GuardianLinkScreen extends HookConsumerWidget {
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: _minTouchTarget.h),
             child: FilledButton(
+              // The enabled fill is already navy on the first frame, while
+              // the label color animates out of the disabled foreground.
+              // That frame is dark text on navy. Snap to the semantic pair.
+              style: ButtonStyle(
+                animationDuration: Duration.zero,
+                backgroundColor: WidgetStateProperty.resolveWith((states) {
+                  if (states.contains(WidgetState.disabled)) {
+                    return colorScheme.onSurface.withValues(alpha: 0.12);
+                  }
+                  return colorScheme.primary;
+                }),
+                foregroundColor: WidgetStateProperty.resolveWith((states) {
+                  if (states.contains(WidgetState.disabled)) {
+                    return colorScheme.onSurface.withValues(alpha: 0.38);
+                  }
+                  return colorScheme.onPrimary;
+                }),
+              ),
               onPressed: (!canSubmitAccept || acceptSubmitting.value)
                   ? null
                   : acceptInvite,
@@ -435,13 +454,42 @@ class GuardianLinkScreen extends HookConsumerWidget {
       ],
     );
 
+    final hubTitle =
+        AppLocalizations.of(context)?.gfamHubTitle ?? guardianLinkTitle;
+    final hubTitleDirection = contentDirectionOf(
+      hubTitle,
+      Directionality.of(context),
+    );
+    final hubTitleStyle =
+        (Theme.of(context).appBarTheme.titleTextStyle ??
+                Theme.of(context).textTheme.titleLarge ??
+                const TextStyle(fontSize: 20, fontWeight: FontWeight.w600))
+            .copyWith(fontFamilyFallback: LingAfriqFonts.fallback);
+    // The actions stay in the bar. The title uses whatever width is left
+    // and wraps, so a 200% localized title is not ellipsized.
+    final actionSlot = (_minTouchTarget.w * 2) + PanAfricanSpacing.lg.w + 24;
+    final titleMaxWidth = MediaQuery.sizeOf(context).width - actionSlot;
+    final titlePainter = TextPainter(
+      text: TextSpan(text: hubTitle, style: hubTitleStyle),
+      textDirection: hubTitleDirection,
+      textScaler: MediaQuery.textScalerOf(context),
+    )..layout(maxWidth: titleMaxWidth < 64 ? 64 : titleMaxWidth);
+    final toolbarHeight = titlePainter.size.height + PanAfricanSpacing.md.h;
+    titlePainter.dispose();
     return Theme(
       data: guarded,
       child: Scaffold(
         backgroundColor: colorScheme.surface,
         appBar: AppBar(
+          toolbarHeight: toolbarHeight < kToolbarHeight
+              ? kToolbarHeight
+              : toolbarHeight,
+          titleTextStyle: hubTitleStyle,
           title: Text(
-            AppLocalizations.of(context)?.gfamHubTitle ?? guardianLinkTitle,
+            hubTitle,
+            softWrap: true,
+            overflow: TextOverflow.visible,
+            textDirection: hubTitleDirection,
           ),
           centerTitle: false,
           actions: [

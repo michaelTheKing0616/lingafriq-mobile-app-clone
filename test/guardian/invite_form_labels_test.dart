@@ -54,6 +54,7 @@ Widget _app({
     builder: (_, __) => ProviderScope(
       child: MaterialApp(
         theme: lightTheme,
+        debugShowCheckedModeBanner: false,
         locale: locale,
         supportedLocales: AppLocalizations.supportedLocales,
         localizationsDelegates: const [
