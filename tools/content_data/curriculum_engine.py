@@ -455,26 +455,10 @@ _GRAMMAR_NOTES: list[tuple[str, list[str]]] = [
 
 
 def _grammar_notes_for(title: str, level: str) -> list[str]:
-    t = title.lower()
-    notes: list[str] = []
-    for key, items in _GRAMMAR_NOTES:
-        if any(k in t for k in key.split("|")):
-            notes.extend(items)
-            break
-    if not notes:
-        notes = [
-            "Pattern: subject → verb → object (default sentence order).",
-            "Listen for the verb stem; affixes carry tense and person.",
-        ]
-    if level in {"B2", "C1", "C2"}:
-        notes.append(
-            "Aim for natural rhythm: vary sentence length and use connectors."
-        )
-    if level in {"C1", "C2"}:
-        notes.append(
-            "Register: switch between formal and informal as the audience shifts."
-        )
-    return notes[:4]
+    # P1-030 forbids uncited template grammar, including the old SVO and
+    # affix defaults. Cited per-language notes come from authoring, not here.
+    del title, level
+    return []
 
 
 def _unit_vocab_pool(lessons: list) -> list[str]:

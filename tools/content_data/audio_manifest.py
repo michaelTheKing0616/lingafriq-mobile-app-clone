@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import hashlib
 import re
+import unicodedata
 from typing import Any
 
 CDN_BASE = "https://cdn.lingafriq.com/audio/v2"
@@ -16,9 +17,14 @@ def _slug(text: str, lang: str) -> str:
     return f"{lang}-{base}" if base else f"{lang}-phrase"
 
 
+def _content_hash(text: str) -> str:
+    # Same key as the shipped manifest: NFC text, sha256 prefix 16.
+    nfc = unicodedata.normalize("NFC", text.strip())
+    return hashlib.sha256(nfc.encode("utf-8")).hexdigest()[:16]
+
+
 def _entry_id(lang: str, text: str) -> str:
-    digest = hashlib.sha256(f"{lang}:{text}".encode("utf-8")).hexdigest()[:12]
-    return f"{lang}-{digest}"
+    return f"{lang}-{_content_hash(text)}"
 
 
 def build_audio_manifest(
@@ -42,6 +48,8 @@ def build_audio_manifest(
             "meaning": meaning,
             "source": source,
             "cefr": cefr,
+            "manifest_key": key,
+            "content_hash": _content_hash(text),
             "slow": {
                 "asset_path": f"assets/audio/{lang}/slow/{slug}.mp3",
                 "cdn_url": f"{CDN_BASE}/{lang}/slow/{slug}.mp3",
@@ -126,6 +134,17 @@ def build_audio_manifest(
                             "curriculum_vocab",
                             level,
                         )
+
+    # Game words are what the tutorial packs cite by manifest id. The
+    # curriculum pass above used to replace this list and drop them.
+    for w in game_content.get("words", []):
+        add(
+            str(w.get("language") or ""),
+            str(w.get("word") or ""),
+            str(w.get("english_meaning") or ""),
+            "game_word",
+            str(w.get("cefr") or "A1"),
+        )
 
     return {
         "meta": {
