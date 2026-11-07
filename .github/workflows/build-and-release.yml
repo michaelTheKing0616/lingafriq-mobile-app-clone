@@ -70,7 +70,10 @@ jobs:
       - name: 🛎️ Checkout repository
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          ref: main
+          # f2df125a checked out main so this job would see a version commit
+          # pushed by increment-version. That push is gone; the build number is
+          # a job output. Checking out main tested stale main on a PR.
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
 
       - name: Placeholder / template bundle linter
@@ -328,7 +331,8 @@ jobs:
       - name: 🛎️ Checkout repository
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          ref: main
+          # Same triggering SHA as Android. Do not check out main.
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
 
       - name: Placeholder / template bundle linter
@@ -677,7 +681,8 @@ jobs:
               if [ -n "$ipa_found" ] && [ -f "$ipa_found" ]; then
                 cp "$ipa_found" "build/release/ios/LingAfriq-$version.ipa"
               else
-                echo "⚠️ Signed build path enabled, but no IPA was found under build/. Skipping IPA copy."
+                echo "::error::Signed iOS build produced no IPA under build/."
+                exit 1
               fi
             fi
           else
@@ -715,8 +720,8 @@ jobs:
       # then re-run this workflow. See: https://developer.apple.com/help/app-store-connect/manage-agreements/sign-and-update-agreements
       - name: 🚀 Upload IPA to TestFlight (App Store Connect API)
         if: >
-          github.ref == 'refs/heads/main' &&
-          (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+          github.event_name == 'workflow_dispatch' ||
+          (github.event_name == 'push' && github.ref == 'refs/heads/main')
         env:
           ASC_API_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
           APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
@@ -724,8 +729,8 @@ jobs:
         run: |
           set -euo pipefail
           if [ "${IOS_SIGNING_READY:-false}" != "true" ]; then
-            echo "Skipping TestFlight: iOS signing credentials not available (IOS_SIGNING_READY=false)."
-            exit 0
+            echo "::error::TestFlight upload requires iOS signing credentials (IOS_SIGNING_READY=false)."
+            exit 1
           fi
           version="${{ needs.increment-version.outputs.version }}"
           IPA="build/release/ios/LingAfriq-${version}.ipa"
@@ -772,7 +777,11 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    if: always()
+    # Pull requests must not publish. A main push or a manual dispatch of the
+    # selected ref publishes only after both build jobs succeed.
+    if: >-
+      (github.event_name == 'workflow_dispatch' ||
+       (github.event_name == 'push' && github.ref == 'refs/heads/main'))
 
     steps:
       - name: 🛎️ Checkout repository
@@ -814,9 +823,17 @@ jobs:
             echo "has_artifacts=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: ℹ️ Skip empty release
-        if: steps.check-artifacts.outputs.has_artifacts != 'true'
-        run: echo "No Android/iOS artifacts found. Skipping release creation."
+      - name: Require signed AAB and IPA
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          aab=(build/release/android/*.aab)
+          ipa=(build/release/ios/*.ipa)
+          if [ "${#aab[@]}" -eq 0 ] || [ "${#ipa[@]}" -eq 0 ]; then
+            echo "::error::Refusing to publish without a signed AAB and a signed IPA."
+            ls -la build/release/android build/release/ios 2>/dev/null || true
+            exit 1
+          fi
 
       - name: Fail on an unpinned action
         run: python3 scripts/ci/check_pinned_actions.py .github/workflows
@@ -849,8 +866,6 @@ jobs:
           retention-days: 90
 
       - name: 🏁 Create GitHub Release
-        if: steps.check-artifacts.outputs.has_artifacts == 'true'
-        continue-on-error: true
         uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
         with:
           name: "LingAfriq v${{ steps.version.outputs.version }}"

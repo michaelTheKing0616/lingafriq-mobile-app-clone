@@ -300,11 +300,14 @@ class _ClassroomStudentRequestsScreenState
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  GuardedHeadline(
-                    l.gtpTitle,
-                    key: const ValueKey('gtp-title'),
-                    style: theme.textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
+                  Semantics(
+                    header: true,
+                    child: Text(
+                      l.gtpTitle,
+                      key: const ValueKey('gtp-title'),
+                      style: theme.textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                   if (widget.tribeName != null)
