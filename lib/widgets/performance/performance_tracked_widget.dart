@@ -146,7 +146,8 @@ class PerformanceTrackedListView extends StatelessWidget {
     });
 
     return ListView.builder(
-      scrollCacheExtent: ScrollCacheExtent.pixels(250.0), controller: controller,
+      cacheExtent: 250,
+      controller: controller,
       padding: padding,
       itemCount: itemCount,
       itemExtent: itemExtent,

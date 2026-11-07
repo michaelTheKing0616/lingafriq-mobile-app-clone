@@ -185,12 +185,8 @@ mixin GroqChatProviderMixin2 on GroqChatStreamHelpers {
         _turn = ConversationTurn.ai;
         _userInterrupt = false;
 
-        // Try different model names if previous one failed
-        final currentModel = GroqChatFieldsMixin._legacyModelLabels[modelIndex];
-
-        // Ensure system prompt is not empty (use override if provided)
-        final systemPrompt = (systemPromptOverride ?? _systemPrompt)?.trim() ?? 'You are Polie, a helpful AI language assistant for African languages.';
-        
+        // Model fallback uses _legacyModelLabels[modelIndex] when the gateway
+        // rejects the current model. The prompt sent is effectiveSystemPrompt.
         // Build messages array - CRITICAL: Gateway API format
         // Groq expects:
         // - messages: array of {role: "user"|"assistant", content: string}

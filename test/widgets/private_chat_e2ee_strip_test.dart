@@ -17,10 +17,10 @@ void main() {
               ).accessibilityLabel(MlsEncryptionUiState.encrypted),
               child: Material(
                 color: cs.primaryContainer,
-                child: SizedBox(
+                child: const SizedBox(
                   height: 48,
                   child: Row(
-                    children: const [
+                    children: [
                       Icon(Icons.lock_rounded),
                       Text(kE2eeOnLabel),
                     ],

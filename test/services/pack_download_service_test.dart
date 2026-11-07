@@ -7,6 +7,8 @@ import 'package:lingafriq/content/language_pack_access.dart';
 import 'package:lingafriq/content/language_pack_catalog.dart';
 import 'package:lingafriq/services/pack_download_service.dart';
 
+import '../support/app_repo_root.dart';
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -16,9 +18,7 @@ void main() {
 
   setUp(() async {
     tmp = await Directory.systemTemp.createTemp('pack_dl_');
-    final repoRoot = Directory.current.path.contains('lingafriq-mobile-app-clone')
-        ? Directory.current.path
-        : '${Directory.current.path}/lingafriq-mobile-app-clone';
+    final repoRoot = appRepoRoot();
     final hausaFile = File('$repoRoot/assets/data/cms_manifests/2/manifest.json');
     hausaBytes = await hausaFile.readAsBytes();
     final digest = sha256.convert(hausaBytes).toString();

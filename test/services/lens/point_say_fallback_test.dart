@@ -100,7 +100,7 @@ void main() {
     });
 
     test('maps gateway glosses to dictionary labels only', () async {
-      final client = PointSaySiglipClient();
+      final client = const PointSaySiglipClient();
       final outcome = await client.matchFrame(
         post: (_, __) async => Response(
           requestOptions: RequestOptions(path: kPointSaySiglipMatchPath),
@@ -165,7 +165,7 @@ void main() {
         _wrap(
           Scaffold(
             body: PointSayDictionaryMatchesSheet(
-              matches: [
+              matches: const [
                 PointSayDictionaryGlossMatch(
                   gloss: 'Cup',
                   mlKitLabel: 'Cup',

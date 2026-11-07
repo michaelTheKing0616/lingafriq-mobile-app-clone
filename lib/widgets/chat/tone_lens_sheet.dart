@@ -247,7 +247,7 @@ class _ToneLensSheetBodyState extends State<_ToneLensSheetBody> {
               style: FilledButton.styleFrom(
                 minimumSize: Size.fromHeight(48.h),
               ),
-              child: Text(ToneLensSheetCopy.save),
+              child: const Text(ToneLensSheetCopy.save),
             ),
         ],
       ),

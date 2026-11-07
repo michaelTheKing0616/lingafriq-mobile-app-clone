@@ -76,7 +76,6 @@ class LipSyncDriver {
       if (position >= token.start && position < token.end) {
         final posMs = position.inMilliseconds;
         final startMs = token.start.inMilliseconds;
-        final endMs = token.end.inMilliseconds;
         return (posMs - startMs).clamp(0, maxDriftMs);
       }
     }

@@ -70,6 +70,8 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindi
       } catch (_) {
         try {
           await _player.setAudioSource(
+            // just_audio still marks the caching source experimental.
+            // ignore: experimental_member_use
             LockCachingAudioSource(
               Uri.parse(url),
               headers: _authHeaders,

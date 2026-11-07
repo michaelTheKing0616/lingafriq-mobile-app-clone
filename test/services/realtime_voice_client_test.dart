@@ -92,7 +92,7 @@ void main() {
       );
       expect(
         shouldOfferPushToTalkAutomatically(
-          RealtimeVoiceNetworkProfile(
+          const RealtimeVoiceNetworkProfile(
             lowBandwidthActive: false,
             cellularOrConstrained: false,
             downlinkKbps: realtimePttBandwidthThresholdKbps - 1,

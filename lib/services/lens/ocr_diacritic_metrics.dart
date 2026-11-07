@@ -69,7 +69,6 @@ OcrDiacriticMarkStats compareOcrDiacriticMarks({
 }) {
   final refClusters = _graphemeClusters(reference);
   final hypClusters = _graphemeClusters(hypothesis);
-  final refBases = refClusters.map(_stripMarks).toList();
   final hypBases = hypClusters.map(_stripMarks).toList();
 
   var referenceMarks = 0;

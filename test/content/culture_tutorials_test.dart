@@ -160,7 +160,7 @@ void main() {
       expect(card, isNotNull);
       expect(customs['culture_card_id'], card!['id']);
       expect(
-        (card!['claims'] as List).first as Map<String, dynamic>,
+        (card['claims'] as List).first as Map<String, dynamic>,
         containsPair('text', customs['kinship_introduction_claim']),
       );
     }

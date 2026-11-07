@@ -42,9 +42,9 @@ void main() {
               passedAt: DateTime(2026, 10, 20),
             ),
           ],
-          debugOpenBadgeCredential: {
-            '@context': ['https://www.w3.org/ns/credentials/v2'],
-            'type': ['VerifiableCredential', 'OpenBadgeCredential'],
+          debugOpenBadgeCredential: const {
+            '@context': const ['https://www.w3.org/ns/credentials/v2'],
+            'type': const ['VerifiableCredential', 'OpenBadgeCredential'],
             'name': 'LingAfriq Proficiency Passport — YO B1',
           },
         ),

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart' show kIsWeb, debugPrint, visibleForTesting;
+import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/profile_model.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
@@ -226,7 +226,7 @@ mixin ApiProviderMixin1 on Notifier<BaseProviderState>, BaseProviderMixin {
         await prefs.storeAuthTokens(token!, refreshToken!);
       }
 
-      final email = data['email'] as String;
+      data['email'] as String;
       final prefs = ref.read(sharedPreferencesProvider);
       // Always refresh profile from the server after login so fields like
       // `is_admin` / `is_staff` (staff tools) are never stale vs cached prefs.

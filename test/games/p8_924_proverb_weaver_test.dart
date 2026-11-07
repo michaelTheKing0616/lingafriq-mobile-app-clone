@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -111,7 +110,7 @@ void main() {
   testWidgets('locked below B1', (tester) async {
     await pumpWeaverPreview(
       tester,
-      ProverbWeaverScreen(language: 'zu', learnerLevel: 'A2'),
+      const ProverbWeaverScreen(language: 'zu', learnerLevel: 'A2'),
     );
     await tester.pumpAndSettle();
     expect(find.textContaining('Reach B1'), findsOneWidget);
@@ -135,10 +134,10 @@ void main() {
   testWidgets('proverb_weaver_why_wrong golden', (tester) async {
     await pumpWeaverPreview(
       tester,
-      ProverbWeaverPreview(
+      const ProverbWeaverPreview(
         phaseLabel: 'Why wrong',
         hintEn: 'Read the note',
-        body: const Text('That situation does not fit'),
+        body: Text('That situation does not fit'),
       ),
     );
     await expectLater(
@@ -150,10 +149,10 @@ void main() {
   testWidgets('proverb_weaver_results golden', (tester) async {
     await pumpWeaverPreview(
       tester,
-      ProverbWeaverPreview(
+      const ProverbWeaverPreview(
         phaseLabel: 'Results',
         hintEn: 'Session complete',
-        body: const Text('2 of 3 situations matched'),
+        body: Text('2 of 3 situations matched'),
       ),
     );
     await expectLater(

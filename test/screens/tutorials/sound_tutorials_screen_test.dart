@@ -13,10 +13,10 @@ Widget _wrap(Widget child) {
 }
 
 SoundTutorialRepo _repoWithFixtureVideo() {
-  return SoundTutorialRepo(
+  return const SoundTutorialRepo(
     catalogue: {
       'yo': [
-        const SoundTutorialEntry(
+        SoundTutorialEntry(
           id: 'yo-fixture',
           languageCode: 'yo',
           title: 'Fixture tones',
@@ -25,7 +25,7 @@ SoundTutorialRepo _repoWithFixtureVideo() {
           slowMotionAvailable: true,
           licenceRef: 'test-fixture',
         ),
-        const SoundTutorialEntry(
+        SoundTutorialEntry(
           id: 'yo-soon',
           languageCode: 'yo',
           title: 'Pending capture',
@@ -67,9 +67,9 @@ void main() {
         (tester) async {
       await tester.pumpWidget(
         _wrap(
-          SoundTutorialsScreen(
+          const SoundTutorialsScreen(
             languageCode: 'yo',
-            repo: const SoundTutorialRepo(),
+            repo: SoundTutorialRepo(),
           ),
         ),
       );

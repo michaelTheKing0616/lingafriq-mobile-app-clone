@@ -47,10 +47,10 @@ class DialectPreferenceService {
             );
       final res = await ApiService.get(uri.toString());
       if (res.statusCode != 200 || res.data is! Map) {
-        return fromCache();
+        return await fromCache();
       }
       final data = (res.data as Map).cast<String, dynamic>();
-      if (data['success'] != true) return fromCache();
+      if (data['success'] != true) return await fromCache();
       final pref = data['preference'];
       if (pref is Map) {
         final m = Map<String, dynamic>.from(pref);
@@ -61,7 +61,7 @@ class DialectPreferenceService {
         }
         return m;
       }
-      return fromCache();
+      return await fromCache();
     } catch (_) {
       return fromCache();
     }

@@ -67,7 +67,7 @@ void main() {
 
     test('validate rejects invented citation source', () {
       final cards = PersonaCultureGrounding.parseCards([_marketCard()]);
-      final bogus = ClaimCitation(
+      final bogus = const ClaimCitation(
         claimId: 'yo.culture.market_greeting#0',
         cardId: 'yo.culture.market_greeting',
         sourceRef: 'invented/source',

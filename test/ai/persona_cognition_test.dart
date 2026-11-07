@@ -112,7 +112,7 @@ void main() {
     });
 
     test('documented_topic_returns_documented_status', () async {
-      final intent = IntentClassification(
+      final intent = const IntentClassification(
         domain: UserIntentDomain.historical,
         type: UserIntentType.factual,
         confidence: 0.9,
@@ -141,7 +141,7 @@ void main() {
     });
 
     test('anachronistic_topic_returns_anachronistic_status', () async {
-      final intent = IntentClassification(
+      final intent = const IntentClassification(
         domain: UserIntentDomain.modern,
         type: UserIntentType.opinion,
         confidence: 0.8,
@@ -169,7 +169,7 @@ void main() {
     });
 
     test('offensive_intent_classified_as_out_of_scope', () async {
-      final intent = IntentClassification(
+      final intent = const IntentClassification(
         domain: UserIntentDomain.offensive,
         type: UserIntentType.offtopic,
         confidence: 0.9,
@@ -195,7 +195,7 @@ void main() {
     });
 
     test('inferred_topic_returns_inferred_with_uncertainty', () async {
-      final intent = IntentClassification(
+      final intent = const IntentClassification(
         domain: UserIntentDomain.ethical,
         type: UserIntentType.opinion,
         confidence: 0.6,

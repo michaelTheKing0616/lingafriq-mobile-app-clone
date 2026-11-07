@@ -90,12 +90,12 @@ void main() {
         (tester) async {
       await tester.pumpWidget(
         _wrap(
-          TutorialPerceptionCheck(
+          const TutorialPerceptionCheck(
             checkId: 'restart-1',
             prompt: 'Listen',
             nonAudioDescription: 'Read the prompt.',
-            responseOptions: const ['A'],
-            checkDuration: const Duration(seconds: 2),
+            responseOptions: ['A'],
+            checkDuration: Duration(seconds: 2),
           ),
         ),
       );
@@ -108,11 +108,11 @@ void main() {
 
       await tester.pumpWidget(
         _wrap(
-          TutorialPerceptionCheck(
+          const TutorialPerceptionCheck(
             checkId: 'restart-1',
             prompt: 'Listen',
             nonAudioDescription: 'Read the prompt.',
-            responseOptions: const ['A'],
+            responseOptions: ['A'],
           ),
         ),
       );

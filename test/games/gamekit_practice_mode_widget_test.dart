@@ -8,15 +8,15 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 void main() {
   testWidgets('practice banner shows Practice, not scored', (tester) async {
     await tester.pumpWidget(
-      MaterialApp(
-        localizationsDelegates: const [
+      const MaterialApp(
+        localizationsDelegates: [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
         supportedLocales: AppLocalizations.supportedLocales,
         home: GameKitPracticeReplayPanel(
-          modelAudio: const GameKitCorrectItemAudio(uri: 'asset:assets/audio/placeholder.wav'),
+          modelAudio: GameKitCorrectItemAudio(uri: 'asset:assets/audio/placeholder.wav'),
           learnerRecordingPath: null,
           playModelLabel: 'Model',
           playYoursLabel: 'Yours',

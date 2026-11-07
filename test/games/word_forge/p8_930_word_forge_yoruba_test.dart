@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lingafriq/games/word_forge/morphology_slots.dart';
@@ -151,7 +150,7 @@ void main() {
   testWidgets('word_forge_yoruba_results golden', (tester) async {
     await pumpWordForge(
       tester,
-      WordForgeScreen(
+      const WordForgeScreen(
         language: 'yo',
         initialPhase: WordForgePhase.results,
       ),

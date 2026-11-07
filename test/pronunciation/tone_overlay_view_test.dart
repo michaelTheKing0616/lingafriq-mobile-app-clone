@@ -5,7 +5,7 @@ import 'package:lingafriq/screens/pronunciation/tone_overlay_view.dart';
 void main() {
   test('buildToneOverlayAccessibilitySummary describes each syllable', () {
     final summary = buildToneOverlayAccessibilitySummary([
-      SyllableToneOverlayRow(
+      const SyllableToneOverlayRow(
         label: 'ọ',
         expectedToneLabel: 'H',
         toneLabel: 'H',
@@ -13,7 +13,7 @@ void main() {
         nativeContour: [1],
         learnerContour: [1.1],
       ),
-      SyllableToneOverlayRow(
+      const SyllableToneOverlayRow(
         label: 'kọ',
         expectedToneLabel: 'L',
         correct: null,
@@ -29,11 +29,11 @@ void main() {
 
   testWidgets('ToneOverlayView exposes semantics summary', (tester) async {
     await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: ToneOverlayView(
+      const MaterialApp(
+        home: const Scaffold(
+          body: const ToneOverlayView(
             status: ToneOverlayStatus.scored,
-            syllables: [
+            syllables: const [
               SyllableToneOverlayRow(
                 label: 'a',
                 expectedToneLabel: 'M',

@@ -59,11 +59,14 @@ class SentryService {
           options.environment = _environment;
           options.release = _release;
           options.tracesSampleRate = enablePerformanceMonitoring ? 1.0 : 0.0;
+          // sentry_flutter still marks profile sampling experimental.
+          // ignore: experimental_member_use
           options.profilesSampleRate = enablePerformanceMonitoring ? 1.0 : 0.0;
           
           // Enable additional features
           options.enableAutoSessionTracking = true;
           options.attachScreenshot = false;
+          // ignore: experimental_member_use
           options.attachViewHierarchy = false;
 
           options.beforeSend = (event, hint) {

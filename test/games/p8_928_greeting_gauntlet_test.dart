@@ -19,12 +19,12 @@ Future<void> pumpGauntletPreview(WidgetTester tester, Widget child) async {
 }
 
 GauntletRound _sampleRound() {
-  return GauntletRound(
+  return const GauntletRound(
     time: GauntletTimeOfDay.morning,
     person: GauntletPerson.elder,
     setting: GauntletSetting.home,
     promptEn: 'You meet your aunt in the morning. What do you say first?',
-    choices: const [
+    choices: [
       GauntletChoice(
         text: 'Ẹ kú àárọ̀',
         translationEn: 'Good morning (to elders)',
@@ -116,9 +116,9 @@ void main() {
   testWidgets('greeting_gauntlet_results golden', (tester) async {
     await pumpGauntletPreview(
       tester,
-      GreetingGauntletPreview(
+      const GreetingGauntletPreview(
         phaseLabel: 'Results',
-        body: const Column(
+        body: Column(
           children: [
             Text('Round complete'),
             Text('You matched 4 of 6 scenes.'),

@@ -116,7 +116,6 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
 
   Future<void> _onLabelTap(String mlKitLabel) async {
     if (_bootstrapping || _fallback == null) return;
-    final coordinator = _fallback!;
     final top3 = await _onDeviceTop3(mlKitLabel);
     final needsFallback = pointSayNeedsGatewayFallback(top3);
     final online = await (widget.hasInternet ?? ConnectivityService.hasInternet)();

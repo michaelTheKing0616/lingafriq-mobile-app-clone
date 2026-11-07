@@ -122,7 +122,7 @@ void main() {
   testWidgets('recordings pending state', (tester) async {
     await pumpDanfoPreview(
       tester,
-      DanfoRushScreen(language: 'sw'),
+      const DanfoRushScreen(language: 'sw'),
     );
     await tester.pumpAndSettle();
     expect(find.textContaining('still on the way'), findsOneWidget);
@@ -147,11 +147,11 @@ void main() {
   testWidgets('danfo_rush_why_wrong golden', (tester) async {
     await pumpDanfoPreview(
       tester,
-      DanfoRushPreview(
+      const DanfoRushPreview(
         phaseLabel: 'Why wrong',
         conductorLine: 'Wrong bus',
         timerProgress: 0.2,
-        body: const Text('Replay the call and match the stop you heard.'),
+        body: Text('Replay the call and match the stop you heard.'),
       ),
     );
     await expectLater(
@@ -163,11 +163,11 @@ void main() {
   testWidgets('danfo_rush_results golden', (tester) async {
     await pumpDanfoPreview(
       tester,
-      DanfoRushPreview(
+      const DanfoRushPreview(
         phaseLabel: 'Results',
         conductorLine: 'Route complete',
         timerProgress: 1,
-        body: const Text('4 of 5 stops matched'),
+        body: Text('4 of 5 stops matched'),
       ),
     );
     await expectLater(
