@@ -10,6 +10,7 @@ import 'package:lingafriq/screens/guardian/family_tools_section.dart';
 import 'package:lingafriq/services/guardian_link_service.dart';
 import 'package:lingafriq/theme/guarded_theme.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/widgets/bidi_text.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 
 /// Single source for every ~48dp tap target in this screen (buttons, the
@@ -93,6 +94,11 @@ class GuardianLinkScreen extends HookConsumerWidget {
       'Copy this code and send it to a parent or guardian. It expires in seven days.';
   static const String offlineBanner =
       'You are offline. Some actions need an internet connection.';
+
+  static const Key inviteCodeFieldKey = ValueKey('guardian-accept-invite-code');
+  static const Key guardianNameFieldKey = ValueKey(
+    'guardian-accept-display-name',
+  );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -350,35 +356,30 @@ class GuardianLinkScreen extends HookConsumerWidget {
               guardianAcceptInviteHint,
         ),
         SizedBox(height: PanAfricanSpacing.sm.h),
-        TextField(
+        _PersistentField(
+          fieldKey: inviteCodeFieldKey,
           controller: acceptTokenController,
           enabled: !acceptSubmitting.value,
+          label:
+              AppLocalizations.of(context)?.gfamInviteCodeLabel ??
+              'Invite code',
           textCapitalization: TextCapitalization.characters,
           autofillHints: const [AutofillHints.oneTimeCode],
-          decoration: InputDecoration(
-            labelText:
-                AppLocalizations.of(context)?.gfamInviteCodeLabel ??
-                'Invite code',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-            ),
-          ),
           textInputAction: TextInputAction.next,
         ),
         SizedBox(height: PanAfricanSpacing.sm.h),
-        TextField(
+        _PersistentField(
+          fieldKey: guardianNameFieldKey,
           controller: guardianNameController,
           enabled: !acceptSubmitting.value,
+          // This is the guardian display name the learner will see.
+          // The existing localized sentence is the whole label; it is not
+          // a one-line placeholder.
+          label:
+              AppLocalizations.of(context)?.gfamYourNameHint ??
+              guardianYourNameHint,
           textCapitalization: TextCapitalization.words,
           autofillHints: const [AutofillHints.name],
-          decoration: InputDecoration(
-            labelText:
-                AppLocalizations.of(context)?.gfamYourNameHint ??
-                guardianYourNameHint,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-            ),
-          ),
           textInputAction: TextInputAction.done,
           onSubmitted: canSubmitAccept ? (_) => acceptInvite() : null,
         ),
@@ -615,6 +616,65 @@ class _ModeToggleSegment extends StatelessWidget {
   }
 }
 
+/// Label stays outside the field so the full sentence wraps and remains
+/// after the guardian types. The hint for this form is the section subtitle.
+class _PersistentField extends StatelessWidget {
+  const _PersistentField({
+    required this.fieldKey,
+    required this.controller,
+    required this.label,
+    required this.enabled,
+    required this.textCapitalization,
+    required this.autofillHints,
+    required this.textInputAction,
+    this.onSubmitted,
+  });
+
+  final Key fieldKey;
+  final TextEditingController controller;
+  final String label;
+  final bool enabled;
+  final TextCapitalization textCapitalization;
+  final Iterable<String> autofillHints;
+  final TextInputAction textInputAction;
+  final ValueChanged<String>? onSubmitted;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        ExcludeSemantics(
+          child: BidiText(
+            label,
+            style: PanAfricanTypography.labelLarge(
+              context,
+            ).copyWith(color: Theme.of(context).colorScheme.onSurface),
+          ),
+        ),
+        SizedBox(height: PanAfricanSpacing.xs.h),
+        Semantics(
+          label: label,
+          child: TextField(
+            key: fieldKey,
+            controller: controller,
+            enabled: enabled,
+            textCapitalization: textCapitalization,
+            autofillHints: autofillHints,
+            textInputAction: textInputAction,
+            onSubmitted: onSubmitted,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _SectionHeader extends StatelessWidget {
   const _SectionHeader({required this.title, required this.subtitle});
 
@@ -627,13 +687,15 @@ class _SectionHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        BidiText(
           // `titleLarge` is already FontWeight.w700 — no override needed here.
+          // Direction follows the sentence, so an English question mark stays
+          // at the end when the screen itself is RTL.
           title,
           style: PanAfricanTypography.titleLarge(context),
         ),
         SizedBox(height: PanAfricanSpacing.xs.h),
-        Text(
+        BidiText(
           subtitle,
           style: PanAfricanTypography.bodyMedium(context).copyWith(
             color: colorScheme.onSurfaceVariant,

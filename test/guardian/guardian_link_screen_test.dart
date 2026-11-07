@@ -390,12 +390,12 @@ void main() {
     expect(linkButton().onPressed, isNull);
 
     await tester.scrollUntilVisible(
-      find.widgetWithText(TextField, 'Invite code'),
+      find.byKey(GuardianLinkScreen.inviteCodeFieldKey),
       400,
       scrollable: _hubScrollable(),
     );
     await tester.enterText(
-      find.widgetWithText(TextField, 'Invite code'),
+      find.byKey(GuardianLinkScreen.inviteCodeFieldKey),
       'tok-1',
     );
     await tester.pump();
@@ -406,7 +406,7 @@ void main() {
     );
 
     await tester.enterText(
-      find.widgetWithText(TextField, GuardianLinkScreen.guardianYourNameHint),
+      find.byKey(GuardianLinkScreen.guardianNameFieldKey),
       'Ada',
     );
     await tester.pump();
@@ -432,16 +432,16 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.scrollUntilVisible(
-      find.widgetWithText(TextField, 'Invite code'),
+      find.byKey(GuardianLinkScreen.inviteCodeFieldKey),
       400,
       scrollable: _hubScrollable(),
     );
     await tester.enterText(
-      find.widgetWithText(TextField, 'Invite code'),
+      find.byKey(GuardianLinkScreen.inviteCodeFieldKey),
       'tok-1',
     );
     await tester.enterText(
-      find.widgetWithText(TextField, GuardianLinkScreen.guardianYourNameHint),
+      find.byKey(GuardianLinkScreen.guardianNameFieldKey),
       'Ada',
     );
     await tester.pump();
@@ -455,7 +455,7 @@ void main() {
       findsNothing,
     );
     final tokenField = tester.widget<TextField>(
-      find.widgetWithText(TextField, 'Invite code'),
+      find.byKey(GuardianLinkScreen.inviteCodeFieldKey),
     );
     expect(tokenField.controller?.text, isEmpty);
   });
@@ -482,16 +482,16 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.scrollUntilVisible(
-      find.widgetWithText(TextField, 'Invite code'),
+      find.byKey(GuardianLinkScreen.inviteCodeFieldKey),
       400,
       scrollable: _hubScrollable(),
     );
     await tester.enterText(
-      find.widgetWithText(TextField, 'Invite code'),
+      find.byKey(GuardianLinkScreen.inviteCodeFieldKey),
       'bad-tok',
     );
     await tester.enterText(
-      find.widgetWithText(TextField, GuardianLinkScreen.guardianYourNameHint),
+      find.byKey(GuardianLinkScreen.guardianNameFieldKey),
       'Ada',
     );
     await tester.pump();
@@ -527,16 +527,16 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.scrollUntilVisible(
-        find.widgetWithText(TextField, 'Invite code'),
+        find.byKey(GuardianLinkScreen.inviteCodeFieldKey),
         400,
         scrollable: _hubScrollable(),
       );
       await tester.enterText(
-        find.widgetWithText(TextField, 'Invite code'),
+        find.byKey(GuardianLinkScreen.inviteCodeFieldKey),
         'tok-2',
       );
       await tester.enterText(
-        find.widgetWithText(TextField, GuardianLinkScreen.guardianYourNameHint),
+        find.byKey(GuardianLinkScreen.guardianNameFieldKey),
         'Bola',
       );
       await tester.pump();
@@ -603,10 +603,7 @@ void main() {
       400,
       scrollable: _hubScrollable(),
     );
-    final tile = find.ancestor(
-      of: tileName,
-      matching: find.byType(ListTile),
-    );
+    final tile = find.ancestor(of: tileName, matching: find.byType(ListTile));
     expect(
       find.descendant(of: tile, matching: find.byIcon(Icons.chevron_left)),
       findsOneWidget,
