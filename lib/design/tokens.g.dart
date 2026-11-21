@@ -31,4 +31,12 @@ abstract final class LingAfriqTokens {
   static const double elevationDarksm = 2.0;
   static const double strokehairline = 1.0;
   static const double strokeregular = 2.0;
+  static const String motionProductEasing = 'cubic-bezier(0.23,1,0.32,1)';
+  static const int motionProductBase = 240;
+  static const int motionProductFast = 160;
+  static const int motionProductInstant = 80;
+  static const int motionProductSlow = 300;
+  static const String motionRareEasing = 'cubic-bezier(0.23,1,0.32,1)';
+  static const int motionRareLessonComplete = 480;
+  static const int motionRareLevelUp = 600;
 }

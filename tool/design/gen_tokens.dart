@@ -69,6 +69,15 @@ GeneratedTokens generateTokens(Map<String, dynamic> spec) {
   for (final key in stroke.keys.toList()..sort()) {
     dart.writeln('  static const double stroke$key = ${stroke[key]}.0;');
   }
+  final motion = _motion(spec);
+  dart.writeln("  static const String motionProductEasing = '${motion.productEasing}';");
+  for (final entry in motion.productDurations.entries) {
+    dart.writeln('  static const int motionProduct${_pascal(entry.key)} = ${entry.value};');
+  }
+  dart.writeln("  static const String motionRareEasing = '${motion.rareEasing}';");
+  for (final entry in motion.rareDurations.entries) {
+    dart.writeln('  static const int motionRare${_pascal(entry.key)} = ${entry.value};');
+  }
   dart.writeln('}');
 
   final css = StringBuffer(':root {\n');
@@ -77,6 +86,15 @@ GeneratedTokens generateTokens(Map<String, dynamic> spec) {
   }
   for (final key in spacing.keys.toList()..sort()) {
     css.writeln('  --spacing-$key: ${spacing[key]}px;');
+  }
+  final motionCss = _motion(spec);
+  css.writeln('  --motion-product-easing: ${motionCss.productEasing};');
+  for (final entry in motionCss.productDurations.entries) {
+    css.writeln('  --motion-product-${entry.key}: ${entry.value}ms;');
+  }
+  css.writeln('  --motion-rare-easing: ${motionCss.rareEasing};');
+  for (final entry in motionCss.rareDurations.entries) {
+    css.writeln('  --motion-rare-${entry.key}: ${entry.value}ms;');
   }
   css.writeln('}');
 
@@ -108,6 +126,64 @@ List<String> reportPaddingLiterals(String source, String path) {
   }
   return hits;
 }
+
+class _Motion {
+  _Motion({
+    required this.productEasing,
+    required this.productDurations,
+    required this.rareEasing,
+    required this.rareDurations,
+  });
+
+  final String productEasing;
+  final Map<String, int> productDurations;
+  final String rareEasing;
+  final Map<String, int> rareDurations;
+}
+
+const _easeOut = 'cubic-bezier(0.23,1,0.32,1)';
+
+_Motion _motion(Map<String, dynamic> spec) {
+  final motion = _map(spec, 'motion');
+  final product = _map(motion, 'product');
+  final rare = _map(motion, 'rare');
+  if (product['easing'] != _easeOut) {
+    throw TokenGenException('product easing must be $_easeOut');
+  }
+  final productDurations = _durations(product, 'product', 300);
+  final rareDurations = _durations(rare, 'rare', null);
+  final uses = rare['allowedUses'];
+  if (uses is! List || uses.toSet().difference({'lesson-complete', 'level-up'}).isNotEmpty) {
+    throw TokenGenException('rare motion is only for lesson-complete and level-up');
+  }
+  return _Motion(
+    productEasing: product['easing'] as String,
+    productDurations: productDurations,
+    rareEasing: rare['easing'] as String,
+    rareDurations: rareDurations,
+  );
+}
+
+Map<String, int> _durations(Map<String, dynamic> group, String tier, int? cap) {
+  final raw = group['durationMs'];
+  if (raw is! Map || raw.isEmpty) {
+    throw TokenGenException('$tier motion has no durations');
+  }
+  final out = <String, int>{};
+  for (final key in raw.keys.toList()..sort()) {
+    final value = raw[key];
+    if (value is! num || value < 0) {
+      throw TokenGenException('$tier duration $key is invalid');
+    }
+    if (cap != null && value > cap) {
+      throw TokenGenException('$tier duration $key is above ${cap}ms');
+    }
+    out[key.toString()] = value.toInt();
+  }
+  return out;
+}
+
+String _pascal(String key) => key[0].toUpperCase() + key.substring(1);
 
 Map<String, dynamic> _map(Map<String, dynamic> spec, String key) {
   final value = spec[key];
