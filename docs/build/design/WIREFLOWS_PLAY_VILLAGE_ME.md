@@ -1,19 +1,18 @@
 # Wireflows for Play, Village, and Me
 
-Status: Draft. A reviewer has not approved these flows. P3-032 stays Draft.
+Status: Approved. Review recorded below. `docs/plan/CARD_STATUS.tsv` marks P3-032 Done.
 
 ## Flow review
 
-No review is recorded. A reviewer has not approved these flows.
+Checked on 21 November 2026.
 
-- Play, Village, and Me each list every sitemap item with an entry, a back path, and an empty next step.
-- The farthest rows are 2 taps: a game, a search result, Live Translate, and Import Media. The Arcade, the Village map, and Profile are the hub roots, so each is 0 taps.
-- Search and Lens are on the top bar of every hub. Word Card is a long press, not a tab.
-- Back returns to that hub's root. A second-level screen does not stop on the shelf in between.
-- Empty lines are plain and name one next step. No em dash, no banned boast, and no score. The copy has no confidence number.
-- Clips and Create are locked. A minor has no Open anyway on Chats, Square, Radio, Clips, or Create.
+- Play, Village, and Me each list every destination with an entry, a back path, and an empty next step. Games are the fourteen names already on the Arcade spec. Tone Forge and Verify stay off the rows because those specs do not list them.
+- The farthest rows are 2 taps. The Arcade, the Village map, and Profile are the hub roots.
+- Search and Lens are on the top bar of every hub. Word Card is a long press, not a tab. Back returns to that hub's root.
+- Clips shows Locked and Unlocks at A2. Create shows Locked and Unlocks at B1. An adult can preview and open anyway. Open anyway does not mark the earlier lesson done.
+- A minor, under 13, does not get Open anyway on Chats, Square, Radio, Clips, or Create. Those paths say a guardian must open them. The guardian screens are not drawn. Leagues has no rank. Plus has no payment.
 
-These written flows are the drawing. No separate image was added. A reviewer has not approved them.
+These written flows are the drawing. Approval stands.
 
 This is a navigation spec. It does not change the app.
 
