@@ -13,7 +13,10 @@ import 'package:lingafriq/design/components/ling_dialog.dart';
 import 'package:lingafriq/design/components/ling_list_row.dart';
 import 'package:lingafriq/design/components/ling_state.dart';
 import 'package:lingafriq/design/components/ling_text_field.dart';
+import 'package:lingafriq/design/states/empty_state.dart';
+import 'package:lingafriq/design/states/skeleton.dart';
 import 'package:lingafriq/design/text/diacritic_keyboard.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 import 'package:lingafriq/design/text/target_text.dart';
 import 'package:lingafriq/design/typography.dart';
 
@@ -281,9 +284,63 @@ void _expectState(
             .widget<LingDialog>(find.byType(LingDialog))
             .unavailableLabel,
       );
+    case 'lingSkeletonList':
+      _expectSkeleton(tester, find.byType(LingSkeletonList), brightness);
+    case 'lingSkeletonCard':
+      _expectSkeleton(tester, find.byType(LingSkeletonCard), brightness);
+    case 'lingEmptyState':
+      _expectEmpty(tester, brightness);
     default:
       fail('No state assertion for $useCaseId');
   }
+}
+
+void _expectSkeleton(
+  WidgetTester tester,
+  Finder finder,
+  Brightness brightness,
+) {
+  expect(finder, findsOneWidget);
+  expect(find.byType(ShaderMask), findsNothing);
+  final LingPalette palette = LingPalette.of(brightness);
+  final Scaffold scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
+  expect(scaffold.backgroundColor, palette.surface);
+  expect(scaffold.backgroundColor, isNot(LingAfriqTokens.surface));
+  final Iterable<Material> bones = tester.widgetList<Material>(
+    find.descendant(of: finder, matching: find.byType(Material)),
+  );
+  expect(bones, isNotEmpty);
+  for (final Material bone in bones) {
+    expect(bone.color, palette.surfaceContainer);
+  }
+  final Size size = tester.getSize(finder);
+  expect(size.width, greaterThanOrEqualTo(48));
+  expect(size.height, greaterThanOrEqualTo(48));
+}
+
+void _expectEmpty(WidgetTester tester, Brightness brightness) {
+  expect(find.text(LingEmptyStateCopy.title), findsOneWidget);
+  expect(find.text(LingEmptyStateCopy.whatHappened), findsOneWidget);
+  expect(find.text(LingEmptyStateCopy.why), findsOneWidget);
+  expect(find.text(LingEmptyStateCopy.whatToDo), findsOneWidget);
+  expect(find.byType(LingButton), findsOneWidget);
+  final LingButton button = tester.widget<LingButton>(find.byType(LingButton));
+  expect(button.role, LingButtonRole.accent);
+  expect(button.label, LingEmptyStateCopy.actionLabel);
+  final Size size = tester.getSize(find.byType(LingButton));
+  expect(size.width, greaterThanOrEqualTo(48));
+  expect(size.height, greaterThanOrEqualTo(48));
+  final LingPalette palette = LingPalette.of(brightness);
+  final Material material = tester.widget<Material>(find.byKey(LingMarks.fill));
+  expect(material.color, palette.accent);
+  for (final Text text in tester.widgetList<Text>(find.byType(Text))) {
+    expect(text.softWrap, isTrue);
+    expect(text.maxLines, isNull);
+    expect(text.overflow, TextOverflow.visible);
+  }
+  final Scaffold scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
+  expect(scaffold.backgroundColor, palette.surface);
+  expect(scaffold.backgroundColor, isNot(LingAfriqTokens.surface));
 }
 
 void _expectLabeledControl<T extends Widget>(
