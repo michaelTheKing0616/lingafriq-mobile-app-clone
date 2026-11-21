@@ -45,3 +45,6 @@ jobs:
         run: |
           python3 test/scripts/extract_strings_test.py
           python3 scripts/i18n/extract_strings.py
+
+      - name: Pseudo locale expands shell and onboarding copy
+        run: python3 scripts/i18n/pseudo_locale.py --self-test
