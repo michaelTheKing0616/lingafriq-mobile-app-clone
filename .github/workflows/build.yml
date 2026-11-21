@@ -38,7 +38,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
         with:
-          flutter-version: '3.35.0'
+          flutter-version: '3.47.9'
           channel: 'stable'
       
       - name: 🔧 Install CMake (required for rive_common native builds)
@@ -64,6 +64,16 @@ jobs:
         run: |
           python3 scripts/lint_dark_patterns.py --self-test
           python3 scripts/lint_dark_patterns.py
+
+      - name: Token compliance (P3-013)
+        run: |
+          python3 test/scripts/token_compliance_test.py
+          python3 scripts/lint/token_compliance.py
+
+      - name: WCAG contrast (P3-089)
+        run: |
+          python3 scripts/lint/contrast_check.py --self-test
+          python3 scripts/lint/contrast_check.py
 
       - name: Placeholder / template bundle linter
         run: |

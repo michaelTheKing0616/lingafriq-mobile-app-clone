@@ -8,8 +8,8 @@ void main() {
     testWidgets('shows banner when offline', (WidgetTester tester) async {
       await pumpWidgetWithMaterial(
         tester,
-        OfflineBanner(
-          child: const Scaffold(
+        const OfflineBanner(
+          child: Scaffold(
             body: Center(child: Text('Test Content')),
           ),
         ),
@@ -23,8 +23,8 @@ void main() {
     testWidgets('hides banner when online', (WidgetTester tester) async {
       await pumpWidgetWithMaterial(
         tester,
-        OfflineBanner(
-          child: const Scaffold(
+        const OfflineBanner(
+          child: Scaffold(
             body: Center(child: Text('Test Content')),
           ),
         ),
@@ -38,9 +38,9 @@ void main() {
     testWidgets('shows sync status when online with pending items', (WidgetTester tester) async {
       await pumpWidgetWithMaterial(
         tester,
-        OfflineBanner(
+        const OfflineBanner(
           showWhenOnline: true,
-          child: const Scaffold(
+          child: Scaffold(
             body: Center(child: Text('Test Content')),
           ),
         ),
@@ -54,8 +54,8 @@ void main() {
     testWidgets('displays correct offline message', (WidgetTester tester) async {
       await pumpWidgetWithMaterial(
         tester,
-        OfflineBanner(
-          child: const Scaffold(
+        const OfflineBanner(
+          child: Scaffold(
             body: Center(child: Text('Test Content')),
           ),
         ),
@@ -69,8 +69,8 @@ void main() {
     testWidgets('displays pending count when offline', (WidgetTester tester) async {
       await pumpWidgetWithMaterial(
         tester,
-        OfflineBanner(
-          child: const Scaffold(
+        const OfflineBanner(
+          child: Scaffold(
             body: Center(child: Text('Test Content')),
           ),
         ),

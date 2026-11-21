@@ -2,46 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lingafriq/theme/lingafriq_fonts.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Polie & AI Chat design tokens — Afro-futurist, cinematic learning experience.
 /// Heritage × intelligence × delight. Dark-first; light mode ceremonial.
 /// Aligns with 4pt grid, Manrope/Inter typography, glass & glow surfaces.
 
+@Deprecated('Use LingAfriqTokens. This file is a retired design system.')
 class PolieColors {
   PolieColors._();
 
   // TSX parity palette (earth/amber/cream family)
-  static const Color primary = Color(0xFF2D1B0E);
-  static const Color primaryDark = Color(0xFF0F0A04);
-  static const Color obsidian = Color(0xFF0F0A04);
+  static const Color primary = LingAfriqTokens.hexFF2D1B0E;
+  static const Color primaryDark = LingAfriqTokens.hexFF0F0A04;
+  static const Color obsidian = LingAfriqTokens.hexFF0F0A04;
 
   // Accents
-  static const Color goldEmber = Color(0xFFD4822A);
-  static const Color goldEmberLight = Color(0xFFF2C14E);
-  static const Color electricTeal = Color(0xFF4A7C59);
-  static const Color electricTealLight = Color(0xFF5C9070);
-  static const Color royalAmethyst = Color(0xFFC4663A);
-  static const Color royalAmethystLight = Color(0xFFD27A53);
+  static const Color goldEmber = LingAfriqTokens.hexFFD4822A;
+  static const Color goldEmberLight = LingAfriqTokens.hexFFF2C14E;
+  static const Color electricTeal = LingAfriqTokens.hexFF4A7C59;
+  static const Color electricTealLight = LingAfriqTokens.hexFF5C9070;
+  static const Color royalAmethyst = LingAfriqTokens.hexFFC4663A;
+  static const Color royalAmethystLight = LingAfriqTokens.hexFFD27A53;
 
   // States
-  static const Color success = Color(0xFF22C55E);
-  static const Color error = Color(0xFFB91C1C);
-  static const Color errorMuted = Color(0xFF991B1B);
+  static const Color success = LingAfriqTokens.hexFF22C55E;
+  static const Color error = LingAfriqTokens.hexFFB91C1C;
+  static const Color errorMuted = LingAfriqTokens.hexFF991B1B;
 
   // @deprecated — Glass-era tokens. Use surfaceContainer / surfaceContainerLight instead.
-  static const Color surfaceGlass = Color(0x1FFFFFFF);
-  static const Color surfaceGlassDark = Color(0x2BFFFFFF);
-  static const Color surfaceContainer = Color(0xFF1A130C);
-  static const Color surfaceContainerLight = Color(0xFFFAF3E0);
+  static const Color surfaceGlass = LingAfriqTokens.hex1FFFFFFF;
+  static const Color surfaceGlassDark = LingAfriqTokens.hex2BFFFFFF;
+  static const Color surfaceContainer = LingAfriqTokens.hexFF1A130C;
+  static const Color surfaceContainerLight = LingAfriqTokens.hexFFFAF3E0;
 
   // Surfaces — Light mode
-  static const Color surfaceLight = Color(0xFFFAF3E0);
+  static const Color surfaceLight = LingAfriqTokens.hexFFFAF3E0;
 
   // Text
-  static const Color textPrimary = Color(0xFFFAF3E0);
-  static const Color textSecondary = Color(0xFFC4B7A6);
-  static const Color textPrimaryLight = Color(0xFF2D1B0E);
-  static const Color textSecondaryLight = Color(0xFF7A624C);
+  static const Color textPrimary = LingAfriqTokens.hexFFFAF3E0;
+  static const Color textSecondary = LingAfriqTokens.hexFFC4B7A6;
+  static const Color textPrimaryLight = LingAfriqTokens.hexFF2D1B0E;
+  static const Color textSecondaryLight = LingAfriqTokens.hexFF7A624C;
 }
 
 class PolieSpacing {

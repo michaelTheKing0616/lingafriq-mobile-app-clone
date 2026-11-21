@@ -8,9 +8,9 @@ void main() {
     await tester.pumpWidget(
       ScreenUtilInit(
         designSize: const Size(390, 844),
-        builder: (_, __) => MaterialApp(
-          home: Scaffold(
-            body: ServerAssistConsentSheet(
+        builder: (_, __) => const MaterialApp(
+          home: const Scaffold(
+            body: const ServerAssistConsentSheet(
               messagePreview: 'Ẹ kú àárọ̀',
               feature: ServerAssistFeature.aiGloss,
             ),

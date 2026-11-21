@@ -160,15 +160,15 @@ void main() {
     });
 
     test('Yoruba without tone marks blocks TTS and shows no recording', () {
-      final lexeme = VerifiedLexeme(
+      final lexeme = const VerifiedLexeme(
         lexemeId: 'yo.lex.oko.unmarked',
         language: 'yo',
         verificationStatus: 'expert_reviewed',
         lemma: 'oko',
         standardOrthography: 'oko',
         exampleSentence: null,
-        audioUris: const [],
-        raw: const {
+        audioUris: [],
+        raw: {
           'lemma': 'oko',
           'orthography': {'standard': 'oko'},
           'audio': [],

@@ -175,7 +175,7 @@ class ApiRetryService {
   /// Check internet connectivity
   Future<bool> _checkConnectivity() async {
     try {
-      return ConnectivityService.hasInternet();
+      return await ConnectivityService.hasInternet();
     } catch (e) {
       logger.error('Failed to check connectivity', error: e);
       return true; // Assume connected on error

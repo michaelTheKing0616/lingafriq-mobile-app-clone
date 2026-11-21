@@ -10,7 +10,7 @@ import '../../helpers/test_utils.dart';
 
 CoachingPattern _yoProgressive() {
   return CoachingPattern.fromGrammarEntry(
-    GrammarPatternEntry(
+    const GrammarPatternEntry(
       id: 'yo.pat.progressive',
       descriptionL1: 'Preverbal ń marks an action in progress',
       form: 'Subject + ń + verb phrase',

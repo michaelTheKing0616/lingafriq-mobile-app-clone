@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lingafriq/games/festival/festival_banner.dart';
-import 'package:lingafriq/games/festival/festival_theme_service.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() {

@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lingafriq/services/tts/ig_tts.dart';
 import 'package:lingafriq/services/tts/zu_tts.dart';
 
 const _zuPhrase = 'Sawubona.';

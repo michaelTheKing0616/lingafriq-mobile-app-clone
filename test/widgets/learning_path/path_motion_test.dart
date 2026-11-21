@@ -107,11 +107,11 @@ void main() {
     testWidgets('day-1 burst settles under reduced motion', (tester) async {
       await tester.pumpWidget(
         wrap(
-          PathStreakFlameBurst(
+          const PathStreakFlameBurst(
             play: true,
             reducedMotion: true,
             streakCount: 1,
-            child: const Icon(Icons.local_fire_department_rounded),
+            child: Icon(Icons.local_fire_department_rounded),
           ),
         ),
       );

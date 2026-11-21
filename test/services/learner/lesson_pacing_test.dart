@@ -10,7 +10,7 @@ void main() {
       final difficulty = DifficultyController(initialTarget: 0.6);
       for (var i = 0; i < 10; i++) {
         difficulty.recordOutcome(
-          SessionAttemptOutcome(
+          const SessionAttemptOutcome(
             candidateId: 'a',
             success: false,
             difficultyAtPresentation: 0.6,
@@ -51,14 +51,14 @@ void main() {
         preferences: prefs,
       );
       prefs.applyOverride(
-        LessonPacingPlan(
+        const LessonPacingPlan(
           itemCount: kPacingMinItems,
           newItemFraction: kPacingMinNewFraction,
           difficultyTarget: 0.2,
-          focusSkillDrillIds: const [],
+          focusSkillDrillIds: [],
           reasonKey: kPaceReasonOverride,
           reasonDetail: 'test',
-          reachableLessonIds: const ['x'],
+          reachableLessonIds: ['x'],
         ),
       );
       final overridden = engine.recommend(

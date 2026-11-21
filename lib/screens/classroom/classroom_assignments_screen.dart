@@ -227,7 +227,6 @@ class _AssignmentCard extends StatelessWidget {
 
     final submitted = mySubmission is Map ? (mySubmission['status']?.toString() ?? '').isNotEmpty : false;
     final gradeMap = myGrade is Map ? myGrade.cast<String, dynamic>() : null;
-    final gradeStatus = gradeMap?['status']?.toString();
     final displayScore = gradeMap?['displayScore'];
     final autoGrade = gradeMap?['autoGrade'];
     final teacherOverride = gradeMap?['teacherOverride'];
@@ -302,7 +301,7 @@ class _AssignmentCard extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.help_outline_rounded, color: PanAfricanColors.warning, size: 20),
+                const Icon(Icons.help_outline_rounded, color: PanAfricanColors.warning, size: 20),
                 SizedBox(width: PanAfricanSpacing.xs),
                 Expanded(
                   child: Text(l10nUnsure, style: PanAfricanTypography.bodySmall(context)),

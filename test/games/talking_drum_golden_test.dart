@@ -30,10 +30,10 @@ void main() {
 
   testWidgets('talking_drum_why_wrong shows hatched unsure state', (tester) async {
     await tester.pumpWidget(
-      MaterialApp(
+      const MaterialApp(
         home: Scaffold(
           body: TalkingDrumContourOverlay(
-            nativeContour: const [1, 0.5, 0],
+            nativeContour: [1, 0.5, 0],
             unsure: true,
           ),
         ),
@@ -44,11 +44,11 @@ void main() {
 
   testWidgets('talking_drum_results learner overlay', (tester) async {
     await tester.pumpWidget(
-      MaterialApp(
+      const MaterialApp(
         home: Scaffold(
           body: TalkingDrumContourOverlay(
-            nativeContour: const [1, 0.5, 0],
-            learnerContour: const [0.9, 0.4, 0.1],
+            nativeContour: [1, 0.5, 0],
+            learnerContour: [0.9, 0.4, 0.1],
           ),
         ),
       ),

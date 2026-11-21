@@ -89,7 +89,7 @@ void main() {
         () => assertLabelPromotionAllowed(
           target: ContentQualityLabel.expertReviewed,
           reviewers: [
-            ReviewerApproval(
+            const ReviewerApproval(
               reviewerId: 'l1',
               role: ReviewerRole.linguist,
               approved: true,

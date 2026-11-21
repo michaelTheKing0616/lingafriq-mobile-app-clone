@@ -21,7 +21,7 @@ void main() {
     await ScreenUtil.ensureScreenSize();
     await tester.pumpWidget(
       _wrap(
-        CanDoBadgeScreen(
+        const CanDoBadgeScreen(
           unitId: 'yoruba-A1-u1',
           canDoId: 'greet',
           canDoText: 'I can greet by time of day.',

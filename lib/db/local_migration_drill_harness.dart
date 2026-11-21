@@ -6,8 +6,6 @@ import 'package:drift/native.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 import 'app_database.dart';
-import 'migrations/local_sql.dart';
-import 'schema_version_policy.dart';
 
 /// P12-020: rehearse upgrade paths and newer-schema refusal without touching prod files.
 class LocalMigrationDrillHarness {

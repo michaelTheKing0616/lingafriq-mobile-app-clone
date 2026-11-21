@@ -17,7 +17,7 @@ void main() {
     test('unsure offers retry and no reward eligibility', () {
       final score = gameScoreFromScorerResponse(
         body: {'scorer_version': 'p6-038', 'confidence': 0.55},
-        outcome: LensScoreOutcome(
+        outcome: const LensScoreOutcome(
           phase: ToneOverlayStatus.unsure,
           errorMessage: 'retry',
         ),
@@ -37,22 +37,22 @@ void main() {
             {'phone': 'o', 'gop': 0.9},
           ],
         },
-        outcome: LensScoreOutcome(
+        outcome: const LensScoreOutcome(
           phase: ToneOverlayStatus.scored,
           syllables: [
             SyllableToneOverlayRow(
               label: 'ọ',
               expectedToneLabel: 'M',
               correct: true,
-              nativeContour: const [0, 1],
-              learnerContour: const [0, 1],
+              nativeContour: [0, 1],
+              learnerContour: [0, 1],
             ),
             SyllableToneOverlayRow(
               label: 'kọ̀',
               expectedToneLabel: 'L',
               correct: false,
-              nativeContour: const [1, 0],
-              learnerContour: const [0, 0],
+              nativeContour: [1, 0],
+              learnerContour: [0, 0],
             ),
           ],
           celebrate: false,
@@ -67,7 +67,7 @@ void main() {
     test('unavailable scorer enables honest practice', () {
       final score = gameScoreFromScorerResponse(
         body: const {},
-        outcome: LensScoreOutcome(
+        outcome: const LensScoreOutcome(
           phase: ToneOverlayStatus.error,
           errorMessage: 'down',
           retryable: true,

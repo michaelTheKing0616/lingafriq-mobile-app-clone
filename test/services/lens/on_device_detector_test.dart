@@ -53,7 +53,7 @@ void main() {
           AfricanObjectSet(
             version: 1,
             entries: [
-              AfricanObjectSetEntry(
+              const AfricanObjectSetEntry(
                 objectSetId: 'afr.bad',
                 mlKitLabels: ['X'],
                 livingDictionaryLexemeId: '',

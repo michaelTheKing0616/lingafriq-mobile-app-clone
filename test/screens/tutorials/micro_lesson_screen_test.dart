@@ -45,9 +45,9 @@ void main() {
 
   group('micro-lesson content', () {
     test('step order must be learn, see, try', () {
-      final bad = MicroLesson(
+      final bad = const MicroLesson(
         id: 'x',
-        steps: const [
+        steps: [
           MicroLessonStepContent(
             kind: MicroLessonStepKind.see,
             body: 'a',
@@ -79,9 +79,9 @@ void main() {
       expect(microLessonRuntimeInRange(const Duration(seconds: 90)), isTrue);
       expect(microLessonRuntimeInRange(const Duration(seconds: 91)), isFalse);
 
-      final short = MicroLesson(
+      final short = const MicroLesson(
         id: 'short',
-        steps: const [
+        steps: [
           MicroLessonStepContent(
             kind: MicroLessonStepKind.learn,
             body: 'a',

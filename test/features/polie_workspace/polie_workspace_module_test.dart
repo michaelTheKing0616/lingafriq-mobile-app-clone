@@ -58,7 +58,7 @@ void main() {
 
   test('P12-005: workspace library compiles (smoke ctor)', () {
     expect(
-      PolieWorkspaceScreen(
+      const PolieWorkspaceScreen(
         sourceLanguage: 'English',
         targetLanguage: 'Yoruba',
         initialMode: PolieMode.translation,

@@ -113,7 +113,10 @@ Return only valid JSON.
         maxTokens: 300,
         language: language,
       );
-      final json = jsonDecode(text);
+      final json = _parseJsonSafely(text);
+      if (json == null) {
+        throw const FormatException('grammar feedback json');
+      }
 
       final corrected = json['corrected'] as String? ?? userText;
       final errorsRaw = (json['errors'] as List?) ?? [];
@@ -298,7 +301,11 @@ Return only JSON.
         maxTokens: 500,
         language: language,
       );
-      return jsonDecode(text);
+      return _parseJsonSafely(text) ??
+          {
+            'passage': '',
+            'questions': <dynamic>[],
+          };
     } catch (e) {
       logger.error('Listening passage generation error', tag: 'ai-chat', error: e);
       return {
@@ -326,7 +333,10 @@ Return only JSON.
         temperature: 0.0,
         maxTokens: 150,
       );
-      final json = jsonDecode(raw);
+      final json = _parseJsonSafely(raw);
+      if (json == null) {
+        throw const FormatException('open answer json');
+      }
       final score = (json['score'] as num).toDouble();
       _recordSessionMetrics(comp: score);
       return score;
@@ -363,7 +373,12 @@ Return only JSON.
         maxTokens: 1500,
         language: language,
       );
-      return jsonDecode(text) as Map<String, dynamic>;
+      return _parseJsonSafely(text) ??
+          {
+            'language': language,
+            'level': targetCEFR,
+            'weeks': <dynamic>[],
+          };
     } catch (e) {
       logger.error('Curriculum generation error', tag: 'ai-chat', error: e);
       return {

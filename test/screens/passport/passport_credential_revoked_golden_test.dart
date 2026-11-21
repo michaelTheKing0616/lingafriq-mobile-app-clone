@@ -22,7 +22,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         theme: ThemeData(fontFamily: goldenFontFamily),
-        home: PassportCredentialScreen(
+        home: const PassportCredentialScreen(
           verifyToken: 'payload.sig',
           level: 'B1',
           score: 72,

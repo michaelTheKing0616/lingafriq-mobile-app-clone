@@ -12,11 +12,11 @@ void main() {
       MaterialApp(
         home: Scaffold(
           body: ClipTemplateDetailPanel(
-            content: ClipTemplateContent(
+            content: const ClipTemplateContent(
               kind: ClipTemplateKind.tongueTwister,
               languageTag: 'yo',
               headline: 'ọkọ́ · ọkọ̀',
-              promptLines: const ['Slowly: ọkọ́, then ọkọ̀'],
+              promptLines: ['Slowly: ọkọ́, then ọkọ̀'],
               suggestedCaption: 'Tone practice',
               verificationStatus: 'expert_reviewed',
               sourceId: 'register:fsi-yoruba',
@@ -42,7 +42,7 @@ void main() {
           data: const MediaQueryData(size: Size(390, 844)),
           child: ScreenUtilInit(
             designSize: const Size(390, 844),
-            builder: (_, __) => ClipTemplatesScreen(
+            builder: (_, __) => const ClipTemplatesScreen(
               gateOverride: ClipTemplatesAccessGate.blockedMinor,
               loadCapabilitiesOnInit: false,
             ),

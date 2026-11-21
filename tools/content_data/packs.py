@@ -902,6 +902,30 @@ for _lang in CURRICULUM_LANGUAGES:
     augment_curriculum_units(_pack)
 
 
+_FALSE_TONE_CLAIM = "High tone on àárọ̀ marks respect"
+
+
+def _ship_tone(tonal: object) -> str | None:
+    # P1-030: a tone note ships only when it is not the known false claim
+    # and the text itself carries a source citation. Uncited notes are not
+    # copied into phonetic_guide.
+    if not isinstance(tonal, str) or not tonal.strip():
+        return None
+    if _FALSE_TONE_CLAIM in tonal:
+        return None
+    low = tonal.lower()
+    cited = any(
+        m in low
+        for m in ("elevation", "public-domain", "public domain", "public_domain")
+    )
+    native = any(
+        m in low for m in ("native-verified", "native_verified", "native verified")
+    )
+    if cited and not native:
+        return tonal.strip()
+    return None
+
+
 def _word_entry(lang_key: str, idx: int, pack: dict, row: tuple) -> dict:
     text, gloss, pos, tonal, cultural = row[:5]
     display = pack["display"]
@@ -916,11 +940,11 @@ def _word_entry(lang_key: str, idx: int, pack: dict, row: tuple) -> dict:
         "language": lang_key,
         "word": text,
         "english_meaning": gloss,
-        "phonetic_guide": tonal or None,
+        "phonetic_guide": None,
         "part_of_speech": pos,
         "cefr": cefr,
         "topic": gloss.split("/")[0].strip()[:40] if gloss else "General",
-        "tonal_note": tonal or None,
+        "tonal_note": _ship_tone(tonal),
         "cultural_note": cultural or None,
         "game_tags": tags,
     }

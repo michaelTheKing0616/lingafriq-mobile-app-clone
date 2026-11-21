@@ -99,12 +99,12 @@ void main() {
   testWidgets('market_haggle_playing golden', (tester) async {
     await pumpMarketHagglePreview(
       tester,
-      MarketHagglePreview(
+      const MarketHagglePreview(
           phaseLabel: 'Playing',
           traderLine: 'Welcome — greet me first.',
           showAi: false,
           ask: 2700,
-          body: const Text('Ẹ kú àárọ̀'),
+          body: Text('Ẹ kú àárọ̀'),
         ),
     );
     await expectLater(
@@ -116,12 +116,12 @@ void main() {
   testWidgets('market_haggle_why_wrong golden', (tester) async {
     await pumpMarketHagglePreview(
       tester,
-      MarketHagglePreview(
+      const MarketHagglePreview(
         phaseLabel: 'Why wrong',
           traderLine: 'That sounded informal.',
           showAi: true,
           ask: 3000,
-          body: const Text('Try the honorific greeting before you bargain.'),
+          body: Text('Try the honorific greeting before you bargain.'),
         ),
     );
     await expectLater(
@@ -133,13 +133,13 @@ void main() {
   testWidgets('market_haggle_results golden', (tester) async {
     await pumpMarketHagglePreview(
       tester,
-      MarketHagglePreview(
+      const MarketHagglePreview(
         phaseLabel: 'Results',
           traderLine: 'Deal!',
           showAi: false,
           ask: 2200,
           body: Column(
-            children: const [
+            children: [
               Text('Goal 100%'),
               Text('Politeness 100%'),
               Text('Correctness 100%'),

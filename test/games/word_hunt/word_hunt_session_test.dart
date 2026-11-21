@@ -19,15 +19,15 @@ AfricanObjectSet _fixtureSet() {
 }
 
 VerifiedLexeme _yoCupLexeme() {
-  return VerifiedLexeme(
+  return const VerifiedLexeme(
     lexemeId: 'yo.lex.418526e95cbc',
     language: 'yo',
     verificationStatus: 'expert_reviewed',
     lemma: 'ago',
     standardOrthography: 'ago',
     exampleSentence: 'Mo ní ago.',
-    audioUris: const ['https://cdn.example/ago.mp3'],
-    raw: const {},
+    audioUris: ['https://cdn.example/ago.mp3'],
+    raw: {},
   );
 }
 

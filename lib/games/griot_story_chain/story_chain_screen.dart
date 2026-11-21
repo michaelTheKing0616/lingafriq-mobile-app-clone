@@ -69,6 +69,7 @@ class _StoryChainScreenState extends ConsumerState<StoryChainScreen> {
   StoryChainSentence? _pendingSentence;
   StoryPlaybackPlan? _playback;
   String? _loadError;
+  String? _turnError;
   int _playbackIndex = 0;
   bool _grammarLoading = false;
 
@@ -207,7 +208,10 @@ class _StoryChainScreenState extends ConsumerState<StoryChainScreen> {
       final idx = circle.sentences.length - 1;
       circle.sentences[idx] = finalized;
     } on StateError {
-      setState(() => _phase = StoryChainPhase.waitingForPlayer);
+      setState(() {
+        _turnError = whyWrongCopy;
+        _phase = StoryChainPhase.waitingForPlayer;
+      });
       return;
     }
     _sentenceController.clear();
@@ -299,10 +303,13 @@ class _StoryChainScreenState extends ConsumerState<StoryChainScreen> {
       case StoryChainPhase.waitingForPlayer:
         return _StateMessage(
           key: const ValueKey('wait'),
-          message:
+          message: _turnError ??
               'Waiting for ${_circle?.activePlayerId() ?? 'the next storyteller'}…',
           actionLabel: 'Back to story',
-          onAction: () => setState(() => _phase = StoryChainPhase.playing),
+          onAction: () => setState(() {
+            _turnError = null;
+            _phase = StoryChainPhase.playing;
+          }),
         );
       case StoryChainPhase.grammarSuggestion:
         return _grammarPanel(context);

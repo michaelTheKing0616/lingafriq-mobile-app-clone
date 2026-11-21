@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lingafriq/services/chat/chat_room_learning_service.dart';
 import 'package:lingafriq/services/chat/on_device_overlay_service.dart';
-import 'package:lingafriq/services/lexicon_lookup_service.dart';
 import 'package:lingafriq/services/offline/lexicon_pack_service.dart';
 import 'package:lingafriq/widgets/chat/tone_lens_sheet.dart';
 

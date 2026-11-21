@@ -40,9 +40,9 @@ void main() {
             ),
           ),
         ],
-        child: MaterialApp(
-          home: AgePolicyRouteShell(
-            child: Scaffold(body: Text('social child')),
+        child: const MaterialApp(
+          home: const AgePolicyRouteShell(
+            child: const Scaffold(body: const Text('social child')),
           ),
         ),
       ),

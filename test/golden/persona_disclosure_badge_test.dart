@@ -60,7 +60,7 @@ void main() {
             body: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                PersonaDisclosureBadge(
+                const PersonaDisclosureBadge(
                   layout: PersonaDisclosureBadgeLayout.bust,
                 ),
                 PersonaSessionOpeningDisclosure(

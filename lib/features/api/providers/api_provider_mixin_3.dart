@@ -2,7 +2,7 @@ import 'package:lingafriq/features/api/providers/api_provider_helpers.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart' show kIsWeb, debugPrint, visibleForTesting;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:lingafriq/history/models/section_history_model.dart';
 import 'package:lingafriq/history_quiz/models/history_quiz_lesson_model.dart';
 import 'package:lingafriq/providers/dialog_provider.dart';

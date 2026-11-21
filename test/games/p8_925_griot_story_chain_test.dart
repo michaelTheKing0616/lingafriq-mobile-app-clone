@@ -55,7 +55,7 @@ void main() {
     );
     circle.sentences.add(
       markModerationFlagged(
-        StoryChainSentence(
+        const StoryChainSentence(
           id: 's1',
           authorId: 'other',
           text: 'blocked',
@@ -112,10 +112,10 @@ void main() {
   testWidgets('griot_story_chain_grammar golden', (tester) async {
     await pumpGriotPreview(
       tester,
-      GriotStoryChainPreview(
+      const GriotStoryChainPreview(
           phaseLabel: 'Grammar suggestion',
           hintEn: 'Polie suggests a small grammar tweak.',
-          body: const Text('Keep my sentence'),
+          body: Text('Keep my sentence'),
         ),
     );
     await expectLater(
@@ -127,10 +127,10 @@ void main() {
   testWidgets('griot_story_chain_results golden', (tester) async {
     await pumpGriotPreview(
       tester,
-      GriotStoryChainPreview(
+      const GriotStoryChainPreview(
           phaseLabel: 'Results',
           hintEn: 'Your chain is ready',
-          body: const Text('Beat 1 of 3'),
+          body: Text('Beat 1 of 3'),
         ),
     );
     await expectLater(

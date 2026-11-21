@@ -216,9 +216,10 @@ class _WordForgeScreenState extends State<WordForgeScreen> {
       case WordForgePhase.loading:
         return const Center(child: CircularProgressIndicator());
       case WordForgePhase.error:
-        return const _StateMessage(
+        return _StateMessage(
           message: WordForgeScreen.errorCopy,
           icon: Icons.translate_rounded,
+          detail: _instructions,
         );
       case WordForgePhase.results:
         return _ResultsPane(
@@ -252,6 +253,7 @@ class _WordForgeScreenState extends State<WordForgeScreen> {
       case WordForgePhase.practiceMode:
         return _PlayingPane(
           round: _activeRound,
+          instructions: _instructions,
           onPick: _onSlotPick,
           onSubmit: _submit,
           reduceMotion: reduceMotion,
@@ -294,12 +296,14 @@ class LingAfriqScaffoldLite extends StatelessWidget {
 class _PlayingPane extends StatelessWidget {
   const _PlayingPane({
     required this.round,
+    required this.instructions,
     required this.onPick,
     required this.onSubmit,
     required this.reduceMotion,
   });
 
   final WordForgeRound? round;
+  final String instructions;
   final void Function(WordForgeSlotDefinition, MorphemeOption) onPick;
   final VoidCallback onSubmit;
   final bool reduceMotion;
@@ -307,7 +311,7 @@ class _PlayingPane extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (round == null) {
-      return const _StateMessage(message: WordForgeScreen.errorCopy);
+      return _StateMessage(message: instructions);
     }
     final composed = composeWordForge(round!.selection);
     return ListView(
@@ -536,10 +540,12 @@ class _StateMessage extends StatelessWidget {
   const _StateMessage({
     required this.message,
     this.icon,
+    this.detail,
   });
 
   final String message;
   final IconData? icon;
+  final String? detail;
 
   @override
   Widget build(BuildContext context) {
@@ -554,6 +560,14 @@ class _StateMessage extends StatelessWidget {
             style: PanAfricanTypography.bodyMedium(context),
             textAlign: TextAlign.center,
           ),
+          if (detail != null && detail!.isNotEmpty) ...[
+            SizedBox(height: PanAfricanSpacing.sm),
+            Text(
+              detail!,
+              style: PanAfricanTypography.bodySmall(context),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ],
       ),
     );

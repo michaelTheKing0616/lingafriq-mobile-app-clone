@@ -63,6 +63,8 @@ class VoiceServiceClient {
       
       // Play audio
       await _audioPlayer.setAudioSource(
+        // just_audio still marks the caching source experimental.
+        // ignore: experimental_member_use
         LockCachingAudioSource(Uri.dataFromBytes(
           Uint8List.fromList(audioBytes),
           mimeType: 'audio/wav',

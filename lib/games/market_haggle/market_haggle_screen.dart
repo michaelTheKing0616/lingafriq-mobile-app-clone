@@ -209,7 +209,7 @@ class _MarketHaggleScreenState extends ConsumerState<MarketHaggleScreen> {
   }
 
   void _pickCounter(int offer) {
-    final plan = _plan!;
+    if (_plan == null) return;
     final state = _priceState!;
     final next = applyCounterOffer(state: state, offerNaira: offer);
     _counterPick = offer;

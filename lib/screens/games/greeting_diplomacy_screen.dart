@@ -84,7 +84,6 @@ class _GreetingDiplomacyGameState
   }
 
   List<_GreetingChallenge> _fallbackChallenges() {
-    final rng = Random();
     return List.generate(8, (i) => _GreetingChallenge(
       characterIndex: i % _characters.length,
       greeting: ['E ku irole, baba', 'Bawo ni, ore mi?', 'Shikamoo, mzee', 'Habari za asubuhi?', 'Kedu, nwanne m?', 'Ndewo, nna anyi', 'Sannu, alhaji', 'Ina kwana?'][i],

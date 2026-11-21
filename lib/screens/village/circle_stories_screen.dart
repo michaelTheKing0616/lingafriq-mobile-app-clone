@@ -254,7 +254,7 @@ class CircleStoriesScreen extends HookConsumerWidget {
     } catch (_) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(kStoriesOffline)),
+          const SnackBar(content: const Text(kStoriesOffline)),
         );
       }
     }

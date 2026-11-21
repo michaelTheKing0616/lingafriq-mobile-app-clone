@@ -1,28 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/design/legacy_shim.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
+@Deprecated('Use LingAfriqTokens. This file is a retired design system.')
 class AppColors {
-  static const Color grey = Color(0xffB9C0D1);
-  static const Color filledLight = Color(0xffE7E7E7);
-  // static const Color filledDark = Color(0xff1A1A1A);
-  static const Color filledDark = Color(0xff1A1A1A);
-  static const Color primaryGreen = Color(0xff566A29);
-  static const Color primaryOrange = Color(0xffEB8937);
-  static const Color bottomBarOrange = Color(0xffC7463A);
-  static const Color red = Color(0xffC4413A);
-  static const Color accentGold = Color(0xffFFD700);
+  static Color readGrey() => LegacyDesignShim.read('app_colors.grey', grey);
+
+  static const Color grey = LingAfriqTokens.hexFFB9C0D1;
+  static const Color filledLight = LingAfriqTokens.hexFFE7E7E7;
+  // static const Color filledDark = LingAfriqTokens.hexFF1A1A1A;
+  static const Color filledDark = LingAfriqTokens.hexFF1A1A1A;
+  static const Color primaryGreen = LingAfriqTokens.hexFF566A29;
+  static const Color primaryOrange = LingAfriqTokens.hexFFEB8937;
+  static const Color bottomBarOrange = LingAfriqTokens.hexFFC7463A;
+  static const Color red = LingAfriqTokens.hexFFC4413A;
+  static const Color accentGold = LingAfriqTokens.hexFFFFD700;
   
   // Additional colors for compatibility
-  static const Color stitchPrimary = Color(0xFF1B7340); // Pan-African green
-  static const Color success = Color(0xFF2ECC71);
-  static const Color surfaceDark = Color(0xFF0D1810);
-  static const Color surfaceLight = Color(0xFFFAFAFA);
-  static const Color stitchCardDark = Color(0xFF1F3527);
-  static const Color stitchCardLight = Color(0xFFFFFFFF);
-  static const Color stitchBorderDark = Color(0xFF2A4A35);
-  static const Color stitchBorderLight = Color(0xFFE0E4E0);
-  static const Color stitchTextDark = Color(0xFF0D1B12);
-  static const Color stitchTextLight = Color(0xFFF4F6F5);
-  static const Color accentOrange = Color(0xFFEB8937);
+  static const Color stitchPrimary = LingAfriqTokens.hexFF1B7340; // Pan-African green
+  static const Color success = LingAfriqTokens.hexFF2ECC71;
+  static const Color surfaceDark = LingAfriqTokens.hexFF0D1810;
+  static const Color surfaceLight = LingAfriqTokens.hexFFFAFAFA;
+  static const Color stitchCardDark = LingAfriqTokens.hexFF1F3527;
+  static const Color stitchCardLight = LingAfriqTokens.hexFFFFFFFF;
+  static const Color stitchBorderDark = LingAfriqTokens.hexFF2A4A35;
+  static const Color stitchBorderLight = LingAfriqTokens.hexFFE0E4E0;
+  static const Color stitchTextDark = LingAfriqTokens.hexFF0D1B12;
+  static const Color stitchTextLight = LingAfriqTokens.hexFFF4F6F5;
+  static const Color accentOrange = LingAfriqTokens.hexFFEB8937;
 
   /// Back-compat aliases (used by newer widgets/design system code)
   static const Color accentGreen = stitchPrimary;
@@ -30,5 +35,5 @@ class AppColors {
   static const Color textSecondary = grey;
   
   // Additional color for games
-  static const Color oceanBlue = Color(0xFF00A8E8);
+  static const Color oceanBlue = LingAfriqTokens.hexFF00A8E8;
 }

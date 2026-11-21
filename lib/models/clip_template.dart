@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/models/verified_lexeme.dart';
 import 'package:lingafriq/services/word_of_the_day_service.dart';
 
 /// P9-949 — clip starter templates bound to verified content only.
@@ -326,7 +325,7 @@ class ClipTemplateDetailPanel extends StatelessWidget {
                 Chip(
                   label: Text(statusLabel),
                   backgroundColor: PanAfricanColors.primaryContainer,
-                  labelStyle: TextStyle(
+                  labelStyle: const TextStyle(
                     color: PanAfricanColors.onPrimaryContainer,
                   ),
                 ),

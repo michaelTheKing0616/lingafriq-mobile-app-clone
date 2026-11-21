@@ -67,16 +67,56 @@ def self_test() -> None:
             raise SystemExit("scan missed the unpinned workflow")
 
 
+def release_workflow_problems(text: str) -> list[str]:
+    """The store workflow must build the triggering SHA and must not publish from a PR."""
+    problems = []
+    if re.search(r"^\s*ref:\s*main\s*$", text, re.MULTILINE):
+        problems.append(
+            "checkout hardcodes ref: main; build the PR head or the push/dispatch SHA"
+        )
+    if re.search(
+        r"Skipping TestFlight:.*\n\s*exit 0",
+        text,
+    ):
+        problems.append("TestFlight treats missing signing as success")
+    release_job = re.search(
+        r"\n  create-release:.*?(?=\n  [A-Za-z0-9_-]+:|\Z)",
+        text,
+        re.DOTALL,
+    )
+    block = release_job.group(0) if release_job else ""
+    if not block:
+        problems.append("create-release job is missing")
+    elif re.search(r"^\s*if:\s*always\(\)\s*$", block, re.MULTILINE):
+        problems.append("create-release runs on pull requests and failed builds")
+    elif "workflow_dispatch" not in block or "refs/heads/main" not in block:
+        problems.append("create-release is not limited to a main push or manual dispatch")
+    release_at = block.find("Create GitHub Release")
+    if release_at >= 0 and "continue-on-error:" in block[release_at:release_at + 600]:
+        problems.append("GitHub Release step ignores publish failures")
+    return problems
+
+
 def main(argv: list[str]) -> int:
     if argv and argv[0] == "--self-test":
         self_test()
+        stale = "jobs:\n  build-android:\n    steps:\n      - with:\n          ref: main\n  create-release:\n    if: always()\n"
+        if "ref: main" not in release_workflow_problems(stale)[0]:
+            raise SystemExit("stale main checkout was not detected")
         print("pin lint self-test passed")
         return 0
     roots = [Path(arg) for arg in argv] or [Path(".github/workflows")]
     problems = scan(roots)
+    for root in roots:
+        workflow = root / "build-and-release.yml" if root.is_dir() else root
+        if workflow.name == "build-and-release.yml" and workflow.is_file():
+            problems.extend(
+                f"{workflow}: {item}"
+                for item in release_workflow_problems(workflow.read_text(encoding="utf-8"))
+            )
     if problems:
         print("\n".join(problems))
-        print(f"{len(problems)} unpinned action reference(s)")
+        print(f"{len(problems)} workflow problem(s)")
         return 1
     print("action refs are pinned")
     return 0

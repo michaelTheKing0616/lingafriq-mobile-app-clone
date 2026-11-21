@@ -128,7 +128,7 @@ class CapabilityBlockedSheet extends StatelessWidget {
     return showModalBottomSheet<void>(
       context: context,
       showDragHandle: true,
-      builder: (ctx) => CapabilityBlockedSheet(
+      builder: (ctx) => const CapabilityBlockedSheet(
         title: purchaseBlockedTitle,
         body: purchaseBlockedBody,
         actionLabel: 'Open Family hub',

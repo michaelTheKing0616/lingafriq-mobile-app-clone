@@ -4,7 +4,7 @@ import 'package:lingafriq/widgets/learning_path/path_node_state.dart';
 void main() {
   group('resolvePathNodeState', () {
     test('locks future lessons', () {
-      final lesson = PathLessonProgress(
+      final lesson = const PathLessonProgress(
         lessonId: 'l2',
         title: 'Greetings',
         index: 2,
@@ -22,7 +22,7 @@ void main() {
     });
 
     test('marks completed lesson done with tick semantics', () {
-      final lesson = PathLessonProgress(
+      final lesson = const PathLessonProgress(
         lessonId: 'l0',
         title: 'Hello',
         index: 0,
@@ -40,7 +40,7 @@ void main() {
     });
 
     test('review due from scheduler set not calendar', () {
-      final lesson = PathLessonProgress(
+      final lesson = const PathLessonProgress(
         lessonId: 'l0',
         title: 'Hello',
         index: 0,
@@ -58,7 +58,7 @@ void main() {
     });
 
     test('pacing reachable opens node ahead of strict sequence', () {
-      final lesson = PathLessonProgress(
+      final lesson = const PathLessonProgress(
         lessonId: 'l3',
         title: 'Market',
         index: 3,
@@ -76,7 +76,7 @@ void main() {
     });
 
     test('skipped pacing marks skipped state', () {
-      final lesson = PathLessonProgress(
+      final lesson = const PathLessonProgress(
         lessonId: 'l1',
         title: 'Numbers',
         index: 1,

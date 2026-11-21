@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/services/guarded_messaging_service.dart';
 import 'package:lingafriq/theme/guarded_theme.dart';
+import 'package:lingafriq/theme/lingafriq_fonts.dart';
 
 /// Teacher view: students waiting for a guardian, and per-student teacher-message approval
 /// for school accounts. Reference pack: docs/design/references/teacher-requests
@@ -18,7 +19,7 @@ class ClassroomStudentRequestsScreen extends StatefulWidget {
   final String tribeId;
   final String? tribeName;
 
-  /// Clock for "Expires in N days" (tests pin it).
+  /// Retained for callers. The subtitle uses the server expiry date.
   final DateTime Function()? now;
   final GuardedMessagingService? service;
 
@@ -121,7 +122,6 @@ class _ClassroomStudentRequestsScreenState
     final l = AppLocalizations.of(context)!;
     final theme = guardedTheme(Theme.of(context));
     final loc = MaterialLocalizations.of(context);
-    final now = widget.now?.call() ?? DateTime.now();
     Widget body;
     if (_errorStatus != null) {
       body = ListView(
@@ -163,6 +163,18 @@ class _ClassroomStudentRequestsScreenState
             Center(
               child: OutlinedButton.icon(
                 onPressed: _load,
+                // The app outlined-button theme pins Nunito weight 600 with
+                // no Arabic fallback, and a terracotta foreground. At 200%
+                // the Arabic label kept its layout box but painted no glyphs.
+                // This screen's action colour is the guarded navy token.
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: theme.colorScheme.primary,
+                  iconColor: theme.colorScheme.primary,
+                  textStyle: theme.textTheme.labelLarge?.copyWith(
+                    fontFamily: LingAfriqFonts.display,
+                    fontFamilyFallback: LingAfriqFonts.fallback,
+                  ),
+                ),
                 icon: const Icon(Icons.refresh),
                 label: Text(l.gdmRetry),
               ),
@@ -269,7 +281,6 @@ class _ClassroomStudentRequestsScreenState
                       student: s,
                       on: _dm[s.studentUserId] ?? false,
                       expiry: _expiry[s.studentUserId],
-                      now: now,
                       formatDate: (d) => loc.formatMediumDate(d.toLocal()),
                     ),
                     value: _dm[s.studentUserId] ?? false,
@@ -302,11 +313,14 @@ class _ClassroomStudentRequestsScreenState
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  GuardedHeadline(
-                    l.gtpTitle,
-                    key: const ValueKey('gtp-title'),
-                    style: theme.textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
+                  Semantics(
+                    header: true,
+                    child: Text(
+                      l.gtpTitle,
+                      key: const ValueKey('gtp-title'),
+                      style: theme.textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                   if (widget.tribeName != null)
@@ -327,105 +341,38 @@ class _ClassroomStudentRequestsScreenState
   }
 }
 
-/// Status line plus chips: "Verified by school", "Allow until …",
-/// "Expires in N days". Text stays full contrast even when the switch is off.
+/// Subtitle locked by the student-request goldens: "Teacher messages",
+/// "Messages on until {date}", or the consent lock. Full-contrast text.
 class _SchoolRowDetails extends StatelessWidget {
   const _SchoolRowDetails({
     required this.student,
     required this.on,
     required this.expiry,
-    required this.now,
     required this.formatDate,
   });
 
   final SchoolStudent student;
   final bool on;
   final DateTime? expiry;
-  final DateTime now;
   final String Function(DateTime) formatDate;
 
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-    final scheme = theme.colorScheme;
-    final id = student.studentUserId;
-    final days = expiry == null
-        ? null
-        : (expiry!.difference(now).inHours / 24).ceil().clamp(0, 9999);
-    Widget chip(
-      String key,
-      IconData icon,
-      String text, {
-      bool strong = false,
-    }) => Container(
-      key: ValueKey('$key-$id'),
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: strong
-            ? scheme.primaryContainer
-            : scheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(999),
+    final String text;
+    if (!student.accountActive) {
+      text = l.gtpLocked;
+    } else if (on && expiry != null) {
+      text = l.gtpDmUntil(formatDate(expiry!));
+    } else {
+      text = l.gtpTeacherDm;
+    }
+    return Text(
+      text,
+      style: theme.textTheme.bodyMedium?.copyWith(
+        color: theme.colorScheme.onSurfaceVariant,
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            size: 16,
-            color: strong ? scheme.onPrimaryContainer : scheme.onSurface,
-          ),
-          const SizedBox(width: 4),
-          Flexible(
-            child: Text(
-              text,
-              style: theme.textTheme.labelMedium?.copyWith(
-                color: strong ? scheme.onPrimaryContainer : scheme.onSurface,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          student.accountActive ? l.gtpTeacherDm : l.gtpLocked,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: scheme.onSurfaceVariant,
-          ),
-        ),
-        if (student.accountActive || (on && expiry != null)) ...[
-          const SizedBox(height: 6),
-          Wrap(
-            spacing: 6,
-            runSpacing: 6,
-            children: [
-              if (student.accountActive)
-                chip(
-                  'gtp-verified',
-                  Icons.verified_outlined,
-                  l.gtpVerified,
-                  strong: true,
-                ),
-              if (on && expiry != null) ...[
-                chip(
-                  'gtp-until',
-                  Icons.event_available_outlined,
-                  l.gtpAllowUntil(formatDate(expiry!)),
-                ),
-                chip(
-                  'gtp-expires',
-                  Icons.timer_outlined,
-                  l.gtpExpiresIn(days!),
-                ),
-              ],
-            ],
-          ),
-        ],
-      ],
     );
   }
 }

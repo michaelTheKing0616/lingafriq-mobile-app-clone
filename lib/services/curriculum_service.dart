@@ -75,7 +75,7 @@ class CurriculumService {
     try {
       // Expanded per-language bundle is optional in current app package.
       // Fallback to compact curriculum when expanded assets are unavailable.
-      return loadCompactCurriculum(language, level);
+      return await loadCompactCurriculum(language, level);
     } catch (e) {
       debugPrint('Error loading expanded curriculum: $e');
       return null;

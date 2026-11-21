@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 
+import '../support/app_repo_root.dart';
+
 /// P10-912 AC4 — fail CI on unlabelled dark-pattern monetisation strings.
 void main() {
-  final repoRoot = Directory.current.path.endsWith('lingafriq-mobile-app-clone')
-      ? Directory.current.path
-      : p.join(Directory.current.path, 'lingafriq-mobile-app-clone');
+  final repoRoot = appRepoRoot();
 
   final libDir = Directory(p.join(repoRoot, 'lib'));
   final allowTag = 'monetisation-guard: allow';

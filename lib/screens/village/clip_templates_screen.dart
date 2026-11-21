@@ -317,7 +317,7 @@ class _TemplateTile extends StatelessWidget {
                   ),
                 ),
                 if (selected)
-                  Icon(Icons.check_circle, color: PanAfricanColors.primary),
+                  const Icon(Icons.check_circle, color: PanAfricanColors.primary),
               ],
             ),
           ),

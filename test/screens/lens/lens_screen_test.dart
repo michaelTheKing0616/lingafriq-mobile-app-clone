@@ -129,7 +129,7 @@ class _PermissionDeniedStateHarness extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(lensPermissionDeniedMessage),
+          const Text(lensPermissionDeniedMessage),
           FilledButton(onPressed: () {}, child: const Text('Open Settings')),
         ],
       ),

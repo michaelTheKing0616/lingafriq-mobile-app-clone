@@ -387,9 +387,9 @@ class _AppealScreenState extends State<AppealScreen> {
                   controller: _reasonController,
                   minLines: 3,
                   maxLines: 5,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: AppealCopy.reasonHint,
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                   ),
                 ),
               ),

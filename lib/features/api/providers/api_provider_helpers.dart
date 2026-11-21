@@ -1,18 +1,14 @@
-import 'package:flutter/foundation.dart' show visibleForTesting;
-
 /// Timeout for lesson/quiz API calls to avoid endless loading.
 const apiLessonReceiveTimeout = Duration(seconds: 30);
 
 const apiUserContentBase = '/api/user-content';
 
-@visibleForTesting
 Map<String, dynamic>? apiCoerceMap(dynamic value) {
   if (value is Map<String, dynamic>) return value;
   if (value is Map) return Map<String, dynamic>.from(value);
   return null;
 }
 
-@visibleForTesting
 List<dynamic> apiExtractListPayload(dynamic payload) {
   if (payload is List) return payload;
   final map = apiCoerceMap(payload);

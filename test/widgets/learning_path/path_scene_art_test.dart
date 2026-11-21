@@ -81,9 +81,9 @@ void main() {
     testWidgets('alt text and dim overlay', (tester) async {
       final handle = tester.ensureSemantics();
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: PathSceneArtSlot(
+        const MaterialApp(
+          home: const Scaffold(
+            body: const PathSceneArtSlot(
               languageKey: 'ig',
               unitIndex: 0,
               dimmed: true,
@@ -100,9 +100,9 @@ void main() {
 
     testWidgets('unlicensed bundle shows missing art', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: PathSceneArtSlot(
+        const MaterialApp(
+          home: const Scaffold(
+            body: const PathSceneArtSlot(
               languageKey: 'ha',
               unitIndex: 0,
               dimmed: false,

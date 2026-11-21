@@ -190,7 +190,7 @@ class _FirstDmPromptSheetState extends State<FirstDmPromptSheet> {
               SizedBox(height: spacing),
               TextButton(
                 onPressed: _busy ? null : () => _run(widget.onDecline),
-                child: Text(FirstDmCopy.declineLabel),
+                child: const Text(FirstDmCopy.declineLabel),
               ),
               if (_error != null) ...[
                 SizedBox(height: spacing),

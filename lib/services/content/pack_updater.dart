@@ -333,7 +333,7 @@ class PackUpdater {
     );
     try {
       final download = await fetch(languageCode, current.version, targetVersion);
-      return applyDiffDownload(download);
+      return await applyDiffDownload(download);
     } on PackUpdateError catch (err) {
       _state = PackUpdaterState(
         phase: PackUpdaterPhase.error,

@@ -68,7 +68,7 @@ void main() {
   group('LensScoringClient', () {
     test('uses score utterance path not tone trainer', () async {
       String? seenPath;
-      final client = LensScoringClient();
+      final client = const LensScoringClient();
       await client.scoreUtterance(
         post: (path, data) async {
           seenPath = path;
@@ -86,7 +86,7 @@ void main() {
     });
 
     test('scorer unreachable is retryable error', () async {
-      final client = LensScoringClient();
+      final client = const LensScoringClient();
       final outcome = await client.scoreUtterance(
         post: (_, __) async => Response(
           requestOptions: RequestOptions(path: kLensScoreUtterancePath),

@@ -178,9 +178,10 @@ class LensOcrModeService {
         lookupForms: lookup,
       );
 
-      if (needsServer && restorePost != null && imageBase64 != null) {
+      final post = restorePost;
+      if (needsServer && post != null && imageBase64 != null) {
         try {
-          final response = await restorePost(
+          final response = await post(
             kLensOcrRestorePath,
             {
               'imageOptIn': true,
@@ -199,10 +200,6 @@ class LensOcrModeService {
                 serverText: map['restored_text'] as String?,
                 serverUnsure: map['unsure'] == true,
               );
-              if (map['model'] is Map) {
-                final model = Map<String, dynamic>.from(map['model'] as Map);
-                // surfaced on outcome below
-              }
             }
           }
         } catch (_) {
@@ -225,9 +222,10 @@ class LensOcrModeService {
       anyUnsure = anyUnsure || restore.unsure;
 
       String translationEn = '';
-      if (translatePhrase != null) {
+      final translate = translatePhrase;
+      if (translate != null) {
         translationEn =
-            await translatePhrase(sourceLang: lang, text: restore.text) ?? '';
+            await translate(sourceLang: lang, text: restore.text) ?? '';
       }
 
       built.add(

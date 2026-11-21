@@ -9,13 +9,13 @@ void main() {
       await tester.pumpWidget(
         ScreenUtilInit(
           designSize: const Size(390, 844),
-          builder: (_, __) => MaterialApp(
+          builder: (_, __) => const MaterialApp(
             home: GameTemplateShell(
               title: 'Template Test',
               progressLabel: '1/5',
               scoreLabel: '10',
-              playArea: const Center(child: Text('Play Area')),
-              actionBar: const Text('Action Bar'),
+              playArea: Center(child: Text('Play Area')),
+              actionBar: Text('Action Bar'),
             ),
           ),
         ),

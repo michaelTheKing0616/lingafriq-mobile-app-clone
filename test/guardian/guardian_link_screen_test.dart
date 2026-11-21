@@ -281,12 +281,18 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
+    // The family overview and the link tile both show the name. The tile is
+    // the tappable row; its semantics label is the accessible name.
+    final tileName = find.descendant(
+      of: find.byType(ListTile),
+      matching: find.text('Ada'),
+    );
     await tester.scrollUntilVisible(
-      find.text('Ada'),
+      tileName,
       400,
       scrollable: _hubScrollable(),
     );
-    expect(find.text('Ada'), findsOneWidget);
+    expect(tileName, findsOneWidget);
     expect(find.bySemanticsLabel('Ada, Needs your consent'), findsOneWidget);
     handle.dispose();
   });
@@ -384,12 +390,12 @@ void main() {
     expect(linkButton().onPressed, isNull);
 
     await tester.scrollUntilVisible(
-      find.widgetWithText(TextField, 'Invite code'),
+      find.byKey(GuardianLinkScreen.inviteCodeFieldKey),
       400,
       scrollable: _hubScrollable(),
     );
     await tester.enterText(
-      find.widgetWithText(TextField, 'Invite code'),
+      find.byKey(GuardianLinkScreen.inviteCodeFieldKey),
       'tok-1',
     );
     await tester.pump();
@@ -400,7 +406,7 @@ void main() {
     );
 
     await tester.enterText(
-      find.widgetWithText(TextField, GuardianLinkScreen.guardianYourNameHint),
+      find.byKey(GuardianLinkScreen.guardianNameFieldKey),
       'Ada',
     );
     await tester.pump();
@@ -426,16 +432,16 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.scrollUntilVisible(
-      find.widgetWithText(TextField, 'Invite code'),
+      find.byKey(GuardianLinkScreen.inviteCodeFieldKey),
       400,
       scrollable: _hubScrollable(),
     );
     await tester.enterText(
-      find.widgetWithText(TextField, 'Invite code'),
+      find.byKey(GuardianLinkScreen.inviteCodeFieldKey),
       'tok-1',
     );
     await tester.enterText(
-      find.widgetWithText(TextField, GuardianLinkScreen.guardianYourNameHint),
+      find.byKey(GuardianLinkScreen.guardianNameFieldKey),
       'Ada',
     );
     await tester.pump();
@@ -449,7 +455,7 @@ void main() {
       findsNothing,
     );
     final tokenField = tester.widget<TextField>(
-      find.widgetWithText(TextField, 'Invite code'),
+      find.byKey(GuardianLinkScreen.inviteCodeFieldKey),
     );
     expect(tokenField.controller?.text, isEmpty);
   });
@@ -476,16 +482,16 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.scrollUntilVisible(
-      find.widgetWithText(TextField, 'Invite code'),
+      find.byKey(GuardianLinkScreen.inviteCodeFieldKey),
       400,
       scrollable: _hubScrollable(),
     );
     await tester.enterText(
-      find.widgetWithText(TextField, 'Invite code'),
+      find.byKey(GuardianLinkScreen.inviteCodeFieldKey),
       'bad-tok',
     );
     await tester.enterText(
-      find.widgetWithText(TextField, GuardianLinkScreen.guardianYourNameHint),
+      find.byKey(GuardianLinkScreen.guardianNameFieldKey),
       'Ada',
     );
     await tester.pump();
@@ -521,16 +527,16 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.scrollUntilVisible(
-        find.widgetWithText(TextField, 'Invite code'),
+        find.byKey(GuardianLinkScreen.inviteCodeFieldKey),
         400,
         scrollable: _hubScrollable(),
       );
       await tester.enterText(
-        find.widgetWithText(TextField, 'Invite code'),
+        find.byKey(GuardianLinkScreen.inviteCodeFieldKey),
         'tok-2',
       );
       await tester.enterText(
-        find.widgetWithText(TextField, GuardianLinkScreen.guardianYourNameHint),
+        find.byKey(GuardianLinkScreen.guardianNameFieldKey),
         'Bola',
       );
       await tester.pump();
@@ -586,16 +592,18 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
+    // Family overview repeats the fallback name. The chevron under test is
+    // the one on the learner ListTile, not the family-tools row.
+    final tileName = find.descendant(
+      of: find.byType(ListTile),
+      matching: find.text('Your learner'),
+    );
     await tester.scrollUntilVisible(
-      find.text('Your learner'),
+      tileName,
       400,
       scrollable: _hubScrollable(),
     );
-    // Family tools tiles use the same chevrons, so check the learner tile.
-    final tile = find.ancestor(
-      of: find.text('Your learner'),
-      matching: find.byType(ListTile),
-    );
+    final tile = find.ancestor(of: tileName, matching: find.byType(ListTile));
     expect(
       find.descendant(of: tile, matching: find.byIcon(Icons.chevron_left)),
       findsOneWidget,
@@ -673,7 +681,13 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text(GuardianLinkScreen.offlineBanner), findsOneWidget);
-    expect(find.text('Your learner'), findsOneWidget);
+    // The family overview repeats this fallback name. The assertion is the
+    // linked-learner row: exactly one ListTile title, then the golden.
+    final learnerTitle = find.descendant(
+      of: find.byType(ListTile),
+      matching: find.text('Your learner'),
+    );
+    expect(learnerTitle, findsOneWidget);
 
     await expectLater(
       find.byType(GuardianLinkScreen),

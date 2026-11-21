@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/theme/lingafriq_fonts.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // THE MODERN GRIOT — LingAfriq Canonical Design System
@@ -30,21 +31,22 @@ import 'package:lingafriq/theme/lingafriq_fonts.dart';
 /// Palette inspired by Sahel sunsets, laterite earth, and savanna canopy.
 /// Every value is hand-picked to maintain WCAG AA contrast on its paired
 /// surface while preserving warmth — no cool greys, no pure black.
+@Deprecated('Use LingAfriqTokens. This file is a retired design system.')
 class ModernGriotColors {
   ModernGriotColors._();
 
   // ── Primary ──────────────────────────────────────────────────────────────
   /// Earthy ochre / terracotta — brand anchor.
-  static const Color primary = Color(0xFF9E3D00);
+  static const Color primary = LingAfriqTokens.hexFF9E3D00;
 
   /// Sun-glow orange — used for primary containers and vibrant fills.
-  static const Color primaryContainer = Color(0xFFFF7A35);
+  static const Color primaryContainer = LingAfriqTokens.hexFFFF7A35;
 
   /// Text/icons on primary surfaces.
-  static const Color onPrimary = Color(0xFFFFF0EA);
+  static const Color onPrimary = LingAfriqTokens.hexFFFFF0EA;
 
   /// Text/icons on primaryContainer.
-  static const Color onPrimaryContainer = Color(0xFF3A1500);
+  static const Color onPrimaryContainer = LingAfriqTokens.hexFF3A1500;
 
   /// M3-style aliases for surfaces that pair with [primary] / [onPrimary].
   static const Color primaryFixed = primaryContainer;
@@ -52,87 +54,87 @@ class ModernGriotColors {
 
   // ── Secondary ────────────────────────────────────────────────────────────
   /// Deep forest green — knowledge, growth.
-  static const Color secondary = Color(0xFF526124);
+  static const Color secondary = LingAfriqTokens.hexFF526124;
 
   /// Text/icons on secondary surfaces.
-  static const Color onSecondary = Color(0xFFE8FBAC);
+  static const Color onSecondary = LingAfriqTokens.hexFFE8FBAC;
 
   /// Lighter secondary fill for containers.
-  static const Color secondaryContainer = Color(0xFFD6ED79);
+  static const Color secondaryContainer = LingAfriqTokens.hexFFD6ED79;
 
   /// Text/icons on secondaryContainer.
-  static const Color onSecondaryContainer = Color(0xFF192600);
+  static const Color onSecondaryContainer = LingAfriqTokens.hexFF192600;
 
   // ── Tertiary (accent) ────────────────────────────────────────────────────
-  static const Color tertiary = Color(0xFF7B5733);
-  static const Color onTertiary = Color(0xFFFFFFFF);
-  static const Color tertiaryContainer = Color(0xFFFFDCC4);
-  static const Color onTertiaryContainer = Color(0xFF2E1500);
+  static const Color tertiary = LingAfriqTokens.hexFF7B5733;
+  static const Color onTertiary = LingAfriqTokens.hexFFFFFFFF;
+  static const Color tertiaryContainer = LingAfriqTokens.hexFFFFDCC4;
+  static const Color onTertiaryContainer = LingAfriqTokens.hexFF2E1500;
 
   // ── Surface system (tonal layering, lightest → darkest) ──────────────────
   /// Warm parchment — main canvas.
-  static const Color surface = Color(0xFFFEF6E7);
+  static const Color surface = LingAfriqTokens.hexFFFEF6E7;
 
   /// Default container tint.
-  static const Color surfaceContainer = Color(0xFFF0E7D6);
+  static const Color surfaceContainer = LingAfriqTokens.hexFFF0E7D6;
 
   /// Cards sitting low (slightly lighter than container).
-  static const Color surfaceContainerLow = Color(0xFFF8F0E0);
+  static const Color surfaceContainerLow = LingAfriqTokens.hexFFF8F0E0;
 
   /// Elevated cards, modals.
-  static const Color surfaceContainerLowest = Color(0xFFFFFFFF);
+  static const Color surfaceContainerLowest = LingAfriqTokens.hexFFFFFFFF;
 
   /// Between container and highest — subtle layering.
-  static const Color surfaceContainerHigh = Color(0xFFE8DFD0);
+  static const Color surfaceContainerHigh = LingAfriqTokens.hexFFE8DFD0;
 
   /// Input backgrounds, recessed areas.
-  static const Color surfaceContainerHighest = Color(0xFFE5DCC9);
+  static const Color surfaceContainerHighest = LingAfriqTokens.hexFFE5DCC9;
 
   /// Dimmed surface for overlays / scrims.
-  static const Color surfaceDim = Color(0xFFDCD4C0);
+  static const Color surfaceDim = LingAfriqTokens.hexFFDCD4C0;
 
   /// Variant surface — same role as highest, semantic alias.
-  static const Color surfaceVariant = Color(0xFFE5DCC9);
+  static const Color surfaceVariant = LingAfriqTokens.hexFFE5DCC9;
 
   // ── On-surface ───────────────────────────────────────────────────────────
   /// Warm dark — headings, primary text. NEVER pure black.
-  static const Color onSurface = Color(0xFF322E25);
+  static const Color onSurface = LingAfriqTokens.hexFF322E25;
 
   /// Body text, secondary labels.
-  static const Color onSurfaceVariant = Color(0xFF605B50);
+  static const Color onSurfaceVariant = LingAfriqTokens.hexFF605B50;
 
   // ── Outline ──────────────────────────────────────────────────────────────
   /// Standard outline.
-  static const Color outline = Color(0xFF8A8478);
+  static const Color outline = LingAfriqTokens.hexFF8A8478;
 
   /// Ghost border for inputs — apply at 15% opacity only.
-  static const Color outlineVariant = Color(0xFFB3AC9F);
+  static const Color outlineVariant = LingAfriqTokens.hexFFB3AC9F;
 
   // ── Error ────────────────────────────────────────────────────────────────
-  static const Color error = Color(0xFFBA1A1A);
-  static const Color onError = Color(0xFFFFFFFF);
-  static const Color errorContainer = Color(0xFFFFDAD6);
-  static const Color onErrorContainer = Color(0xFF410002);
+  static const Color error = LingAfriqTokens.hexFFBA1A1A;
+  static const Color onError = LingAfriqTokens.hexFFFFFFFF;
+  static const Color errorContainer = LingAfriqTokens.hexFFFFDAD6;
+  static const Color onErrorContainer = LingAfriqTokens.hexFF410002;
 
   // ── Inverse ──────────────────────────────────────────────────────────────
-  static const Color inverseSurface = Color(0xFF322E25);
-  static const Color onInverseSurface = Color(0xFFFEF6E7);
-  static const Color inversePrimary = Color(0xFFFFB68A);
+  static const Color inverseSurface = LingAfriqTokens.hexFF322E25;
+  static const Color onInverseSurface = LingAfriqTokens.hexFFFEF6E7;
+  static const Color inversePrimary = LingAfriqTokens.hexFFFFB68A;
 
   // ── Misc ─────────────────────────────────────────────────────────────────
-  static const Color shadow = Color(0xFF322E25);
-  static const Color scrim = Color(0xFF322E25);
+  static const Color shadow = LingAfriqTokens.hexFF322E25;
+  static const Color scrim = LingAfriqTokens.hexFF322E25;
   static const Color surfaceTint = primary;
 
   // ── Brand kit accents (LingAfriq Gold / Coral) ────────────────────────────
   /// CTA fill. Pair only with [onBrandGold] (AA ≥ 8:1).
-  static const Color brandGold = Color(0xFFFFC53D);
+  static const Color brandGold = LingAfriqTokens.hexFFFFC53D;
 
   /// Text/icons on [brandGold].
-  static const Color onBrandGold = Color(0xFF322E25);
+  static const Color onBrandGold = LingAfriqTokens.hexFF322E25;
 
   /// Selection border / check accent. Do not use as a text fill (fails AA).
-  static const Color brandCoral = Color(0xFFE5603B);
+  static const Color brandCoral = LingAfriqTokens.hexFFE5603B;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -143,59 +145,60 @@ class ModernGriotColors {
 ///
 /// Surfaces use dark warm browns (never pure black / cool grey).
 /// Primary shifts to lighter peach-orange for contrast.
+@Deprecated('Use LingAfriqTokens. This file is a retired design system.')
 class ModernGriotColorsDark {
   ModernGriotColorsDark._();
 
   // ── Primary ──────────────────────────────────────────────────────────────
-  static const Color primary = Color(0xFFFFB68A);
-  static const Color primaryContainer = Color(0xFF7C2D00);
-  static const Color onPrimary = Color(0xFF532200);
-  static const Color onPrimaryContainer = Color(0xFFFFDBC9);
+  static const Color primary = LingAfriqTokens.hexFFFFB68A;
+  static const Color primaryContainer = LingAfriqTokens.hexFF7C2D00;
+  static const Color onPrimary = LingAfriqTokens.hexFF532200;
+  static const Color onPrimaryContainer = LingAfriqTokens.hexFFFFDBC9;
 
   // ── Secondary ────────────────────────────────────────────────────────────
-  static const Color secondary = Color(0xFFBBD15F);
-  static const Color onSecondary = Color(0xFF2A3400);
-  static const Color secondaryContainer = Color(0xFF3D4A0E);
-  static const Color onSecondaryContainer = Color(0xFFD6ED79);
+  static const Color secondary = LingAfriqTokens.hexFFBBD15F;
+  static const Color onSecondary = LingAfriqTokens.hexFF2A3400;
+  static const Color secondaryContainer = LingAfriqTokens.hexFF3D4A0E;
+  static const Color onSecondaryContainer = LingAfriqTokens.hexFFD6ED79;
 
   // ── Tertiary ─────────────────────────────────────────────────────────────
-  static const Color tertiary = Color(0xFFE6BF99);
-  static const Color onTertiary = Color(0xFF462A0D);
-  static const Color tertiaryContainer = Color(0xFF60401E);
-  static const Color onTertiaryContainer = Color(0xFFFFDCC4);
+  static const Color tertiary = LingAfriqTokens.hexFFE6BF99;
+  static const Color onTertiary = LingAfriqTokens.hexFF462A0D;
+  static const Color tertiaryContainer = LingAfriqTokens.hexFF60401E;
+  static const Color onTertiaryContainer = LingAfriqTokens.hexFFFFDCC4;
 
   // ── Surface system (darkest → lightest) ──────────────────────────────────
-  static const Color surface = Color(0xFF1C1A15);
-  static const Color surfaceContainer = Color(0xFF252219);
-  static const Color surfaceContainerLow = Color(0xFF201E17);
-  static const Color surfaceContainerLowest = Color(0xFF16140F);
-  static const Color surfaceContainerHigh = Color(0xFF2E2A22);
-  static const Color surfaceContainerHighest = Color(0xFF3A352C);
-  static const Color surfaceDim = Color(0xFF1C1A15);
-  static const Color surfaceVariant = Color(0xFF4D4639);
+  static const Color surface = LingAfriqTokens.hexFF1C1A15;
+  static const Color surfaceContainer = LingAfriqTokens.hexFF252219;
+  static const Color surfaceContainerLow = LingAfriqTokens.hexFF201E17;
+  static const Color surfaceContainerLowest = LingAfriqTokens.hexFF16140F;
+  static const Color surfaceContainerHigh = LingAfriqTokens.hexFF2E2A22;
+  static const Color surfaceContainerHighest = LingAfriqTokens.hexFF3A352C;
+  static const Color surfaceDim = LingAfriqTokens.hexFF1C1A15;
+  static const Color surfaceVariant = LingAfriqTokens.hexFF4D4639;
 
   // ── On-surface ───────────────────────────────────────────────────────────
-  static const Color onSurface = Color(0xFFEDE0D0);
-  static const Color onSurfaceVariant = Color(0xFFCFC5B4);
+  static const Color onSurface = LingAfriqTokens.hexFFEDE0D0;
+  static const Color onSurfaceVariant = LingAfriqTokens.hexFFCFC5B4;
 
   // ── Outline ──────────────────────────────────────────────────────────────
-  static const Color outline = Color(0xFF9A9080);
-  static const Color outlineVariant = Color(0xFF4D4639);
+  static const Color outline = LingAfriqTokens.hexFF9A9080;
+  static const Color outlineVariant = LingAfriqTokens.hexFF4D4639;
 
   // ── Error ────────────────────────────────────────────────────────────────
-  static const Color error = Color(0xFFFFB4AB);
-  static const Color onError = Color(0xFF690005);
-  static const Color errorContainer = Color(0xFF93000A);
-  static const Color onErrorContainer = Color(0xFFFFDAD6);
+  static const Color error = LingAfriqTokens.hexFFFFB4AB;
+  static const Color onError = LingAfriqTokens.hexFF690005;
+  static const Color errorContainer = LingAfriqTokens.hexFF93000A;
+  static const Color onErrorContainer = LingAfriqTokens.hexFFFFDAD6;
 
   // ── Inverse ──────────────────────────────────────────────────────────────
-  static const Color inverseSurface = Color(0xFFEDE0D0);
-  static const Color onInverseSurface = Color(0xFF322E25);
-  static const Color inversePrimary = Color(0xFF9E3D00);
+  static const Color inverseSurface = LingAfriqTokens.hexFFEDE0D0;
+  static const Color onInverseSurface = LingAfriqTokens.hexFF322E25;
+  static const Color inversePrimary = LingAfriqTokens.hexFF9E3D00;
 
   // ── Misc ─────────────────────────────────────────────────────────────────
-  static const Color shadow = Color(0xFF000000);
-  static const Color scrim = Color(0xFF000000);
+  static const Color shadow = LingAfriqTokens.hexFF000000;
+  static const Color scrim = LingAfriqTokens.hexFF000000;
   static const Color surfaceTint = primary;
 }
 
@@ -491,7 +494,7 @@ class ModernGriotGradients {
   static const LinearGradient forestGrowth = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [ModernGriotColors.secondary, Color(0xFF7A8C3A)],
+    colors: [ModernGriotColors.secondary, LingAfriqTokens.hexFF7A8C3A],
   );
 
   /// Dark surface gradient — dark-mode hero / app-bar backgrounds.
@@ -508,7 +511,7 @@ class ModernGriotGradients {
   static const LinearGradient sunsetWarm = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [ModernGriotColors.surface, Color(0xFFFDE8D0)],
+    colors: [ModernGriotColors.surface, LingAfriqTokens.hexFFFDE8D0],
   );
 
   /// Surface at 80% opacity — glassmorphism panels.
@@ -678,7 +681,7 @@ class ModernGriotThemeExtension
 
   static const ModernGriotThemeExtension light = ModernGriotThemeExtension(
     signatureGradient: ModernGriotGradients.signatureGradient,
-    glassColor: Color(0xCCFFFFFF),
+    glassColor: LingAfriqTokens.hexCCFFFFFF,
     glassBlur: 24.0,
     ambientShadowColor: ModernGriotColors.onSurface,
     patternOpacity: 0.03,
@@ -686,9 +689,9 @@ class ModernGriotThemeExtension
 
   static const ModernGriotThemeExtension dark = ModernGriotThemeExtension(
     signatureGradient: ModernGriotGradients.signatureGradient,
-    glassColor: Color(0xCC252219),
+    glassColor: LingAfriqTokens.hexCC252219,
     glassBlur: 24.0,
-    ambientShadowColor: Color(0xFF000000),
+    ambientShadowColor: LingAfriqTokens.hexFF000000,
     patternOpacity: 0.05,
   );
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
+import 'package:lingafriq/design/typography.dart';
 import 'package:lingafriq/services/content/gloss_lookup.dart';
 import 'package:lingafriq/widgets/tone_lens.dart';
 
@@ -109,7 +109,7 @@ class _TargetTextState extends State<TargetText> {
   TextStyle _targetStyle(BuildContext context, double scale) {
     final base = widget.debugFontFamily != null
         ? TextStyle(fontFamily: widget.debugFontFamily, fontSize: 18 * scale, height: 1.5)
-        : GoogleFonts.andika(fontSize: 18 * scale, height: 1.5);
+        : LingAfriqType.target.copyWith(fontSize: 18 * scale);
     return base.copyWith(
       textBaseline: TextBaseline.alphabetic,
       leadingDistribution: TextLeadingDistribution.even,

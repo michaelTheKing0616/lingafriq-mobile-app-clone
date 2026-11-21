@@ -22,15 +22,15 @@ AfricanObjectSet _fixtureSet() {
 }
 
 VerifiedLexeme _yoCupLexeme() {
-  return VerifiedLexeme(
+  return const VerifiedLexeme(
     lexemeId: 'yo.lex.418526e95cbc',
     language: 'yo',
     verificationStatus: 'expert_reviewed',
     lemma: 'ago',
     standardOrthography: 'ago',
     exampleSentence: 'Mo ní ago.',
-    audioUris: const ['https://cdn.example/ago.mp3'],
-    raw: const {},
+    audioUris: ['https://cdn.example/ago.mp3'],
+    raw: {},
   );
 }
 
@@ -111,13 +111,13 @@ void main() {
       SharedPreferences.setMockInitialValues({});
       SpacedRepetitionService().clearUserCards('u1');
       final collection = LensCollectionService();
-      final card = LensWordCard(
+      final card = const LensWordCard(
         lexemeId: 'yo.lex.418526e95cbc',
         language: 'yo',
         word: 'ago',
         objectSetId: 'afr.cup',
         exampleSentence: 'Mo ní ago.',
-        audio: const LensWordCardAudio(
+        audio: LensWordCardAudio(
           kind: LensWordCardAudioKind.nativeHuman,
           playUri: 'https://cdn.example/ago.mp3',
         ),

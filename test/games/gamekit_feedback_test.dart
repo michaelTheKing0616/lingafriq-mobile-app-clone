@@ -77,10 +77,10 @@ void main() {
   group('GameKitVerdictSlot widget', () {
     testWidgets('pending and final share fixed height', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: Column(
-              children: [
+        const MaterialApp(
+          home: const Scaffold(
+            body: const Column(
+              children: const [
                 GameKitVerdictSlot(
                   phase: GameKitFeedbackPhase.pending,
                   isCorrect: false,

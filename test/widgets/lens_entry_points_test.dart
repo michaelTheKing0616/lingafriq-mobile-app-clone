@@ -77,13 +77,13 @@ void main() {
     testWidgets('Lens button opens scoped host when available', (tester) async {
       SharedPreferences.setMockInitialValues({'learning_language': 'yoruba'});
       await tester.pumpWidget(
-        ProviderScope(
+        const ProviderScope(
           child: MaterialApp(
             home: Scaffold(
               appBar: AppTopBar(
                 title: 'Today',
                 language: 'yoruba',
-                lensPreflight: const LensAvailability(
+                lensPreflight: LensAvailability(
                   available: true,
                   reason: LensAvailabilityReason.ready,
                 ),
@@ -103,13 +103,13 @@ void main() {
 
     testWidgets('Lens button shows explanation when unavailable', (tester) async {
       await tester.pumpWidget(
-        ProviderScope(
+        const ProviderScope(
           child: MaterialApp(
             home: Scaffold(
               appBar: AppTopBar(
                 title: 'Learn',
                 language: 'yoruba',
-                lensPreflight: const LensAvailability(
+                lensPreflight: LensAvailability(
                   available: false,
                   reason: LensAvailabilityReason.noCamera,
                 ),
@@ -128,13 +128,13 @@ void main() {
   group('Learn object lesson', () {
     testWidgets('find-at-home opens Lens with scope banner', (tester) async {
       await tester.pumpWidget(
-        ProviderScope(
+        const ProviderScope(
           child: MaterialApp(
             home: LearnObjectLessonScreen(
             title: 'Kitchen',
             language: 'yoruba',
-            objectSetIds: const ['obj.cup', 'obj.chair'],
-            preflight: const LensAvailability(
+            objectSetIds: ['obj.cup', 'obj.chair'],
+            preflight: LensAvailability(
               available: true,
               reason: LensAvailabilityReason.ready,
             ),

@@ -6,9 +6,9 @@ import 'package:lingafriq/services/push/data_push_handler.dart';
 void main() {
   group('DataPushHandler P9-909', () {
     test('AC3 rejects notification+body payloads', () {
-      final withNotification = RemoteMessage(
-        notification: const RemoteNotification(title: 'Hi', body: 'secret'),
-        data: const {'type': 'chat_message', 'roomId': 'private_1_2', 'seq': '1'},
+      final withNotification = const RemoteMessage(
+        notification: RemoteNotification(title: 'Hi', body: 'secret'),
+        data: {'type': 'chat_message', 'roomId': 'private_1_2', 'seq': '1'},
       );
       expect(DataPushHandler.isDataOnlyPush(withNotification), isFalse);
     });
@@ -34,9 +34,9 @@ void main() {
     });
 
     test('P9-941 notificationFromSync uses synced text only', () {
-      final batch = WaMessageSyncBatch(
+      final batch = const WaMessageSyncBatch(
         messages: [
-          WaSyncedMessage(
+          const WaSyncedMessage(
             seq: 1,
             serverMessageId: 'a',
             message: 'Ẹ kú àárọ̀',
@@ -55,7 +55,7 @@ void main() {
     });
 
     test('P9-941 generic notification when sync fails', () {
-      final batch = WaMessageSyncBatch(messages: [], cursor: 0);
+      final batch = const WaMessageSyncBatch(messages: [], cursor: 0);
       final note = DataPushHandler.notificationFromSync(
         roomId: 'private_2_5',
         batch: batch,

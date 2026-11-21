@@ -53,7 +53,7 @@ void main() {
           },
         ],
       });
-      final recognizer = LensServerRecognizer();
+      final recognizer = const LensServerRecognizer();
       final candidates = recognizer.candidatesFromObjectSet(set);
       expect(candidates, hasLength(1));
       expect(candidates.first['object_set_id'], 'afr.book');
@@ -61,7 +61,7 @@ void main() {
     });
 
     test('budget exhaustion surfaces retryable error', () async {
-      final recognizer = LensServerRecognizer();
+      final recognizer = const LensServerRecognizer();
       final outcome = await recognizer.recognizeCrop(
         post: (_, __) async => Response(
           requestOptions: RequestOptions(path: kLensRecognizePath),

@@ -183,7 +183,7 @@ class ErrorRecoveryService {
   /// Check internet connectivity
   Future<bool> _checkConnectivity() async {
     try {
-      return ConnectivityService.hasInternet();
+      return await ConnectivityService.hasInternet();
     } catch (e) {
       debugPrint('Error checking connectivity: $e');
       // Assume connected if check fails (to avoid blocking operations)

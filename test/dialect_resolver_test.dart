@@ -38,7 +38,7 @@ void main() {
     ];
 
     test('returns matching regional variant', () {
-      final resolver = DialectResolver(dialectLabels: labels);
+      final resolver = const DialectResolver(dialectLabels: labels);
       final result = resolver.resolve(
         preferredDialectId: 'yo-lagos',
         standardEntry: standard,
@@ -50,7 +50,7 @@ void main() {
     });
 
     test('falls back to standard with dialect UI label', () {
-      final resolver = DialectResolver(dialectLabels: labels);
+      final resolver = const DialectResolver(dialectLabels: labels);
       final result = resolver.resolve(
         preferredDialectId: 'yo-ibadan',
         standardEntry: standard,

@@ -98,7 +98,6 @@ List<String> parseLexiconCultureNotes(Map<String, dynamic> entry) {
   return const [];
 }
 
-@visibleForTesting
 String languageLabelForCode(String code) {
   switch (code.trim().toLowerCase()) {
     case 'yo':
@@ -120,7 +119,6 @@ String languageLabelForCode(String code) {
   }
 }
 
-@visibleForTesting
 List<LexiconSameIdeaRow> parseSameIdeaInOtherLanguages(
   Map<String, dynamic> entry,
 ) {

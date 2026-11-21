@@ -4,7 +4,6 @@ import 'package:lingafriq/games/gamekit/game_meta_layer.dart';
 import 'package:lingafriq/games/gamekit/game_feedback.dart';
 import 'package:lingafriq/games/gamekit/game_result.dart';
 import 'package:lingafriq/games/gamekit/game_scoring.dart';
-import 'package:lingafriq/games/gamekit/game_session.dart';
 import 'package:lingafriq/services/cultural_mastery_service.dart';
 
 void main() {
@@ -72,13 +71,6 @@ void main() {
   group('meta layer skips rewards in practice', () {
     test('honest practice turn does not award badges', () async {
       final layer = GameMetaLayer(masteryService: CulturalMasteryService());
-      final session = GameSession(
-        sessionId: 's',
-        userId: 'u',
-        gameId: 'tone_trainer',
-        language: 'yo',
-        startTime: DateTime.now(),
-      );
       final result = GameTurnResult(
         score: GameScore.honestPractice(message: 'practice'),
         feedback: GameFeedback.neutral(

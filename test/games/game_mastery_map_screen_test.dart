@@ -22,15 +22,15 @@ void main() {
         ],
         child: ScreenUtilInit(
           designSize: const Size(390, 844),
-          builder: (_, __) => MaterialApp(
-            localizationsDelegates: const [
+          builder: (_, __) => const MaterialApp(
+            localizationsDelegates: [
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
             supportedLocales: AppLocalizations.supportedLocales,
-            home: const GameMasteryMapScreen(learnerId: 'test_learner_empty'),
+            home: GameMasteryMapScreen(learnerId: 'test_learner_empty'),
           ),
         ),
       ),

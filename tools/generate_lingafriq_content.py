@@ -202,11 +202,19 @@ def copy_cms_manifests_to_assets() -> None:
 
     if out_dir.exists():
 
+        catalog = dest_root / "pack_catalog.json"
+        preserved_catalog = catalog.read_bytes() if catalog.is_file() else None
+
         if dest_root.exists():
 
             shutil.rmtree(dest_root)
 
         shutil.copytree(out_dir, dest_root)
+
+        generated_catalog = dest_root / "pack_catalog.json"
+        if preserved_catalog is not None and not generated_catalog.is_file():
+            generated_catalog.write_bytes(preserved_catalog)
+            print("Kept pack_catalog.json; the CMS sync output did not include it")
 
         print(f"Copied CMS manifests -> {dest_root}")
 

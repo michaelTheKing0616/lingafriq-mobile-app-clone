@@ -77,10 +77,10 @@ void main() {
   group('SameIdeaView', () {
     testWidgets('renders verified chips and unavailable copy', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: SameIdeaView(
-              rows: const [
+              rows: [
                 LexiconSameIdeaRow(
                   languageCode: 'ig',
                   languageLabel: 'Igbo',

@@ -316,9 +316,9 @@ P1-038	Done	Send one reminder per day in local time with quiet hours (reminders.
 P1-039	Draft	Verify live scheduler count and RevenueCat key injection	P1/P1-039.yaml
 P1-040	Done	Remove MMS-TTS, XTTS-v2 and NLLB client config; piper-only routing; 503 sidecars (P1-040)	P1/P1-040.yaml
 P1-041	Draft	Choose commercial TTS and MT replacements named in source	P1/P1-041.yaml
-P1-042	Draft	Remove unofficial Google Translate scraper	P1/P1-042.yaml
+P1-042	Done	Remove unofficial Google Translate scraper	P1/P1-042.yaml
 P1-043	Done	Generic login errors + scrubbed logs (loginCredentials.ts, logger scrub, P1-043.login.test.ts)	P1/P1-043.yaml
-P1-044	Draft	Add per-account progressive lockout and backoff	P1/P1-044.yaml
+P1-044	Done	Add per-account progressive lockout and backoff	P1/P1-044.yaml
 P1-045	Done	Enforce 8-char password with breached check and Argon2id rehash	P1/P1-045.yaml
 P1-046	Done	Fix JWT secret handling and move to asymmetric keys with kid rotation	P1/P1-046.yaml
 P1-047	Done	Issue short-lived access tokens with rotating revocable refresh tokens	P1/P1-047.yaml
@@ -527,16 +527,16 @@ P3-001	Draft	Benchmark Duolingo and three rivals into baselines	P3/P3-001.yaml
 P3-002	Draft	Write design principles and three job journey maps	P3/P3-002.yaml
 P3-003	Draft	Design three art directions with hero screens	P3/P3-003.yaml
 P3-004	Draft	'ADR-010: choose the art direction'	P3/P3-004.yaml
-P3-005	Draft	'ADR-012: choose typography (Andika, Noto, display face)'	P3/P3-005.yaml
+P3-005	Done	'ADR-012: choose typography (Andika, Noto, display face)'	P3/P3-005.yaml
 P3-006	Draft	'ADR-011: ratify five tabs, Me and three global tools'	P3/P3-006.yaml
-P3-007	Draft	Generate Dart, CSS and Rive tokens from one JSON	P3/P3-007.yaml
-P3-008	Draft	Define OKLCH colour ramps with one accent and dark mode	P3/P3-008.yaml
-P3-009	Draft	Add 4-pt spacing, radius, elevation and stroke tokens	P3/P3-009.yaml
-P3-010	Draft	Add motion tokens with the ease-out curve	P3/P3-010.yaml
-P3-011	Draft	Bundle Andika and Noto, drop runtime font fetch	P3/P3-011.yaml
-P3-012	Draft	Define type scale with 18 sp floor and 1.5 leading	P3/P3-012.yaml
-P3-013	Draft	Add token-compliance lint for colours, sizes, fonts, strings	P3/P3-013.yaml
-P3-014	Draft	Retire six design systems behind token shims	P3/P3-014.yaml
+P3-007	Done	Generate Dart, CSS and Rive tokens from one JSON	P3/P3-007.yaml
+P3-008	Done	Define OKLCH colour ramps with one accent and dark mode	P3/P3-008.yaml
+P3-009	Done	Add 4-pt spacing, radius, elevation and stroke tokens	P3/P3-009.yaml
+P3-010	Done	Add motion tokens with the ease-out curve	P3/P3-010.yaml
+P3-011	Done	Bundle Andika and Noto, drop runtime font fetch	P3/P3-011.yaml
+P3-012	Done	Define type scale with 18 sp floor and 1.5 leading	P3/P3-012.yaml
+P3-013	Done	Add token-compliance lint for colours, sizes, fonts, strings	P3/P3-013.yaml
+P3-014	Done	Retire six design systems behind token shims	P3/P3-014.yaml
 P3-015	Draft	Design hi-fi Today, Path map and Lesson player	P3/P3-015.yaml
 P3-016	Draft	Design hi-fi Tone Lens, Word Card and Lens camera	P3/P3-016.yaml
 P3-017	Draft	Design hi-fi Village map, Arcade shelf and Polie voice	P3/P3-017.yaml
@@ -611,11 +611,11 @@ P3-085	Draft	Unlock optional avatar creation after lesson 2	P3/P3-085.yaml
 P3-086	Draft	Track onboarding funnel and time to first word	P3/P3-086.yaml
 P3-087	Draft	Audit screen-reader labels and switch or keyboard navigation	P3/P3-087.yaml
 P3-088	Draft	Support 200% text without clipping	P3/P3-088.yaml
-P3-089	Draft	Enforce WCAG 2.2 AA contrast in CI	P3/P3-089.yaml
+P3-089	Done	Enforce WCAG 2.2 AA contrast in CI	P3/P3-089.yaml
 P3-090	Draft	Add captions and transcripts for audio and video	P3/P3-090.yaml
 P3-091	Draft	Add haptic and visual alternatives and visual pitch path	P3/P3-091.yaml
 P3-092	Draft	Honour reduced motion with gentler animation	P3/P3-092.yaml
-P3-093	Draft	Offer a dyslexia-friendly reading option on Andika	P3/P3-093.yaml
+P3-093	Done	Offer a dyslexia-friendly reading option on Andika	P3/P3-093.yaml
 P3-094	Draft	Extract 1,104 hard-coded strings to ARB	P3/P3-094.yaml
 P3-095	Draft	Add pseudo-localisation to CI	P3/P3-095.yaml
 P3-096	Draft	Support RTL layouts for Arabic and Ajami	P3/P3-096.yaml
