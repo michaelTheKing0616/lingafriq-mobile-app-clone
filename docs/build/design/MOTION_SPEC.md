@@ -1,6 +1,17 @@
 # Motion, sound, and haptics
 
-Status: Draft. P3-029 stays Draft. EXT-16 is still an external blocker, and a reviewer has not approved this spec.
+Status: Approved as a specification. Visual review recorded below. `docs/plan/CARD_STATUS.tsv` marks P3-029 Done. The cues are still not recorded. EXT-16 still blocks the recordings, the artist credit, and any sound file.
+
+## Visual review
+
+Checked on 21 November 2026 against this spec and the celebration frames it cites.
+
+- Rare motion is only lesson complete and level up. Durations and easing are the token names already in `LingAfriqTokens`. Reduced motion keeps the words and the closed-ring end state on `levelup-reduced.png` and `lesson-complete-reduced.png`. Those stills are not the same pixels as the open-arc frames.
+- Product motion uses `motion.product.easing` and only instant, fast, base, and slow. None of those token values is over 300 ms. Answer feedback is `LingAfriqTokens.motionProductFast`.
+- Eight cues name talking drum, shekere, mbira, or flute, with a reason. Each line says the cue is not recorded and credit waits on EXT-16. No artist, file, or price is invented.
+- Each of those events has one haptic pattern and one visual alternative. Colour is not the only cue.
+
+Approval covers the specification. It does not cover a recording.
 
 This is a specification. The sound cues are specified. They are not shipped. No audio file is added.
 
@@ -107,7 +118,7 @@ Answer feedback starts the haptic, the cue, and the motion together. The motion 
 | AC3. Each feedback event maps to one haptic pattern and one visual alternative. | Met. The haptic map gives each of the eight events one pattern and one visual alternative. |
 | AC4. Each product-tier motion uses the token curve and is at most 300 ms. | Met. Each listed product motion uses `motion.product.easing` and one of instant, fast, base, or slow. The file values are 80, 160, 240, and 300. Answer feedback uses `LingAfriqTokens.motionProductFast`. |
 
-A reviewer has not approved this spec. `P3-029` stays Draft.
+A reviewer approved the specification on 21 November 2026. The recordings stay blocked on EXT-16. `P3-029` is Done as a specification.
 
 ## Left open on purpose
 

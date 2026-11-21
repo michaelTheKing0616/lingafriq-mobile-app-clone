@@ -52,7 +52,7 @@ risks: []
 gate: G3
 external_blockers:
 - EXT-16
-status: Draft
+status: Done
 skills:
   worker:
   - prime/motion-system
