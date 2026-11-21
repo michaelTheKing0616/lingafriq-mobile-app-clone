@@ -8,6 +8,8 @@ import 'package:lingafriq/design/components/ling_dialog.dart';
 import 'package:lingafriq/design/components/ling_list_row.dart';
 import 'package:lingafriq/design/components/ling_state.dart';
 import 'package:lingafriq/design/components/ling_text_field.dart';
+import 'package:lingafriq/design/states/empty_state.dart';
+import 'package:lingafriq/design/states/skeleton.dart';
 import 'package:lingafriq/design/text/diacritic_keyboard.dart';
 import 'package:lingafriq/design/text/target_text.dart';
 import 'package:lingafriq/design/tokens.g.dart';
@@ -161,6 +163,24 @@ final List<CatalogueUseCase> catalogueUseCases = <CatalogueUseCase>[
     states: catalogueControlStates,
     goldenFrames: catalogueCoreGoldenFrames,
     build: _buildLingChip,
+  ),
+  CatalogueUseCase(
+    id: 'lingSkeletonList',
+    states: const <String>['loading'],
+    goldenFrames: catalogueCoreGoldenFrames,
+    build: _buildLingSkeletonList,
+  ),
+  CatalogueUseCase(
+    id: 'lingSkeletonCard',
+    states: const <String>['loading'],
+    goldenFrames: catalogueCoreGoldenFrames,
+    build: _buildLingSkeletonCard,
+  ),
+  CatalogueUseCase(
+    id: 'lingEmptyState',
+    states: const <String>['forward'],
+    goldenFrames: catalogueCoreGoldenFrames,
+    build: _buildLingEmptyState,
   ),
 ];
 
@@ -451,6 +471,69 @@ Widget _buildLingChip(Brightness brightness, double textScale, String state) {
           unavailableLabel: copy.commonStateUnavailable,
           onPressed: state == 'disabled' ? null : () {},
           forcedState: LingForcedState.fromCatalogue(state),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget _buildLingSkeletonList(
+  Brightness brightness,
+  double textScale,
+  String state,
+) {
+  if (state != 'loading') {
+    throw ArgumentError.value(state, 'state', 'Not a skeleton list state');
+  }
+  return _controlFrame(
+    brightness: brightness,
+    textScale: textScale,
+    child: const LingSkeletonList(),
+  );
+}
+
+Widget _buildLingSkeletonCard(
+  Brightness brightness,
+  double textScale,
+  String state,
+) {
+  if (state != 'loading') {
+    throw ArgumentError.value(state, 'state', 'Not a skeleton card state');
+  }
+  return _controlFrame(
+    brightness: brightness,
+    textScale: textScale,
+    child: const Padding(
+      padding: EdgeInsets.all(LingAfriqTokens.spacing16),
+      child: LingSkeletonCard(),
+    ),
+  );
+}
+
+Widget _buildLingEmptyState(
+  Brightness brightness,
+  double textScale,
+  String state,
+) {
+  if (state != 'forward') {
+    throw ArgumentError.value(state, 'state', 'Not an empty state');
+  }
+  return _controlFrame(
+    brightness: brightness,
+    textScale: textScale,
+    child: SingleChildScrollView(
+      child: _WithCopy(
+        builder: (AppLocalizations copy) => Padding(
+          padding: const EdgeInsets.all(LingAfriqTokens.spacing16),
+          child: LingEmptyState(
+            title: LingEmptyStateCopy.title,
+            whatHappened: LingEmptyStateCopy.whatHappened,
+            why: LingEmptyStateCopy.why,
+            whatToDo: LingEmptyStateCopy.whatToDo,
+            actionLabel: LingEmptyStateCopy.actionLabel,
+            unavailableLabel: copy.commonStateUnavailable,
+            onAction: () {},
+          ),
         ),
       ),
     ),

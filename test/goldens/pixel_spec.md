@@ -395,3 +395,106 @@ Token ids:
 - LingAfriqType.bodyFamily
 
 default is the container role. pressed blends onSurface onto that fill. focused adds the accent ring. disabled shows the unavailable word and clears the enabled semantics flag. loading keeps the label and shows a progress mark.
+
+## lingSkeletonList
+
+Widget: LingSkeletonList. Three bones stand in for loaded list rows.
+
+States: loading. The catalogue frame disables animations, so this golden is the flat container tone. Semantics label: Loading.
+
+Golden size: 390 by 640. Frames: light 1.0, dark 1.0, light 2.0.
+
+Spacing:
+
+- LingAfriqTokens.spacing16 horizontal padding inside each bone
+- LingAfriqTokens.spacing12 vertical padding inside each bone, and the gap between bones
+- LingAfriqTokens.spacing24 trailing icon strut
+- LingAfriqTokens.spacing48 minimum width and height
+- LingAfriqTokens.radiussm corner
+
+Token ids:
+
+- LingAfriqTokens.roleLightSurface
+- LingAfriqTokens.roleDarkSurface
+- LingAfriqTokens.roleLightSurfaceContainer
+- LingAfriqTokens.roleDarkSurfaceContainer
+- LingAfriqTokens.roleLightOnSurface
+- LingAfriqTokens.roleDarkOnSurface
+- LingAfriqTokens.spacing16
+- LingAfriqTokens.spacing12
+- LingAfriqTokens.spacing24
+- LingAfriqTokens.spacing48
+- LingAfriqTokens.radiussm
+- LingAfriqTokens.motionProductSlow
+- LingAfriqTokens.motionProductEasing
+- LingAfriqType.bodyFamily
+- LingAfriqType.bodySize
+- LingAfriqType.targetHeight
+
+The page background is the ramp role surface. The bone fill is the container role. Reduced motion keeps that flat tone. When animations are on, the bone eases between the surface role and the container role. The move uses LingAfriqTokens.motionProductSlow, at most 300 ms, and LingAfriqTokens.motionProductEasing. The whole bone changes together. It does not sweep.
+
+## lingSkeletonCard
+
+Widget: LingSkeletonCard. One bone stands in for a loaded card.
+
+States: loading. The catalogue frame disables animations, so this golden is the flat container tone. Semantics label: Loading.
+
+Golden size: 390 by 640. Frames: light 1.0, dark 1.0, light 2.0.
+
+Spacing:
+
+- LingAfriqTokens.spacing16 page padding and padding inside the bone
+- LingAfriqTokens.spacing48 minimum width and height
+- LingAfriqTokens.radiusmd corner
+
+Token ids:
+
+- LingAfriqTokens.roleLightSurface
+- LingAfriqTokens.roleDarkSurface
+- LingAfriqTokens.roleLightSurfaceContainer
+- LingAfriqTokens.roleDarkSurfaceContainer
+- LingAfriqTokens.roleLightOnSurface
+- LingAfriqTokens.roleDarkOnSurface
+- LingAfriqTokens.spacing16
+- LingAfriqTokens.spacing48
+- LingAfriqTokens.radiusmd
+- LingAfriqTokens.motionProductSlow
+- LingAfriqTokens.motionProductEasing
+- LingAfriqType.bodyFamily
+
+The page background is the ramp role surface. The bone fill is the container role. The pulse, when animations are on, uses the same product motion as the list bone and does not sweep.
+
+## lingEmptyState
+
+Widget: LingEmptyState. The forward sample is the Today empty copy.
+
+States: forward. Title No plan yet. What happened: Today has nothing queued. Why: There is no review due, and no lesson is chosen. What to do: Open Path and start the first lesson. One button: Open Path.
+
+Golden size: 390 by 640. Frames: light 1.0, dark 1.0, light 2.0.
+
+Spacing:
+
+- LingAfriqTokens.spacing16 page padding and the gap between each line and the button
+- LingAfriqTokens.spacing48 minimum width and height of the button
+- LingAfriqTokens.radiussm button corner
+
+Token ids:
+
+- LingAfriqTokens.roleLightSurface
+- LingAfriqTokens.roleDarkSurface
+- LingAfriqTokens.roleLightOnSurface
+- LingAfriqTokens.roleDarkOnSurface
+- LingAfriqTokens.roleLightOnSurfaceVariant
+- LingAfriqTokens.roleDarkOnSurfaceVariant
+- LingAfriqTokens.roleLightAccent
+- LingAfriqTokens.roleDarkAccent
+- LingAfriqTokens.roleLightOnAccent
+- LingAfriqTokens.roleDarkOnAccent
+- LingAfriqTokens.spacing16
+- LingAfriqTokens.spacing48
+- LingAfriqTokens.radiussm
+- LingAfriqType.bodyFamily
+- LingAfriqType.bodySize
+- LingAfriqType.targetHeight
+
+The page background is the ramp role surface. The title uses onSurface. The three lines use onSurfaceVariant. The button uses the accent role and onAccent. Text wraps. There is one button. The frame scrolls when the wrapped lines are taller than the surface.
