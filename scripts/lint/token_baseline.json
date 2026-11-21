@@ -9,7 +9,7 @@
     "lib/avatars/share/sticker_generator.dart": 1,
     "lib/avatars/social/tribe_avatar_widget.dart": 12,
     "lib/avatars/social/user_avatar_customizer.dart": 22,
-    "lib/design/tokens.g.dart": 160,
+    "lib/design/tokens.g.dart": 188,
     "lib/detail_types/correction_screen.dart": 1,
     "lib/features/polie_workspace/build_host/polie_workspace_build_host_scaffold.dart": 1,
     "lib/features/polie_workspace/mode_surface/polie_workspace_mode_conversation.dart": 21,

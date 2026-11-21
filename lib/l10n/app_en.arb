@@ -5346,5 +5346,29 @@
         "type": "int"
       }
     }
+  },
+  "commonActionContinue": "Continue",
+  "@commonActionContinue": {
+    "description": "common.action.continue"
+  },
+  "commonActionSave": "Save",
+  "@commonActionSave": {
+    "description": "common.action.save"
+  },
+  "commonActionTryAgain": "Try again",
+  "@commonActionTryAgain": {
+    "description": "common.action.tryAgain"
+  },
+  "commonActionClose": "Close",
+  "@commonActionClose": {
+    "description": "common.action.close"
+  },
+  "commonActionShowMore": "Show more",
+  "@commonActionShowMore": {
+    "description": "common.action.showMore"
+  },
+  "commonStateUnavailable": "Unavailable",
+  "@commonStateUnavailable": {
+    "description": "common.state.unavailable"
   }
 }

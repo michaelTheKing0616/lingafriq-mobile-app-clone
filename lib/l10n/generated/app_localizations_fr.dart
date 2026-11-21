@@ -4072,4 +4072,22 @@ class AppLocalizationsFr extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get commonActionContinue => 'Continue';
+
+  @override
+  String get commonActionSave => 'Save';
+
+  @override
+  String get commonActionTryAgain => 'Try again';
+
+  @override
+  String get commonActionClose => 'Close';
+
+  @override
+  String get commonActionShowMore => 'Show more';
+
+  @override
+  String get commonStateUnavailable => 'Unavailable';
 }

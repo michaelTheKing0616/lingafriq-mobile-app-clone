@@ -6888,6 +6888,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =0{Expires today} =1{Expires in 1 day} other{Expires in {count} days}}'**
   String gtpExpiresIn(int count);
+
+  /// common.action.continue
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get commonActionContinue;
+
+  /// common.action.save
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get commonActionSave;
+
+  /// common.action.tryAgain
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get commonActionTryAgain;
+
+  /// common.action.close
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get commonActionClose;
+
+  /// common.action.showMore
+  ///
+  /// In en, this message translates to:
+  /// **'Show more'**
+  String get commonActionShowMore;
+
+  /// common.state.unavailable
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable'**
+  String get commonStateUnavailable;
 }
 
 class _AppLocalizationsDelegate
