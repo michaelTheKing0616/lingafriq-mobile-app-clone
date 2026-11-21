@@ -23,6 +23,7 @@ import 'package:lingafriq/providers/auth_provider.dart';
 import 'package:lingafriq/providers/dialog_provider.dart';
 import 'package:lingafriq/avatars/avatars.dart';
 import 'delete_account_dialogue.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 /// Beautiful Material 3 Profile Tab with Pan-African Design
 class ProfileTabMaterial3 extends HookConsumerWidget {
@@ -54,7 +55,7 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
               children: [
                 // Header with Pan-African App Bar
                 PanAfricanAppBar(
-                  title: 'Profile',
+                  title: l10nOf(context).shellProfile,
                   showBackButton: false,
                   actions: [
                     IconButton(
@@ -62,7 +63,7 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                       onPressed: () {
                         ref.read(scaffoldKeyProvider).currentState?.openDrawer();
                       },
-                      tooltip: 'Menu',
+                      tooltip: l10nOf(context).shellMenu,
                     ),
                   ],
                 ),
@@ -82,7 +83,7 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                       children: [
                         // Profile Avatar (from Avatar Intelligence System)
                         Semantics(
-                          label: 'Profile avatar. Tap to edit profile',
+                          label: l10nOf(context).shellProfileAvatarTapToEditProfile,
                           button: true,
                           child: LingAfriqAvatar(
                             size: 0.25.sw,
@@ -98,7 +99,7 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                         // Profile Details
                         Expanded(
                           child: Semantics(
-                            label: 'Profile: ${user?.username ?? 'User'}, ${user?.email ?? ''}, Level ${user?.level ?? 1}, Streak ${user?.streak ?? 0}',
+                            label: l10nOf(context).shellProfileValueValue2LevelValue3Streak(user?.username ?? 'User', user?.email ?? '', '${user?.level ?? 1}', '${user?.streak ?? 0}'),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -121,12 +122,12 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                                   runSpacing: PanAfricanSpacing.xxs,
                                   children: [
                                     PanAfricanBadge(
-                                      label: 'Level ${user?.level ?? 1}',
+                                      label: l10nOf(context).shellLevelValue('${user?.level ?? 1}'),
                                       color: PanAfricanColors.primary,
                                       icon: Icons.trending_up_rounded,
                                     ),
                                     PanAfricanBadge(
-                                      label: 'Streak ${user?.streak ?? 0}',
+                                      label: l10nOf(context).shellStreakValue('${user?.streak ?? 0}'),
                                       color: PanAfricanColors.tertiary,
                                       icon: Icons.local_fire_department_rounded,
                                     ),
@@ -178,12 +179,12 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                                         color: PanAfricanColors.secondary),
                                     SizedBox(width: PanAfricanSpacing.sm),
                                     Text(
-                                      'Achievements',
+                                      l10nOf(context).shellAchievements,
                                       style: PanAfricanTypography.titleLarge(context),
                                     ),
                                     const Spacer(),
                                     Text(
-                                      '$unlockedBadges/$totalBadges',
+                                      l10nOf(context).shellUnlockedbadgesTotalbadges(unlockedBadges.toString(), totalBadges.toString()),
                                       style: PanAfricanTypography.labelLarge(context).copyWith(
                                         color: PanAfricanColors.textSecondary,
                                       ),
@@ -192,7 +193,7 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                                 ),
                                 SizedBox(height: PanAfricanSpacing.sm),
                                 Semantics(
-                                  label: 'Achievement progress: $unlockedBadges out of $totalBadges badges unlocked',
+                                  label: l10nOf(context).shellAchievementProgressUnlockedbadgesOutOfTotal(unlockedBadges.toString(), totalBadges.toString()),
                                   value: '${(badgeProgress * 100).toInt()}%',
                                   child: PanAfricanProgressBar(
                                     progress: badgeProgress,
@@ -206,7 +207,7 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                                   runSpacing: PanAfricanSpacing.xxs,
                                   children: [
                                     PanAfricanBadge(
-                                      label: '${gamification.xp} XP',
+                                      label: l10nOf(context).shellValueXp('${gamification.xp}'),
                                       color: PanAfricanColors.primary,
                                       icon: Icons.stars_rounded,
                                     ),
@@ -216,7 +217,7 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                                       icon: Icons.emoji_events_rounded,
                                     ),
                                     PanAfricanBadge(
-                                      label: 'Streak ${gamification.dailyStreak}',
+                                      label: l10nOf(context).shellStreakValue('${gamification.dailyStreak}'),
                                       color: PanAfricanColors.kenteRed,
                                       icon: Icons.local_fire_department_rounded,
                                     ),
@@ -239,16 +240,16 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                                   ),
                                   SizedBox(width: PanAfricanSpacing.sm),
                                   Text(
-                                    'Global Ranking',
+                                    l10nOf(context).shellGlobalRanking,
                                     style: PanAfricanTypography.titleMedium(
                                       context,
                                     ),
                                   ),
                                   const Spacer(),
                                   Semantics(
-                                    label: 'Global rank: ${user?.rank ?? 0}',
+                                    label: l10nOf(context).shellGlobalRankValue('${user?.rank ?? 0}'),
                                     child: PanAfricanBadge(
-                                      label: '#${user?.rank ?? 0}',
+                                      label: l10nOf(context).shellValue12bd('${user?.rank ?? 0}'),
                                       color: PanAfricanColors.primary,
                                       icon: Icons.trending_up_rounded,
                                     ),
@@ -267,14 +268,14 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                           // Menu Items
                           _ProfileCard(
                             isDark: isDark,
-                            child: const PanAfricanListTile(
-                              title: 'Change Password',
-                              subtitle: 'Update your credentials securely',
-                              leading: Icon(
+                            child: PanAfricanListTile(
+                              title: l10nOf(context).shellChangePassword,
+                              subtitle: l10nOf(context).shellUpdateYourCredentialsSecurely,
+                              leading: const Icon(
                                 Icons.lock_outline,
                                 color: PanAfricanColors.primary,
                               ),
-                              trailing: Icon(
+                              trailing: const Icon(
                                 Icons.chevron_right,
                                 color: PanAfricanColors.neutralMedium,
                               ),
@@ -288,14 +289,14 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
 
                           _ProfileCard(
                             isDark: isDark,
-                            child: const PanAfricanListTile(
-                              title: 'Give us Feedback',
-                              subtitle: 'Help us improve LingAfriq',
-                              leading: Icon(
+                            child: PanAfricanListTile(
+                              title: l10nOf(context).shellGiveUsFeedback,
+                              subtitle: l10nOf(context).shellHelpUsImproveLingafriq,
+                              leading: const Icon(
                                 Icons.feedback_outlined,
                                 color: PanAfricanColors.primary,
                               ),
-                              trailing: Icon(
+                              trailing: const Icon(
                                 Icons.chevron_right,
                                 color: PanAfricanColors.neutralMedium,
                               ),
@@ -309,14 +310,14 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
 
                           _ProfileCard(
                             isDark: isDark,
-                            child: const PanAfricanListTile(
-                              title: 'Who are we?',
-                              subtitle: 'Learn about the LingAfriq mission',
-                              leading: Icon(
+                            child: PanAfricanListTile(
+                              title: l10nOf(context).shellWhoAreWe,
+                              subtitle: l10nOf(context).shellLearnAboutTheLingafriqMission,
+                              leading: const Icon(
                                 Icons.info_outline,
                                 color: PanAfricanColors.primary,
                               ),
-                              trailing: Icon(
+                              trailing: const Icon(
                                 Icons.chevron_right,
                                 color: PanAfricanColors.neutralMedium,
                               ),
@@ -328,14 +329,14 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
 
                           _ProfileCard(
                             isDark: isDark,
-                            child: const PanAfricanListTile(
-                              title: 'Privacy & User Policy',
-                              subtitle: 'Read how your data is protected',
-                              leading: Icon(
+                            child: PanAfricanListTile(
+                              title: l10nOf(context).shellPrivacyUserPolicy,
+                              subtitle: l10nOf(context).shellReadHowYourDataIsProtected,
+                              leading: const Icon(
                                 Icons.privacy_tip_outlined,
                                 color: PanAfricanColors.primary,
                               ),
-                              trailing: Icon(
+                              trailing: const Icon(
                                 Icons.chevron_right,
                                 color: PanAfricanColors.neutralMedium,
                               ),
@@ -347,14 +348,14 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
 
                           _ProfileCard(
                             isDark: isDark,
-                            child: const PanAfricanListTile(
-                              title: 'Delete your account',
-                              subtitle: 'This action is permanent',
-                              leading: Icon(
+                            child: PanAfricanListTile(
+                              title: l10nOf(context).shellDeleteYourAccount,
+                              subtitle: l10nOf(context).shellThisActionIsPermanent,
+                              leading: const Icon(
                                 Icons.delete_outline,
                                 color: PanAfricanColors.error,
                               ),
-                              trailing: Icon(
+                              trailing: const Icon(
                                 Icons.chevron_right,
                                 color: PanAfricanColors.neutralMedium,
                               ),
@@ -384,7 +385,7 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                               await ref
                                   .read(dialogProvider(""))
                                   .showPlatformDialogue(
-                                    title: "Account Deleted",
+                                    title: l10nOf(context).shellAccountDeleted,
                                   );
                               ref.read(authProvider.notifier).signOut(
                                     deleteAccount: true,

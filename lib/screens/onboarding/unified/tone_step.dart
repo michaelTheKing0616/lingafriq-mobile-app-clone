@@ -5,37 +5,37 @@ class _ToneStep extends HookConsumerWidget {
 
   final Function(Map<String, dynamic>) onNext;
 
-  static const _tones = [
+  static _tones(BuildContext context) => [
     {
       'id': 'playful',
       'icon': Icons.sentiment_very_satisfied_rounded,
-      'label': 'Playful',
-      'desc': 'Fun & light',
+      'label': l10nOf(context).onboardingPlayful,
+      'desc': l10nOf(context).onboardingFunLight,
     },
     {
       'id': 'encouraging',
       'icon': Icons.thumb_up_rounded,
-      'label': 'Encouraging',
-      'desc': 'Supportive',
+      'label': l10nOf(context).onboardingEncouraging,
+      'desc': l10nOf(context).onboardingSupportive,
     },
     {
       'id': 'serious',
       'icon': Icons.psychology_rounded,
-      'label': 'Focused',
-      'desc': 'Direct & efficient',
+      'label': l10nOf(context).onboardingFocused,
+      'desc': l10nOf(context).onboardingDirectEfficient,
     },
     {
       'id': 'friendly',
       'icon': Icons.emoji_people_rounded,
-      'label': 'Friendly',
-      'desc': 'Warm & casual',
+      'label': l10nOf(context).onboardingFriendly,
+      'desc': l10nOf(context).onboardingWarmCasual,
     },
   ];
 
-  static const _gamificationLevels = [
-    {'id': 'full', 'label': 'Full', 'desc': 'XP, badges, streaks'},
-    {'id': 'moderate', 'label': 'Moderate', 'desc': 'Progress tracking'},
-    {'id': 'minimal', 'label': 'Minimal', 'desc': 'Just learning'},
+  static _gamificationLevels(BuildContext context) => [
+    {'id': 'full', 'label': l10nOf(context).onboardingFull, 'desc': l10nOf(context).onboardingXpBadgesStreaks},
+    {'id': 'moderate', 'label': l10nOf(context).onboardingModerate, 'desc': l10nOf(context).onboardingProgressTracking},
+    {'id': 'minimal', 'label': l10nOf(context).onboardingMinimal, 'desc': l10nOf(context).onboardingJustLearning},
   ];
 
   @override
@@ -64,16 +64,16 @@ class _ToneStep extends HookConsumerWidget {
           });
         },
       ),
-      header: const _QuestionHeader(
-        question: 'How should Polie sound?',
-        hint: 'Pick the voice that feels like a good study buddy.',
+      header: _QuestionHeader(
+        question: l10nOf(context).onboardingHowShouldPolieSound,
+        hint: l10nOf(context).onboardingPickTheVoiceThatFeelsLike,
         step: OnboardingStep.story,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: ModernGriotSpacing.md.h),
-          for (final tone in _tones)
+          for (final tone in _tones(context))
             _SelectRow(
               label: tone['label'] as String,
               subtitle: tone['desc'] as String,
@@ -89,14 +89,14 @@ class _ToneStep extends HookConsumerWidget {
             ),
           SizedBox(height: ModernGriotSpacing.md.h),
           Text(
-            _bidi(context, 'How much game feel?'),
+            _bidi(context, l10nOf(context).onboardingHowMuchGameFeel),
             style: ModernGriotTypography.titleMedium(
               context: context,
               color: ModernGriotColors.onSurface,
             ),
           ),
           SizedBox(height: ModernGriotSpacing.xs.h),
-          for (final level in _gamificationLevels)
+          for (final level in _gamificationLevels(context))
             _SelectRow(
               label: level['label'] as String,
               subtitle: level['desc'] as String,

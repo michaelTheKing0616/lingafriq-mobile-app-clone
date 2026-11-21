@@ -46,6 +46,7 @@ import 'package:lingafriq/screens/gamification/tribe_selection_screen.dart';
 import 'package:lingafriq/screens/gamification/leaderboard_screen.dart';
 import 'package:lingafriq/screens/personalities/personality_selection_screen.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 /// Modern Pan-African App Drawer with Future-Forward Styling
 class AppDrawerMaterial3 extends HookConsumerWidget {
@@ -68,7 +69,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
       final enabled = Theme.of(context).brightness == Brightness.dark;
       showLingAfriqInfo(
         context,
-        'Dark mode ${enabled ? 'enabled' : 'disabled'}',
+        l10nOf(context).shellDarkModeValue(enabled ? 'enabled' : 'disabled'),
       );
     }
 
@@ -93,7 +94,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                   Row(
                     children: [
                       Semantics(
-                        label: 'User avatar',
+                        label: l10nOf(context).shellUserAvatar,
                         excludeSemantics: true,
                         child: CircleAvatar(
                           radius: 30.r,
@@ -113,7 +114,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           children: [
                             Semantics(
                               label:
-                                  'Username: ${currentUser?.username ?? 'User'}',
+                                  l10nOf(context).shellUsernameValue(currentUser?.username ?? 'User'),
                               child: Text(
                                 currentUser?.username ?? 'User',
                                 style: PanAfricanTypography.titleLarge(context)
@@ -126,7 +127,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                             ),
                             SizedBox(height: PanAfricanSpacing.xxs),
                             Semantics(
-                              label: 'Email: ${currentUser?.email ?? ''}',
+                              label: l10nOf(context).shellEmailValue(currentUser?.email ?? ''),
                               child: Text(
                                 currentUser?.email ?? '',
                                 style: PanAfricanTypography.bodySmall(context)
@@ -182,7 +183,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       ),
                       _DrawerItem(
                         icon: PanAfricanIcons.ai,
-                        label: 'Authentic Path (A1–C1)',
+                        label: l10nOf(context).shellAuthenticPathA1C1,
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
@@ -196,7 +197,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       ),
                       _DrawerItem(
                         icon: Icons.verified_user_outlined,
-                        label: 'Native content review',
+                        label: l10nOf(context).shellNativeContentReview,
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
@@ -210,7 +211,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       ),
                       _DrawerItem(
                         icon: PanAfricanIcons.lesson,
-                        label: 'Polie Tutor',
+                        label: l10nOf(context).shellPolieTutor,
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
@@ -224,7 +225,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       ),
                       _DrawerItem(
                         icon: PanAfricanIcons.chat,
-                        label: 'AI Chat',
+                        label: l10nOf(context).shellAiChat,
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
@@ -259,7 +260,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       ),
                       _DrawerItem(
                         icon: PanAfricanIcons.magazine,
-                        label: 'Cultural Magazine',
+                        label: l10nOf(context).shellCulturalMagazine,
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
@@ -273,7 +274,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       ),
                       _DrawerItem(
                         icon: Icons.auto_awesome_mosaic_rounded,
-                        label: 'Phrase DNA',
+                        label: l10nOf(context).shellPhraseDna,
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
@@ -287,7 +288,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       ),
                       _DrawerItem(
                         icon: Icons.graphic_eq_rounded,
-                        label: 'Tone & Rhythm',
+                        label: l10nOf(context).shellToneRhythm,
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
@@ -317,7 +318,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       ),
                       _DrawerItem(
                         icon: Icons.upload,
-                        label: 'Import Media',
+                        label: l10nOf(context).shellImportMedia,
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
@@ -331,7 +332,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       ),
                       _DrawerItem(
                         icon: Icons.center_focus_strong_rounded,
-                        label: 'Point & Say',
+                        label: l10nOf(context).shellPointSay,
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
@@ -347,7 +348,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       ),
                       _DrawerItem(
                         icon: Icons.mic_none_rounded,
-                        label: 'Live translate',
+                        label: l10nOf(context).shellLiveTranslate,
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(context, liveTranslateRoute());
@@ -356,7 +357,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       ),
                       _DrawerItem(
                         icon: Icons.auto_stories_rounded,
-                        label: 'Living Dictionary',
+                        label: l10nOf(context).shellLivingDictionary,
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
@@ -370,7 +371,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       ),
                       _DrawerItem(
                         icon: Icons.flag_rounded,
-                        label: 'Heritage milestones',
+                        label: l10nOf(context).shellHeritageMilestones,
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.pushNamed(context, 'heritage-milestones');
@@ -379,7 +380,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       ),
                       _DrawerItem(
                         icon: Icons.translate_rounded,
-                        label: 'Dialect preference',
+                        label: l10nOf(context).shellDialectPreference,
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.pushNamed(context, 'dialect-preference');
@@ -388,7 +389,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       ),
                       _DrawerItem(
                         icon: Icons.create,
-                        label: 'Create Content',
+                        label: l10nOf(context).shellCreateContent,
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
@@ -410,7 +411,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       if (!socialBlocked) ...[
                         if (chatVisible) _DrawerItem(
                           icon: PanAfricanIcons.chat,
-                          label: 'Global Chat',
+                          label: l10nOf(context).shellGlobalChat,
                           onTap: () {
                             Navigator.pop(context);
                             Navigator.push(
@@ -424,7 +425,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                         ),
                         _DrawerItem(
                           icon: Icons.dynamic_feed_rounded,
-                          label: 'Community Feed',
+                          label: l10nOf(context).shellCommunityFeed,
                           onTap: () {
                             Navigator.pop(context);
                             Navigator.push(
@@ -456,7 +457,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       if (!socialBlocked)
                         _DrawerItem(
                           icon: Icons.chat_bubble_outline,
-                          label: 'Private Chat',
+                          label: l10nOf(context).shellPrivateChat,
                           onTap: () {
                             Navigator.pop(context);
                             Navigator.push(
@@ -470,7 +471,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                         ),
                       _DrawerItem(
                         icon: Icons.school_outlined,
-                        label: 'Live Classroom',
+                        label: l10nOf(context).shellLiveClassroom,
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
@@ -484,7 +485,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       ),
                       _DrawerItem(
                         icon: PanAfricanIcons.community,
-                        label: 'Language Villages',
+                        label: l10nOf(context).shellLanguageVillages,
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
@@ -499,7 +500,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       if (!socialBlocked)
                         _DrawerItem(
                           icon: Icons.radio,
-                          label: 'Practice Rooms',
+                          label: l10nOf(context).shellPracticeRooms,
                           onTap: () {
                             Navigator.pop(context);
                             Navigator.push(
@@ -513,7 +514,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                         ),
                       _DrawerItem(
                         icon: PanAfricanIcons.tribe,
-                        label: 'My Tribes',
+                        label: l10nOf(context).shellMyTribes,
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
@@ -527,7 +528,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       ),
                       _DrawerItem(
                         icon: Icons.history_edu,
-                        label: 'Historical Personas',
+                        label: l10nOf(context).shellHistoricalPersonas,
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
@@ -548,7 +549,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       children: [
                         _DrawerItem(
                           icon: Icons.shield_outlined,
-                          label: 'Micro-mentor reports',
+                          label: l10nOf(context).shellMicroMentorReports,
                           onTap: () {
                             Navigator.pop(context);
                             Navigator.push(
@@ -632,14 +633,14 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       ),
                       // Dark Mode Toggle
                       Semantics(
-                        label: 'Dark mode',
+                        label: l10nOf(context).shellDarkMode9cf8,
                         value: isDark ? 'enabled' : 'disabled',
                         toggled: isDark,
                         child: SwitchListTile(
                           value: isDark,
                           onChanged: (_) => toggleDarkMode(),
-                          title: const Text('Dark Mode'),
-                          subtitle: const Text('Toggle theme'),
+                          title: Text(l10nOf(context).shellDarkMode),
+                          subtitle: Text(l10nOf(context).shellToggleTheme),
                           secondary: Semantics(
                             excludeSemantics: true,
                             child: Icon(
@@ -672,21 +673,21 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                 ),
               ),
               child: Semantics(
-                label: 'Logout',
+                label: l10nOf(context).shellLogout,
                 button: true,
                 child: PanAfricanButton(
-                  label: 'Logout',
+                  label: l10nOf(context).shellLogout,
                   icon: Icons.logout,
                   onPressed: () async {
                     final shouldLogout = await showDialog<bool>(
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: const Text('Logout'),
-                        content: const Text('Are you sure you want to logout?'),
+                        title: Text(l10nOf(context).shellLogout),
+                        content: Text(l10nOf(context).shellAreYouSureYouWantTo),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(context, false),
-                            child: const Text('Cancel'),
+                            child: Text(l10nOf(context).shellCancel),
                           ),
                           ElevatedButton(
                             onPressed: () => Navigator.pop(context, true),
@@ -696,7 +697,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                                 context,
                               ).colorScheme.onPrimary,
                             ),
-                            child: const Text('Logout'),
+                            child: Text(l10nOf(context).shellLogout),
                           ),
                         ],
                       ),
@@ -737,7 +738,7 @@ class _DrawerSection extends StatelessWidget {
             vertical: PanAfricanSpacing.sm,
           ),
           child: Semantics(
-            label: '$title section',
+            label: l10nOf(context).shellTitleSection(title.toString()),
             header: true,
             child: Text(
               title.toUpperCase(),

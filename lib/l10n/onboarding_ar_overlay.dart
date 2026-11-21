@@ -1,9 +1,22 @@
-part of '../unified_onboarding_screen.dart';
+/// Arabic onboarding copy that already shipped in the app.
+///
+/// Keyed by the English source string. Unknown keys stay in English.
+/// This is the existing translation, not a new one: other locales are left
+/// for translators and fall back to the English ARB.
+String? onboardingArExact(String english) => _exact[english];
 
-/// Arabic copy for the onboarding entry screens (welcome, language pick and
-/// the shared chrome). Keyed by the English source; unknown keys stay English
-/// inside an LTR isolate.
-const Map<String, String> _arCopy = {
+String onboardingArSaveHint(int wordsLearned) {
+  final words = wordsLearned == 1 ? 'كلمة واحدة' : '$wordsLearned كلمات';
+  return 'أنهيت درسك الأول وتعلّمت $words. '
+      'يحفظ الحساب تقدّمك إذا غيّرت هاتفك.';
+}
+
+String onboardingArStep(int current, int total) => 'الخطوة $current من $total';
+
+String onboardingArBasket(int words) =>
+    words == 1 ? 'كلمة واحدة في سلّتك' : '$words كلمات في سلّتك';
+
+const Map<String, String> _exact = {
   'Welcome to': 'مرحبًا بك في',
   'LingAfriq': 'لينغ أفريك',
   'The language village that gets you speaking.':

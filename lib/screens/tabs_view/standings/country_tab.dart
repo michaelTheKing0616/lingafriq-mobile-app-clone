@@ -8,6 +8,7 @@ import 'package:lingafriq/widgets/info_widget.dart';
 
 import '../../../models/profile_model.dart';
 import 'leader_board_provider.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 class CountryTab extends ConsumerWidget {
   final List<ProfileModel> profiles;
@@ -20,9 +21,9 @@ class CountryTab extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoadingMore = ref.watch(leaderboardProvider.select((value) => value.isLoadingMore));
     if (profiles.isEmpty) {
-      return const InfoWidget(
-        text: 'No points earned yet',
-        subText: 'Start a course to see your country ranking',
+      return InfoWidget(
+        text: l10nOf(context).shellNoPointsEarnedYet,
+        subText: l10nOf(context).shellStartACourseToSeeYoure3fc,
       );
     }
 

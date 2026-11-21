@@ -7,11 +7,11 @@ class _DailyGoalStep extends HookConsumerWidget {
 
   final Function(Map<String, dynamic>) onNext;
 
-  static const _goals = [
-    (min: 5, label: 'Casual', note: 'A greeting a day'),
-    (min: 10, label: 'Steady', note: 'A good daily start'),
-    (min: 15, label: 'Serious', note: 'Hold a short chat in weeks'),
-    (min: 20, label: 'Intense', note: 'For a trip or a big day soon'),
+  static _goals(BuildContext context) => [
+    (min: 5, label: 'Casual', note: l10nOf(context).onboardingAGreetingADay),
+    (min: 10, label: 'Steady', note: l10nOf(context).onboardingAGoodDailyStart),
+    (min: 15, label: 'Serious', note: l10nOf(context).onboardingHoldAShortChatInWeeks),
+    (min: 20, label: 'Intense', note: l10nOf(context).onboardingForATripOrABig),
   ];
 
   @override
@@ -35,15 +35,15 @@ class _DailyGoalStep extends HookConsumerWidget {
         enabled: minutes.value != null,
         onPressed: submit,
       ),
-      header: const _QuestionHeader(
+      header: _QuestionHeader(
         step: OnboardingStep.schedule,
-        question: 'How much time a day feels right?',
-        hint: 'You can change this any time in Settings.',
+        question: l10nOf(context).onboardingHowMuchTimeADayFeels,
+        hint: l10nOf(context).onboardingYouCanChangeThisAnyTime,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          for (final g in _goals)
+          for (final g in _goals(context))
             _SelectRow(
               label: g.label,
               subtitle: g.note,
@@ -84,7 +84,7 @@ class _MinutesBadge extends StatelessWidget {
         borderRadius: BorderRadius.circular(ModernGriotRadius.pill),
       ),
       child: Text(
-        _bidi(context, '$minutes min'),
+        _bidi(context, l10nOf(context).onboardingMinutesMin(minutes.toString())),
         textAlign: TextAlign.center,
         style: ModernGriotTypography.labelLarge(
           context: context,

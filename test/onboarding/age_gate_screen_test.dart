@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 import 'package:lingafriq/screens/onboarding/age_gate_screen.dart';
 import 'package:lingafriq/services/age_tier_service.dart';
 
@@ -39,8 +40,8 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text(AgeGateScreen.ageGateTitle), findsOneWidget);
-      expect(find.text(AgeGateScreen.ageGateBody), findsOneWidget);
+      expect(find.text(l10nEn().onboardingWhatYearWereYouBorn), findsOneWidget);
+      expect(find.text(l10nEn().onboardingWeUseThisToKeepLearners), findsOneWidget);
       expect(find.text('Select birth year'), findsOneWidget);
     });
 
@@ -72,7 +73,7 @@ void main() {
               AgeTierAssignmentResult(
                 ok: false,
                 code: 'AGE_RETRY_BLOCKED',
-                message: AgeGateScreen.ageGateBlocked,
+                message: l10nEn().onboardingYouAlreadyEnteredABirthYear,
               ),
             ),
           ),
@@ -82,7 +83,10 @@ void main() {
       await tester.ensureVisible(find.text('Continue'));
       await tester.tap(find.text('Continue'));
       await tester.pumpAndSettle();
-      expect(find.text(AgeGateScreen.ageGateBlocked), findsOneWidget);
+      expect(
+        find.text(l10nEn().onboardingYouAlreadyEnteredABirthYear),
+        findsOneWidget,
+      );
     });
 
     testWidgets('pending guardian state offers lesson continue', (
@@ -113,7 +117,7 @@ void main() {
       await tester.tap(find.text('Continue'));
       await tester.pumpAndSettle();
       expect(
-        find.text(AgeGateScreen.ageGatePendingGuardianTitle),
+        find.text(l10nEn().onboardingWeNeedAGuardian),
         findsOneWidget,
       );
       await tester.ensureVisible(find.text('Continue to lessons'));

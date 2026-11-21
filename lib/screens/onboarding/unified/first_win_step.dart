@@ -22,7 +22,7 @@ class _FirstWinStep extends HookConsumerWidget {
     final copy = _lessonCopyFor(learningLanguage);
     final decoy = switch (learningLanguage) {
       'sw' => 'Jambo',
-      'ha' => 'Ina kwana',
+      'ha' => l10nOf(context).onboardingInaKwana,
       'ig' => 'Kedu',
       'am' => 'ታደለ',
       'zu' => 'Unjani',
@@ -62,7 +62,7 @@ class _FirstWinStep extends HookConsumerWidget {
       final xp = _kExerciseXp * (spoke.value ? 3 : 2);
       return _StepScaffold(
         bottom: _PrimaryCta(
-          label: 'Keep going',
+          label: l10nOf(context).onboardingKeepGoing,
           enabled: true,
           onPressed: () {
             onNext({
@@ -98,7 +98,7 @@ class _FirstWinStep extends HookConsumerWidget {
                   ),
                 SizedBox(height: ModernGriotSpacing.md.h),
                 Text(
-                  _bidi(context, 'You did it!'),
+                  _bidi(context, l10nOf(context).onboardingYouDidIt),
                   style: ModernGriotTypography.headlineMedium(
                     context: context,
                     color: ModernGriotColors.onSurface,
@@ -106,7 +106,7 @@ class _FirstWinStep extends HookConsumerWidget {
                 ),
                 SizedBox(height: ModernGriotSpacing.xs.h),
                 Text(
-                  _bidi(context, 'Celebrate progress, not perfection.'),
+                  _bidi(context, l10nOf(context).onboardingCelebrateProgressNotPerfection),
                   textAlign: TextAlign.center,
                   style: ModernGriotTypography.bodyLarge(
                     context: context,
@@ -116,14 +116,14 @@ class _FirstWinStep extends HookConsumerWidget {
                 SizedBox(height: ModernGriotSpacing.lg.h),
                 Row(
                   children: [
-                    const Expanded(
-                      child: _StatTile(value: '1', label: 'New word'),
+                    Expanded(
+                      child: _StatTile(value: '1', label: l10nOf(context).onboardingNewWord),
                     ),
                     Expanded(
                       child: _StatTile(value: '$xp', label: 'XP'),
                     ),
-                    const Expanded(
-                      child: _StatTile(value: '1', label: 'Lesson done'),
+                    Expanded(
+                      child: _StatTile(value: '1', label: l10nOf(context).onboardingLessonDone),
                     ),
                   ],
                 ),
@@ -144,7 +144,7 @@ class _FirstWinStep extends HookConsumerWidget {
 
     return _StepScaffold(
       bottom: _PrimaryCta(
-        label: phase.value == 2 ? 'Finish lesson' : 'Continue',
+        label: phase.value == 2 ? l10nOf(context).onboardingFinishLesson : 'Continue',
         enabled: canAdvance,
         onPressed: () {
           if (phase.value == 2) spoke.value = true;
@@ -158,7 +158,7 @@ class _FirstWinStep extends HookConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            _bidi(context, 'Your first win'),
+            _bidi(context, l10nOf(context).onboardingYourFirstWin),
             style: ModernGriotTypography.headlineSmall(
               context: context,
               color: ModernGriotColors.onSurface,
@@ -168,7 +168,7 @@ class _FirstWinStep extends HookConsumerWidget {
           Text(
             _bidi(
               context,
-              'A 60-second taste of ${copy.name}. Hear, tap, say.',
+              l10nOf(context).onboardingA60SecondTasteOfValue(copy.name),
             ),
             style: ModernGriotTypography.bodyMedium(
               context: context,
@@ -194,7 +194,7 @@ class _FirstWinStep extends HookConsumerWidget {
           if (phase.value == 0) ...[
             Center(
               child: Text(
-                _bidi(context, 'Hear: ${copy.hear}'),
+                _bidi(context, l10nOf(context).onboardingHearValue(copy.hear)),
                 textAlign: TextAlign.center,
                 style: ModernGriotTypography.headlineMedium(
                   context: context,
@@ -208,10 +208,10 @@ class _FirstWinStep extends HookConsumerWidget {
                 button: true,
                 liveRegion: true,
                 label: switch (audioStatus.value) {
-                  _GreetingAudioStatus.heard => 'Greeting played',
-                  _GreetingAudioStatus.unavailable => 'Audio unavailable',
-                  _GreetingAudioStatus.playing => 'Playing greeting',
-                  _GreetingAudioStatus.idle => 'Play greeting ${copy.hear}',
+                  _GreetingAudioStatus.heard => l10nOf(context).onboardingGreetingPlayed,
+                  _GreetingAudioStatus.unavailable => l10nOf(context).onboardingAudioUnavailable,
+                  _GreetingAudioStatus.playing => l10nOf(context).onboardingPlayingGreeting,
+                  _GreetingAudioStatus.idle => l10nOf(context).onboardingPlayGreetingValue(copy.hear),
                 },
                 child: OutlinedButton.icon(
                   onPressed: audioStatus.value == _GreetingAudioStatus.playing
@@ -234,10 +234,10 @@ class _FirstWinStep extends HookConsumerWidget {
                   }),
                   label: Text(
                     _bidi(context, switch (audioStatus.value) {
-                      _GreetingAudioStatus.heard => 'Heard it',
-                      _GreetingAudioStatus.unavailable => 'Audio unavailable',
+                      _GreetingAudioStatus.heard => l10nOf(context).onboardingHeardIt,
+                      _GreetingAudioStatus.unavailable => l10nOf(context).onboardingAudioUnavailable,
                       _GreetingAudioStatus.playing => 'Playing…',
-                      _GreetingAudioStatus.idle => 'Play greeting',
+                      _GreetingAudioStatus.idle => l10nOf(context).onboardingPlayGreeting,
                     }),
                   ),
                 ),
@@ -248,7 +248,7 @@ class _FirstWinStep extends HookConsumerWidget {
               Text(
                 _bidi(
                   context,
-                  'We could not play sound right now. You can still continue.',
+                  l10nOf(context).onboardingWeCouldNotPlaySoundRight,
                 ),
                 textAlign: TextAlign.center,
                 style: ModernGriotTypography.bodySmall(
@@ -260,7 +260,7 @@ class _FirstWinStep extends HookConsumerWidget {
           ] else if (phase.value == 1) ...[
             Center(
               child: Text(
-                _bidi(context, 'Tap the greeting'),
+                _bidi(context, l10nOf(context).onboardingTapTheGreeting),
                 textAlign: TextAlign.center,
                 style: ModernGriotTypography.headlineMedium(
                   context: context,
@@ -281,7 +281,7 @@ class _FirstWinStep extends HookConsumerWidget {
           ] else ...[
             Center(
               child: Text(
-                _bidi(context, 'Say it with Polie'),
+                _bidi(context, l10nOf(context).onboardingSayItWithPolie),
                 textAlign: TextAlign.center,
                 style: ModernGriotTypography.headlineMedium(
                   context: context,
@@ -305,8 +305,8 @@ class _FirstWinStep extends HookConsumerWidget {
               child: Semantics(
                 button: true,
                 label: saidReady.value
-                    ? 'You marked the phrase as said'
-                    : 'Mark that you said ${copy.hear}',
+                    ? l10nOf(context).onboardingYouMarkedThePhraseAsSaid
+                    : l10nOf(context).onboardingMarkThatYouSaidValue(copy.hear),
                 child: OutlinedButton.icon(
                   onPressed: () {
                     HapticFeedback.mediumImpact();
@@ -328,7 +328,7 @@ class _FirstWinStep extends HookConsumerWidget {
                   label: Text(
                     _bidi(
                       context,
-                      saidReady.value ? 'Nice, you said it' : 'I said it',
+                      saidReady.value ? l10nOf(context).onboardingNiceYouSaidIt : l10nOf(context).onboardingISaidIt,
                     ),
                   ),
                 ),
@@ -349,7 +349,7 @@ class _FirstWinStep extends HookConsumerWidget {
                   saidReady.value = false;
                   phase.value = 3;
                 },
-                child: Text(_bidi(context, "Can't speak now")),
+                child: Text(_bidi(context, l10nOf(context).onboardingCanTSpeakNow)),
               ),
             ),
           ],

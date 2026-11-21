@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/utils.dart';
 
 import '../../../widgets/top_gradient_box_builder.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 class AboutUsScreen extends StatelessWidget {
   const AboutUsScreen({super.key});
@@ -18,7 +19,7 @@ class AboutUsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Semantics(
-                    label: 'Back',
+                    label: l10nOf(context).shellBack,
                     button: true,
                     child: BackButton(color: Theme.of(context).colorScheme.onPrimary),
                   ),

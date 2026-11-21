@@ -15,6 +15,7 @@ import '../../../widgets/greegins_builder.dart';
 import '../home/home_tab.dart';
 import '../home/language_detail_screen.dart';
 import '../tabs_view.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 class CoursesTab extends HookConsumerWidget {
   const CoursesTab({super.key});
@@ -43,9 +44,9 @@ class CoursesTab extends HookConsumerWidget {
                 ),
                 // const PointsAndProfileImageBuilder(),
                 GreetingsBuilder(
-                  pageTitle: "Your Courses!",
+                  pageTitle: l10nOf(context).shellYourCourses,
                   showGreeting: ref.watch(userProvider) != null,
-                  greetingTitle: "Hi ${ref.watch(userProvider)?.fullName}",
+                  greetingTitle: l10nOf(context).shellHiValue('${ref.watch(userProvider)?.fullName}'),
                 ),
               ],
             ),
@@ -62,9 +63,9 @@ class CoursesTab extends HookConsumerWidget {
                         languages.results.where((e) => e.total_score > 0).toList();
 
                     if (progressLanguages.isEmpty) {
-                      return const InfoWidget(
-                        text: "No Course started yet",
-                        subText: "Start a course to see your progress",
+                      return InfoWidget(
+                        text: l10nOf(context).shellNoCourseStartedYet,
+                        subText: l10nOf(context).shellStartACourseToSeeYour,
                       );
                     }
 
@@ -91,8 +92,8 @@ class CoursesTab extends HookConsumerWidget {
                       },
                     );
                   },
-                  loading: () => const AdaptiveProgressIndicator(
-                    message: "Loading Courses ...",
+                  loading: () => AdaptiveProgressIndicator(
+                    message: l10nOf(context).shellLoadingCourses,
                   ),
                 ),
               ),
@@ -147,7 +148,7 @@ class _ProgressItem extends ConsumerWidget {
                       ],
                     ),
                     4.heightBox,
-                    "Lessons completed: ${language.completed} • Points earned: ${language.total_score}"
+                    l10nOf(context).shellLessonsCompletedValuePointsEarnedValue2('${language.completed}', '${language.total_score}')
                         .text
                         .color(context.adaptive54)
                         .maxLines(2)

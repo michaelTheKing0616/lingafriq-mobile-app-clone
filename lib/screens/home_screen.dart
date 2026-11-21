@@ -2,9 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/age_policy_provider.dart';
-import 'package:lingafriq/providers/tab_scaffold_provider.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 /// Root shell after sign-in (P1-022). Redirects restricted learners off social tab.
 class HomeScreen extends ConsumerWidget {
@@ -35,10 +35,8 @@ class AgeRestrictedSurfaceScreen extends StatelessWidget {
     this.serverMessage,
   });
 
-  static const String title = 'Learning comes first';
-  static const String body =
-      'Private messages, calls, snaps, and the public feed unlock when you are 18 '
-      'and your age is verified. Until then, keep going on lessons, games, and Polie.';
+  static String title(BuildContext context) => l10nOf(context).shellLearningComesFirst;
+  static String body(BuildContext context) => l10nOf(context).shellPrivateMessagesCallsSnapsAndThe;
 
   final bool showBack;
   final String? serverMessage;
@@ -53,9 +51,9 @@ class AgeRestrictedSurfaceScreen extends StatelessWidget {
           isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
       appBar: showBack
           ? AppBar(
-              title: const Text('Not available yet'),
+              title: Text(l10nOf(context).shellNotAvailableYet),
               leading: Semantics(
-                label: 'Back to learning home',
+                label: l10nOf(context).shellBackToLearningHome,
                 button: true,
                 child: IconButton(
                   icon: const Icon(Icons.arrow_back),
@@ -73,13 +71,13 @@ class AgeRestrictedSurfaceScreen extends StatelessWidget {
               Semantics(
                 header: true,
                 child: Text(
-                  title,
+                  title(context),
                   style: theme.textTheme.headlineSmall,
                 ),
               ),
               const SizedBox(height: 16),
               Text(
-                serverMessage ?? body,
+                serverMessage ?? body(context),
                 style: theme.textTheme.bodyLarge,
               ),
               const Spacer(),
@@ -94,7 +92,7 @@ class AgeRestrictedSurfaceScreen extends StatelessWidget {
                     (_) => false,
                   );
                 },
-                child: const Text('Back to learning'),
+                child: Text(l10nOf(context).shellBackToLearning),
               ),
             ],
           ),

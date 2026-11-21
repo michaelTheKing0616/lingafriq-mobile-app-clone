@@ -7,6 +7,7 @@ import 'package:lingafriq/providers/onboarding_provider.dart';
 import 'package:lingafriq/services/placement_test_service.dart';
 import 'package:lingafriq/services/localization_service.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 class PlacementQuizScreen extends HookConsumerWidget {
   final VoidCallback onComplete;
@@ -43,7 +44,7 @@ class PlacementQuizScreen extends HookConsumerWidget {
                   ),
                   SizedBox(height: PanAfricanSpacing.lg),
                   Text(
-                    'Loading placement test...',
+                    l10nOf(context).onboardingLoadingPlacementTest,
                     style: PanAfricanTypography.bodyLarge(context),
                   ),
                 ],
@@ -70,13 +71,13 @@ class PlacementQuizScreen extends HookConsumerWidget {
                     ),
                     SizedBox(height: PanAfricanSpacing.lg),
                     Text(
-                      'Placement questions are not available right now.',
+                      l10nOf(context).onboardingPlacementQuestionsAreNotAvailableRight,
                       style: PanAfricanTypography.titleMedium(context),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: PanAfricanSpacing.sm),
                     Text(
-                      'Please try again later.',
+                      l10nOf(context).onboardingPleaseTryAgainLater,
                       style: PanAfricanTypography.bodyMedium(
                         context,
                         color: PanAfricanColors.textSecondary,
@@ -96,7 +97,7 @@ class PlacementQuizScreen extends HookConsumerWidget {
                         ).colorScheme.onPrimary,
                         minimumSize: Size(200.w, 50.h),
                       ),
-                      child: const Text('Go Back'),
+                      child: Text(l10nOf(context).onboardingGoBack),
                     ),
                   ],
                 ),
@@ -212,10 +213,10 @@ class _PlacementQuizScaffoldState extends State<_PlacementQuizScaffold> {
                 FutureBuilder<String>(
                   future: loc.t(
                     key: 'placement.title',
-                    english: 'Placement Test',
+                    english: l10nOf(context).onboardingPlacementTest,
                   ),
                   builder: (context, snapshot) {
-                    final title = snapshot.data ?? 'Placement Test';
+                    final title = snapshot.data ?? l10nOf(context).onboardingPlacementTest;
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -224,7 +225,7 @@ class _PlacementQuizScaffoldState extends State<_PlacementQuizScaffold> {
                           style: PanAfricanTypography.titleLarge(context),
                         ),
                         Text(
-                          '${_currentIndex + 1} / ${widget.questions.length}',
+                          l10nOf(context).onboardingValueValue2('${_currentIndex + 1}', '${widget.questions.length}'),
                           style: PanAfricanTypography.labelMedium(
                             context,
                             color: isDark
