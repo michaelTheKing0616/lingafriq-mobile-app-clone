@@ -177,8 +177,13 @@ class AfricanTtsService {
       return gold;
     }
 
-    // Human curriculum audio (gold) is the only clip played before synthesis.
-    // The non-commercial silver engine is not called.
+    // Gold missed. Try the cached or server silver clip before synthesis.
+    final silver = await _resolveSilverMms(
+      language: lang,
+      text: body,
+      speed: speed,
+    );
+    if (silver != null) return silver;
 
     // -------- Dynamic TTS via the server router --------
     try {

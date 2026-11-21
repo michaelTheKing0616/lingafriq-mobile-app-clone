@@ -25,7 +25,8 @@ class DrumTimbreSynth {
       if (token != _playToken) return;
       await _hitOnce(contour[i]);
       if (i < contour.length - 1) {
-        await Future<void>.delayed(step);
+        final jitter = Duration(milliseconds: _rng.nextInt(21) - 10);
+        await Future<void>.delayed(step + jitter);
       }
     }
   }
