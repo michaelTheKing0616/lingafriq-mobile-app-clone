@@ -1,10 +1,18 @@
 # P3-018 Profile, the wardrobe, celebrations, and the first spoken word
 
-Status: Draft. A visual reviewer has not approved the frames. `docs/plan/CARD_STATUS.tsv` keeps P3-018 at Draft.
+Status: Approved. Visual review recorded below. `docs/plan/CARD_STATUS.tsv` marks P3-018 Done.
 
 ## Visual review
 
-Not recorded. The frames are ready to check. No approval is written here.
+Checked on 21 November 2026 against the exported frames.
+
+- Profile light and dark are Me. Wardrobe, Progress, Achievements, and Settings are rows. Skip for now is present, and the line says the avatar can wait until after lesson 2. All features is the only filled accent button. Progress is the words Morning greetings.
+- Wardrobe says This is optional. Head wrap has a check and the word On. Save look is the only filled accent button.
+- The first spoken word shows the greeting contour above `Ẹ kú àárọ̀`. The pill says Speak within 60 seconds, and the next line says it is a target, not a timer. Sample feedback names the syllable kú with no number. The line stays visible at 200%.
+- Level up and lesson complete are marked Rare. The rare mark is an open arc. The reduced-motion mark is a closed ring with the rays at the end. The words stay. The celebration is gentler and is not removed. The two pictures are not the same pixels. Continue and Back to Today are the only filled accent buttons on those frames.
+- The spec cites `motion.rare` tokens and has no hex. Copy has no boast, no em dash, and no confidence number.
+
+Wardrobe has no skeleton, error, or offline frame. Lesson complete has no skeleton, empty, error, or offline frame. Profile, the first spoken word, and level up carry those states. Approval stands.
 
 This is the screen spec for five surfaces:
 
