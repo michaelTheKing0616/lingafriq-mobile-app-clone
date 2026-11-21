@@ -1,3 +1,5 @@
+charter: v2
+
 # P3-016 Tone Lens, Word Card, and the Lens camera
 
 Status: Approved. Visual review recorded below. `docs/plan/CARD_STATUS.tsv` marks P3-016 Done.
