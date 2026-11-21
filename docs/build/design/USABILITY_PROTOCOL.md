@@ -1,6 +1,17 @@
 # Usability-test protocol
 
-Status: Draft. A reviewer has not approved this protocol. Card P3-033 stays Draft.
+Status: Approved. Review recorded below. `docs/plan/CARD_STATUS.tsv` marks P3-033 Done. The study has not been run. The targets below are not results.
+
+## Protocol review
+
+Checked on 21 November 2026.
+
+- Nine tasks each have a start screen, the words the facilitator says, and a yes or no pass rule. Task 1 uses reduced motion. Task 2 uses 200 percent text. A pass does not use a score inside the app.
+- The task target is at least 90 percent of people who attempt a task. The questionnaire is the ten-item System Usability Scale, scored in the standard way, with a target of at least 85. Neither number is a filled-in result.
+- The sample is at least 5 adults on low-end Android in Nigeria, at least 5 in Kenya, and at least 5 in South Africa, with at least 2 hearing-impaired adults inside those counts. Their pass uses the Tone Lens and written lines, not sound alone.
+- Consent covers the screen recording, the voices, the right to stop, and deletion after the notes. This round does not include anyone under 18, even with a guardian present. The under-13 gate is read by an adult.
+
+Approval stands. No session has been run.
 
 This is a plan for a future study. The study has not been run. This file has no participant, no session, and no filled-in score. Do not read a target below as a result.
 
