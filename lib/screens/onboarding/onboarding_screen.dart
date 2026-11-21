@@ -7,6 +7,7 @@ import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
 import 'package:lingafriq/utils/utils.dart';
 
 import '../../providers/api_provider.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 class IndexNotifier extends Notifier<int> {
   @override
@@ -49,16 +50,16 @@ class OnboardingScreen extends HookConsumerWidget {
                 _OnboardingItem(
                   topImage: Images.obTop1,
                   bottomImage: Images.obBottom1,
-                  title: "What Do We Offer Uniqely",
+                  title: l10nOf(context).onboardingWhatDoWeOfferUniqely,
                   description:
-                      "54 countries, 2000+ languages, 1+ billion voices. One origin. ",
+                      l10nOf(context).onboardingText54Countries2000Languages1Billion,
                   textfontsize: 24.sp,
                 ),
                 _OnboardingItem(
                   textfontsize: 22.sp,
                   topImage: Images.obTop2,
                   bottomImage: Images.obBottom2,
-                  title: "What Do We Offer Uniqely",
+                  title: l10nOf(context).onboardingWhatDoWeOfferUniqely,
                   description:
                       "Afrika has a voice, and our duty is to amplify it.  We'd love take you on a journey through history, and  help you express yourself through language. One thing is certain, we bring you closer to Afrika and her culture.",
                 ),
@@ -66,7 +67,7 @@ class OnboardingScreen extends HookConsumerWidget {
                   textfontsize: 17.sp,
                   topImage: Images.obTop3,
                   bottomImage: Images.obBottom3,
-                  title: "What Do We Offer Uniqely",
+                  title: l10nOf(context).onboardingWhatDoWeOfferUniqely,
                   description:
                       '''This app provides you with learning tools such as video, audio, and illustrations to teach you your preferred Afrikan language from scratch. 
 
@@ -79,7 +80,7 @@ Earn points as you progress and see how you compare to other learners on the lea
                 _OnboardingItem(
                   topImage: Images.obTop4,
                   bottomImage: Images.obBottom2,
-                  title: "What Do We Offer Uniqely",
+                  title: l10nOf(context).onboardingWhatDoWeOfferUniqely,
                   description:
                       '''We aim to have all Afrikan languages, but we're not there yet. We're working to feature more languages. Don't see a language you'd like to learn, let's know about it and we'd work to include it (that's if we're not working on it already 😉♥️). 
 

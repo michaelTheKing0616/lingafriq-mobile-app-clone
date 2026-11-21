@@ -31,8 +31,7 @@ class _SaveProgressStep extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     VoidCallback? go(_AccountChoice c) => busy ? null : () => onChoose(c);
-    final words = wordsLearned == 1 ? '1 word' : '$wordsLearned words';
-    final arWords = wordsLearned == 1 ? 'كلمة واحدة' : '$wordsLearned كلمات';
+    final words = wordsLearned == 1 ? l10nOf(context).onboardingText1Word : l10nOf(context).onboardingWordslearnedWords(wordsLearned.toString());
     return _StepScaffold(
       showOfflineNotice: failedChoice == null,
       bottom: Padding(
@@ -46,7 +45,7 @@ class _SaveProgressStep extends StatelessWidget {
             ),
           ),
           child: Text(
-            _bidi(context, 'Later. My answers stay on this phone'),
+            _bidi(context, l10nOf(context).onboardingLaterMyAnswersStayOnThis),
             textAlign: TextAlign.center,
             style: ModernGriotTypography.labelLarge(
               context: context,
@@ -57,13 +56,11 @@ class _SaveProgressStep extends StatelessWidget {
       ),
       header: _QuestionHeader(
         step: OnboardingStep.profile,
-        question: 'Save your progress?',
+        question: l10nOf(context).onboardingSaveYourProgress,
         hint: _tr(
           context,
-          'You finished your first lesson and learned $words. '
-              'An account keeps your progress safe if you change phones.',
-          'أنهيت درسك الأول وتعلّمت $arWords. '
-              'يحفظ الحساب تقدّمك إذا غيّرت هاتفك.',
+          l10nOf(context).onboardingYouFinishedYourFirstLessonAnd(words.toString()),
+          onboardingArSaveHint(wordsLearned),
         ),
       ),
       child: Column(
@@ -76,7 +73,7 @@ class _SaveProgressStep extends StatelessWidget {
             SizedBox(height: ModernGriotSpacing.md.h),
           ],
           _AuthProviderButton(
-            label: 'Continue with Google',
+            label: l10nOf(context).onboardingContinueWithGoogle,
             icon: Icons.account_circle_outlined,
             background: ModernGriotColors.surfaceContainerLowest,
             foreground: ModernGriotColors.onSurface,
@@ -86,7 +83,7 @@ class _SaveProgressStep extends StatelessWidget {
           ),
           SizedBox(height: ModernGriotSpacing.sm.h),
           _AuthProviderButton(
-            label: 'Continue with Apple',
+            label: l10nOf(context).onboardingContinueWithApple,
             icon: Icons.apple,
             background: ModernGriotColors.inverseSurface,
             foreground: ModernGriotColors.onInverseSurface,
@@ -96,7 +93,7 @@ class _SaveProgressStep extends StatelessWidget {
           ),
           SizedBox(height: ModernGriotSpacing.sm.h),
           _AuthProviderButton(
-            label: 'Sign up with email',
+            label: l10nOf(context).onboardingSignUpWithEmail,
             icon: Icons.mail_outline_rounded,
             background: ModernGriotColors.brandGold,
             foreground: ModernGriotColors.onBrandGold,
@@ -115,7 +112,7 @@ class _SaveProgressStep extends StatelessWidget {
                 ),
               ),
               child: Text(
-                _bidi(context, 'I already have an account'),
+                _bidi(context, l10nOf(context).onboardingIAlreadyHaveAnAccount),
                 style: ModernGriotTypography.labelLarge(
                   context: context,
                   color: ModernGriotColors.primary,
@@ -160,7 +157,7 @@ class _AuthProviderButton extends StatelessWidget {
       ),
       child: Semantics(
         button: true,
-        label: _bidi(context, busy ? 'Saving your progress…' : label),
+        label: _bidi(context, busy ? l10nOf(context).onboardingSavingYourProgress : label),
         excludeSemantics: true,
         child: OutlinedButton.icon(
           onPressed: onPressed,
@@ -172,7 +169,7 @@ class _AuthProviderButton extends StatelessWidget {
                   size: 24,
                 ),
           label: busy
-              ? const _BusyLabel(label: 'Saving your progress…')
+              ? _BusyLabel(label: l10nOf(context).onboardingSavingYourProgress)
               : Text(
                   _bidi(context, label),
                   textAlign: TextAlign.center,
@@ -229,15 +226,15 @@ class _FinishError extends ConsumerWidget {
           children: [
             Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.wifi_off_rounded,
                   color: ModernGriotColors.error,
-                  semanticLabel: 'Error',
+                  semanticLabel: l10nOf(context).onboardingError,
                 ),
                 SizedBox(width: ModernGriotSpacing.xs.w),
                 Expanded(
                   child: Text(
-                    _bidi(context, "Couldn't reach sign-in"),
+                    _bidi(context, l10nOf(context).onboardingCouldnTReachSignIn),
                     style: ModernGriotTypography.titleSmall(
                       context: context,
                       color: ModernGriotColors.onSurface,
@@ -250,8 +247,7 @@ class _FinishError extends ConsumerWidget {
             Text(
               _bidi(
                 context,
-                "You're offline. Your answers are saved on this phone. "
-                'Connect, then try again.',
+                l10nOf(context).onboardingYouReOfflineYourAnswersAre,
               ),
               style: ModernGriotTypography.bodyMedium(
                 context: context,
@@ -270,7 +266,7 @@ class _FinishError extends ConsumerWidget {
                   backgroundColor: ModernGriotColors.brandGold,
                   foregroundColor: ModernGriotColors.onBrandGold,
                 ),
-                child: Text(_bidi(context, 'Retry')),
+                child: Text(_bidi(context, l10nOf(context).onboardingRetry)),
               ),
             ),
           ],

@@ -9,12 +9,12 @@ class _LevelPlacementStep extends HookConsumerWidget {
   final Function(Map<String, dynamic>) onNext;
   final String learningLanguage;
 
-  static const _levels = [
-    {'id': 'new', 'label': "I'm new", 'bars': 0},
-    {'id': 'words', 'label': 'I know some common words', 'bars': 1},
-    {'id': 'basic', 'label': 'I can have basic conversations', 'bars': 2},
-    {'id': 'topics', 'label': 'I can talk about various topics', 'bars': 3},
-    {'id': 'fluent', 'label': 'I can hold a conversation', 'bars': 4},
+  static _levels(BuildContext context) => [
+    {'id': 'new', 'label': l10nOf(context).onboardingIMNew, 'bars': 0},
+    {'id': 'words', 'label': l10nOf(context).onboardingIKnowSomeCommonWords, 'bars': 1},
+    {'id': 'basic', 'label': l10nOf(context).onboardingICanHaveBasicConversations, 'bars': 2},
+    {'id': 'topics', 'label': l10nOf(context).onboardingICanTalkAboutVariousTopics, 'bars': 3},
+    {'id': 'fluent', 'label': l10nOf(context).onboardingICanHoldAConversation, 'bars': 4},
   ];
 
   String get _langName {
@@ -32,7 +32,7 @@ class _LevelPlacementStep extends HookConsumerWidget {
       case 'am':
         return 'Amharic';
       default:
-        return 'this language';
+        return l10nEn().onboardingThisLanguage;
     }
   }
 
@@ -67,14 +67,14 @@ class _LevelPlacementStep extends HookConsumerWidget {
         },
       ),
       header: _QuestionHeader(
-        question: 'How much $_langName do you know?',
+        question: l10nOf(context).onboardingHowMuchLangnameDoYouKnow(_langName.toString()),
         step: OnboardingStep.goals,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: ModernGriotSpacing.lg.h),
-          for (final level in _levels)
+          for (final level in _levels(context))
             _SelectRow(
               label: level['label'] as String,
               isSelected: selected.value == level['id'],
@@ -103,7 +103,7 @@ class _LevelPlacementStep extends HookConsumerWidget {
             },
             // Non-breaking hyphen: "1-" never dangles at the end of a line.
             child: Text(
-              _bidi(context, 'Not sure? Take a 1\u2011minute check'),
+              _bidi(context, l10nOf(context).onboardingNotSureTakeA1Minute),
               style: ModernGriotTypography.labelLarge(
                 context: context,
                 color: ModernGriotColors.primary,
@@ -113,7 +113,7 @@ class _LevelPlacementStep extends HookConsumerWidget {
           if (showQuickCheck.value) ...[
             SizedBox(height: ModernGriotSpacing.xs.h),
             Text(
-              _bidi(context, 'Quick check: tap each word you recognize.'),
+              _bidi(context, l10nOf(context).onboardingQuickCheckTapEachWordYou),
               style: ModernGriotTypography.bodyMedium(
                 context: context,
                 color: _captionInk,
@@ -159,7 +159,7 @@ List<String> _quickCheckWords(String code) {
   final copy = _lessonCopyFor(code);
   switch (code) {
     case 'ha':
-      return [copy.hear, 'Na gode', 'Ina kwana'];
+      return [copy.hear, l10nEn().onboardingNaGode, l10nEn().onboardingInaKwana];
     case 'ig':
       return [copy.hear, 'Kedu', 'Daalụ'];
     case 'sw':
@@ -169,7 +169,7 @@ List<String> _quickCheckWords(String code) {
     case 'zu':
       return [copy.hear, 'Ngiyabonga', 'Unjani'];
     default:
-      return [copy.hear, 'Ẹ káàárọ̀', 'Oúnjẹ'];
+      return [copy.hear, l10nEn().onboardingKR, 'Oúnjẹ'];
   }
 }
 

@@ -40,3 +40,8 @@ jobs:
         run: |
           python3 test/design/target_text_only_lint_test.py
           python3 scripts/lint/target_text_only.py
+
+      - name: Hard-coded UI strings stay under the baseline
+        run: |
+          python3 test/scripts/extract_strings_test.py
+          python3 scripts/i18n/extract_strings.py

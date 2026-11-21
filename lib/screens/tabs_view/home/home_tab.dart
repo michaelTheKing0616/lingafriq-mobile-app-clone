@@ -25,6 +25,7 @@ import 'package:lingafriq/screens/progress/progress_dashboard_screen.dart';
 
 import '../../../detail_types/introduction_screen.dart';
 import 'language_detail_screen.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 final languagesProvider = FutureProvider.autoDispose((ref) {
   return ref.read(apiProvider.notifier).getLanguages();
@@ -32,10 +33,10 @@ final languagesProvider = FutureProvider.autoDispose((ref) {
 
 final _timerProvider = Provider((ref) {
   final welcomeTexts = [
-    'Sannu da zuwa',
-    'Wehcome o',
+    l10nEn().shellSannuDaZuwa,
+    l10nEn().shellWehcomeO,
     'Karibu',
-    'Ẹ Káàbọ',
+    l10nEn().shellKBd95e,
     'Wamukelekile',
     'Nnọọ',
     'Welcome',
@@ -92,7 +93,7 @@ class HomeTab extends HookConsumerWidget {
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.lg),
                   child: Text(
-                    'Featured Languages',
+                    l10nOf(context).shellFeaturedLanguages,
                     style: PanAfricanTypography.titleLarge(context),
                   ),
                 ),
@@ -131,13 +132,13 @@ class HomeTab extends HookConsumerWidget {
                         Semantics(
                           header: true,
                           child: Text(
-                            'Explore More',
+                            l10nOf(context).shellExploreMore,
                             style: PanAfricanTypography.titleMedium(context),
                           ),
                         ),
                         SizedBox(height: PanAfricanSpacing.sm),
                         Semantics(
-                          label: 'Search languages',
+                          label: l10nOf(context).shellSearchLanguages,
                           button: true,
                           child: PanAfricanCard(
                             padding: EdgeInsets.symmetric(
@@ -155,7 +156,7 @@ class HomeTab extends HookConsumerWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Search languages',
+                                l10nOf(context).shellSearchLanguages,
                                 style: PanAfricanTypography.bodyLarge(context),
                               ),
                               const ExcludeSemantics(
@@ -179,8 +180,8 @@ class HomeTab extends HookConsumerWidget {
                       },
                     );
                   },
-                  loading: () => const AdaptiveProgressIndicator(
-                    message: "Loading Languages ...",
+                  loading: () => AdaptiveProgressIndicator(
+                    message: l10nOf(context).shellLoadingLanguages,
                   ),
                 ),
               ),
@@ -210,7 +211,7 @@ class HomeTab extends HookConsumerWidget {
             Row(
               children: [
                 Semantics(
-                  label: 'Menu',
+                  label: l10nOf(context).shellMenu,
                   button: true,
                   child: IconButton(
                     onPressed: () {
@@ -228,7 +229,7 @@ class HomeTab extends HookConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '$title${username != null ? ', $username' : ''}',
+                        l10nOf(context).shellTitleValue(title.toString(), username != null ? l10nOf(context).shellUsername(username.toString()) : ''),
                         style: PanAfricanTypography.displaySmall(context).copyWith(
                           color: Theme.of(context).colorScheme.onPrimary,
                         ),
@@ -252,7 +253,7 @@ class HomeTab extends HookConsumerWidget {
             ),
             SizedBox(height: PanAfricanSpacing.md),
             Semantics(
-              label: 'Level ${gamification.level}. XP ${gamification.xp}. ${_getXPToNextLevel(gamification)} XP to next level. ${gamification.dailyStreak} day streak. ${gamification.unlockedBadges.length} badges. ${gamification.languagesLearned} languages.',
+              label: l10nOf(context).shellLevelValueXpValue2Value3Xp('${gamification.level}', '${gamification.xp}', '${_getXPToNextLevel(gamification)}', '${gamification.dailyStreak}', '${gamification.unlockedBadges.length}', '${gamification.languagesLearned}'),
               child: PanAfricanCard(
                 backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.08),
                 hasGlow: true,
@@ -278,13 +279,13 @@ class HomeTab extends HookConsumerWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
-                                  '${gamification.level}',
+                                  l10nOf(context).shellValue75ce('${gamification.level}'),
                                   style: PanAfricanTypography.titleLarge(context).copyWith(
                                     color: Theme.of(context).colorScheme.onPrimary,
                                   ),
                                 ),
                                 Text(
-                                  'Level',
+                                  l10nOf(context).shellLevel,
                                   style: PanAfricanTypography.labelSmall(context).copyWith(
                                     color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.75),
                                   ),
@@ -300,14 +301,14 @@ class HomeTab extends HookConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'XP ${gamification.xp}',
+                              l10nOf(context).shellXpValue('${gamification.xp}'),
                               style: PanAfricanTypography.titleMedium(context).copyWith(
                                 color: Theme.of(context).colorScheme.onPrimary,
                               ),
                             ),
                             SizedBox(height: PanAfricanSpacing.xxs),
                             Text(
-                              '${_getXPToNextLevel(gamification)} XP to next level',
+                              l10nOf(context).shellValueXpToNextLevel('${_getXPToNextLevel(gamification)}'),
                               style: PanAfricanTypography.bodySmall(context).copyWith(
                                 color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.75),
                               ),
@@ -327,19 +328,19 @@ class HomeTab extends HookConsumerWidget {
                   Row(
                     children: [
                       _HeroPill(
-                        label: '${gamification.dailyStreak} day streak',
+                        label: l10nOf(context).shellValueDayStreak('${gamification.dailyStreak}'),
                         icon: Icons.local_fire_department_rounded,
                         color: PanAfricanColors.tertiary,
                       ),
                       SizedBox(width: PanAfricanSpacing.xs),
                       _HeroPill(
-                        label: '${gamification.unlockedBadges.length} badges',
+                        label: l10nOf(context).shellValueBadges('${gamification.unlockedBadges.length}'),
                         icon: Icons.workspace_premium_rounded,
                         color: PanAfricanColors.secondary,
                       ),
                       SizedBox(width: PanAfricanSpacing.xs),
                       _HeroPill(
-                        label: '${gamification.languagesLearned} languages',
+                        label: l10nOf(context).shellValueLanguages('${gamification.languagesLearned}'),
                         icon: Icons.public_rounded,
                         color: PanAfricanColors.kenteBlue,
                       ),
@@ -365,7 +366,7 @@ class HomeTab extends HookConsumerWidget {
           Semantics(
             header: true,
             child: Text(
-              'Quick Actions',
+              l10nOf(context).shellQuickActions,
               style: PanAfricanTypography.titleMedium(context),
             ),
           ),
@@ -374,8 +375,8 @@ class HomeTab extends HookConsumerWidget {
             children: [
               Expanded(
                 child: _QuickActionCard(
-                  title: 'AI Tutor',
-                  subtitle: 'Polie modes & skills',
+                  title: l10nOf(context).shellAiTutor,
+                  subtitle: l10nOf(context).shellPolieModesSkills,
                   icon: Icons.auto_awesome_rounded,
                   color: PanAfricanColors.kenteBlue,
                   onTap: () {
@@ -386,8 +387,8 @@ class HomeTab extends HookConsumerWidget {
               SizedBox(width: PanAfricanSpacing.md),
               Expanded(
                 child: _QuickActionCard(
-                  title: 'AI Chat',
-                  subtitle: 'Conversation with Polie',
+                  title: l10nOf(context).shellAiChat,
+                  subtitle: l10nOf(context).shellConversationWithPolie,
                   icon: Icons.chat_bubble_outline_rounded,
                   color: PanAfricanColors.kenteTeal,
                   onTap: () {
@@ -405,7 +406,7 @@ class HomeTab extends HookConsumerWidget {
               Expanded(
                 child: _QuickActionCard(
                   title: 'Progress',
-                  subtitle: 'View dashboard',
+                  subtitle: l10nOf(context).shellViewDashboard,
                   icon: Icons.insights_rounded,
                   color: PanAfricanColors.primary,
                   onTap: () {
@@ -432,7 +433,7 @@ class HomeTab extends HookConsumerWidget {
           Semantics(
             header: true,
             child: Text(
-              'Your Progress',
+              l10nOf(context).shellYourProgress,
               style: PanAfricanTypography.titleMedium(context),
             ),
           ),
@@ -567,7 +568,7 @@ class _QuickActionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: '$title. $subtitle',
+      label: l10nOf(context).shellTitleSubtitle(title.toString(), subtitle.toString()),
       button: true,
       child: PanAfricanCard(
         hasHoverEffect: true,
@@ -625,7 +626,7 @@ class _HighlightCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: '$label: $value',
+      label: l10nOf(context).shellLabelValue(label.toString(), value.toString()),
       child: PanAfricanCard(
         padding: EdgeInsets.all(PanAfricanSpacing.md),
         child: Column(
@@ -670,7 +671,7 @@ class LanguageItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Semantics(
-      label: '${language.name}. Tap to open.',
+      label: l10nOf(context).shellValueTapToOpen(language.name),
       button: true,
       child: InkWell(
         onTap: () async {

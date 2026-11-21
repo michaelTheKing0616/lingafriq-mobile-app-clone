@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 /// Bundled illustrations for languages that ship with their own art.
 const Map<String, String> kLanguageArtAssets = {
@@ -47,8 +48,8 @@ class LanguageIdentity {
 }
 
 /// Known languages. Hues are spread around the wheel so neighbours differ.
-const Map<String, LanguageIdentity> kLanguageIdentities = {
-  'swahili': LanguageIdentity(
+Map<String, LanguageIdentity> kLanguageIdentities() => {
+  'swahili': const LanguageIdentity(
     base: Color(0xFF0B6262),
     accent: Color(0xFF5FD0C4),
     motif: LanguageMotif.waves,
@@ -56,20 +57,20 @@ const Map<String, LanguageIdentity> kLanguageIdentities = {
     greeting: 'Habari',
   ),
   'yoruba': LanguageIdentity(
-    base: Color(0xFF2E3A87),
-    accent: Color(0xFF9FB0FF),
+    base: const Color(0xFF2E3A87),
+    accent: const Color(0xFF9FB0FF),
     motif: LanguageMotif.circles,
     native: 'Yorùbá',
-    greeting: 'Ẹ káàbọ̀',
+    greeting: l10nEn().shellKB,
   ),
   'hausa': LanguageIdentity(
-    base: Color(0xFF8A4A10),
-    accent: Color(0xFFF2B35B),
+    base: const Color(0xFF8A4A10),
+    accent: const Color(0xFFF2B35B),
     motif: LanguageMotif.lozenges,
-    native: 'Harshen Hausa',
+    native: l10nEn().shellHarshenHausa,
     greeting: 'Sannu',
   ),
-  'zulu': LanguageIdentity(
+  'zulu': const LanguageIdentity(
     base: Color(0xFF8A2D4F),
     accent: Color(0xFFF59AB8),
     motif: LanguageMotif.triangles,
@@ -77,27 +78,27 @@ const Map<String, LanguageIdentity> kLanguageIdentities = {
     greeting: 'Sawubona',
   ),
   'igbo': LanguageIdentity(
-    base: Color(0xFF1F6B3A),
-    accent: Color(0xFF8EE0A6),
+    base: const Color(0xFF1F6B3A),
+    accent: const Color(0xFF8EE0A6),
     motif: LanguageMotif.lozenges,
-    native: 'Asụsụ Igbo',
+    native: l10nEn().shellAsSIgbo,
     greeting: 'Nnọọ',
   ),
-  'amharic': LanguageIdentity(
+  'amharic': const LanguageIdentity(
     base: Color(0xFF5B3A9A),
     accent: Color(0xFFC6B2FF),
     motif: LanguageMotif.steps,
     native: 'አማርኛ',
     greeting: 'ሰላም',
   ),
-  'twi': LanguageIdentity(
+  'twi': const LanguageIdentity(
     base: Color(0xFF9C3B12),
     accent: Color(0xFFFFB27A),
     motif: LanguageMotif.chevrons,
     native: 'Twi',
     greeting: 'Akwaaba',
   ),
-  'xhosa': LanguageIdentity(
+  'xhosa': const LanguageIdentity(
     base: Color(0xFF2F4F7A),
     accent: Color(0xFF9CC3F5),
     motif: LanguageMotif.stripes,
@@ -105,46 +106,46 @@ const Map<String, LanguageIdentity> kLanguageIdentities = {
     greeting: 'Molo',
   ),
   'pidgin': LanguageIdentity(
-    base: Color(0xFF6A5A0A),
-    accent: Color(0xFFF2D65B),
+    base: const Color(0xFF6A5A0A),
+    accent: const Color(0xFFF2D65B),
     motif: LanguageMotif.dots,
     native: 'Naijá',
-    greeting: 'How far',
+    greeting: l10nEn().shellHowFar,
   ),
-  'igala': LanguageIdentity(
+  'igala': const LanguageIdentity(
     base: Color(0xFF7A2E2E),
     accent: Color(0xFFF0A08A),
     motif: LanguageMotif.chevrons,
     native: 'Igala',
   ),
-  'tiv': LanguageIdentity(
+  'tiv': const LanguageIdentity(
     base: Color(0xFF3F5E1A),
     accent: Color(0xFFC4E58A),
     motif: LanguageMotif.stripes,
     native: 'Tiv',
   ),
-  'somali': LanguageIdentity(
+  'somali': const LanguageIdentity(
     base: Color(0xFF155A8A),
     accent: Color(0xFF8CCBF5),
     motif: LanguageMotif.dots,
     native: 'Af-Soomaali',
     greeting: 'Salaan',
   ),
-  'shona': LanguageIdentity(
+  'shona': const LanguageIdentity(
     base: Color(0xFF6B4423),
     accent: Color(0xFFE8B98A),
     motif: LanguageMotif.steps,
     native: 'chiShona',
     greeting: 'Mhoro',
   ),
-  'lingala': LanguageIdentity(
+  'lingala': const LanguageIdentity(
     base: Color(0xFF0F5E4A),
     accent: Color(0xFF7FE0C2),
     motif: LanguageMotif.triangles,
     native: 'Lingála',
     greeting: 'Mbote',
   ),
-  'kinyarwanda': LanguageIdentity(
+  'kinyarwanda': const LanguageIdentity(
     base: Color(0xFF3A5A8C),
     accent: Color(0xFFB5D0FF),
     motif: LanguageMotif.waves,
@@ -152,11 +153,11 @@ const Map<String, LanguageIdentity> kLanguageIdentities = {
     greeting: 'Muraho',
   ),
   'wolof': LanguageIdentity(
-    base: Color(0xFF7A3F6E),
-    accent: Color(0xFFF0B0E0),
+    base: const Color(0xFF7A3F6E),
+    accent: const Color(0xFFF0B0E0),
     motif: LanguageMotif.circles,
     native: 'Wolof',
-    greeting: 'Nanga def',
+    greeting: l10nEn().shellNangaDef,
   ),
 };
 
@@ -181,7 +182,7 @@ int _stableHash(String s) {
 /// (hue from the name, dark enough for white text, motif from the name).
 LanguageIdentity languageIdentity(String name) {
   final n = name.toLowerCase();
-  for (final e in kLanguageIdentities.entries) {
+  for (final e in kLanguageIdentities().entries) {
     if (n.contains(e.key)) return e.value;
   }
   final h = _stableHash(n);

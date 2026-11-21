@@ -11,11 +11,11 @@ class _NotificationsStep extends HookConsumerWidget {
   final int dailyMinutes;
   final String learningLanguage;
 
-  static const _times = [
-    {'id': 'sunrise', 'label': 'Sunrise', 'time': '6–9 AM'},
-    {'id': 'midday', 'label': 'Midday', 'time': '12–2 PM'},
-    {'id': 'sunset', 'label': 'Sunset', 'time': '5–7 PM'},
-    {'id': 'night', 'label': 'Night', 'time': '8–10 PM'},
+  static _times(BuildContext context) => [
+    {'id': 'sunrise', 'label': l10nOf(context).onboardingSunrise, 'time': l10nOf(context).onboardingText69Am},
+    {'id': 'midday', 'label': l10nOf(context).onboardingMidday, 'time': l10nOf(context).onboardingText122Pm},
+    {'id': 'sunset', 'label': l10nOf(context).onboardingSunset, 'time': l10nOf(context).onboardingText57Pm},
+    {'id': 'night', 'label': l10nOf(context).onboardingNight, 'time': l10nOf(context).onboardingText810Pm},
   ];
 
   @override
@@ -23,8 +23,8 @@ class _NotificationsStep extends HookConsumerWidget {
     final selectedTime = useState<String?>('sunrise');
     final lesson = _lessonCopyFor(learningLanguage);
     final reminderLine = lesson.reminder.replaceFirst(
-      '5 minutes',
-      '$dailyMinutes minutes',
+      l10nOf(context).onboardingText5Minutes,
+      l10nOf(context).onboardingDailyminutesMinutes(dailyMinutes.toString()),
     );
 
     Future<void> finish({required bool enable}) async {
@@ -61,7 +61,7 @@ class _NotificationsStep extends HookConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           _PrimaryCta(
-            label: 'Turn on reminders',
+            label: l10nOf(context).onboardingTurnOnReminders,
             enabled: selectedTime.value != null,
             onPressed: () => finish(enable: true),
           ),
@@ -74,7 +74,7 @@ class _NotificationsStep extends HookConsumerWidget {
               ),
             ),
             child: Text(
-              _bidi(context, 'Not now'),
+              _bidi(context, l10nOf(context).onboardingNotNow),
               style: ModernGriotTypography.labelLarge(
                 context: context,
                 color: _captionInk,
@@ -84,11 +84,10 @@ class _NotificationsStep extends HookConsumerWidget {
           SizedBox(height: ModernGriotSpacing.xs.h),
         ],
       ),
-      header: const _QuestionHeader(
-        question: 'A soft nudge when it matters',
+      header: _QuestionHeader(
+        question: l10nOf(context).onboardingASoftNudgeWhenItMatters,
         hint:
-            'See the reminder below. Turn it on only if it helps you '
-            'keep your streak. You pick the time.',
+            l10nOf(context).onboardingSeeTheReminderBelowTurnIt,
         step: OnboardingStep.schedule,
       ),
       child: Column(
@@ -144,9 +143,9 @@ class _NotificationsStep extends HookConsumerWidget {
                   child: Text(
                     _bidi(
                       context,
-                      _times.firstWhere(
+                      _times(context).firstWhere(
                             (t) => t['id'] == selectedTime.value,
-                            orElse: () => _times.first,
+                            orElse: () => _times(context).first,
                           )['time']
                           as String,
                     ),
@@ -161,14 +160,14 @@ class _NotificationsStep extends HookConsumerWidget {
           ),
           SizedBox(height: ModernGriotSpacing.lg.h),
           Text(
-            _bidi(context, 'Best time'),
+            _bidi(context, l10nOf(context).onboardingBestTime),
             style: ModernGriotTypography.titleMedium(
               context: context,
               color: ModernGriotColors.onSurface,
             ),
           ),
           SizedBox(height: ModernGriotSpacing.xs.h),
-          for (final t in _times)
+          for (final t in _times(context))
             _SelectRow(
               label: t['label'] as String,
               subtitle: t['time'] as String,

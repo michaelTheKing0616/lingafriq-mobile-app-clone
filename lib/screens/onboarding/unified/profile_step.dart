@@ -103,7 +103,7 @@ class _ProfileStep extends HookConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           _PrimaryCta(
-            label: 'Complete setup',
+            label: l10nOf(context).onboardingCompleteSetup,
             enabled: canComplete,
             onPressed: () async {
               try {
@@ -121,7 +121,7 @@ class _ProfileStep extends HookConsumerWidget {
           TextButton(
             onPressed: onSkip,
             child: Text(
-              _bidi(context, 'Skip for now'),
+              _bidi(context, l10nOf(context).onboardingSkipForNow),
               style: ModernGriotTypography.labelLarge(
                 context: context,
                 color: _captionInk,
@@ -131,17 +131,17 @@ class _ProfileStep extends HookConsumerWidget {
           SizedBox(height: ModernGriotSpacing.xs.h),
         ],
       ),
-      header: const _QuestionHeader(
+      header: _QuestionHeader(
         step: OnboardingStep.profile,
-        question: 'Pick a name',
-        hint: 'A learner without a name is a drum without a rhythm.',
+        question: l10nOf(context).onboardingPickAName,
+        hint: l10nOf(context).onboardingALearnerWithoutANameIs56f4,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Semantics(
             button: true,
-            label: 'Add a profile photo, optional',
+            label: l10nOf(context).onboardingAddAProfilePhotoOptional,
             excludeSemantics: true,
             child: InkWell(
               onTap: pickAvatar,
@@ -171,7 +171,7 @@ class _ProfileStep extends HookConsumerWidget {
                     SizedBox(width: ModernGriotSpacing.sm.w),
                     Expanded(
                       child: Text(
-                        _bidi(context, 'Add a photo (optional)'),
+                        _bidi(context, l10nOf(context).onboardingAddAPhotoOptional),
                         style: ModernGriotTypography.labelLarge(
                           context: context,
                           color: ModernGriotColors.onSurface,
@@ -191,8 +191,8 @@ class _ProfileStep extends HookConsumerWidget {
               color: ModernGriotColors.onSurface,
             ),
             decoration: InputDecoration(
-              labelText: _bidi(context, 'Username'),
-              hintText: _bidi(context, 'Enter your username'),
+              labelText: _bidi(context, l10nOf(context).onboardingUsername),
+              hintText: _bidi(context, l10nOf(context).onboardingEnterYourUsername),
               filled: true,
               fillColor: ModernGriotColors.surfaceContainerLowest,
               border: OutlineInputBorder(
@@ -218,7 +218,7 @@ class _ProfileStep extends HookConsumerWidget {
           ),
           SizedBox(height: ModernGriotSpacing.sm.h),
           Text(
-            _bidi(context, 'Ideas from your language'),
+            _bidi(context, l10nOf(context).onboardingIdeasFromYourLanguage),
             style: ModernGriotTypography.labelLarge(
               context: context,
               color: _captionInk,
@@ -232,7 +232,7 @@ class _ProfileStep extends HookConsumerWidget {
               for (final idea in _nameIdeas(learnCode))
                 ActionChip(
                   label: Text(_bidi(context, idea)),
-                  tooltip: 'Use the name $idea',
+                  tooltip: l10nOf(context).onboardingUseTheNameIdea(idea.toString()),
                   materialTapTargetSize: MaterialTapTargetSize.padded,
                   backgroundColor: ModernGriotColors.surfaceContainerLowest,
                   side: BorderSide(color: _accentFor(learnCode)),
@@ -253,7 +253,7 @@ class _ProfileStep extends HookConsumerWidget {
           _VillageCardPreview(
             name: username.value.isEmpty ? null : username.value,
             accent: _accentFor(learnCode),
-            greeting: _greetings[learnCode],
+            greeting: _greetings(context)[learnCode],
           ),
           SizedBox(height: ModernGriotSpacing.lg.h),
         ],
@@ -296,21 +296,21 @@ class _ProfileStep extends HookConsumerWidget {
   String? _usernameHelper(_UsernameStatus status) {
     switch (status) {
       case _UsernameStatus.initial:
-        return 'Use 3 to 30 letters, numbers, or underscores';
+        return l10nEn().onboardingUse3To30LettersNumbers;
       case _UsernameStatus.checking:
-        return 'Checking if that name is free…';
+        return l10nEn().onboardingCheckingIfThatNameIsFree;
       case _UsernameStatus.available:
-        return 'That name is yours';
+        return l10nEn().onboardingThatNameIsYours;
       case _UsernameStatus.taken:
-        return "Someone's already using that one, try another";
+        return l10nEn().onboardingSomeoneSAlreadyUsingThatOne;
       case _UsernameStatus.tooShort:
-        return 'Needs at least 3 characters';
+        return l10nEn().onboardingNeedsAtLeast3Characters;
       case _UsernameStatus.tooLong:
-        return 'Keep it to 30 characters or fewer';
+        return l10nEn().onboardingKeepItTo30CharactersOr;
       case _UsernameStatus.invalidFormat:
-        return 'Only letters, numbers, and underscores, please';
+        return l10nEn().onboardingOnlyLettersNumbersAndUnderscoresPlease;
       case _UsernameStatus.error:
-        return "We couldn't check that just now, but you can still continue";
+        return l10nEn().onboardingWeCouldnTCheckThatJust;
     }
   }
 }
@@ -341,10 +341,10 @@ class _VillageCardPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final shown = name ?? 'Your name';
+    final shown = name ?? l10nOf(context).onboardingYourName;
     return Semantics(
       container: true,
-      label: 'Preview: how you appear in the village, $shown',
+      label: l10nOf(context).onboardingPreviewHowYouAppearInThe(shown.toString()),
       excludeSemantics: true,
       child: Container(
         key: const ValueKey('village-card-preview'),

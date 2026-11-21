@@ -14,6 +14,7 @@ import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 class ModernOnboardingScreen extends HookConsumerWidget {
   const ModernOnboardingScreen({super.key});
@@ -130,7 +131,7 @@ class ModernOnboardingScreen extends HookConsumerWidget {
                     );
                   },
                   child: Text(
-                    'Skip',
+                    l10nOf(context).onboardingSkip,
                     style: PanAfricanTypography.labelLarge(
                       context,
                       color: Theme.of(
@@ -243,7 +244,7 @@ class _WelcomeScreen extends StatelessWidget {
                               ),
                             ),
                         child: Text(
-                          'Your journey to fluency\nstarts now!',
+                          l10nOf(context).onboardingYourJourneyToFluencyStartsNow,
                           textAlign: TextAlign.center,
                           style:
                               PanAfricanTypography.displaySmall(
@@ -266,7 +267,7 @@ class _WelcomeScreen extends StatelessWidget {
                       FadeTransition(
                         opacity: animationController,
                         child: Text(
-                          'Discover the beauty of African languages',
+                          l10nOf(context).onboardingDiscoverTheBeautyOfAfricanLanguages,
                           textAlign: TextAlign.center,
                           style: PanAfricanTypography.bodyLarge(
                             context,
@@ -299,23 +300,23 @@ class _FeaturesScreen extends StatelessWidget {
     final features = [
       {
         'icon': Icons.games_rounded,
-        'title': 'Learn languages, play games',
+        'title': l10nOf(context).onboardingLearnLanguagesPlayGames,
         'description':
-            'Fun, bite-sized lessons make learning addictive and effective',
+            l10nOf(context).onboardingFunBiteSizedLessonsMakeLearning,
         'color': PanAfricanColors.primary,
       },
       {
         'icon': Icons.trending_up_rounded,
-        'title': 'Track your progress',
+        'title': l10nOf(context).onboardingTrackYourProgress,
         'description':
-            'Stay motivated with personalized challenges and daily goals',
+            l10nOf(context).onboardingStayMotivatedWithPersonalizedChallenge,
         'color': PanAfricanColors.secondary,
       },
       {
         'icon': Icons.people_rounded,
-        'title': 'Connect with culture',
+        'title': l10nOf(context).onboardingConnectWithCulture,
         'description':
-            'Learn about history, traditions, and cultural expressions',
+            l10nOf(context).onboardingLearnAboutHistoryTraditionsAndCultural,
         'color': PanAfricanColors.tertiary,
       },
     ];
@@ -334,7 +335,7 @@ class _FeaturesScreen extends StatelessWidget {
                     FadeTransition(
                       opacity: animationController,
                       child: Text(
-                        'Learn a new language,\nthe fun way',
+                        l10nOf(context).onboardingLearnANewLanguageTheFun,
                         textAlign: TextAlign.center,
                         style: PanAfricanTypography.headlineLarge(context),
                       ),
@@ -525,7 +526,7 @@ class _AdventureScreen extends StatelessWidget {
                         FadeTransition(
                           opacity: animationController,
                           child: Text(
-                            'Ready for a\npan-African adventure?',
+                            l10nOf(context).onboardingReadyForAPanAfricanAdventure,
                             textAlign: TextAlign.center,
                             style:
                                 PanAfricanTypography.displayMedium(
@@ -552,7 +553,7 @@ class _AdventureScreen extends StatelessWidget {
                         FadeTransition(
                           opacity: animationController,
                           child: Text(
-                            'Explore 54 countries, 2000+ languages,\nand connect with 1+ billion voices',
+                            l10nOf(context).onboardingExplore54Countries2000LanguagesAnd,
                             textAlign: TextAlign.center,
                             style: PanAfricanTypography.bodyLarge(
                               context,
@@ -592,26 +593,26 @@ class _GetStartedScreen extends StatelessWidget {
     final paths = [
       {
         'icon': Icons.explore_rounded,
-        'title': 'Explore Cultures',
-        'description': 'Discover the rich heritage of African languages',
+        'title': l10nOf(context).onboardingExploreCultures,
+        'description': l10nOf(context).onboardingDiscoverTheRichHeritageOfAfrican,
         'color': PanAfricanColors.tertiary,
       },
       {
         'icon': Icons.work_rounded,
-        'title': 'Boost Your Career',
-        'description': 'Open doors to international opportunities',
+        'title': l10nOf(context).onboardingBoostYourCareer,
+        'description': l10nOf(context).onboardingOpenDoorsToInternationalOpportunities,
         'color': PanAfricanColors.kenteBlue,
       },
       {
         'icon': Icons.school_rounded,
-        'title': 'Excel Academically',
-        'description': 'Prepare for studies and broaden knowledge',
+        'title': l10nOf(context).onboardingExcelAcademically,
+        'description': l10nOf(context).onboardingPrepareForStudiesAndBroadenKnowledge,
         'color': PanAfricanColors.ankaraPurple,
       },
       {
         'icon': Icons.record_voice_over_rounded,
-        'title': 'Local Dialect & Heritage',
-        'description': 'Prioritize how your community really speaks',
+        'title': l10nOf(context).onboardingLocalDialectHeritage,
+        'description': l10nOf(context).onboardingPrioritizeHowYourCommunityReallySpeaks,
         'color': PanAfricanColors.kenteTeal,
       },
     ];
@@ -630,7 +631,7 @@ class _GetStartedScreen extends StatelessWidget {
                     FadeTransition(
                       opacity: animationController,
                       child: Text(
-                        'Your Language Journey\nStarts Here!',
+                        l10nOf(context).onboardingYourLanguageJourneyStartsHere,
                         textAlign: TextAlign.center,
                         style: PanAfricanTypography.headlineLarge(
                           context,
@@ -642,7 +643,7 @@ class _GetStartedScreen extends StatelessWidget {
                     FadeTransition(
                       opacity: animationController,
                       child: Text(
-                        'Choose your path and unlock new opportunities',
+                        l10nOf(context).onboardingChooseYourPathAndUnlockNew,
                         textAlign: TextAlign.center,
                         style: PanAfricanTypography.bodyLarge(
                           context,
@@ -739,7 +740,7 @@ class _GetStartedScreen extends StatelessWidget {
                               ),
                             ),
                             child: Text(
-                              'Get Started',
+                              l10nOf(context).onboardingGetStarted,
                               style: PanAfricanTypography.labelLarge(
                                 context,
                                 color: Theme.of(context).colorScheme.onPrimary,
@@ -757,7 +758,7 @@ class _GetStartedScreen extends StatelessWidget {
                         onLogin();
                       },
                       child: Text(
-                        'Already learning? Log in',
+                        l10nOf(context).onboardingAlreadyLearningLogIn,
                         style: PanAfricanTypography.labelLarge(
                           context,
                           color: PanAfricanColors.primary,

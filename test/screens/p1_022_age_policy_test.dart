@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/age_policy_provider.dart';
 import 'package:lingafriq/screens/chat/chat_list_screen.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 import 'package:lingafriq/screens/home_screen.dart';
 
 void main() {
@@ -23,7 +24,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(find.text(AgeRestrictedSurfaceScreen.title), findsOneWidget);
+    expect(find.text(l10nEn().shellLearningComesFirst), findsOneWidget);
     expect(find.text('Back to learning'), findsOneWidget);
   });
 
@@ -57,7 +58,7 @@ void main() {
         home: AgeRestrictedSurfaceScreen(showBack: true),
       ),
     );
-    expect(find.text(AgeRestrictedSurfaceScreen.title), findsOneWidget);
+    expect(find.text(l10nEn().shellLearningComesFirst), findsOneWidget);
   });
 }
 

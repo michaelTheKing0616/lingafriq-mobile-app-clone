@@ -16,6 +16,7 @@ import '../../../screens/curriculum/authentic_curriculum_entry_screen.dart';
 import 'package:lingafriq/utils/curriculum_languages.dart';
 import '../../../screens/learning/learning_path_screen.dart';
 import '../../../widgets/responsive_safe_area.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 class LanguageDetailScreen extends ConsumerWidget {
   final Language language;
@@ -93,7 +94,7 @@ class LanguageDetailScreen extends ConsumerWidget {
                                       border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
                                     ),
                                     child: Text(
-                                      'Pick where you want to learn',
+                                      l10nOf(context).shellPickWhereYouWantToLearn,
                                       textAlign: TextAlign.center,
                                       style: PanAfricanTypography.bodyMedium(context).copyWith(
                                         color: Colors.white,
@@ -197,7 +198,7 @@ class _BackButtonWithHaptic extends StatelessWidget {
           HapticFeedback.lightImpact();
           Navigator.of(context).pop();
         },
-        tooltip: 'Back',
+        tooltip: l10nOf(context).shellBack,
       ),
     );
   }
@@ -229,7 +230,7 @@ class _QuizButton extends StatelessWidget {
             ),
             child: Center(
               child: Text(
-                'Take Quiz',
+                l10nOf(context).shellTakeQuiz,
                 style: PanAfricanTypography.titleMedium(context).copyWith(
                   color: Theme.of(context).colorScheme.onPrimary,
                   fontWeight: FontWeight.w600,
@@ -308,7 +309,7 @@ class _AuthenticPathChip extends StatelessWidget {
               Icon(Icons.auto_awesome_rounded, size: 18.sp, color: Colors.white),
               SizedBox(width: 4.sp),
               Text(
-                'Authentic Path',
+                l10nOf(context).shellAuthenticPath,
                 style: TextStyle(
                   fontSize: 11.sp,
                   fontWeight: FontWeight.w700,

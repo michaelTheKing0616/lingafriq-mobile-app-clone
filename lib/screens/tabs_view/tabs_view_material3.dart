@@ -19,6 +19,7 @@ import 'package:lingafriq/providers/curriculum_provider.dart';
 import 'package:lingafriq/providers/age_policy_provider.dart';
 import 'package:lingafriq/screens/home_screen.dart';
 import 'package:lingafriq/services/connectivity_service.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 // Re-export for consumers that imported from tabs_view_material3
 export 'package:lingafriq/providers/tab_scaffold_provider.dart'
@@ -187,49 +188,49 @@ class _Material3BottomNavigationBar extends StatelessWidget {
         elevation: 0,
         destinations: [
           Semantics(
-            label: 'Home tab',
+            label: l10nOf(context).shellHomeTab,
             button: true,
-            child: const NavigationDestination(
-              icon: Icon(PanAfricanIcons.home),
-              selectedIcon: Icon(PanAfricanIcons.homeSelected),
-              label: 'Home',
+            child: NavigationDestination(
+              icon: const Icon(PanAfricanIcons.home),
+              selectedIcon: const Icon(PanAfricanIcons.homeSelected),
+              label: l10nOf(context).shellHome,
             ),
           ),
           Semantics(
-            label: 'Courses tab',
+            label: l10nOf(context).shellCoursesTab,
             button: true,
-            child: const NavigationDestination(
-              icon: Icon(PanAfricanIcons.courses),
-              selectedIcon: Icon(PanAfricanIcons.coursesSelected),
-              label: 'Courses',
+            child: NavigationDestination(
+              icon: const Icon(PanAfricanIcons.courses),
+              selectedIcon: const Icon(PanAfricanIcons.coursesSelected),
+              label: l10nOf(context).shellCourses,
             ),
           ),
           Semantics(
-            label: 'AI Tutor tab',
+            label: l10nOf(context).shellAiTutorTab,
             button: true,
-            child: const NavigationDestination(
-              icon: Icon(PanAfricanIcons.ai),
-              selectedIcon: Icon(PanAfricanIcons.aiSelected),
-              label: 'AI',
+            child: NavigationDestination(
+              icon: const Icon(PanAfricanIcons.ai),
+              selectedIcon: const Icon(PanAfricanIcons.aiSelected),
+              label: l10nOf(context).shellAi,
             ),
           ),
           if (!hideSocialTab)
             Semantics(
-              label: 'Social tab',
+              label: l10nOf(context).shellSocialTab,
               button: true,
-              child: const NavigationDestination(
-                icon: Icon(PanAfricanIcons.social),
-                selectedIcon: Icon(PanAfricanIcons.socialSelected),
-                label: 'Social',
+              child: NavigationDestination(
+                icon: const Icon(PanAfricanIcons.social),
+                selectedIcon: const Icon(PanAfricanIcons.socialSelected),
+                label: l10nOf(context).shellSocial,
               ),
             ),
           Semantics(
-            label: 'Profile tab',
+            label: l10nOf(context).shellProfileTab,
             button: true,
-            child: const NavigationDestination(
-              icon: Icon(PanAfricanIcons.profile),
-              selectedIcon: Icon(PanAfricanIcons.profileSelected),
-              label: 'Profile',
+            child: NavigationDestination(
+              icon: const Icon(PanAfricanIcons.profile),
+              selectedIcon: const Icon(PanAfricanIcons.profileSelected),
+              label: l10nOf(context).shellProfile,
             ),
           ),
         ],
