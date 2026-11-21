@@ -242,6 +242,20 @@ void main() {
     expect(_passes('#777777', '#767676', 'body'), isFalse);
   });
 
+  test('CI contrast check names a failing pair and passes the token roles', () {
+    final self = Process.runSync('python3', ['scripts/lint/contrast_check.py', '--self-test']);
+    expect(self.exitCode, 0, reason: '${self.stdout}${self.stderr}');
+    final live = Process.runSync('python3', ['scripts/lint/contrast_check.py']);
+    expect(live.exitCode, 0, reason: '${live.stdout}${live.stderr}');
+    expect(live.stdout.toString(), contains('WCAG 2.2 AA'));
+    final broken = Process.runSync('python3', ['scripts/lint/contrast_check.py', '--sample-failure']);
+    expect(broken.exitCode, 1);
+    final line = broken.stdout.toString();
+    expect(line, contains('onSurface'));
+    expect(line, contains('surface'));
+    expect(line, contains('<'));
+  });
+
   test('each state colour lists a non-colour cue', () {
     final table = File('design/tokens/color_roles.md').readAsStringSync();
     for (final name in ['success', 'warning', 'danger', 'info']) {
