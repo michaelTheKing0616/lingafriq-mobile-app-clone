@@ -615,7 +615,7 @@ P3-089	Done	Enforce WCAG 2.2 AA contrast in CI	P3/P3-089.yaml
 P3-090	Draft	Add captions and transcripts for audio and video	P3/P3-090.yaml
 P3-091	Draft	Add haptic and visual alternatives and visual pitch path	P3/P3-091.yaml
 P3-092	Draft	Honour reduced motion with gentler animation	P3/P3-092.yaml
-P3-093	Draft	Offer a dyslexia-friendly reading option on Andika	P3/P3-093.yaml
+P3-093	Done	Offer a dyslexia-friendly reading option on Andika	P3/P3-093.yaml
 P3-094	Draft	Extract 1,104 hard-coded strings to ARB	P3/P3-094.yaml
 P3-095	Draft	Add pseudo-localisation to CI	P3/P3-095.yaml
 P3-096	Draft	Support RTL layouts for Arabic and Ajami	P3/P3-096.yaml

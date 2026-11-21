@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:lingafriq/design/a11y/reading_option.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/providers/offline_download_provider.dart';
@@ -27,13 +28,26 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   int _downloadedCount = 0;
   int _storageSizeBytes = 0;
   bool _isLoadingStorage = false;
+  final ReadingOptionController _reading = ReadingOptionController.instance;
 
   @override
   void initState() {
     super.initState();
+    _reading.addListener(_onReadingChanged);
+    _reading.load();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadStorageInfo();
     });
+  }
+
+  void _onReadingChanged() {
+    if (mounted) setState(() {});
+  }
+
+  @override
+  void dispose() {
+    _reading.removeListener(_onReadingChanged);
+    super.dispose();
   }
 
   Future<void> _loadStorageInfo() async {
@@ -302,11 +316,25 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   ),
                   SizedBox(height: PanAfricanSpacing.lg),
 
+                  _SettingsSection(
+                    title: 'Accessibility',
+                    isDark: isDark,
+                    index: 3,
+                    children: [
+                      ReadingOptionTile(
+                        controller: _reading,
+                        title: ReadingOptionController.title,
+                        subtitle: ReadingOptionController.subtitle,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: PanAfricanSpacing.lg),
+
                   // Help tours
                   _SettingsSection(
                     title: 'Help',
                     isDark: isDark,
-                    index: 3,
+                    index: 4,
                     children: _helpTourTiles(context, isDark),
                   ),
                   SizedBox(height: PanAfricanSpacing.lg),
@@ -315,7 +343,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   _SettingsSection(
                     title: 'Offline Storage',
                     isDark: isDark,
-                    index: 4,
+                    index: 5,
                     children: [
                       _SettingsInfoTile(
                         icon: Icons.cloud_download,
