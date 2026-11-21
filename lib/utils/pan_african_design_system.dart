@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/theme/lingafriq_fonts.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// LingAfriq Pan-African Design System
 ///
@@ -13,6 +14,7 @@ import 'package:lingafriq/theme/lingafriq_fonts.dart';
 /// - Earth tones: African soil, heritage, roots
 /// - Vibrant accents: African textiles (Kente, Ankara, Kitenge)
 
+@Deprecated('Use LingAfriqTokens. This file is a retired design system.')
 class PanAfricanColors {
   PanAfricanColors._();
 
@@ -21,34 +23,34 @@ class PanAfricanColors {
   // ═══════════════════════════════════════════════════════════════════════════
 
   /// Primary green - Representing African forests and growth
-  static const Color primary = Color(0xFF1B7340);
+  static const Color primary = LingAfriqTokens.hexFF1B7340;
   // Backward-compatible alias (older UI code expects this name).
   static const Color primaryGreen = primary;
-  static const Color primaryLight = Color(0xFF2BEE6C);
-  static const Color primaryDark = Color(0xFF0D4D29);
-  static const Color primaryContainer = Color(0xFFB7F5CD);
-  static const Color onPrimaryContainer = Color(0xFF002109);
+  static const Color primaryLight = LingAfriqTokens.hexFF2BEE6C;
+  static const Color primaryDark = LingAfriqTokens.hexFF0D4D29;
+  static const Color primaryContainer = LingAfriqTokens.hexFFB7F5CD;
+  static const Color onPrimaryContainer = LingAfriqTokens.hexFF002109;
 
   // ═══════════════════════════════════════════════════════════════════════════
   // SECONDARY PALETTE - African Gold/Sunset
   // ═══════════════════════════════════════════════════════════════════════════
 
   /// Gold - Representing African wealth, sunsets, and success
-  static const Color secondary = Color(0xFFF7CB46);
-  static const Color secondaryLight = Color(0xFFFFF3CD);
-  static const Color secondaryDark = Color(0xFFE8A817);
-  static const Color secondaryContainer = Color(0xFFFFF3CD);
-  static const Color onSecondaryContainer = Color(0xFF5C4A00);
+  static const Color secondary = LingAfriqTokens.hexFFF7CB46;
+  static const Color secondaryLight = LingAfriqTokens.hexFFFFF3CD;
+  static const Color secondaryDark = LingAfriqTokens.hexFFE8A817;
+  static const Color secondaryContainer = LingAfriqTokens.hexFFFFF3CD;
+  static const Color onSecondaryContainer = LingAfriqTokens.hexFF5C4A00;
 
   // ═══════════════════════════════════════════════════════════════════════════
   // TERTIARY PALETTE - African Sunset/Fire
   // ═══════════════════════════════════════════════════════════════════════════
 
   /// Orange/Red - Representing African sunsets and energy
-  static const Color tertiary = Color(0xFFEB8937);
-  static const Color tertiaryDark = Color(0xFFD45B0A);
-  static const Color tertiaryContainer = Color(0xFFFFE4D9);
-  static const Color onTertiaryContainer = Color(0xFF5C2100);
+  static const Color tertiary = LingAfriqTokens.hexFFEB8937;
+  static const Color tertiaryDark = LingAfriqTokens.hexFFD45B0A;
+  static const Color tertiaryContainer = LingAfriqTokens.hexFFFFE4D9;
+  static const Color onTertiaryContainer = LingAfriqTokens.hexFF5C2100;
 
   // ═══════════════════════════════════════════════════════════════════════════
   // ACCENT COLORS - African Textiles Inspired
@@ -58,87 +60,87 @@ class PanAfricanColors {
   static const Color accent = secondary;
 
   /// Kente Red
-  static const Color kenteRed = Color(0xFFC4413A);
+  static const Color kenteRed = LingAfriqTokens.hexFFC4413A;
 
   /// Kente-inspired gold accent (alias of [gold] for game/traditional UI).
   static const Color kenteGold = gold;
 
   /// Kente Blue
-  static const Color kenteBlue = Color(0xFF1CB0F6);
+  static const Color kenteBlue = LingAfriqTokens.hexFF1CB0F6;
 
   /// Ankara Purple
-  static const Color ankaraPurple = Color(0xFF9B59B6);
+  static const Color ankaraPurple = LingAfriqTokens.hexFF9B59B6;
 
   /// Kitenge Teal
-  static const Color kitengeTeal = Color(0xFF16A085);
+  static const Color kitengeTeal = LingAfriqTokens.hexFF16A085;
   // Backward-compatible alias for earlier usage.
   static const Color kenteTeal = kitengeTeal;
 
   /// Maasai Red
-  static const Color maasaiRed = Color(0xFFE74C3C);
+  static const Color maasaiRed = LingAfriqTokens.hexFFE74C3C;
 
   // ═══════════════════════════════════════════════════════════════════════════
   // NEUTRAL PALETTE - African Earth
   // ═══════════════════════════════════════════════════════════════════════════
 
-  static const Color neutralDarkest = Color(0xFF0D1B12);
-  static const Color neutralDark = Color(0xFF1A2E21);
-  static const Color neutralMedium = Color(0xFF4A5D52);
-  static const Color neutralLight = Color(0xFFB8C4BD);
-  static const Color neutralLightest = Color(0xFFF4F6F5);
+  static const Color neutralDarkest = LingAfriqTokens.hexFF0D1B12;
+  static const Color neutralDark = LingAfriqTokens.hexFF1A2E21;
+  static const Color neutralMedium = LingAfriqTokens.hexFF4A5D52;
+  static const Color neutralLight = LingAfriqTokens.hexFFB8C4BD;
+  static const Color neutralLightest = LingAfriqTokens.hexFFF4F6F5;
 
   // ═══════════════════════════════════════════════════════════════════════════
   // SEMANTIC COLORS
   // ═══════════════════════════════════════════════════════════════════════════
 
-  static const Color success = Color(0xFF2ECC71);
-  static const Color error = Color(0xFFE74C3C);
-  static const Color warning = Color(0xFFF39C12);
-  static const Color info = Color(0xFF3498DB);
+  static const Color success = LingAfriqTokens.hexFF2ECC71;
+  static const Color error = LingAfriqTokens.hexFFE74C3C;
+  static const Color warning = LingAfriqTokens.hexFFF39C12;
+  static const Color info = LingAfriqTokens.hexFF3498DB;
 
   // ═══════════════════════════════════════════════════════════════════════════
   // SURFACE COLORS
   // ═══════════════════════════════════════════════════════════════════════════
 
   // Light Mode
-  static const Color surface = Color(0xFFFAFAFA);
-  static const Color surfaceLight = Color(0xFFFAFAFA);
-  static const Color surfaceContainerLowestLight = Color(0xFFFFFFFF);
-  static const Color surfaceContainerLowLight = Color(0xFFF5F7F5);
-  static const Color surfaceContainerLight = Color(0xFFF0F2F0);
-  static const Color surfaceContainerHighLight = Color(0xFFE8EBE8);
-  static const Color surfaceContainerHighestLight = Color(0xFFE0E4E0);
-  static const Color cardLight = Color(0xFFFFFFFF);
-  static const Color borderLight = Color(0xFFE0E4E0);
-  static const Color outline = Color(0xFFE0E4E0);
+  static const Color surface = LingAfriqTokens.hexFFFAFAFA;
+  static const Color surfaceLight = LingAfriqTokens.hexFFFAFAFA;
+  static const Color surfaceContainerLowestLight = LingAfriqTokens.hexFFFFFFFF;
+  static const Color surfaceContainerLowLight = LingAfriqTokens.hexFFF5F7F5;
+  static const Color surfaceContainerLight = LingAfriqTokens.hexFFF0F2F0;
+  static const Color surfaceContainerHighLight = LingAfriqTokens.hexFFE8EBE8;
+  static const Color surfaceContainerHighestLight = LingAfriqTokens.hexFFE0E4E0;
+  static const Color cardLight = LingAfriqTokens.hexFFFFFFFF;
+  static const Color borderLight = LingAfriqTokens.hexFFE0E4E0;
+  static const Color outline = LingAfriqTokens.hexFFE0E4E0;
 
   // Dark Mode
-  static const Color surfaceDark = Color(0xFF0D1810);
-  static const Color surfaceContainerLowestDark = Color(0xFF0D1810);
-  static const Color surfaceContainerLowDark = Color(0xFF152419);
-  static const Color surfaceContainerDark = Color(0xFF1A2E21);
-  static const Color surfaceContainerHighDark = Color(0xFF253D2D);
-  static const Color surfaceContainerHighestDark = Color(0xFF2A4A35);
-  static const Color cardDark = Color(0xFF1F3527);
-  static const Color borderDark = Color(0xFF2A4A35);
+  static const Color surfaceDark = LingAfriqTokens.hexFF0D1810;
+  static const Color surfaceContainerLowestDark = LingAfriqTokens.hexFF0D1810;
+  static const Color surfaceContainerLowDark = LingAfriqTokens.hexFF152419;
+  static const Color surfaceContainerDark = LingAfriqTokens.hexFF1A2E21;
+  static const Color surfaceContainerHighDark = LingAfriqTokens.hexFF253D2D;
+  static const Color surfaceContainerHighestDark = LingAfriqTokens.hexFF2A4A35;
+  static const Color cardDark = LingAfriqTokens.hexFF1F3527;
+  static const Color borderDark = LingAfriqTokens.hexFF2A4A35;
 
   // ═══════════════════════════════════════════════════════════════════════════
   // TEXT COLORS
   // ═══════════════════════════════════════════════════════════════════════════
 
-  static const Color textPrimary = Color(0xFF0D1B12);
-  static const Color textSecondary = Color(0xFF4A5D52);
-  static const Color textDark = Color(0xFF0D1B12);
-  static const Color textPrimaryLight = Color(0xFF0D1B12);
-  static const Color textSecondaryLight = Color(0xFF4A5D52);
-  static const Color textDisabledLight = Color(0xFF9CA8A0);
+  static const Color textPrimary = LingAfriqTokens.hexFF0D1B12;
+  static const Color textSecondary = LingAfriqTokens.hexFF4A5D52;
+  static const Color textDark = LingAfriqTokens.hexFF0D1B12;
+  static const Color textPrimaryLight = LingAfriqTokens.hexFF0D1B12;
+  static const Color textSecondaryLight = LingAfriqTokens.hexFF4A5D52;
+  static const Color textDisabledLight = LingAfriqTokens.hexFF9CA8A0;
 
-  static const Color textPrimaryDark = Color(0xFFF4F6F5);
-  static const Color textSecondaryDark = Color(0xFFB8C4BD);
-  static const Color textTertiaryDark = Color(0xFF8A9B91);
-  static const Color textDisabledDark = Color(0xFF6B7D72);
+  static const Color textPrimaryDark = LingAfriqTokens.hexFFF4F6F5;
+  static const Color textSecondaryDark = LingAfriqTokens.hexFFB8C4BD;
+  static const Color textTertiaryDark = LingAfriqTokens.hexFF8A9B91;
+  static const Color textDisabledDark = LingAfriqTokens.hexFF6B7D72;
 
-  static const Color textTertiaryLight = Color(0xFF7A8C82);
+  static const Color textTertiaryLight = LingAfriqTokens.hexFF7A8C82;
 
   // ═══════════════════════════════════════════════════════════════════════════
   // BACKWARD-COMPATIBLE ALIASES
@@ -149,39 +151,39 @@ class PanAfricanColors {
   static const Color backgroundLight = surfaceLight;
 
   /// Gold accent - African wealth and success
-  static const Color gold = Color(0xFFF7CB46);
+  static const Color gold = LingAfriqTokens.hexFFF7CB46;
 }
 
 /// Pan-African Gradients (subtle, flat variants - no bold gradients)
 class PanAfricanGradients {
   PanAfricanGradients._();
 
-  static const Color _primary = Color(0xFF1B7340);
+  static const Color _primary = LingAfriqTokens.hexFF1B7340;
   // ignore: unused_field
-  static const Color _primaryDark = Color(0xFF0D4D29);
-  static const Color _primaryContainer = Color(0xFFB7F5CD);
-  static const Color _surface = Color(0xFFFAFAFA);
-  static const Color _neutralLightest = Color(0xFFF4F6F5);
+  static const Color _primaryDark = LingAfriqTokens.hexFF0D4D29;
+  static const Color _primaryContainer = LingAfriqTokens.hexFFB7F5CD;
+  static const Color _surface = LingAfriqTokens.hexFFFAFAFA;
+  static const Color _neutralLightest = LingAfriqTokens.hexFFF4F6F5;
 
   /// African Sunset - Barely visible warm tint
   static const LinearGradient sunset = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFFFFF8F0), Color(0xFFFFFBF5)],
+    colors: [LingAfriqTokens.hexFFFFF8F0, LingAfriqTokens.hexFFFFFBF5],
   );
 
   /// African Forest - Restored contrast so white text remains readable.
   static const LinearGradient forest = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFF2A7A4C), Color(0xFF1B7340)],
+    colors: [LingAfriqTokens.hexFF2A7A4C, LingAfriqTokens.hexFF1B7340],
   );
 
   /// Savanna Gold - Barely there warm tint
   static const LinearGradient savannaGold = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFFFFF8E7), Color(0xFFFFFDF5)],
+    colors: [LingAfriqTokens.hexFFFFF8E7, LingAfriqTokens.hexFFFFFDF5],
   );
 
   /// Primary Header - Subtle green
@@ -195,7 +197,7 @@ class PanAfricanGradients {
   static const LinearGradient kente = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFFF7CB46), Color(0xFFEB8937)],
+    colors: [LingAfriqTokens.hexFFF7CB46, LingAfriqTokens.hexFFEB8937],
   );
 
   /// Kente Vibrant - Flat (primaryContainer)
@@ -209,21 +211,21 @@ class PanAfricanGradients {
   static const LinearGradient darkSurface = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [Color(0xFF1A2E21), Color(0xFF0D1810)],
+    colors: [LingAfriqTokens.hexFF1A2E21, LingAfriqTokens.hexFF0D1810],
   );
 
   /// App Bar Gradient (Dark) - Subtle
   static const LinearGradient appBarDark = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFF1F3527), Color(0xFF0D1810)],
+    colors: [LingAfriqTokens.hexFF1F3527, LingAfriqTokens.hexFF0D1810],
   );
 
   /// Achievement/Celebration - Subtle green
   static const LinearGradient celebration = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [_primaryContainer, Color(0xFFE8F5E9)],
+    colors: [_primaryContainer, LingAfriqTokens.hexFFE8F5E9],
   );
 
   /// African Earth - Flat neutral
@@ -609,8 +611,8 @@ class PanAfricanColorScheme {
     onTertiaryContainer: PanAfricanColors.onTertiaryContainer,
     error: PanAfricanColors.error,
     onError: Colors.white,
-    errorContainer: Color(0xFFFFDAD6),
-    onErrorContainer: Color(0xFF410002),
+    errorContainer: LingAfriqTokens.hexFFFFDAD6,
+    onErrorContainer: LingAfriqTokens.hexFF410002,
     surface: PanAfricanColors.surfaceLight,
     onSurface: PanAfricanColors.textPrimaryLight,
     surfaceContainerHighest: PanAfricanColors.surfaceContainerHighestLight,
@@ -643,10 +645,10 @@ class PanAfricanColorScheme {
     onTertiary: PanAfricanColors.tertiaryDark,
     tertiaryContainer: PanAfricanColors.tertiaryDark,
     onTertiaryContainer: PanAfricanColors.tertiaryContainer,
-    error: Color(0xFFFFB4AB),
-    onError: Color(0xFF690005),
-    errorContainer: Color(0xFF93000A),
-    onErrorContainer: Color(0xFFFFDAD6),
+    error: LingAfriqTokens.hexFFFFB4AB,
+    onError: LingAfriqTokens.hexFF690005,
+    errorContainer: LingAfriqTokens.hexFF93000A,
+    onErrorContainer: LingAfriqTokens.hexFFFFDAD6,
     surface: PanAfricanColors.surfaceDark,
     onSurface: PanAfricanColors.textPrimaryDark,
     surfaceContainerHighest: PanAfricanColors.surfaceContainerHighestDark,

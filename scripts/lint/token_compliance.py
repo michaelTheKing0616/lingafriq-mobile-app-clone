@@ -26,6 +26,15 @@ USER_STRING = ("user-string", r"""\bText\s*\(\s*['\"]""")
 STRICT_PREFIXES = ("lib/design/", "widgetbook/")
 SCAN_PREFIXES = ("lib/", "widgetbook/")
 SUMMARY_LIMIT = 15
+RETIRED_DESIGN = (
+    "package:lingafriq/utils/african_theme.dart",
+    "package:lingafriq/utils/app_colors.dart",
+    "package:lingafriq/utils/design_system.dart",
+    "package:lingafriq/utils/modern_griot_design_system.dart",
+    "package:lingafriq/utils/pan_african_design_system.dart",
+    "package:lingafriq/utils/polie_design_tokens.dart",
+    "package:lingafriq/theme/stitch_theme_extensions.dart",
+)
 
 
 def _compile():
@@ -71,7 +80,22 @@ def colour_counts(root: Path) -> dict[str, int]:
     return counts
 
 
-def lint(root: Path, baseline: dict[str, int]) -> list[tuple[str, str, int]]:
+def retired_importers(root: Path) -> dict[str, int]:
+    found = {}
+    for path in dart_files(root):
+        text = path.read_text(encoding="utf-8")
+        for index, line in enumerate(text.splitlines(), start=1):
+            if any(target in line and line.strip().startswith("import ") for target in RETIRED_DESIGN):
+                found[rel_path(path, root)] = index
+                break
+    return found
+
+
+def lint(
+    root: Path,
+    baseline: dict[str, int],
+    allowed_importers: set[str] | None = None,
+) -> list[tuple[str, str, int]]:
     findings = []
     by_rule = dict(RULES)
     for path in dart_files(root):
@@ -86,6 +110,10 @@ def lint(root: Path, baseline: dict[str, int]) -> list[tuple[str, str, int]]:
             for rule in ("font-family", "font-size", "spacing-literal", "user-string"):
                 for line in line_hits(text, by_rule[rule]):
                     findings.append((rule, rel, line))
+    if allowed_importers is not None:
+        for rel, line in sorted(retired_importers(root).items()):
+            if rel not in allowed_importers:
+                findings.append(("deprecated-import", rel, line))
     return findings
 
 
@@ -104,10 +132,13 @@ def summary(findings: list[tuple[str, str, int]], total: int, baseline_total: in
     return "\n".join(lines) + "\n"
 
 
-def load_baseline(path: Path) -> dict[str, int]:
+def load_baseline(path: Path) -> tuple[dict[str, int], set[str] | None]:
     raw = json.loads(path.read_text(encoding="utf-8"))
     counts = raw["colorLiteral"]
-    return {key: int(counts[key]) for key in counts}
+    colours = {key: int(counts[key]) for key in counts}
+    if "deprecatedImports" not in raw:
+        return colours, None
+    return colours, set(raw["deprecatedImports"])
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -122,13 +153,16 @@ def main(argv: list[str] | None = None) -> int:
         baseline_path = root / baseline_path
     counts = colour_counts(root)
     if args.write_baseline:
-        payload = {"colorLiteral": counts}
+        payload = {
+            "colorLiteral": counts,
+            "deprecatedImports": sorted(retired_importers(root)),
+        }
         baseline_path.parent.mkdir(parents=True, exist_ok=True)
         baseline_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
         print(f"token-compliance: wrote {sum(counts.values())} color-literal")
         return 0
-    baseline = load_baseline(baseline_path)
-    findings = lint(root, baseline)
+    baseline, allowed_importers = load_baseline(baseline_path)
+    findings = lint(root, baseline, allowed_importers)
     text = summary(findings, sum(counts.values()), sum(baseline.values()))
     sys.stdout.write(text)
     return 1 if findings else 0

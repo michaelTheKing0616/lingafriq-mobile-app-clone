@@ -102,6 +102,23 @@ class TokenComplianceTest(unittest.TestCase):
             self.assertLessEqual(len(printed), 15)
             self.assertTrue(printed[-1].startswith("+"))
 
+    def test_a_new_import_of_a_retired_design_file_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            baseline = write_tree(
+                root,
+                {
+                    "lib/fresh.dart": "import 'package:lingafriq/utils/app_colors.dart';\n",
+                },
+                {},
+            )
+            raw = json.loads(baseline.read_text())
+            raw["deprecatedImports"] = []
+            baseline.write_text(json.dumps(raw), encoding="utf-8")
+            result = run(root, baseline)
+            self.assertEqual(result.returncode, 1, result.stdout)
+            self.assertIn("deprecated-import lib/fresh.dart:1", result.stdout)
+
     def test_repository_matches_the_recorded_baseline(self):
         result = run(ROOT, ROOT / "scripts" / "lint" / "token_baseline.json")
         self.assertEqual(result.returncode, 0, result.stdout)

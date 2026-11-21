@@ -54,7 +54,9 @@ GeneratedTokens generateTokens(Map<String, dynamic> spec) {
     ..writeln()
     ..writeln('abstract final class LingAfriqTokens {');
   for (final name in resolved.keys) {
-    dart.writeln('  static const Color $name = Color(0xFF${resolved[name]});');
+    final hex = resolved[name]!;
+    final argb = hex.length == 8 ? hex : 'FF$hex';
+    dart.writeln('  static const Color $name = Color(0x$argb);');
   }
   for (final key in spacing.keys.toList()..sort()) {
     dart.writeln('  static const double spacing$key = ${spacing[key]}.0;');
@@ -270,8 +272,8 @@ String _resolveColor(dynamic node, Map<String, dynamic> colors, String name) {
     return _resolveColor(colors[ref.substring(6)], colors, ref.substring(6));
   }
   final hex = raw.replaceFirst('#', '').toUpperCase();
-  if (!RegExp(r'^[0-9A-F]{6}$').hasMatch(hex)) {
-    throw TokenGenException('color.$name is not a 6-digit hex');
+  if (!RegExp(r'^[0-9A-F]{6}([0-9A-F]{2})?$').hasMatch(hex)) {
+    throw TokenGenException('color.$name is not a 6-digit or 8-digit hex');
   }
   return hex;
 }

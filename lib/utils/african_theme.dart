@@ -4,6 +4,7 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 /// Pan-African Theme Colors and Design Elements
 /// Inspired by African cultures, landscapes, and traditions
 
+@Deprecated('Use LingAfriqTokens. This file is a retired design system.')
 class AfricanTheme {
   // Pan-African Color Palette
   static const Color primaryGreen = PanAfricanColors.primary; // Legacy alias

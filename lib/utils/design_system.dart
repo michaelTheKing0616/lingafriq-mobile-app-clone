@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Modern Design System for LingAfriq
 /// Based on Material Design 3 principles and modern UI best practices
 
+@Deprecated('Use LingAfriqTokens. This file is a retired design system.')
 class DesignSystem {
   // Spacing
   static const double spacingXS = 4.0;
@@ -50,7 +52,7 @@ class DesignSystem {
   static const LinearGradient primaryGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0XFFC4413A), Color(0XFFF7CB46)],
+    colors: [LingAfriqTokens.hexFFC4413A, LingAfriqTokens.hexFFF7CB46],
   );
 
   static const LinearGradient accentGradient = LinearGradient(
@@ -63,13 +65,13 @@ class DesignSystem {
   static const LinearGradient stitchPrimaryGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [PanAfricanColors.primary, Color(0xFF22C55E)],
+    colors: [PanAfricanColors.primary, LingAfriqTokens.hexFF22C55E],
   );
 
   static const LinearGradient successGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [PanAfricanColors.success, Color(0xFF66BB6A)],
+    colors: [PanAfricanColors.success, LingAfriqTokens.hexFF66BB6A],
   );
 
   // Card Styles

@@ -536,7 +536,7 @@ P3-010	Done	Add motion tokens with the ease-out curve	P3/P3-010.yaml
 P3-011	Done	Bundle Andika and Noto, drop runtime font fetch	P3/P3-011.yaml
 P3-012	Done	Define type scale with 18 sp floor and 1.5 leading	P3/P3-012.yaml
 P3-013	Done	Add token-compliance lint for colours, sizes, fonts, strings	P3/P3-013.yaml
-P3-014	Draft	Retire six design systems behind token shims	P3/P3-014.yaml
+P3-014	Done	Retire six design systems behind token shims	P3/P3-014.yaml
 P3-015	Draft	Design hi-fi Today, Path map and Lesson player	P3/P3-015.yaml
 P3-016	Draft	Design hi-fi Tone Lens, Word Card and Lens camera	P3/P3-016.yaml
 P3-017	Draft	Design hi-fi Village map, Arcade shelf and Polie voice	P3/P3-017.yaml
