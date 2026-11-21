@@ -305,6 +305,7 @@ class _AyoMancalaGameState extends BaseGameScreenState<AyoMancalaGame> {
         'north_store': _board.storeFor(AyoPlayer.north),
         'captures_correct': _correctCaptureConfirmations,
         'captures_missed': _missedCaptureConfirmations,
+        'ai_captures': _aiCaptures,
       },
     );
     await finishGame();

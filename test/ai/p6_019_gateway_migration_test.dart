@@ -45,7 +45,7 @@ void main() {
 
   group('P6-019 allowlist security scan', () {
     test('no Groq host or bearer tokens in provider or screen', () {
-      for (final path in [_providerPath, _screenPath]) {
+      for (final path in [_providerPath, _screenPath, _clientPath]) {
         final src = _stripped(path).toLowerCase();
         expect(src.contains('api.groq.com'), isFalse, reason: path);
         expect(src.contains('openai.com/v1'), isFalse, reason: path);

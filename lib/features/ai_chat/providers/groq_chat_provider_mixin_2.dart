@@ -83,6 +83,16 @@ mixin GroqChatProviderMixin2 on GroqChatStreamHelpers {
         previousContext: previousContext.isNotEmpty ? previousContext : null,
       );
     }
+
+    final scenarioHints = _scenarioHintsBlock().trim();
+    final promptParts = <String>[
+      if ((effectiveSystemPrompt ?? '').trim().isNotEmpty)
+        effectiveSystemPrompt!.trim(),
+      _languageFocusBlock(),
+      if (_mode == PolieMode.roleplay) 'ROLEPLAY TURN: $_roleplayTurnCount',
+      if (scenarioHints.isNotEmpty) scenarioHints,
+    ];
+    effectiveSystemPrompt = promptParts.join('\n\n');
     
     // Use Hybrid Polie if enabled and appropriate for the task
     if (_useHybridPolie && _hybridOrchestrator != null) {
