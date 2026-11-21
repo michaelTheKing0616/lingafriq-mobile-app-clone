@@ -554,7 +554,7 @@ P3-028	Draft	Build answer feedback helper under 160 ms	P3/P3-028.yaml
 P3-029	Done	Specify motion, sound palette and haptic map	P3/P3-029.yaml
 P3-030	Done	Write copy deck and voice guide	P3/P3-030.yaml
 P3-031	Done	Draw wireflows for Today, Learn and Speak	P3/P3-031.yaml
-P3-032	Draft	Draw wireflows for Play, Village and Me	P3/P3-032.yaml
+P3-032	Done	Draw wireflows for Play, Village and Me	P3/P3-032.yaml
 P3-033	Draft	Write usability-test protocol with success targets	P3/P3-033.yaml
 P3-034	Draft	Build the Tone Lens renderer, never colour-only	P3/P3-034.yaml
 P3-035	Done	Build the single text renderer and diacritic keyboard	P3/P3-035.yaml
