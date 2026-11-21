@@ -23,3 +23,15 @@ jobs:
 
       - name: Audit lockfiles in this repo
         run: bash scripts/ci/dep_audit.sh
+
+  honest-copy:
+    name: Honest UI copy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Banned words, em dashes, and fake confidence
+        run: |
+          python3 test/scripts/honest_copy_test.py
+          python3 scripts/lint/honest_copy.py

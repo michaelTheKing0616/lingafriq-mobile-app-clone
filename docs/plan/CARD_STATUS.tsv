@@ -549,7 +549,7 @@ P3-023	Draft	Build AI-unavailable and content-under-review states	P3/P3-023.yaml
 P3-024	Draft	Ship a custom icon set with no emoji icons	P3/P3-024.yaml
 P3-025	Draft	Specify the illustration system	P3/P3-025.yaml
 P3-026	Draft	Integrate credited culture pattern library	P3/P3-026.yaml
-P3-027	Draft	Lint banned words and fake-precision chips	P3/P3-027.yaml
+P3-027	Done	Lint banned words and fake-precision chips	P3/P3-027.yaml
 P3-028	Draft	Build answer feedback helper under 160 ms	P3/P3-028.yaml
 P3-029	Draft	Specify motion, sound palette and haptic map	P3/P3-029.yaml
 P3-030	Draft	Write copy deck and voice guide	P3/P3-030.yaml
