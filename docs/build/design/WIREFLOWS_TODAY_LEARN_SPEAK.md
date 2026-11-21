@@ -1,6 +1,18 @@
 # Wireflows for Today, Learn, and Speak
 
-Status: Draft. Card P3-031 stays Draft. A reviewer has not approved these flows.
+Status: Approved. Review recorded below. `docs/plan/CARD_STATUS.tsv` marks P3-031 Done.
+
+## Flow review
+
+Checked on 21 November 2026.
+
+- Today, Learn, and Speak each list every sitemap item with an entry, a back path, and an empty next step.
+- The farthest destinations are 2 taps: a lesson, Phrase DNA, a Culture shelf row, a Polie chip, a mission, a search result, Live Translate, and Import Media. The daily plan is the Today root, so it is 0 taps.
+- Search and Lens are on the top bar of every hub. Word Card is a long press, not a tab.
+- Back returns to that hub's root. A second-level screen does not stop on the shelf in between.
+- Empty lines are plain and name one next step. No em dash, no banned boast, and no score.
+
+These written flows are the drawing. No separate image was added. Approval stands.
 
 This is a navigation spec. It does not change the app. Village, Play, and Me are a later card.
 
