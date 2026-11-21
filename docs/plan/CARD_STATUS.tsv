@@ -545,7 +545,7 @@ P3-019	Done	Create isolated Widgetbook catalogue with golden harness	P3/P3-019.y
 P3-020	Done	'Build core components: buttons, cards, inputs, sheets'	P3/P3-020.yaml
 P3-021	Done	Build skeleton and forward-pointing empty states	P3/P3-021.yaml
 P3-022	Done	Build error anatomy and offline state, stop swallowed errors	P3/P3-022.yaml
-P3-023	Draft	Build AI-unavailable and content-under-review states	P3/P3-023.yaml
+P3-023	Done	Build AI-unavailable and content-under-review states	P3/P3-023.yaml
 P3-024	Done	Ship a custom icon set with no emoji icons	P3/P3-024.yaml
 P3-025	Draft	Specify the illustration system	P3/P3-025.yaml
 P3-026	Draft	Integrate credited culture pattern library	P3/P3-026.yaml
