@@ -1,8 +1,18 @@
 # Copy deck
 
-A reviewer has not approved this file.
+Status: Approved. Visual and copy review recorded below. `docs/plan/CARD_STATUS.tsv` marks P3-030 Done.
 
-Status: Draft.
+## Copy review
+
+Checked on 21 November 2026.
+
+- The old village lines are quoted and replaced with plain questions. The learning-style question and the points choice do not ship.
+- Every shipped string in the tables is grade 7 or lower under the formula written here. Short labels that failed the formula are lengthened, and the draft is listed.
+- Buttons start with a verb, except "I said it", which reports the act. "Open all features" replaces "All features".
+- The voice guide has ten do-and-don't pairs and the three-line error pattern, including the line that Polie did not speak for the learner.
+- No em dash, no banned boast, and no emoji used as an icon.
+
+The painted frames still show a few shorter labels, such as Continue, Practise, and Preview. This deck is the copy those screens should use when they are built. Approval stands.
 
 This file lists the strings that will ship. It does not change the app, the screens, or the ARB files. Each ARB key is a proposal written here only.
 

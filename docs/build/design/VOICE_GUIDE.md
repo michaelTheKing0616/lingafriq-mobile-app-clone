@@ -1,8 +1,10 @@
 # Voice guide
 
-A reviewer has not approved this file.
+Status: Approved with the copy deck. `docs/plan/CARD_STATUS.tsv` marks P3-030 Done.
 
-Status: Draft.
+## Copy review
+
+Checked on 21 November 2026 with `docs/build/design/COPY_DECK.md`. The ten situations, the tone rules, and the three error examples match that deck. Approval stands.
 
 This guide is for the strings in the copy deck. It does not change the app. Sound and haptic cues stay in the motion spec. This guide does not restate them.
 
