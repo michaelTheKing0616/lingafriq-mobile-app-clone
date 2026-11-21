@@ -36,6 +36,12 @@ abstract final class LingAfriqTokens {
   static const int motionProductFast = 160;
   static const int motionProductInstant = 80;
   static const int motionProductSlow = 300;
+  static const String typeIdBody = 'type.body';
+  static const String typeRoleBody = 'body';
+  static const String typeIdDisplay = 'type.display';
+  static const String typeRoleDisplay = 'display';
+  static const String typeIdTarget = 'type.target';
+  static const String typeRoleTarget = 'target-language';
   static const String motionRareEasing = 'cubic-bezier(0.23,1,0.32,1)';
   static const int motionRareLessonComplete = 480;
   static const int motionRareLevelUp = 600;

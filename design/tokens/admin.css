@@ -12,6 +12,9 @@
   --spacing-48: 48px;
   --spacing-64: 64px;
   --spacing-8: 8px;
+  --type.body: LingAfriqText;
+  --type.display: LingAfriqDisplay;
+  --type.target: Andika;
   --motion-product-easing: cubic-bezier(0.23,1,0.32,1);
   --motion-product-base: 240ms;
   --motion-product-fast: 160ms;

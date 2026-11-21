@@ -74,6 +74,15 @@ GeneratedTokens generateTokens(Map<String, dynamic> spec) {
   for (final entry in motion.productDurations.entries) {
     dart.writeln('  static const int motionProduct${_pascal(entry.key)} = ${entry.value};');
   }
+  final typeStyles = _typeScale(spec);
+  for (final style in typeStyles) {
+    dart.writeln(
+      "  static const String typeId${_pascal(style.name)} = '${style.token}';",
+    );
+    dart.writeln(
+      "  static const String typeRole${_pascal(style.name)} = '${style.role}';",
+    );
+  }
   dart.writeln("  static const String motionRareEasing = '${motion.rareEasing}';");
   for (final entry in motion.rareDurations.entries) {
     dart.writeln('  static const int motionRare${_pascal(entry.key)} = ${entry.value};');
@@ -88,6 +97,9 @@ GeneratedTokens generateTokens(Map<String, dynamic> spec) {
     css.writeln('  --spacing-$key: ${spacing[key]}px;');
   }
   final motionCss = _motion(spec);
+  for (final style in _typeScale(spec)) {
+    css.writeln('  --${style.token}: ${style.family};');
+  }
   css.writeln('  --motion-product-easing: ${motionCss.productEasing};');
   for (final entry in motionCss.productDurations.entries) {
     css.writeln('  --motion-product-${entry.key}: ${entry.value}ms;');
@@ -142,6 +154,58 @@ class _Motion {
 }
 
 const _easeOut = 'cubic-bezier(0.23,1,0.32,1)';
+
+class _TypeStyle {
+  _TypeStyle({
+    required this.name,
+    required this.token,
+    required this.role,
+    required this.family,
+    required this.size,
+    required this.height,
+  });
+
+  final String name;
+  final String token;
+  final String role;
+  final String family;
+  final double size;
+  final double height;
+}
+
+List<_TypeStyle> _typeScale(Map<String, dynamic> spec) {
+  final type = _map(spec, 'type');
+  final out = <_TypeStyle>[];
+  for (final name in type.keys.toList()..sort()) {
+    final raw = type[name];
+    if (raw is! Map) throw TokenGenException('type.$name is invalid');
+    final role = raw['role'];
+    final family = raw['family'];
+    final size = raw['size'];
+    final height = raw['height'];
+    final token = raw['id'];
+    if (role is! String || family is! String || token is! String) {
+      throw TokenGenException('type.$name is missing role, family, or id');
+    }
+    if (size is! num || height is! num) {
+      throw TokenGenException('type.$name is missing size or height');
+    }
+    if (role == 'target-language' && (size < 18 || height < 1.5)) {
+      throw TokenGenException('type.$name is below the 18sp / 1.5 floor');
+    }
+    out.add(
+      _TypeStyle(
+        name: name,
+        token: token,
+        role: role,
+        family: family,
+        size: size.toDouble(),
+        height: height.toDouble(),
+      ),
+    );
+  }
+  return out;
+}
 
 _Motion _motion(Map<String, dynamic> spec) {
   final motion = _map(spec, 'motion');

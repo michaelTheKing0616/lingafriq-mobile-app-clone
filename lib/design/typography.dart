@@ -9,6 +9,9 @@ abstract final class LingAfriqType {
   static const String targetRole = 'target-language';
   static const String displayRole = 'display';
   static const String bodyRole = 'body';
+  static const String targetToken = 'type.target';
+  static const String displayToken = 'type.display';
+  static const String bodyToken = 'type.body';
 
   static const String targetFamily = 'Andika';
   static const String displayFamily = 'LingAfriqDisplay';
