@@ -618,7 +618,7 @@ P3-092	Done	Honour reduced motion with gentler animation	P3/P3-092.yaml
 P3-093	Done	Offer a dyslexia-friendly reading option on Andika	P3/P3-093.yaml
 P3-094	Draft	Extract 1,104 hard-coded strings to ARB	P3/P3-094.yaml
 P3-095	Draft	Add pseudo-localisation to CI	P3/P3-095.yaml
-P3-096	Draft	Support RTL layouts for Arabic and Ajami	P3/P3-096.yaml
+P3-096	Done	Support RTL layouts for Arabic and Ajami	P3/P3-096.yaml
 P3-097	Draft	Import reviewed UI translations in nine languages	P3/P3-097.yaml
 P3-098	Draft	Deliver explanations in the learner's L1	P3/P3-098.yaml
 P3-099	Draft	Review G3 design gate with UX and UI Scorecards	P3/P3-099.yaml
