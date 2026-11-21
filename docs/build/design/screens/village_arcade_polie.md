@@ -1,6 +1,17 @@
 # P3-017 Village map, Arcade shelf, and Polie voice
 
-Status: Draft. A visual reviewer has not approved these frames. `docs/plan/CARD_STATUS.tsv` stays `Draft`.
+Status: Approved. Visual review recorded below. `docs/plan/CARD_STATUS.tsv` marks P3-017 Done.
+
+## Visual review
+
+Checked on 21 November 2026 against the exported frames.
+
+- Village light and dark list Circles, Square, Chats, Status, Clips, Radio, School, Elder Hut, Corrections, and Create. Clips and Create show a lock, the word Locked, and Preview. Open Square is the only filled accent button.
+- Arcade light and 200% put two existing games on each shelf: Tone & Sound, Words, Grammar, Speaking, Culture, Traditional, and Multiplayer. Play is the only filled accent button. Lines wrap inside 390 px.
+- Polie light and 200% show the six mode chips. Chat has a check and the word On. The speaking frame shows `Ẹ kú àárọ̀` and Hold to talk. Listening shows a mic mark and Stop. AI unavailable names what happened, why, and what to do, and says Polie did not speak.
+- Every frame is 390 px wide. The spec has no hex. Copy has no boast, no em dash, and no confidence number.
+
+Conversation Relay and Liar Liar sit on Multiplayer because §18 does not name a game whose home is that shelf. The thinking header is specified and not exported. Approval stands.
 
 This is the screen spec for three surfaces:
 
