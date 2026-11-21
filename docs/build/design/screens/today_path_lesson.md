@@ -1,6 +1,17 @@
 # P3-015 Today, Path, and the lesson player
 
-Status: Draft. The frames below are the hi-fi. A T4 reviewer has not approved them, so `docs/plan/CARD_STATUS.tsv` stays Draft. See the card report.
+Status: Approved. Visual review recorded below. `docs/plan/CARD_STATUS.tsv` marks P3-015 Done.
+
+## Visual review
+
+Checked on 21 November 2026 against the exported frames.
+
+- Today light, dark, and 200% show one plan, the minute pill, due reviews, the next lesson with `Ẹ kú àárọ̀`, one speaking row, and a single Start button. At 200% the lines wrap inside 390 px and the tone marks stay visible.
+- Path light shows done, current, locked, and review-due with a check, a number, a lock, and a triangle. Locked has Preview and Open anyway. Start is the only filled accent button.
+- Lesson light is the plan session. Error uses a cross and danger text. Offline uses an info mark. Both name what happened, why, and what to do.
+- Every frame is 390 px wide. No hex appears in this spec. Copy has no boast, no em dash, and no confidence number.
+
+These are token frames, not illustrated scenes. That is the evidence this card asked for. Approval stands.
 
 This is the screen spec for three surfaces:
 
