@@ -35,6 +35,8 @@ import 'package:lingafriq/providers/onboarding_provider.dart';
 import 'package:lingafriq/providers/firebase_messaging_provider.dart';
 
 import 'package:lingafriq/providers/tts_provider.dart';
+import 'package:lingafriq/l10n/onboarding_ar_overlay.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 part 'unified/shared_widgets.dart';
 part 'unified/welcome_step.dart';
@@ -50,7 +52,6 @@ part 'unified/tone_step.dart';
 part 'unified/profile_step.dart';
 part 'unified/save_progress_step.dart';
 part 'unified/identity.dart';
-part 'unified/copy_ar.dart';
 
 /// Documented Modern Griot opacity roles — never invent ad-hoc alphas in UI.
 abstract final class _GriotAlpha {
@@ -121,48 +122,48 @@ _lessonCopyFor(String code) {
         name: 'Hausa',
         hear: 'Sannu',
         tap: 'Sannu',
-        say: 'Sannu, Hello',
-        reminder: 'Sannu! 5 minutes of Hausa?',
+        say: l10nEn().onboardingSannuHello,
+        reminder: l10nEn().onboardingSannu5MinutesOfHausa,
       );
     case 'ig':
       return (
         name: 'Igbo',
         hear: 'Ndewo',
         tap: 'Ndewo',
-        say: 'Ndewo, Hello',
-        reminder: 'Ndewo! 5 minutes of Igbo?',
+        say: l10nEn().onboardingNdewoHello,
+        reminder: l10nEn().onboardingNdewo5MinutesOfIgbo,
       );
     case 'sw':
       return (
         name: 'Swahili',
         hear: 'Habari',
         tap: 'Habari',
-        say: 'Habari, Hello',
-        reminder: 'Habari! 5 minutes of Swahili?',
+        say: l10nEn().onboardingHabariHello,
+        reminder: l10nEn().onboardingHabari5MinutesOfSwahili,
       );
     case 'am':
       return (
         name: 'Amharic',
         hear: 'ሰላም',
         tap: 'ሰላም',
-        say: 'ሰላም, Hello',
-        reminder: 'ሰላም! 5 minutes of Amharic?',
+        say: l10nEn().onboardingHello,
+        reminder: l10nEn().onboardingText5MinutesOfAmharic,
       );
     case 'zu':
       return (
         name: 'Zulu',
         hear: 'Sawubona',
         tap: 'Sawubona',
-        say: 'Sawubona, Hello',
-        reminder: 'Sawubona! 5 minutes of Zulu?',
+        say: l10nEn().onboardingSawubonaHello,
+        reminder: l10nEn().onboardingSawubona5MinutesOfZulu,
       );
     default:
       return (
         name: 'Yoruba',
         hear: 'Báwo',
-        tap: 'Báwo ni',
-        say: 'Báwo, Hello',
-        reminder: 'Ẹ kú àárọ̀! 5 minutes of Yoruba?',
+        tap: l10nEn().onboardingBWoNi,
+        say: l10nEn().onboardingBWoHello,
+        reminder: l10nEn().onboardingKR5MinutesOfYoruba,
       );
   }
 }
@@ -568,8 +569,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
           behavior: SnackBarBehavior.floating,
           backgroundColor: ModernGriotColors.onSurface,
           content: Text(
-            "You're offline right now, but we've saved your answers and "
-            'will sync them the moment you reconnect.',
+            l10nOf(context).onboardingYouReOfflineRightNowBut,
             style: ModernGriotTypography.bodyMedium(
               context: context,
               color: ModernGriotColors.surface,
@@ -597,16 +597,14 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                   borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
                 ),
                 title: Text(
-                  'Take a quick placement test?',
+                  l10nOf(context).onboardingTakeAQuickPlacementTest,
                   style: ModernGriotTypography.titleLarge(
                     context: dialogContext,
                     color: ModernGriotColors.onSurface,
                   ),
                 ),
                 content: Text(
-                  "We'll ask a few short questions to find your starting "
-                  'level in $learningLanguage. You can always take it later '
-                  'from your profile.',
+                  l10nOf(context).onboardingWeLlAskAFewShort(learningLanguage.toString()),
                   style: ModernGriotTypography.bodyMedium(
                     context: dialogContext,
                     color: _captionInk,
@@ -616,7 +614,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                   TextButton(
                     onPressed: () => Navigator.pop(dialogContext, false),
                     child: Text(
-                      'Maybe later',
+                      l10nOf(context).onboardingMaybeLater,
                       style: ModernGriotTypography.labelLarge(
                         context: dialogContext,
                         color: _captionInk,
@@ -633,7 +631,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                         ModernGriotLayout.minTouchTarget,
                       ),
                     ),
-                    child: const Text('Take the test'),
+                    child: Text(l10nOf(context).onboardingTakeTheTest),
                   ),
                 ],
               );
@@ -717,7 +715,7 @@ class _OnboardingTopBar extends StatelessWidget {
         children: [
           if (onBack != null)
             Semantics(
-              label: _bidi(context, 'Go back to the previous step'),
+              label: _bidi(context, l10nOf(context).onboardingGoBackToThePreviousStep),
               button: true,
               child: IconButton(
                 onPressed: onBack,
@@ -743,11 +741,11 @@ class _OnboardingTopBar extends StatelessWidget {
             SizedBox(width: ModernGriotLayout.minTouchTarget.w),
           Expanded(
             child: Semantics(
-              label: _bidi(context, 'Onboarding progress'),
+              label: _bidi(context, l10nOf(context).onboardingOnboardingProgress),
               value: _tr(
                 context,
-                'Step ${current + 1} of $total',
-                'الخطوة ${current + 1} من $total',
+                l10nOf(context).onboardingStepValueOfTotal('${current + 1}', total.toString()),
+                onboardingArStep(current + 1, total),
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(
@@ -770,7 +768,7 @@ class _OnboardingTopBar extends StatelessWidget {
           ),
           if (allowSkip)
             Semantics(
-              label: _bidi(context, 'Skip onboarding'),
+              label: _bidi(context, l10nOf(context).onboardingSkipOnboarding),
               button: true,
               child: TextButton(
                 onPressed: onSkip,
@@ -781,7 +779,7 @@ class _OnboardingTopBar extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  _bidi(context, 'Skip'),
+                  _bidi(context, l10nOf(context).onboardingSkip),
                   style: ModernGriotTypography.labelLarge(
                     context: context,
                     color: foregroundColor,

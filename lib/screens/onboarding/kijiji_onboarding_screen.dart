@@ -13,6 +13,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 /// Comprehensive 10-Step Story-Driven Onboarding
 /// "Kijiji cha Lugha" - The Language Village
@@ -38,7 +39,7 @@ class KijijiOnboardingScreen extends HookConsumerWidget {
 
     return LoadingOverlay(
       isLoading: isLoading.value,
-      message: 'Loading...',
+      message: l10nOf(context).onboardingLoading,
       child: Scaffold(
         body: AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.light,
@@ -191,7 +192,7 @@ class KijijiOnboardingScreen extends HookConsumerWidget {
                           .navigateOffAll(const LoginScreen());
                     },
                     child: Text(
-                      'Skip',
+                      l10nOf(context).onboardingSkip,
                       style: TextStyle(
                         color: Theme.of(
                           context,
@@ -282,7 +283,7 @@ class _WelcomeScreen extends StatelessWidget {
                     FadeTransition(
                       opacity: animationController,
                       child: Text(
-                        'Welcome to\nKijiji cha Lugha',
+                        l10nOf(context).onboardingWelcomeToKijijiChaLugha,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 36,
@@ -304,7 +305,7 @@ class _WelcomeScreen extends StatelessWidget {
                     FadeTransition(
                       opacity: animationController,
                       child: Text(
-                        'The Language Village\nYour journey begins here',
+                        l10nOf(context).onboardingTheLanguageVillageYourJourneyBegins,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
@@ -339,9 +340,9 @@ class _WelcomeScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  child: const Text(
-                    'Begin Journey',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  child: Text(
+                    l10nOf(context).onboardingBeginJourney,
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -400,7 +401,7 @@ class _ElderScreen extends HookConsumerWidget {
               FadeTransition(
                 opacity: animationController,
                 child: Text(
-                  'Welcome, traveler. I am Pa LingAfriq,\nkeeper of the village memory.',
+                  l10nOf(context).onboardingWelcomeTravelerIAmPaLingafriq,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 24,
@@ -414,7 +415,7 @@ class _ElderScreen extends HookConsumerWidget {
               FadeTransition(
                 opacity: animationController,
                 child: Text(
-                  'Tell me: who are you?',
+                  l10nOf(context).onboardingTellMeWhoAreYou,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 18,
@@ -475,7 +476,7 @@ class _ElderScreen extends HookConsumerWidget {
               FadeTransition(
                 opacity: animationController,
                 child: Text(
-                  'Why are you learning?',
+                  l10nOf(context).onboardingWhyAreYouLearning,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 18,
@@ -554,9 +555,9 @@ class _ElderScreen extends HookConsumerWidget {
                       context,
                     ).colorScheme.surface.withValues(alpha: 0.3),
                   ),
-                  child: const Text(
-                    'Next',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  child: Text(
+                    l10nOf(context).onboardingNext,
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -612,7 +613,7 @@ class _WeaverScreen extends HookConsumerWidget {
       'Zulu',
       'Hausa',
       'Igbo',
-      'Nigerian Pidgin English',
+      l10nOf(context).onboardingNigerianPidginEnglish,
     ];
     final levels = ['beginner', 'intermediate', 'advanced'];
 
@@ -643,7 +644,7 @@ class _WeaverScreen extends HookConsumerWidget {
               FadeTransition(
                 opacity: animationController,
                 child: Text(
-                  'I am Adisa, the Weaver.\nChoose the threads of your voice.',
+                  l10nOf(context).onboardingIAmAdisaTheWeaverChoose,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 24,
@@ -657,7 +658,7 @@ class _WeaverScreen extends HookConsumerWidget {
               FadeTransition(
                 opacity: animationController,
                 child: Text(
-                  'Select Language',
+                  l10nOf(context).onboardingSelectLanguage,
                   style: TextStyle(
                     fontSize: 18,
                     color: Theme.of(context).colorScheme.onPrimary,
@@ -698,7 +699,7 @@ class _WeaverScreen extends HookConsumerWidget {
               FadeTransition(
                 opacity: animationController,
                 child: Text(
-                  'What\'s your level?',
+                  l10nOf(context).onboardingWhatSYourLevel,
                   style: TextStyle(
                     fontSize: 18,
                     color: Theme.of(context).colorScheme.onPrimary,
@@ -766,7 +767,7 @@ class _WeaverScreen extends HookConsumerWidget {
                       ),
                     ),
                   ),
-                  child: const Text('Next'),
+                  child: Text(l10nOf(context).onboardingNext),
                 ),
               ),
             ],
@@ -796,7 +797,7 @@ class _RhythmMasterScreen extends HookConsumerWidget {
 
     return _buildCharacterScreen(
       context,
-      'I am Nuru the Rhythm Master.\nTap the drum that sings to your spirit.',
+      l10nOf(context).onboardingIAmNuruTheRhythmMaster,
       Icons.music_note_rounded,
       styles,
       selectedStyle,
@@ -893,7 +894,7 @@ class _RhythmMasterScreen extends HookConsumerWidget {
                       ),
                     ),
                   ),
-                  child: const Text('Next'),
+                  child: Text(l10nOf(context).onboardingNext),
                 ),
               ),
             ],
@@ -936,7 +937,7 @@ class _TimekeeperScreen extends HookConsumerWidget {
               ),
               const SizedBox(height: 32),
               Text(
-                'I am Zawadi, keeper of time.\nWhen shall we train your tongue?',
+                l10nOf(context).onboardingIAmZawadiKeeperOfTime,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 24,
@@ -946,7 +947,7 @@ class _TimekeeperScreen extends HookConsumerWidget {
               ),
               const SizedBox(height: 32),
               Text(
-                '${duration.value} minutes per day',
+                l10nOf(context).onboardingValueMinutesPerDay('${duration.value}'),
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onPrimary,
                   fontSize: 18,
@@ -997,7 +998,7 @@ class _TimekeeperScreen extends HookConsumerWidget {
                     horizontal: 48,
                   ),
                 ),
-                child: const Text('Next'),
+                child: Text(l10nOf(context).onboardingNext),
               ),
             ],
           ),
@@ -1022,15 +1023,15 @@ class _PathChooserScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedGoal = useState<String?>(null);
     final goals = [
-      {'id': 'travel', 'icon': Icons.flight_rounded, 'title': 'Travel'},
-      {'id': 'heritage', 'icon': Icons.favorite_rounded, 'title': 'Heritage'},
-      {'id': 'business', 'icon': Icons.business_rounded, 'title': 'Business'},
-      {'id': 'academic', 'icon': Icons.school_rounded, 'title': 'Academic'},
-      {'id': 'confidence', 'icon': Icons.mic_rounded, 'title': 'Confidence'},
+      {'id': 'travel', 'icon': Icons.flight_rounded, 'title': l10nOf(context).onboardingTravel},
+      {'id': 'heritage', 'icon': Icons.favorite_rounded, 'title': l10nOf(context).onboardingHeritage},
+      {'id': 'business', 'icon': Icons.business_rounded, 'title': l10nOf(context).onboardingBusiness},
+      {'id': 'academic', 'icon': Icons.school_rounded, 'title': l10nOf(context).onboardingAcademic},
+      {'id': 'confidence', 'icon': Icons.mic_rounded, 'title': l10nOf(context).onboardingConfidence},
       {
         'id': 'brain_training',
         'icon': Icons.psychology_rounded,
-        'title': 'Brain Training',
+        'title': l10nOf(context).onboardingBrainTraining,
       },
     ];
 
@@ -1043,7 +1044,7 @@ class _PathChooserScreen extends HookConsumerWidget {
             children: [
               const SizedBox(height: 40),
               Text(
-                'Choose your path.',
+                l10nOf(context).onboardingChooseYourPath,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 24,
@@ -1116,7 +1117,7 @@ class _PathChooserScreen extends HookConsumerWidget {
                     horizontal: 48,
                   ),
                 ),
-                child: const Text('Next'),
+                child: Text(l10nOf(context).onboardingNext),
               ),
             ],
           ),
@@ -1157,7 +1158,7 @@ class _GriotScreen extends HookConsumerWidget {
               ),
               const SizedBox(height: 32),
               Text(
-                'I am Amina the Griot.\nHow shall I speak to you?',
+                l10nOf(context).onboardingIAmAminaTheGriotHow,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 24,
@@ -1167,7 +1168,7 @@ class _GriotScreen extends HookConsumerWidget {
               ),
               const SizedBox(height: 32),
               Text(
-                'Tone Preference',
+                l10nOf(context).onboardingTonePreference,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onPrimary,
                   fontSize: 18,
@@ -1200,7 +1201,7 @@ class _GriotScreen extends HookConsumerWidget {
               ),
               const SizedBox(height: 32),
               Text(
-                'Gamification',
+                l10nOf(context).onboardingGamification,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onPrimary,
                   fontSize: 18,
@@ -1246,7 +1247,7 @@ class _GriotScreen extends HookConsumerWidget {
                     horizontal: 48,
                   ),
                 ),
-                child: const Text('Next'),
+                child: Text(l10nOf(context).onboardingNext),
               ),
             ],
           ),
@@ -1292,7 +1293,7 @@ class _HealerScreen extends HookConsumerWidget {
               ),
               const SizedBox(height: 32),
               Text(
-                'I am the Healer.\nLet me make your journey smooth.',
+                l10nOf(context).onboardingIAmTheHealerLetMe,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 24,
@@ -1340,7 +1341,7 @@ class _HealerScreen extends HookConsumerWidget {
                     horizontal: 48,
                   ),
                 ),
-                child: const Text('Next'),
+                child: Text(l10nOf(context).onboardingNext),
               ),
             ],
           ),
@@ -1380,7 +1381,7 @@ class _SocialScreen extends HookConsumerWidget {
               ),
               const SizedBox(height: 32),
               Text(
-                'Build your clan.',
+                l10nOf(context).onboardingBuildYourClan,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 24,
@@ -1420,7 +1421,7 @@ class _SocialScreen extends HookConsumerWidget {
                     horizontal: 48,
                   ),
                 ),
-                child: const Text('Next'),
+                child: Text(l10nOf(context).onboardingNext),
               ),
             ],
           ),
@@ -1460,7 +1461,7 @@ class _NamingScreen extends HookConsumerWidget {
               ),
               const SizedBox(height: 32),
               Text(
-                'A learner without a name is a drum without a rhythm!\nTell us what you wish to be called.',
+                l10nOf(context).onboardingALearnerWithoutANameIs,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 24,
@@ -1476,7 +1477,7 @@ class _NamingScreen extends HookConsumerWidget {
                   fontSize: 18,
                 ),
                 decoration: InputDecoration(
-                  hintText: 'Enter your username',
+                  hintText: l10nOf(context).onboardingEnterYourUsername,
                   hintStyle: TextStyle(
                     color: Theme.of(
                       context,
@@ -1523,7 +1524,7 @@ class _NamingScreen extends HookConsumerWidget {
                     horizontal: 48,
                   ),
                 ),
-                child: const Text('Next'),
+                child: Text(l10nOf(context).onboardingNext),
               ),
             ],
           ),
@@ -1545,38 +1546,38 @@ class _PlacementTestScreen extends HookConsumerWidget {
   });
 
   // Simple placement questions for quick level assessment
-  static const _placementQuestions = [
+  static _placementQuestions(BuildContext context) => [
     {
       'question':
-          'How would you describe your familiarity with African languages?',
+          l10nOf(context).onboardingHowWouldYouDescribeYourFamiliarity,
       'options': [
-        {'text': 'Complete beginner - never learned one', 'level': 'A0'},
-        {'text': 'Some exposure - know a few words', 'level': 'A1'},
-        {'text': 'Basic - can introduce myself', 'level': 'A2'},
-        {'text': 'Intermediate - can hold conversations', 'level': 'B1'},
-        {'text': 'Advanced - speak fluently', 'level': 'B2'},
+        {'text': l10nOf(context).onboardingCompleteBeginnerNeverLearnedOne, 'level': 'A0'},
+        {'text': l10nOf(context).onboardingSomeExposureKnowAFewWords, 'level': 'A1'},
+        {'text': l10nOf(context).onboardingBasicCanIntroduceMyself, 'level': 'A2'},
+        {'text': l10nOf(context).onboardingIntermediateCanHoldConversations, 'level': 'B1'},
+        {'text': l10nOf(context).onboardingAdvancedSpeakFluently, 'level': 'B2'},
       ],
     },
     {
       'question':
-          'Can you read or write in the African language you want to learn?',
+          l10nOf(context).onboardingCanYouReadOrWriteIn,
       'options': [
-        {'text': 'Not at all', 'level': 'A0'},
-        {'text': 'I can recognize some letters/characters', 'level': 'A1'},
-        {'text': 'I can read simple words', 'level': 'A2'},
-        {'text': 'I can read sentences', 'level': 'B1'},
-        {'text': 'I can read fluently', 'level': 'B2'},
+        {'text': l10nOf(context).onboardingNotAtAll, 'level': 'A0'},
+        {'text': l10nOf(context).onboardingICanRecognizeSomeLettersCharacters, 'level': 'A1'},
+        {'text': l10nOf(context).onboardingICanReadSimpleWords, 'level': 'A2'},
+        {'text': l10nOf(context).onboardingICanReadSentences, 'level': 'B1'},
+        {'text': l10nOf(context).onboardingICanReadFluently, 'level': 'B2'},
       ],
     },
     {
       'question':
-          'How confident are you in understanding spoken African languages?',
+          l10nOf(context).onboardingHowConfidentAreYouInUnderstanding,
       'options': [
-        {'text': 'Cannot understand anything', 'level': 'A0'},
-        {'text': 'Understand greetings and simple words', 'level': 'A1'},
-        {'text': 'Understand short, simple conversations', 'level': 'A2'},
-        {'text': 'Understand most everyday conversations', 'level': 'B1'},
-        {'text': 'Understand complex discussions', 'level': 'B2'},
+        {'text': l10nOf(context).onboardingCannotUnderstandAnything, 'level': 'A0'},
+        {'text': l10nOf(context).onboardingUnderstandGreetingsAndSimpleWords, 'level': 'A1'},
+        {'text': l10nOf(context).onboardingUnderstandShortSimpleConversations, 'level': 'A2'},
+        {'text': l10nOf(context).onboardingUnderstandMostEverydayConversations, 'level': 'B1'},
+        {'text': l10nOf(context).onboardingUnderstandComplexDiscussions, 'level': 'B2'},
       ],
     },
   ];
@@ -1629,7 +1630,7 @@ class _PlacementTestScreen extends HookConsumerWidget {
       HapticFeedback.selectionClick();
       answers.value = [...answers.value, level];
 
-      if (currentQuestion.value < _placementQuestions.length - 1) {
+      if (currentQuestion.value < _placementQuestions(context).length - 1) {
         currentQuestion.value++;
       } else {
         submitTest();
@@ -1654,9 +1655,9 @@ class _PlacementTestScreen extends HookConsumerWidget {
                 }, skipTest)
               : _buildQuestionView(
                   context,
-                  _placementQuestions[currentQuestion.value],
+                  _placementQuestions(context)[currentQuestion.value],
                   currentQuestion.value,
-                  _placementQuestions.length,
+                  _placementQuestions(context).length,
                   selectAnswer,
                   skipTest,
                   isSubmitting.value,
@@ -1695,7 +1696,7 @@ class _PlacementTestScreen extends HookConsumerWidget {
                 ).animate().scale(duration: 600.ms, curve: Curves.elasticOut),
                 SizedBox(height: 32.h),
                 Text(
-                  'Let us see where you stand, traveler.',
+                  l10nOf(context).onboardingLetUsSeeWhereYouStand,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 24.sp,
@@ -1707,7 +1708,7 @@ class _PlacementTestScreen extends HookConsumerWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 32.w),
                   child: Text(
-                    'Answer 3 quick questions to help us personalize your learning journey.',
+                    l10nOf(context).onboardingAnswer3QuickQuestionsToHelp,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 16.sp,
@@ -1740,7 +1741,7 @@ class _PlacementTestScreen extends HookConsumerWidget {
                     ),
                   ),
                   child: Text(
-                    'Start Assessment',
+                    l10nOf(context).onboardingStartAssessment,
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
@@ -1752,7 +1753,7 @@ class _PlacementTestScreen extends HookConsumerWidget {
               TextButton(
                 onPressed: onSkip,
                 child: Text(
-                  'Skip for now (start as beginner)',
+                  l10nOf(context).onboardingSkipForNowStartAsBeginner,
                   style: TextStyle(
                     color: Theme.of(
                       context,
@@ -1790,7 +1791,7 @@ class _PlacementTestScreen extends HookConsumerWidget {
               Row(
                 children: [
                   Text(
-                    'Question ${questionIndex + 1} of $totalQuestions',
+                    l10nOf(context).onboardingQuestionValueOfTotalquestions('${questionIndex + 1}', totalQuestions.toString()),
                     style: TextStyle(
                       color: Theme.of(
                         context,
@@ -1802,7 +1803,7 @@ class _PlacementTestScreen extends HookConsumerWidget {
                   TextButton(
                     onPressed: onSkip,
                     child: Text(
-                      'Skip test',
+                      l10nOf(context).onboardingSkipTest,
                       style: TextStyle(
                         color: Theme.of(
                           context,

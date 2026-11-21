@@ -4041,4 +4041,2421 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get commonStateUnavailable => 'Unavailable';
+
+  @override
+  String get onboardingContinue => 'Continue';
+
+  @override
+  String get onboardingSelectBirthYear => 'Select birth year';
+
+  @override
+  String onboardingBirthYearValue(String value) {
+    return 'Birth year, $value';
+  }
+
+  @override
+  String get onboardingContinueToLessons => 'Continue to lessons';
+
+  @override
+  String get onboardingWeCouldNotSaveThatYear =>
+      'We could not save that year. Try again.';
+
+  @override
+  String get onboardingChooseTheYearYouWereBorn =>
+      'Choose the year you were born to continue.';
+
+  @override
+  String get onboardingYourAccountIsReadyForLessons =>
+      'Your account is ready for lessons, but chat, Village, and purchases stay paused until a guardian approves.';
+
+  @override
+  String get onboardingWeNeedAGuardian => 'We need a guardian';
+
+  @override
+  String get onboardingYouAlreadyEnteredABirthYear =>
+      'You already entered a birth year on this device. If something looks wrong, ask a guardian to help from their account.';
+
+  @override
+  String get onboardingWeUseThisToKeepLearners =>
+      'We use this to keep learners safe and unlock the right features for your age. We only ask for the year, and we store your age group, not the year itself.';
+
+  @override
+  String get onboardingWhatYearWereYouBorn => 'What year were you born?';
+
+  @override
+  String onboardingPendingsyncsPendingSyncValue(
+    String pendingSyncs,
+    String value,
+  ) {
+    return '$pendingSyncs pending sync$value';
+  }
+
+  @override
+  String get onboardingCouldNotVerifyAvailabilityYouCan =>
+      'Could not verify availability. You can still continue.';
+
+  @override
+  String get onboardingOnlyLettersNumbersAndUnderscoresAre =>
+      'Only letters, numbers, and underscores are allowed';
+
+  @override
+  String get onboardingUsernameMustBe30CharactersOr =>
+      'Username must be 30 characters or less';
+
+  @override
+  String get onboardingUsernameMustBeAtLeast3 =>
+      'Username must be at least 3 characters';
+
+  @override
+  String get onboardingUsernameIsAlreadyTaken => '✗ Username is already taken';
+
+  @override
+  String get onboardingUsernameIsAvailable => '✓ Username is available';
+
+  @override
+  String get onboardingCheckingAvailability => 'Checking availability...';
+
+  @override
+  String get onboardingEnterAUsername330Characters =>
+      'Enter a username (3-30 characters, letters, numbers, and underscores only)';
+
+  @override
+  String get onboardingCompleteOnboarding => 'Complete Onboarding';
+
+  @override
+  String get onboardingChooseAUniqueUsername => 'Choose a unique username';
+
+  @override
+  String get onboardingUsername => 'Username';
+
+  @override
+  String get onboardingChangeAvatar => 'Change Avatar';
+
+  @override
+  String get onboardingSetYourUsernameAvatarIsOptional =>
+      'Set your username (avatar is optional)';
+
+  @override
+  String get onboardingCompleteYourProfile => 'Complete Your Profile';
+
+  @override
+  String get onboardingEnableReminders => 'Enable Reminders';
+
+  @override
+  String get onboardingPreferredTimeOfDay => 'Preferred Time of Day';
+
+  @override
+  String onboardingValueMinutesPerDay(String value) {
+    return '$value minutes per day';
+  }
+
+  @override
+  String onboardingValueMinutes(String value) {
+    return '$value minutes';
+  }
+
+  @override
+  String get onboardingDailyDurationMinutes => 'Daily Duration (minutes)';
+
+  @override
+  String get onboardingWhenAndHowLongDoYou =>
+      'When and how long do you want to learn?';
+
+  @override
+  String get onboardingSetYourLearningSchedule => 'Set your learning schedule';
+
+  @override
+  String get onboardingHowShouldPolieCommunicateWithYou =>
+      'How should Polie communicate with you?';
+
+  @override
+  String get onboardingWhatToneDoYouPrefer => 'What tone do you prefer?';
+
+  @override
+  String get onboardingHowFastDoYouWantTo => 'How fast do you want to learn?';
+
+  @override
+  String get onboardingWhatPaceDoYouPrefer => 'What pace do you prefer?';
+
+  @override
+  String get onboardingSelectYourPreferredLearningStyle =>
+      'Select your preferred learning style';
+
+  @override
+  String get onboardingHowDoYouLearnBest => 'How do you learn best?';
+
+  @override
+  String get onboardingChooseYourMainLearningObjective =>
+      'Choose your main learning objective';
+
+  @override
+  String get onboardingWhatSYourPrimaryGoal => 'What\'s your primary goal?';
+
+  @override
+  String get onboardingChooseYourDailyLearningGoal =>
+      'Choose your daily learning goal';
+
+  @override
+  String get onboardingHowMuchTimeCanYouCommit =>
+      'How much time can you commit daily?';
+
+  @override
+  String get onboardingDedicatedStudy => 'Dedicated study';
+
+  @override
+  String get onboardingText20Min => '20 min';
+
+  @override
+  String get onboardingBalanced => 'Balanced';
+
+  @override
+  String get onboardingText15Min => '15 min';
+
+  @override
+  String get onboardingLightLearning => 'Light learning';
+
+  @override
+  String get onboardingText10Min => '10 min';
+
+  @override
+  String get onboardingQuickPractice => 'Quick practice';
+
+  @override
+  String get onboardingText5Min => '5 min';
+
+  @override
+  String get onboardingSelectAllThatApply => 'Select all that apply';
+
+  @override
+  String get onboardingWhyAreYouLearning => 'Why are you learning?';
+
+  @override
+  String get onboardingThisHelpsUsPersonalizeYourExperience =>
+      'This helps us personalize your experience';
+
+  @override
+  String get onboardingWhatSYourAgeCategory => 'What\'s your age category?';
+
+  @override
+  String get onboardingSelectTheLanguageYouWantTo =>
+      'Select the language you want to learn';
+
+  @override
+  String get onboardingWhatLanguageDoYouWishTo =>
+      'What language do you wish to learn first?';
+
+  @override
+  String get onboardingXhosa => 'Xhosa';
+
+  @override
+  String get onboardingZulu => 'Zulu';
+
+  @override
+  String get onboardingSwahili => 'Swahili';
+
+  @override
+  String get onboardingNigerianPidginEnglish => 'Nigerian Pidgin English';
+
+  @override
+  String get onboardingIgbo => 'Igbo';
+
+  @override
+  String get onboardingHausa => 'Hausa';
+
+  @override
+  String get onboardingYoruba => 'Yoruba';
+
+  @override
+  String get onboardingHelpUsPersonalizeYourLearningExperienc =>
+      'Help us personalize your learning experience';
+
+  @override
+  String get onboardingWhatSYourCurrentLevel => 'What\'s your current level?';
+
+  @override
+  String get onboardingISpeakThisLanguageNatively =>
+      'I speak this language natively';
+
+  @override
+  String get onboardingNative => 'Native';
+
+  @override
+  String get onboardingIMQuiteFluent => 'I\'m quite fluent';
+
+  @override
+  String get onboardingAdvanced => 'Advanced';
+
+  @override
+  String get onboardingICanHaveBasicConversations =>
+      'I can have basic conversations';
+
+  @override
+  String get onboardingIntermediate => 'Intermediate';
+
+  @override
+  String get onboardingIKnowAFewWords => 'I know a few words';
+
+  @override
+  String get onboardingElementary => 'Elementary';
+
+  @override
+  String get onboardingIMJustStartingOut => 'I\'m just starting out';
+
+  @override
+  String get onboardingBeginner => 'Beginner';
+
+  @override
+  String get onboardingContinueToNextStep => 'Continue to next step';
+
+  @override
+  String get onboardingSearchLanguages => 'Search languages...';
+
+  @override
+  String get onboardingSearchLanguagesea93 => 'Search languages';
+
+  @override
+  String get onboardingAllLanguages => 'All Languages';
+
+  @override
+  String onboardingShowAllLanguagesValueMore(String value) {
+    return 'Show All Languages ($value more)';
+  }
+
+  @override
+  String onboardingShowAllLanguagesValueMoreLanguages(String value) {
+    return 'Show all languages. $value more languages available.';
+  }
+
+  @override
+  String onboardingSelectValueAsProficiencyLanguageValue2(
+    String value,
+    String value2,
+  ) {
+    return 'Select $value as proficiency language. $value2';
+  }
+
+  @override
+  String get onboardingPopularLanguages => 'Popular Languages';
+
+  @override
+  String get onboardingWeLlTranslateAllInApp =>
+      'We\'ll translate all in-app content to this language';
+
+  @override
+  String get onboardingWhatLanguageDoYouSpeak => 'What language do you speak?';
+
+  @override
+  String get onboardingPolish => 'Polish';
+
+  @override
+  String get onboardingDutch => 'Dutch';
+
+  @override
+  String get onboardingTurkish => 'Turkish';
+
+  @override
+  String get onboardingRussian => 'Russian';
+
+  @override
+  String get onboardingHindi => 'Hindi';
+
+  @override
+  String get onboardingKorean => 'Korean';
+
+  @override
+  String get onboardingJapanese => 'Japanese';
+
+  @override
+  String get onboardingChinese => 'Chinese';
+
+  @override
+  String get onboardingItalian => 'Italian';
+
+  @override
+  String get onboardingGerman => 'German';
+
+  @override
+  String get onboardingBerber => 'Berber';
+
+  @override
+  String get onboardingArabic => 'Arabic';
+
+  @override
+  String get onboardingSango => 'Sango';
+
+  @override
+  String get onboardingKongo => 'Kongo';
+
+  @override
+  String get onboardingLingala => 'Lingala';
+
+  @override
+  String get onboardingChichewa => 'Chichewa';
+
+  @override
+  String get onboardingNdebele => 'Ndebele';
+
+  @override
+  String get onboardingSwati => 'Swati';
+
+  @override
+  String get onboardingTsonga => 'Tsonga';
+
+  @override
+  String get onboardingVenda => 'Venda';
+
+  @override
+  String get onboardingSetswana => 'Setswana';
+
+  @override
+  String get onboardingSesotho => 'Sesotho';
+
+  @override
+  String get onboardingAfrikaans => 'Afrikaans';
+
+  @override
+  String get onboardingSomali => 'Somali';
+
+  @override
+  String get onboardingOromo => 'Oromo';
+
+  @override
+  String get onboardingTigrinya => 'Tigrinya';
+
+  @override
+  String get onboardingAmharic => 'Amharic';
+
+  @override
+  String get onboardingKirundi => 'Kirundi';
+
+  @override
+  String get onboardingKinyarwanda => 'Kinyarwanda';
+
+  @override
+  String get onboardingLuganda => 'Luganda';
+
+  @override
+  String get onboardingLuo => 'Luo';
+
+  @override
+  String get onboardingKikuyu => 'Kikuyu';
+
+  @override
+  String get onboardingFon => 'Fon';
+
+  @override
+  String get onboardingEwe => 'Ewe';
+
+  @override
+  String get onboardingAkan => 'Akan';
+
+  @override
+  String get onboardingBambara => 'Bambara';
+
+  @override
+  String get onboardingFulfulde => 'Fulfulde';
+
+  @override
+  String get onboardingTwi => 'Twi';
+
+  @override
+  String get onboardingWolof => 'Wolof';
+
+  @override
+  String get onboardingNigerianPidgin => 'Nigerian Pidgin';
+
+  @override
+  String get onboardingSpanish => 'Spanish';
+
+  @override
+  String get onboardingPortuguese => 'Portuguese';
+
+  @override
+  String get onboardingFrench => 'French';
+
+  @override
+  String get onboardingEnglish => 'English';
+
+  @override
+  String get onboardingTakeTest => 'Take Test';
+
+  @override
+  String get onboardingSkip => 'Skip';
+
+  @override
+  String onboardingWouldYouLikeToTakeA(String learningLanguage) {
+    return 'Would you like to take a placement test to assess your current level in $learningLanguage? You can skip this and take it later.';
+  }
+
+  @override
+  String get onboardingTakePlacementTest => 'Take Placement Test?';
+
+  @override
+  String onboardingProgresspercent(String progressPercent) {
+    return '$progressPercent%';
+  }
+
+  @override
+  String onboardingStepValueOfTotalsteps(String value, String totalSteps) {
+    return 'Step $value of $totalSteps';
+  }
+
+  @override
+  String get onboardingSkipOnboarding => 'Skip onboarding';
+
+  @override
+  String get onboardingOnboarding => 'Onboarding';
+
+  @override
+  String get onboardingGoBackToPreviousStep => 'Go back to previous step';
+
+  @override
+  String onboardingOnboardingProgressStepValueOfTotalstep(
+    String value,
+    String totalSteps,
+    String progressPercent,
+  ) {
+    return 'Onboarding progress. Step $value of $totalSteps. $progressPercent percent complete.';
+  }
+
+  @override
+  String get onboardingSkipTest => 'Skip test';
+
+  @override
+  String onboardingQuestionValueOfTotalquestions(
+    String value,
+    String totalQuestions,
+  ) {
+    return 'Question $value of $totalQuestions';
+  }
+
+  @override
+  String get onboardingSkipForNowStartAsBeginner =>
+      'Skip for now (start as beginner)';
+
+  @override
+  String get onboardingStartAssessment => 'Start Assessment';
+
+  @override
+  String get onboardingAnswer3QuickQuestionsToHelp =>
+      'Answer 3 quick questions to help us personalize your learning journey.';
+
+  @override
+  String get onboardingLetUsSeeWhereYouStand =>
+      'Let us see where you stand, traveler.';
+
+  @override
+  String get onboardingUnderstandComplexDiscussions =>
+      'Understand complex discussions';
+
+  @override
+  String get onboardingUnderstandMostEverydayConversations =>
+      'Understand most everyday conversations';
+
+  @override
+  String get onboardingUnderstandShortSimpleConversations =>
+      'Understand short, simple conversations';
+
+  @override
+  String get onboardingUnderstandGreetingsAndSimpleWords =>
+      'Understand greetings and simple words';
+
+  @override
+  String get onboardingCannotUnderstandAnything => 'Cannot understand anything';
+
+  @override
+  String get onboardingHowConfidentAreYouInUnderstanding =>
+      'How confident are you in understanding spoken African languages?';
+
+  @override
+  String get onboardingICanReadFluently => 'I can read fluently';
+
+  @override
+  String get onboardingICanReadSentences => 'I can read sentences';
+
+  @override
+  String get onboardingICanReadSimpleWords => 'I can read simple words';
+
+  @override
+  String get onboardingICanRecognizeSomeLettersCharacters =>
+      'I can recognize some letters/characters';
+
+  @override
+  String get onboardingNotAtAll => 'Not at all';
+
+  @override
+  String get onboardingCanYouReadOrWriteIn =>
+      'Can you read or write in the African language you want to learn?';
+
+  @override
+  String get onboardingAdvancedSpeakFluently => 'Advanced - speak fluently';
+
+  @override
+  String get onboardingIntermediateCanHoldConversations =>
+      'Intermediate - can hold conversations';
+
+  @override
+  String get onboardingBasicCanIntroduceMyself =>
+      'Basic - can introduce myself';
+
+  @override
+  String get onboardingSomeExposureKnowAFewWords =>
+      'Some exposure - know a few words';
+
+  @override
+  String get onboardingCompleteBeginnerNeverLearnedOne =>
+      'Complete beginner - never learned one';
+
+  @override
+  String get onboardingHowWouldYouDescribeYourFamiliarity =>
+      'How would you describe your familiarity with African languages?';
+
+  @override
+  String get onboardingNext => 'Next';
+
+  @override
+  String get onboardingEnterYourUsername => 'Enter your username';
+
+  @override
+  String get onboardingALearnerWithoutANameIs =>
+      'A learner without a name is a drum without a rhythm!\nTell us what you wish to be called.';
+
+  @override
+  String get onboardingBuildYourClan => 'Build your clan.';
+
+  @override
+  String get onboardingIAmTheHealerLetMe =>
+      'I am the Healer.\nLet me make your journey smooth.';
+
+  @override
+  String get onboardingGamification => 'Gamification';
+
+  @override
+  String get onboardingTonePreference => 'Tone Preference';
+
+  @override
+  String get onboardingIAmAminaTheGriotHow =>
+      'I am Amina the Griot.\nHow shall I speak to you?';
+
+  @override
+  String get onboardingChooseYourPath => 'Choose your path.';
+
+  @override
+  String get onboardingBrainTraining => 'Brain Training';
+
+  @override
+  String get onboardingConfidence => 'Confidence';
+
+  @override
+  String get onboardingAcademic => 'Academic';
+
+  @override
+  String get onboardingBusiness => 'Business';
+
+  @override
+  String get onboardingHeritage => 'Heritage';
+
+  @override
+  String get onboardingTravel => 'Travel';
+
+  @override
+  String get onboardingIAmZawadiKeeperOfTime =>
+      'I am Zawadi, keeper of time.\nWhen shall we train your tongue?';
+
+  @override
+  String get onboardingIAmNuruTheRhythmMaster =>
+      'I am Nuru the Rhythm Master.\nTap the drum that sings to your spirit.';
+
+  @override
+  String get onboardingWhatSYourLevel => 'What\'s your level?';
+
+  @override
+  String get onboardingSelectLanguage => 'Select Language';
+
+  @override
+  String get onboardingIAmAdisaTheWeaverChoose =>
+      'I am Adisa, the Weaver.\nChoose the threads of your voice.';
+
+  @override
+  String get onboardingTellMeWhoAreYou => 'Tell me: who are you?';
+
+  @override
+  String get onboardingWelcomeTravelerIAmPaLingafriq =>
+      'Welcome, traveler. I am Pa LingAfriq,\nkeeper of the village memory.';
+
+  @override
+  String get onboardingBeginJourney => 'Begin Journey';
+
+  @override
+  String get onboardingTheLanguageVillageYourJourneyBegins =>
+      'The Language Village\nYour journey begins here';
+
+  @override
+  String get onboardingWelcomeToKijijiChaLugha =>
+      'Welcome to\nKijiji cha Lugha';
+
+  @override
+  String get onboardingLoading => 'Loading...';
+
+  @override
+  String get onboardingAlreadyLearningLogIn => 'Already learning? Log in';
+
+  @override
+  String get onboardingGetStarted => 'Get Started';
+
+  @override
+  String get onboardingChooseYourPathAndUnlockNew =>
+      'Choose your path and unlock new opportunities';
+
+  @override
+  String get onboardingYourLanguageJourneyStartsHere =>
+      'Your Language Journey\nStarts Here!';
+
+  @override
+  String get onboardingPrioritizeHowYourCommunityReallySpeaks =>
+      'Prioritize how your community really speaks';
+
+  @override
+  String get onboardingLocalDialectHeritage => 'Local Dialect & Heritage';
+
+  @override
+  String get onboardingPrepareForStudiesAndBroadenKnowledge =>
+      'Prepare for studies and broaden knowledge';
+
+  @override
+  String get onboardingExcelAcademically => 'Excel Academically';
+
+  @override
+  String get onboardingOpenDoorsToInternationalOpportunities =>
+      'Open doors to international opportunities';
+
+  @override
+  String get onboardingBoostYourCareer => 'Boost Your Career';
+
+  @override
+  String get onboardingDiscoverTheRichHeritageOfAfrican =>
+      'Discover the rich heritage of African languages';
+
+  @override
+  String get onboardingExploreCultures => 'Explore Cultures';
+
+  @override
+  String get onboardingExplore54Countries2000LanguagesAnd =>
+      'Explore 54 countries, 2000+ languages,\nand connect with 1+ billion voices';
+
+  @override
+  String get onboardingReadyForAPanAfricanAdventure =>
+      'Ready for a\npan-African adventure?';
+
+  @override
+  String get onboardingLearnANewLanguageTheFun =>
+      'Learn a new language,\nthe fun way';
+
+  @override
+  String get onboardingLearnAboutHistoryTraditionsAndCultural =>
+      'Learn about history, traditions, and cultural expressions';
+
+  @override
+  String get onboardingConnectWithCulture => 'Connect with culture';
+
+  @override
+  String get onboardingStayMotivatedWithPersonalizedChallenge =>
+      'Stay motivated with personalized challenges and daily goals';
+
+  @override
+  String get onboardingTrackYourProgress => 'Track your progress';
+
+  @override
+  String get onboardingFunBiteSizedLessonsMakeLearning =>
+      'Fun, bite-sized lessons make learning addictive and effective';
+
+  @override
+  String get onboardingLearnLanguagesPlayGames => 'Learn languages, play games';
+
+  @override
+  String get onboardingDiscoverTheBeautyOfAfricanLanguages =>
+      'Discover the beauty of African languages';
+
+  @override
+  String get onboardingYourJourneyToFluencyStartsNow =>
+      'Your journey to fluency\nstarts now!';
+
+  @override
+  String get onboardingWhatDoWeOfferUniqely => 'What Do We Offer Uniqely';
+
+  @override
+  String get onboardingText54Countries2000Languages1Billion =>
+      '54 countries, 2000+ languages, 1+ billion voices. One origin. ';
+
+  @override
+  String onboardingValueValue2(String value, String value2) {
+    return '$value / $value2';
+  }
+
+  @override
+  String get onboardingPlacementTest => 'Placement Test';
+
+  @override
+  String get onboardingGoBack => 'Go Back';
+
+  @override
+  String get onboardingPleaseTryAgainLater => 'Please try again later.';
+
+  @override
+  String get onboardingPlacementQuestionsAreNotAvailableRight =>
+      'Placement questions are not available right now.';
+
+  @override
+  String get onboardingLoadingPlacementTest => 'Loading placement test...';
+
+  @override
+  String get onboardingAreasForImprovement => 'Areas for Improvement';
+
+  @override
+  String get onboardingYourProficiencyLevel => 'Your Proficiency Level';
+
+  @override
+  String get onboardingPlacementTestComplete => 'Placement Test Complete!';
+
+  @override
+  String get onboardingPrevious => 'Previous';
+
+  @override
+  String get onboardingYourAnswer => 'Your Answer';
+
+  @override
+  String get onboardingSelected => 'Selected';
+
+  @override
+  String onboardingAnswerOptionOptionValue(String option, String value) {
+    return 'Answer option: $option$value';
+  }
+
+  @override
+  String onboardingQuestionValueOfValue2(String value, String value2) {
+    return 'Question $value of $value2';
+  }
+
+  @override
+  String onboardingValueOfValue2(String value, String value2) {
+    return '$value of $value2';
+  }
+
+  @override
+  String onboardingProgressQuestionValueOfValue2(String value, String value2) {
+    return 'Progress: question $value of $value2';
+  }
+
+  @override
+  String get onboardingLoadingTest => 'Loading test...';
+
+  @override
+  String get onboardingTryAgain => 'Try Again';
+
+  @override
+  String get onboardingContinueWithoutTest => 'Continue Without Test';
+
+  @override
+  String get onboardingWeCouldnTConnectToThe =>
+      'We couldn\'t connect to the server to generate your placement test. You can continue without it and take it later from your profile.';
+
+  @override
+  String get onboardingUnableToGeneratePlacementTest =>
+      'Unable to Generate Placement Test';
+
+  @override
+  String get onboardingGeneratingYourPlacementTest =>
+      'Generating your placement test...';
+
+  @override
+  String get onboardingPleaseAnswerAllQuestions =>
+      'Please answer all questions';
+
+  @override
+  String get onboardingEngageWithNativeContent => 'Engage with native content';
+
+  @override
+  String get onboardingFocusOnFluencyAndNuance => 'Focus on fluency and nuance';
+
+  @override
+  String get onboardingAdvancedLessonsRecommended =>
+      'Advanced lessons recommended';
+
+  @override
+  String get onboardingExpandVocabularyInSpecificTopics =>
+      'Expand vocabulary in specific topics';
+
+  @override
+  String get onboardingPracticeConversationSkills =>
+      'Practice conversation skills';
+
+  @override
+  String get onboardingContinueWithIntermediateContent =>
+      'Continue with intermediate content';
+
+  @override
+  String get onboardingPracticePronunciationDaily =>
+      'Practice pronunciation daily';
+
+  @override
+  String get onboardingFocusOnVocabularyBuilding =>
+      'Focus on vocabulary building';
+
+  @override
+  String get onboardingStartWithBeginnerLessons =>
+      'Start with beginner lessons';
+
+  @override
+  String get onboardingStartWithTheFirstLessonsA =>
+      'Start with the first lessons. A level waits until calibrated items are available.';
+
+  @override
+  String get onboardingSomeGrammarConceptsNeedReview =>
+      'Some grammar concepts need review';
+
+  @override
+  String get onboardingGrammarFundamentalsNeeded =>
+      'Grammar fundamentals needed';
+
+  @override
+  String get onboardingNeedToBuildVocabulary => 'Need to build vocabulary';
+
+  @override
+  String get onboardingWillingnessToLearn => 'Willingness to learn';
+
+  @override
+  String get onboardingBasicVocabularyKnowledge => 'Basic vocabulary knowledge';
+
+  @override
+  String get onboardingGoodUnderstandingOfBasicGrammar =>
+      'Good understanding of basic grammar';
+
+  @override
+  String get onboardingStrongVocabularyFoundation =>
+      'Strong vocabulary foundation';
+
+  @override
+  String get onboardingAPreciseLevelNeedsMoreCalibrated =>
+      'A precise level needs more calibrated items';
+
+  @override
+  String get onboardingKeepLearningMyParentWillAdd =>
+      'Keep learning. My parent will add it later';
+
+  @override
+  String get onboardingParentSEmail => 'Parent\'s email';
+
+  @override
+  String get onboardingAParentOrGuardianSaysYes =>
+      'A parent or guardian says yes before you chat or share. Add their email so they can approve your account.';
+
+  @override
+  String get onboardingAskAParent => 'Ask a parent';
+
+  @override
+  String get onboardingYourProfileStaysPrivateAndAdults =>
+      'Your profile stays private, and adults cannot send you direct messages.';
+
+  @override
+  String get onboardingTypeItInstead => 'Type it instead';
+
+  @override
+  String onboardingValue(String value) {
+    return '$value';
+  }
+
+  @override
+  String get onboardingSwipeUpOrDownToChange =>
+      'Swipe up or down to change the year';
+
+  @override
+  String get onboardingBirthYear => 'Birth year';
+
+  @override
+  String get onboardingUseTheYearWheel => 'Use the year wheel';
+
+  @override
+  String onboardingForExampleValue(String value) {
+    return 'For example $value';
+  }
+
+  @override
+  String get onboardingThisHelpsUsKeepLingafriqRight =>
+      'This helps us keep LingAfriq right for you. We only ask for the year.';
+
+  @override
+  String onboardingMinutesMin(String minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String get onboardingYouCanChangeThisAnyTime =>
+      'You can change this any time in Settings.';
+
+  @override
+  String get onboardingHowMuchTimeADayFeels =>
+      'How much time a day feels right?';
+
+  @override
+  String get onboardingForATripOrABig => 'For a trip or a big day soon';
+
+  @override
+  String get onboardingHoldAShortChatInWeeks => 'Hold a short chat in weeks';
+
+  @override
+  String get onboardingAGoodDailyStart => 'A good daily start';
+
+  @override
+  String get onboardingAGreetingADay => 'A greeting a day';
+
+  @override
+  String get onboardingCanTSpeakNow => 'Can\'t speak now';
+
+  @override
+  String get onboardingISaidIt => 'I said it';
+
+  @override
+  String onboardingMarkThatYouSaidValue(String value) {
+    return 'Mark that you said $value';
+  }
+
+  @override
+  String get onboardingSayItWithPolie => 'Say it with Polie';
+
+  @override
+  String get onboardingTapTheGreeting => 'Tap the greeting';
+
+  @override
+  String get onboardingWeCouldNotPlaySoundRight =>
+      'We could not play sound right now. You can still continue.';
+
+  @override
+  String get onboardingPlayGreeting => 'Play greeting';
+
+  @override
+  String get onboardingAudioUnavailable => 'Audio unavailable';
+
+  @override
+  String get onboardingHeardIt => 'Heard it';
+
+  @override
+  String onboardingPlayGreetingValue(String value) {
+    return 'Play greeting $value';
+  }
+
+  @override
+  String get onboardingPlayingGreeting => 'Playing greeting';
+
+  @override
+  String get onboardingGreetingPlayed => 'Greeting played';
+
+  @override
+  String onboardingHearValue(String value) {
+    return 'Hear: $value';
+  }
+
+  @override
+  String onboardingA60SecondTasteOfValue(String value) {
+    return 'A 60-second taste of $value. Hear, tap, say.';
+  }
+
+  @override
+  String get onboardingYourFirstWin => 'Your first win';
+
+  @override
+  String get onboardingLessonDone => 'Lesson done';
+
+  @override
+  String get onboardingNewWord => 'New word';
+
+  @override
+  String get onboardingCelebrateProgressNotPerfection =>
+      'Celebrate progress, not perfection.';
+
+  @override
+  String get onboardingYouDidIt => 'You did it!';
+
+  @override
+  String get onboardingKeepGoing => 'Keep going';
+
+  @override
+  String get onboardingInaKwana => 'Ina kwana';
+
+  @override
+  String onboardingWordsWordsInYourBasket(String words) {
+    return '$words words in your basket';
+  }
+
+  @override
+  String get onboardingPolieIsKeepingYourSeatIn =>
+      'Polie is keeping your seat in the village.';
+
+  @override
+  String get onboardingKB => 'Ẹ kú àbọ̀';
+
+  @override
+  String get onboardingText => 'እንኳን ደህና መጡ';
+
+  @override
+  String get onboardingHowFar => 'How far?';
+
+  @override
+  String get onboardingDalalAkJMm => 'Dalal ak jàmm';
+
+  @override
+  String onboardingValueValue26468(String value, String value2) {
+    return '$value · $value2';
+  }
+
+  @override
+  String get onboardingTryARegionAScriptName =>
+      'Try a region, a script name, or clear the box.';
+
+  @override
+  String get onboardingNoLanguagesMatchThatSearch =>
+      'No languages match that search.';
+
+  @override
+  String get onboardingNoLanguagesMatchYourSearch =>
+      'No languages match your search';
+
+  @override
+  String get onboardingISpeak => 'I speak';
+
+  @override
+  String get onboardingWhatDoYouWantToLearn => 'What do you want to learn?';
+
+  @override
+  String get onboardingNorthAfrica => 'North Africa';
+
+  @override
+  String get onboardingText526f => 'ⵜⴰⵎⴰⵣⵉⵖⵜ';
+
+  @override
+  String get onboardingTamazight => 'Tamazight';
+
+  @override
+  String get onboardingTextd271 => 'الدارجة';
+
+  @override
+  String get onboardingDarija => 'Darija';
+
+  @override
+  String get onboardingSouthernAfrica => 'Southern Africa';
+
+  @override
+  String get onboardingIsixhosa => 'isiXhosa';
+
+  @override
+  String get onboardingIsizulu => 'isiZulu';
+
+  @override
+  String get onboardingEastAfrica => 'East Africa';
+
+  @override
+  String get onboardingText91cf => 'አማርኛ';
+
+  @override
+  String get onboardingKiswahili => 'Kiswahili';
+
+  @override
+  String get onboardingWestAfrica => 'West Africa';
+
+  @override
+  String get onboardingNaij => 'Naijá';
+
+  @override
+  String get onboardingAsSIgbo => 'Asụsụ Igbo';
+
+  @override
+  String get onboardingDYorB => 'Èdè Yorùbá';
+
+  @override
+  String get onboardingText9970 => 'العربية';
+
+  @override
+  String get onboardingPortuguS => 'Português';
+
+  @override
+  String get onboardingFranAis => 'Français';
+
+  @override
+  String get onboardingPickTheStyleThatFeelsMost =>
+      'Pick the style that feels most natural.';
+
+  @override
+  String get onboardingVarietyOfMethods => 'Variety of methods';
+
+  @override
+  String get onboardingMixed => 'Mixed';
+
+  @override
+  String get onboardingTalkToLearn => 'Talk to learn';
+
+  @override
+  String get onboardingConversation => 'Conversation';
+
+  @override
+  String get onboardingRepetitionDrills => 'Repetition & drills';
+
+  @override
+  String get onboardingPractice => 'Practice';
+
+  @override
+  String get onboardingNarrativeLearning => 'Narrative learning';
+
+  @override
+  String get onboardingStories => 'Stories';
+
+  @override
+  String get onboardingSeeToRemember => 'See to remember';
+
+  @override
+  String get onboardingVisual => 'Visual';
+
+  @override
+  String get onboardingLearnByEar => 'Learn by ear';
+
+  @override
+  String get onboardingListening => 'Listening';
+
+  @override
+  String get onboardingKR => 'Ẹ káàárọ̀';
+
+  @override
+  String get onboardingNaGode => 'Na gode';
+
+  @override
+  String get onboardingQuickCheckTapEachWordYou =>
+      'Quick check: tap each word you recognize.';
+
+  @override
+  String get onboardingNotSureTakeA1Minute => 'Not sure? Take a 1‑minute check';
+
+  @override
+  String onboardingHowMuchLangnameDoYouKnow(String langName) {
+    return 'How much $langName do you know?';
+  }
+
+  @override
+  String get onboardingThisLanguage => 'this language';
+
+  @override
+  String get onboardingICanHoldAConversation => 'I can hold a conversation';
+
+  @override
+  String get onboardingICanTalkAboutVariousTopics =>
+      'I can talk about various topics';
+
+  @override
+  String get onboardingIKnowSomeCommonWords => 'I know some common words';
+
+  @override
+  String get onboardingIMNew => 'I\'m new';
+
+  @override
+  String get onboardingBestTime => 'Best time';
+
+  @override
+  String get onboardingSeeTheReminderBelowTurnIt =>
+      'See the reminder below. Turn it on only if it helps you keep your streak. You pick the time.';
+
+  @override
+  String get onboardingASoftNudgeWhenItMatters =>
+      'A soft nudge when it matters';
+
+  @override
+  String get onboardingNotNow => 'Not now';
+
+  @override
+  String get onboardingTurnOnReminders => 'Turn on reminders';
+
+  @override
+  String onboardingDailyminutesMinutes(String dailyMinutes) {
+    return '$dailyMinutes minutes';
+  }
+
+  @override
+  String get onboardingText5Minutes => '5 minutes';
+
+  @override
+  String get onboardingText810Pm => '8–10 PM';
+
+  @override
+  String get onboardingNight => 'Night';
+
+  @override
+  String get onboardingText57Pm => '5–7 PM';
+
+  @override
+  String get onboardingSunset => 'Sunset';
+
+  @override
+  String get onboardingText122Pm => '12–2 PM';
+
+  @override
+  String get onboardingMidday => 'Midday';
+
+  @override
+  String get onboardingText69Am => '6–9 AM';
+
+  @override
+  String get onboardingSunrise => 'Sunrise';
+
+  @override
+  String onboardingPreviewHowYouAppearInThe(String shown) {
+    return 'Preview: how you appear in the village, $shown';
+  }
+
+  @override
+  String get onboardingYourName => 'Your name';
+
+  @override
+  String get onboardingWeCouldnTCheckThatJust =>
+      'We couldn\'t check that just now, but you can still continue';
+
+  @override
+  String get onboardingOnlyLettersNumbersAndUnderscoresPlease =>
+      'Only letters, numbers, and underscores, please';
+
+  @override
+  String get onboardingKeepItTo30CharactersOr =>
+      'Keep it to 30 characters or fewer';
+
+  @override
+  String get onboardingNeedsAtLeast3Characters => 'Needs at least 3 characters';
+
+  @override
+  String get onboardingSomeoneSAlreadyUsingThatOne =>
+      'Someone\'s already using that one, try another';
+
+  @override
+  String get onboardingThatNameIsYours => 'That name is yours';
+
+  @override
+  String get onboardingCheckingIfThatNameIsFree =>
+      'Checking if that name is free…';
+
+  @override
+  String get onboardingUse3To30LettersNumbers =>
+      'Use 3 to 30 letters, numbers, or underscores';
+
+  @override
+  String onboardingUseTheNameIdea(String idea) {
+    return 'Use the name $idea';
+  }
+
+  @override
+  String get onboardingIdeasFromYourLanguage => 'Ideas from your language';
+
+  @override
+  String get onboardingAddAPhotoOptional => 'Add a photo (optional)';
+
+  @override
+  String get onboardingAddAProfilePhotoOptional =>
+      'Add a profile photo, optional';
+
+  @override
+  String get onboardingALearnerWithoutANameIs56f4 =>
+      'A learner without a name is a drum without a rhythm.';
+
+  @override
+  String get onboardingPickAName => 'Pick a name';
+
+  @override
+  String get onboardingSkipForNow => 'Skip for now';
+
+  @override
+  String get onboardingCompleteSetup => 'Complete setup';
+
+  @override
+  String get onboardingPickAllThatFitYourFirst =>
+      'Pick all that fit. Your first lessons follow your answer.';
+
+  @override
+  String onboardingWhyAreYouLearningLanguagename(String languageName) {
+    return 'Why are you learning $languageName?';
+  }
+
+  @override
+  String get onboardingColleaguesClientsAndCommunity =>
+      'Colleagues, clients and community';
+
+  @override
+  String get onboardingMarketsDirectionsAndSmallTalk =>
+      'Markets, directions and small talk';
+
+  @override
+  String get onboardingProverbsNamesMusicAndStories =>
+      'Proverbs, names, music and stories';
+
+  @override
+  String get onboardingHeritageAndCulture => 'Heritage and culture';
+
+  @override
+  String get onboardingGreetEldersAndKeepUpAt =>
+      'Greet elders and keep up at gatherings';
+
+  @override
+  String get onboardingTalkToFamily => 'Talk to family';
+
+  @override
+  String get onboardingRetry => 'Retry';
+
+  @override
+  String get onboardingYouReOfflineYourAnswersAre =>
+      'You\'re offline. Your answers are saved on this phone. Connect, then try again.';
+
+  @override
+  String get onboardingCouldnTReachSignIn => 'Couldn\'t reach sign-in';
+
+  @override
+  String get onboardingError => 'Error';
+
+  @override
+  String get onboardingSavingYourProgress => 'Saving your progress…';
+
+  @override
+  String get onboardingIAlreadyHaveAnAccount => 'I already have an account';
+
+  @override
+  String get onboardingSignUpWithEmail => 'Sign up with email';
+
+  @override
+  String get onboardingContinueWithApple => 'Continue with Apple';
+
+  @override
+  String get onboardingContinueWithGoogle => 'Continue with Google';
+
+  @override
+  String onboardingYouFinishedYourFirstLessonAnd(String words) {
+    return 'You finished your first lesson and learned $words. An account keeps your progress safe if you change phones.';
+  }
+
+  @override
+  String get onboardingSaveYourProgress => 'Save your progress?';
+
+  @override
+  String get onboardingLaterMyAnswersStayOnThis =>
+      'Later. My answers stay on this phone';
+
+  @override
+  String onboardingWordslearnedWords(String wordsLearned) {
+    return '$wordsLearned words';
+  }
+
+  @override
+  String get onboardingYouReOfflineKeepGoingYour =>
+      'You\'re offline. Keep going: your answers are saved on this phone and sync when you reconnect.';
+
+  @override
+  String get onboardingDoubleTapToChoose => 'Double tap to choose';
+
+  @override
+  String get onboardingSaving => 'Saving…';
+
+  @override
+  String get onboardingHowMuchGameFeel => 'How much game feel?';
+
+  @override
+  String get onboardingPickTheVoiceThatFeelsLike =>
+      'Pick the voice that feels like a good study buddy.';
+
+  @override
+  String get onboardingHowShouldPolieSound => 'How should Polie sound?';
+
+  @override
+  String get onboardingJustLearning => 'Just learning';
+
+  @override
+  String get onboardingMinimal => 'Minimal';
+
+  @override
+  String get onboardingProgressTracking => 'Progress tracking';
+
+  @override
+  String get onboardingModerate => 'Moderate';
+
+  @override
+  String get onboardingXpBadgesStreaks => 'XP, badges, streaks';
+
+  @override
+  String get onboardingFull => 'Full';
+
+  @override
+  String get onboardingWarmCasual => 'Warm & casual';
+
+  @override
+  String get onboardingFriendly => 'Friendly';
+
+  @override
+  String get onboardingDirectEfficient => 'Direct & efficient';
+
+  @override
+  String get onboardingFocused => 'Focused';
+
+  @override
+  String get onboardingSupportive => 'Supportive';
+
+  @override
+  String get onboardingEncouraging => 'Encouraging';
+
+  @override
+  String get onboardingFunLight => 'Fun & light';
+
+  @override
+  String get onboardingPlayful => 'Playful';
+
+  @override
+  String get onboardingGetStarted90e4 => 'Get started';
+
+  @override
+  String get onboardingWorksOfflineAbout2MbPer =>
+      'Works offline · about 2 MB per unit';
+
+  @override
+  String get onboardingWorksOfflineAbout2MegabytesPer =>
+      'Works offline, about 2 megabytes per unit';
+
+  @override
+  String get onboardingShortLessonsWithPolieHearTap =>
+      'Short lessons with Polie. Hear, tap, and say real phrases.';
+
+  @override
+  String get onboardingTheLanguageVillageThatGetsYou =>
+      'The language village that gets you speaking.';
+
+  @override
+  String get onboardingLingafriq => 'LingAfriq';
+
+  @override
+  String get onboardingWelcomeTo => 'Welcome to';
+
+  @override
+  String get onboardingKBSannuNnKaribuAkwaaba =>
+      'Ẹ kú àbọ̀ · Sannu · Nnọọ · Karibu · Akwaaba';
+
+  @override
+  String get onboardingPolieGreetsYouWelcomeInYoruba =>
+      'Polie greets you: welcome, in Yoruba, Hausa, Igbo, Swahili and Twi.';
+
+  @override
+  String get onboardingLingafriqSpeakAfricanLanguagesWithConf =>
+      'LingAfriq. Speak African languages with confidence. Learn with Polie. Works offline.';
+
+  @override
+  String onboardingStepValueOfTotal(String value, String total) {
+    return 'Step $value of $total';
+  }
+
+  @override
+  String get onboardingOnboardingProgress => 'Onboarding progress';
+
+  @override
+  String get onboardingGoBackToThePreviousStep =>
+      'Go back to the previous step';
+
+  @override
+  String get onboardingTakeTheTest => 'Take the test';
+
+  @override
+  String get onboardingMaybeLater => 'Maybe later';
+
+  @override
+  String onboardingWeLlAskAFewShort(String learningLanguage) {
+    return 'We\'ll ask a few short questions to find your starting level in $learningLanguage. You can always take it later from your profile.';
+  }
+
+  @override
+  String get onboardingTakeAQuickPlacementTest =>
+      'Take a quick placement test?';
+
+  @override
+  String get onboardingYouReOfflineRightNowBut =>
+      'You\'re offline right now, but we\'ve saved your answers and will sync them the moment you reconnect.';
+
+  @override
+  String get onboardingKR5MinutesOfYoruba => 'Ẹ kú àárọ̀! 5 minutes of Yoruba?';
+
+  @override
+  String get onboardingBWoHello => 'Báwo, Hello';
+
+  @override
+  String get onboardingBWoNi => 'Báwo ni';
+
+  @override
+  String get onboardingSawubona5MinutesOfZulu => 'Sawubona! 5 minutes of Zulu?';
+
+  @override
+  String get onboardingSawubonaHello => 'Sawubona, Hello';
+
+  @override
+  String get onboardingText5MinutesOfAmharic => 'ሰላም! 5 minutes of Amharic?';
+
+  @override
+  String get onboardingHello => 'ሰላም, Hello';
+
+  @override
+  String get onboardingHabari5MinutesOfSwahili =>
+      'Habari! 5 minutes of Swahili?';
+
+  @override
+  String get onboardingHabariHello => 'Habari, Hello';
+
+  @override
+  String get onboardingNdewo5MinutesOfIgbo => 'Ndewo! 5 minutes of Igbo?';
+
+  @override
+  String get onboardingNdewoHello => 'Ndewo, Hello';
+
+  @override
+  String get onboardingSannu5MinutesOfHausa => 'Sannu! 5 minutes of Hausa?';
+
+  @override
+  String get onboardingSannuHello => 'Sannu, Hello';
+
+  @override
+  String get onboardingTheAncestorsSmileUponYourDedication =>
+      'The ancestors smile upon your dedication.';
+
+  @override
+  String get onboardingMayYourJourneyBeFilledWith =>
+      'May your journey be filled with discovery.';
+
+  @override
+  String get onboardingVillageElder => 'Village Elder';
+
+  @override
+  String get onboardingPaLingafriq => 'Pa LingAfriq';
+
+  @override
+  String get onboardingChooseWiselyItWillBeKnown =>
+      'Choose wisely — it will be known across the village.';
+
+  @override
+  String get onboardingEveryVillagerMustHaveAName =>
+      'Every villager must have a name.';
+
+  @override
+  String get onboardingNowItIsTimeForYour =>
+      'Now it is time for your naming ceremony.';
+
+  @override
+  String get onboardingHowDoesYourSpiritBestReceive =>
+      'How does your spirit best receive knowledge?';
+
+  @override
+  String get onboardingEachSoulDancesDifferentlyToThe =>
+      'Each soul dances differently to the rhythm of words.';
+
+  @override
+  String get onboardingLanguageIsMusicTraveler =>
+      'Language is music, traveler!';
+
+  @override
+  String get onboardingTheRhythmMaster => 'The Rhythm Master';
+
+  @override
+  String get onboardingForInEveryWordLiesThe =>
+      'For in every word lies the wisdom of generations.';
+
+  @override
+  String get onboardingLetMeTellYouTheStory =>
+      'Let me tell you the story of our languages...';
+
+  @override
+  String get onboardingAhANewStudentIAm =>
+      'Ah, a new student! I am Amara, the griot.';
+
+  @override
+  String get onboardingTheGriot => 'The Griot';
+
+  @override
+  String get onboardingHowMuchTimeCanYouDedicate =>
+      'How much time can you dedicate each day?';
+
+  @override
+  String get onboardingConsistencyIsTheHeartbeatOfLearning =>
+      'Consistency is the heartbeat of learning.';
+
+  @override
+  String get onboardingIAmKofiKeeperOfTime =>
+      'I am Kofi, keeper of time and rhythm.';
+
+  @override
+  String get onboardingTheTimekeeper => 'The Timekeeper';
+
+  @override
+  String get onboardingWhatBringsYouToLearnThis =>
+      'What brings you to learn this beautiful language?';
+
+  @override
+  String get onboardingEveryGreatJourneyNeedsADestination =>
+      'Every great journey needs a destination.';
+
+  @override
+  String get onboardingGreetingsTravelerIAmZuriYour =>
+      'Greetings, traveler! I am Zuri, your pathfinder.';
+
+  @override
+  String get onboardingThePathfinder => 'The Pathfinder';
+
+  @override
+  String get onboardingWhichThreadShallWeWeaveInto =>
+      'Which thread shall we weave into your story?';
+
+  @override
+  String get onboardingEachLanguageIsAThreadIn =>
+      'Each language is a thread in the tapestry of Africa.';
+
+  @override
+  String get onboardingIAmAdisaWeaverOfWords =>
+      'I am Adisa, weaver of words and keeper of tongues.';
+
+  @override
+  String get onboardingTheWeaver => 'The Weaver';
+
+  @override
+  String get onboardingYourJourneyToConnectWithYour =>
+      'Your journey to connect with your roots begins here.';
+
+  @override
+  String get onboardingIAmPaLingafriqGuardianOf =>
+      'I am Pa LingAfriq, guardian of our ancestral tongues.';
+
+  @override
+  String get onboardingWelcomeYoungOneToOurVillage =>
+      'Welcome, young one, to our village of languages.';
+
+  @override
+  String get shellLogout => 'Logout';
+
+  @override
+  String get shellCancel => 'Cancel';
+
+  @override
+  String get shellAreYouSureYouWantTo => 'Are you sure you want to logout?';
+
+  @override
+  String get shellSwitchBetweenLightAndDarkTheme =>
+      'Switch between light and dark theme';
+
+  @override
+  String get shellDarkMode => 'Dark Mode';
+
+  @override
+  String get shellFriendQuests => 'Friend Quests';
+
+  @override
+  String get shellSocialHub => 'Social Hub';
+
+  @override
+  String get shellMicroMentorReports => 'Micro-mentor reports';
+
+  @override
+  String get shellPersonaMissions => 'Persona Missions';
+
+  @override
+  String get shellHistoricalPersonas => 'Historical Personas';
+
+  @override
+  String get shellMyTribes => 'My Tribes';
+
+  @override
+  String get shellLanguageVillages => 'Language Villages';
+
+  @override
+  String get shellPrivateChat => 'Private Chat';
+
+  @override
+  String get shellCommunityFeed => 'Community Feed';
+
+  @override
+  String get shellGlobalChat => 'Global Chat';
+
+  @override
+  String get shellCreateContent => 'Create Content';
+
+  @override
+  String get shellLiveTranslate => 'Live translate';
+
+  @override
+  String get shellPointSay => 'Point & Say';
+
+  @override
+  String get shellImportMedia => 'Import Media';
+
+  @override
+  String get shellCulturalMagazine => 'Cultural Magazine';
+
+  @override
+  String get shellCulturalHub => 'Cultural Hub';
+
+  @override
+  String get shellAddWordsInVocabularyBuilderTo =>
+      'Add words in Vocabulary Builder to start flashcard review.';
+
+  @override
+  String get shellPleaseSelectALanguageFirst =>
+      'Please select a language first';
+
+  @override
+  String get shellFlashcardReview => 'Flashcard Review';
+
+  @override
+  String get shellWritingPractice => 'Writing Practice';
+
+  @override
+  String get shellListeningPractice => 'Listening Practice';
+
+  @override
+  String get shellConversationScenarios => 'Conversation Scenarios';
+
+  @override
+  String get shellVocabularyBuilder => 'Vocabulary Builder';
+
+  @override
+  String get shellLearningPath => 'Learning Path';
+
+  @override
+  String get shellGrammarHub => 'Grammar Hub';
+
+  @override
+  String get shellAiChat => 'AI Chat';
+
+  @override
+  String get shellTutorMode => 'Tutor Mode';
+
+  @override
+  String get shellNativeContentReview => 'Native content review';
+
+  @override
+  String get shellAuthenticPathA1C1 => 'Authentic Path (A1–C1)';
+
+  @override
+  String get shellToggleDarkMode => 'Toggle Dark Mode';
+
+  @override
+  String shellDarkModeValue(String value) {
+    return 'Dark mode $value';
+  }
+
+  @override
+  String shellTitleSection(String title) {
+    return '$title section';
+  }
+
+  @override
+  String get shellToggleTheme => 'Toggle theme';
+
+  @override
+  String get shellDarkMode9cf8 => 'Dark mode';
+
+  @override
+  String get shellPracticeRooms => 'Practice Rooms';
+
+  @override
+  String get shellLiveClassroom => 'Live Classroom';
+
+  @override
+  String get shellDialectPreference => 'Dialect preference';
+
+  @override
+  String get shellHeritageMilestones => 'Heritage milestones';
+
+  @override
+  String get shellLivingDictionary => 'Living Dictionary';
+
+  @override
+  String get shellToneRhythm => 'Tone & Rhythm';
+
+  @override
+  String get shellPhraseDna => 'Phrase DNA';
+
+  @override
+  String get shellPolieTutor => 'Polie Tutor';
+
+  @override
+  String shellEmailValue(String value) {
+    return 'Email: $value';
+  }
+
+  @override
+  String shellUsernameValue(String value) {
+    return 'Username: $value';
+  }
+
+  @override
+  String get shellUserAvatar => 'User avatar';
+
+  @override
+  String shellLessonsCompletedValuePointsEarnedValue2(
+    String value,
+    String value2,
+  ) {
+    return 'Lessons completed: $value • Points earned: $value2';
+  }
+
+  @override
+  String get shellLoadingCourses => 'Loading Courses ...';
+
+  @override
+  String get shellStartACourseToSeeYour =>
+      'Start a course to see your progress';
+
+  @override
+  String get shellNoCourseStartedYet => 'No Course started yet';
+
+  @override
+  String shellHiValue(String value) {
+    return 'Hi $value';
+  }
+
+  @override
+  String get shellYourCourses => 'Your Courses!';
+
+  @override
+  String shellValue(String value) {
+    return '$value%';
+  }
+
+  @override
+  String get shellProgress => 'Progress';
+
+  @override
+  String shellProgressValue(String value) {
+    return 'Progress $value%';
+  }
+
+  @override
+  String shellLessonsCompletedValuePointsValue2(String value, String value2) {
+    return 'Lessons completed: $value • Points: $value2';
+  }
+
+  @override
+  String shellValueValue2CompleteTapToOpen(String value, String value2) {
+    return '$value, $value2% complete. Tap to open.';
+  }
+
+  @override
+  String get shellLoadingCourses7098 => 'Loading Courses...';
+
+  @override
+  String get shellNoLanguagesAvailable => 'No languages available';
+
+  @override
+  String get shellYourProgress => 'Your Progress';
+
+  @override
+  String get shellMenu => 'Menu';
+
+  @override
+  String get shellOpenMenu => 'Open menu';
+
+  @override
+  String get shellYourCourses9648 => 'Your Courses';
+
+  @override
+  String get shellNangaDef => 'Nanga def';
+
+  @override
+  String get shellHowFar => 'How far';
+
+  @override
+  String get shellAsSIgbo => 'Asụsụ Igbo';
+
+  @override
+  String get shellHarshenHausa => 'Harshen Hausa';
+
+  @override
+  String get shellKB => 'Ẹ káàbọ̀';
+
+  @override
+  String shellValueTapToOpen(String value) {
+    return '$value. Tap to open.';
+  }
+
+  @override
+  String shellLabelValue(String label, String value) {
+    return '$label: $value';
+  }
+
+  @override
+  String shellTitleSubtitle(String title, String subtitle) {
+    return '$title. $subtitle';
+  }
+
+  @override
+  String get shellViewDashboard => 'View dashboard';
+
+  @override
+  String get shellConversationWithPolie => 'Conversation with Polie';
+
+  @override
+  String get shellPolieModesSkills => 'Polie modes & skills';
+
+  @override
+  String get shellAiTutor => 'AI Tutor';
+
+  @override
+  String get shellQuickActions => 'Quick Actions';
+
+  @override
+  String shellValueLanguages(String value) {
+    return '$value languages';
+  }
+
+  @override
+  String shellValueBadges(String value) {
+    return '$value badges';
+  }
+
+  @override
+  String shellValueDayStreak(String value) {
+    return '$value day streak';
+  }
+
+  @override
+  String shellValueXpToNextLevel(String value) {
+    return '$value XP to next level';
+  }
+
+  @override
+  String shellXpValue(String value) {
+    return 'XP $value';
+  }
+
+  @override
+  String get shellLevel => 'Level';
+
+  @override
+  String shellValue75ce(String value) {
+    return '$value';
+  }
+
+  @override
+  String shellLevelValueXpValue2Value3Xp(
+    String value,
+    String value2,
+    String value3,
+    String value4,
+    String value5,
+    String value6,
+  ) {
+    return 'Level $value. XP $value2. $value3 XP to next level. $value4 day streak. $value5 badges. $value6 languages.';
+  }
+
+  @override
+  String shellTitleValue(String title, String value) {
+    return '$title$value';
+  }
+
+  @override
+  String get shellLoadingLanguages => 'Loading Languages ...';
+
+  @override
+  String get shellSearchLanguages => 'Search languages';
+
+  @override
+  String get shellExploreMore => 'Explore More';
+
+  @override
+  String get shellFeaturedLanguages => 'Featured Languages';
+
+  @override
+  String get shellKBd95e => 'Ẹ Káàbọ';
+
+  @override
+  String get shellWehcomeO => 'Wehcome o';
+
+  @override
+  String get shellSannuDaZuwa => 'Sannu da zuwa';
+
+  @override
+  String shellPercent(String percent) {
+    return '$percent%';
+  }
+
+  @override
+  String get shellKBf733 => 'Ẹ Káàbọ̀';
+
+  @override
+  String get shellWelcomeO => 'Welcome o';
+
+  @override
+  String get shellConnectionTimedOut => 'connection timed out';
+
+  @override
+  String get shellConnectionRefused => 'connection refused';
+
+  @override
+  String get shellFailedHostLookup => 'failed host lookup';
+
+  @override
+  String get shellNetworkIsUnreachable => 'network is unreachable';
+
+  @override
+  String get shellNoInternet => 'no internet';
+
+  @override
+  String get shellAuthenticPath => 'Authentic Path';
+
+  @override
+  String get shellTakeQuiz => 'Take Quiz';
+
+  @override
+  String get shellBack => 'Back';
+
+  @override
+  String get shellPickWhereYouWantToLearn => 'Pick where you want to learn';
+
+  @override
+  String get shellStartLearning => 'Start learning';
+
+  @override
+  String shellValuePts(String value) {
+    return '$value pts';
+  }
+
+  @override
+  String get shellTryADifferentSearchTerm => 'Try a different search term';
+
+  @override
+  String get shellNoLanguagesFound => 'No languages found';
+
+  @override
+  String get shellClearSearch => 'Clear search';
+
+  @override
+  String get shellSearchLanguages2580 => 'Search languages...';
+
+  @override
+  String shellValuea1d1(String value) {
+    return '$value ';
+  }
+
+  @override
+  String get shellRetry => 'Retry';
+
+  @override
+  String get shellFailedToLoadQuizzesPleaseTry =>
+      'Failed to load quizzes. Please try again.';
+
+  @override
+  String get shellConnectionTimedOut52c8 => 'Connection timed out';
+
+  @override
+  String shellWeReWorkingToAddRandom(String value) {
+    return 'We\'re working to add random quizzes for $value!';
+  }
+
+  @override
+  String shellLoadingQuizzesForValue(String value) {
+    return 'Loading quizzes for $value...';
+  }
+
+  @override
+  String get shellChooseAQuizType => 'Choose a quiz type';
+
+  @override
+  String get shellAppPolicy => 'App Policy';
+
+  @override
+  String get shellChangePassword => 'Change Password';
+
+  @override
+  String get shellPasswordChanged => 'Password Changed';
+
+  @override
+  String get shellConfirmYourNewPassword => 'Confirm your new password';
+
+  @override
+  String get shellConfirmPassword => 'Confirm Password';
+
+  @override
+  String get shellEnterNewPassword => 'Enter new password';
+
+  @override
+  String get shellNewPassword => 'New Password';
+
+  @override
+  String get shellEnterYourCurrentPassword => 'Enter your current password';
+
+  @override
+  String get shellCurrentPassword => 'Current Password';
+
+  @override
+  String get shellDeleteNow => 'Delete Now';
+
+  @override
+  String get shellEnterCurrentPassword => 'Enter Current Password';
+
+  @override
+  String get shellConfirmation => 'Confirmation';
+
+  @override
+  String get shellYes => 'Yes';
+
+  @override
+  String get shellNo => 'No';
+
+  @override
+  String get shellAreYouSureYouWantToecc5 =>
+      'Are you sure you want to DELETE account?';
+
+  @override
+  String get shellAccountDeleted => 'Account Deleted';
+
+  @override
+  String get shellThisActionIsPermanent => 'This action is permanent';
+
+  @override
+  String get shellDeleteYourAccount => 'Delete your account';
+
+  @override
+  String get shellReadHowYourDataIsProtected =>
+      'Read how your data is protected';
+
+  @override
+  String get shellPrivacyUserPolicy => 'Privacy & User Policy';
+
+  @override
+  String get shellLearnAboutTheLingafriqMission =>
+      'Learn about the LingAfriq mission';
+
+  @override
+  String get shellWhoAreWe => 'Who are we?';
+
+  @override
+  String get shellHelpUsImproveLingafriq => 'Help us improve LingAfriq';
+
+  @override
+  String get shellGiveUsFeedback => 'Give us Feedback';
+
+  @override
+  String get shellUpdateYourCredentialsSecurely =>
+      'Update your credentials securely';
+
+  @override
+  String shellValue12bd(String value) {
+    return '#$value';
+  }
+
+  @override
+  String shellGlobalRankValue(String value) {
+    return 'Global rank: $value';
+  }
+
+  @override
+  String get shellGlobalRanking => 'Global Ranking';
+
+  @override
+  String shellStreakValue(String value) {
+    return 'Streak $value';
+  }
+
+  @override
+  String shellValueXp(String value) {
+    return '$value XP';
+  }
+
+  @override
+  String shellAchievementProgressUnlockedbadgesOutOfTotal(
+    String unlockedBadges,
+    String totalBadges,
+  ) {
+    return 'Achievement progress: $unlockedBadges out of $totalBadges badges unlocked';
+  }
+
+  @override
+  String shellUnlockedbadgesTotalbadges(
+    String unlockedBadges,
+    String totalBadges,
+  ) {
+    return '$unlockedBadges/$totalBadges';
+  }
+
+  @override
+  String get shellAchievements => 'Achievements';
+
+  @override
+  String shellLevelValue(String value) {
+    return 'Level $value';
+  }
+
+  @override
+  String shellProfileValueValue2LevelValue3Streak(
+    String value,
+    String value2,
+    String value3,
+    String value4,
+  ) {
+    return 'Profile: $value, $value2, Level $value3, Streak $value4';
+  }
+
+  @override
+  String get shellProfileAvatarTapToEditProfile =>
+      'Profile avatar. Tap to edit profile';
+
+  @override
+  String get shellProfile => 'Profile';
+
+  @override
+  String get shellSubmit => 'Submit';
+
+  @override
+  String get shellFeedbackFormOnMobileApp => 'Feedback Form on Mobile App';
+
+  @override
+  String shellLanguageCountryCountry(String country) {
+    return 'Language Country:\n$country\n\n';
+  }
+
+  @override
+  String shellWouldYouLikeToSuggestA(String suggestion) {
+    return 'Would you like to suggest a language? If yes, enter language below:\n$suggestion\n\n';
+  }
+
+  @override
+  String shellWhatWouldYouLikeUsTo(String reason) {
+    return 'What would you like us to know:\n$reason\n\n';
+  }
+
+  @override
+  String get shellPleaseFillInSomeFields => 'Please fill in some fields';
+
+  @override
+  String get shellLanguageCountry => 'Language Country';
+
+  @override
+  String get shellWriteYourSuggestionHere => 'Write your suggestion here';
+
+  @override
+  String get shellWouldYouLikeToSuggestAb06a =>
+      'Would you like to suggest a language? If yes, enter language below';
+
+  @override
+  String get shellPleaseExplainWhatWouldYouLike =>
+      'Please explain What would you like us to know?';
+
+  @override
+  String get shellWhatWouldYouLikeUsTo0de8 => 'What would you like us to know?';
+
+  @override
+  String get shellStartACourseToSeeYoure3fc =>
+      'Start a course to see your country ranking';
+
+  @override
+  String get shellNoPointsEarnedYet => 'No points earned yet';
+
+  @override
+  String shellSpaceTextSpace2(String space, String text, String space2) {
+    return '$space$text$space2';
+  }
+
+  @override
+  String get shellLoadingLeaderboard => 'Loading Leaderboard...';
+
+  @override
+  String get shellCountry => 'Country';
+
+  @override
+  String get shellGlobal => 'Global';
+
+  @override
+  String shellLeaderboardViewValueSwitchBetweenGlobal(String value) {
+    return 'Leaderboard view: $value. Switch between Global and Country.';
+  }
+
+  @override
+  String get shellLeaderboard => 'Leaderboard';
+
+  @override
+  String get shellProfileTab => 'Profile tab';
+
+  @override
+  String get shellSocial => 'Social';
+
+  @override
+  String get shellSocialTab => 'Social tab';
+
+  @override
+  String get shellAi => 'AI';
+
+  @override
+  String get shellAiTutorTab => 'AI Tutor tab';
+
+  @override
+  String get shellCourses => 'Courses';
+
+  @override
+  String get shellCoursesTab => 'Courses tab';
+
+  @override
+  String get shellHome => 'Home';
+
+  @override
+  String get shellHomeTab => 'Home tab';
+
+  @override
+  String get shellBackToLearning => 'Back to learning';
+
+  @override
+  String get shellBackToLearningHome => 'Back to learning home';
+
+  @override
+  String get shellNotAvailableYet => 'Not available yet';
+
+  @override
+  String get shellPrivateMessagesCallsSnapsAndThe =>
+      'Private messages, calls, snaps, and the public feed unlock when you are 18 and your age is verified. Until then, keep going on lessons, games, and Polie.';
+
+  @override
+  String get shellLearningComesFirst => 'Learning comes first';
+
+  @override
+  String onboardingWordsInYourBasket(int words) {
+    String _temp0 = intl.Intl.pluralLogic(
+      words,
+      locale: localeName,
+      other: '$words words in your basket',
+      one: '1 word in your basket',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get onboardingNotSelected => 'not selected';
+
+  @override
+  String get onboardingAddAvatarOptional => 'Add Avatar (Optional)';
+
+  @override
+  String get onboardingLevelNotPreciseYet => 'Level not precise yet';
+
+  @override
+  String get onboardingSelectedd7a1 => ', selected';
+
+  @override
+  String onboardingUseAYearBetween1900And(String nowYear) {
+    return 'Use a year between 1900 and $nowYear.';
+  }
+
+  @override
+  String get onboardingNiceYouSaidIt => 'Nice, you said it';
+
+  @override
+  String get onboardingYouMarkedThePhraseAsSaid =>
+      'You marked the phrase as said';
+
+  @override
+  String get onboardingFinishLesson => 'Finish lesson';
+
+  @override
+  String get onboardingText1Word => '1 word';
+
+  @override
+  String shellUsername(String username) {
+    return ', $username';
+  }
 }

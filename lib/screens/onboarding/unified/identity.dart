@@ -8,15 +8,15 @@ part of '../unified_onboarding_screen.dart';
 const Color _captionInk = Color(0xFF4A453B);
 
 /// Native greeting per learn language (shown in its own script).
-const Map<String, String> _greetings = {
-  'yo': 'Ẹ kú àbọ̀',
+Map<String, String> _greetings(BuildContext context) => {
+  'yo': l10nOf(context).onboardingKB,
   'ha': 'Sannu',
   'ig': 'Nnọọ',
   'tw': 'Akwaaba',
-  'wo': 'Dalal ak jàmm',
-  'pcm': 'How far?',
+  'wo': l10nOf(context).onboardingDalalAkJMm,
+  'pcm': l10nOf(context).onboardingHowFar,
   'sw': 'Karibu',
-  'am': 'እንኳን ደህና መጡ',
+  'am': l10nOf(context).onboardingText,
   'zu': 'Sawubona',
   'xh': 'Molo',
   'ar-maghreb': 'مرحبا',
@@ -378,7 +378,7 @@ class _SignInHero extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final accent = _accentFor(code);
-    final greeting = _greetings[code] ?? 'Ẹ kú àbọ̀';
+    final greeting = _greetings(context)[code] ?? l10nOf(context).onboardingKB;
     // Large text: one line, so the title and first button stay on screen.
     if (MediaQuery.textScalerOf(context).scale(1) >= 1.5) {
       return Column(
@@ -450,7 +450,7 @@ class _SignInHero extends StatelessWidget {
                     Text(
                       _bidi(
                         context,
-                        'Polie is keeping your seat in the village.',
+                        l10nOf(context).onboardingPolieIsKeepingYourSeatIn,
                       ),
                       style: ModernGriotTypography.bodyMedium(
                         context: context,
@@ -499,12 +499,8 @@ class _WordBasket extends StatelessWidget {
                   child: Text(
                     _tr(
                       context,
-                      words == 1
-                          ? '1 word in your basket'
-                          : '$words words in your basket',
-                      words == 1
-                          ? 'كلمة واحدة في سلّتك'
-                          : '$words كلمات في سلّتك',
+                      l10nOf(context).onboardingWordsInYourBasket(words),
+                      onboardingArBasket(words),
                     ),
                     style: ModernGriotTypography.titleSmall(
                       context: context,

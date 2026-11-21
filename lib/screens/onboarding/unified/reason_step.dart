@@ -7,33 +7,33 @@ class _ReasonStep extends HookConsumerWidget {
   final Function(Map<String, dynamic>) onNext;
   final String learningLanguage;
 
-  static const _reasons = [
+  static _reasons(BuildContext context) => [
     (
       id: 'family',
       icon: Icons.favorite_rounded,
-      title: 'Talk to family',
-      subtitle: 'Greet elders and keep up at gatherings',
+      title: l10nOf(context).onboardingTalkToFamily,
+      subtitle: l10nOf(context).onboardingGreetEldersAndKeepUpAt,
       reason: 'family',
     ),
     (
       id: 'heritage',
       icon: Icons.diversity_3_rounded,
-      title: 'Heritage and culture',
-      subtitle: 'Proverbs, names, music and stories',
+      title: l10nOf(context).onboardingHeritageAndCulture,
+      subtitle: l10nOf(context).onboardingProverbsNamesMusicAndStories,
       reason: 'heritage',
     ),
     (
       id: 'travel',
       icon: Icons.flight_rounded,
       title: 'Travel',
-      subtitle: 'Markets, directions and small talk',
+      subtitle: l10nOf(context).onboardingMarketsDirectionsAndSmallTalk,
       reason: 'travel',
     ),
     (
       id: 'work',
       icon: Icons.work_rounded,
       title: 'Work',
-      subtitle: 'Colleagues, clients and community',
+      subtitle: l10nOf(context).onboardingColleaguesClientsAndCommunity,
       reason: 'business',
     ),
   ];
@@ -44,9 +44,9 @@ class _ReasonStep extends HookConsumerWidget {
     final languageName = _lessonCopyFor(learningLanguage).name;
 
     Future<void> submit() async {
-      final reasons = [
+      final List<String> reasons = [
         for (final id in selected.value)
-          _reasons.firstWhere((r) => r.id == id).reason,
+          _reasons(context).firstWhere((r) => r.id == id).reason,
       ];
       final primary = selected.value.first;
       try {
@@ -67,13 +67,13 @@ class _ReasonStep extends HookConsumerWidget {
       ),
       header: _QuestionHeader(
         step: OnboardingStep.goals,
-        question: 'Why are you learning $languageName?',
-        hint: 'Pick all that fit. Your first lessons follow your answer.',
+        question: l10nOf(context).onboardingWhyAreYouLearningLanguagename(languageName.toString()),
+        hint: l10nOf(context).onboardingPickAllThatFitYourFirst,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          for (final r in _reasons)
+          for (final r in _reasons(context))
             _SelectRow(
               height: ModernGriotLayout.selectRowComfortable,
               label: r.title,

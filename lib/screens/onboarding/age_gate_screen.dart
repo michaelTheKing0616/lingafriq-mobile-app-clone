@@ -8,6 +8,7 @@ import 'package:lingafriq/services/age_tier_service.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 /// Copy keys: age_gate.title, age_gate.body, age_gate.blocked (P9-912).
 ///
@@ -33,15 +34,11 @@ class AgeGateScreen extends HookConsumerWidget {
   /// ISO country used for the child threshold; defaults to the device locale.
   final String? countryCode;
 
-  static const String ageGateTitle = 'What year were you born?';
-  static const String ageGateBody =
-      'We use this to keep learners safe and unlock the right features for your age. '
-      'We only ask for the year, and we store your age group, not the year itself.';
-  static const String ageGateBlocked =
-      'You already entered a birth year on this device. If something looks wrong, ask a guardian to help from their account.';
-  static const String ageGatePendingGuardianTitle = 'We need a guardian';
-  static const String ageGatePendingGuardianBody =
-      'Your account is ready for lessons, but chat, Village, and purchases stay paused until a guardian approves.';
+  static String ageGateTitle(BuildContext context) => l10nOf(context).onboardingWhatYearWereYouBorn;
+  static String ageGateBody(BuildContext context) => l10nOf(context).onboardingWeUseThisToKeepLearners;
+  static String ageGateBlocked(BuildContext context) => l10nOf(context).onboardingYouAlreadyEnteredABirthYear;
+  static String ageGatePendingGuardianTitle(BuildContext context) => l10nOf(context).onboardingWeNeedAGuardian;
+  static String ageGatePendingGuardianBody(BuildContext context) => l10nOf(context).onboardingYourAccountIsReadyForLessons;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -71,7 +68,7 @@ class AgeGateScreen extends HookConsumerWidget {
           countryCode ?? Localizations.maybeLocaleOf(context)?.countryCode;
       if (year == null ||
           computeRegistrationAgeBand(year, countryCode: country) == null) {
-        errorText.value = 'Choose the year you were born to continue.';
+        errorText.value = l10nOf(context).onboardingChooseTheYearYouWereBorn;
         return;
       }
       submitting.value = true;
@@ -83,13 +80,14 @@ class AgeGateScreen extends HookConsumerWidget {
           birthYear: year,
           deviceKey: await deviceKey(),
         );
+        if (!context.mounted) return;
         if (!result.ok) {
           if (result.code == 'AGE_RETRY_BLOCKED') {
             blockedRetry.value = true;
-            errorText.value = ageGateBlocked;
+            errorText.value = ageGateBlocked(context);
           } else {
             errorText.value =
-                result.message ?? 'We could not save that year. Try again.';
+                result.message ?? l10nOf(context).onboardingWeCouldNotSaveThatYear;
           }
           return;
         }
@@ -109,7 +107,7 @@ class AgeGateScreen extends HookConsumerWidget {
       final picked = await showDialog<int>(
         context: context,
         builder: (dialogContext) => AlertDialog(
-          title: const Text(ageGateTitle),
+          title: Text(ageGateTitle(context)),
           content: SizedBox(
             width: 300,
             height: 320,
@@ -135,9 +133,9 @@ class AgeGateScreen extends HookConsumerWidget {
         child: SingleChildScrollView(
           child: _StatusPanel(
             icon: Icons.family_restroom_rounded,
-            title: ageGatePendingGuardianTitle,
-            body: ageGatePendingGuardianBody,
-            primaryLabel: 'Continue to lessons',
+            title: ageGatePendingGuardianTitle(context),
+            body: ageGatePendingGuardianBody(context),
+            primaryLabel: l10nOf(context).onboardingContinueToLessons,
             onPrimary: () => onCompleted?.call(),
             colorScheme: colorScheme,
           ),
@@ -156,7 +154,7 @@ class AgeGateScreen extends HookConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    ageGateTitle,
+                    ageGateTitle(context),
                     style: PanAfricanTypography.headlineSmall(context).copyWith(
                       fontWeight: FontWeight.w700,
                       color: colorScheme.onSurface,
@@ -164,7 +162,7 @@ class AgeGateScreen extends HookConsumerWidget {
                   ),
                   SizedBox(height: PanAfricanSpacing.md.h),
                   Text(
-                    ageGateBody,
+                    ageGateBody(context),
                     style: PanAfricanTypography.bodyLarge(context).copyWith(
                       color: colorScheme.onSurfaceVariant,
                       height: 1.45,
@@ -174,7 +172,7 @@ class AgeGateScreen extends HookConsumerWidget {
                   Semantics(
                     button: true,
                     label:
-                        'Birth year, ${selectedDate.value?.toString() ?? 'not selected'}',
+                        l10nOf(context).onboardingBirthYearValue(selectedDate.value?.toString() ?? l10nOf(context).onboardingNotSelected),
                     child: Material(
                       color: colorScheme.surfaceContainerHighest,
                       borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
@@ -199,7 +197,7 @@ class AgeGateScreen extends HookConsumerWidget {
                               Expanded(
                                 child: Text(
                                   selectedDate.value?.toString() ??
-                                      'Select birth year',
+                                      l10nOf(context).onboardingSelectBirthYear,
                                   style: PanAfricanTypography.titleMedium(
                                     context,
                                   ),
@@ -248,7 +246,7 @@ class AgeGateScreen extends HookConsumerWidget {
                               ),
                             )
                           : Text(
-                              'Continue',
+                              l10nOf(context).onboardingContinue,
                               style: PanAfricanTypography.labelLarge(context)
                                   .copyWith(
                                     color: Colors.white,

@@ -6924,6 +6924,4177 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unavailable'**
   String get commonStateUnavailable;
+
+  /// onboarding. Continue
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get onboardingContinue;
+
+  /// onboarding. Select birth year
+  ///
+  /// In en, this message translates to:
+  /// **'Select birth year'**
+  String get onboardingSelectBirthYear;
+
+  /// onboarding. Birth year, {value}
+  ///
+  /// In en, this message translates to:
+  /// **'Birth year, {value}'**
+  String onboardingBirthYearValue(String value);
+
+  /// onboarding. Continue to lessons
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to lessons'**
+  String get onboardingContinueToLessons;
+
+  /// onboarding. We could not save that year. Try again.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not save that year. Try again.'**
+  String get onboardingWeCouldNotSaveThatYear;
+
+  /// onboarding. Choose the year you were born to continue.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the year you were born to continue.'**
+  String get onboardingChooseTheYearYouWereBorn;
+
+  /// onboarding. Your account is ready for lessons, but chat, Village, and purchases stay paused
+  ///
+  /// In en, this message translates to:
+  /// **'Your account is ready for lessons, but chat, Village, and purchases stay paused until a guardian approves.'**
+  String get onboardingYourAccountIsReadyForLessons;
+
+  /// onboarding. We need a guardian
+  ///
+  /// In en, this message translates to:
+  /// **'We need a guardian'**
+  String get onboardingWeNeedAGuardian;
+
+  /// onboarding. You already entered a birth year on this device. If something looks wrong, ask a
+  ///
+  /// In en, this message translates to:
+  /// **'You already entered a birth year on this device. If something looks wrong, ask a guardian to help from their account.'**
+  String get onboardingYouAlreadyEnteredABirthYear;
+
+  /// onboarding. We use this to keep learners safe and unlock the right features for your age. We
+  ///
+  /// In en, this message translates to:
+  /// **'We use this to keep learners safe and unlock the right features for your age. We only ask for the year, and we store your age group, not the year itself.'**
+  String get onboardingWeUseThisToKeepLearners;
+
+  /// onboarding. What year were you born?
+  ///
+  /// In en, this message translates to:
+  /// **'What year were you born?'**
+  String get onboardingWhatYearWereYouBorn;
+
+  /// onboarding. {pendingSyncs} pending sync{value}
+  ///
+  /// In en, this message translates to:
+  /// **'{pendingSyncs} pending sync{value}'**
+  String onboardingPendingsyncsPendingSyncValue(
+    String pendingSyncs,
+    String value,
+  );
+
+  /// onboarding. Could not verify availability. You can still continue.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not verify availability. You can still continue.'**
+  String get onboardingCouldNotVerifyAvailabilityYouCan;
+
+  /// onboarding. Only letters, numbers, and underscores are allowed
+  ///
+  /// In en, this message translates to:
+  /// **'Only letters, numbers, and underscores are allowed'**
+  String get onboardingOnlyLettersNumbersAndUnderscoresAre;
+
+  /// onboarding. Username must be 30 characters or less
+  ///
+  /// In en, this message translates to:
+  /// **'Username must be 30 characters or less'**
+  String get onboardingUsernameMustBe30CharactersOr;
+
+  /// onboarding. Username must be at least 3 characters
+  ///
+  /// In en, this message translates to:
+  /// **'Username must be at least 3 characters'**
+  String get onboardingUsernameMustBeAtLeast3;
+
+  /// onboarding. ✗ Username is already taken
+  ///
+  /// In en, this message translates to:
+  /// **'✗ Username is already taken'**
+  String get onboardingUsernameIsAlreadyTaken;
+
+  /// onboarding. ✓ Username is available
+  ///
+  /// In en, this message translates to:
+  /// **'✓ Username is available'**
+  String get onboardingUsernameIsAvailable;
+
+  /// onboarding. Checking availability...
+  ///
+  /// In en, this message translates to:
+  /// **'Checking availability...'**
+  String get onboardingCheckingAvailability;
+
+  /// onboarding. Enter a username (3-30 characters, letters, numbers, and underscores only)
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a username (3-30 characters, letters, numbers, and underscores only)'**
+  String get onboardingEnterAUsername330Characters;
+
+  /// onboarding. Complete Onboarding
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Onboarding'**
+  String get onboardingCompleteOnboarding;
+
+  /// onboarding. Choose a unique username
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a unique username'**
+  String get onboardingChooseAUniqueUsername;
+
+  /// onboarding. Username
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get onboardingUsername;
+
+  /// onboarding. Change Avatar
+  ///
+  /// In en, this message translates to:
+  /// **'Change Avatar'**
+  String get onboardingChangeAvatar;
+
+  /// onboarding. Set your username (avatar is optional)
+  ///
+  /// In en, this message translates to:
+  /// **'Set your username (avatar is optional)'**
+  String get onboardingSetYourUsernameAvatarIsOptional;
+
+  /// onboarding. Complete Your Profile
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Your Profile'**
+  String get onboardingCompleteYourProfile;
+
+  /// onboarding. Enable Reminders
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Reminders'**
+  String get onboardingEnableReminders;
+
+  /// onboarding. Preferred Time of Day
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred Time of Day'**
+  String get onboardingPreferredTimeOfDay;
+
+  /// onboarding. {value} minutes per day
+  ///
+  /// In en, this message translates to:
+  /// **'{value} minutes per day'**
+  String onboardingValueMinutesPerDay(String value);
+
+  /// onboarding. {value} minutes
+  ///
+  /// In en, this message translates to:
+  /// **'{value} minutes'**
+  String onboardingValueMinutes(String value);
+
+  /// onboarding. Daily Duration (minutes)
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Duration (minutes)'**
+  String get onboardingDailyDurationMinutes;
+
+  /// onboarding. When and how long do you want to learn?
+  ///
+  /// In en, this message translates to:
+  /// **'When and how long do you want to learn?'**
+  String get onboardingWhenAndHowLongDoYou;
+
+  /// onboarding. Set your learning schedule
+  ///
+  /// In en, this message translates to:
+  /// **'Set your learning schedule'**
+  String get onboardingSetYourLearningSchedule;
+
+  /// onboarding. How should Polie communicate with you?
+  ///
+  /// In en, this message translates to:
+  /// **'How should Polie communicate with you?'**
+  String get onboardingHowShouldPolieCommunicateWithYou;
+
+  /// onboarding. What tone do you prefer?
+  ///
+  /// In en, this message translates to:
+  /// **'What tone do you prefer?'**
+  String get onboardingWhatToneDoYouPrefer;
+
+  /// onboarding. How fast do you want to learn?
+  ///
+  /// In en, this message translates to:
+  /// **'How fast do you want to learn?'**
+  String get onboardingHowFastDoYouWantTo;
+
+  /// onboarding. What pace do you prefer?
+  ///
+  /// In en, this message translates to:
+  /// **'What pace do you prefer?'**
+  String get onboardingWhatPaceDoYouPrefer;
+
+  /// onboarding. Select your preferred learning style
+  ///
+  /// In en, this message translates to:
+  /// **'Select your preferred learning style'**
+  String get onboardingSelectYourPreferredLearningStyle;
+
+  /// onboarding. How do you learn best?
+  ///
+  /// In en, this message translates to:
+  /// **'How do you learn best?'**
+  String get onboardingHowDoYouLearnBest;
+
+  /// onboarding. Choose your main learning objective
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your main learning objective'**
+  String get onboardingChooseYourMainLearningObjective;
+
+  /// onboarding. What's your primary goal?
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s your primary goal?'**
+  String get onboardingWhatSYourPrimaryGoal;
+
+  /// onboarding. Choose your daily learning goal
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your daily learning goal'**
+  String get onboardingChooseYourDailyLearningGoal;
+
+  /// onboarding. How much time can you commit daily?
+  ///
+  /// In en, this message translates to:
+  /// **'How much time can you commit daily?'**
+  String get onboardingHowMuchTimeCanYouCommit;
+
+  /// onboarding. Dedicated study
+  ///
+  /// In en, this message translates to:
+  /// **'Dedicated study'**
+  String get onboardingDedicatedStudy;
+
+  /// onboarding. 20 min
+  ///
+  /// In en, this message translates to:
+  /// **'20 min'**
+  String get onboardingText20Min;
+
+  /// onboarding. Balanced
+  ///
+  /// In en, this message translates to:
+  /// **'Balanced'**
+  String get onboardingBalanced;
+
+  /// onboarding. 15 min
+  ///
+  /// In en, this message translates to:
+  /// **'15 min'**
+  String get onboardingText15Min;
+
+  /// onboarding. Light learning
+  ///
+  /// In en, this message translates to:
+  /// **'Light learning'**
+  String get onboardingLightLearning;
+
+  /// onboarding. 10 min
+  ///
+  /// In en, this message translates to:
+  /// **'10 min'**
+  String get onboardingText10Min;
+
+  /// onboarding. Quick practice
+  ///
+  /// In en, this message translates to:
+  /// **'Quick practice'**
+  String get onboardingQuickPractice;
+
+  /// onboarding. 5 min
+  ///
+  /// In en, this message translates to:
+  /// **'5 min'**
+  String get onboardingText5Min;
+
+  /// onboarding. Select all that apply
+  ///
+  /// In en, this message translates to:
+  /// **'Select all that apply'**
+  String get onboardingSelectAllThatApply;
+
+  /// onboarding. Why are you learning?
+  ///
+  /// In en, this message translates to:
+  /// **'Why are you learning?'**
+  String get onboardingWhyAreYouLearning;
+
+  /// onboarding. This helps us personalize your experience
+  ///
+  /// In en, this message translates to:
+  /// **'This helps us personalize your experience'**
+  String get onboardingThisHelpsUsPersonalizeYourExperience;
+
+  /// onboarding. What's your age category?
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s your age category?'**
+  String get onboardingWhatSYourAgeCategory;
+
+  /// onboarding. Select the language you want to learn
+  ///
+  /// In en, this message translates to:
+  /// **'Select the language you want to learn'**
+  String get onboardingSelectTheLanguageYouWantTo;
+
+  /// onboarding. What language do you wish to learn first?
+  ///
+  /// In en, this message translates to:
+  /// **'What language do you wish to learn first?'**
+  String get onboardingWhatLanguageDoYouWishTo;
+
+  /// onboarding. Xhosa
+  ///
+  /// In en, this message translates to:
+  /// **'Xhosa'**
+  String get onboardingXhosa;
+
+  /// onboarding. Zulu
+  ///
+  /// In en, this message translates to:
+  /// **'Zulu'**
+  String get onboardingZulu;
+
+  /// onboarding. Swahili
+  ///
+  /// In en, this message translates to:
+  /// **'Swahili'**
+  String get onboardingSwahili;
+
+  /// onboarding. Nigerian Pidgin English
+  ///
+  /// In en, this message translates to:
+  /// **'Nigerian Pidgin English'**
+  String get onboardingNigerianPidginEnglish;
+
+  /// onboarding. Igbo
+  ///
+  /// In en, this message translates to:
+  /// **'Igbo'**
+  String get onboardingIgbo;
+
+  /// onboarding. Hausa
+  ///
+  /// In en, this message translates to:
+  /// **'Hausa'**
+  String get onboardingHausa;
+
+  /// onboarding. Yoruba
+  ///
+  /// In en, this message translates to:
+  /// **'Yoruba'**
+  String get onboardingYoruba;
+
+  /// onboarding. Help us personalize your learning experience
+  ///
+  /// In en, this message translates to:
+  /// **'Help us personalize your learning experience'**
+  String get onboardingHelpUsPersonalizeYourLearningExperienc;
+
+  /// onboarding. What's your current level?
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s your current level?'**
+  String get onboardingWhatSYourCurrentLevel;
+
+  /// onboarding. I speak this language natively
+  ///
+  /// In en, this message translates to:
+  /// **'I speak this language natively'**
+  String get onboardingISpeakThisLanguageNatively;
+
+  /// onboarding. Native
+  ///
+  /// In en, this message translates to:
+  /// **'Native'**
+  String get onboardingNative;
+
+  /// onboarding. I'm quite fluent
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m quite fluent'**
+  String get onboardingIMQuiteFluent;
+
+  /// onboarding. Advanced
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced'**
+  String get onboardingAdvanced;
+
+  /// onboarding. I can have basic conversations
+  ///
+  /// In en, this message translates to:
+  /// **'I can have basic conversations'**
+  String get onboardingICanHaveBasicConversations;
+
+  /// onboarding. Intermediate
+  ///
+  /// In en, this message translates to:
+  /// **'Intermediate'**
+  String get onboardingIntermediate;
+
+  /// onboarding. I know a few words
+  ///
+  /// In en, this message translates to:
+  /// **'I know a few words'**
+  String get onboardingIKnowAFewWords;
+
+  /// onboarding. Elementary
+  ///
+  /// In en, this message translates to:
+  /// **'Elementary'**
+  String get onboardingElementary;
+
+  /// onboarding. I'm just starting out
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m just starting out'**
+  String get onboardingIMJustStartingOut;
+
+  /// onboarding. Beginner
+  ///
+  /// In en, this message translates to:
+  /// **'Beginner'**
+  String get onboardingBeginner;
+
+  /// onboarding. Continue to next step
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to next step'**
+  String get onboardingContinueToNextStep;
+
+  /// onboarding. Search languages...
+  ///
+  /// In en, this message translates to:
+  /// **'Search languages...'**
+  String get onboardingSearchLanguages;
+
+  /// onboarding. Search languages
+  ///
+  /// In en, this message translates to:
+  /// **'Search languages'**
+  String get onboardingSearchLanguagesea93;
+
+  /// onboarding. All Languages
+  ///
+  /// In en, this message translates to:
+  /// **'All Languages'**
+  String get onboardingAllLanguages;
+
+  /// onboarding. Show All Languages ({value} more)
+  ///
+  /// In en, this message translates to:
+  /// **'Show All Languages ({value} more)'**
+  String onboardingShowAllLanguagesValueMore(String value);
+
+  /// onboarding. Show all languages. {value} more languages available.
+  ///
+  /// In en, this message translates to:
+  /// **'Show all languages. {value} more languages available.'**
+  String onboardingShowAllLanguagesValueMoreLanguages(String value);
+
+  /// onboarding. Select {value} as proficiency language. {value2}
+  ///
+  /// In en, this message translates to:
+  /// **'Select {value} as proficiency language. {value2}'**
+  String onboardingSelectValueAsProficiencyLanguageValue2(
+    String value,
+    String value2,
+  );
+
+  /// onboarding. Popular Languages
+  ///
+  /// In en, this message translates to:
+  /// **'Popular Languages'**
+  String get onboardingPopularLanguages;
+
+  /// onboarding. We'll translate all in-app content to this language
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll translate all in-app content to this language'**
+  String get onboardingWeLlTranslateAllInApp;
+
+  /// onboarding. What language do you speak?
+  ///
+  /// In en, this message translates to:
+  /// **'What language do you speak?'**
+  String get onboardingWhatLanguageDoYouSpeak;
+
+  /// onboarding. Polish
+  ///
+  /// In en, this message translates to:
+  /// **'Polish'**
+  String get onboardingPolish;
+
+  /// onboarding. Dutch
+  ///
+  /// In en, this message translates to:
+  /// **'Dutch'**
+  String get onboardingDutch;
+
+  /// onboarding. Turkish
+  ///
+  /// In en, this message translates to:
+  /// **'Turkish'**
+  String get onboardingTurkish;
+
+  /// onboarding. Russian
+  ///
+  /// In en, this message translates to:
+  /// **'Russian'**
+  String get onboardingRussian;
+
+  /// onboarding. Hindi
+  ///
+  /// In en, this message translates to:
+  /// **'Hindi'**
+  String get onboardingHindi;
+
+  /// onboarding. Korean
+  ///
+  /// In en, this message translates to:
+  /// **'Korean'**
+  String get onboardingKorean;
+
+  /// onboarding. Japanese
+  ///
+  /// In en, this message translates to:
+  /// **'Japanese'**
+  String get onboardingJapanese;
+
+  /// onboarding. Chinese
+  ///
+  /// In en, this message translates to:
+  /// **'Chinese'**
+  String get onboardingChinese;
+
+  /// onboarding. Italian
+  ///
+  /// In en, this message translates to:
+  /// **'Italian'**
+  String get onboardingItalian;
+
+  /// onboarding. German
+  ///
+  /// In en, this message translates to:
+  /// **'German'**
+  String get onboardingGerman;
+
+  /// onboarding. Berber
+  ///
+  /// In en, this message translates to:
+  /// **'Berber'**
+  String get onboardingBerber;
+
+  /// onboarding. Arabic
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic'**
+  String get onboardingArabic;
+
+  /// onboarding. Sango
+  ///
+  /// In en, this message translates to:
+  /// **'Sango'**
+  String get onboardingSango;
+
+  /// onboarding. Kongo
+  ///
+  /// In en, this message translates to:
+  /// **'Kongo'**
+  String get onboardingKongo;
+
+  /// onboarding. Lingala
+  ///
+  /// In en, this message translates to:
+  /// **'Lingala'**
+  String get onboardingLingala;
+
+  /// onboarding. Chichewa
+  ///
+  /// In en, this message translates to:
+  /// **'Chichewa'**
+  String get onboardingChichewa;
+
+  /// onboarding. Ndebele
+  ///
+  /// In en, this message translates to:
+  /// **'Ndebele'**
+  String get onboardingNdebele;
+
+  /// onboarding. Swati
+  ///
+  /// In en, this message translates to:
+  /// **'Swati'**
+  String get onboardingSwati;
+
+  /// onboarding. Tsonga
+  ///
+  /// In en, this message translates to:
+  /// **'Tsonga'**
+  String get onboardingTsonga;
+
+  /// onboarding. Venda
+  ///
+  /// In en, this message translates to:
+  /// **'Venda'**
+  String get onboardingVenda;
+
+  /// onboarding. Setswana
+  ///
+  /// In en, this message translates to:
+  /// **'Setswana'**
+  String get onboardingSetswana;
+
+  /// onboarding. Sesotho
+  ///
+  /// In en, this message translates to:
+  /// **'Sesotho'**
+  String get onboardingSesotho;
+
+  /// onboarding. Afrikaans
+  ///
+  /// In en, this message translates to:
+  /// **'Afrikaans'**
+  String get onboardingAfrikaans;
+
+  /// onboarding. Somali
+  ///
+  /// In en, this message translates to:
+  /// **'Somali'**
+  String get onboardingSomali;
+
+  /// onboarding. Oromo
+  ///
+  /// In en, this message translates to:
+  /// **'Oromo'**
+  String get onboardingOromo;
+
+  /// onboarding. Tigrinya
+  ///
+  /// In en, this message translates to:
+  /// **'Tigrinya'**
+  String get onboardingTigrinya;
+
+  /// onboarding. Amharic
+  ///
+  /// In en, this message translates to:
+  /// **'Amharic'**
+  String get onboardingAmharic;
+
+  /// onboarding. Kirundi
+  ///
+  /// In en, this message translates to:
+  /// **'Kirundi'**
+  String get onboardingKirundi;
+
+  /// onboarding. Kinyarwanda
+  ///
+  /// In en, this message translates to:
+  /// **'Kinyarwanda'**
+  String get onboardingKinyarwanda;
+
+  /// onboarding. Luganda
+  ///
+  /// In en, this message translates to:
+  /// **'Luganda'**
+  String get onboardingLuganda;
+
+  /// onboarding. Luo
+  ///
+  /// In en, this message translates to:
+  /// **'Luo'**
+  String get onboardingLuo;
+
+  /// onboarding. Kikuyu
+  ///
+  /// In en, this message translates to:
+  /// **'Kikuyu'**
+  String get onboardingKikuyu;
+
+  /// onboarding. Fon
+  ///
+  /// In en, this message translates to:
+  /// **'Fon'**
+  String get onboardingFon;
+
+  /// onboarding. Ewe
+  ///
+  /// In en, this message translates to:
+  /// **'Ewe'**
+  String get onboardingEwe;
+
+  /// onboarding. Akan
+  ///
+  /// In en, this message translates to:
+  /// **'Akan'**
+  String get onboardingAkan;
+
+  /// onboarding. Bambara
+  ///
+  /// In en, this message translates to:
+  /// **'Bambara'**
+  String get onboardingBambara;
+
+  /// onboarding. Fulfulde
+  ///
+  /// In en, this message translates to:
+  /// **'Fulfulde'**
+  String get onboardingFulfulde;
+
+  /// onboarding. Twi
+  ///
+  /// In en, this message translates to:
+  /// **'Twi'**
+  String get onboardingTwi;
+
+  /// onboarding. Wolof
+  ///
+  /// In en, this message translates to:
+  /// **'Wolof'**
+  String get onboardingWolof;
+
+  /// onboarding. Nigerian Pidgin
+  ///
+  /// In en, this message translates to:
+  /// **'Nigerian Pidgin'**
+  String get onboardingNigerianPidgin;
+
+  /// onboarding. Spanish
+  ///
+  /// In en, this message translates to:
+  /// **'Spanish'**
+  String get onboardingSpanish;
+
+  /// onboarding. Portuguese
+  ///
+  /// In en, this message translates to:
+  /// **'Portuguese'**
+  String get onboardingPortuguese;
+
+  /// onboarding. French
+  ///
+  /// In en, this message translates to:
+  /// **'French'**
+  String get onboardingFrench;
+
+  /// onboarding. English
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get onboardingEnglish;
+
+  /// onboarding. Take Test
+  ///
+  /// In en, this message translates to:
+  /// **'Take Test'**
+  String get onboardingTakeTest;
+
+  /// onboarding. Skip
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get onboardingSkip;
+
+  /// onboarding. Would you like to take a placement test to assess your current level in {learnin
+  ///
+  /// In en, this message translates to:
+  /// **'Would you like to take a placement test to assess your current level in {learningLanguage}? You can skip this and take it later.'**
+  String onboardingWouldYouLikeToTakeA(String learningLanguage);
+
+  /// onboarding. Take Placement Test?
+  ///
+  /// In en, this message translates to:
+  /// **'Take Placement Test?'**
+  String get onboardingTakePlacementTest;
+
+  /// onboarding. {progressPercent}%
+  ///
+  /// In en, this message translates to:
+  /// **'{progressPercent}%'**
+  String onboardingProgresspercent(String progressPercent);
+
+  /// onboarding. Step {value} of {totalSteps}
+  ///
+  /// In en, this message translates to:
+  /// **'Step {value} of {totalSteps}'**
+  String onboardingStepValueOfTotalsteps(String value, String totalSteps);
+
+  /// onboarding. Skip onboarding
+  ///
+  /// In en, this message translates to:
+  /// **'Skip onboarding'**
+  String get onboardingSkipOnboarding;
+
+  /// onboarding. Onboarding
+  ///
+  /// In en, this message translates to:
+  /// **'Onboarding'**
+  String get onboardingOnboarding;
+
+  /// onboarding. Go back to previous step
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to previous step'**
+  String get onboardingGoBackToPreviousStep;
+
+  /// onboarding. Onboarding progress. Step {value} of {totalSteps}. {progressPercent} percent com
+  ///
+  /// In en, this message translates to:
+  /// **'Onboarding progress. Step {value} of {totalSteps}. {progressPercent} percent complete.'**
+  String onboardingOnboardingProgressStepValueOfTotalstep(
+    String value,
+    String totalSteps,
+    String progressPercent,
+  );
+
+  /// onboarding. Skip test
+  ///
+  /// In en, this message translates to:
+  /// **'Skip test'**
+  String get onboardingSkipTest;
+
+  /// onboarding. Question {value} of {totalQuestions}
+  ///
+  /// In en, this message translates to:
+  /// **'Question {value} of {totalQuestions}'**
+  String onboardingQuestionValueOfTotalquestions(
+    String value,
+    String totalQuestions,
+  );
+
+  /// onboarding. Skip for now (start as beginner)
+  ///
+  /// In en, this message translates to:
+  /// **'Skip for now (start as beginner)'**
+  String get onboardingSkipForNowStartAsBeginner;
+
+  /// onboarding. Start Assessment
+  ///
+  /// In en, this message translates to:
+  /// **'Start Assessment'**
+  String get onboardingStartAssessment;
+
+  /// onboarding. Answer 3 quick questions to help us personalize your learning journey.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer 3 quick questions to help us personalize your learning journey.'**
+  String get onboardingAnswer3QuickQuestionsToHelp;
+
+  /// onboarding. Let us see where you stand, traveler.
+  ///
+  /// In en, this message translates to:
+  /// **'Let us see where you stand, traveler.'**
+  String get onboardingLetUsSeeWhereYouStand;
+
+  /// onboarding. Understand complex discussions
+  ///
+  /// In en, this message translates to:
+  /// **'Understand complex discussions'**
+  String get onboardingUnderstandComplexDiscussions;
+
+  /// onboarding. Understand most everyday conversations
+  ///
+  /// In en, this message translates to:
+  /// **'Understand most everyday conversations'**
+  String get onboardingUnderstandMostEverydayConversations;
+
+  /// onboarding. Understand short, simple conversations
+  ///
+  /// In en, this message translates to:
+  /// **'Understand short, simple conversations'**
+  String get onboardingUnderstandShortSimpleConversations;
+
+  /// onboarding. Understand greetings and simple words
+  ///
+  /// In en, this message translates to:
+  /// **'Understand greetings and simple words'**
+  String get onboardingUnderstandGreetingsAndSimpleWords;
+
+  /// onboarding. Cannot understand anything
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot understand anything'**
+  String get onboardingCannotUnderstandAnything;
+
+  /// onboarding. How confident are you in understanding spoken African languages?
+  ///
+  /// In en, this message translates to:
+  /// **'How confident are you in understanding spoken African languages?'**
+  String get onboardingHowConfidentAreYouInUnderstanding;
+
+  /// onboarding. I can read fluently
+  ///
+  /// In en, this message translates to:
+  /// **'I can read fluently'**
+  String get onboardingICanReadFluently;
+
+  /// onboarding. I can read sentences
+  ///
+  /// In en, this message translates to:
+  /// **'I can read sentences'**
+  String get onboardingICanReadSentences;
+
+  /// onboarding. I can read simple words
+  ///
+  /// In en, this message translates to:
+  /// **'I can read simple words'**
+  String get onboardingICanReadSimpleWords;
+
+  /// onboarding. I can recognize some letters/characters
+  ///
+  /// In en, this message translates to:
+  /// **'I can recognize some letters/characters'**
+  String get onboardingICanRecognizeSomeLettersCharacters;
+
+  /// onboarding. Not at all
+  ///
+  /// In en, this message translates to:
+  /// **'Not at all'**
+  String get onboardingNotAtAll;
+
+  /// onboarding. Can you read or write in the African language you want to learn?
+  ///
+  /// In en, this message translates to:
+  /// **'Can you read or write in the African language you want to learn?'**
+  String get onboardingCanYouReadOrWriteIn;
+
+  /// onboarding. Advanced - speak fluently
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced - speak fluently'**
+  String get onboardingAdvancedSpeakFluently;
+
+  /// onboarding. Intermediate - can hold conversations
+  ///
+  /// In en, this message translates to:
+  /// **'Intermediate - can hold conversations'**
+  String get onboardingIntermediateCanHoldConversations;
+
+  /// onboarding. Basic - can introduce myself
+  ///
+  /// In en, this message translates to:
+  /// **'Basic - can introduce myself'**
+  String get onboardingBasicCanIntroduceMyself;
+
+  /// onboarding. Some exposure - know a few words
+  ///
+  /// In en, this message translates to:
+  /// **'Some exposure - know a few words'**
+  String get onboardingSomeExposureKnowAFewWords;
+
+  /// onboarding. Complete beginner - never learned one
+  ///
+  /// In en, this message translates to:
+  /// **'Complete beginner - never learned one'**
+  String get onboardingCompleteBeginnerNeverLearnedOne;
+
+  /// onboarding. How would you describe your familiarity with African languages?
+  ///
+  /// In en, this message translates to:
+  /// **'How would you describe your familiarity with African languages?'**
+  String get onboardingHowWouldYouDescribeYourFamiliarity;
+
+  /// onboarding. Next
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get onboardingNext;
+
+  /// onboarding. Enter your username
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your username'**
+  String get onboardingEnterYourUsername;
+
+  /// onboarding. A learner without a name is a drum without a rhythm!
+  /// Tell us what you wish to be
+  ///
+  /// In en, this message translates to:
+  /// **'A learner without a name is a drum without a rhythm!\nTell us what you wish to be called.'**
+  String get onboardingALearnerWithoutANameIs;
+
+  /// onboarding. Build your clan.
+  ///
+  /// In en, this message translates to:
+  /// **'Build your clan.'**
+  String get onboardingBuildYourClan;
+
+  /// onboarding. I am the Healer.
+  /// Let me make your journey smooth.
+  ///
+  /// In en, this message translates to:
+  /// **'I am the Healer.\nLet me make your journey smooth.'**
+  String get onboardingIAmTheHealerLetMe;
+
+  /// onboarding. Gamification
+  ///
+  /// In en, this message translates to:
+  /// **'Gamification'**
+  String get onboardingGamification;
+
+  /// onboarding. Tone Preference
+  ///
+  /// In en, this message translates to:
+  /// **'Tone Preference'**
+  String get onboardingTonePreference;
+
+  /// onboarding. I am Amina the Griot.
+  /// How shall I speak to you?
+  ///
+  /// In en, this message translates to:
+  /// **'I am Amina the Griot.\nHow shall I speak to you?'**
+  String get onboardingIAmAminaTheGriotHow;
+
+  /// onboarding. Choose your path.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your path.'**
+  String get onboardingChooseYourPath;
+
+  /// onboarding. Brain Training
+  ///
+  /// In en, this message translates to:
+  /// **'Brain Training'**
+  String get onboardingBrainTraining;
+
+  /// onboarding. Confidence
+  ///
+  /// In en, this message translates to:
+  /// **'Confidence'**
+  String get onboardingConfidence;
+
+  /// onboarding. Academic
+  ///
+  /// In en, this message translates to:
+  /// **'Academic'**
+  String get onboardingAcademic;
+
+  /// onboarding. Business
+  ///
+  /// In en, this message translates to:
+  /// **'Business'**
+  String get onboardingBusiness;
+
+  /// onboarding. Heritage
+  ///
+  /// In en, this message translates to:
+  /// **'Heritage'**
+  String get onboardingHeritage;
+
+  /// onboarding. Travel
+  ///
+  /// In en, this message translates to:
+  /// **'Travel'**
+  String get onboardingTravel;
+
+  /// onboarding. I am Zawadi, keeper of time.
+  /// When shall we train your tongue?
+  ///
+  /// In en, this message translates to:
+  /// **'I am Zawadi, keeper of time.\nWhen shall we train your tongue?'**
+  String get onboardingIAmZawadiKeeperOfTime;
+
+  /// onboarding. I am Nuru the Rhythm Master.
+  /// Tap the drum that sings to your spirit.
+  ///
+  /// In en, this message translates to:
+  /// **'I am Nuru the Rhythm Master.\nTap the drum that sings to your spirit.'**
+  String get onboardingIAmNuruTheRhythmMaster;
+
+  /// onboarding. What's your level?
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s your level?'**
+  String get onboardingWhatSYourLevel;
+
+  /// onboarding. Select Language
+  ///
+  /// In en, this message translates to:
+  /// **'Select Language'**
+  String get onboardingSelectLanguage;
+
+  /// onboarding. I am Adisa, the Weaver.
+  /// Choose the threads of your voice.
+  ///
+  /// In en, this message translates to:
+  /// **'I am Adisa, the Weaver.\nChoose the threads of your voice.'**
+  String get onboardingIAmAdisaTheWeaverChoose;
+
+  /// onboarding. Tell me: who are you?
+  ///
+  /// In en, this message translates to:
+  /// **'Tell me: who are you?'**
+  String get onboardingTellMeWhoAreYou;
+
+  /// onboarding. Welcome, traveler. I am Pa LingAfriq,
+  /// keeper of the village memory.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome, traveler. I am Pa LingAfriq,\nkeeper of the village memory.'**
+  String get onboardingWelcomeTravelerIAmPaLingafriq;
+
+  /// onboarding. Begin Journey
+  ///
+  /// In en, this message translates to:
+  /// **'Begin Journey'**
+  String get onboardingBeginJourney;
+
+  /// onboarding. The Language Village
+  /// Your journey begins here
+  ///
+  /// In en, this message translates to:
+  /// **'The Language Village\nYour journey begins here'**
+  String get onboardingTheLanguageVillageYourJourneyBegins;
+
+  /// onboarding. Welcome to
+  /// Kijiji cha Lugha
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to\nKijiji cha Lugha'**
+  String get onboardingWelcomeToKijijiChaLugha;
+
+  /// onboarding. Loading...
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get onboardingLoading;
+
+  /// onboarding. Already learning? Log in
+  ///
+  /// In en, this message translates to:
+  /// **'Already learning? Log in'**
+  String get onboardingAlreadyLearningLogIn;
+
+  /// onboarding. Get Started
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get onboardingGetStarted;
+
+  /// onboarding. Choose your path and unlock new opportunities
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your path and unlock new opportunities'**
+  String get onboardingChooseYourPathAndUnlockNew;
+
+  /// onboarding. Your Language Journey
+  /// Starts Here!
+  ///
+  /// In en, this message translates to:
+  /// **'Your Language Journey\nStarts Here!'**
+  String get onboardingYourLanguageJourneyStartsHere;
+
+  /// onboarding. Prioritize how your community really speaks
+  ///
+  /// In en, this message translates to:
+  /// **'Prioritize how your community really speaks'**
+  String get onboardingPrioritizeHowYourCommunityReallySpeaks;
+
+  /// onboarding. Local Dialect & Heritage
+  ///
+  /// In en, this message translates to:
+  /// **'Local Dialect & Heritage'**
+  String get onboardingLocalDialectHeritage;
+
+  /// onboarding. Prepare for studies and broaden knowledge
+  ///
+  /// In en, this message translates to:
+  /// **'Prepare for studies and broaden knowledge'**
+  String get onboardingPrepareForStudiesAndBroadenKnowledge;
+
+  /// onboarding. Excel Academically
+  ///
+  /// In en, this message translates to:
+  /// **'Excel Academically'**
+  String get onboardingExcelAcademically;
+
+  /// onboarding. Open doors to international opportunities
+  ///
+  /// In en, this message translates to:
+  /// **'Open doors to international opportunities'**
+  String get onboardingOpenDoorsToInternationalOpportunities;
+
+  /// onboarding. Boost Your Career
+  ///
+  /// In en, this message translates to:
+  /// **'Boost Your Career'**
+  String get onboardingBoostYourCareer;
+
+  /// onboarding. Discover the rich heritage of African languages
+  ///
+  /// In en, this message translates to:
+  /// **'Discover the rich heritage of African languages'**
+  String get onboardingDiscoverTheRichHeritageOfAfrican;
+
+  /// onboarding. Explore Cultures
+  ///
+  /// In en, this message translates to:
+  /// **'Explore Cultures'**
+  String get onboardingExploreCultures;
+
+  /// onboarding. Explore 54 countries, 2000+ languages,
+  /// and connect with 1+ billion voices
+  ///
+  /// In en, this message translates to:
+  /// **'Explore 54 countries, 2000+ languages,\nand connect with 1+ billion voices'**
+  String get onboardingExplore54Countries2000LanguagesAnd;
+
+  /// onboarding. Ready for a
+  /// pan-African adventure?
+  ///
+  /// In en, this message translates to:
+  /// **'Ready for a\npan-African adventure?'**
+  String get onboardingReadyForAPanAfricanAdventure;
+
+  /// onboarding. Learn a new language,
+  /// the fun way
+  ///
+  /// In en, this message translates to:
+  /// **'Learn a new language,\nthe fun way'**
+  String get onboardingLearnANewLanguageTheFun;
+
+  /// onboarding. Learn about history, traditions, and cultural expressions
+  ///
+  /// In en, this message translates to:
+  /// **'Learn about history, traditions, and cultural expressions'**
+  String get onboardingLearnAboutHistoryTraditionsAndCultural;
+
+  /// onboarding. Connect with culture
+  ///
+  /// In en, this message translates to:
+  /// **'Connect with culture'**
+  String get onboardingConnectWithCulture;
+
+  /// onboarding. Stay motivated with personalized challenges and daily goals
+  ///
+  /// In en, this message translates to:
+  /// **'Stay motivated with personalized challenges and daily goals'**
+  String get onboardingStayMotivatedWithPersonalizedChallenge;
+
+  /// onboarding. Track your progress
+  ///
+  /// In en, this message translates to:
+  /// **'Track your progress'**
+  String get onboardingTrackYourProgress;
+
+  /// onboarding. Fun, bite-sized lessons make learning addictive and effective
+  ///
+  /// In en, this message translates to:
+  /// **'Fun, bite-sized lessons make learning addictive and effective'**
+  String get onboardingFunBiteSizedLessonsMakeLearning;
+
+  /// onboarding. Learn languages, play games
+  ///
+  /// In en, this message translates to:
+  /// **'Learn languages, play games'**
+  String get onboardingLearnLanguagesPlayGames;
+
+  /// onboarding. Discover the beauty of African languages
+  ///
+  /// In en, this message translates to:
+  /// **'Discover the beauty of African languages'**
+  String get onboardingDiscoverTheBeautyOfAfricanLanguages;
+
+  /// onboarding. Your journey to fluency
+  /// starts now!
+  ///
+  /// In en, this message translates to:
+  /// **'Your journey to fluency\nstarts now!'**
+  String get onboardingYourJourneyToFluencyStartsNow;
+
+  /// onboarding. What Do We Offer Uniqely
+  ///
+  /// In en, this message translates to:
+  /// **'What Do We Offer Uniqely'**
+  String get onboardingWhatDoWeOfferUniqely;
+
+  /// onboarding. 54 countries, 2000+ languages, 1+ billion voices. One origin.
+  ///
+  /// In en, this message translates to:
+  /// **'54 countries, 2000+ languages, 1+ billion voices. One origin. '**
+  String get onboardingText54Countries2000Languages1Billion;
+
+  /// onboarding. {value} / {value2}
+  ///
+  /// In en, this message translates to:
+  /// **'{value} / {value2}'**
+  String onboardingValueValue2(String value, String value2);
+
+  /// onboarding. Placement Test
+  ///
+  /// In en, this message translates to:
+  /// **'Placement Test'**
+  String get onboardingPlacementTest;
+
+  /// onboarding. Go Back
+  ///
+  /// In en, this message translates to:
+  /// **'Go Back'**
+  String get onboardingGoBack;
+
+  /// onboarding. Please try again later.
+  ///
+  /// In en, this message translates to:
+  /// **'Please try again later.'**
+  String get onboardingPleaseTryAgainLater;
+
+  /// onboarding. Placement questions are not available right now.
+  ///
+  /// In en, this message translates to:
+  /// **'Placement questions are not available right now.'**
+  String get onboardingPlacementQuestionsAreNotAvailableRight;
+
+  /// onboarding. Loading placement test...
+  ///
+  /// In en, this message translates to:
+  /// **'Loading placement test...'**
+  String get onboardingLoadingPlacementTest;
+
+  /// onboarding. Areas for Improvement
+  ///
+  /// In en, this message translates to:
+  /// **'Areas for Improvement'**
+  String get onboardingAreasForImprovement;
+
+  /// onboarding. Your Proficiency Level
+  ///
+  /// In en, this message translates to:
+  /// **'Your Proficiency Level'**
+  String get onboardingYourProficiencyLevel;
+
+  /// onboarding. Placement Test Complete!
+  ///
+  /// In en, this message translates to:
+  /// **'Placement Test Complete!'**
+  String get onboardingPlacementTestComplete;
+
+  /// onboarding. Previous
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get onboardingPrevious;
+
+  /// onboarding. Your Answer
+  ///
+  /// In en, this message translates to:
+  /// **'Your Answer'**
+  String get onboardingYourAnswer;
+
+  /// onboarding. Selected
+  ///
+  /// In en, this message translates to:
+  /// **'Selected'**
+  String get onboardingSelected;
+
+  /// onboarding. Answer option: {option}{value}
+  ///
+  /// In en, this message translates to:
+  /// **'Answer option: {option}{value}'**
+  String onboardingAnswerOptionOptionValue(String option, String value);
+
+  /// onboarding. Question {value} of {value2}
+  ///
+  /// In en, this message translates to:
+  /// **'Question {value} of {value2}'**
+  String onboardingQuestionValueOfValue2(String value, String value2);
+
+  /// onboarding. {value} of {value2}
+  ///
+  /// In en, this message translates to:
+  /// **'{value} of {value2}'**
+  String onboardingValueOfValue2(String value, String value2);
+
+  /// onboarding. Progress: question {value} of {value2}
+  ///
+  /// In en, this message translates to:
+  /// **'Progress: question {value} of {value2}'**
+  String onboardingProgressQuestionValueOfValue2(String value, String value2);
+
+  /// onboarding. Loading test...
+  ///
+  /// In en, this message translates to:
+  /// **'Loading test...'**
+  String get onboardingLoadingTest;
+
+  /// onboarding. Try Again
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get onboardingTryAgain;
+
+  /// onboarding. Continue Without Test
+  ///
+  /// In en, this message translates to:
+  /// **'Continue Without Test'**
+  String get onboardingContinueWithoutTest;
+
+  /// onboarding. We couldn't connect to the server to generate your placement test. You can conti
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t connect to the server to generate your placement test. You can continue without it and take it later from your profile.'**
+  String get onboardingWeCouldnTConnectToThe;
+
+  /// onboarding. Unable to Generate Placement Test
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to Generate Placement Test'**
+  String get onboardingUnableToGeneratePlacementTest;
+
+  /// onboarding. Generating your placement test...
+  ///
+  /// In en, this message translates to:
+  /// **'Generating your placement test...'**
+  String get onboardingGeneratingYourPlacementTest;
+
+  /// onboarding. Please answer all questions
+  ///
+  /// In en, this message translates to:
+  /// **'Please answer all questions'**
+  String get onboardingPleaseAnswerAllQuestions;
+
+  /// onboarding. Engage with native content
+  ///
+  /// In en, this message translates to:
+  /// **'Engage with native content'**
+  String get onboardingEngageWithNativeContent;
+
+  /// onboarding. Focus on fluency and nuance
+  ///
+  /// In en, this message translates to:
+  /// **'Focus on fluency and nuance'**
+  String get onboardingFocusOnFluencyAndNuance;
+
+  /// onboarding. Advanced lessons recommended
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced lessons recommended'**
+  String get onboardingAdvancedLessonsRecommended;
+
+  /// onboarding. Expand vocabulary in specific topics
+  ///
+  /// In en, this message translates to:
+  /// **'Expand vocabulary in specific topics'**
+  String get onboardingExpandVocabularyInSpecificTopics;
+
+  /// onboarding. Practice conversation skills
+  ///
+  /// In en, this message translates to:
+  /// **'Practice conversation skills'**
+  String get onboardingPracticeConversationSkills;
+
+  /// onboarding. Continue with intermediate content
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with intermediate content'**
+  String get onboardingContinueWithIntermediateContent;
+
+  /// onboarding. Practice pronunciation daily
+  ///
+  /// In en, this message translates to:
+  /// **'Practice pronunciation daily'**
+  String get onboardingPracticePronunciationDaily;
+
+  /// onboarding. Focus on vocabulary building
+  ///
+  /// In en, this message translates to:
+  /// **'Focus on vocabulary building'**
+  String get onboardingFocusOnVocabularyBuilding;
+
+  /// onboarding. Start with beginner lessons
+  ///
+  /// In en, this message translates to:
+  /// **'Start with beginner lessons'**
+  String get onboardingStartWithBeginnerLessons;
+
+  /// onboarding. Start with the first lessons. A level waits until calibrated items are available
+  ///
+  /// In en, this message translates to:
+  /// **'Start with the first lessons. A level waits until calibrated items are available.'**
+  String get onboardingStartWithTheFirstLessonsA;
+
+  /// onboarding. Some grammar concepts need review
+  ///
+  /// In en, this message translates to:
+  /// **'Some grammar concepts need review'**
+  String get onboardingSomeGrammarConceptsNeedReview;
+
+  /// onboarding. Grammar fundamentals needed
+  ///
+  /// In en, this message translates to:
+  /// **'Grammar fundamentals needed'**
+  String get onboardingGrammarFundamentalsNeeded;
+
+  /// onboarding. Need to build vocabulary
+  ///
+  /// In en, this message translates to:
+  /// **'Need to build vocabulary'**
+  String get onboardingNeedToBuildVocabulary;
+
+  /// onboarding. Willingness to learn
+  ///
+  /// In en, this message translates to:
+  /// **'Willingness to learn'**
+  String get onboardingWillingnessToLearn;
+
+  /// onboarding. Basic vocabulary knowledge
+  ///
+  /// In en, this message translates to:
+  /// **'Basic vocabulary knowledge'**
+  String get onboardingBasicVocabularyKnowledge;
+
+  /// onboarding. Good understanding of basic grammar
+  ///
+  /// In en, this message translates to:
+  /// **'Good understanding of basic grammar'**
+  String get onboardingGoodUnderstandingOfBasicGrammar;
+
+  /// onboarding. Strong vocabulary foundation
+  ///
+  /// In en, this message translates to:
+  /// **'Strong vocabulary foundation'**
+  String get onboardingStrongVocabularyFoundation;
+
+  /// onboarding. A precise level needs more calibrated items
+  ///
+  /// In en, this message translates to:
+  /// **'A precise level needs more calibrated items'**
+  String get onboardingAPreciseLevelNeedsMoreCalibrated;
+
+  /// onboarding. Keep learning. My parent will add it later
+  ///
+  /// In en, this message translates to:
+  /// **'Keep learning. My parent will add it later'**
+  String get onboardingKeepLearningMyParentWillAdd;
+
+  /// onboarding. Parent's email
+  ///
+  /// In en, this message translates to:
+  /// **'Parent\'s email'**
+  String get onboardingParentSEmail;
+
+  /// onboarding. A parent or guardian says yes before you chat or share. Add their email so they
+  ///
+  /// In en, this message translates to:
+  /// **'A parent or guardian says yes before you chat or share. Add their email so they can approve your account.'**
+  String get onboardingAParentOrGuardianSaysYes;
+
+  /// onboarding. Ask a parent
+  ///
+  /// In en, this message translates to:
+  /// **'Ask a parent'**
+  String get onboardingAskAParent;
+
+  /// onboarding. Your profile stays private, and adults cannot send you direct messages.
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile stays private, and adults cannot send you direct messages.'**
+  String get onboardingYourProfileStaysPrivateAndAdults;
+
+  /// onboarding. Type it instead
+  ///
+  /// In en, this message translates to:
+  /// **'Type it instead'**
+  String get onboardingTypeItInstead;
+
+  /// onboarding. {value}
+  ///
+  /// In en, this message translates to:
+  /// **'{value}'**
+  String onboardingValue(String value);
+
+  /// onboarding. Swipe up or down to change the year
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe up or down to change the year'**
+  String get onboardingSwipeUpOrDownToChange;
+
+  /// onboarding. Birth year
+  ///
+  /// In en, this message translates to:
+  /// **'Birth year'**
+  String get onboardingBirthYear;
+
+  /// onboarding. Use the year wheel
+  ///
+  /// In en, this message translates to:
+  /// **'Use the year wheel'**
+  String get onboardingUseTheYearWheel;
+
+  /// onboarding. For example {value}
+  ///
+  /// In en, this message translates to:
+  /// **'For example {value}'**
+  String onboardingForExampleValue(String value);
+
+  /// onboarding. This helps us keep LingAfriq right for you. We only ask for the year.
+  ///
+  /// In en, this message translates to:
+  /// **'This helps us keep LingAfriq right for you. We only ask for the year.'**
+  String get onboardingThisHelpsUsKeepLingafriqRight;
+
+  /// onboarding. {minutes} min
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String onboardingMinutesMin(String minutes);
+
+  /// onboarding. You can change this any time in Settings.
+  ///
+  /// In en, this message translates to:
+  /// **'You can change this any time in Settings.'**
+  String get onboardingYouCanChangeThisAnyTime;
+
+  /// onboarding. How much time a day feels right?
+  ///
+  /// In en, this message translates to:
+  /// **'How much time a day feels right?'**
+  String get onboardingHowMuchTimeADayFeels;
+
+  /// onboarding. For a trip or a big day soon
+  ///
+  /// In en, this message translates to:
+  /// **'For a trip or a big day soon'**
+  String get onboardingForATripOrABig;
+
+  /// onboarding. Hold a short chat in weeks
+  ///
+  /// In en, this message translates to:
+  /// **'Hold a short chat in weeks'**
+  String get onboardingHoldAShortChatInWeeks;
+
+  /// onboarding. A good daily start
+  ///
+  /// In en, this message translates to:
+  /// **'A good daily start'**
+  String get onboardingAGoodDailyStart;
+
+  /// onboarding. A greeting a day
+  ///
+  /// In en, this message translates to:
+  /// **'A greeting a day'**
+  String get onboardingAGreetingADay;
+
+  /// onboarding. Can't speak now
+  ///
+  /// In en, this message translates to:
+  /// **'Can\'t speak now'**
+  String get onboardingCanTSpeakNow;
+
+  /// onboarding. I said it
+  ///
+  /// In en, this message translates to:
+  /// **'I said it'**
+  String get onboardingISaidIt;
+
+  /// onboarding. Mark that you said {value}
+  ///
+  /// In en, this message translates to:
+  /// **'Mark that you said {value}'**
+  String onboardingMarkThatYouSaidValue(String value);
+
+  /// onboarding. Say it with Polie
+  ///
+  /// In en, this message translates to:
+  /// **'Say it with Polie'**
+  String get onboardingSayItWithPolie;
+
+  /// onboarding. Tap the greeting
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the greeting'**
+  String get onboardingTapTheGreeting;
+
+  /// onboarding. We could not play sound right now. You can still continue.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not play sound right now. You can still continue.'**
+  String get onboardingWeCouldNotPlaySoundRight;
+
+  /// onboarding. Play greeting
+  ///
+  /// In en, this message translates to:
+  /// **'Play greeting'**
+  String get onboardingPlayGreeting;
+
+  /// onboarding. Audio unavailable
+  ///
+  /// In en, this message translates to:
+  /// **'Audio unavailable'**
+  String get onboardingAudioUnavailable;
+
+  /// onboarding. Heard it
+  ///
+  /// In en, this message translates to:
+  /// **'Heard it'**
+  String get onboardingHeardIt;
+
+  /// onboarding. Play greeting {value}
+  ///
+  /// In en, this message translates to:
+  /// **'Play greeting {value}'**
+  String onboardingPlayGreetingValue(String value);
+
+  /// onboarding. Playing greeting
+  ///
+  /// In en, this message translates to:
+  /// **'Playing greeting'**
+  String get onboardingPlayingGreeting;
+
+  /// onboarding. Greeting played
+  ///
+  /// In en, this message translates to:
+  /// **'Greeting played'**
+  String get onboardingGreetingPlayed;
+
+  /// onboarding. Hear: {value}
+  ///
+  /// In en, this message translates to:
+  /// **'Hear: {value}'**
+  String onboardingHearValue(String value);
+
+  /// onboarding. A 60-second taste of {value}. Hear, tap, say.
+  ///
+  /// In en, this message translates to:
+  /// **'A 60-second taste of {value}. Hear, tap, say.'**
+  String onboardingA60SecondTasteOfValue(String value);
+
+  /// onboarding. Your first win
+  ///
+  /// In en, this message translates to:
+  /// **'Your first win'**
+  String get onboardingYourFirstWin;
+
+  /// onboarding. Lesson done
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson done'**
+  String get onboardingLessonDone;
+
+  /// onboarding. New word
+  ///
+  /// In en, this message translates to:
+  /// **'New word'**
+  String get onboardingNewWord;
+
+  /// onboarding. Celebrate progress, not perfection.
+  ///
+  /// In en, this message translates to:
+  /// **'Celebrate progress, not perfection.'**
+  String get onboardingCelebrateProgressNotPerfection;
+
+  /// onboarding. You did it!
+  ///
+  /// In en, this message translates to:
+  /// **'You did it!'**
+  String get onboardingYouDidIt;
+
+  /// onboarding. Keep going
+  ///
+  /// In en, this message translates to:
+  /// **'Keep going'**
+  String get onboardingKeepGoing;
+
+  /// onboarding. Ina kwana
+  ///
+  /// In en, this message translates to:
+  /// **'Ina kwana'**
+  String get onboardingInaKwana;
+
+  /// onboarding. {words} words in your basket
+  ///
+  /// In en, this message translates to:
+  /// **'{words} words in your basket'**
+  String onboardingWordsWordsInYourBasket(String words);
+
+  /// onboarding. Polie is keeping your seat in the village.
+  ///
+  /// In en, this message translates to:
+  /// **'Polie is keeping your seat in the village.'**
+  String get onboardingPolieIsKeepingYourSeatIn;
+
+  /// onboarding. Ẹ kú àbọ̀
+  ///
+  /// In en, this message translates to:
+  /// **'Ẹ kú àbọ̀'**
+  String get onboardingKB;
+
+  /// onboarding. እንኳን ደህና መጡ
+  ///
+  /// In en, this message translates to:
+  /// **'እንኳን ደህና መጡ'**
+  String get onboardingText;
+
+  /// onboarding. How far?
+  ///
+  /// In en, this message translates to:
+  /// **'How far?'**
+  String get onboardingHowFar;
+
+  /// onboarding. Dalal ak jàmm
+  ///
+  /// In en, this message translates to:
+  /// **'Dalal ak jàmm'**
+  String get onboardingDalalAkJMm;
+
+  /// onboarding. {value} · {value2}
+  ///
+  /// In en, this message translates to:
+  /// **'{value} · {value2}'**
+  String onboardingValueValue26468(String value, String value2);
+
+  /// onboarding. Try a region, a script name, or clear the box.
+  ///
+  /// In en, this message translates to:
+  /// **'Try a region, a script name, or clear the box.'**
+  String get onboardingTryARegionAScriptName;
+
+  /// onboarding. No languages match that search.
+  ///
+  /// In en, this message translates to:
+  /// **'No languages match that search.'**
+  String get onboardingNoLanguagesMatchThatSearch;
+
+  /// onboarding. No languages match your search
+  ///
+  /// In en, this message translates to:
+  /// **'No languages match your search'**
+  String get onboardingNoLanguagesMatchYourSearch;
+
+  /// onboarding. I speak
+  ///
+  /// In en, this message translates to:
+  /// **'I speak'**
+  String get onboardingISpeak;
+
+  /// onboarding. What do you want to learn?
+  ///
+  /// In en, this message translates to:
+  /// **'What do you want to learn?'**
+  String get onboardingWhatDoYouWantToLearn;
+
+  /// onboarding. North Africa
+  ///
+  /// In en, this message translates to:
+  /// **'North Africa'**
+  String get onboardingNorthAfrica;
+
+  /// onboarding. ⵜⴰⵎⴰⵣⵉⵖⵜ
+  ///
+  /// In en, this message translates to:
+  /// **'ⵜⴰⵎⴰⵣⵉⵖⵜ'**
+  String get onboardingText526f;
+
+  /// onboarding. Tamazight
+  ///
+  /// In en, this message translates to:
+  /// **'Tamazight'**
+  String get onboardingTamazight;
+
+  /// onboarding. الدارجة
+  ///
+  /// In en, this message translates to:
+  /// **'الدارجة'**
+  String get onboardingTextd271;
+
+  /// onboarding. Darija
+  ///
+  /// In en, this message translates to:
+  /// **'Darija'**
+  String get onboardingDarija;
+
+  /// onboarding. Southern Africa
+  ///
+  /// In en, this message translates to:
+  /// **'Southern Africa'**
+  String get onboardingSouthernAfrica;
+
+  /// onboarding. isiXhosa
+  ///
+  /// In en, this message translates to:
+  /// **'isiXhosa'**
+  String get onboardingIsixhosa;
+
+  /// onboarding. isiZulu
+  ///
+  /// In en, this message translates to:
+  /// **'isiZulu'**
+  String get onboardingIsizulu;
+
+  /// onboarding. East Africa
+  ///
+  /// In en, this message translates to:
+  /// **'East Africa'**
+  String get onboardingEastAfrica;
+
+  /// onboarding. አማርኛ
+  ///
+  /// In en, this message translates to:
+  /// **'አማርኛ'**
+  String get onboardingText91cf;
+
+  /// onboarding. Kiswahili
+  ///
+  /// In en, this message translates to:
+  /// **'Kiswahili'**
+  String get onboardingKiswahili;
+
+  /// onboarding. West Africa
+  ///
+  /// In en, this message translates to:
+  /// **'West Africa'**
+  String get onboardingWestAfrica;
+
+  /// onboarding. Naijá
+  ///
+  /// In en, this message translates to:
+  /// **'Naijá'**
+  String get onboardingNaij;
+
+  /// onboarding. Asụsụ Igbo
+  ///
+  /// In en, this message translates to:
+  /// **'Asụsụ Igbo'**
+  String get onboardingAsSIgbo;
+
+  /// onboarding. Èdè Yorùbá
+  ///
+  /// In en, this message translates to:
+  /// **'Èdè Yorùbá'**
+  String get onboardingDYorB;
+
+  /// onboarding. العربية
+  ///
+  /// In en, this message translates to:
+  /// **'العربية'**
+  String get onboardingText9970;
+
+  /// onboarding. Português
+  ///
+  /// In en, this message translates to:
+  /// **'Português'**
+  String get onboardingPortuguS;
+
+  /// onboarding. Français
+  ///
+  /// In en, this message translates to:
+  /// **'Français'**
+  String get onboardingFranAis;
+
+  /// onboarding. Pick the style that feels most natural.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick the style that feels most natural.'**
+  String get onboardingPickTheStyleThatFeelsMost;
+
+  /// onboarding. Variety of methods
+  ///
+  /// In en, this message translates to:
+  /// **'Variety of methods'**
+  String get onboardingVarietyOfMethods;
+
+  /// onboarding. Mixed
+  ///
+  /// In en, this message translates to:
+  /// **'Mixed'**
+  String get onboardingMixed;
+
+  /// onboarding. Talk to learn
+  ///
+  /// In en, this message translates to:
+  /// **'Talk to learn'**
+  String get onboardingTalkToLearn;
+
+  /// onboarding. Conversation
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation'**
+  String get onboardingConversation;
+
+  /// onboarding. Repetition & drills
+  ///
+  /// In en, this message translates to:
+  /// **'Repetition & drills'**
+  String get onboardingRepetitionDrills;
+
+  /// onboarding. Practice
+  ///
+  /// In en, this message translates to:
+  /// **'Practice'**
+  String get onboardingPractice;
+
+  /// onboarding. Narrative learning
+  ///
+  /// In en, this message translates to:
+  /// **'Narrative learning'**
+  String get onboardingNarrativeLearning;
+
+  /// onboarding. Stories
+  ///
+  /// In en, this message translates to:
+  /// **'Stories'**
+  String get onboardingStories;
+
+  /// onboarding. See to remember
+  ///
+  /// In en, this message translates to:
+  /// **'See to remember'**
+  String get onboardingSeeToRemember;
+
+  /// onboarding. Visual
+  ///
+  /// In en, this message translates to:
+  /// **'Visual'**
+  String get onboardingVisual;
+
+  /// onboarding. Learn by ear
+  ///
+  /// In en, this message translates to:
+  /// **'Learn by ear'**
+  String get onboardingLearnByEar;
+
+  /// onboarding. Listening
+  ///
+  /// In en, this message translates to:
+  /// **'Listening'**
+  String get onboardingListening;
+
+  /// onboarding. Ẹ káàárọ̀
+  ///
+  /// In en, this message translates to:
+  /// **'Ẹ káàárọ̀'**
+  String get onboardingKR;
+
+  /// onboarding. Na gode
+  ///
+  /// In en, this message translates to:
+  /// **'Na gode'**
+  String get onboardingNaGode;
+
+  /// onboarding. Quick check: tap each word you recognize.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick check: tap each word you recognize.'**
+  String get onboardingQuickCheckTapEachWordYou;
+
+  /// onboarding. Not sure? Take a 1‑minute check
+  ///
+  /// In en, this message translates to:
+  /// **'Not sure? Take a 1‑minute check'**
+  String get onboardingNotSureTakeA1Minute;
+
+  /// onboarding. How much {langName} do you know?
+  ///
+  /// In en, this message translates to:
+  /// **'How much {langName} do you know?'**
+  String onboardingHowMuchLangnameDoYouKnow(String langName);
+
+  /// onboarding. this language
+  ///
+  /// In en, this message translates to:
+  /// **'this language'**
+  String get onboardingThisLanguage;
+
+  /// onboarding. I can hold a conversation
+  ///
+  /// In en, this message translates to:
+  /// **'I can hold a conversation'**
+  String get onboardingICanHoldAConversation;
+
+  /// onboarding. I can talk about various topics
+  ///
+  /// In en, this message translates to:
+  /// **'I can talk about various topics'**
+  String get onboardingICanTalkAboutVariousTopics;
+
+  /// onboarding. I know some common words
+  ///
+  /// In en, this message translates to:
+  /// **'I know some common words'**
+  String get onboardingIKnowSomeCommonWords;
+
+  /// onboarding. I'm new
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m new'**
+  String get onboardingIMNew;
+
+  /// onboarding. Best time
+  ///
+  /// In en, this message translates to:
+  /// **'Best time'**
+  String get onboardingBestTime;
+
+  /// onboarding. See the reminder below. Turn it on only if it helps you keep your streak. You pi
+  ///
+  /// In en, this message translates to:
+  /// **'See the reminder below. Turn it on only if it helps you keep your streak. You pick the time.'**
+  String get onboardingSeeTheReminderBelowTurnIt;
+
+  /// onboarding. A soft nudge when it matters
+  ///
+  /// In en, this message translates to:
+  /// **'A soft nudge when it matters'**
+  String get onboardingASoftNudgeWhenItMatters;
+
+  /// onboarding. Not now
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get onboardingNotNow;
+
+  /// onboarding. Turn on reminders
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on reminders'**
+  String get onboardingTurnOnReminders;
+
+  /// onboarding. {dailyMinutes} minutes
+  ///
+  /// In en, this message translates to:
+  /// **'{dailyMinutes} minutes'**
+  String onboardingDailyminutesMinutes(String dailyMinutes);
+
+  /// onboarding. 5 minutes
+  ///
+  /// In en, this message translates to:
+  /// **'5 minutes'**
+  String get onboardingText5Minutes;
+
+  /// onboarding. 8–10 PM
+  ///
+  /// In en, this message translates to:
+  /// **'8–10 PM'**
+  String get onboardingText810Pm;
+
+  /// onboarding. Night
+  ///
+  /// In en, this message translates to:
+  /// **'Night'**
+  String get onboardingNight;
+
+  /// onboarding. 5–7 PM
+  ///
+  /// In en, this message translates to:
+  /// **'5–7 PM'**
+  String get onboardingText57Pm;
+
+  /// onboarding. Sunset
+  ///
+  /// In en, this message translates to:
+  /// **'Sunset'**
+  String get onboardingSunset;
+
+  /// onboarding. 12–2 PM
+  ///
+  /// In en, this message translates to:
+  /// **'12–2 PM'**
+  String get onboardingText122Pm;
+
+  /// onboarding. Midday
+  ///
+  /// In en, this message translates to:
+  /// **'Midday'**
+  String get onboardingMidday;
+
+  /// onboarding. 6–9 AM
+  ///
+  /// In en, this message translates to:
+  /// **'6–9 AM'**
+  String get onboardingText69Am;
+
+  /// onboarding. Sunrise
+  ///
+  /// In en, this message translates to:
+  /// **'Sunrise'**
+  String get onboardingSunrise;
+
+  /// onboarding. Preview: how you appear in the village, {shown}
+  ///
+  /// In en, this message translates to:
+  /// **'Preview: how you appear in the village, {shown}'**
+  String onboardingPreviewHowYouAppearInThe(String shown);
+
+  /// onboarding. Your name
+  ///
+  /// In en, this message translates to:
+  /// **'Your name'**
+  String get onboardingYourName;
+
+  /// onboarding. We couldn't check that just now, but you can still continue
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t check that just now, but you can still continue'**
+  String get onboardingWeCouldnTCheckThatJust;
+
+  /// onboarding. Only letters, numbers, and underscores, please
+  ///
+  /// In en, this message translates to:
+  /// **'Only letters, numbers, and underscores, please'**
+  String get onboardingOnlyLettersNumbersAndUnderscoresPlease;
+
+  /// onboarding. Keep it to 30 characters or fewer
+  ///
+  /// In en, this message translates to:
+  /// **'Keep it to 30 characters or fewer'**
+  String get onboardingKeepItTo30CharactersOr;
+
+  /// onboarding. Needs at least 3 characters
+  ///
+  /// In en, this message translates to:
+  /// **'Needs at least 3 characters'**
+  String get onboardingNeedsAtLeast3Characters;
+
+  /// onboarding. Someone's already using that one, try another
+  ///
+  /// In en, this message translates to:
+  /// **'Someone\'s already using that one, try another'**
+  String get onboardingSomeoneSAlreadyUsingThatOne;
+
+  /// onboarding. That name is yours
+  ///
+  /// In en, this message translates to:
+  /// **'That name is yours'**
+  String get onboardingThatNameIsYours;
+
+  /// onboarding. Checking if that name is free…
+  ///
+  /// In en, this message translates to:
+  /// **'Checking if that name is free…'**
+  String get onboardingCheckingIfThatNameIsFree;
+
+  /// onboarding. Use 3 to 30 letters, numbers, or underscores
+  ///
+  /// In en, this message translates to:
+  /// **'Use 3 to 30 letters, numbers, or underscores'**
+  String get onboardingUse3To30LettersNumbers;
+
+  /// onboarding. Use the name {idea}
+  ///
+  /// In en, this message translates to:
+  /// **'Use the name {idea}'**
+  String onboardingUseTheNameIdea(String idea);
+
+  /// onboarding. Ideas from your language
+  ///
+  /// In en, this message translates to:
+  /// **'Ideas from your language'**
+  String get onboardingIdeasFromYourLanguage;
+
+  /// onboarding. Add a photo (optional)
+  ///
+  /// In en, this message translates to:
+  /// **'Add a photo (optional)'**
+  String get onboardingAddAPhotoOptional;
+
+  /// onboarding. Add a profile photo, optional
+  ///
+  /// In en, this message translates to:
+  /// **'Add a profile photo, optional'**
+  String get onboardingAddAProfilePhotoOptional;
+
+  /// onboarding. A learner without a name is a drum without a rhythm.
+  ///
+  /// In en, this message translates to:
+  /// **'A learner without a name is a drum without a rhythm.'**
+  String get onboardingALearnerWithoutANameIs56f4;
+
+  /// onboarding. Pick a name
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a name'**
+  String get onboardingPickAName;
+
+  /// onboarding. Skip for now
+  ///
+  /// In en, this message translates to:
+  /// **'Skip for now'**
+  String get onboardingSkipForNow;
+
+  /// onboarding. Complete setup
+  ///
+  /// In en, this message translates to:
+  /// **'Complete setup'**
+  String get onboardingCompleteSetup;
+
+  /// onboarding. Pick all that fit. Your first lessons follow your answer.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick all that fit. Your first lessons follow your answer.'**
+  String get onboardingPickAllThatFitYourFirst;
+
+  /// onboarding. Why are you learning {languageName}?
+  ///
+  /// In en, this message translates to:
+  /// **'Why are you learning {languageName}?'**
+  String onboardingWhyAreYouLearningLanguagename(String languageName);
+
+  /// onboarding. Colleagues, clients and community
+  ///
+  /// In en, this message translates to:
+  /// **'Colleagues, clients and community'**
+  String get onboardingColleaguesClientsAndCommunity;
+
+  /// onboarding. Markets, directions and small talk
+  ///
+  /// In en, this message translates to:
+  /// **'Markets, directions and small talk'**
+  String get onboardingMarketsDirectionsAndSmallTalk;
+
+  /// onboarding. Proverbs, names, music and stories
+  ///
+  /// In en, this message translates to:
+  /// **'Proverbs, names, music and stories'**
+  String get onboardingProverbsNamesMusicAndStories;
+
+  /// onboarding. Heritage and culture
+  ///
+  /// In en, this message translates to:
+  /// **'Heritage and culture'**
+  String get onboardingHeritageAndCulture;
+
+  /// onboarding. Greet elders and keep up at gatherings
+  ///
+  /// In en, this message translates to:
+  /// **'Greet elders and keep up at gatherings'**
+  String get onboardingGreetEldersAndKeepUpAt;
+
+  /// onboarding. Talk to family
+  ///
+  /// In en, this message translates to:
+  /// **'Talk to family'**
+  String get onboardingTalkToFamily;
+
+  /// onboarding. Retry
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get onboardingRetry;
+
+  /// onboarding. You're offline. Your answers are saved on this phone. Connect, then try again.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline. Your answers are saved on this phone. Connect, then try again.'**
+  String get onboardingYouReOfflineYourAnswersAre;
+
+  /// onboarding. Couldn't reach sign-in
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t reach sign-in'**
+  String get onboardingCouldnTReachSignIn;
+
+  /// onboarding. Error
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get onboardingError;
+
+  /// onboarding. Saving your progress…
+  ///
+  /// In en, this message translates to:
+  /// **'Saving your progress…'**
+  String get onboardingSavingYourProgress;
+
+  /// onboarding. I already have an account
+  ///
+  /// In en, this message translates to:
+  /// **'I already have an account'**
+  String get onboardingIAlreadyHaveAnAccount;
+
+  /// onboarding. Sign up with email
+  ///
+  /// In en, this message translates to:
+  /// **'Sign up with email'**
+  String get onboardingSignUpWithEmail;
+
+  /// onboarding. Continue with Apple
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Apple'**
+  String get onboardingContinueWithApple;
+
+  /// onboarding. Continue with Google
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Google'**
+  String get onboardingContinueWithGoogle;
+
+  /// onboarding. You finished your first lesson and learned {words}. An account keeps your progre
+  ///
+  /// In en, this message translates to:
+  /// **'You finished your first lesson and learned {words}. An account keeps your progress safe if you change phones.'**
+  String onboardingYouFinishedYourFirstLessonAnd(String words);
+
+  /// onboarding. Save your progress?
+  ///
+  /// In en, this message translates to:
+  /// **'Save your progress?'**
+  String get onboardingSaveYourProgress;
+
+  /// onboarding. Later. My answers stay on this phone
+  ///
+  /// In en, this message translates to:
+  /// **'Later. My answers stay on this phone'**
+  String get onboardingLaterMyAnswersStayOnThis;
+
+  /// onboarding. {wordsLearned} words
+  ///
+  /// In en, this message translates to:
+  /// **'{wordsLearned} words'**
+  String onboardingWordslearnedWords(String wordsLearned);
+
+  /// onboarding. You're offline. Keep going: your answers are saved on this phone and sync when y
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline. Keep going: your answers are saved on this phone and sync when you reconnect.'**
+  String get onboardingYouReOfflineKeepGoingYour;
+
+  /// onboarding. Double tap to choose
+  ///
+  /// In en, this message translates to:
+  /// **'Double tap to choose'**
+  String get onboardingDoubleTapToChoose;
+
+  /// onboarding. Saving…
+  ///
+  /// In en, this message translates to:
+  /// **'Saving…'**
+  String get onboardingSaving;
+
+  /// onboarding. How much game feel?
+  ///
+  /// In en, this message translates to:
+  /// **'How much game feel?'**
+  String get onboardingHowMuchGameFeel;
+
+  /// onboarding. Pick the voice that feels like a good study buddy.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick the voice that feels like a good study buddy.'**
+  String get onboardingPickTheVoiceThatFeelsLike;
+
+  /// onboarding. How should Polie sound?
+  ///
+  /// In en, this message translates to:
+  /// **'How should Polie sound?'**
+  String get onboardingHowShouldPolieSound;
+
+  /// onboarding. Just learning
+  ///
+  /// In en, this message translates to:
+  /// **'Just learning'**
+  String get onboardingJustLearning;
+
+  /// onboarding. Minimal
+  ///
+  /// In en, this message translates to:
+  /// **'Minimal'**
+  String get onboardingMinimal;
+
+  /// onboarding. Progress tracking
+  ///
+  /// In en, this message translates to:
+  /// **'Progress tracking'**
+  String get onboardingProgressTracking;
+
+  /// onboarding. Moderate
+  ///
+  /// In en, this message translates to:
+  /// **'Moderate'**
+  String get onboardingModerate;
+
+  /// onboarding. XP, badges, streaks
+  ///
+  /// In en, this message translates to:
+  /// **'XP, badges, streaks'**
+  String get onboardingXpBadgesStreaks;
+
+  /// onboarding. Full
+  ///
+  /// In en, this message translates to:
+  /// **'Full'**
+  String get onboardingFull;
+
+  /// onboarding. Warm & casual
+  ///
+  /// In en, this message translates to:
+  /// **'Warm & casual'**
+  String get onboardingWarmCasual;
+
+  /// onboarding. Friendly
+  ///
+  /// In en, this message translates to:
+  /// **'Friendly'**
+  String get onboardingFriendly;
+
+  /// onboarding. Direct & efficient
+  ///
+  /// In en, this message translates to:
+  /// **'Direct & efficient'**
+  String get onboardingDirectEfficient;
+
+  /// onboarding. Focused
+  ///
+  /// In en, this message translates to:
+  /// **'Focused'**
+  String get onboardingFocused;
+
+  /// onboarding. Supportive
+  ///
+  /// In en, this message translates to:
+  /// **'Supportive'**
+  String get onboardingSupportive;
+
+  /// onboarding. Encouraging
+  ///
+  /// In en, this message translates to:
+  /// **'Encouraging'**
+  String get onboardingEncouraging;
+
+  /// onboarding. Fun & light
+  ///
+  /// In en, this message translates to:
+  /// **'Fun & light'**
+  String get onboardingFunLight;
+
+  /// onboarding. Playful
+  ///
+  /// In en, this message translates to:
+  /// **'Playful'**
+  String get onboardingPlayful;
+
+  /// onboarding. Get started
+  ///
+  /// In en, this message translates to:
+  /// **'Get started'**
+  String get onboardingGetStarted90e4;
+
+  /// onboarding. Works offline · about 2 MB per unit
+  ///
+  /// In en, this message translates to:
+  /// **'Works offline · about 2 MB per unit'**
+  String get onboardingWorksOfflineAbout2MbPer;
+
+  /// onboarding. Works offline, about 2 megabytes per unit
+  ///
+  /// In en, this message translates to:
+  /// **'Works offline, about 2 megabytes per unit'**
+  String get onboardingWorksOfflineAbout2MegabytesPer;
+
+  /// onboarding. Short lessons with Polie. Hear, tap, and say real phrases.
+  ///
+  /// In en, this message translates to:
+  /// **'Short lessons with Polie. Hear, tap, and say real phrases.'**
+  String get onboardingShortLessonsWithPolieHearTap;
+
+  /// onboarding. The language village that gets you speaking.
+  ///
+  /// In en, this message translates to:
+  /// **'The language village that gets you speaking.'**
+  String get onboardingTheLanguageVillageThatGetsYou;
+
+  /// onboarding. LingAfriq
+  ///
+  /// In en, this message translates to:
+  /// **'LingAfriq'**
+  String get onboardingLingafriq;
+
+  /// onboarding. Welcome to
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to'**
+  String get onboardingWelcomeTo;
+
+  /// onboarding. Ẹ kú àbọ̀ · Sannu · Nnọọ · Karibu · Akwaaba
+  ///
+  /// In en, this message translates to:
+  /// **'Ẹ kú àbọ̀ · Sannu · Nnọọ · Karibu · Akwaaba'**
+  String get onboardingKBSannuNnKaribuAkwaaba;
+
+  /// onboarding. Polie greets you: welcome, in Yoruba, Hausa, Igbo, Swahili and Twi.
+  ///
+  /// In en, this message translates to:
+  /// **'Polie greets you: welcome, in Yoruba, Hausa, Igbo, Swahili and Twi.'**
+  String get onboardingPolieGreetsYouWelcomeInYoruba;
+
+  /// onboarding. LingAfriq. Speak African languages with confidence. Learn with Polie. Works offl
+  ///
+  /// In en, this message translates to:
+  /// **'LingAfriq. Speak African languages with confidence. Learn with Polie. Works offline.'**
+  String get onboardingLingafriqSpeakAfricanLanguagesWithConf;
+
+  /// onboarding. Step {value} of {total}
+  ///
+  /// In en, this message translates to:
+  /// **'Step {value} of {total}'**
+  String onboardingStepValueOfTotal(String value, String total);
+
+  /// onboarding. Onboarding progress
+  ///
+  /// In en, this message translates to:
+  /// **'Onboarding progress'**
+  String get onboardingOnboardingProgress;
+
+  /// onboarding. Go back to the previous step
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to the previous step'**
+  String get onboardingGoBackToThePreviousStep;
+
+  /// onboarding. Take the test
+  ///
+  /// In en, this message translates to:
+  /// **'Take the test'**
+  String get onboardingTakeTheTest;
+
+  /// onboarding. Maybe later
+  ///
+  /// In en, this message translates to:
+  /// **'Maybe later'**
+  String get onboardingMaybeLater;
+
+  /// onboarding. We'll ask a few short questions to find your starting level in {learningLanguage
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll ask a few short questions to find your starting level in {learningLanguage}. You can always take it later from your profile.'**
+  String onboardingWeLlAskAFewShort(String learningLanguage);
+
+  /// onboarding. Take a quick placement test?
+  ///
+  /// In en, this message translates to:
+  /// **'Take a quick placement test?'**
+  String get onboardingTakeAQuickPlacementTest;
+
+  /// onboarding. You're offline right now, but we've saved your answers and will sync them the mo
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline right now, but we\'ve saved your answers and will sync them the moment you reconnect.'**
+  String get onboardingYouReOfflineRightNowBut;
+
+  /// onboarding. Ẹ kú àárọ̀! 5 minutes of Yoruba?
+  ///
+  /// In en, this message translates to:
+  /// **'Ẹ kú àárọ̀! 5 minutes of Yoruba?'**
+  String get onboardingKR5MinutesOfYoruba;
+
+  /// onboarding. Báwo, Hello
+  ///
+  /// In en, this message translates to:
+  /// **'Báwo, Hello'**
+  String get onboardingBWoHello;
+
+  /// onboarding. Báwo ni
+  ///
+  /// In en, this message translates to:
+  /// **'Báwo ni'**
+  String get onboardingBWoNi;
+
+  /// onboarding. Sawubona! 5 minutes of Zulu?
+  ///
+  /// In en, this message translates to:
+  /// **'Sawubona! 5 minutes of Zulu?'**
+  String get onboardingSawubona5MinutesOfZulu;
+
+  /// onboarding. Sawubona, Hello
+  ///
+  /// In en, this message translates to:
+  /// **'Sawubona, Hello'**
+  String get onboardingSawubonaHello;
+
+  /// onboarding. ሰላም! 5 minutes of Amharic?
+  ///
+  /// In en, this message translates to:
+  /// **'ሰላም! 5 minutes of Amharic?'**
+  String get onboardingText5MinutesOfAmharic;
+
+  /// onboarding. ሰላም, Hello
+  ///
+  /// In en, this message translates to:
+  /// **'ሰላም, Hello'**
+  String get onboardingHello;
+
+  /// onboarding. Habari! 5 minutes of Swahili?
+  ///
+  /// In en, this message translates to:
+  /// **'Habari! 5 minutes of Swahili?'**
+  String get onboardingHabari5MinutesOfSwahili;
+
+  /// onboarding. Habari, Hello
+  ///
+  /// In en, this message translates to:
+  /// **'Habari, Hello'**
+  String get onboardingHabariHello;
+
+  /// onboarding. Ndewo! 5 minutes of Igbo?
+  ///
+  /// In en, this message translates to:
+  /// **'Ndewo! 5 minutes of Igbo?'**
+  String get onboardingNdewo5MinutesOfIgbo;
+
+  /// onboarding. Ndewo, Hello
+  ///
+  /// In en, this message translates to:
+  /// **'Ndewo, Hello'**
+  String get onboardingNdewoHello;
+
+  /// onboarding. Sannu! 5 minutes of Hausa?
+  ///
+  /// In en, this message translates to:
+  /// **'Sannu! 5 minutes of Hausa?'**
+  String get onboardingSannu5MinutesOfHausa;
+
+  /// onboarding. Sannu, Hello
+  ///
+  /// In en, this message translates to:
+  /// **'Sannu, Hello'**
+  String get onboardingSannuHello;
+
+  /// onboarding. The ancestors smile upon your dedication.
+  ///
+  /// In en, this message translates to:
+  /// **'The ancestors smile upon your dedication.'**
+  String get onboardingTheAncestorsSmileUponYourDedication;
+
+  /// onboarding. May your journey be filled with discovery.
+  ///
+  /// In en, this message translates to:
+  /// **'May your journey be filled with discovery.'**
+  String get onboardingMayYourJourneyBeFilledWith;
+
+  /// onboarding. Village Elder
+  ///
+  /// In en, this message translates to:
+  /// **'Village Elder'**
+  String get onboardingVillageElder;
+
+  /// onboarding. Pa LingAfriq
+  ///
+  /// In en, this message translates to:
+  /// **'Pa LingAfriq'**
+  String get onboardingPaLingafriq;
+
+  /// onboarding. Choose wisely — it will be known across the village.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose wisely — it will be known across the village.'**
+  String get onboardingChooseWiselyItWillBeKnown;
+
+  /// onboarding. Every villager must have a name.
+  ///
+  /// In en, this message translates to:
+  /// **'Every villager must have a name.'**
+  String get onboardingEveryVillagerMustHaveAName;
+
+  /// onboarding. Now it is time for your naming ceremony.
+  ///
+  /// In en, this message translates to:
+  /// **'Now it is time for your naming ceremony.'**
+  String get onboardingNowItIsTimeForYour;
+
+  /// onboarding. How does your spirit best receive knowledge?
+  ///
+  /// In en, this message translates to:
+  /// **'How does your spirit best receive knowledge?'**
+  String get onboardingHowDoesYourSpiritBestReceive;
+
+  /// onboarding. Each soul dances differently to the rhythm of words.
+  ///
+  /// In en, this message translates to:
+  /// **'Each soul dances differently to the rhythm of words.'**
+  String get onboardingEachSoulDancesDifferentlyToThe;
+
+  /// onboarding. Language is music, traveler!
+  ///
+  /// In en, this message translates to:
+  /// **'Language is music, traveler!'**
+  String get onboardingLanguageIsMusicTraveler;
+
+  /// onboarding. The Rhythm Master
+  ///
+  /// In en, this message translates to:
+  /// **'The Rhythm Master'**
+  String get onboardingTheRhythmMaster;
+
+  /// onboarding. For in every word lies the wisdom of generations.
+  ///
+  /// In en, this message translates to:
+  /// **'For in every word lies the wisdom of generations.'**
+  String get onboardingForInEveryWordLiesThe;
+
+  /// onboarding. Let me tell you the story of our languages...
+  ///
+  /// In en, this message translates to:
+  /// **'Let me tell you the story of our languages...'**
+  String get onboardingLetMeTellYouTheStory;
+
+  /// onboarding. Ah, a new student! I am Amara, the griot.
+  ///
+  /// In en, this message translates to:
+  /// **'Ah, a new student! I am Amara, the griot.'**
+  String get onboardingAhANewStudentIAm;
+
+  /// onboarding. The Griot
+  ///
+  /// In en, this message translates to:
+  /// **'The Griot'**
+  String get onboardingTheGriot;
+
+  /// onboarding. How much time can you dedicate each day?
+  ///
+  /// In en, this message translates to:
+  /// **'How much time can you dedicate each day?'**
+  String get onboardingHowMuchTimeCanYouDedicate;
+
+  /// onboarding. Consistency is the heartbeat of learning.
+  ///
+  /// In en, this message translates to:
+  /// **'Consistency is the heartbeat of learning.'**
+  String get onboardingConsistencyIsTheHeartbeatOfLearning;
+
+  /// onboarding. I am Kofi, keeper of time and rhythm.
+  ///
+  /// In en, this message translates to:
+  /// **'I am Kofi, keeper of time and rhythm.'**
+  String get onboardingIAmKofiKeeperOfTime;
+
+  /// onboarding. The Timekeeper
+  ///
+  /// In en, this message translates to:
+  /// **'The Timekeeper'**
+  String get onboardingTheTimekeeper;
+
+  /// onboarding. What brings you to learn this beautiful language?
+  ///
+  /// In en, this message translates to:
+  /// **'What brings you to learn this beautiful language?'**
+  String get onboardingWhatBringsYouToLearnThis;
+
+  /// onboarding. Every great journey needs a destination.
+  ///
+  /// In en, this message translates to:
+  /// **'Every great journey needs a destination.'**
+  String get onboardingEveryGreatJourneyNeedsADestination;
+
+  /// onboarding. Greetings, traveler! I am Zuri, your pathfinder.
+  ///
+  /// In en, this message translates to:
+  /// **'Greetings, traveler! I am Zuri, your pathfinder.'**
+  String get onboardingGreetingsTravelerIAmZuriYour;
+
+  /// onboarding. The Pathfinder
+  ///
+  /// In en, this message translates to:
+  /// **'The Pathfinder'**
+  String get onboardingThePathfinder;
+
+  /// onboarding. Which thread shall we weave into your story?
+  ///
+  /// In en, this message translates to:
+  /// **'Which thread shall we weave into your story?'**
+  String get onboardingWhichThreadShallWeWeaveInto;
+
+  /// onboarding. Each language is a thread in the tapestry of Africa.
+  ///
+  /// In en, this message translates to:
+  /// **'Each language is a thread in the tapestry of Africa.'**
+  String get onboardingEachLanguageIsAThreadIn;
+
+  /// onboarding. I am Adisa, weaver of words and keeper of tongues.
+  ///
+  /// In en, this message translates to:
+  /// **'I am Adisa, weaver of words and keeper of tongues.'**
+  String get onboardingIAmAdisaWeaverOfWords;
+
+  /// onboarding. The Weaver
+  ///
+  /// In en, this message translates to:
+  /// **'The Weaver'**
+  String get onboardingTheWeaver;
+
+  /// onboarding. Your journey to connect with your roots begins here.
+  ///
+  /// In en, this message translates to:
+  /// **'Your journey to connect with your roots begins here.'**
+  String get onboardingYourJourneyToConnectWithYour;
+
+  /// onboarding. I am Pa LingAfriq, guardian of our ancestral tongues.
+  ///
+  /// In en, this message translates to:
+  /// **'I am Pa LingAfriq, guardian of our ancestral tongues.'**
+  String get onboardingIAmPaLingafriqGuardianOf;
+
+  /// onboarding. Welcome, young one, to our village of languages.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome, young one, to our village of languages.'**
+  String get onboardingWelcomeYoungOneToOurVillage;
+
+  /// shell. Logout
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get shellLogout;
+
+  /// shell. Cancel
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get shellCancel;
+
+  /// shell. Are you sure you want to logout?
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to logout?'**
+  String get shellAreYouSureYouWantTo;
+
+  /// shell. Switch between light and dark theme
+  ///
+  /// In en, this message translates to:
+  /// **'Switch between light and dark theme'**
+  String get shellSwitchBetweenLightAndDarkTheme;
+
+  /// shell. Dark Mode
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Mode'**
+  String get shellDarkMode;
+
+  /// shell. Friend Quests
+  ///
+  /// In en, this message translates to:
+  /// **'Friend Quests'**
+  String get shellFriendQuests;
+
+  /// shell. Social Hub
+  ///
+  /// In en, this message translates to:
+  /// **'Social Hub'**
+  String get shellSocialHub;
+
+  /// shell. Micro-mentor reports
+  ///
+  /// In en, this message translates to:
+  /// **'Micro-mentor reports'**
+  String get shellMicroMentorReports;
+
+  /// shell. Persona Missions
+  ///
+  /// In en, this message translates to:
+  /// **'Persona Missions'**
+  String get shellPersonaMissions;
+
+  /// shell. Historical Personas
+  ///
+  /// In en, this message translates to:
+  /// **'Historical Personas'**
+  String get shellHistoricalPersonas;
+
+  /// shell. My Tribes
+  ///
+  /// In en, this message translates to:
+  /// **'My Tribes'**
+  String get shellMyTribes;
+
+  /// shell. Language Villages
+  ///
+  /// In en, this message translates to:
+  /// **'Language Villages'**
+  String get shellLanguageVillages;
+
+  /// shell. Private Chat
+  ///
+  /// In en, this message translates to:
+  /// **'Private Chat'**
+  String get shellPrivateChat;
+
+  /// shell. Community Feed
+  ///
+  /// In en, this message translates to:
+  /// **'Community Feed'**
+  String get shellCommunityFeed;
+
+  /// shell. Global Chat
+  ///
+  /// In en, this message translates to:
+  /// **'Global Chat'**
+  String get shellGlobalChat;
+
+  /// shell. Create Content
+  ///
+  /// In en, this message translates to:
+  /// **'Create Content'**
+  String get shellCreateContent;
+
+  /// shell. Live translate
+  ///
+  /// In en, this message translates to:
+  /// **'Live translate'**
+  String get shellLiveTranslate;
+
+  /// shell. Point & Say
+  ///
+  /// In en, this message translates to:
+  /// **'Point & Say'**
+  String get shellPointSay;
+
+  /// shell. Import Media
+  ///
+  /// In en, this message translates to:
+  /// **'Import Media'**
+  String get shellImportMedia;
+
+  /// shell. Cultural Magazine
+  ///
+  /// In en, this message translates to:
+  /// **'Cultural Magazine'**
+  String get shellCulturalMagazine;
+
+  /// shell. Cultural Hub
+  ///
+  /// In en, this message translates to:
+  /// **'Cultural Hub'**
+  String get shellCulturalHub;
+
+  /// shell. Add words in Vocabulary Builder to start flashcard review.
+  ///
+  /// In en, this message translates to:
+  /// **'Add words in Vocabulary Builder to start flashcard review.'**
+  String get shellAddWordsInVocabularyBuilderTo;
+
+  /// shell. Please select a language first
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a language first'**
+  String get shellPleaseSelectALanguageFirst;
+
+  /// shell. Flashcard Review
+  ///
+  /// In en, this message translates to:
+  /// **'Flashcard Review'**
+  String get shellFlashcardReview;
+
+  /// shell. Writing Practice
+  ///
+  /// In en, this message translates to:
+  /// **'Writing Practice'**
+  String get shellWritingPractice;
+
+  /// shell. Listening Practice
+  ///
+  /// In en, this message translates to:
+  /// **'Listening Practice'**
+  String get shellListeningPractice;
+
+  /// shell. Conversation Scenarios
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation Scenarios'**
+  String get shellConversationScenarios;
+
+  /// shell. Vocabulary Builder
+  ///
+  /// In en, this message translates to:
+  /// **'Vocabulary Builder'**
+  String get shellVocabularyBuilder;
+
+  /// shell. Learning Path
+  ///
+  /// In en, this message translates to:
+  /// **'Learning Path'**
+  String get shellLearningPath;
+
+  /// shell. Grammar Hub
+  ///
+  /// In en, this message translates to:
+  /// **'Grammar Hub'**
+  String get shellGrammarHub;
+
+  /// shell. AI Chat
+  ///
+  /// In en, this message translates to:
+  /// **'AI Chat'**
+  String get shellAiChat;
+
+  /// shell. Tutor Mode
+  ///
+  /// In en, this message translates to:
+  /// **'Tutor Mode'**
+  String get shellTutorMode;
+
+  /// shell. Native content review
+  ///
+  /// In en, this message translates to:
+  /// **'Native content review'**
+  String get shellNativeContentReview;
+
+  /// shell. Authentic Path (A1–C1)
+  ///
+  /// In en, this message translates to:
+  /// **'Authentic Path (A1–C1)'**
+  String get shellAuthenticPathA1C1;
+
+  /// shell. Toggle Dark Mode
+  ///
+  /// In en, this message translates to:
+  /// **'Toggle Dark Mode'**
+  String get shellToggleDarkMode;
+
+  /// shell. Dark mode {value}
+  ///
+  /// In en, this message translates to:
+  /// **'Dark mode {value}'**
+  String shellDarkModeValue(String value);
+
+  /// shell. {title} section
+  ///
+  /// In en, this message translates to:
+  /// **'{title} section'**
+  String shellTitleSection(String title);
+
+  /// shell. Toggle theme
+  ///
+  /// In en, this message translates to:
+  /// **'Toggle theme'**
+  String get shellToggleTheme;
+
+  /// shell. Dark mode
+  ///
+  /// In en, this message translates to:
+  /// **'Dark mode'**
+  String get shellDarkMode9cf8;
+
+  /// shell. Practice Rooms
+  ///
+  /// In en, this message translates to:
+  /// **'Practice Rooms'**
+  String get shellPracticeRooms;
+
+  /// shell. Live Classroom
+  ///
+  /// In en, this message translates to:
+  /// **'Live Classroom'**
+  String get shellLiveClassroom;
+
+  /// shell. Dialect preference
+  ///
+  /// In en, this message translates to:
+  /// **'Dialect preference'**
+  String get shellDialectPreference;
+
+  /// shell. Heritage milestones
+  ///
+  /// In en, this message translates to:
+  /// **'Heritage milestones'**
+  String get shellHeritageMilestones;
+
+  /// shell. Living Dictionary
+  ///
+  /// In en, this message translates to:
+  /// **'Living Dictionary'**
+  String get shellLivingDictionary;
+
+  /// shell. Tone & Rhythm
+  ///
+  /// In en, this message translates to:
+  /// **'Tone & Rhythm'**
+  String get shellToneRhythm;
+
+  /// shell. Phrase DNA
+  ///
+  /// In en, this message translates to:
+  /// **'Phrase DNA'**
+  String get shellPhraseDna;
+
+  /// shell. Polie Tutor
+  ///
+  /// In en, this message translates to:
+  /// **'Polie Tutor'**
+  String get shellPolieTutor;
+
+  /// shell. Email: {value}
+  ///
+  /// In en, this message translates to:
+  /// **'Email: {value}'**
+  String shellEmailValue(String value);
+
+  /// shell. Username: {value}
+  ///
+  /// In en, this message translates to:
+  /// **'Username: {value}'**
+  String shellUsernameValue(String value);
+
+  /// shell. User avatar
+  ///
+  /// In en, this message translates to:
+  /// **'User avatar'**
+  String get shellUserAvatar;
+
+  /// shell. Lessons completed: {value} • Points earned: {value2}
+  ///
+  /// In en, this message translates to:
+  /// **'Lessons completed: {value} • Points earned: {value2}'**
+  String shellLessonsCompletedValuePointsEarnedValue2(
+    String value,
+    String value2,
+  );
+
+  /// shell. Loading Courses ...
+  ///
+  /// In en, this message translates to:
+  /// **'Loading Courses ...'**
+  String get shellLoadingCourses;
+
+  /// shell. Start a course to see your progress
+  ///
+  /// In en, this message translates to:
+  /// **'Start a course to see your progress'**
+  String get shellStartACourseToSeeYour;
+
+  /// shell. No Course started yet
+  ///
+  /// In en, this message translates to:
+  /// **'No Course started yet'**
+  String get shellNoCourseStartedYet;
+
+  /// shell. Hi {value}
+  ///
+  /// In en, this message translates to:
+  /// **'Hi {value}'**
+  String shellHiValue(String value);
+
+  /// shell. Your Courses!
+  ///
+  /// In en, this message translates to:
+  /// **'Your Courses!'**
+  String get shellYourCourses;
+
+  /// shell. {value}%
+  ///
+  /// In en, this message translates to:
+  /// **'{value}%'**
+  String shellValue(String value);
+
+  /// shell. Progress
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get shellProgress;
+
+  /// shell. Progress {value}%
+  ///
+  /// In en, this message translates to:
+  /// **'Progress {value}%'**
+  String shellProgressValue(String value);
+
+  /// shell. Lessons completed: {value} • Points: {value2}
+  ///
+  /// In en, this message translates to:
+  /// **'Lessons completed: {value} • Points: {value2}'**
+  String shellLessonsCompletedValuePointsValue2(String value, String value2);
+
+  /// shell. {value}, {value2}% complete. Tap to open.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}, {value2}% complete. Tap to open.'**
+  String shellValueValue2CompleteTapToOpen(String value, String value2);
+
+  /// shell. Loading Courses...
+  ///
+  /// In en, this message translates to:
+  /// **'Loading Courses...'**
+  String get shellLoadingCourses7098;
+
+  /// shell. No languages available
+  ///
+  /// In en, this message translates to:
+  /// **'No languages available'**
+  String get shellNoLanguagesAvailable;
+
+  /// shell. Your Progress
+  ///
+  /// In en, this message translates to:
+  /// **'Your Progress'**
+  String get shellYourProgress;
+
+  /// shell. Menu
+  ///
+  /// In en, this message translates to:
+  /// **'Menu'**
+  String get shellMenu;
+
+  /// shell. Open menu
+  ///
+  /// In en, this message translates to:
+  /// **'Open menu'**
+  String get shellOpenMenu;
+
+  /// shell. Your Courses
+  ///
+  /// In en, this message translates to:
+  /// **'Your Courses'**
+  String get shellYourCourses9648;
+
+  /// shell. Nanga def
+  ///
+  /// In en, this message translates to:
+  /// **'Nanga def'**
+  String get shellNangaDef;
+
+  /// shell. How far
+  ///
+  /// In en, this message translates to:
+  /// **'How far'**
+  String get shellHowFar;
+
+  /// shell. Asụsụ Igbo
+  ///
+  /// In en, this message translates to:
+  /// **'Asụsụ Igbo'**
+  String get shellAsSIgbo;
+
+  /// shell. Harshen Hausa
+  ///
+  /// In en, this message translates to:
+  /// **'Harshen Hausa'**
+  String get shellHarshenHausa;
+
+  /// shell. Ẹ káàbọ̀
+  ///
+  /// In en, this message translates to:
+  /// **'Ẹ káàbọ̀'**
+  String get shellKB;
+
+  /// shell. {value}. Tap to open.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}. Tap to open.'**
+  String shellValueTapToOpen(String value);
+
+  /// shell. {label}: {value}
+  ///
+  /// In en, this message translates to:
+  /// **'{label}: {value}'**
+  String shellLabelValue(String label, String value);
+
+  /// shell. {title}. {subtitle}
+  ///
+  /// In en, this message translates to:
+  /// **'{title}. {subtitle}'**
+  String shellTitleSubtitle(String title, String subtitle);
+
+  /// shell. View dashboard
+  ///
+  /// In en, this message translates to:
+  /// **'View dashboard'**
+  String get shellViewDashboard;
+
+  /// shell. Conversation with Polie
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation with Polie'**
+  String get shellConversationWithPolie;
+
+  /// shell. Polie modes & skills
+  ///
+  /// In en, this message translates to:
+  /// **'Polie modes & skills'**
+  String get shellPolieModesSkills;
+
+  /// shell. AI Tutor
+  ///
+  /// In en, this message translates to:
+  /// **'AI Tutor'**
+  String get shellAiTutor;
+
+  /// shell. Quick Actions
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Actions'**
+  String get shellQuickActions;
+
+  /// shell. {value} languages
+  ///
+  /// In en, this message translates to:
+  /// **'{value} languages'**
+  String shellValueLanguages(String value);
+
+  /// shell. {value} badges
+  ///
+  /// In en, this message translates to:
+  /// **'{value} badges'**
+  String shellValueBadges(String value);
+
+  /// shell. {value} day streak
+  ///
+  /// In en, this message translates to:
+  /// **'{value} day streak'**
+  String shellValueDayStreak(String value);
+
+  /// shell. {value} XP to next level
+  ///
+  /// In en, this message translates to:
+  /// **'{value} XP to next level'**
+  String shellValueXpToNextLevel(String value);
+
+  /// shell. XP {value}
+  ///
+  /// In en, this message translates to:
+  /// **'XP {value}'**
+  String shellXpValue(String value);
+
+  /// shell. Level
+  ///
+  /// In en, this message translates to:
+  /// **'Level'**
+  String get shellLevel;
+
+  /// shell. {value}
+  ///
+  /// In en, this message translates to:
+  /// **'{value}'**
+  String shellValue75ce(String value);
+
+  /// shell. Level {value}. XP {value2}. {value3} XP to next level. {value4} day streak. {val
+  ///
+  /// In en, this message translates to:
+  /// **'Level {value}. XP {value2}. {value3} XP to next level. {value4} day streak. {value5} badges. {value6} languages.'**
+  String shellLevelValueXpValue2Value3Xp(
+    String value,
+    String value2,
+    String value3,
+    String value4,
+    String value5,
+    String value6,
+  );
+
+  /// shell. {title}{value}
+  ///
+  /// In en, this message translates to:
+  /// **'{title}{value}'**
+  String shellTitleValue(String title, String value);
+
+  /// shell. Loading Languages ...
+  ///
+  /// In en, this message translates to:
+  /// **'Loading Languages ...'**
+  String get shellLoadingLanguages;
+
+  /// shell. Search languages
+  ///
+  /// In en, this message translates to:
+  /// **'Search languages'**
+  String get shellSearchLanguages;
+
+  /// shell. Explore More
+  ///
+  /// In en, this message translates to:
+  /// **'Explore More'**
+  String get shellExploreMore;
+
+  /// shell. Featured Languages
+  ///
+  /// In en, this message translates to:
+  /// **'Featured Languages'**
+  String get shellFeaturedLanguages;
+
+  /// shell. Ẹ Káàbọ
+  ///
+  /// In en, this message translates to:
+  /// **'Ẹ Káàbọ'**
+  String get shellKBd95e;
+
+  /// shell. Wehcome o
+  ///
+  /// In en, this message translates to:
+  /// **'Wehcome o'**
+  String get shellWehcomeO;
+
+  /// shell. Sannu da zuwa
+  ///
+  /// In en, this message translates to:
+  /// **'Sannu da zuwa'**
+  String get shellSannuDaZuwa;
+
+  /// shell. {percent}%
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}%'**
+  String shellPercent(String percent);
+
+  /// shell. Ẹ Káàbọ̀
+  ///
+  /// In en, this message translates to:
+  /// **'Ẹ Káàbọ̀'**
+  String get shellKBf733;
+
+  /// shell. Welcome o
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome o'**
+  String get shellWelcomeO;
+
+  /// shell. connection timed out
+  ///
+  /// In en, this message translates to:
+  /// **'connection timed out'**
+  String get shellConnectionTimedOut;
+
+  /// shell. connection refused
+  ///
+  /// In en, this message translates to:
+  /// **'connection refused'**
+  String get shellConnectionRefused;
+
+  /// shell. failed host lookup
+  ///
+  /// In en, this message translates to:
+  /// **'failed host lookup'**
+  String get shellFailedHostLookup;
+
+  /// shell. network is unreachable
+  ///
+  /// In en, this message translates to:
+  /// **'network is unreachable'**
+  String get shellNetworkIsUnreachable;
+
+  /// shell. no internet
+  ///
+  /// In en, this message translates to:
+  /// **'no internet'**
+  String get shellNoInternet;
+
+  /// shell. Authentic Path
+  ///
+  /// In en, this message translates to:
+  /// **'Authentic Path'**
+  String get shellAuthenticPath;
+
+  /// shell. Take Quiz
+  ///
+  /// In en, this message translates to:
+  /// **'Take Quiz'**
+  String get shellTakeQuiz;
+
+  /// shell. Back
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get shellBack;
+
+  /// shell. Pick where you want to learn
+  ///
+  /// In en, this message translates to:
+  /// **'Pick where you want to learn'**
+  String get shellPickWhereYouWantToLearn;
+
+  /// shell. Start learning
+  ///
+  /// In en, this message translates to:
+  /// **'Start learning'**
+  String get shellStartLearning;
+
+  /// shell. {value} pts
+  ///
+  /// In en, this message translates to:
+  /// **'{value} pts'**
+  String shellValuePts(String value);
+
+  /// shell. Try a different search term
+  ///
+  /// In en, this message translates to:
+  /// **'Try a different search term'**
+  String get shellTryADifferentSearchTerm;
+
+  /// shell. No languages found
+  ///
+  /// In en, this message translates to:
+  /// **'No languages found'**
+  String get shellNoLanguagesFound;
+
+  /// shell. Clear search
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search'**
+  String get shellClearSearch;
+
+  /// shell. Search languages...
+  ///
+  /// In en, this message translates to:
+  /// **'Search languages...'**
+  String get shellSearchLanguages2580;
+
+  /// shell. {value}
+  ///
+  /// In en, this message translates to:
+  /// **'{value} '**
+  String shellValuea1d1(String value);
+
+  /// shell. Retry
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get shellRetry;
+
+  /// shell. Failed to load quizzes. Please try again.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load quizzes. Please try again.'**
+  String get shellFailedToLoadQuizzesPleaseTry;
+
+  /// shell. Connection timed out
+  ///
+  /// In en, this message translates to:
+  /// **'Connection timed out'**
+  String get shellConnectionTimedOut52c8;
+
+  /// shell. We're working to add random quizzes for {value}!
+  ///
+  /// In en, this message translates to:
+  /// **'We\'re working to add random quizzes for {value}!'**
+  String shellWeReWorkingToAddRandom(String value);
+
+  /// shell. Loading quizzes for {value}...
+  ///
+  /// In en, this message translates to:
+  /// **'Loading quizzes for {value}...'**
+  String shellLoadingQuizzesForValue(String value);
+
+  /// shell. Choose a quiz type
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a quiz type'**
+  String get shellChooseAQuizType;
+
+  /// shell. App Policy
+  ///
+  /// In en, this message translates to:
+  /// **'App Policy'**
+  String get shellAppPolicy;
+
+  /// shell. Change Password
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get shellChangePassword;
+
+  /// shell. Password Changed
+  ///
+  /// In en, this message translates to:
+  /// **'Password Changed'**
+  String get shellPasswordChanged;
+
+  /// shell. Confirm your new password
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm your new password'**
+  String get shellConfirmYourNewPassword;
+
+  /// shell. Confirm Password
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get shellConfirmPassword;
+
+  /// shell. Enter new password
+  ///
+  /// In en, this message translates to:
+  /// **'Enter new password'**
+  String get shellEnterNewPassword;
+
+  /// shell. New Password
+  ///
+  /// In en, this message translates to:
+  /// **'New Password'**
+  String get shellNewPassword;
+
+  /// shell. Enter your current password
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your current password'**
+  String get shellEnterYourCurrentPassword;
+
+  /// shell. Current Password
+  ///
+  /// In en, this message translates to:
+  /// **'Current Password'**
+  String get shellCurrentPassword;
+
+  /// shell. Delete Now
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Now'**
+  String get shellDeleteNow;
+
+  /// shell. Enter Current Password
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Current Password'**
+  String get shellEnterCurrentPassword;
+
+  /// shell. Confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmation'**
+  String get shellConfirmation;
+
+  /// shell. Yes
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get shellYes;
+
+  /// shell. No
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get shellNo;
+
+  /// shell. Are you sure you want to DELETE account?
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to DELETE account?'**
+  String get shellAreYouSureYouWantToecc5;
+
+  /// shell. Account Deleted
+  ///
+  /// In en, this message translates to:
+  /// **'Account Deleted'**
+  String get shellAccountDeleted;
+
+  /// shell. This action is permanent
+  ///
+  /// In en, this message translates to:
+  /// **'This action is permanent'**
+  String get shellThisActionIsPermanent;
+
+  /// shell. Delete your account
+  ///
+  /// In en, this message translates to:
+  /// **'Delete your account'**
+  String get shellDeleteYourAccount;
+
+  /// shell. Read how your data is protected
+  ///
+  /// In en, this message translates to:
+  /// **'Read how your data is protected'**
+  String get shellReadHowYourDataIsProtected;
+
+  /// shell. Privacy & User Policy
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy & User Policy'**
+  String get shellPrivacyUserPolicy;
+
+  /// shell. Learn about the LingAfriq mission
+  ///
+  /// In en, this message translates to:
+  /// **'Learn about the LingAfriq mission'**
+  String get shellLearnAboutTheLingafriqMission;
+
+  /// shell. Who are we?
+  ///
+  /// In en, this message translates to:
+  /// **'Who are we?'**
+  String get shellWhoAreWe;
+
+  /// shell. Help us improve LingAfriq
+  ///
+  /// In en, this message translates to:
+  /// **'Help us improve LingAfriq'**
+  String get shellHelpUsImproveLingafriq;
+
+  /// shell. Give us Feedback
+  ///
+  /// In en, this message translates to:
+  /// **'Give us Feedback'**
+  String get shellGiveUsFeedback;
+
+  /// shell. Update your credentials securely
+  ///
+  /// In en, this message translates to:
+  /// **'Update your credentials securely'**
+  String get shellUpdateYourCredentialsSecurely;
+
+  /// shell. #{value}
+  ///
+  /// In en, this message translates to:
+  /// **'#{value}'**
+  String shellValue12bd(String value);
+
+  /// shell. Global rank: {value}
+  ///
+  /// In en, this message translates to:
+  /// **'Global rank: {value}'**
+  String shellGlobalRankValue(String value);
+
+  /// shell. Global Ranking
+  ///
+  /// In en, this message translates to:
+  /// **'Global Ranking'**
+  String get shellGlobalRanking;
+
+  /// shell. Streak {value}
+  ///
+  /// In en, this message translates to:
+  /// **'Streak {value}'**
+  String shellStreakValue(String value);
+
+  /// shell. {value} XP
+  ///
+  /// In en, this message translates to:
+  /// **'{value} XP'**
+  String shellValueXp(String value);
+
+  /// shell. Achievement progress: {unlockedBadges} out of {totalBadges} badges unlocked
+  ///
+  /// In en, this message translates to:
+  /// **'Achievement progress: {unlockedBadges} out of {totalBadges} badges unlocked'**
+  String shellAchievementProgressUnlockedbadgesOutOfTotal(
+    String unlockedBadges,
+    String totalBadges,
+  );
+
+  /// shell. {unlockedBadges}/{totalBadges}
+  ///
+  /// In en, this message translates to:
+  /// **'{unlockedBadges}/{totalBadges}'**
+  String shellUnlockedbadgesTotalbadges(
+    String unlockedBadges,
+    String totalBadges,
+  );
+
+  /// shell. Achievements
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements'**
+  String get shellAchievements;
+
+  /// shell. Level {value}
+  ///
+  /// In en, this message translates to:
+  /// **'Level {value}'**
+  String shellLevelValue(String value);
+
+  /// shell. Profile: {value}, {value2}, Level {value3}, Streak {value4}
+  ///
+  /// In en, this message translates to:
+  /// **'Profile: {value}, {value2}, Level {value3}, Streak {value4}'**
+  String shellProfileValueValue2LevelValue3Streak(
+    String value,
+    String value2,
+    String value3,
+    String value4,
+  );
+
+  /// shell. Profile avatar. Tap to edit profile
+  ///
+  /// In en, this message translates to:
+  /// **'Profile avatar. Tap to edit profile'**
+  String get shellProfileAvatarTapToEditProfile;
+
+  /// shell. Profile
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get shellProfile;
+
+  /// shell. Submit
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get shellSubmit;
+
+  /// shell. Feedback Form on Mobile App
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback Form on Mobile App'**
+  String get shellFeedbackFormOnMobileApp;
+
+  /// shell. Language Country:
+  /// {country}
+  ///
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'Language Country:\n{country}\n\n'**
+  String shellLanguageCountryCountry(String country);
+
+  /// shell. Would you like to suggest a language? If yes, enter language below:
+  /// {suggestion}
+  ///
+  /// In en, this message translates to:
+  /// **'Would you like to suggest a language? If yes, enter language below:\n{suggestion}\n\n'**
+  String shellWouldYouLikeToSuggestA(String suggestion);
+
+  /// shell. What would you like us to know:
+  /// {reason}
+  ///
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'What would you like us to know:\n{reason}\n\n'**
+  String shellWhatWouldYouLikeUsTo(String reason);
+
+  /// shell. Please fill in some fields
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill in some fields'**
+  String get shellPleaseFillInSomeFields;
+
+  /// shell. Language Country
+  ///
+  /// In en, this message translates to:
+  /// **'Language Country'**
+  String get shellLanguageCountry;
+
+  /// shell. Write your suggestion here
+  ///
+  /// In en, this message translates to:
+  /// **'Write your suggestion here'**
+  String get shellWriteYourSuggestionHere;
+
+  /// shell. Would you like to suggest a language? If yes, enter language below
+  ///
+  /// In en, this message translates to:
+  /// **'Would you like to suggest a language? If yes, enter language below'**
+  String get shellWouldYouLikeToSuggestAb06a;
+
+  /// shell. Please explain What would you like us to know?
+  ///
+  /// In en, this message translates to:
+  /// **'Please explain What would you like us to know?'**
+  String get shellPleaseExplainWhatWouldYouLike;
+
+  /// shell. What would you like us to know?
+  ///
+  /// In en, this message translates to:
+  /// **'What would you like us to know?'**
+  String get shellWhatWouldYouLikeUsTo0de8;
+
+  /// shell. Start a course to see your country ranking
+  ///
+  /// In en, this message translates to:
+  /// **'Start a course to see your country ranking'**
+  String get shellStartACourseToSeeYoure3fc;
+
+  /// shell. No points earned yet
+  ///
+  /// In en, this message translates to:
+  /// **'No points earned yet'**
+  String get shellNoPointsEarnedYet;
+
+  /// shell. {space}{text}{space2}
+  ///
+  /// In en, this message translates to:
+  /// **'{space}{text}{space2}'**
+  String shellSpaceTextSpace2(String space, String text, String space2);
+
+  /// shell. Loading Leaderboard...
+  ///
+  /// In en, this message translates to:
+  /// **'Loading Leaderboard...'**
+  String get shellLoadingLeaderboard;
+
+  /// shell. Country
+  ///
+  /// In en, this message translates to:
+  /// **'Country'**
+  String get shellCountry;
+
+  /// shell. Global
+  ///
+  /// In en, this message translates to:
+  /// **'Global'**
+  String get shellGlobal;
+
+  /// shell. Leaderboard view: {value}. Switch between Global and Country.
+  ///
+  /// In en, this message translates to:
+  /// **'Leaderboard view: {value}. Switch between Global and Country.'**
+  String shellLeaderboardViewValueSwitchBetweenGlobal(String value);
+
+  /// shell. Leaderboard
+  ///
+  /// In en, this message translates to:
+  /// **'Leaderboard'**
+  String get shellLeaderboard;
+
+  /// shell. Profile tab
+  ///
+  /// In en, this message translates to:
+  /// **'Profile tab'**
+  String get shellProfileTab;
+
+  /// shell. Social
+  ///
+  /// In en, this message translates to:
+  /// **'Social'**
+  String get shellSocial;
+
+  /// shell. Social tab
+  ///
+  /// In en, this message translates to:
+  /// **'Social tab'**
+  String get shellSocialTab;
+
+  /// shell. AI
+  ///
+  /// In en, this message translates to:
+  /// **'AI'**
+  String get shellAi;
+
+  /// shell. AI Tutor tab
+  ///
+  /// In en, this message translates to:
+  /// **'AI Tutor tab'**
+  String get shellAiTutorTab;
+
+  /// shell. Courses
+  ///
+  /// In en, this message translates to:
+  /// **'Courses'**
+  String get shellCourses;
+
+  /// shell. Courses tab
+  ///
+  /// In en, this message translates to:
+  /// **'Courses tab'**
+  String get shellCoursesTab;
+
+  /// shell. Home
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get shellHome;
+
+  /// shell. Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Home tab'**
+  String get shellHomeTab;
+
+  /// shell. Back to learning
+  ///
+  /// In en, this message translates to:
+  /// **'Back to learning'**
+  String get shellBackToLearning;
+
+  /// shell. Back to learning home
+  ///
+  /// In en, this message translates to:
+  /// **'Back to learning home'**
+  String get shellBackToLearningHome;
+
+  /// shell. Not available yet
+  ///
+  /// In en, this message translates to:
+  /// **'Not available yet'**
+  String get shellNotAvailableYet;
+
+  /// shell. Private messages, calls, snaps, and the public feed unlock when you are 18 and y
+  ///
+  /// In en, this message translates to:
+  /// **'Private messages, calls, snaps, and the public feed unlock when you are 18 and your age is verified. Until then, keep going on lessons, games, and Polie.'**
+  String get shellPrivateMessagesCallsSnapsAndThe;
+
+  /// shell. Learning comes first
+  ///
+  /// In en, this message translates to:
+  /// **'Learning comes first'**
+  String get shellLearningComesFirst;
+
+  /// onboarding. Words in the first-win basket
+  ///
+  /// In en, this message translates to:
+  /// **'{words, plural, =1{1 word in your basket} other{{words} words in your basket}}'**
+  String onboardingWordsInYourBasket(int words);
+
+  /// onboarding. not selected
+  ///
+  /// In en, this message translates to:
+  /// **'not selected'**
+  String get onboardingNotSelected;
+
+  /// onboarding. Add Avatar (Optional)
+  ///
+  /// In en, this message translates to:
+  /// **'Add Avatar (Optional)'**
+  String get onboardingAddAvatarOptional;
+
+  /// onboarding. Level not precise yet
+  ///
+  /// In en, this message translates to:
+  /// **'Level not precise yet'**
+  String get onboardingLevelNotPreciseYet;
+
+  /// onboarding. , selected
+  ///
+  /// In en, this message translates to:
+  /// **', selected'**
+  String get onboardingSelectedd7a1;
+
+  /// onboarding. Use a year between 1900 and {nowYear}.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a year between 1900 and {nowYear}.'**
+  String onboardingUseAYearBetween1900And(String nowYear);
+
+  /// onboarding. Nice, you said it
+  ///
+  /// In en, this message translates to:
+  /// **'Nice, you said it'**
+  String get onboardingNiceYouSaidIt;
+
+  /// onboarding. You marked the phrase as said
+  ///
+  /// In en, this message translates to:
+  /// **'You marked the phrase as said'**
+  String get onboardingYouMarkedThePhraseAsSaid;
+
+  /// onboarding. Finish lesson
+  ///
+  /// In en, this message translates to:
+  /// **'Finish lesson'**
+  String get onboardingFinishLesson;
+
+  /// onboarding. 1 word
+  ///
+  /// In en, this message translates to:
+  /// **'1 word'**
+  String get onboardingText1Word;
+
+  /// shell. , {username}
+  ///
+  /// In en, this message translates to:
+  /// **', {username}'**
+  String shellUsername(String username);
 }
 
 class _AppLocalizationsDelegate

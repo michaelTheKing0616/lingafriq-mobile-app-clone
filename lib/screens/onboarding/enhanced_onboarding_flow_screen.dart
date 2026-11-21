@@ -28,6 +28,7 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 /// Enhanced 9-Step Onboarding Flow with Beautiful Material 3 + Pan-African Design
 class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
@@ -203,7 +204,7 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
     final progressPercent = ((currentStep + 1) / totalSteps * 100).toInt();
     return Semantics(
       label:
-          'Onboarding progress. Step ${currentStep + 1} of $totalSteps. $progressPercent percent complete.',
+          l10nOf(context).onboardingOnboardingProgressStepValueOfTotalstep('${currentStep + 1}', totalSteps.toString(), progressPercent.toString()),
       value: '$progressPercent%',
       child: Container(
         padding: EdgeInsets.all(PanAfricanSpacing.lg),
@@ -213,7 +214,7 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
               children: [
                 if (onBack != null)
                   Semantics(
-                    label: 'Go back to previous step',
+                    label: l10nOf(context).onboardingGoBackToPreviousStep,
                     button: true,
                     child: IconButton(
                       onPressed: () {
@@ -235,10 +236,10 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
                   SizedBox(width: 48.w, height: 48.w),
                 const Spacer(),
                 Semantics(
-                  label: 'Onboarding',
+                  label: l10nOf(context).onboardingOnboarding,
                   header: true,
                   child: Text(
-                    'Onboarding',
+                    l10nOf(context).onboardingOnboarding,
                     style: PanAfricanTypography.titleMedium(
                       context,
                     ).copyWith(color: Theme.of(context).colorScheme.onPrimary),
@@ -246,12 +247,12 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
                 ),
                 const Spacer(),
                 Semantics(
-                  label: 'Skip onboarding',
+                  label: l10nOf(context).onboardingSkipOnboarding,
                   button: true,
                   child: TextButton(
                     onPressed: () => _skipOnboarding(context, ref),
                     child: Text(
-                      'Skip',
+                      l10nOf(context).onboardingSkip,
                       style: PanAfricanTypography.labelLarge(context).copyWith(
                         color: Theme.of(
                           context,
@@ -267,13 +268,13 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Step ${currentStep + 1} of $totalSteps',
+                  l10nOf(context).onboardingStepValueOfTotalsteps('${currentStep + 1}', totalSteps.toString()),
                   style: PanAfricanTypography.labelMedium(
                     context,
                   ).copyWith(color: Theme.of(context).colorScheme.onPrimary),
                 ),
                 Text(
-                  '$progressPercent%',
+                  l10nOf(context).onboardingProgresspercent(progressPercent.toString()),
                   style: PanAfricanTypography.labelMedium(
                     context,
                   ).copyWith(color: Theme.of(context).colorScheme.onPrimary),
@@ -403,18 +404,18 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
             final shouldTakeTest = await showDialog<bool>(
               context: context,
               builder: (context) => AlertDialog(
-                title: const Text('Take Placement Test?'),
+                title: Text(l10nOf(context).onboardingTakePlacementTest),
                 content: Text(
-                  'Would you like to take a placement test to assess your current level in $learningLanguage? You can skip this and take it later.',
+                  l10nOf(context).onboardingWouldYouLikeToTakeA(learningLanguage.toString()),
                 ),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(context, false),
-                    child: const Text('Skip'),
+                    child: Text(l10nOf(context).onboardingSkip),
                   ),
                   ElevatedButton(
                     onPressed: () => Navigator.pop(context, true),
-                    child: const Text('Take Test'),
+                    child: Text(l10nOf(context).onboardingTakeTest),
                   ),
                 ],
               ),
@@ -479,95 +480,95 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
 
   // Comprehensive language list: Major languages with flags + all African languages
   static List<Map<String, String>> get _majorLanguages => [
-    {'code': 'en', 'name': 'English', 'flag': '🇬🇧', 'category': 'major'},
-    {'code': 'fr', 'name': 'French', 'flag': '🇫🇷', 'category': 'major'},
-    {'code': 'pt', 'name': 'Portuguese', 'flag': '🇵🇹', 'category': 'major'},
-    {'code': 'es', 'name': 'Spanish', 'flag': '🇪🇸', 'category': 'major'},
-    {'code': 'ar', 'name': 'Arabic', 'flag': '🇸🇦', 'category': 'major'},
-    {'code': 'yo', 'name': 'Yoruba', 'flag': '🇳🇬', 'category': 'african'},
-    {'code': 'ha', 'name': 'Hausa', 'flag': '🇳🇬', 'category': 'african'},
-    {'code': 'ig', 'name': 'Igbo', 'flag': '🇳🇬', 'category': 'african'},
-    {'code': 'sw', 'name': 'Swahili', 'flag': '🇰🇪', 'category': 'african'},
-    {'code': 'zu', 'name': 'Zulu', 'flag': '🇿🇦', 'category': 'african'},
-    {'code': 'xh', 'name': 'Xhosa', 'flag': '🇿🇦', 'category': 'african'},
-    {'code': 'am', 'name': 'Amharic', 'flag': '🇪🇹', 'category': 'african'},
+    {'code': 'en', 'name': l10nEn().onboardingEnglish, 'flag': '🇬🇧', 'category': 'major'},
+    {'code': 'fr', 'name': l10nEn().onboardingFrench, 'flag': '🇫🇷', 'category': 'major'},
+    {'code': 'pt', 'name': l10nEn().onboardingPortuguese, 'flag': '🇵🇹', 'category': 'major'},
+    {'code': 'es', 'name': l10nEn().onboardingSpanish, 'flag': '🇪🇸', 'category': 'major'},
+    {'code': 'ar', 'name': l10nEn().onboardingArabic, 'flag': '🇸🇦', 'category': 'major'},
+    {'code': 'yo', 'name': l10nEn().onboardingYoruba, 'flag': '🇳🇬', 'category': 'african'},
+    {'code': 'ha', 'name': l10nEn().onboardingHausa, 'flag': '🇳🇬', 'category': 'african'},
+    {'code': 'ig', 'name': l10nEn().onboardingIgbo, 'flag': '🇳🇬', 'category': 'african'},
+    {'code': 'sw', 'name': l10nEn().onboardingSwahili, 'flag': '🇰🇪', 'category': 'african'},
+    {'code': 'zu', 'name': l10nEn().onboardingZulu, 'flag': '🇿🇦', 'category': 'african'},
+    {'code': 'xh', 'name': l10nEn().onboardingXhosa, 'flag': '🇿🇦', 'category': 'african'},
+    {'code': 'am', 'name': l10nEn().onboardingAmharic, 'flag': '🇪🇹', 'category': 'african'},
     {
       'code': 'pcm',
-      'name': 'Nigerian Pidgin',
+      'name': l10nEn().onboardingNigerianPidgin,
       'flag': '🇳🇬',
       'category': 'african',
     },
-    {'code': 'wo', 'name': 'Wolof', 'flag': '🇸🇳', 'category': 'african'},
-    {'code': 'so', 'name': 'Somali', 'flag': '🇸🇴', 'category': 'african'},
-    {'code': 'tw', 'name': 'Twi', 'flag': '🇬🇭', 'category': 'african'},
-    {'code': 'af', 'name': 'Afrikaans', 'flag': '🇿🇦', 'category': 'african'},
+    {'code': 'wo', 'name': l10nEn().onboardingWolof, 'flag': '🇸🇳', 'category': 'african'},
+    {'code': 'so', 'name': l10nEn().onboardingSomali, 'flag': '🇸🇴', 'category': 'african'},
+    {'code': 'tw', 'name': l10nEn().onboardingTwi, 'flag': '🇬🇭', 'category': 'african'},
+    {'code': 'af', 'name': l10nEn().onboardingAfrikaans, 'flag': '🇿🇦', 'category': 'african'},
   ];
 
   static List<Map<String, String>> get _allAfricanLanguages => [
     // West African
-    {'code': 'yo', 'name': 'Yoruba', 'flag': '🇳🇬', 'category': 'african'},
-    {'code': 'ha', 'name': 'Hausa', 'flag': '🇳🇬', 'category': 'african'},
-    {'code': 'ig', 'name': 'Igbo', 'flag': '🇳🇬', 'category': 'african'},
+    {'code': 'yo', 'name': l10nEn().onboardingYoruba, 'flag': '🇳🇬', 'category': 'african'},
+    {'code': 'ha', 'name': l10nEn().onboardingHausa, 'flag': '🇳🇬', 'category': 'african'},
+    {'code': 'ig', 'name': l10nEn().onboardingIgbo, 'flag': '🇳🇬', 'category': 'african'},
     {
       'code': 'pcm',
-      'name': 'Nigerian Pidgin',
+      'name': l10nEn().onboardingNigerianPidgin,
       'flag': '🇳🇬',
       'category': 'african',
     },
-    {'code': 'wo', 'name': 'Wolof', 'flag': '🇸🇳', 'category': 'african'},
-    {'code': 'tw', 'name': 'Twi', 'flag': '🇬🇭', 'category': 'african'},
-    {'code': 'ff', 'name': 'Fulfulde', 'flag': '🇳🇬', 'category': 'african'},
-    {'code': 'bm', 'name': 'Bambara', 'flag': '🇲🇱', 'category': 'african'},
-    {'code': 'ak', 'name': 'Akan', 'flag': '🇬🇭', 'category': 'african'},
-    {'code': 'ee', 'name': 'Ewe', 'flag': '🇬🇭', 'category': 'african'},
-    {'code': 'fon', 'name': 'Fon', 'flag': '🇧🇯', 'category': 'african'},
-    {'code': 'kik', 'name': 'Kikuyu', 'flag': '🇰🇪', 'category': 'african'},
-    {'code': 'luo', 'name': 'Luo', 'flag': '🇰🇪', 'category': 'african'},
-    {'code': 'lug', 'name': 'Luganda', 'flag': '🇺🇬', 'category': 'african'},
+    {'code': 'wo', 'name': l10nEn().onboardingWolof, 'flag': '🇸🇳', 'category': 'african'},
+    {'code': 'tw', 'name': l10nEn().onboardingTwi, 'flag': '🇬🇭', 'category': 'african'},
+    {'code': 'ff', 'name': l10nEn().onboardingFulfulde, 'flag': '🇳🇬', 'category': 'african'},
+    {'code': 'bm', 'name': l10nEn().onboardingBambara, 'flag': '🇲🇱', 'category': 'african'},
+    {'code': 'ak', 'name': l10nEn().onboardingAkan, 'flag': '🇬🇭', 'category': 'african'},
+    {'code': 'ee', 'name': l10nEn().onboardingEwe, 'flag': '🇬🇭', 'category': 'african'},
+    {'code': 'fon', 'name': l10nEn().onboardingFon, 'flag': '🇧🇯', 'category': 'african'},
+    {'code': 'kik', 'name': l10nEn().onboardingKikuyu, 'flag': '🇰🇪', 'category': 'african'},
+    {'code': 'luo', 'name': l10nEn().onboardingLuo, 'flag': '🇰🇪', 'category': 'african'},
+    {'code': 'lug', 'name': l10nEn().onboardingLuganda, 'flag': '🇺🇬', 'category': 'african'},
     {
       'code': 'rw',
-      'name': 'Kinyarwanda',
+      'name': l10nEn().onboardingKinyarwanda,
       'flag': '🇷🇼',
       'category': 'african',
     },
-    {'code': 'rn', 'name': 'Kirundi', 'flag': '🇧🇮', 'category': 'african'},
+    {'code': 'rn', 'name': l10nEn().onboardingKirundi, 'flag': '🇧🇮', 'category': 'african'},
     // East African
-    {'code': 'sw', 'name': 'Swahili', 'flag': '🇰🇪', 'category': 'african'},
-    {'code': 'am', 'name': 'Amharic', 'flag': '🇪🇹', 'category': 'african'},
-    {'code': 'ti', 'name': 'Tigrinya', 'flag': '🇪🇷', 'category': 'african'},
-    {'code': 'om', 'name': 'Oromo', 'flag': '🇪🇹', 'category': 'african'},
-    {'code': 'so', 'name': 'Somali', 'flag': '🇸🇴', 'category': 'african'},
+    {'code': 'sw', 'name': l10nEn().onboardingSwahili, 'flag': '🇰🇪', 'category': 'african'},
+    {'code': 'am', 'name': l10nEn().onboardingAmharic, 'flag': '🇪🇹', 'category': 'african'},
+    {'code': 'ti', 'name': l10nEn().onboardingTigrinya, 'flag': '🇪🇷', 'category': 'african'},
+    {'code': 'om', 'name': l10nEn().onboardingOromo, 'flag': '🇪🇹', 'category': 'african'},
+    {'code': 'so', 'name': l10nEn().onboardingSomali, 'flag': '🇸🇴', 'category': 'african'},
     // Southern African
-    {'code': 'zu', 'name': 'Zulu', 'flag': '🇿🇦', 'category': 'african'},
-    {'code': 'xh', 'name': 'Xhosa', 'flag': '🇿🇦', 'category': 'african'},
-    {'code': 'af', 'name': 'Afrikaans', 'flag': '🇿🇦', 'category': 'african'},
-    {'code': 'st', 'name': 'Sesotho', 'flag': '🇿🇦', 'category': 'african'},
-    {'code': 'tn', 'name': 'Setswana', 'flag': '🇧🇼', 'category': 'african'},
-    {'code': 've', 'name': 'Venda', 'flag': '🇿🇦', 'category': 'african'},
-    {'code': 'ts', 'name': 'Tsonga', 'flag': '🇿🇦', 'category': 'african'},
-    {'code': 'ss', 'name': 'Swati', 'flag': '🇸🇿', 'category': 'african'},
-    {'code': 'nr', 'name': 'Ndebele', 'flag': '🇿🇼', 'category': 'african'},
-    {'code': 'ny', 'name': 'Chichewa', 'flag': '🇲🇼', 'category': 'african'},
+    {'code': 'zu', 'name': l10nEn().onboardingZulu, 'flag': '🇿🇦', 'category': 'african'},
+    {'code': 'xh', 'name': l10nEn().onboardingXhosa, 'flag': '🇿🇦', 'category': 'african'},
+    {'code': 'af', 'name': l10nEn().onboardingAfrikaans, 'flag': '🇿🇦', 'category': 'african'},
+    {'code': 'st', 'name': l10nEn().onboardingSesotho, 'flag': '🇿🇦', 'category': 'african'},
+    {'code': 'tn', 'name': l10nEn().onboardingSetswana, 'flag': '🇧🇼', 'category': 'african'},
+    {'code': 've', 'name': l10nEn().onboardingVenda, 'flag': '🇿🇦', 'category': 'african'},
+    {'code': 'ts', 'name': l10nEn().onboardingTsonga, 'flag': '🇿🇦', 'category': 'african'},
+    {'code': 'ss', 'name': l10nEn().onboardingSwati, 'flag': '🇸🇿', 'category': 'african'},
+    {'code': 'nr', 'name': l10nEn().onboardingNdebele, 'flag': '🇿🇼', 'category': 'african'},
+    {'code': 'ny', 'name': l10nEn().onboardingChichewa, 'flag': '🇲🇼', 'category': 'african'},
     // Central African
-    {'code': 'ln', 'name': 'Lingala', 'flag': '🇨🇩', 'category': 'african'},
-    {'code': 'kg', 'name': 'Kongo', 'flag': '🇨🇩', 'category': 'african'},
-    {'code': 'sg', 'name': 'Sango', 'flag': '🇨🇫', 'category': 'african'},
+    {'code': 'ln', 'name': l10nEn().onboardingLingala, 'flag': '🇨🇩', 'category': 'african'},
+    {'code': 'kg', 'name': l10nEn().onboardingKongo, 'flag': '🇨🇩', 'category': 'african'},
+    {'code': 'sg', 'name': l10nEn().onboardingSango, 'flag': '🇨🇫', 'category': 'african'},
     // North African
-    {'code': 'ar', 'name': 'Arabic', 'flag': '🇪🇬', 'category': 'african'},
-    {'code': 'ber', 'name': 'Berber', 'flag': '🇲🇦', 'category': 'african'},
+    {'code': 'ar', 'name': l10nEn().onboardingArabic, 'flag': '🇪🇬', 'category': 'african'},
+    {'code': 'ber', 'name': l10nEn().onboardingBerber, 'flag': '🇲🇦', 'category': 'african'},
   ];
 
   static List<Map<String, String>> get _otherForeignLanguages => [
-    {'code': 'de', 'name': 'German', 'flag': '🇩🇪', 'category': 'foreign'},
-    {'code': 'it', 'name': 'Italian', 'flag': '🇮🇹', 'category': 'foreign'},
-    {'code': 'zh', 'name': 'Chinese', 'flag': '🇨🇳', 'category': 'foreign'},
-    {'code': 'ja', 'name': 'Japanese', 'flag': '🇯🇵', 'category': 'foreign'},
-    {'code': 'ko', 'name': 'Korean', 'flag': '🇰🇷', 'category': 'foreign'},
-    {'code': 'hi', 'name': 'Hindi', 'flag': '🇮🇳', 'category': 'foreign'},
-    {'code': 'ru', 'name': 'Russian', 'flag': '🇷🇺', 'category': 'foreign'},
-    {'code': 'tr', 'name': 'Turkish', 'flag': '🇹🇷', 'category': 'foreign'},
-    {'code': 'nl', 'name': 'Dutch', 'flag': '🇳🇱', 'category': 'foreign'},
-    {'code': 'pl', 'name': 'Polish', 'flag': '🇵🇱', 'category': 'foreign'},
+    {'code': 'de', 'name': l10nEn().onboardingGerman, 'flag': '🇩🇪', 'category': 'foreign'},
+    {'code': 'it', 'name': l10nEn().onboardingItalian, 'flag': '🇮🇹', 'category': 'foreign'},
+    {'code': 'zh', 'name': l10nEn().onboardingChinese, 'flag': '🇨🇳', 'category': 'foreign'},
+    {'code': 'ja', 'name': l10nEn().onboardingJapanese, 'flag': '🇯🇵', 'category': 'foreign'},
+    {'code': 'ko', 'name': l10nEn().onboardingKorean, 'flag': '🇰🇷', 'category': 'foreign'},
+    {'code': 'hi', 'name': l10nEn().onboardingHindi, 'flag': '🇮🇳', 'category': 'foreign'},
+    {'code': 'ru', 'name': l10nEn().onboardingRussian, 'flag': '🇷🇺', 'category': 'foreign'},
+    {'code': 'tr', 'name': l10nEn().onboardingTurkish, 'flag': '🇹🇷', 'category': 'foreign'},
+    {'code': 'nl', 'name': l10nEn().onboardingDutch, 'flag': '🇳🇱', 'category': 'foreign'},
+    {'code': 'pl', 'name': l10nEn().onboardingPolish, 'flag': '🇵🇱', 'category': 'foreign'},
   ];
 
   @override
@@ -647,8 +648,8 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
     }
 
     return _OnboardingStepTemplate(
-      title: 'What language do you speak?',
-      description: 'We\'ll translate all in-app content to this language',
+      title: l10nOf(context).onboardingWhatLanguageDoYouSpeak,
+      description: l10nOf(context).onboardingWeLlTranslateAllInApp,
       isDark: isDark,
       pageController: pageController,
       currentStep: currentStep,
@@ -661,10 +662,10 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Semantics(
-                  label: 'Popular Languages',
+                  label: l10nOf(context).onboardingPopularLanguages,
                   header: true,
                   child: Text(
-                    'Popular Languages',
+                    l10nOf(context).onboardingPopularLanguages,
                     style: PanAfricanTypography.titleMedium(context),
                   ),
                 ),
@@ -693,7 +694,7 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
 
                       return Semantics(
                         label:
-                            'Select ${lang['name'] ?? ''} as proficiency language. ${isSelected ? 'Selected' : ''}',
+                            l10nOf(context).onboardingSelectValueAsProficiencyLanguageValue2(lang['name'] ?? '', isSelected ? 'Selected' : ''),
                         button: true,
                         selected: isSelected,
                         child: GestureDetector(
@@ -755,13 +756,13 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
                   if (!showOtherLanguages.value)
                     Semantics(
                       label:
-                          'Show all languages. ${allLanguages.length - _majorLanguages.length} more languages available.',
+                          l10nOf(context).onboardingShowAllLanguagesValueMoreLanguages('${allLanguages.length - _majorLanguages.length}'),
                       button: true,
                       child: OutlinedButton.icon(
                         onPressed: () => showOtherLanguages.value = true,
                         icon: const Icon(Icons.language),
                         label: Text(
-                          'Show All Languages (${allLanguages.length - _majorLanguages.length} more)',
+                          l10nOf(context).onboardingShowAllLanguagesValueMore('${allLanguages.length - _majorLanguages.length}'),
                         ),
                         style: OutlinedButton.styleFrom(
                           minimumSize: Size(double.infinity, 50.h),
@@ -773,7 +774,7 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
                   if (showOtherLanguages.value) ...[
                     SizedBox(height: PanAfricanSpacing.md),
                     Text(
-                      'All Languages',
+                      l10nOf(context).onboardingAllLanguages,
                       style: PanAfricanTypography.titleMedium(context),
                     ),
                     SizedBox(height: PanAfricanSpacing.sm),
@@ -782,8 +783,8 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
                     TextField(
                       onChanged: (value) => searchQuery.value = value,
                       decoration: InputDecoration(
-                        labelText: 'Search languages',
-                        hintText: 'Search languages...',
+                        labelText: l10nOf(context).onboardingSearchLanguagesea93,
+                        hintText: l10nOf(context).onboardingSearchLanguages,
                         prefixIcon: const Icon(Icons.search),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(
@@ -853,7 +854,7 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
           Padding(
             padding: EdgeInsets.all(PanAfricanSpacing.lg),
             child: Semantics(
-              label: 'Continue to next step',
+              label: l10nOf(context).onboardingContinueToNextStep,
               button: true,
               enabled: selectedLanguage.value != null,
               child: ElevatedButton(
@@ -867,7 +868,7 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
                   ),
                   disabledBackgroundColor: PanAfricanColors.borderLight,
                 ),
-                child: const Text('Continue'),
+                child: Text(l10nOf(context).onboardingContinue),
               ),
             ),
           ),
@@ -897,39 +898,39 @@ class _Step15ProficiencyLevel extends HookConsumerWidget {
     final levels = [
       {
         'code': 'beginner',
-        'name': 'Beginner',
-        'description': 'I\'m just starting out',
+        'name': l10nOf(context).onboardingBeginner,
+        'description': l10nOf(context).onboardingIMJustStartingOut,
         'icon': Icons.stars,
       },
       {
         'code': 'elementary',
-        'name': 'Elementary',
-        'description': 'I know a few words',
+        'name': l10nOf(context).onboardingElementary,
+        'description': l10nOf(context).onboardingIKnowAFewWords,
         'icon': Icons.star_border,
       },
       {
         'code': 'intermediate',
-        'name': 'Intermediate',
-        'description': 'I can have basic conversations',
+        'name': l10nOf(context).onboardingIntermediate,
+        'description': l10nOf(context).onboardingICanHaveBasicConversations,
         'icon': Icons.star_half,
       },
       {
         'code': 'advanced',
-        'name': 'Advanced',
-        'description': 'I\'m quite fluent',
+        'name': l10nOf(context).onboardingAdvanced,
+        'description': l10nOf(context).onboardingIMQuiteFluent,
         'icon': Icons.star,
       },
       {
         'code': 'native',
-        'name': 'Native',
-        'description': 'I speak this language natively',
+        'name': l10nOf(context).onboardingNative,
+        'description': l10nOf(context).onboardingISpeakThisLanguageNatively,
         'icon': Icons.verified,
       },
     ];
 
     return _OnboardingStepTemplate(
-      title: 'What\'s your current level?',
-      description: 'Help us personalize your learning experience',
+      title: l10nOf(context).onboardingWhatSYourCurrentLevel,
+      description: l10nOf(context).onboardingHelpUsPersonalizeYourLearningExperienc,
       isDark: isDark,
       pageController: pageController,
       currentStep: currentStep,
@@ -1088,7 +1089,7 @@ class _Step15ProficiencyLevel extends HookConsumerWidget {
                 borderRadius: BorderRadius.circular(PanAfricanRadius.md),
               ),
             ),
-            child: const Text('Continue'),
+            child: Text(l10nOf(context).onboardingContinue),
           ),
         ),
       ],
@@ -1114,13 +1115,13 @@ class _Step2LearningLanguage extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final languages = [
-      {'code': 'yoruba', 'name': 'Yoruba', 'flag': '🇳🇬'},
-      {'code': 'hausa', 'name': 'Hausa', 'flag': '🇳🇬'},
-      {'code': 'igbo', 'name': 'Igbo', 'flag': '🇳🇬'},
-      {'code': 'pidgin', 'name': 'Nigerian Pidgin English', 'flag': '🇳🇬'},
-      {'code': 'swahili', 'name': 'Swahili', 'flag': '🇰🇪'},
-      {'code': 'zulu', 'name': 'Zulu', 'flag': '🇿🇦'},
-      {'code': 'xhosa', 'name': 'Xhosa', 'flag': '🇿🇦'},
+      {'code': 'yoruba', 'name': l10nOf(context).onboardingYoruba, 'flag': '🇳🇬'},
+      {'code': 'hausa', 'name': l10nOf(context).onboardingHausa, 'flag': '🇳🇬'},
+      {'code': 'igbo', 'name': l10nOf(context).onboardingIgbo, 'flag': '🇳🇬'},
+      {'code': 'pidgin', 'name': l10nOf(context).onboardingNigerianPidginEnglish, 'flag': '🇳🇬'},
+      {'code': 'swahili', 'name': l10nOf(context).onboardingSwahili, 'flag': '🇰🇪'},
+      {'code': 'zulu', 'name': l10nOf(context).onboardingZulu, 'flag': '🇿🇦'},
+      {'code': 'xhosa', 'name': l10nOf(context).onboardingXhosa, 'flag': '🇿🇦'},
     ];
 
     Future<void> saveAndNext() async {
@@ -1162,8 +1163,8 @@ class _Step2LearningLanguage extends HookConsumerWidget {
     }
 
     return _OnboardingStepTemplate(
-      title: 'What language do you wish to learn first?',
-      description: 'Select the language you want to learn',
+      title: l10nOf(context).onboardingWhatLanguageDoYouWishTo,
+      description: l10nOf(context).onboardingSelectTheLanguageYouWantTo,
       isDark: isDark,
       pageController: pageController,
       currentStep: currentStep,
@@ -1240,7 +1241,7 @@ class _Step2LearningLanguage extends HookConsumerWidget {
                   borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                 ),
               ),
-              child: const Text('Continue'),
+              child: Text(l10nOf(context).onboardingContinue),
             ),
           ),
         ],
@@ -1269,8 +1270,8 @@ class _Step3AgeCategory extends HookConsumerWidget {
     final options = ['child', 'teen', 'adult', 'senior'];
 
     return _OnboardingStepTemplate(
-      title: 'What\'s your age category?',
-      description: 'This helps us personalize your experience',
+      title: l10nOf(context).onboardingWhatSYourAgeCategory,
+      description: l10nOf(context).onboardingThisHelpsUsPersonalizeYourExperience,
       isDark: isDark,
       pageController: pageController,
       currentStep: currentStep,
@@ -1377,7 +1378,7 @@ class _Step3AgeCategory extends HookConsumerWidget {
                 borderRadius: BorderRadius.circular(PanAfricanRadius.md),
               ),
             ),
-            child: const Text('Continue'),
+            child: Text(l10nOf(context).onboardingContinue),
           ),
         ),
       ],
@@ -1413,8 +1414,8 @@ class _Step4LearningReasons extends HookConsumerWidget {
     ];
 
     return _OnboardingStepTemplate(
-      title: 'Why are you learning?',
-      description: 'Select all that apply',
+      title: l10nOf(context).onboardingWhyAreYouLearning,
+      description: l10nOf(context).onboardingSelectAllThatApply,
       isDark: isDark,
       child: _buildMultiSelect(
         context,
@@ -1515,7 +1516,7 @@ class _Step4LearningReasons extends HookConsumerWidget {
               foregroundColor: Theme.of(context).colorScheme.onSurface,
               minimumSize: Size(double.infinity, 50.h),
             ),
-            child: const Text('Continue'),
+            child: Text(l10nOf(context).onboardingContinue),
           ),
         ),
       ],
@@ -1541,15 +1542,15 @@ class _Step45DailyTimeGoal extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final durations = [
-      {'minutes': 5, 'label': '5 min', 'description': 'Quick practice'},
-      {'minutes': 10, 'label': '10 min', 'description': 'Light learning'},
-      {'minutes': 15, 'label': '15 min', 'description': 'Balanced'},
-      {'minutes': 20, 'label': '20 min', 'description': 'Dedicated study'},
+      {'minutes': 5, 'label': l10nOf(context).onboardingText5Min, 'description': l10nOf(context).onboardingQuickPractice},
+      {'minutes': 10, 'label': l10nOf(context).onboardingText10Min, 'description': l10nOf(context).onboardingLightLearning},
+      {'minutes': 15, 'label': l10nOf(context).onboardingText15Min, 'description': l10nOf(context).onboardingBalanced},
+      {'minutes': 20, 'label': l10nOf(context).onboardingText20Min, 'description': l10nOf(context).onboardingDedicatedStudy},
     ];
 
     return _OnboardingStepTemplate(
-      title: 'How much time can you commit daily?',
-      description: 'Choose your daily learning goal',
+      title: l10nOf(context).onboardingHowMuchTimeCanYouCommit,
+      description: l10nOf(context).onboardingChooseYourDailyLearningGoal,
       isDark: isDark,
       pageController: pageController,
       currentStep: currentStep,
@@ -1673,7 +1674,7 @@ class _Step45DailyTimeGoal extends HookConsumerWidget {
                   borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                 ),
               ),
-              child: const Text('Continue'),
+              child: Text(l10nOf(context).onboardingContinue),
             ),
           ),
         ],
@@ -1708,8 +1709,8 @@ class _Step5PrimaryGoal extends HookConsumerWidget {
     ];
 
     return _OnboardingStepTemplate(
-      title: 'What\'s your primary goal?',
-      description: 'Choose your main learning objective',
+      title: l10nOf(context).onboardingWhatSYourPrimaryGoal,
+      description: l10nOf(context).onboardingChooseYourMainLearningObjective,
       isDark: isDark,
       pageController: pageController,
       currentStep: currentStep,
@@ -1813,7 +1814,7 @@ class _Step5PrimaryGoal extends HookConsumerWidget {
               foregroundColor: Theme.of(context).colorScheme.onSurface,
               minimumSize: Size(double.infinity, 50.h),
             ),
-            child: const Text('Continue'),
+            child: Text(l10nOf(context).onboardingContinue),
           ),
         ),
       ],
@@ -1845,8 +1846,8 @@ class _Step6LearningStyle extends HookConsumerWidget {
     ];
 
     return _OnboardingStepTemplate(
-      title: 'How do you learn best?',
-      description: 'Select your preferred learning style',
+      title: l10nOf(context).onboardingHowDoYouLearnBest,
+      description: l10nOf(context).onboardingSelectYourPreferredLearningStyle,
       isDark: isDark,
       pageController: pageController,
       currentStep: currentStep,
@@ -1950,7 +1951,7 @@ class _Step6LearningStyle extends HookConsumerWidget {
               foregroundColor: Theme.of(context).colorScheme.onSurface,
               minimumSize: Size(double.infinity, 50.h),
             ),
-            child: const Text('Continue'),
+            child: Text(l10nOf(context).onboardingContinue),
           ),
         ),
       ],
@@ -1975,8 +1976,8 @@ class _Step7PacePreference extends HookConsumerWidget {
     final paces = ['slow', 'steady', 'fast', 'surprise'];
 
     return _OnboardingStepTemplate(
-      title: 'What pace do you prefer?',
-      description: 'How fast do you want to learn?',
+      title: l10nOf(context).onboardingWhatPaceDoYouPrefer,
+      description: l10nOf(context).onboardingHowFastDoYouWantTo,
       isDark: isDark,
       pageController: pageController,
       currentStep: currentStep,
@@ -2083,7 +2084,7 @@ class _Step7PacePreference extends HookConsumerWidget {
               foregroundColor: Theme.of(context).colorScheme.onSurface,
               minimumSize: Size(double.infinity, 50.h),
             ),
-            child: const Text('Continue'),
+            child: Text(l10nOf(context).onboardingContinue),
           ),
         ),
       ],
@@ -2108,8 +2109,8 @@ class _Step8AppTone extends HookConsumerWidget {
     final tones = ['playful', 'encouraging', 'serious', 'friendly'];
 
     return _OnboardingStepTemplate(
-      title: 'What tone do you prefer?',
-      description: 'How should Polie communicate with you?',
+      title: l10nOf(context).onboardingWhatToneDoYouPrefer,
+      description: l10nOf(context).onboardingHowShouldPolieCommunicateWithYou,
       isDark: isDark,
       pageController: pageController,
       currentStep: currentStep,
@@ -2213,7 +2214,7 @@ class _Step8AppTone extends HookConsumerWidget {
               foregroundColor: Theme.of(context).colorScheme.onSurface,
               minimumSize: Size(double.infinity, 50.h),
             ),
-            child: const Text('Continue'),
+            child: Text(l10nOf(context).onboardingContinue),
           ),
         ),
       ],
@@ -2240,8 +2241,8 @@ class _Step9SchedulePreferences extends HookConsumerWidget {
     final times = ['sunrise', 'midday', 'sunset', 'night'];
 
     return _OnboardingStepTemplate(
-      title: 'Set your learning schedule',
-      description: 'When and how long do you want to learn?',
+      title: l10nOf(context).onboardingSetYourLearningSchedule,
+      description: l10nOf(context).onboardingWhenAndHowLongDoYou,
       isDark: isDark,
       pageController: pageController,
       currentStep: currentStep,
@@ -2254,7 +2255,7 @@ class _Step9SchedulePreferences extends HookConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Daily Duration (minutes)',
+                    l10nOf(context).onboardingDailyDurationMinutes,
                     style: PanAfricanTypography.titleMedium(context),
                   ),
                   SizedBox(height: PanAfricanSpacing.sm),
@@ -2263,16 +2264,16 @@ class _Step9SchedulePreferences extends HookConsumerWidget {
                     min: 5,
                     max: 120,
                     divisions: 23,
-                    label: '${duration.value} minutes',
+                    label: l10nOf(context).onboardingValueMinutes('${duration.value}'),
                     onChanged: (value) => duration.value = value.toInt(),
                   ),
                   Text(
-                    '${duration.value} minutes per day',
+                    l10nOf(context).onboardingValueMinutesPerDay('${duration.value}'),
                     style: PanAfricanTypography.bodyMedium(context),
                   ),
                   SizedBox(height: PanAfricanSpacing.xl),
                   Text(
-                    'Preferred Time of Day',
+                    l10nOf(context).onboardingPreferredTimeOfDay,
                     style: PanAfricanTypography.titleMedium(context),
                   ),
                   SizedBox(height: PanAfricanSpacing.sm),
@@ -2310,7 +2311,7 @@ class _Step9SchedulePreferences extends HookConsumerWidget {
                   }),
                   SizedBox(height: PanAfricanSpacing.md),
                   SwitchListTile(
-                    title: const Text('Enable Reminders'),
+                    title: Text(l10nOf(context).onboardingEnableReminders),
                     value: remindersEnabled.value,
                     onChanged: (value) => remindersEnabled.value = value,
                   ),
@@ -2378,7 +2379,7 @@ class _Step9SchedulePreferences extends HookConsumerWidget {
                 foregroundColor: Theme.of(context).colorScheme.onSurface,
                 minimumSize: Size(double.infinity, 50.h),
               ),
-              child: const Text('Continue'),
+              child: Text(l10nOf(context).onboardingContinue),
             ),
           ),
         ],
@@ -2498,8 +2499,8 @@ class _Step10ProfileSetup extends HookConsumerWidget {
     }
 
     return _OnboardingStepTemplate(
-      title: 'Complete Your Profile',
-      description: 'Set your username (avatar is optional)',
+      title: l10nOf(context).onboardingCompleteYourProfile,
+      description: l10nOf(context).onboardingSetYourUsernameAvatarIsOptional,
       isDark: isDark,
       pageController: pageController,
       currentStep: currentStep,
@@ -2560,8 +2561,8 @@ class _Step10ProfileSetup extends HookConsumerWidget {
                         onPressed: pickAvatar,
                         child: Text(
                           path == null
-                              ? 'Add Avatar (Optional)'
-                              : 'Change Avatar',
+                              ? l10nOf(context).onboardingAddAvatarOptional
+                              : l10nOf(context).onboardingChangeAvatar,
                         ),
                       );
                     },
@@ -2578,8 +2579,8 @@ class _Step10ProfileSetup extends HookConsumerWidget {
                           return TextField(
                             controller: usernameController,
                             decoration: InputDecoration(
-                              labelText: 'Username',
-                              hintText: 'Choose a unique username',
+                              labelText: l10nOf(context).onboardingUsername,
+                              hintText: l10nOf(context).onboardingChooseAUniqueUsername,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(
                                   PanAfricanRadius.md,
@@ -2687,7 +2688,7 @@ class _Step10ProfileSetup extends HookConsumerWidget {
                         minimumSize: Size(double.infinity, 50.h),
                         disabledBackgroundColor: PanAfricanColors.borderLight,
                       ),
-                      child: const Text('Complete Onboarding'),
+                      child: Text(l10nOf(context).onboardingCompleteOnboarding),
                     );
                   },
                 );
@@ -2717,21 +2718,21 @@ class _Step10ProfileSetup extends HookConsumerWidget {
   String? _getUsernameStatusText(UsernameStatus status) {
     switch (status) {
       case UsernameStatus.initial:
-        return 'Enter a username (3-30 characters, letters, numbers, and underscores only)';
+        return l10nEn().onboardingEnterAUsername330Characters;
       case UsernameStatus.checking:
-        return 'Checking availability...';
+        return l10nEn().onboardingCheckingAvailability;
       case UsernameStatus.available:
-        return '✓ Username is available';
+        return l10nEn().onboardingUsernameIsAvailable;
       case UsernameStatus.taken:
-        return '✗ Username is already taken';
+        return l10nEn().onboardingUsernameIsAlreadyTaken;
       case UsernameStatus.tooShort:
-        return 'Username must be at least 3 characters';
+        return l10nEn().onboardingUsernameMustBeAtLeast3;
       case UsernameStatus.tooLong:
-        return 'Username must be 30 characters or less';
+        return l10nEn().onboardingUsernameMustBe30CharactersOr;
       case UsernameStatus.invalidFormat:
-        return 'Only letters, numbers, and underscores are allowed';
+        return l10nEn().onboardingOnlyLettersNumbersAndUnderscoresAre;
       case UsernameStatus.error:
-        return 'Could not verify availability. You can still continue.';
+        return l10nEn().onboardingCouldNotVerifyAvailabilityYouCan;
     }
   }
 }
@@ -2817,7 +2818,7 @@ class _OnboardingStepTemplate extends ConsumerWidget {
                         Text(
                           isSyncing
                               ? 'Syncing...'
-                              : '$pendingSyncs pending sync${pendingSyncs > 1 ? 's' : ''}',
+                              : l10nOf(context).onboardingPendingsyncsPendingSyncValue(pendingSyncs.toString(), pendingSyncs > 1 ? 's' : ''),
                           style: PanAfricanTypography.bodySmall(context)
                               .copyWith(
                                 color: PanAfricanColors.primary,

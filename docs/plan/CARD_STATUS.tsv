@@ -545,7 +545,7 @@ P3-019	Done	Create isolated Widgetbook catalogue with golden harness	P3/P3-019.y
 P3-020	Done	'Build core components: buttons, cards, inputs, sheets'	P3/P3-020.yaml
 P3-021	Done	Build skeleton and forward-pointing empty states	P3/P3-021.yaml
 P3-022	Done	Build error anatomy and offline state, stop swallowed errors	P3/P3-022.yaml
-P3-023	Draft	Build AI-unavailable and content-under-review states	P3/P3-023.yaml
+P3-023	Done	Build AI-unavailable and content-under-review states	P3/P3-023.yaml
 P3-024	Done	Ship a custom icon set with no emoji icons	P3/P3-024.yaml
 P3-025	Draft	Specify the illustration system	P3/P3-025.yaml
 P3-026	Draft	Integrate credited culture pattern library	P3/P3-026.yaml
@@ -610,15 +610,15 @@ P3-084	Draft	Ask for notifications in context after lesson 1	P3/P3-084.yaml
 P3-085	Draft	Unlock optional avatar creation after lesson 2	P3/P3-085.yaml
 P3-086	Draft	Track onboarding funnel and time to first word	P3/P3-086.yaml
 P3-087	Done	Audit screen-reader labels and switch or keyboard navigation	P3/P3-087.yaml
-P3-088	Draft	Support 200% text without clipping	P3/P3-088.yaml
+P3-088	Done	Support 200% text without clipping	P3/P3-088.yaml
 P3-089	Done	Enforce WCAG 2.2 AA contrast in CI	P3/P3-089.yaml
 P3-090	Done	Add captions and transcripts for audio and video	P3/P3-090.yaml
 P3-091	Done	Add haptic and visual alternatives and visual pitch path	P3/P3-091.yaml
-P3-092	Draft	Honour reduced motion with gentler animation	P3/P3-092.yaml
+P3-092	Done	Honour reduced motion with gentler animation	P3/P3-092.yaml
 P3-093	Done	Offer a dyslexia-friendly reading option on Andika	P3/P3-093.yaml
-P3-094	Draft	Extract 1,104 hard-coded strings to ARB	P3/P3-094.yaml
+P3-094	Done	Extract 1,104 hard-coded strings to ARB	P3/P3-094.yaml
 P3-095	Draft	Add pseudo-localisation to CI	P3/P3-095.yaml
-P3-096	Draft	Support RTL layouts for Arabic and Ajami	P3/P3-096.yaml
+P3-096	Done	Support RTL layouts for Arabic and Ajami	P3/P3-096.yaml
 P3-097	Draft	Import reviewed UI translations in nine languages	P3/P3-097.yaml
 P3-098	Draft	Deliver explanations in the learner's L1	P3/P3-098.yaml
 P3-099	Draft	Review G3 design gate with UX and UI Scorecards	P3/P3-099.yaml

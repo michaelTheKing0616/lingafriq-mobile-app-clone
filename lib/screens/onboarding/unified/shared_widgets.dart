@@ -38,7 +38,7 @@ final _rtlChars = RegExp(r'[\u0590-\u08FF\uFB1D-\uFEFC]');
 /// left-to-right isolate; real RTL strings pass through untouched.
 String _bidi(BuildContext context, String text) {
   final locale = Localizations.maybeLocaleOf(context);
-  final ar = locale?.languageCode == 'ar' ? _arCopy[text] : null;
+  final ar = locale?.languageCode == 'ar' ? onboardingArExact(text) : null;
   if (ar != null) return ar;
   return Directionality.of(context) == TextDirection.rtl &&
           !_rtlChars.hasMatch(text)
@@ -327,7 +327,7 @@ class _PrimaryCta extends StatelessWidget {
             textStyle: ModernGriotTypography.titleMedium(context: context),
           ),
           child: busy
-              ? _BusyLabel(label: _bidi(context, 'Saving…'))
+              ? _BusyLabel(label: _bidi(context, l10nOf(context).onboardingSaving))
               : Text(_bidi(context, label), textAlign: TextAlign.center),
         ),
       ),
@@ -384,7 +384,7 @@ class _SelectRow extends StatelessWidget {
       button: true,
       selected: isSelected,
       label: [label, if (subtitle != null) subtitle!].join(', '),
-      hint: isSelected ? null : 'Double tap to choose',
+      hint: isSelected ? null : l10nOf(context).onboardingDoubleTapToChoose,
       excludeSemantics: true,
       child: Material(
         color: Colors.transparent,
@@ -552,9 +552,7 @@ class _OfflineNotice extends StatelessWidget {
 
   final VoidCallback onRetry;
 
-  static const String message =
-      "You're offline. Keep going: your answers are saved on this phone "
-      'and sync when you reconnect.';
+  static String message(BuildContext context) => l10nOf(context).onboardingYouReOfflineKeepGoingYour;
 
   @override
   Widget build(BuildContext context) {
@@ -588,7 +586,7 @@ class _OfflineNotice extends StatelessWidget {
             SizedBox(width: ModernGriotSpacing.sm.w),
             Expanded(
               child: Text(
-                _bidi(context, message),
+                _bidi(context, message(context)),
                 style: ModernGriotTypography.bodySmall(
                   context: context,
                   color: ModernGriotColors.onSurface,
@@ -604,7 +602,7 @@ class _OfflineNotice extends StatelessWidget {
                 ),
               ),
               child: Text(
-                _bidi(context, 'Retry'),
+                _bidi(context, l10nOf(context).onboardingRetry),
                 style: ModernGriotTypography.labelLarge(
                   context: context,
                   color: ModernGriotColors.onSurface,

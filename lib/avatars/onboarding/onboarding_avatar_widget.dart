@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../director/avatar_director.dart';
 import '../cast/cast_stage.dart';
 import '../personality_system.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 /// Onboarding Avatar Widget - Animated guide for onboarding steps
 ///
@@ -134,7 +135,7 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
 
   @override
   Widget build(BuildContext context) {
-    final info = OnboardingAvatarInfo.getForStep(widget.step);
+    final info = OnboardingAvatarInfo.getForStep(context, widget.step);
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -533,123 +534,123 @@ class OnboardingAvatarInfo {
     this.defaultDialogues = const [],
   });
 
-  static const Map<OnboardingStep, OnboardingAvatarInfo> _info = {
+  static Map<OnboardingStep, OnboardingAvatarInfo> _info(BuildContext context) => {
     OnboardingStep.welcome: OnboardingAvatarInfo(
       step: OnboardingStep.welcome,
-      name: 'Pa LingAfriq',
-      title: 'Village Elder',
-      primaryColor: Color(0xFFD4AF37),
-      secondaryColor: Color(0xFFA67C00),
+      name: l10nOf(context).onboardingPaLingafriq,
+      title: l10nOf(context).onboardingVillageElder,
+      primaryColor: const Color(0xFFD4AF37),
+      secondaryColor: const Color(0xFFA67C00),
       icon: Icons.elderly,
       characterEmoji: '👴🏿',
       defaultDialogues: [
-        'Welcome, young one, to our village of languages.',
-        'I am Pa LingAfriq, guardian of our ancestral tongues.',
-        'Your journey to connect with your roots begins here.',
+        l10nOf(context).onboardingWelcomeYoungOneToOurVillage,
+        l10nOf(context).onboardingIAmPaLingafriqGuardianOf,
+        l10nOf(context).onboardingYourJourneyToConnectWithYour,
       ],
     ),
     OnboardingStep.languageSelection: OnboardingAvatarInfo(
       step: OnboardingStep.languageSelection,
       name: 'Adisa',
-      title: 'The Weaver',
-      primaryColor: Color(0xFF00D4AA),
-      secondaryColor: Color(0xFF00A88A),
+      title: l10nOf(context).onboardingTheWeaver,
+      primaryColor: const Color(0xFF00D4AA),
+      secondaryColor: const Color(0xFF00A88A),
       icon: Icons.language,
       characterEmoji: '🧑🏿‍🎨',
       defaultDialogues: [
-        'I am Adisa, weaver of words and keeper of tongues.',
-        'Each language is a thread in the tapestry of Africa.',
-        'Which thread shall we weave into your story?',
+        l10nOf(context).onboardingIAmAdisaWeaverOfWords,
+        l10nOf(context).onboardingEachLanguageIsAThreadIn,
+        l10nOf(context).onboardingWhichThreadShallWeWeaveInto,
       ],
     ),
     OnboardingStep.goals: OnboardingAvatarInfo(
       step: OnboardingStep.goals,
       name: 'Zuri',
-      title: 'The Pathfinder',
-      primaryColor: Color(0xFF9B59B6),
-      secondaryColor: Color(0xFF7D3C98),
+      title: l10nOf(context).onboardingThePathfinder,
+      primaryColor: const Color(0xFF9B59B6),
+      secondaryColor: const Color(0xFF7D3C98),
       icon: Icons.explore,
       characterEmoji: '🧭',
       defaultDialogues: [
-        'Greetings, traveler! I am Zuri, your pathfinder.',
-        'Every great journey needs a destination.',
-        'What brings you to learn this beautiful language?',
+        l10nOf(context).onboardingGreetingsTravelerIAmZuriYour,
+        l10nOf(context).onboardingEveryGreatJourneyNeedsADestination,
+        l10nOf(context).onboardingWhatBringsYouToLearnThis,
       ],
     ),
     OnboardingStep.schedule: OnboardingAvatarInfo(
       step: OnboardingStep.schedule,
       name: 'Kofi',
-      title: 'The Timekeeper',
-      primaryColor: Color(0xFF3498DB),
-      secondaryColor: Color(0xFF2980B9),
+      title: l10nOf(context).onboardingTheTimekeeper,
+      primaryColor: const Color(0xFF3498DB),
+      secondaryColor: const Color(0xFF2980B9),
       icon: Icons.schedule,
       characterEmoji: '⏳',
       defaultDialogues: [
-        'I am Kofi, keeper of time and rhythm.',
-        'Consistency is the heartbeat of learning.',
-        'How much time can you dedicate each day?',
+        l10nOf(context).onboardingIAmKofiKeeperOfTime,
+        l10nOf(context).onboardingConsistencyIsTheHeartbeatOfLearning,
+        l10nOf(context).onboardingHowMuchTimeCanYouDedicate,
       ],
     ),
     OnboardingStep.story: OnboardingAvatarInfo(
       step: OnboardingStep.story,
       name: 'Amara',
-      title: 'The Griot',
-      primaryColor: Color(0xFFE74C3C),
-      secondaryColor: Color(0xFFC0392B),
+      title: l10nOf(context).onboardingTheGriot,
+      primaryColor: const Color(0xFFE74C3C),
+      secondaryColor: const Color(0xFFC0392B),
       icon: Icons.auto_stories,
       characterEmoji: '📖',
       defaultDialogues: [
-        'Ah, a new student! I am Amara, the griot.',
-        'Let me tell you the story of our languages...',
-        'For in every word lies the wisdom of generations.',
+        l10nOf(context).onboardingAhANewStudentIAm,
+        l10nOf(context).onboardingLetMeTellYouTheStory,
+        l10nOf(context).onboardingForInEveryWordLiesThe,
       ],
     ),
     OnboardingStep.learningStyle: OnboardingAvatarInfo(
       step: OnboardingStep.learningStyle,
       name: 'Nuru',
-      title: 'The Rhythm Master',
-      primaryColor: Color(0xFFFF6B35),
-      secondaryColor: Color(0xFFE85D26),
+      title: l10nOf(context).onboardingTheRhythmMaster,
+      primaryColor: const Color(0xFFFF6B35),
+      secondaryColor: const Color(0xFFE85D26),
       icon: Icons.music_note_rounded,
       characterEmoji: '🥁',
       defaultDialogues: [
-        'Language is music, traveler!',
-        'Each soul dances differently to the rhythm of words.',
-        'How does your spirit best receive knowledge?',
+        l10nOf(context).onboardingLanguageIsMusicTraveler,
+        l10nOf(context).onboardingEachSoulDancesDifferentlyToThe,
+        l10nOf(context).onboardingHowDoesYourSpiritBestReceive,
       ],
     ),
     OnboardingStep.profile: OnboardingAvatarInfo(
       step: OnboardingStep.profile,
-      name: 'Pa LingAfriq',
-      title: 'Village Elder',
-      primaryColor: Color(0xFFD4AF37),
-      secondaryColor: Color(0xFFA67C00),
+      name: l10nOf(context).onboardingPaLingafriq,
+      title: l10nOf(context).onboardingVillageElder,
+      primaryColor: const Color(0xFFD4AF37),
+      secondaryColor: const Color(0xFFA67C00),
       icon: Icons.person_add_rounded,
       characterEmoji: '🪪',
       defaultDialogues: [
-        'Now it is time for your naming ceremony.',
-        'Every villager must have a name.',
-        'Choose wisely — it will be known across the village.',
+        l10nOf(context).onboardingNowItIsTimeForYour,
+        l10nOf(context).onboardingEveryVillagerMustHaveAName,
+        l10nOf(context).onboardingChooseWiselyItWillBeKnown,
       ],
     ),
     OnboardingStep.complete: OnboardingAvatarInfo(
       step: OnboardingStep.complete,
-      name: 'Pa LingAfriq',
-      title: 'Village Elder',
-      primaryColor: Color(0xFFD4AF37),
-      secondaryColor: Color(0xFFA67C00),
+      name: l10nOf(context).onboardingPaLingafriq,
+      title: l10nOf(context).onboardingVillageElder,
+      primaryColor: const Color(0xFFD4AF37),
+      secondaryColor: const Color(0xFFA67C00),
       icon: Icons.celebration,
       characterEmoji: '🎉',
       defaultDialogues: [
         'You are now part of our village!',
-        'May your journey be filled with discovery.',
-        'The ancestors smile upon your dedication.',
+        l10nOf(context).onboardingMayYourJourneyBeFilledWith,
+        l10nOf(context).onboardingTheAncestorsSmileUponYourDedication,
       ],
     ),
   };
 
-  static OnboardingAvatarInfo getForStep(OnboardingStep step) {
-    return _info[step]!;
+  static OnboardingAvatarInfo getForStep(BuildContext context, OnboardingStep step) {
+    return _info(context)[step]!;
   }
 
   String getRandomDialogue() {

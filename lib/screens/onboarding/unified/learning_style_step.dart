@@ -5,42 +5,42 @@ class _LearningStyleStep extends HookConsumerWidget {
 
   final Function(Map<String, dynamic>) onNext;
 
-  static const _styles = [
+  static _styles(BuildContext context) => [
     {
       'id': 'audio',
       'icon': Icons.headphones_rounded,
-      'title': 'Listening',
-      'desc': 'Learn by ear',
+      'title': l10nOf(context).onboardingListening,
+      'desc': l10nOf(context).onboardingLearnByEar,
     },
     {
       'id': 'visual',
       'icon': Icons.visibility_rounded,
-      'title': 'Visual',
-      'desc': 'See to remember',
+      'title': l10nOf(context).onboardingVisual,
+      'desc': l10nOf(context).onboardingSeeToRemember,
     },
     {
       'id': 'stories',
       'icon': Icons.auto_stories_rounded,
-      'title': 'Stories',
-      'desc': 'Narrative learning',
+      'title': l10nOf(context).onboardingStories,
+      'desc': l10nOf(context).onboardingNarrativeLearning,
     },
     {
       'id': 'drills',
       'icon': Icons.repeat_rounded,
-      'title': 'Practice',
-      'desc': 'Repetition & drills',
+      'title': l10nOf(context).onboardingPractice,
+      'desc': l10nOf(context).onboardingRepetitionDrills,
     },
     {
       'id': 'conversation',
       'icon': Icons.chat_rounded,
-      'title': 'Conversation',
-      'desc': 'Talk to learn',
+      'title': l10nOf(context).onboardingConversation,
+      'desc': l10nOf(context).onboardingTalkToLearn,
     },
     {
       'id': 'mixed',
       'icon': Icons.shuffle_rounded,
-      'title': 'Mixed',
-      'desc': 'Variety of methods',
+      'title': l10nOf(context).onboardingMixed,
+      'desc': l10nOf(context).onboardingVarietyOfMethods,
     },
   ];
 
@@ -62,16 +62,16 @@ class _LearningStyleStep extends HookConsumerWidget {
           onNext({'learning_style': selected.value});
         },
       ),
-      header: const _QuestionHeader(
-        question: 'How do you learn best?',
-        hint: 'Pick the style that feels most natural.',
+      header: _QuestionHeader(
+        question: l10nOf(context).onboardingHowDoYouLearnBest,
+        hint: l10nOf(context).onboardingPickTheStyleThatFeelsMost,
         step: OnboardingStep.learningStyle,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: ModernGriotSpacing.md.h),
-          for (final style in _styles)
+          for (final style in _styles(context))
             _SelectRow(
               label: style['title'] as String,
               subtitle: style['desc'] as String,

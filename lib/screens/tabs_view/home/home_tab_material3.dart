@@ -60,11 +60,11 @@ bool _isPendingGuardianMinor(AgeTierStatus? status) {
 bool _looksOffline(Object error) {
   final message = error.toString().toLowerCase();
   return message.contains('socketexception') ||
-      message.contains('no internet') ||
-      message.contains('network is unreachable') ||
-      message.contains('failed host lookup') ||
-      message.contains('connection refused') ||
-      message.contains('connection timed out');
+      message.contains(l10nEn().shellNoInternet) ||
+      message.contains(l10nEn().shellNetworkIsUnreachable) ||
+      message.contains(l10nEn().shellFailedHostLookup) ||
+      message.contains(l10nEn().shellConnectionRefused) ||
+      message.contains(l10nEn().shellConnectionTimedOut);
 }
 
 /// A small set of Pan-African welcome words. One is shown per calendar day
@@ -78,10 +78,10 @@ typedef WelcomeWord = ({
 });
 
 final List<WelcomeWord> kWelcomeWords = <WelcomeWord>[
-  (word: 'Sannu da zuwa', language: (l) => l.homeLangHausa),
-  (word: 'Welcome o', language: (l) => l.homeLangPidgin),
+  (word: l10nEn().shellSannuDaZuwa, language: (l) => l.homeLangHausa),
+  (word: l10nEn().shellWelcomeO, language: (l) => l.homeLangPidgin),
   (word: 'Karibu', language: (l) => l.homeLangSwahili),
-  (word: 'Ẹ Káàbọ̀', language: (l) => l.homeLangYoruba),
+  (word: l10nEn().shellKBf733, language: (l) => l.homeLangYoruba),
   (word: 'Wamukelekile', language: (l) => l.homeLangZulu),
   (word: 'Nnọọ', language: (l) => l.homeLangIgbo),
   (word: 'Welcome', language: null),
@@ -900,7 +900,7 @@ class _GoalRing extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        '$percent%',
+                        l10nOf(context).shellPercent(percent.toString()),
                         style: PanAfricanTypography.titleSmall(context)
                             .copyWith(
                               color: PanAfricanColors.neutralDarkest,

@@ -14,6 +14,7 @@ import 'package:lingafriq/models/placement_question.dart';
 import 'package:lingafriq/utils/text_sanitizer.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/config/api_contract.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 /// Polie-Powered Placement Test Screen
 class PlacementTestScreen extends HookConsumerWidget {
@@ -38,24 +39,24 @@ class PlacementTestScreen extends HookConsumerWidget {
     // These declarations above submitTest fix that.
     List<String> getStrengths(PlacementResult r) {
       if (r.provisional || r.level == 'unsure') {
-        return ['A precise level needs more calibrated items'];
+        return [l10nOf(context).onboardingAPreciseLevelNeedsMoreCalibrated];
       }
       if (r.score >= 70) {
         return [
-          'Strong vocabulary foundation',
-          'Good understanding of basic grammar',
+          l10nOf(context).onboardingStrongVocabularyFoundation,
+          l10nOf(context).onboardingGoodUnderstandingOfBasicGrammar,
         ];
       }
-      if (r.score >= 50) return ['Basic vocabulary knowledge'];
-      return ['Willingness to learn'];
+      if (r.score >= 50) return [l10nOf(context).onboardingBasicVocabularyKnowledge];
+      return [l10nOf(context).onboardingWillingnessToLearn];
     }
 
     List<String> getWeaknesses(PlacementResult r) {
       if (r.provisional || r.level == 'unsure') return [];
       if (r.score < 50) {
-        return ['Need to build vocabulary', 'Grammar fundamentals needed'];
+        return [l10nOf(context).onboardingNeedToBuildVocabulary, l10nOf(context).onboardingGrammarFundamentalsNeeded];
       }
-      if (r.score < 70) return ['Some grammar concepts need review'];
+      if (r.score < 70) return [l10nOf(context).onboardingSomeGrammarConceptsNeedReview];
       return [];
     }
 
@@ -63,27 +64,27 @@ class PlacementTestScreen extends HookConsumerWidget {
       final level = r.level;
       if (r.provisional || level == 'unsure') {
         return [
-          'Start with the first lessons. A level waits until calibrated items are available.',
+          l10nOf(context).onboardingStartWithTheFirstLessonsA,
         ];
       }
       if (level == 'A1' || level == 'A2') {
         return [
-          'Start with beginner lessons',
-          'Focus on vocabulary building',
-          'Practice pronunciation daily',
+          l10nOf(context).onboardingStartWithBeginnerLessons,
+          l10nOf(context).onboardingFocusOnVocabularyBuilding,
+          l10nOf(context).onboardingPracticePronunciationDaily,
         ];
       }
       if (level == 'B1' || level == 'B2') {
         return [
-          'Continue with intermediate content',
-          'Practice conversation skills',
-          'Expand vocabulary in specific topics',
+          l10nOf(context).onboardingContinueWithIntermediateContent,
+          l10nOf(context).onboardingPracticeConversationSkills,
+          l10nOf(context).onboardingExpandVocabularyInSpecificTopics,
         ];
       }
       return [
-        'Advanced lessons recommended',
-        'Focus on fluency and nuance',
-        'Engage with native content',
+        l10nOf(context).onboardingAdvancedLessonsRecommended,
+        l10nOf(context).onboardingFocusOnFluencyAndNuance,
+        l10nOf(context).onboardingEngageWithNativeContent,
       ];
     }
 
@@ -219,7 +220,7 @@ class PlacementTestScreen extends HookConsumerWidget {
       final questionsLength = (test.value?['questions'] as List?)?.length ?? 0;
       if (answers.value.length < questionsLength) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please answer all questions')),
+          SnackBar(content: Text(l10nOf(context).onboardingPleaseAnswerAllQuestions)),
         );
         return;
       }
@@ -318,7 +319,7 @@ class PlacementTestScreen extends HookConsumerWidget {
               const CircularProgressIndicator(),
               SizedBox(height: PanAfricanSpacing.lg),
               Text(
-                'Generating your placement test...',
+                l10nOf(context).onboardingGeneratingYourPlacementTest,
                 style: PanAfricanTypography.bodyLarge(context),
               ),
             ],
@@ -334,7 +335,7 @@ class PlacementTestScreen extends HookConsumerWidget {
     if (test.value == null) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text('Placement Test'),
+          title: Text(l10nOf(context).onboardingPlacementTest),
           backgroundColor: Colors.transparent,
           elevation: 0,
         ),
@@ -365,13 +366,13 @@ class PlacementTestScreen extends HookConsumerWidget {
                     ),
                     SizedBox(height: PanAfricanSpacing.xl),
                     Text(
-                      'Unable to Generate Placement Test',
+                      l10nOf(context).onboardingUnableToGeneratePlacementTest,
                       style: PanAfricanTypography.headlineSmall(context),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: PanAfricanSpacing.md),
                     Text(
-                      'We couldn\'t connect to the server to generate your placement test. You can continue without it and take it later from your profile.',
+                      l10nOf(context).onboardingWeCouldnTConnectToThe,
                       style: PanAfricanTypography.bodyMedium(context),
                       textAlign: TextAlign.center,
                     ),
@@ -385,7 +386,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                         ).colorScheme.onPrimary,
                         minimumSize: Size(double.infinity, 50.h),
                       ),
-                      child: const Text('Continue Without Test'),
+                      child: Text(l10nOf(context).onboardingContinueWithoutTest),
                     ),
                     SizedBox(height: PanAfricanSpacing.md),
                     OutlinedButton(
@@ -396,7 +397,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                       style: OutlinedButton.styleFrom(
                         minimumSize: Size(double.infinity, 50.h),
                       ),
-                      child: const Text('Try Again'),
+                      child: Text(l10nOf(context).onboardingTryAgain),
                     ),
                   ],
                 ),
@@ -414,10 +415,10 @@ class PlacementTestScreen extends HookConsumerWidget {
 
     return LoadingOverlay(
       isLoading: isLoadingOverlay.value,
-      message: 'Loading test...',
+      message: l10nOf(context).onboardingLoadingTest,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Placement Test'),
+          title: Text(l10nOf(context).onboardingPlacementTest),
           backgroundColor: Colors.transparent,
           elevation: 0,
         ),
@@ -440,16 +441,16 @@ class PlacementTestScreen extends HookConsumerWidget {
                 // Progress
                 Semantics(
                   label:
-                      'Question ${currentQuestionIndex.value + 1} of ${questions.length}',
+                      l10nOf(context).onboardingQuestionValueOfValue2('${currentQuestionIndex.value + 1}', '${questions.length}'),
                   value:
-                      '${currentQuestionIndex.value + 1} of ${questions.length}',
+                      l10nOf(context).onboardingValueOfValue2('${currentQuestionIndex.value + 1}', '${questions.length}'),
                   child: Container(
                     padding: EdgeInsets.all(PanAfricanSpacing.md),
                     child: Semantics(
                       label:
-                          'Progress: question ${currentQuestionIndex.value + 1} of ${questions.length}',
+                          l10nOf(context).onboardingProgressQuestionValueOfValue2('${currentQuestionIndex.value + 1}', '${questions.length}'),
                       value:
-                          '${currentQuestionIndex.value + 1} of ${questions.length}',
+                          l10nOf(context).onboardingValueOfValue2('${currentQuestionIndex.value + 1}', '${questions.length}'),
                       child: LinearProgressIndicator(
                         value:
                             (currentQuestionIndex.value + 1) / questions.length,
@@ -463,7 +464,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                 ),
                 SizedBox(height: PanAfricanSpacing.sm),
                 Text(
-                  'Question ${currentQuestionIndex.value + 1} of ${questions.length}',
+                  l10nOf(context).onboardingQuestionValueOfValue2('${currentQuestionIndex.value + 1}', '${questions.length}'),
                   style: PanAfricanTypography.labelMedium(context),
                 ),
 
@@ -494,7 +495,7 @@ class PlacementTestScreen extends HookConsumerWidget {
 
                                 return Semantics(
                                   label:
-                                      'Answer option: $option${isSelected ? ", selected" : ""}',
+                                      l10nOf(context).onboardingAnswerOptionOptionValue(option.toString(), isSelected ? l10nOf(context).onboardingSelectedd7a1 : ""),
                                   button: true,
                                   selected: isSelected,
                                   child: Card(
@@ -526,7 +527,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                                               color: Theme.of(
                                                 context,
                                               ).colorScheme.onPrimary,
-                                              semanticLabel: 'Selected',
+                                              semanticLabel: l10nOf(context).onboardingSelected,
                                             )
                                           : null,
                                       onTap: () {
@@ -545,7 +546,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                         if (currentQuestion['type'] != 'multiple_choice')
                           TextField(
                             decoration: InputDecoration(
-                              labelText: 'Your Answer',
+                              labelText: l10nOf(context).onboardingYourAnswer,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(
                                   PanAfricanRadius.md,
@@ -580,7 +581,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                               currentQuestionIndex.value--;
                               HapticFeedback.lightImpact();
                             },
-                            child: const Text('Previous'),
+                            child: Text(l10nOf(context).onboardingPrevious),
                           ),
                         ),
                       if (currentQuestionIndex.value > 0)
@@ -646,7 +647,7 @@ class PlacementTestScreen extends HookConsumerWidget {
             child: Column(
               children: [
                 Text(
-                  'Placement Test Complete!',
+                  l10nOf(context).onboardingPlacementTestComplete,
                   style: PanAfricanTypography.displayMedium(
                     context,
                   ).copyWith(color: Theme.of(context).colorScheme.onPrimary),
@@ -668,8 +669,8 @@ class PlacementTestScreen extends HookConsumerWidget {
                 SizedBox(height: PanAfricanSpacing.xl),
                 Text(
                   (result['cefr_level'] ?? 'unsure').toString() == 'unsure'
-                      ? 'Level not precise yet'
-                      : 'Your Proficiency Level',
+                      ? l10nOf(context).onboardingLevelNotPreciseYet
+                      : l10nOf(context).onboardingYourProficiencyLevel,
                   style: PanAfricanTypography.titleLarge(
                     context,
                   ).copyWith(color: Theme.of(context).colorScheme.onPrimary),
@@ -690,7 +691,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                 if (result['weaknesses'] != null)
                   _buildSection(
                     context,
-                    'Areas for Improvement',
+                    l10nOf(context).onboardingAreasForImprovement,
                     result['weaknesses'] as List,
                     PanAfricanColors.warning,
                     isDark,
@@ -714,7 +715,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                     foregroundColor: PanAfricanColors.primary,
                     minimumSize: Size(double.infinity, 50.h),
                   ),
-                  child: const Text('Continue'),
+                  child: Text(l10nOf(context).onboardingContinue),
                 ),
               ],
             ),

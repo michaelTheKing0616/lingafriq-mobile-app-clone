@@ -649,7 +649,7 @@ class _Wallet extends StatelessWidget {
             Icon(i.$1, color: i.$2, size: 24.sp),
             SizedBox(height: PanAfricanSpacing.xxs),
             Text(
-              '${i.$3}',
+              l10nOf(context).shellValue75ce('${i.$3}'),
               style: PanAfricanTypography.titleMedium(
                 context,
               ).copyWith(fontWeight: FontWeight.w800, color: scheme.onSurface),

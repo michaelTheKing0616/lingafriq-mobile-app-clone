@@ -9,8 +9,7 @@ class _WelcomeStep extends StatelessWidget {
   Widget _poliePlane(BuildContext context, double side) {
     return Semantics(
       label:
-          'LingAfriq. Speak African languages with confidence. '
-          'Learn with Polie. Works offline.',
+          l10nOf(context).onboardingLingafriqSpeakAfricanLanguagesWithConf,
       child: ExcludeSemantics(
         child: Center(
           child:
@@ -48,15 +47,14 @@ class _WelcomeStep extends StatelessWidget {
       // Polie's intro: greets in five home scripts on a woven mat.
       Semantics(
         label:
-            'Polie greets you: welcome, in Yoruba, Hausa, Igbo, '
-            'Swahili and Twi.',
+            l10nOf(context).onboardingPolieGreetsYouWelcomeInYoruba,
         child: ExcludeSemantics(
           child: Column(
             children: [
               const _WovenStrip(color: ModernGriotColors.brandCoral),
               SizedBox(height: ModernGriotSpacing.xxs.h),
               Text(
-                _bidi(context, 'Ẹ kú àbọ̀ · Sannu · Nnọọ · Karibu · Akwaaba'),
+                _bidi(context, l10nOf(context).onboardingKBSannuNnKaribuAkwaaba),
                 key: const ValueKey('welcome-greetings'),
                 textAlign: TextAlign.center,
                 style: ModernGriotTypography.titleSmall(
@@ -73,7 +71,7 @@ class _WelcomeStep extends StatelessWidget {
       ),
       SizedBox(height: ModernGriotSpacing.xs.h),
       Text(
-        _bidi(context, 'Welcome to'),
+        _bidi(context, l10nOf(context).onboardingWelcomeTo),
         textAlign: TextAlign.center,
         style: ModernGriotTypography.titleMedium(
           context: context,
@@ -85,7 +83,7 @@ class _WelcomeStep extends StatelessWidget {
       ),
       SizedBox(height: ModernGriotSpacing.xxs.h),
       Text(
-        _bidi(context, 'LingAfriq'),
+        _bidi(context, l10nOf(context).onboardingLingafriq),
         textAlign: TextAlign.center,
         style: ModernGriotTypography.displaySmall(
           context: context,
@@ -94,7 +92,7 @@ class _WelcomeStep extends StatelessWidget {
       ),
       SizedBox(height: ModernGriotSpacing.xs.h),
       Text(
-        _bidi(context, 'The language village that gets you speaking.'),
+        _bidi(context, l10nOf(context).onboardingTheLanguageVillageThatGetsYou),
         textAlign: TextAlign.center,
         style: ModernGriotTypography.headlineSmall(
           context: context,
@@ -105,7 +103,7 @@ class _WelcomeStep extends StatelessWidget {
       Text(
         _bidi(
           context,
-          'Short lessons with Polie. Hear, tap, and say real phrases.',
+          l10nOf(context).onboardingShortLessonsWithPolieHearTap,
         ),
         textAlign: TextAlign.center,
         style: ModernGriotTypography.bodyMedium(
@@ -115,7 +113,7 @@ class _WelcomeStep extends StatelessWidget {
       ),
       SizedBox(height: ModernGriotSpacing.sm.h),
       Semantics(
-        label: 'Works offline, about 2 megabytes per unit',
+        label: l10nOf(context).onboardingWorksOfflineAbout2MegabytesPer,
         child: Container(
           padding: EdgeInsets.symmetric(
             horizontal: ModernGriotSpacing.sm.w,
@@ -127,7 +125,7 @@ class _WelcomeStep extends StatelessWidget {
             borderRadius: BorderRadius.circular(ModernGriotRadius.pill),
           ),
           child: Text(
-            _bidi(context, 'Works offline · about 2 MB per unit'),
+            _bidi(context, l10nOf(context).onboardingWorksOfflineAbout2MbPer),
             textAlign: TextAlign.center,
             style: ModernGriotTypography.labelMedium(
               context: context,
@@ -158,7 +156,7 @@ class _WelcomeStep extends StatelessWidget {
             ),
           ),
           child: Text(
-            _bidi(context, 'Get started'),
+            _bidi(context, l10nOf(context).onboardingGetStarted90e4),
             style: ModernGriotTypography.titleMedium(
               context: context,
               color: ModernGriotColors.onBrandGold,
@@ -178,7 +176,7 @@ class _WelcomeStep extends StatelessWidget {
           ),
         ),
         child: Text(
-          _bidi(context, 'I already have an account'),
+          _bidi(context, l10nOf(context).onboardingIAlreadyHaveAnAccount),
           textAlign: TextAlign.center,
           style: ModernGriotTypography.labelLarge(
             context: context,

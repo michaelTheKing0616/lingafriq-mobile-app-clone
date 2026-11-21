@@ -12,6 +12,7 @@ import '../../../widgets/greegins_builder.dart';
 import '../tabs_view.dart';
 import 'country_tab.dart';
 import 'global_tab.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 class StandingsTabIndexNotifier extends Notifier<int> {
   @override
@@ -87,7 +88,7 @@ class StandingsTab extends HookConsumerWidget {
   Widget buildSegment(String text) {
     final space = (" " * 5);
     return Text(
-      "$space$text$space",
+      l10nEn().shellSpaceTextSpace2(space.toString(), text.toString(), space.toString()),
       style: TextStyle(fontSize: 18.sp),
     ).p8();
   }

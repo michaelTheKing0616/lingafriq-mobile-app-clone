@@ -18,6 +18,7 @@ import 'package:lingafriq/utils/curriculum_languages.dart';
 import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart' show languagesProvider;
 import 'package:lingafriq/providers/tab_scaffold_provider.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 /// Beautiful Material 3 Courses Tab with Pan-African Design
 class CoursesTabMaterial3 extends HookConsumerWidget {
@@ -41,12 +42,12 @@ class CoursesTabMaterial3 extends HookConsumerWidget {
             children: [
               // Header with Pan-African App Bar
               PanAfricanAppBar(
-                title: 'Your Courses',
-                subtitle: user != null ? 'Hi ${user.fullName}' : null,
+                title: l10nOf(context).shellYourCourses9648,
+                subtitle: user != null ? l10nOf(context).shellHiValue(user.fullName) : null,
                 showBackButton: false,
                 actions: [
                   Semantics(
-                    label: 'Open menu',
+                    label: l10nOf(context).shellOpenMenu,
                     button: true,
                     child: IconButton(
                     icon: const Icon(Icons.menu_rounded),
@@ -54,7 +55,7 @@ class CoursesTabMaterial3 extends HookConsumerWidget {
                       HapticFeedback.lightImpact();
                       ref.read(scaffoldKeyProvider).currentState?.openDrawer();
                     },
-                    tooltip: 'Menu',
+                    tooltip: l10nOf(context).shellMenu,
                   ),
                   ),
                 ],
@@ -84,7 +85,7 @@ class CoursesTabMaterial3 extends HookConsumerWidget {
                         child: Semantics(
                           header: true,
                           child: Text(
-                          'Your Progress',
+                          l10nOf(context).shellYourProgress,
                           style: PanAfricanTypography.headlineMedium(context),
                         ),
                         ),
@@ -113,7 +114,7 @@ class CoursesTabMaterial3 extends HookConsumerWidget {
                                     ),
                                     SizedBox(height: PanAfricanSpacing.md),
                                     Text(
-                                      'No languages available',
+                                      l10nOf(context).shellNoLanguagesAvailable,
                                       style: PanAfricanTypography.titleMedium(context),
                                     ),
                                   ],
@@ -170,8 +171,8 @@ class CoursesTabMaterial3 extends HookConsumerWidget {
                               ),
                             );
                           },
-                          loading: () => const AdaptiveProgressIndicator(
-                            message: "Loading Courses...",
+                          loading: () => AdaptiveProgressIndicator(
+                            message: l10nOf(context).shellLoadingCourses7098,
                           ),
                         ),
                       ),
@@ -216,7 +217,7 @@ class _ProgressCard extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: Semantics(
-          label: '${language.name}, ${(progress * 100).toInt()}% complete. Tap to open.',
+          label: l10nOf(context).shellValueValue2CompleteTapToOpen(language.name, '${(progress * 100).toInt()}'),
           child: InkWell(
             onTap: onTap,
             borderRadius: PanAfricanRadius.lgBR,
@@ -270,7 +271,7 @@ class _ProgressCard extends StatelessWidget {
                         ),
                         SizedBox(height: PanAfricanSpacing.xs),
                         Text(
-                          'Lessons completed: ${language.completed} • Points: ${language.total_score}',
+                          l10nOf(context).shellLessonsCompletedValuePointsValue2('${language.completed}', '${language.total_score}'),
                           style: PanAfricanTypography.bodySmall(context).copyWith(
                             color: PanAfricanColors.neutralMedium,
                           ),
@@ -292,7 +293,7 @@ class _ProgressCard extends StatelessWidget {
               SizedBox(height: PanAfricanSpacing.sm),
               // Progress Bar
               Semantics(
-                label: 'Progress ${(progress * 100).toInt()}%',
+                label: l10nOf(context).shellProgressValue('${(progress * 100).toInt()}'),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -300,13 +301,13 @@ class _ProgressCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Progress',
+                          l10nOf(context).shellProgress,
                           style: PanAfricanTypography.labelMedium(context).copyWith(
                             color: PanAfricanColors.neutralMedium,
                           ),
                         ),
                         Text(
-                          '${(progress * 100).toInt()}%',
+                          l10nOf(context).shellValue('${(progress * 100).toInt()}'),
                           style: PanAfricanTypography.labelMedium(context).copyWith(
                             color: PanAfricanColors.primary,
                             fontWeight: FontWeight.w600,
@@ -340,7 +341,7 @@ class _ProgressCard extends StatelessWidget {
                     color: PanAfricanColors.secondary,
                   ),
                   label: Text(
-                    'Authentic Path (A1–C1)',
+                    l10nOf(context).shellAuthenticPathA1C1,
                     style: PanAfricanTypography.labelLarge(context).copyWith(
                       color: PanAfricanColors.secondary,
                       fontWeight: FontWeight.w600,

@@ -78,12 +78,11 @@ class _BirthYearStep extends HookConsumerWidget {
         busy: saving.value,
         onPressed: () => submit(withParentEmail: isChild),
       ),
-      header: const _QuestionHeader(
+      header: _QuestionHeader(
         step: OnboardingStep.profile,
-        question: 'What year were you born?',
+        question: l10nOf(context).onboardingWhatYearWereYouBorn,
         hint:
-            'This helps us keep LingAfriq right for you. '
-            'We only ask for the year.',
+            l10nOf(context).onboardingThisHelpsUsKeepLingafriqRight,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -100,10 +99,10 @@ class _BirthYearStep extends HookConsumerWidget {
               ),
               decoration: InputDecoration(
                 counterText: '',
-                labelText: _bidi(context, 'Birth year'),
-                hintText: _bidi(context, 'For example ${nowYear - 18}'),
+                labelText: _bidi(context, l10nOf(context).onboardingBirthYear),
+                hintText: _bidi(context, l10nOf(context).onboardingForExampleValue('${nowYear - 18}')),
                 helperText: typedInvalid.value
-                    ? 'Use a year between 1900 and $nowYear.'
+                    ? l10nOf(context).onboardingUseAYearBetween1900And(nowYear.toString())
                     : null,
                 filled: true,
                 fillColor: ModernGriotColors.surfaceContainerLowest,
@@ -132,7 +131,7 @@ class _BirthYearStep extends HookConsumerWidget {
                   ),
                 ),
                 child: Text(
-                  _bidi(context, 'Use the year wheel'),
+                  _bidi(context, l10nOf(context).onboardingUseTheYearWheel),
                   style: ModernGriotTypography.labelLarge(
                     context: context,
                     color: ModernGriotColors.onSurface,
@@ -142,9 +141,9 @@ class _BirthYearStep extends HookConsumerWidget {
             ),
           ] else ...[
             Semantics(
-              label: 'Birth year',
+              label: l10nOf(context).onboardingBirthYear,
               value: '${selectedYear.value}',
-              hint: 'Swipe up or down to change the year',
+              hint: l10nOf(context).onboardingSwipeUpOrDownToChange,
               child: Container(
                 height: ModernGriotLayout.minTouchTarget.h * 4,
                 decoration: BoxDecoration(
@@ -185,7 +184,7 @@ class _BirthYearStep extends HookConsumerWidget {
                         childCount: years.length,
                         builder: (context, i) => Center(
                           child: Text(
-                            _bidi(context, '${years[i]}'),
+                            _bidi(context, l10nOf(context).onboardingValue('${years[i]}')),
                             style: years[i] == selectedYear.value
                                 ? ModernGriotTypography.headlineSmall(
                                     context: context,
@@ -214,7 +213,7 @@ class _BirthYearStep extends HookConsumerWidget {
                   ),
                 ),
                 child: Text(
-                  _bidi(context, 'Type it instead'),
+                  _bidi(context, l10nOf(context).onboardingTypeItInstead),
                   style: ModernGriotTypography.labelLarge(
                     context: context,
                     color: ModernGriotColors.onSurface,
@@ -237,8 +236,7 @@ class _BirthYearStep extends HookConsumerWidget {
               child: Text(
                 _bidi(
                   context,
-                  'Your profile stays private, and adults cannot send you '
-                  'direct messages.',
+                  l10nOf(context).onboardingYourProfileStaysPrivateAndAdults,
                 ),
                 style: ModernGriotTypography.bodyMedium(
                   context: context,
@@ -273,7 +271,7 @@ class _AskParentPanel extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              _bidi(context, 'Ask a parent'),
+              _bidi(context, l10nOf(context).onboardingAskAParent),
               style: ModernGriotTypography.titleMedium(
                 context: context,
                 color: ModernGriotColors.onSecondaryContainer,
@@ -283,8 +281,7 @@ class _AskParentPanel extends StatelessWidget {
             Text(
               _bidi(
                 context,
-                'A parent or guardian says yes before you chat or share. '
-                'Add their email so they can approve your account.',
+                l10nOf(context).onboardingAParentOrGuardianSaysYes,
               ),
               style: ModernGriotTypography.bodyMedium(
                 context: context,
@@ -301,7 +298,7 @@ class _AskParentPanel extends StatelessWidget {
                 color: ModernGriotColors.onSurface,
               ),
               decoration: InputDecoration(
-                labelText: _bidi(context, "Parent's email"),
+                labelText: _bidi(context, l10nOf(context).onboardingParentSEmail),
                 filled: true,
                 fillColor: ModernGriotColors.surfaceContainerLowest,
                 border: OutlineInputBorder(
@@ -319,7 +316,7 @@ class _AskParentPanel extends StatelessWidget {
                 ),
               ),
               child: Text(
-                _bidi(context, 'Keep learning. My parent will add it later'),
+                _bidi(context, l10nOf(context).onboardingKeepLearningMyParentWillAdd),
                 textAlign: TextAlign.center,
                 style: ModernGriotTypography.labelLarge(
                   context: context,

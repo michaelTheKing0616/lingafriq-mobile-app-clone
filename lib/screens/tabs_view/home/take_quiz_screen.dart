@@ -25,6 +25,7 @@ import '../../../utils/api.dart';
 import '../../../utils/constants.dart';
 import '../../../widgets/greegins_builder.dart';
 import '../../../widgets/responsive_safe_area.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 class TakeQuizScreen extends ConsumerWidget {
   final Language language;
@@ -46,9 +47,9 @@ class TakeQuizScreen extends ConsumerWidget {
               children: [
                 BackButton(color: Theme.of(context).colorScheme.onPrimary),
                 // PointsAndProfileImageBuilder(size: Size(0.1.sh, 0.1.sh)),
-                const GreetingsBuilder(
+                GreetingsBuilder(
                   greetingTitle: '',
-                  pageTitle: "Take Quiz",
+                  pageTitle: l10nOf(context).shellTakeQuiz,
                 )
               ],
             ),
@@ -94,7 +95,7 @@ class TakeQuizScreen extends ConsumerWidget {
                                       border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
                                     ),
                                     child: Text(
-                                      'Choose a quiz type',
+                                      l10nOf(context).shellChooseAQuizType,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontSize: 13.sp,
@@ -162,7 +163,7 @@ class TakeQuizScreen extends ConsumerWidget {
       final randomQuizes = await showAfricanLoading<List<RandomQuizLessonModel>>(
         context: context,
         ref: ref,
-        message: 'Loading quizzes for ${language.name}...',
+        message: l10nOf(context).shellLoadingQuizzesForValue(language.name),
         operation: () async {
           // Add timeout to prevent endless loading
           return await ref
@@ -182,7 +183,7 @@ class TakeQuizScreen extends ConsumerWidget {
       if (!context.mounted) return;
 
       if (randomQuizes == null || randomQuizes.isEmpty) {
-        ref.read(dialogProvider("We're working to add random quizzes for ${language.name}!"))
+        ref.read(dialogProvider(l10nOf(context).shellWeReWorkingToAddRandom(language.name)))
             .showSuccessSnackBar();
         return;
       }
@@ -195,10 +196,10 @@ class TakeQuizScreen extends ConsumerWidget {
       
     } on TimeoutException catch (e) {
       if (!context.mounted) return;
-      _showErrorSnackbar(context, ref, e.message ?? 'Connection timed out');
+      _showErrorSnackbar(context, ref, e.message ?? l10nOf(context).shellConnectionTimedOut52c8);
     } catch (e) {
       if (!context.mounted) return;
-      _showErrorSnackbar(context, ref, 'Failed to load quizzes. Please try again.');
+      _showErrorSnackbar(context, ref, l10nOf(context).shellFailedToLoadQuizzesPleaseTry);
       if (kDebugMode) debugPrint('Quiz loading error: $e');
     }
   }
@@ -216,7 +217,7 @@ class TakeQuizScreen extends ConsumerWidget {
         backgroundColor: Colors.red.shade700,
         behavior: SnackBarBehavior.floating,
         action: SnackBarAction(
-          label: 'Retry',
+          label: l10nOf(context).shellRetry,
           textColor: Theme.of(context).colorScheme.onError,
           onPressed: () => _loadRandomQuiz(context, ref),
         ),
@@ -301,7 +302,7 @@ class TakeQuizScreen extends ConsumerWidget {
           choices: shuffleableChoicesList,
           answer: englishChoices.elementAt(index),
           question: value,
-          description: "${splittedTextOnBrackets[index]} ",
+          description: l10nEn().shellValuea1d1(splittedTextOnBrackets[index]),
         );
       }).toList();
 

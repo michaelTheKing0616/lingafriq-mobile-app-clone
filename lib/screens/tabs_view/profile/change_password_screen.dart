@@ -14,6 +14,7 @@ import 'package:lingafriq/widgets/primary_text_field.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 
 import '../../../providers/shared_preferences_provider.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 class ChangePasswordScreen extends HookConsumerWidget {
   const ChangePasswordScreen({super.key});
@@ -47,8 +48,8 @@ class ChangePasswordScreen extends HookConsumerWidget {
               32.heightBox,
               PrimaryTextField(
                 controller: currentPasswordController,
-                title: "Current Password",
-                hintText: "Enter your current password",
+                title: l10nOf(context).shellCurrentPassword,
+                hintText: l10nOf(context).shellEnterYourCurrentPassword,
                 validator: Validators.passwordValidator,
                 textInputAction: TextInputAction.next,
                 obscureText: true,
@@ -57,8 +58,8 @@ class ChangePasswordScreen extends HookConsumerWidget {
               12.heightBox,
               PrimaryTextField(
                 controller: passwordController,
-                title: "New Password",
-                hintText: "Enter new password",
+                title: l10nOf(context).shellNewPassword,
+                hintText: l10nOf(context).shellEnterNewPassword,
                 validator: Validators.passwordValidator,
                 textInputAction: TextInputAction.next,
                 obscureText: true,
@@ -67,8 +68,8 @@ class ChangePasswordScreen extends HookConsumerWidget {
               12.heightBox,
               PrimaryTextField(
                 controller: confirmPasswordController,
-                title: "Confirm Password",
-                hintText: "Confirm your new password",
+                title: l10nOf(context).shellConfirmPassword,
+                hintText: l10nOf(context).shellConfirmYourNewPassword,
                 validator: (value) => Validators.confirmPasswordValidator(
                   value,
                   passwordController.text.trim(),
@@ -94,7 +95,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
                         ref.read(sharedPreferencesProvider).removeEmailAndPassword();
                         ref.read(navigationProvider).pop();
                         HapticFeedback.lightImpact();
-                        VxToast.show(context, msg: 'Password Changed');
+                        VxToast.show(context, msg: l10nOf(context).shellPasswordChanged);
                       } else {
                         throw Exception('Failed to change password');
                       }
@@ -103,7 +104,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
                     showError: true,
                   );
                 },
-                text: "Change Password",
+                text: l10nOf(context).shellChangePassword,
               )
             ],
           ).p16().scrollVertical(),
