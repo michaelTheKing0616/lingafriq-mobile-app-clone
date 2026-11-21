@@ -228,6 +228,12 @@ flutter:
 
 
   fonts:
+    - family: Andika
+      fonts:
+        - {asset: assets/google_fonts/Andika-Regular.ttf, weight: 400}
+        - {asset: assets/google_fonts/Andika-Bold.ttf, weight: 700}
+        - {asset: assets/google_fonts/Andika-Italic.ttf, weight: 400, style: italic}
+        - {asset: assets/google_fonts/Andika-BoldItalic.ttf, weight: 700, style: italic}
     - family: LingAfriqDisplay
       fonts:
         - {asset: assets/fonts/lingafriq/Nunito-Bold-LatinAfrica.ttf, weight: 700}
