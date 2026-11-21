@@ -19,15 +19,35 @@ mixin GroqChatProviderMixin2 on GroqChatStreamHelpers {
 
   Stream<String> sendMessageStream(String userMessage, {String? systemPromptOverride}) async* {
     final messageStartTime = DateTime.now();
+    const sendOpName = 'send_message_stream';
+    final sendTrackingId = _performanceAnalytics.startTracking(
+      operationName: sendOpName,
+      metadata: {'mode': _mode.name},
+    );
+    var sendTrackingStopped = false;
+    void stopSendTracking() {
+      if (sendTrackingStopped) return;
+      sendTrackingStopped = true;
+      _performanceAnalytics.stopTracking(
+        trackingId: sendTrackingId,
+        operationName: sendOpName,
+        additionalMetadata: {
+          'mode': _mode.name,
+          'elapsed_ms': DateTime.now().difference(messageStartTime).inMilliseconds,
+        },
+      );
+    }
 
     // Enhanced input validation and sanitization
     final sanitizedMessage = _sanitizeInput(userMessage);
     if (sanitizedMessage.trim().isEmpty) {
+      stopSendTracking();
       throw Exception('Message cannot be empty');
     }
 
     // Validate message length (prevent extremely long messages)
     if (sanitizedMessage.length > 2000) {
+      stopSendTracking();
       throw Exception('Message is too long. Please keep it under 2000 characters.');
     }
 
@@ -132,6 +152,7 @@ mixin GroqChatProviderMixin2 on GroqChatStreamHelpers {
           for (int i = 0; i < words.length; i++) {
             if (_userInterrupt) {
               state = state.copyWith(isLoading: false);
+              stopSendTracking();
               return;
             }
             
@@ -179,6 +200,7 @@ mixin GroqChatProviderMixin2 on GroqChatStreamHelpers {
           
           _turn = ConversationTurn.user;
           state = state.copyWith(isLoading: false);
+          stopSendTracking();
           return;
         } catch (e) {
           logger.warn('Hybrid Polie failed, falling back to standard mode', tag: 'ai-chat', error: e);
@@ -285,11 +307,14 @@ mixin GroqChatProviderMixin2 on GroqChatStreamHelpers {
         }
         
         // Enhance conversation context with intelligent management
-        final enhancedMessagesList = await _contextManager.getConversationContext(
-          conversationId: conversationId,
-          currentMessages: messagesList,
-          systemPrompt: effectiveSystemPrompt ?? '',
-          maxTokens: 2000, // Groq token limit consideration
+        final enhancedMessagesList = await _errorRecovery.executeWithRecovery(
+          operation: () => _contextManager.getConversationContext(
+            conversationId: conversationId,
+            currentMessages: messagesList,
+            systemPrompt: effectiveSystemPrompt ?? '',
+            maxTokens: 2000, // Groq token limit consideration
+          ),
+          operationName: 'get_conversation_context',
         );
         
         // Use enhanced context (which may include summary)
@@ -335,6 +360,7 @@ mixin GroqChatProviderMixin2 on GroqChatStreamHelpers {
           )) {
             if (_userInterrupt) {
               state = state.copyWith(isLoading: false);
+              stopSendTracking();
               return;
             }
             output += delta;
@@ -432,10 +458,12 @@ mixin GroqChatProviderMixin2 on GroqChatStreamHelpers {
           logger.error('Error tracking Polie performance', tag: 'ai-chat', error: e);
         }
 
+        stopSendTracking();
         return;
       } catch (e) {
         if (e is DioException && CancelToken.isCancel(e)) {
           state = state.copyWith(isLoading: false);
+          stopSendTracking();
           return;
         }
 
@@ -478,6 +506,7 @@ mixin GroqChatProviderMixin2 on GroqChatStreamHelpers {
           }
         }
         setProviderError(errorMessage);
+        stopSendTracking();
         throw Exception(errorMessage);
       }
     }

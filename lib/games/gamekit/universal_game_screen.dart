@@ -214,28 +214,33 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
         : null;
 
     _pendingFeedbackTimer?.cancel();
-    _feedbackTiming = GameKitFeedbackTiming(
+    final timing = GameKitFeedbackTiming(
       tappedAt: tappedAt,
       locallyVerifiable: locallyVerifiable,
       localCorrect: localCorrect,
     );
+    _feedbackTiming = timing;
 
     setState(() {
       _selectedAnswer = answer;
       _textInput = textInput;
-      _immediateLocalCorrect = localCorrect;
-      if (locallyVerifiable) {
+      _immediateLocalCorrect = timing.localCorrect;
+      if (timing.locallyVerifiable) {
         _feedbackPhase = GameKitFeedbackPhase.localVerdict;
       } else {
         _feedbackPhase = GameKitFeedbackPhase.idle;
       }
     });
 
-    if (!locallyVerifiable) {
+    if (!timing.locallyVerifiable) {
       _pendingFeedbackTimer = Timer(
         const Duration(milliseconds: GameKitFeedbackBudget.tapToFeedbackP95Ms),
         () {
           if (!mounted || _showResult) return;
+          final stored = _feedbackTiming;
+          if (stored == null || !stored.shouldShowPending(DateTime.now())) {
+            return;
+          }
           setState(() => _feedbackPhase = GameKitFeedbackPhase.pending);
         },
       );

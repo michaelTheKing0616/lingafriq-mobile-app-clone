@@ -185,6 +185,13 @@ class _FlashcardSafariGameState extends BaseGameScreenState<FlashcardSafariGame>
     });
   }
 
+  String get _currentCardAnnouncement {
+    final card = _currentCard;
+    final id = card?['id']?.toString();
+    if (id != null && id.isNotEmpty) return '$_word ($id)';
+    return _word;
+  }
+
   Future<void> _nextCard() async {
     await Future.delayed(const Duration(milliseconds: 800));
     await _loadNewCard();
@@ -275,10 +282,14 @@ class _FlashcardSafariGameState extends BaseGameScreenState<FlashcardSafariGame>
                           color: Colors.brown,
                         ),
                         SizedBox(height: 2.h),
-                        Text(
-                          _showWord ? _word : 'Tap to see word',
-                          style: TextStyle(fontSize: 28.sp, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.center,
+                        Semantics(
+                          liveRegion: true,
+                          label: _currentCardAnnouncement,
+                          child: Text(
+                            _showWord ? _word : 'Tap to see word',
+                            style: TextStyle(fontSize: 28.sp, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                         if (_showWord) ...[
                           SizedBox(height: 8.h),
@@ -324,14 +335,19 @@ class _FlashcardSafariGameState extends BaseGameScreenState<FlashcardSafariGame>
             }),
             if (_showResult) ...[
               SizedBox(height: 2.h),
-              Text(
-                _isCorrect ? 'Correct!' : 'Try again next round',
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                  color: _isCorrect ? Colors.green : Colors.red,
+              Semantics(
+                liveRegion: true,
+                label:
+                    '${_isCorrect ? 'Correct' : 'Try again next round'} for $_currentCardAnnouncement',
+                child: Text(
+                  _isCorrect ? 'Correct!' : 'Try again next round',
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                    color: _isCorrect ? Colors.green : Colors.red,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
               ),
               SizedBox(height: 2.h),
               FilledButton(

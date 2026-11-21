@@ -13,6 +13,7 @@ import '../../utils/pan_african_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
 import 'base_game_screen.dart';
+import 'shell_labels.dart';
 
 class ToneTrainerGame extends BaseGameScreen {
   const ToneTrainerGame({
@@ -128,6 +129,9 @@ class _ToneTrainerGameState extends BaseGameScreenState<ToneTrainerGame> {
   @override
   String? get appBarTitle =>
       'Tone Trainer (${_currentIndex + 1}/${_questions.length})';
+
+  @override
+  String? get shellScoreLabel => shellScorePointsLabel(_score);
 
   @override
   Widget buildGameContent(BuildContext context) {
@@ -329,7 +333,13 @@ class _ToneTrainerGameState extends BaseGameScreenState<ToneTrainerGame> {
                 icon: Icons.check_rounded,
                 onPressed: _selectedTone != null ? _checkSelection : null,
               )
-            else
+            else ...[
+              Text(
+                'Score: $_score/${_questions.length}',
+                style: ModernGriotTypography.titleSmall(context: context),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: PanAfricanSpacing.sm),
               GriotGradientButton(
                 label: _currentIndex < _questions.length - 1
                     ? 'Next Word'
@@ -337,6 +347,7 @@ class _ToneTrainerGameState extends BaseGameScreenState<ToneTrainerGame> {
                 icon: Icons.arrow_forward_rounded,
                 onPressed: _nextQuestion,
               ),
+            ],
             SizedBox(height: PanAfricanSpacing.md),
             // Cultural note
             GameCulturalNoteCard(

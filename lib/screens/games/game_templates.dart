@@ -223,6 +223,80 @@ Map<String, dynamic> _buildQuizChefFallbackRecipe({
   };
 }
 
+PhraseCard _syntheticPhraseCard({
+  required String id,
+  required String language,
+  required String level,
+  required String text,
+}) {
+  return PhraseCard(
+    cardId: id,
+    language: language,
+    text: text,
+    ascii: text,
+    gloss: text,
+    level: level,
+  );
+}
+
+/// Builds playable cards from grammar / karaoke / recipe fallbacks.
+/// Callers must invoke this only when real content is missing and
+/// [_allowSyntheticGameContent] is true.
+List<PhraseCard> _syntheticCardsFromFallbacks({
+  required WidgetRef ref,
+  required String language,
+  required String level,
+}) {
+  final cards = <PhraseCard>[];
+
+  void addCard(String id, String? raw) {
+    final text = raw?.trim() ?? '';
+    if (text.isEmpty) return;
+    cards.add(
+      _syntheticPhraseCard(
+        id: id,
+        language: language,
+        level: level,
+        text: text,
+      ),
+    );
+  }
+
+  final sentences = _buildGrammarFallbackSentences(
+    ref: ref,
+    language: language,
+  );
+  for (var i = 0; i < sentences.length; i++) {
+    addCard('synthetic_grammar_$i', sentences[i]['sentence']?.toString());
+  }
+
+  final song = _buildKaraokeFallbackSong(
+    ref: ref,
+    language: language,
+  );
+  final lyrics = song['lyrics'];
+  if (lyrics is List) {
+    for (var i = 0; i < lyrics.length; i++) {
+      addCard('synthetic_karaoke_$i', lyrics[i]?.toString());
+    }
+  }
+
+  final recipe = _buildQuizChefFallbackRecipe(
+    ref: ref,
+    language: language,
+  );
+  final steps = recipe['steps'];
+  if (steps is List) {
+    for (var i = 0; i < steps.length; i++) {
+      final step = steps[i];
+      final text = step is Map ? step['step']?.toString() : step?.toString();
+      addCard('synthetic_recipe_$i', text);
+    }
+  }
+
+  return cards;
+}
+
 // ========== GAME IMPLEMENTATIONS ==========
 
 /// Listen & Sketch Game
@@ -259,6 +333,15 @@ class _ListenSketchGameState extends BaseGameScreenState<ListenSketchGame> {
   Future<void> onGameInitialized() async {
     final gameProv = ref.read(gameProvider.notifier);
     _cards.addAll(gameProv.availableCards);
+    if (_cards.isEmpty && _allowSyntheticGameContent) {
+      _cards.addAll(
+        _syntheticCardsFromFallbacks(
+          ref: ref,
+          language: widget.language,
+          level: widget.level ?? 'A0',
+        ),
+      );
+    }
     if (_cards.isNotEmpty) {
       _prepareRound();
     }

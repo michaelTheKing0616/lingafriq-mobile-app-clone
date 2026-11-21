@@ -429,6 +429,7 @@ class _PointSayDictionarySheetState extends State<PointSayDictionarySheet> {
   }
 
   Widget _buildMiss(ThemeData theme) {
+    final miss = _miss;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
@@ -440,6 +441,13 @@ class _PointSayDictionarySheetState extends State<PointSayDictionarySheet> {
             style: theme.textTheme.bodyLarge,
           ),
         ),
+        if (miss != null) ...[
+          const SizedBox(height: 8),
+          Text(
+            miss.mlKitLabel,
+            style: theme.textTheme.titleMedium,
+          ),
+        ],
         const SizedBox(height: 16),
         TextField(
           controller: _lemmaController,
