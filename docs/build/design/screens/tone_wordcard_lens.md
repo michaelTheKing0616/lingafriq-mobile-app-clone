@@ -1,6 +1,17 @@
 # P3-016 Tone Lens, Word Card, and the Lens camera
 
-Status: Draft. No visual review is recorded. `docs/plan/CARD_STATUS.tsv` keeps P3-016 as Draft.
+Status: Approved. Visual review recorded below. `docs/plan/CARD_STATUS.tsv` marks P3-016 Done.
+
+## Visual review
+
+Checked on 21 November 2026 against the exported frames.
+
+- Tone Lens light, dark, and 200% show six contours in one `onSurface` stroke: high, mid, and low sit at different heights, rising and falling slope opposite ways, and downstep is a step. The unsure mark is a broken line, labelled Sample, with no number. `Ẹ kú àárọ̀` stays visible at 200%.
+- Word Card opens from a long press. It shows the contour, the word, the meaning, Play audio, one example, Save, and Practise. Practise is the only filled accent button.
+- Lens shows Point & Say, Live Translate, and Import Media. Point & Say is on, with a check, and names `ọ̀gẹ̀dẹ̀` as Plantain under a low contour. The photo line says the picture is checked, then deleted. Error and offline frames name what happened, why, and what to do.
+- Every frame is 390 px wide. The spec has no hex. Copy has no boast, no em dash, and no confidence number.
+
+Live Translate and Import Media are labelled modes on the Lens frame. Their result screens are out of this card. Approval stands.
 
 This is the screen spec for three surfaces:
 
