@@ -8703,5 +8703,119 @@
   "shellOfflineNext": "Connect, then try again.",
   "@shellOfflineNext": {
     "description": "shell. What to do while offline"
+  },
+  "searchFieldLabel": "Search words, features, and content",
+  "@searchFieldLabel": {
+    "description": "search. Field label"
+  },
+  "searchWords": "Words",
+  "@searchWords": {
+    "description": "search. Words group"
+  },
+  "searchFeatures": "Features",
+  "@searchFeatures": {
+    "description": "search. Features group"
+  },
+  "searchContent": "Content",
+  "@searchContent": {
+    "description": "search. Content group"
+  },
+  "searchIdleWhat": "Search is ready.",
+  "@searchIdleWhat": {
+    "description": "search. What happened before a query"
+  },
+  "searchIdleWhy": "The box is empty.",
+  "@searchIdleWhy": {
+    "description": "search. Why nothing is listed yet"
+  },
+  "searchIdleNext": "Type a word or a feature name.",
+  "@searchIdleNext": {
+    "description": "search. What to do on an empty box"
+  },
+  "searchEmptyTitle": "No match",
+  "@searchEmptyTitle": {
+    "description": "search. Title when nothing matches"
+  },
+  "searchEmptyWhat": "Nothing matches {query}.",
+  "@searchEmptyWhat": {
+    "description": "search. What happened when nothing matches",
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "searchEmptyWhy": "That name is not in words, features, or content on this phone.",
+  "@searchEmptyWhy": {
+    "description": "search. Why nothing matched"
+  },
+  "searchEmptyNext": "Open the directory to see every feature.",
+  "@searchEmptyNext": {
+    "description": "search. What to do when nothing matches"
+  },
+  "searchEmptyAction": "Open the directory",
+  "@searchEmptyAction": {
+    "description": "search. Button that opens the directory"
+  },
+  "searchOfflineLabel": "Offline. Showing results saved on this phone.",
+  "@searchOfflineLabel": {
+    "description": "search. Label on local results while offline"
+  },
+  "searchUnlockWhat": "{feature} is not open yet.",
+  "@searchUnlockWhat": {
+    "description": "search. What happened when a feature route is not built",
+    "placeholders": {
+      "feature": {
+        "type": "String"
+      }
+    }
+  },
+  "searchUnlockWhy": "It unlocks at {stage}.",
+  "@searchUnlockWhy": {
+    "description": "search. Why a feature route is not open",
+    "placeholders": {
+      "stage": {
+        "type": "String"
+      }
+    }
+  },
+  "searchUnlockNext": "Read this preview, then go back.",
+  "@searchUnlockNext": {
+    "description": "search. What to do on an unlock preview"
+  },
+  "searchPreviewLabel": "Preview",
+  "@searchPreviewLabel": {
+    "description": "search. Preview heading"
+  },
+  "searchBack": "Back",
+  "@searchBack": {
+    "description": "search. Back from search"
+  },
+  "searchOpenWord": "Open Word Card for {word}",
+  "@searchOpenWord": {
+    "description": "search. Semantics for a word result",
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "searchOpenFeature": "Open {feature}",
+  "@searchOpenFeature": {
+    "description": "search. Semantics for a feature result",
+    "placeholders": {
+      "feature": {
+        "type": "String"
+      }
+    }
+  },
+  "searchOpenContent": "Open {title}",
+  "@searchOpenContent": {
+    "description": "search. Semantics for a content result",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
   }
 }
