@@ -16,6 +16,7 @@ class SurfacingOffer {
     required this.place,
     this.role,
     this.maxPerDay,
+    this.social = false,
   });
 
   /// Stable id. Callers record this on [SurfacingShown].
@@ -25,7 +26,7 @@ class SurfacingOffer {
   final String label;
 
   /// Where the offer belongs: lesson_recap, play, word_card, lens, lesson,
-  /// or today.
+  /// today, scenario, village, radio, events, corrections, or status.
   final String place;
 
   /// Set to matching_game for the single game offered after a lesson.
@@ -34,6 +35,10 @@ class SurfacingOffer {
   /// When set, the offer is skipped once it has been shown this many times
   /// on the calendar day of [SurfacingQuery.now].
   final int? maxPerDay;
+
+  /// A social prompt. [SurfacingRules.evaluate] withholds these when
+  /// [SurfacingQuery.minor] is true.
+  final bool social;
 
   bool get isMatchingGame => role == 'matching_game';
 
@@ -74,7 +79,8 @@ class SurfacingShown {
 /// Explicit inputs for one evaluation. [now] is the clock.
 ///
 /// A day is the calendar date carried on [now] and on each [SurfacingShown.at]
-/// (year, month, and day). Pass those values from the same clock.
+/// (year, month, and day). Pass those values from the same clock. A weekend
+/// is Saturday or Sunday on that calendar date.
 class SurfacingQuery {
   const SurfacingQuery({
     required this.now,
@@ -86,6 +92,11 @@ class SurfacingQuery {
     this.cameraButtonUsed = false,
     this.events = const <SurfacingEvent>[],
     this.lastShown = const <SurfacingShown>[],
+    this.scenarioUnit,
+    this.minor = false,
+    this.adult = false,
+    this.active = false,
+    this.level,
   });
 
   final DateTime now;
@@ -101,6 +112,23 @@ class SurfacingQuery {
 
   /// Offers already shown, with the time the caller recorded.
   final List<SurfacingShown> lastShown;
+
+  /// Scenario unit the caller says was reached, such as market.
+  /// Null means no scenario unit was reached.
+  final String? scenarioUnit;
+
+  /// True when the caller says the account is a minor. Social offers are
+  /// withheld. Learning offers still apply.
+  final bool minor;
+
+  /// True when the caller says the account is an adult.
+  final bool adult;
+
+  /// True when the caller says the learner is active. Not inferred.
+  final bool active;
+
+  /// CEFR band the caller supplies, such as A2. Null means no level.
+  final String? level;
 }
 
 /// Contextual surfacing rules from ELEVATION section 17.3.
@@ -150,6 +178,7 @@ class SurfacingRules {
   ///
   /// An offer with [SurfacingOffer.maxPerDay] is left out once the last-shown
   /// record already reaches that count on the calendar day of [query.now].
+  /// A social offer is left out when [SurfacingQuery.minor] is true.
   /// The same offer id is returned once.
   List<SurfacingOffer> evaluate(SurfacingQuery query) {
     final List<SurfacingOffer> offers = <SurfacingOffer>[];
@@ -157,6 +186,7 @@ class SurfacingRules {
     for (final _ParsedRule rule in _rules) {
       if (!_matches(rule.when, query)) continue;
       for (final SurfacingOffer offer in rule.offers) {
+        if (offer.social && query.minor) continue;
         if (_capped(offer, query)) continue;
         if (!seen.add(offer.id)) continue;
         offers.add(offer);
@@ -172,12 +202,22 @@ class _When {
     required this.any,
     required this.eventKind,
     required this.minCount,
+    required this.scenarioUnit,
+    required this.weekend,
+    required this.adult,
+    required this.active,
+    required this.minLevel,
   });
 
   final List<String> all;
   final List<String> any;
   final String? eventKind;
   final int minCount;
+  final String? scenarioUnit;
+  final bool weekend;
+  final bool adult;
+  final bool active;
+  final String? minLevel;
 }
 
 class _ParsedRule {
@@ -220,8 +260,27 @@ _ParsedRule _parseRule(Object? value, String path) {
   );
 }
 
+const Set<String> _whenKeys = <String>{
+  'all',
+  'any',
+  'event',
+  'min_count',
+  'scenario_unit',
+  'weekend',
+  'adult',
+  'active',
+  'min_level',
+};
+
+const List<String> _cefrOrder = <String>['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+
 _When _parseWhen(Object? value, String path) {
   final Map<String, Object?> row = _asMap(value, path);
+  for (final String key in row.keys) {
+    if (!_whenKeys.contains(key)) {
+      throw FormatException('Unknown condition $key at $path');
+    }
+  }
   final List<String> all = _flags(row['all'], '$path.all');
   final List<String> any = _flags(row['any'], '$path.any');
   final Object? eventValue = row['event'];
@@ -236,7 +295,27 @@ _When _parseWhen(Object? value, String path) {
   } else if (row.containsKey('min_count')) {
     throw FormatException('min_count needs event at $path');
   }
-  if (all.isEmpty && any.isEmpty && eventKind == null) {
+  final String? scenarioUnit = row.containsKey('scenario_unit')
+      ? _asId(row['scenario_unit'], '$path.scenario_unit').toLowerCase()
+      : null;
+  final bool weekend = _requireTrue(row, 'weekend', path);
+  final bool adult = _requireTrue(row, 'adult', path);
+  final bool active = _requireTrue(row, 'active', path);
+  String? minLevel;
+  if (row.containsKey('min_level')) {
+    minLevel = _asId(row['min_level'], '$path.min_level').toUpperCase();
+    if (!_cefrOrder.contains(minLevel)) {
+      throw FormatException('Unknown level $minLevel at $path.min_level');
+    }
+  }
+  if (all.isEmpty &&
+      any.isEmpty &&
+      eventKind == null &&
+      scenarioUnit == null &&
+      !weekend &&
+      !adult &&
+      !active &&
+      minLevel == null) {
     throw FormatException('Expected a condition at $path');
   }
   return _When(
@@ -244,7 +323,19 @@ _When _parseWhen(Object? value, String path) {
     any: List<String>.unmodifiable(any),
     eventKind: eventKind,
     minCount: minCount,
+    scenarioUnit: scenarioUnit,
+    weekend: weekend,
+    adult: adult,
+    active: active,
+    minLevel: minLevel,
   );
+}
+
+bool _requireTrue(Map<String, Object?> row, String key, String path) {
+  if (!row.containsKey(key)) return false;
+  final Object? value = row[key];
+  if (value is bool && value) return true;
+  throw FormatException('$key must be true at $path.$key');
 }
 
 SurfacingOffer _parseOffer(Object? value, String path) {
@@ -268,12 +359,34 @@ SurfacingOffer _parseOffer(Object? value, String path) {
   if (row.containsKey('role')) {
     role = _asId(row['role'], '$path.role');
   }
+  var social = false;
+  if (row.containsKey('social')) {
+    final Object? value = row['social'];
+    if (value is! bool) {
+      throw FormatException('Expected a boolean at $path.social');
+    }
+    social = value;
+  }
+  const Set<String> offerKeys = <String>{
+    'id',
+    'label',
+    'place',
+    'role',
+    'max_per_day',
+    'social',
+  };
+  for (final String key in row.keys) {
+    if (!offerKeys.contains(key)) {
+      throw FormatException('Unknown offer field $key at $path');
+    }
+  }
   return SurfacingOffer(
     id: _asId(row['id'], '$path.id'),
     label: label,
     place: _asId(row['place'], '$path.place'),
     role: role,
     maxPerDay: maxPerDay,
+    social: social,
   );
 }
 
@@ -309,7 +422,40 @@ bool _matches(_When when, SurfacingQuery query) {
   if (kind != null && _countEvents(query, kind) < when.minCount) {
     return false;
   }
+  if (when.scenarioUnit != null) {
+    final String? unit = query.scenarioUnit?.trim().toLowerCase();
+    if (unit != when.scenarioUnit) return false;
+  }
+  if (when.weekend && !_isWeekend(query.now)) return false;
+  if (when.adult && (!query.adult || query.minor)) return false;
+  if (when.active && !query.active) return false;
+  final String? minLevel = when.minLevel;
+  if (minLevel != null && !_levelAtLeast(query.level, minLevel)) {
+    return false;
+  }
   return true;
+}
+
+bool _isWeekend(DateTime now) {
+  return now.weekday == DateTime.saturday || now.weekday == DateTime.sunday;
+}
+
+bool _levelAtLeast(String? level, String minimum) {
+  final int? have = _cefrRank(level);
+  final int? need = _cefrRank(minimum);
+  if (have == null || need == null) return false;
+  return have >= need;
+}
+
+int? _cefrRank(String? level) {
+  if (level == null) return null;
+  var band = level.trim().toUpperCase();
+  if (band.endsWith('+') && band.length > 1) {
+    band = band.substring(0, band.length - 1);
+  }
+  final int index = _cefrOrder.indexOf(band);
+  if (index < 0) return null;
+  return index;
 }
 
 bool _flag(SurfacingQuery query, String name) {
