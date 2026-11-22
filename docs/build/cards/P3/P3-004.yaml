@@ -48,7 +48,7 @@ risks: []
 gate: G3
 external_blockers:
 - EXT-14
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/10-analysis-and-decision-support

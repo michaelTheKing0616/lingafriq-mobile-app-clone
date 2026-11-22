@@ -143,5 +143,6 @@ D1–D10 signed 2026-10-21 ("approve all as recommended").
 | P2-041 | Learner graph. Builder default, Tope may override. 2026-10-23 | **One graph replaces the four models named in ADR-005.** Migration writes events first, then projects nodes, then FSRS-6 schedules, then the old writers stop being read. Raw audio stays off without opt-in. The four models are not deleted by this decision. | builder default |
 | P1-010 | App integrity. Tope 2026-10-22, owner-approved | **Play Integrity on Android and App Attest on iOS. Log-only first.** Enforce on sensitive routes after the false-positive rate is reviewed. | Tope, this session |
 | P1-025 | Snap storage. Tope 2026-10-22, owner-approved | **Private Cloudflare R2 bucket. Signed short-lived URLs only. No public listing.** | Tope, this session |
+| ADR-010 | Art direction. 2026-11-22. Conditional. EXT-14 sign-off is open. | **Night Study. Ink Lesson rejected for the default Today screen. Courtyard rejected. Sign-off for all three stays Pending.** | `docs/build/design/ADR-010.md` |
 
 Affects: D1/D6 → CONFLICTS C1–C3 closed, ADR-001…003; D2–D5 → EXTERNAL EXT-04/05/06/11/12, P4 studio cards; D7 → 04_ROUTING.md locked pending 10-card calibration; D8 → 05_UX_DESIGN_BAR.md targets; D9 → EXT-01 Done (`docs/plan/LINGAFRIQ_AI_MODEL_STACK.md`); D10 → P3 typography cards.
