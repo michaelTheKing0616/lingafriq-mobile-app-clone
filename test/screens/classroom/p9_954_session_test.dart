@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lingafriq/screens/classroom/classroom_session_screen.dart';
+import 'package:lingafriq/screens/classroom/live_classroom_screen.dart';
 
 void main() {
   group('P9-954 live session consent', () {

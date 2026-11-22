@@ -16,7 +16,7 @@ import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/screens/classroom/classroom_assignments_screen.dart';
 import 'package:lingafriq/screens/classroom/classroom_privacy_screen.dart';
 import 'package:lingafriq/screens/classroom/classroom_roster_screen.dart';
-import 'package:lingafriq/screens/classroom/classroom_session_screen.dart';
+import 'package:lingafriq/screens/classroom/live_classroom_screen.dart';
 
 class ClassroomDashboardScreen extends ConsumerStatefulWidget {
   final String tribeId;

@@ -88,7 +88,7 @@ import 'package:lingafriq/screens/home_screen.dart';
 
 import 'screens/chat/call_history_screen.dart';
 import 'screens/chat/live_classroom_screen_material3.dart';
-import 'screens/classroom/classroom_lobby_screen.dart';
+import 'screens/classroom/live_classroom_screen.dart';
 import 'screens/classroom/classroom_student_requests_screen.dart';
 import 'screens/guardian/approvals_screen.dart';
 import 'screens/guardian/child_messages_screen.dart';
@@ -436,7 +436,8 @@ Route<dynamic>? generateAppRoute(RouteSettings settings) {
         livekitUrl: args?['livekitUrl']?.toString(),
       );
     },
-    'classroom-lobby': (_) => const ClassroomLobbyScreen(),
+    'classroom-lobby': (_) =>
+        LiveClassroomScreen.fromRouteArguments(settings.arguments),
     'family-hub': (_) => const GuardianLinkScreen(),
     'guardian-approvals': (_) => const GuardianApprovalsScreen(),
     'guardian-messaging-guide': (_) => const GuardianMessagingExplainerScreen(),

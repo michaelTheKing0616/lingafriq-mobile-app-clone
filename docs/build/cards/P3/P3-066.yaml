@@ -65,11 +65,54 @@ visual_evidence_required: false
 dod_evidence:
 - tester report
 - ledger row
+harvest_audit:
+  classroom_session_screen.dart:
+    moved:
+    - session list, active session, optional agenda, check-in, offline outbox queue, sync
+    - live phases, recording consent, recording banner, retention line, teacher start recording, leave
+    - shouldPersistClassAv, classSessionPhaseLabel, consent and recording copy
+    dropped:
+    - two em dashes in the queued check-in line and the recording indicator were replaced with periods. The card forbids an em dash. The meaning is unchanged.
+  classroom_lobby_screen.dart:
+    moved:
+    - practice-room catalog from tribes with includeClassrooms
+    - class code join
+    - filter chips All, Starting Soon, My Languages. They change selection only. The source does not filter the list.
+    - room card language, title, Community classroom, participant count, HOT when members_count is over 20
+    - Notes opens /classroom-notes
+    - Queue opens /speaker-queue
+    - host and room open the live classroom room
+    - empty and error copy
+    dropped:
+    - empty language_tag rendered an em dash. The chip is omitted when the tag is empty.
+    - host and room tap opened LiveClassroomScreenMaterial3. That screen is not one of the four variants. The action now opens LiveClassroomScreen.
+  live_classroom_mobile_screen.dart:
+    moved:
+    - mute toggle
+    - active lesson card
+    - listener online dots and listener count
+    - reactions with the party and clap marks
+    - host speaking label
+    dropped:
+    - more_vert has no onPressed and builds no menu
+  classroom_v2_route_args.dart:
+    moved:
+    - LiveClassroomScreen.fromRouteArguments uses ClassroomV2RouteArgs.parse for tribeId and tribeName
+    kept: the file stays. classroom-roster-v2, classroom-assignments-v2, classroom-privacy-v2, and classroom-student-requests-v2 still call it, and classroom_v2_route_args_test.dart imports it. Those routes are outside this consolidation.
+    dropped:
+    - missingTribeIdScaffold is not applied on the live classroom. A missing tribe id opens the practice-room catalog. The scaffold stays on the routes that require a tribe id.
+  ideas:
+    roster: not present in the variant
+    assignments: not present in the variant
+    privacy: not present in the variant
+    notes: classroom_lobby_screen.dart opens /classroom-notes with tribeId and roomName
+    speaker_queue: classroom_lobby_screen.dart opens /speaker-queue with tribeId and roomName
 risks:
 - harvest drift; keep list authoritative
+- classroom_v2_route_args.dart remains because other classroom v2 routes still parse with it
 gate: G3
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging
