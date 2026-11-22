@@ -12577,6 +12577,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Go back to Me.'**
   String get hubHMeProfileEmptyNext;
+
+  /// lens.bridge
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation Bridge'**
+  String get lensBridge;
+
+  /// lens.permission.what
+  ///
+  /// In en, this message translates to:
+  /// **'The camera is blocked.'**
+  String get lensPermissionWhat;
+
+  /// lens.permission.why
+  ///
+  /// In en, this message translates to:
+  /// **'LingAfriq does not have permission to use the camera.'**
+  String get lensPermissionWhy;
+
+  /// lens.permission.next
+  ///
+  /// In en, this message translates to:
+  /// **'Open Settings and allow the camera.'**
+  String get lensPermissionNext;
+
+  /// lens.offline.translate.why
+  ///
+  /// In en, this message translates to:
+  /// **'Live Translate needs the network to listen and translate.'**
+  String get lensOfflineTranslateWhy;
+
+  /// lens.recognizer.missing.what
+  ///
+  /// In en, this message translates to:
+  /// **'Point & Say cannot name this offline.'**
+  String get lensRecognizerMissingWhat;
+
+  /// lens.recognizer.missing.why
+  ///
+  /// In en, this message translates to:
+  /// **'The on-device recognizer is not on this phone.'**
+  String get lensRecognizerMissingWhy;
+
+  /// lens.recognizer.missing.next
+  ///
+  /// In en, this message translates to:
+  /// **'Connect, then open Point & Say again. This phone has no on-device recognizer.'**
+  String get lensRecognizerMissingNext;
+
+  /// lens.dictionary.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No word is open.'**
+  String get lensNoWordWhat;
+
+  /// lens.dictionary.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'Point & Say has not named a word.'**
+  String get lensNoWordWhy;
+
+  /// lens.dictionary.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Point at one thing, then open Living Dictionary.'**
+  String get lensNoWordNext;
 }
 
 class _AppLocalizationsDelegate
