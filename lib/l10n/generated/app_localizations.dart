@@ -11791,6 +11791,234 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Connect, then try again.'**
   String get hubLearnOfflineNext;
+
+  /// hub.h_speak.title
+  ///
+  /// In en, this message translates to:
+  /// **'Speak'**
+  String get hubHSpeakTitle;
+
+  /// hub.h_speak.polie
+  ///
+  /// In en, this message translates to:
+  /// **'Polie'**
+  String get hubHSpeakPolie;
+
+  /// hub.h_speak.scenarios
+  ///
+  /// In en, this message translates to:
+  /// **'Scenarios'**
+  String get hubHSpeakScenarios;
+
+  /// hub.h_speak.personas
+  ///
+  /// In en, this message translates to:
+  /// **'Personas and Missions'**
+  String get hubHSpeakPersonas;
+
+  /// hub.h_speak.shadowing
+  ///
+  /// In en, this message translates to:
+  /// **'Shadowing'**
+  String get hubHSpeakShadowing;
+
+  /// hub.h_speak.codeSwitch
+  ///
+  /// In en, this message translates to:
+  /// **'Code-Switch and Respect'**
+  String get hubHSpeakCodeSwitch;
+
+  /// hub.h_speak.missions
+  ///
+  /// In en, this message translates to:
+  /// **'Speak Missions'**
+  String get hubHSpeakMissions;
+
+  /// hub.h_speak.coach
+  ///
+  /// In en, this message translates to:
+  /// **'Coach insights'**
+  String get hubHSpeakCoach;
+
+  /// hub.h_speak.back
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Speak'**
+  String get hubHSpeakBack;
+
+  /// hub.h_speak.notAvailable.title
+  ///
+  /// In en, this message translates to:
+  /// **'Not available yet'**
+  String get hubHSpeakNotAvailableTitle;
+
+  /// hub.h_speak.notAvailable.what
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is not available yet.'**
+  String hubHSpeakNotAvailableWhat(String name);
+
+  /// hub.h_speak.notAvailable.why
+  ///
+  /// In en, this message translates to:
+  /// **'This screen is not built yet.'**
+  String get hubHSpeakNotAvailableWhy;
+
+  /// hub.h_speak.notAvailable.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Speak.'**
+  String get hubHSpeakNotAvailableNext;
+
+  /// hub.h_speak.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'Speak has nothing to open yet.'**
+  String get hubHSpeakEmptyWhat;
+
+  /// hub.h_speak.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'No speaking place is listed.'**
+  String get hubHSpeakEmptyWhy;
+
+  /// hub.h_speak.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Open Polie and hold to talk.'**
+  String get hubHSpeakEmptyNext;
+
+  /// hub.h_speak.openPolie
+  ///
+  /// In en, this message translates to:
+  /// **'Open Polie'**
+  String get hubHSpeakOpenPolie;
+
+  /// hub.h_speak.error.what
+  ///
+  /// In en, this message translates to:
+  /// **'Speak did not open.'**
+  String get hubHSpeakErrorWhat;
+
+  /// hub.h_speak.error.why
+  ///
+  /// In en, this message translates to:
+  /// **'The list did not come back.'**
+  String get hubHSpeakErrorWhy;
+
+  /// hub.h_speak.error.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get hubHSpeakErrorNext;
+
+  /// hub.h_speak.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'Speak is not saved on the phone.'**
+  String get hubHSpeakOfflineWhy;
+
+  /// hub.h_speak.polie.talk
+  ///
+  /// In en, this message translates to:
+  /// **'Talk with Polie.'**
+  String get hubHSpeakTalk;
+
+  /// hub.h_speak.mode.chat
+  ///
+  /// In en, this message translates to:
+  /// **'Chat'**
+  String get hubHSpeakModeChat;
+
+  /// hub.h_speak.mode.explain
+  ///
+  /// In en, this message translates to:
+  /// **'Explain'**
+  String get hubHSpeakModeExplain;
+
+  /// hub.h_speak.mode.correct
+  ///
+  /// In en, this message translates to:
+  /// **'Correct me'**
+  String get hubHSpeakModeCorrect;
+
+  /// hub.h_speak.mode.roleplay
+  ///
+  /// In en, this message translates to:
+  /// **'Roleplay'**
+  String get hubHSpeakModeRoleplay;
+
+  /// hub.h_speak.mode.story
+  ///
+  /// In en, this message translates to:
+  /// **'Story'**
+  String get hubHSpeakModeStory;
+
+  /// hub.h_speak.mode.translate
+  ///
+  /// In en, this message translates to:
+  /// **'Translate'**
+  String get hubHSpeakModeTranslate;
+
+  /// hub.h_speak.mode.on
+  ///
+  /// In en, this message translates to:
+  /// **'On'**
+  String get hubHSpeakOn;
+
+  /// hub.h_speak.mode.onLabel
+  ///
+  /// In en, this message translates to:
+  /// **'{mode}, on'**
+  String hubHSpeakModeOn(String mode);
+
+  /// hub.h_speak.polie.empty.title
+  ///
+  /// In en, this message translates to:
+  /// **'No reply yet'**
+  String get hubHSpeakNoReply;
+
+  /// hub.h_speak.polie.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'Polie has not spoken.'**
+  String get hubHSpeakPolieEmptyWhat;
+
+  /// hub.h_speak.polie.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'You have not held to talk.'**
+  String get hubHSpeakPolieEmptyWhy;
+
+  /// hub.h_speak.polie.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Hold to talk when you are ready.'**
+  String get hubHSpeakPolieEmptyNext;
+
+  /// hub.h_speak.polie.hold
+  ///
+  /// In en, this message translates to:
+  /// **'Hold to talk'**
+  String get hubHSpeakHoldToTalk;
+
+  /// hub.h_speak.polie.error.what
+  ///
+  /// In en, this message translates to:
+  /// **'The voice screen did not load.'**
+  String get hubHSpeakPolieErrorWhat;
+
+  /// hub.h_speak.polie.error.why
+  ///
+  /// In en, this message translates to:
+  /// **'The tutor screen did not come back.'**
+  String get hubHSpeakPolieErrorWhy;
+
+  /// hub.h_speak.polie.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'Polie needs the network to answer.'**
+  String get hubHSpeakPolieOfflineWhy;
 }
 
 class _AppLocalizationsDelegate

@@ -6840,4 +6840,122 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get hubLearnOfflineNext => 'Connect, then try again.';
+
+  @override
+  String get hubHSpeakTitle => 'Speak';
+
+  @override
+  String get hubHSpeakPolie => 'Polie';
+
+  @override
+  String get hubHSpeakScenarios => 'Scenarios';
+
+  @override
+  String get hubHSpeakPersonas => 'Personas and Missions';
+
+  @override
+  String get hubHSpeakShadowing => 'Shadowing';
+
+  @override
+  String get hubHSpeakCodeSwitch => 'Code-Switch and Respect';
+
+  @override
+  String get hubHSpeakMissions => 'Speak Missions';
+
+  @override
+  String get hubHSpeakCoach => 'Coach insights';
+
+  @override
+  String get hubHSpeakBack => 'Back to Speak';
+
+  @override
+  String get hubHSpeakNotAvailableTitle => 'Not available yet';
+
+  @override
+  String hubHSpeakNotAvailableWhat(String name) {
+    return '$name is not available yet.';
+  }
+
+  @override
+  String get hubHSpeakNotAvailableWhy => 'This screen is not built yet.';
+
+  @override
+  String get hubHSpeakNotAvailableNext => 'Go back to Speak.';
+
+  @override
+  String get hubHSpeakEmptyWhat => 'Speak has nothing to open yet.';
+
+  @override
+  String get hubHSpeakEmptyWhy => 'No speaking place is listed.';
+
+  @override
+  String get hubHSpeakEmptyNext => 'Open Polie and hold to talk.';
+
+  @override
+  String get hubHSpeakOpenPolie => 'Open Polie';
+
+  @override
+  String get hubHSpeakErrorWhat => 'Speak did not open.';
+
+  @override
+  String get hubHSpeakErrorWhy => 'The list did not come back.';
+
+  @override
+  String get hubHSpeakErrorNext => 'Try again.';
+
+  @override
+  String get hubHSpeakOfflineWhy => 'Speak is not saved on the phone.';
+
+  @override
+  String get hubHSpeakTalk => 'Talk with Polie.';
+
+  @override
+  String get hubHSpeakModeChat => 'Chat';
+
+  @override
+  String get hubHSpeakModeExplain => 'Explain';
+
+  @override
+  String get hubHSpeakModeCorrect => 'Correct me';
+
+  @override
+  String get hubHSpeakModeRoleplay => 'Roleplay';
+
+  @override
+  String get hubHSpeakModeStory => 'Story';
+
+  @override
+  String get hubHSpeakModeTranslate => 'Translate';
+
+  @override
+  String get hubHSpeakOn => 'On';
+
+  @override
+  String hubHSpeakModeOn(String mode) {
+    return '$mode, on';
+  }
+
+  @override
+  String get hubHSpeakNoReply => 'No reply yet';
+
+  @override
+  String get hubHSpeakPolieEmptyWhat => 'Polie has not spoken.';
+
+  @override
+  String get hubHSpeakPolieEmptyWhy => 'You have not held to talk.';
+
+  @override
+  String get hubHSpeakPolieEmptyNext => 'Hold to talk when you are ready.';
+
+  @override
+  String get hubHSpeakHoldToTalk => 'Hold to talk';
+
+  @override
+  String get hubHSpeakPolieErrorWhat => 'The voice screen did not load.';
+
+  @override
+  String get hubHSpeakPolieErrorWhy => 'The tutor screen did not come back.';
+
+  @override
+  String get hubHSpeakPolieOfflineWhy => 'Polie needs the network to answer.';
 }

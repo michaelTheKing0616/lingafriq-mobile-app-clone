@@ -9137,5 +9137,167 @@
   "hubLearnOfflineNext": "Connect, then try again.",
   "@hubLearnOfflineNext": {
     "description": "hub.h_learn. What to do when Learn is offline"
+  },
+  "hubHSpeakTitle": "Speak",
+  "@hubHSpeakTitle": {
+    "description": "hub.h_speak.title"
+  },
+  "hubHSpeakPolie": "Polie",
+  "@hubHSpeakPolie": {
+    "description": "hub.h_speak.polie"
+  },
+  "hubHSpeakScenarios": "Scenarios",
+  "@hubHSpeakScenarios": {
+    "description": "hub.h_speak.scenarios"
+  },
+  "hubHSpeakPersonas": "Personas and Missions",
+  "@hubHSpeakPersonas": {
+    "description": "hub.h_speak.personas"
+  },
+  "hubHSpeakShadowing": "Shadowing",
+  "@hubHSpeakShadowing": {
+    "description": "hub.h_speak.shadowing"
+  },
+  "hubHSpeakCodeSwitch": "Code-Switch and Respect",
+  "@hubHSpeakCodeSwitch": {
+    "description": "hub.h_speak.codeSwitch"
+  },
+  "hubHSpeakMissions": "Speak Missions",
+  "@hubHSpeakMissions": {
+    "description": "hub.h_speak.missions"
+  },
+  "hubHSpeakCoach": "Coach insights",
+  "@hubHSpeakCoach": {
+    "description": "hub.h_speak.coach"
+  },
+  "hubHSpeakBack": "Back to Speak",
+  "@hubHSpeakBack": {
+    "description": "hub.h_speak.back"
+  },
+  "hubHSpeakNotAvailableTitle": "Not available yet",
+  "@hubHSpeakNotAvailableTitle": {
+    "description": "hub.h_speak.notAvailable.title"
+  },
+  "hubHSpeakNotAvailableWhat": "{name} is not available yet.",
+  "@hubHSpeakNotAvailableWhat": {
+    "description": "hub.h_speak.notAvailable.what",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "hubHSpeakNotAvailableWhy": "This screen is not built yet.",
+  "@hubHSpeakNotAvailableWhy": {
+    "description": "hub.h_speak.notAvailable.why"
+  },
+  "hubHSpeakNotAvailableNext": "Go back to Speak.",
+  "@hubHSpeakNotAvailableNext": {
+    "description": "hub.h_speak.notAvailable.next"
+  },
+  "hubHSpeakEmptyWhat": "Speak has nothing to open yet.",
+  "@hubHSpeakEmptyWhat": {
+    "description": "hub.h_speak.empty.what"
+  },
+  "hubHSpeakEmptyWhy": "No speaking place is listed.",
+  "@hubHSpeakEmptyWhy": {
+    "description": "hub.h_speak.empty.why"
+  },
+  "hubHSpeakEmptyNext": "Open Polie and hold to talk.",
+  "@hubHSpeakEmptyNext": {
+    "description": "hub.h_speak.empty.next"
+  },
+  "hubHSpeakOpenPolie": "Open Polie",
+  "@hubHSpeakOpenPolie": {
+    "description": "hub.h_speak.openPolie"
+  },
+  "hubHSpeakErrorWhat": "Speak did not open.",
+  "@hubHSpeakErrorWhat": {
+    "description": "hub.h_speak.error.what"
+  },
+  "hubHSpeakErrorWhy": "The list did not come back.",
+  "@hubHSpeakErrorWhy": {
+    "description": "hub.h_speak.error.why"
+  },
+  "hubHSpeakErrorNext": "Try again.",
+  "@hubHSpeakErrorNext": {
+    "description": "hub.h_speak.error.next"
+  },
+  "hubHSpeakOfflineWhy": "Speak is not saved on the phone.",
+  "@hubHSpeakOfflineWhy": {
+    "description": "hub.h_speak.offline.why"
+  },
+  "hubHSpeakTalk": "Talk with Polie.",
+  "@hubHSpeakTalk": {
+    "description": "hub.h_speak.polie.talk"
+  },
+  "hubHSpeakModeChat": "Chat",
+  "@hubHSpeakModeChat": {
+    "description": "hub.h_speak.mode.chat"
+  },
+  "hubHSpeakModeExplain": "Explain",
+  "@hubHSpeakModeExplain": {
+    "description": "hub.h_speak.mode.explain"
+  },
+  "hubHSpeakModeCorrect": "Correct me",
+  "@hubHSpeakModeCorrect": {
+    "description": "hub.h_speak.mode.correct"
+  },
+  "hubHSpeakModeRoleplay": "Roleplay",
+  "@hubHSpeakModeRoleplay": {
+    "description": "hub.h_speak.mode.roleplay"
+  },
+  "hubHSpeakModeStory": "Story",
+  "@hubHSpeakModeStory": {
+    "description": "hub.h_speak.mode.story"
+  },
+  "hubHSpeakModeTranslate": "Translate",
+  "@hubHSpeakModeTranslate": {
+    "description": "hub.h_speak.mode.translate"
+  },
+  "hubHSpeakOn": "On",
+  "@hubHSpeakOn": {
+    "description": "hub.h_speak.mode.on"
+  },
+  "hubHSpeakModeOn": "{mode}, on",
+  "@hubHSpeakModeOn": {
+    "description": "hub.h_speak.mode.onLabel",
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "hubHSpeakNoReply": "No reply yet",
+  "@hubHSpeakNoReply": {
+    "description": "hub.h_speak.polie.empty.title"
+  },
+  "hubHSpeakPolieEmptyWhat": "Polie has not spoken.",
+  "@hubHSpeakPolieEmptyWhat": {
+    "description": "hub.h_speak.polie.empty.what"
+  },
+  "hubHSpeakPolieEmptyWhy": "You have not held to talk.",
+  "@hubHSpeakPolieEmptyWhy": {
+    "description": "hub.h_speak.polie.empty.why"
+  },
+  "hubHSpeakPolieEmptyNext": "Hold to talk when you are ready.",
+  "@hubHSpeakPolieEmptyNext": {
+    "description": "hub.h_speak.polie.empty.next"
+  },
+  "hubHSpeakHoldToTalk": "Hold to talk",
+  "@hubHSpeakHoldToTalk": {
+    "description": "hub.h_speak.polie.hold"
+  },
+  "hubHSpeakPolieErrorWhat": "The voice screen did not load.",
+  "@hubHSpeakPolieErrorWhat": {
+    "description": "hub.h_speak.polie.error.what"
+  },
+  "hubHSpeakPolieErrorWhy": "The tutor screen did not come back.",
+  "@hubHSpeakPolieErrorWhy": {
+    "description": "hub.h_speak.polie.error.why"
+  },
+  "hubHSpeakPolieOfflineWhy": "Polie needs the network to answer.",
+  "@hubHSpeakPolieOfflineWhy": {
+    "description": "hub.h_speak.polie.offline.why"
   }
 }
