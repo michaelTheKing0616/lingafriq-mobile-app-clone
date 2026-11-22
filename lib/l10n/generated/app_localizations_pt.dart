@@ -6458,4 +6458,74 @@ class AppLocalizationsPt extends AppLocalizations {
   String shellUsername(String username) {
     return ', $username';
   }
+
+  @override
+  String get shellTabToday => 'Today';
+
+  @override
+  String get shellTabLearn => 'Learn';
+
+  @override
+  String get shellTabSpeak => 'Speak';
+
+  @override
+  String get shellTabPlay => 'Play';
+
+  @override
+  String get shellTabVillage => 'Village';
+
+  @override
+  String get shellMe => 'Me';
+
+  @override
+  String get shellSearch => 'Search';
+
+  @override
+  String get shellLens => 'Lens';
+
+  @override
+  String shellOpenSection(String tab) {
+    return 'Open $tab';
+  }
+
+  @override
+  String shellSectionOpen(String tab) {
+    return '$tab is open';
+  }
+
+  @override
+  String shellSectionLine(int index, String tab) {
+    return 'Line $index in $tab';
+  }
+
+  @override
+  String get shellLinkMissedWhat => 'This link did not open.';
+
+  @override
+  String shellLinkMissedWhy(String link) {
+    return 'Nothing in the app matches $link.';
+  }
+
+  @override
+  String shellLinkMissedWhyWithDetail(String link, String detail) {
+    return 'Nothing in the app matches $link. $detail';
+  }
+
+  @override
+  String get shellLinkMissedNext => 'Go back to Today.';
+
+  @override
+  String get shellLinkMissedAction => 'Go to Today';
+
+  @override
+  String get shellLinkWasEmpty => 'The link was empty.';
+
+  @override
+  String get shellOfflineWhat => 'The phone has no network.';
+
+  @override
+  String get shellOfflineWhy => 'These tabs are not saved offline.';
+
+  @override
+  String get shellOfflineNext => 'Connect, then try again.';
 }

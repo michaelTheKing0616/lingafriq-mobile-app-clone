@@ -8592,5 +8592,116 @@
         "type": "String"
       }
     }
+  },
+  "shellTabToday": "Today",
+  "@shellTabToday": {
+    "description": "shell.tab.today tab label"
+  },
+  "shellTabLearn": "Learn",
+  "@shellTabLearn": {
+    "description": "shell.tab.learn tab label"
+  },
+  "shellTabSpeak": "Speak",
+  "@shellTabSpeak": {
+    "description": "shell.tab.speak tab label"
+  },
+  "shellTabPlay": "Play",
+  "@shellTabPlay": {
+    "description": "shell.tab.play tab label"
+  },
+  "shellTabVillage": "Village",
+  "@shellTabVillage": {
+    "description": "shell.tab.village tab label"
+  },
+  "shellMe": "Me",
+  "@shellMe": {
+    "description": "shell. Me control"
+  },
+  "shellSearch": "Search",
+  "@shellSearch": {
+    "description": "shell. Search control"
+  },
+  "shellLens": "Lens",
+  "@shellLens": {
+    "description": "shell. Lens control"
+  },
+  "shellOpenSection": "Open {tab}",
+  "@shellOpenSection": {
+    "description": "button that opens a section in the current tab",
+    "placeholders": {
+      "tab": {
+        "type": "String"
+      }
+    }
+  },
+  "shellSectionOpen": "{tab} is open",
+  "@shellSectionOpen": {
+    "description": "shell. A tab section is open",
+    "placeholders": {
+      "tab": {
+        "type": "String"
+      }
+    }
+  },
+  "shellSectionLine": "Line {index} in {tab}",
+  "@shellSectionLine": {
+    "description": "shell. A line in a tab list",
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "tab": {
+        "type": "String"
+      }
+    }
+  },
+  "shellLinkMissedWhat": "This link did not open.",
+  "@shellLinkMissedWhat": {
+    "description": "shell. What happened when a link misses"
+  },
+  "shellLinkMissedWhy": "Nothing in the app matches {link}.",
+  "@shellLinkMissedWhy": {
+    "description": "shell. Why a link missed",
+    "placeholders": {
+      "link": {
+        "type": "String"
+      }
+    }
+  },
+  "shellLinkMissedWhyWithDetail": "Nothing in the app matches {link}. {detail}",
+  "@shellLinkMissedWhyWithDetail": {
+    "description": "shell. Why a link missed, with the parser detail",
+    "placeholders": {
+      "link": {
+        "type": "String"
+      },
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "shellLinkMissedNext": "Go back to Today.",
+  "@shellLinkMissedNext": {
+    "description": "shell. What to do after a missed link"
+  },
+  "shellLinkMissedAction": "Go to Today",
+  "@shellLinkMissedAction": {
+    "description": "button that leaves a missed link"
+  },
+  "shellLinkWasEmpty": "The link was empty.",
+  "@shellLinkWasEmpty": {
+    "description": "shell. A link had no text"
+  },
+  "shellOfflineWhat": "The phone has no network.",
+  "@shellOfflineWhat": {
+    "description": "shell. What happened while offline"
+  },
+  "shellOfflineWhy": "These tabs are not saved offline.",
+  "@shellOfflineWhy": {
+    "description": "shell. Why the shell is offline"
+  },
+  "shellOfflineNext": "Connect, then try again.",
+  "@shellOfflineNext": {
+    "description": "shell. What to do while offline"
   }
 }

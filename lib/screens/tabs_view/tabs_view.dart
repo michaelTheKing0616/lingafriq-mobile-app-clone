@@ -1,16 +1,9 @@
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/navigation/app_shell.dart';
+import 'package:lingafriq/navigation/tab_routes.dart';
 import 'package:lingafriq/providers/firebase_messaging_provider.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
-import 'package:lingafriq/screens/tabs_view/courses/courses_tab.dart';
-import 'package:lingafriq/screens/tabs_view/home/home_tab.dart';
-import 'package:lingafriq/screens/tabs_view/profile/profile_tab.dart';
-import 'package:lingafriq/screens/tabs_view/standings/standings_tab.dart';
-import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/widgets/offline/offline_indicator.dart';
 
 class TabIndexNotifier extends Notifier<int> {
   @override
@@ -21,15 +14,19 @@ class TabIndexNotifier extends Notifier<int> {
   }
 }
 
-final tabIndexProvider =
-    NotifierProvider.autoDispose<TabIndexNotifier, int>(() {
-  return TabIndexNotifier();
-});
+final tabIndexProvider = NotifierProvider.autoDispose<TabIndexNotifier, int>(
+  () {
+    return TabIndexNotifier();
+  },
+);
 
 final scaffoldKeyProvider = Provider(((ref) => GlobalKey<ScaffoldState>()));
 
-class TabsView extends StatefulHookConsumerWidget {
-  const TabsView({super.key});
+/// Five-tab shell. Me opens the drawer until Me destinations are wired.
+class TabsView extends ConsumerStatefulWidget {
+  const TabsView({super.key, this.initialLink});
+
+  final String? initialLink;
 
   @override
   ConsumerState<TabsView> createState() => _TabsViewState();
@@ -38,76 +35,36 @@ class TabsView extends StatefulHookConsumerWidget {
 class _TabsViewState extends ConsumerState<TabsView> {
   @override
   void initState() {
-    ref.read(firebaseMessagingProvider).initFCM();
     super.initState();
+    final String? link = widget.initialLink;
+    if (link != null) {
+      final ShellTab? tab = TabRoutes.resolve(link).tab;
+      if (tab != null) {
+        ref.read(tabIndexProvider.notifier).setIndex(tab.index);
+      }
+    }
+    ref.read(firebaseMessagingProvider).initFCM();
   }
 
   @override
   Widget build(BuildContext context) {
-    final index = ref.watch(tabIndexProvider);
-    final scaffoldKey = ref.watch(scaffoldKeyProvider);
-
-    return Scaffold(
-      key: scaffoldKey,
+    final int index = ref.watch(tabIndexProvider);
+    final GlobalKey<ScaffoldState> scaffoldKey = ref.watch(scaffoldKeyProvider);
+    return AppShell(
+      index: index,
+      initialLink: widget.initialLink,
+      scaffoldKey: scaffoldKey,
       drawer: const AppDrawer(),
-      body: OfflineIndicator(
-        child: IndexedStack(
-          index: index,
-          children: const [
-            HomeTab(),
-            CoursesTab(),
-            StandingsTab(),
-            ProfileTab(),
-          ],
-        ),
-      ),
-      bottomNavigationBar: const _BottomNavigationBar(),
-    );
-  }
-}
-
-class _BottomNavigationBar extends HookConsumerWidget {
-  const _BottomNavigationBar();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final index = ref.watch(tabIndexProvider);
-    return ClipRRect(
-      borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-      child: AnimatedBottomNavigationBar(
-        gapLocation: GapLocation.none,
-        backgroundColor: context.primaryColor,
-        activeColor: context.isDarkMode ? Theme.of(context).colorScheme.onSurface : PanAfricanColors.tertiary,
-        inactiveColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.54),
-        splashColor: context.isDarkMode ? PanAfricanColors.primary : PanAfricanColors.tertiary,
-        splashRadius: 30.sp,
-        icons: const [
-          Icons.home_rounded,
-          Icons.folder_copy_rounded,
-          Icons.bar_chart_rounded,
-          Icons.person_rounded
-        ],
-        iconSize: 30.sp,
-        activeIndex: index,
-        onTap: (value) {
-          //Refresh languages provider when tab is changed to courses tab
-          // CRITICAL FIX: Only invalidate if not already loading/refreshing to prevent excessive API calls
-          if (value == 1) {
-            final languagesAsync = ref.read(languagesProvider);
-            // Only invalidate if data is not loading, not refreshing, and not in error state
-            if (!languagesAsync.isLoading && 
-                !languagesAsync.isRefreshing && 
-                !languagesAsync.hasError) {
-              ref.invalidate(languagesProvider);
-            }
-          }
-          // if (value == 2) {
-          //   ref.invalidate(profilesProvider);
-          // }
-          HapticFeedback.lightImpact();
-          ref.read(tabIndexProvider.notifier).setIndex(value);
-        },
-      ),
+      onIndexChanged: (int value) {
+        ref.read(tabIndexProvider.notifier).setIndex(value);
+      },
+      onMe: () => scaffoldKey.currentState?.openDrawer(),
+      onSearch: () {
+        Navigator.of(context).pushNamed('/living-dictionary');
+      },
+      onLens: () {
+        Navigator.of(context).pushNamed('/import_media');
+      },
     );
   }
 }
