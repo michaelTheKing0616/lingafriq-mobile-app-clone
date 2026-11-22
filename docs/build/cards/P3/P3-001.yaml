@@ -6,8 +6,7 @@ phase: P3
 epic: E-P3-DESIGN-WORKFLOW
 req_ids:
 - EP-§3.1-01
-depends_on:
-- E-P2-PLATFORM
+depends_on: []
 size: M
 difficulty:
   score: 2
@@ -51,7 +50,8 @@ dod_evidence:
 - tester report
 - ledger row
 - T4 visual approval with exported frames
-risks: []
+risks:
+- 'Waived by Tope on 2026-11-22: this benchmark does not wait on E-P2-PLATFORM. Fifty-nine of sixty platform cards are Done. P2-032 stays Blocked-External until Atlas access exists, and E-P1-CONTAINMENT stays open because secrets, the AI gateway, and the licence choice are unfinished. Those are not inputs to this benchmark.'
 gate: G3
 external_blockers: []
 status: Draft
