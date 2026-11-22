@@ -1,0 +1,2 @@
+date	rule
+2026-11-22	Tope waived unmet depends_on, including epic phase gates, so Draft cards can start. External obtain-cards stay Blocked-External. Cards already Blocked-External stay blocked. Moonshot cards P13-005 through P13-011 stay behind the moonshot start gate. A card is Done only when its own acceptance criteria pass. Do not invent measurements, licences, translations, or sign-offs.
