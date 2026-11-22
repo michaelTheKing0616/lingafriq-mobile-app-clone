@@ -13310,6 +13310,144 @@ abstract class AppLocalizations {
   /// **'Shadowing is not saved on the phone.'**
   String get revRvShadowOfflineWhy;
 
+  /// rev.rv_audio.following
+  ///
+  /// In en, this message translates to:
+  /// **'Following'**
+  String get revRvAudioFollowing;
+
+  /// rev.rv_audio.followers
+  ///
+  /// In en, this message translates to:
+  /// **'Followers'**
+  String get revRvAudioFollowers;
+
+  /// rev.rv_audio.scheduled
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled sessions'**
+  String get revRvAudioScheduled;
+
+  /// rev.rv_audio.speak
+  ///
+  /// In en, this message translates to:
+  /// **'Speak'**
+  String get revRvAudioSpeak;
+
+  /// rev.rv_audio.host
+  ///
+  /// In en, this message translates to:
+  /// **'Host'**
+  String get revRvAudioHost;
+
+  /// rev.rv_audio.back
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Radio'**
+  String get revRvAudioBack;
+
+  /// rev.rv_audio.following.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No one is on this list.'**
+  String get revRvAudioFollowingEmptyWhat;
+
+  /// rev.rv_audio.following.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'There is no one to show.'**
+  String get revRvAudioFollowingEmptyWhy;
+
+  /// rev.rv_audio.following.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Radio.'**
+  String get revRvAudioFollowingEmptyNext;
+
+  /// rev.rv_audio.following.fail.what
+  ///
+  /// In en, this message translates to:
+  /// **'The list did not open.'**
+  String get revRvAudioFollowingFailWhat;
+
+  /// rev.rv_audio.following.fail.why
+  ///
+  /// In en, this message translates to:
+  /// **'The list did not come back.'**
+  String get revRvAudioFollowingFailWhy;
+
+  /// rev.rv_audio.following.fail.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get revRvAudioFollowingFailNext;
+
+  /// rev.rv_audio.following.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'This list is not saved on the phone.'**
+  String get revRvAudioFollowingOfflineWhy;
+
+  /// rev.rv_audio.scheduled.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No session is scheduled.'**
+  String get revRvAudioScheduledEmptyWhat;
+
+  /// rev.rv_audio.scheduled.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'There is no session to show.'**
+  String get revRvAudioScheduledEmptyWhy;
+
+  /// rev.rv_audio.scheduled.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Radio.'**
+  String get revRvAudioScheduledEmptyNext;
+
+  /// rev.rv_audio.scheduled.fail.what
+  ///
+  /// In en, this message translates to:
+  /// **'The sessions did not open.'**
+  String get revRvAudioScheduledFailWhat;
+
+  /// rev.rv_audio.scheduled.fail.why
+  ///
+  /// In en, this message translates to:
+  /// **'The session list did not come back.'**
+  String get revRvAudioScheduledFailWhy;
+
+  /// rev.rv_audio.scheduled.fail.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get revRvAudioScheduledFailNext;
+
+  /// rev.rv_audio.scheduled.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'These sessions are not saved on the phone.'**
+  String get revRvAudioScheduledOfflineWhy;
+
+  /// rev.rv_audio.hostedBy
+  ///
+  /// In en, this message translates to:
+  /// **'Hosted by {name}'**
+  String revRvAudioHostedBy(String name);
+
+  /// rev.rv_audio.session.semantics
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled session: {name}.'**
+  String revRvAudioSessionSemantics(String name);
+
+  /// rev.rv_audio.session.when
+  ///
+  /// In en, this message translates to:
+  /// **'{date} {time}'**
+  String revRvAudioSessionWhen(String date, String time);
+
   /// unlock.locked
   ///
   /// In en, this message translates to:

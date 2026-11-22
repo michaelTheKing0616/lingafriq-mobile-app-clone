@@ -7,6 +7,8 @@ import 'package:lingafriq/design/states/offline_state.dart';
 import 'package:lingafriq/design/tokens.g.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/l10n/l10n_of.dart';
+import 'package:lingafriq/screens/social_audio/following_screen.dart';
+import 'package:lingafriq/screens/social_audio/scheduled_sessions_screen.dart';
 
 /// How far a Village place is built.
 ///
@@ -114,6 +116,25 @@ VillageGateKind villageGate(VillagePlace place, VillageAudience audience) {
   return VillageGateKind.none;
 }
 
+/// Speaking and hosting on Radio use the guardian gate already on that place.
+bool radioSpeakHostLocked(VillageAudience audience) {
+  final VillagePlace? place = VillageRoutes.find(VillageRoutes.radio);
+  if (place == null) return true;
+  return villageGate(place, audience) == VillageGateKind.guardian;
+}
+
+/// Following screen with the Radio guardian gate applied.
+Widget buildRadioFollowing(VillageAudience audience) {
+  return FollowingScreen.live(guardianLocked: radioSpeakHostLocked(audience));
+}
+
+/// Scheduled sessions screen with the Radio guardian gate applied.
+Widget buildRadioScheduled(VillageAudience audience) {
+  return ScheduledSessionsScreen.live(
+    guardianLocked: radioSpeakHostLocked(audience),
+  );
+}
+
 /// Routes for the Village sitemap. The root is the place list, the map.
 abstract final class VillageRoutes {
   static const String root = '/village';
@@ -124,6 +145,8 @@ abstract final class VillageRoutes {
   static const String status = '/village/status';
   static const String clips = '/village/clips';
   static const String radio = '/village/radio';
+  static const String radioFollowing = '/village/radio/following';
+  static const String radioScheduled = '/village/radio/scheduled';
   static const String school = '/village/school';
   static const String elderHut = '/village/elder-hut';
   static const String corrections = '/village/corrections';
@@ -340,6 +363,14 @@ Widget _pageFor(BuildContext context, String path, {required bool anyway}) {
   if (path == VillageRoutes.root || path == VillageRoutes.map) {
     return const VillageHubPage();
   }
+  if (path == VillageRoutes.radioFollowing ||
+      path == VillageRoutes.radioScheduled) {
+    final VillageAudience audience = _VillageHubData.of(context).audience;
+    if (path == VillageRoutes.radioFollowing) {
+      return buildRadioFollowing(audience);
+    }
+    return buildRadioScheduled(audience);
+  }
   final VillagePlace? place = VillageRoutes.find(path);
   if (place == null) return VillageUnknownPage(path: path);
   final VillageAudience audience = _VillageHubData.of(context).audience;
@@ -390,6 +421,14 @@ class VillageHub extends StatelessWidget {
       ValueKey<String>('village-open-anyway-$id');
 
   static const Key verifyKey = ValueKey<String>('village-verify');
+
+  static const Key radioFollowingKey = ValueKey<String>(
+    'village-radio-following',
+  );
+
+  static const Key radioScheduledKey = ValueKey<String>(
+    'village-radio-scheduled',
+  );
 
   static const Key emptyKey = ValueKey<String>('village-empty');
 
@@ -746,6 +785,7 @@ class VillageNotAvailablePage extends StatelessWidget {
     final AppLocalizations l10n = l10nOf(context);
     final LingPalette palette = LingPalette.of(Theme.of(context).brightness);
     final String name = villagePlaceLabel(l10n, gap.placeId);
+    final bool isRadio = gap.placeId == 'radio';
     final String? childId = VillageRoutes.find(gap.placeId)?.childId;
     final VillagePlace? child = childId == null
         ? null
@@ -766,35 +806,58 @@ class VillageNotAvailablePage extends StatelessWidget {
                 softWrap: true,
                 overflow: TextOverflow.visible,
               ),
-              const SizedBox(height: LingAfriqTokens.spacing16),
-              Text(
-                l10n.hubHVillageNotAvailableTitle,
-                style: lingBody(palette.onSurface),
-                softWrap: true,
-                overflow: TextOverflow.visible,
-              ),
-              const SizedBox(height: LingAfriqTokens.spacing16),
-              Text(
-                l10n.hubHVillageNotAvailableWhat(name),
-                style: lingBody(palette.onSurfaceVariant),
-                softWrap: true,
-                overflow: TextOverflow.visible,
-              ),
-              const SizedBox(height: LingAfriqTokens.spacing16),
-              Text(
-                l10n.hubHVillageNotAvailableWhy,
-                style: lingBody(palette.onSurfaceVariant),
-                softWrap: true,
-                overflow: TextOverflow.visible,
-              ),
-              const SizedBox(height: LingAfriqTokens.spacing16),
-              Text(
-                l10n.hubHVillageNotAvailableNext,
-                style: lingBody(palette.onSurfaceVariant),
-                softWrap: true,
-                overflow: TextOverflow.visible,
-              ),
-              if (child != null) ...<Widget>[
+              if (isRadio) ...<Widget>[
+                const SizedBox(height: LingAfriqTokens.spacing16),
+                LingButton(
+                  key: VillageHub.radioFollowingKey,
+                  label: l10n.revRvAudioFollowing,
+                  unavailableLabel: l10n.commonStateUnavailable,
+                  onPressed: () => Navigator.of(
+                    context,
+                  ).pushNamed(VillageRoutes.radioFollowing),
+                  role: LingButtonRole.quiet,
+                ),
+                const SizedBox(height: LingAfriqTokens.spacing8),
+                LingButton(
+                  key: VillageHub.radioScheduledKey,
+                  label: l10n.revRvAudioScheduled,
+                  unavailableLabel: l10n.commonStateUnavailable,
+                  onPressed: () => Navigator.of(
+                    context,
+                  ).pushNamed(VillageRoutes.radioScheduled),
+                  role: LingButtonRole.quiet,
+                ),
+              ] else ...<Widget>[
+                const SizedBox(height: LingAfriqTokens.spacing16),
+                Text(
+                  l10n.hubHVillageNotAvailableTitle,
+                  style: lingBody(palette.onSurface),
+                  softWrap: true,
+                  overflow: TextOverflow.visible,
+                ),
+                const SizedBox(height: LingAfriqTokens.spacing16),
+                Text(
+                  l10n.hubHVillageNotAvailableWhat(name),
+                  style: lingBody(palette.onSurfaceVariant),
+                  softWrap: true,
+                  overflow: TextOverflow.visible,
+                ),
+                const SizedBox(height: LingAfriqTokens.spacing16),
+                Text(
+                  l10n.hubHVillageNotAvailableWhy,
+                  style: lingBody(palette.onSurfaceVariant),
+                  softWrap: true,
+                  overflow: TextOverflow.visible,
+                ),
+                const SizedBox(height: LingAfriqTokens.spacing16),
+                Text(
+                  l10n.hubHVillageNotAvailableNext,
+                  style: lingBody(palette.onSurfaceVariant),
+                  softWrap: true,
+                  overflow: TextOverflow.visible,
+                ),
+              ],
+              if (!isRadio && child != null) ...<Widget>[
                 const SizedBox(height: LingAfriqTokens.spacing16),
                 LingButton(
                   key: VillageHub.verifyKey,
