@@ -6528,4 +6528,114 @@ class AppLocalizationsYo extends AppLocalizations {
 
   @override
   String get shellOfflineNext => 'Connect, then try again.';
+
+  @override
+  String get hubTodayTitle => 'Today';
+
+  @override
+  String get hubTodayLead => 'One plan for today.';
+
+  @override
+  String get hubTodayDailyPlan => 'Daily plan';
+
+  @override
+  String get hubTodayDailyChallenges => 'Daily Challenges';
+
+  @override
+  String get hubTodayQuests => 'Quests';
+
+  @override
+  String get hubTodayEvents => 'Events and Festivals';
+
+  @override
+  String get hubTodayStreaks => 'Streaks';
+
+  @override
+  String get hubTodayBack => 'Back to Today';
+
+  @override
+  String hubTodayMinutes(int minutes) {
+    return '$minutes minutes';
+  }
+
+  @override
+  String hubTodayMinutesAbout(int minutes) {
+    return 'About $minutes minutes';
+  }
+
+  @override
+  String get hubTodayDueReviews => 'Due reviews';
+
+  @override
+  String get hubTodayNextLesson => 'Next lesson';
+
+  @override
+  String get hubTodayStart => 'Start';
+
+  @override
+  String hubTodayStartPlan(int minutes) {
+    return 'Start the $minutes minute plan';
+  }
+
+  @override
+  String get hubTodayEmptyTitle => 'No plan yet';
+
+  @override
+  String get hubTodayEmptyWhat => 'Today has nothing queued.';
+
+  @override
+  String get hubTodayEmptyWhy =>
+      'There is no review due, and no lesson is chosen.';
+
+  @override
+  String get hubTodayEmptyNext => 'Open Path and start the first lesson.';
+
+  @override
+  String get hubTodayOpenPath => 'Open Path';
+
+  @override
+  String get hubTodayNotBuiltWhat => 'This part is not available yet.';
+
+  @override
+  String get hubTodayNotBuiltWhy => 'It is not built yet.';
+
+  @override
+  String get hubTodayNotBuiltNext => 'Go back to Today.';
+
+  @override
+  String get hubTodayProviderWhat => 'The daily plan is not available.';
+
+  @override
+  String get hubTodayProviderWhy => 'The plan provider is not here.';
+
+  @override
+  String get hubTodayProviderNext => 'Come back when the plan is ready.';
+
+  @override
+  String get hubTodayRangeWhat => 'This plan cannot be shown.';
+
+  @override
+  String get hubTodayRangeWhy =>
+      'A shown plan is 10 to 15 minutes and lists due reviews and the next lesson.';
+
+  @override
+  String get hubTodayRangeNext => 'Come back when the plan is ready.';
+
+  @override
+  String get hubTodayErrorWhat => 'The plan did not open.';
+
+  @override
+  String get hubTodayErrorWhy => 'The lesson list did not come back.';
+
+  @override
+  String get hubTodayErrorNext => 'Try again.';
+
+  @override
+  String get hubTodayOfflineWhat => 'The phone has no network.';
+
+  @override
+  String get hubTodayOfflineWhy => 'This plan is not saved on the phone.';
+
+  @override
+  String get hubTodayOfflineNext => 'Connect, then try again.';
 }
