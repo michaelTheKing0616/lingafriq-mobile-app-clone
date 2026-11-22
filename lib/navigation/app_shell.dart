@@ -7,6 +7,7 @@ import 'package:lingafriq/design/states/offline_state.dart';
 import 'package:lingafriq/design/tokens.g.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/l10n/l10n_of.dart';
+import 'package:lingafriq/navigation/hub_me.dart';
 import 'package:lingafriq/navigation/tab_routes.dart';
 
 /// Global controls that sit on the shell and are not tabs.
@@ -187,9 +188,12 @@ class AppShellState extends State<AppShell> {
       custom();
       return;
     }
-    navigatorOf(
-      ShellTab.values[_index],
-    ).pushNamed(ShellRoutes.tool, arguments: tool);
+    final NavigatorState navigator = navigatorOf(ShellTab.values[_index]);
+    if (tool == ShellTool.me) {
+      openMeHub(navigator);
+      return;
+    }
+    navigator.pushNamed(ShellRoutes.tool, arguments: tool);
   }
 
   Widget _navigatorFor(ShellTab tab) {
