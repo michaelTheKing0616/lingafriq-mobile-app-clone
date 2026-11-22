@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 
 /// How long startup may run before the splash shows a progress cue.
@@ -92,12 +93,12 @@ class SplashProgressCue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+    return SizedBox(
       width: 36,
       height: 36,
       child: CircularProgressIndicator(
         key: SplashReadyGate.progressKey,
-        semanticsLabel: 'Loading',
+        semanticsLabel: l10nOf(context).loading,
         strokeWidth: 3,
         color: PanAfricanColors.secondary,
       ),
