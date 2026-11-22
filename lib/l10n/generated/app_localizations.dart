@@ -11341,6 +11341,210 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open {title}'**
   String searchOpenContent(String title);
+
+  /// hub.h_today.title
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get hubTodayTitle;
+
+  /// hub.h_today.lead
+  ///
+  /// In en, this message translates to:
+  /// **'One plan for today.'**
+  String get hubTodayLead;
+
+  /// hub.h_today.daily_plan
+  ///
+  /// In en, this message translates to:
+  /// **'Daily plan'**
+  String get hubTodayDailyPlan;
+
+  /// hub.h_today.daily_challenges
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Challenges'**
+  String get hubTodayDailyChallenges;
+
+  /// hub.h_today.quests
+  ///
+  /// In en, this message translates to:
+  /// **'Quests'**
+  String get hubTodayQuests;
+
+  /// hub.h_today.events
+  ///
+  /// In en, this message translates to:
+  /// **'Events and Festivals'**
+  String get hubTodayEvents;
+
+  /// hub.h_today.streaks
+  ///
+  /// In en, this message translates to:
+  /// **'Streaks'**
+  String get hubTodayStreaks;
+
+  /// hub.h_today.back
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Today'**
+  String get hubTodayBack;
+
+  /// hub.h_today.minutes
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} minutes'**
+  String hubTodayMinutes(int minutes);
+
+  /// hub.h_today.minutes_about
+  ///
+  /// In en, this message translates to:
+  /// **'About {minutes} minutes'**
+  String hubTodayMinutesAbout(int minutes);
+
+  /// hub.h_today.due_reviews
+  ///
+  /// In en, this message translates to:
+  /// **'Due reviews'**
+  String get hubTodayDueReviews;
+
+  /// hub.h_today.next_lesson
+  ///
+  /// In en, this message translates to:
+  /// **'Next lesson'**
+  String get hubTodayNextLesson;
+
+  /// hub.h_today.start
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get hubTodayStart;
+
+  /// hub.h_today.start_plan
+  ///
+  /// In en, this message translates to:
+  /// **'Start the {minutes} minute plan'**
+  String hubTodayStartPlan(int minutes);
+
+  /// hub.h_today.empty_title
+  ///
+  /// In en, this message translates to:
+  /// **'No plan yet'**
+  String get hubTodayEmptyTitle;
+
+  /// hub.h_today.empty_what
+  ///
+  /// In en, this message translates to:
+  /// **'Today has nothing queued.'**
+  String get hubTodayEmptyWhat;
+
+  /// hub.h_today.empty_why
+  ///
+  /// In en, this message translates to:
+  /// **'There is no review due, and no lesson is chosen.'**
+  String get hubTodayEmptyWhy;
+
+  /// hub.h_today.empty_next
+  ///
+  /// In en, this message translates to:
+  /// **'Open Path and start the first lesson.'**
+  String get hubTodayEmptyNext;
+
+  /// hub.h_today.open_path
+  ///
+  /// In en, this message translates to:
+  /// **'Open Path'**
+  String get hubTodayOpenPath;
+
+  /// hub.h_today.not_built_what
+  ///
+  /// In en, this message translates to:
+  /// **'This part is not available yet.'**
+  String get hubTodayNotBuiltWhat;
+
+  /// hub.h_today.not_built_why
+  ///
+  /// In en, this message translates to:
+  /// **'It is not built yet.'**
+  String get hubTodayNotBuiltWhy;
+
+  /// hub.h_today.not_built_next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Today.'**
+  String get hubTodayNotBuiltNext;
+
+  /// hub.h_today.provider_what
+  ///
+  /// In en, this message translates to:
+  /// **'The daily plan is not available.'**
+  String get hubTodayProviderWhat;
+
+  /// hub.h_today.provider_why
+  ///
+  /// In en, this message translates to:
+  /// **'The plan provider is not here.'**
+  String get hubTodayProviderWhy;
+
+  /// hub.h_today.provider_next
+  ///
+  /// In en, this message translates to:
+  /// **'Come back when the plan is ready.'**
+  String get hubTodayProviderNext;
+
+  /// hub.h_today.range_what
+  ///
+  /// In en, this message translates to:
+  /// **'This plan cannot be shown.'**
+  String get hubTodayRangeWhat;
+
+  /// hub.h_today.range_why
+  ///
+  /// In en, this message translates to:
+  /// **'A shown plan is 10 to 15 minutes and lists due reviews and the next lesson.'**
+  String get hubTodayRangeWhy;
+
+  /// hub.h_today.range_next
+  ///
+  /// In en, this message translates to:
+  /// **'Come back when the plan is ready.'**
+  String get hubTodayRangeNext;
+
+  /// hub.h_today.error_what
+  ///
+  /// In en, this message translates to:
+  /// **'The plan did not open.'**
+  String get hubTodayErrorWhat;
+
+  /// hub.h_today.error_why
+  ///
+  /// In en, this message translates to:
+  /// **'The lesson list did not come back.'**
+  String get hubTodayErrorWhy;
+
+  /// hub.h_today.error_next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get hubTodayErrorNext;
+
+  /// hub.h_today.offline_what
+  ///
+  /// In en, this message translates to:
+  /// **'The phone has no network.'**
+  String get hubTodayOfflineWhat;
+
+  /// hub.h_today.offline_why
+  ///
+  /// In en, this message translates to:
+  /// **'This plan is not saved on the phone.'**
+  String get hubTodayOfflineWhy;
+
+  /// hub.h_today.offline_next
+  ///
+  /// In en, this message translates to:
+  /// **'Connect, then try again.'**
+  String get hubTodayOfflineNext;
 }
 
 class _AppLocalizationsDelegate
