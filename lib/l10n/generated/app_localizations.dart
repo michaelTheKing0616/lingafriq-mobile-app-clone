@@ -12949,6 +12949,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'About is not saved on the phone.'**
   String get revRvMeAboutOfflineWhy;
+
+  /// rev.rv_today.challenges.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No challenges are saved.'**
+  String get revRvTodayChallengesEmptyWhat;
+
+  /// rev.rv_today.challenges.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'Today has no challenge list yet.'**
+  String get revRvTodayChallengesEmptyWhy;
+
+  /// rev.rv_today.challenges.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Today.'**
+  String get revRvTodayChallengesEmptyNext;
+
+  /// rev.rv_today.challenges.error.what
+  ///
+  /// In en, this message translates to:
+  /// **'Challenges did not open.'**
+  String get revRvTodayChallengesErrorWhat;
+
+  /// rev.rv_today.challenges.error.why
+  ///
+  /// In en, this message translates to:
+  /// **'The challenge list did not come back.'**
+  String get revRvTodayChallengesErrorWhy;
+
+  /// rev.rv_today.challenges.error.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get revRvTodayChallengesErrorNext;
+
+  /// rev.rv_today.challenges.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'Challenges are not saved on the phone.'**
+  String get revRvTodayChallengesOfflineWhy;
+
+  /// rev.rv_today.challenges.progress
+  ///
+  /// In en, this message translates to:
+  /// **'{current} of {target}'**
+  String revRvTodayChallengesProgress(int current, int target);
 }
 
 class _AppLocalizationsDelegate

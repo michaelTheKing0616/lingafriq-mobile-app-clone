@@ -28,7 +28,12 @@ import 'screens/curriculum/authentic_curriculum_entry_screen.dart';
 import 'screens/games/games_screen.dart';
 import 'screens/games/games_screen_enhanced_with_all_games.dart';
 import 'screens/games/games_screen_material3.dart';
+import 'screens/goals/daily_challenges_screen.dart';
 import 'screens/goals/daily_goals_screen.dart';
+import 'screens/help/feature_preloader_screen.dart';
+import 'screens/help/games_preloader.dart';
+import 'screens/help/gamification_preloader.dart';
+import 'screens/help/polie_preloader.dart';
 import 'screens/progress/progress_dashboard_screen.dart';
 import 'screens/achievements/achievements_screen.dart';
 import 'screens/gamification/leaderboard_screen.dart';
@@ -324,6 +329,11 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     /// Full static catalog (35+ games) with hub-aligned [AppLanguage] dropdown.
     'games_enhanced_catalog': (_) => const GamesScreenEnhanced(),
     'daily_goals': (_) => const DailyGoalsScreen(),
+    DailyChallengesScreen.routeKey: (_) => const DailyChallengesScreen.saved(),
+    GamesPreloader.routeKey: (_) => const GamesPreloader(),
+    GamificationPreloader.routeKey: (_) => const GamificationPreloader(),
+    PoliePreloader.routeKey: (_) => const PoliePreloader(),
+    FeaturesHelpPreloader.routeKey: (_) => const FeaturesHelpPreloader(),
     'progress': (_) => const ProgressDashboardScreen(),
     'achievements': (_) => const AchievementsScreen(),
     'badges': (_) =>

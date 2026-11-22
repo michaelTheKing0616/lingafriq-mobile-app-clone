@@ -10,6 +10,10 @@ class GamesPreloader extends StatelessWidget {
 
   const GamesPreloader({super.key, this.onComplete, this.tipStore});
 
+  static const String routePath = '/help/games-tip';
+
+  static const String routeKey = 'help/games-tip';
+
   @override
   Widget build(BuildContext context) {
     return FeaturePreloaderScreen(
