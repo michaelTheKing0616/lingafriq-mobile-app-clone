@@ -9738,5 +9738,125 @@
   "lensNoWordNext": "Point at one thing, then open Living Dictionary.",
   "@lensNoWordNext": {
     "description": "lens.dictionary.empty.next"
+  },
+  "revRvMeHandleTitle": "Global handle",
+  "@revRvMeHandleTitle": {
+    "description": "rev.rv_me.handle.title"
+  },
+  "revRvMeHandleEmptyWhat": "No handle is saved.",
+  "@revRvMeHandleEmptyWhat": {
+    "description": "rev.rv_me.handle.empty.what"
+  },
+  "revRvMeHandleEmptyWhy": "Friends cannot find you by a handle yet.",
+  "@revRvMeHandleEmptyWhy": {
+    "description": "rev.rv_me.handle.empty.why"
+  },
+  "revRvMeHandleEmptyNext": "Choose a handle.",
+  "@revRvMeHandleEmptyNext": {
+    "description": "rev.rv_me.handle.empty.next"
+  },
+  "revRvMeHandleChoose": "Choose a handle",
+  "@revRvMeHandleChoose": {
+    "description": "rev.rv_me.handle.choose"
+  },
+  "revRvMeHandleErrorWhat": "The handle did not open.",
+  "@revRvMeHandleErrorWhat": {
+    "description": "rev.rv_me.handle.error.what"
+  },
+  "revRvMeHandleErrorWhy": "The saved handle did not come back.",
+  "@revRvMeHandleErrorWhy": {
+    "description": "rev.rv_me.handle.error.why"
+  },
+  "revRvMeHandleErrorNext": "Try again.",
+  "@revRvMeHandleErrorNext": {
+    "description": "rev.rv_me.handle.error.next"
+  },
+  "revRvMeHandleOfflineWhy": "The handle is not saved on the phone.",
+  "@revRvMeHandleOfflineWhy": {
+    "description": "rev.rv_me.handle.offline.why"
+  },
+  "revRvMeHandleCurrent": "Current handle",
+  "@revRvMeHandleCurrent": {
+    "description": "rev.rv_me.handle.current"
+  },
+  "revRvMeHandleField": "Handle",
+  "@revRvMeHandleField": {
+    "description": "rev.rv_me.handle.field"
+  },
+  "revRvMeHandleHint": "Type the handle you want.",
+  "@revRvMeHandleHint": {
+    "description": "rev.rv_me.handle.hint"
+  },
+  "revRvMeHandleServer": "The server checks that this handle is unique and not profane.",
+  "@revRvMeHandleServer": {
+    "description": "rev.rv_me.handle.server"
+  },
+  "revRvMeHandleSave": "Save handle",
+  "@revRvMeHandleSave": {
+    "description": "rev.rv_me.handle.save"
+  },
+  "revRvMeHandleSaved": "Handle saved.",
+  "@revRvMeHandleSaved": {
+    "description": "rev.rv_me.handle.saved"
+  },
+  "revRvMeHandleNeeded": "Enter a handle before saving.",
+  "@revRvMeHandleNeeded": {
+    "description": "rev.rv_me.handle.needed"
+  },
+  "revRvMeHandleRejected": "The server rejected this handle.",
+  "@revRvMeHandleRejected": {
+    "description": "rev.rv_me.handle.rejected"
+  },
+  "revRvMeHandleCheckWhat": "The handle was not saved.",
+  "@revRvMeHandleCheckWhat": {
+    "description": "rev.rv_me.handle.check.what"
+  },
+  "revRvMeHandleCheckWhy": "Uniqueness and profanity could not be checked.",
+  "@revRvMeHandleCheckWhy": {
+    "description": "rev.rv_me.handle.check.why"
+  },
+  "revRvMeHandleCheckNext": "Try again. Nothing was saved.",
+  "@revRvMeHandleCheckNext": {
+    "description": "rev.rv_me.handle.check.next"
+  },
+  "revRvMeHandleSaveWhat": "The handle was not saved.",
+  "@revRvMeHandleSaveWhat": {
+    "description": "rev.rv_me.handle.saveError.what"
+  },
+  "revRvMeHandleSaveWhy": "The server did not keep this handle.",
+  "@revRvMeHandleSaveWhy": {
+    "description": "rev.rv_me.handle.saveError.why"
+  },
+  "revRvMeHandleSaveNext": "Try again. Nothing was saved.",
+  "@revRvMeHandleSaveNext": {
+    "description": "rev.rv_me.handle.saveError.next"
+  },
+  "revRvMeAboutEmptyWhat": "No story is saved.",
+  "@revRvMeAboutEmptyWhat": {
+    "description": "rev.rv_me.about.empty.what"
+  },
+  "revRvMeAboutEmptyWhy": "About has nothing to show.",
+  "@revRvMeAboutEmptyWhy": {
+    "description": "rev.rv_me.about.empty.why"
+  },
+  "revRvMeAboutEmptyNext": "Go back to Me.",
+  "@revRvMeAboutEmptyNext": {
+    "description": "rev.rv_me.about.empty.next"
+  },
+  "revRvMeAboutErrorWhat": "About did not open.",
+  "@revRvMeAboutErrorWhat": {
+    "description": "rev.rv_me.about.error.what"
+  },
+  "revRvMeAboutErrorWhy": "The story did not come back.",
+  "@revRvMeAboutErrorWhy": {
+    "description": "rev.rv_me.about.error.why"
+  },
+  "revRvMeAboutErrorNext": "Try again.",
+  "@revRvMeAboutErrorNext": {
+    "description": "rev.rv_me.about.error.next"
+  },
+  "revRvMeAboutOfflineWhy": "About is not saved on the phone.",
+  "@revRvMeAboutOfflineWhy": {
+    "description": "rev.rv_me.about.offline.why"
   }
 }

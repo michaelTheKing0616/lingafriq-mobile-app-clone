@@ -88,6 +88,8 @@ import 'screens/classroom/classroom_privacy_screen.dart';
 import 'screens/classroom/classroom_v2_route_args.dart';
 import 'screens/classroom/speaker_queue_screen.dart';
 import 'screens/tabs_view/profile/app_policy_screen.dart';
+import 'screens/tabs_view/profile/about_us_screen.dart';
+import 'screens/profile/global_handle_edit_screen.dart';
 import 'screens/lesson/lesson_flow_screen.dart';
 import 'screens/grammar/grammar_hub_screen.dart'
     show GrammarHubScreen, GrammarTopic;
@@ -488,6 +490,10 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
       return FeaturesGuideScreen(initialTab: tab.clamp(0, 5));
     },
     'policy': (_) => const AppPolicyScreen(),
+    // /me/handle
+    GlobalHandleEditScreen.routeKey: (_) => const GlobalHandleEditScreen(),
+    // /me/about
+    AboutUsScreen.routeKey: (_) => const AboutUsScreen(),
     // Lesson Flow
     'lesson-flow': (ctx) {
       final args = settings.arguments as Map<String, dynamic>?;
