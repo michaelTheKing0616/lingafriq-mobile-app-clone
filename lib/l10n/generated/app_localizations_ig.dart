@@ -7361,4 +7361,97 @@ class AppLocalizationsIg extends AppLocalizations {
 
   @override
   String get directoryBack => 'Back to Me';
+
+  @override
+  String get revRvMeHandleTitle => 'Global handle';
+
+  @override
+  String get revRvMeHandleEmptyWhat => 'No handle is saved.';
+
+  @override
+  String get revRvMeHandleEmptyWhy =>
+      'Friends cannot find you by a handle yet.';
+
+  @override
+  String get revRvMeHandleEmptyNext => 'Choose a handle.';
+
+  @override
+  String get revRvMeHandleChoose => 'Choose a handle';
+
+  @override
+  String get revRvMeHandleErrorWhat => 'The handle did not open.';
+
+  @override
+  String get revRvMeHandleErrorWhy => 'The saved handle did not come back.';
+
+  @override
+  String get revRvMeHandleErrorNext => 'Try again.';
+
+  @override
+  String get revRvMeHandleOfflineWhy => 'The handle is not saved on the phone.';
+
+  @override
+  String get revRvMeHandleCurrent => 'Current handle';
+
+  @override
+  String get revRvMeHandleField => 'Handle';
+
+  @override
+  String get revRvMeHandleHint => 'Type the handle you want.';
+
+  @override
+  String get revRvMeHandleServer =>
+      'The server checks that this handle is unique and not profane.';
+
+  @override
+  String get revRvMeHandleSave => 'Save handle';
+
+  @override
+  String get revRvMeHandleSaved => 'Handle saved.';
+
+  @override
+  String get revRvMeHandleNeeded => 'Enter a handle before saving.';
+
+  @override
+  String get revRvMeHandleRejected => 'The server rejected this handle.';
+
+  @override
+  String get revRvMeHandleCheckWhat => 'The handle was not saved.';
+
+  @override
+  String get revRvMeHandleCheckWhy =>
+      'Uniqueness and profanity could not be checked.';
+
+  @override
+  String get revRvMeHandleCheckNext => 'Try again. Nothing was saved.';
+
+  @override
+  String get revRvMeHandleSaveWhat => 'The handle was not saved.';
+
+  @override
+  String get revRvMeHandleSaveWhy => 'The server did not keep this handle.';
+
+  @override
+  String get revRvMeHandleSaveNext => 'Try again. Nothing was saved.';
+
+  @override
+  String get revRvMeAboutEmptyWhat => 'No story is saved.';
+
+  @override
+  String get revRvMeAboutEmptyWhy => 'About has nothing to show.';
+
+  @override
+  String get revRvMeAboutEmptyNext => 'Go back to Me.';
+
+  @override
+  String get revRvMeAboutErrorWhat => 'About did not open.';
+
+  @override
+  String get revRvMeAboutErrorWhy => 'The story did not come back.';
+
+  @override
+  String get revRvMeAboutErrorNext => 'Try again.';
+
+  @override
+  String get revRvMeAboutOfflineWhy => 'About is not saved on the phone.';
 }

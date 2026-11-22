@@ -12769,6 +12769,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Back to Me'**
   String get directoryBack;
+
+  /// rev.rv_me.handle.title
+  ///
+  /// In en, this message translates to:
+  /// **'Global handle'**
+  String get revRvMeHandleTitle;
+
+  /// rev.rv_me.handle.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No handle is saved.'**
+  String get revRvMeHandleEmptyWhat;
+
+  /// rev.rv_me.handle.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'Friends cannot find you by a handle yet.'**
+  String get revRvMeHandleEmptyWhy;
+
+  /// rev.rv_me.handle.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a handle.'**
+  String get revRvMeHandleEmptyNext;
+
+  /// rev.rv_me.handle.choose
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a handle'**
+  String get revRvMeHandleChoose;
+
+  /// rev.rv_me.handle.error.what
+  ///
+  /// In en, this message translates to:
+  /// **'The handle did not open.'**
+  String get revRvMeHandleErrorWhat;
+
+  /// rev.rv_me.handle.error.why
+  ///
+  /// In en, this message translates to:
+  /// **'The saved handle did not come back.'**
+  String get revRvMeHandleErrorWhy;
+
+  /// rev.rv_me.handle.error.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get revRvMeHandleErrorNext;
+
+  /// rev.rv_me.handle.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'The handle is not saved on the phone.'**
+  String get revRvMeHandleOfflineWhy;
+
+  /// rev.rv_me.handle.current
+  ///
+  /// In en, this message translates to:
+  /// **'Current handle'**
+  String get revRvMeHandleCurrent;
+
+  /// rev.rv_me.handle.field
+  ///
+  /// In en, this message translates to:
+  /// **'Handle'**
+  String get revRvMeHandleField;
+
+  /// rev.rv_me.handle.hint
+  ///
+  /// In en, this message translates to:
+  /// **'Type the handle you want.'**
+  String get revRvMeHandleHint;
+
+  /// rev.rv_me.handle.server
+  ///
+  /// In en, this message translates to:
+  /// **'The server checks that this handle is unique and not profane.'**
+  String get revRvMeHandleServer;
+
+  /// rev.rv_me.handle.save
+  ///
+  /// In en, this message translates to:
+  /// **'Save handle'**
+  String get revRvMeHandleSave;
+
+  /// rev.rv_me.handle.saved
+  ///
+  /// In en, this message translates to:
+  /// **'Handle saved.'**
+  String get revRvMeHandleSaved;
+
+  /// rev.rv_me.handle.needed
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a handle before saving.'**
+  String get revRvMeHandleNeeded;
+
+  /// rev.rv_me.handle.rejected
+  ///
+  /// In en, this message translates to:
+  /// **'The server rejected this handle.'**
+  String get revRvMeHandleRejected;
+
+  /// rev.rv_me.handle.check.what
+  ///
+  /// In en, this message translates to:
+  /// **'The handle was not saved.'**
+  String get revRvMeHandleCheckWhat;
+
+  /// rev.rv_me.handle.check.why
+  ///
+  /// In en, this message translates to:
+  /// **'Uniqueness and profanity could not be checked.'**
+  String get revRvMeHandleCheckWhy;
+
+  /// rev.rv_me.handle.check.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again. Nothing was saved.'**
+  String get revRvMeHandleCheckNext;
+
+  /// rev.rv_me.handle.saveError.what
+  ///
+  /// In en, this message translates to:
+  /// **'The handle was not saved.'**
+  String get revRvMeHandleSaveWhat;
+
+  /// rev.rv_me.handle.saveError.why
+  ///
+  /// In en, this message translates to:
+  /// **'The server did not keep this handle.'**
+  String get revRvMeHandleSaveWhy;
+
+  /// rev.rv_me.handle.saveError.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again. Nothing was saved.'**
+  String get revRvMeHandleSaveNext;
+
+  /// rev.rv_me.about.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No story is saved.'**
+  String get revRvMeAboutEmptyWhat;
+
+  /// rev.rv_me.about.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'About has nothing to show.'**
+  String get revRvMeAboutEmptyWhy;
+
+  /// rev.rv_me.about.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Me.'**
+  String get revRvMeAboutEmptyNext;
+
+  /// rev.rv_me.about.error.what
+  ///
+  /// In en, this message translates to:
+  /// **'About did not open.'**
+  String get revRvMeAboutErrorWhat;
+
+  /// rev.rv_me.about.error.why
+  ///
+  /// In en, this message translates to:
+  /// **'The story did not come back.'**
+  String get revRvMeAboutErrorWhy;
+
+  /// rev.rv_me.about.error.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get revRvMeAboutErrorNext;
+
+  /// rev.rv_me.about.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'About is not saved on the phone.'**
+  String get revRvMeAboutOfflineWhy;
 }
 
 class _AppLocalizationsDelegate
