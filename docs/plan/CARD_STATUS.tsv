@@ -593,7 +593,7 @@ P3-067	Draft	Consolidate onboarding variants into unified onboarding	P3/P3-067.y
 P3-068	Draft	Consolidate game templates, loaders and results into GameKit	P3/P3-068.yaml
 P3-069	Draft	Replace live proverb unlocker with the GameKit rewrite	P3/P3-069.yaml
 P3-070	Draft	Fold enhanced variants into live counterparts	P3/P3-070.yaml
-P3-071	Draft	Move developer examples to dev/ outside the app build	P3/P3-071.yaml
+P3-071	Done	Move developer examples to dev/ outside the app build	P3/P3-071.yaml
 P3-072	Draft	Verify consolidation harvest lists are complete	P3/P3-072.yaml
 P3-073	Done	Remove forced splash delay	P3/P3-073.yaml
 P3-074	Draft	Persist onboarding steps with typed JSON	P3/P3-074.yaml
