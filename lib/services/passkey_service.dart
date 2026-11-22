@@ -10,7 +10,7 @@ import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/auth/email_verification_screen.dart';
 import 'package:lingafriq/screens/auth/passkey_prompt.dart';
-import 'package:lingafriq/screens/onboarding/onboarding_screen_material3.dart';
+import 'package:lingafriq/screens/onboarding/unified_onboarding_screen.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
 import 'package:lingafriq/services/passkey_codec.dart';
 import 'package:lingafriq/utils/api.dart';
@@ -170,7 +170,7 @@ class _PasskeyAccountScreenState extends ConsumerState<PasskeyAccountScreen> {
       }
       final seen = ref.read(sharedPreferencesProvider).isOnboardingSeen;
       ref.read(navigationProvider).navigateOffAll(
-        seen ? const TabsViewMaterial3() : const OnboardingScreenMaterial3(),
+        seen ? const TabsViewMaterial3() : const UnifiedOnboardingScreen(),
       );
     } catch (error) {
       if (!mounted) return;

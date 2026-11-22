@@ -14,7 +14,7 @@ import 'package:lingafriq/utils/structured_logger.dart';
 
 import '../screens/auth/world_class_login_screen.dart';
 import '../screens/auth/email_verification_screen.dart';
-import '../screens/onboarding/onboarding_screen_material3.dart';
+import '../screens/onboarding/unified_onboarding_screen.dart';
 import 'api_provider.dart';
 import 'base_provider.dart';
 import 'dialog_provider.dart';
@@ -80,7 +80,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       await prefs.setBool('onboarding_seen', false);
       await prefs.remove('onboarding_complete');
       await prefs.remove('onboarding_data');
-      ref.read(navigationProvider).navigateOffAll(const OnboardingScreenMaterial3());
+      ref.read(navigationProvider).navigateOffAll(const UnifiedOnboardingScreen());
       return;
     }
 
@@ -93,7 +93,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
     }
     if (migration.reask.isNotEmpty) {
-      ref.read(navigationProvider).navigateOffAll(const OnboardingScreenMaterial3());
+      ref.read(navigationProvider).navigateOffAll(const UnifiedOnboardingScreen());
       return;
     }
 
@@ -220,7 +220,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         } else {
           final isOnboardingSeen = ref.read(sharedPreferencesProvider).isOnboardingSeen;
           ref.read(navigationProvider).navigateOffAll(
-            isOnboardingSeen ? const HomeScreen() : const OnboardingScreenMaterial3(),
+            isOnboardingSeen ? const HomeScreen() : const UnifiedOnboardingScreen(),
           );
         }
       }

@@ -37,6 +37,7 @@ import 'package:lingafriq/providers/firebase_messaging_provider.dart';
 import 'package:lingafriq/providers/tts_provider.dart';
 import 'package:lingafriq/l10n/onboarding_ar_overlay.dart';
 import 'package:lingafriq/l10n/l10n_of.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 
 part 'unified/shared_widgets.dart';
 part 'unified/welcome_step.dart';
@@ -176,6 +177,27 @@ Duration _motionDelay(BuildContext context, Duration normal) {
   return MediaQuery.disableAnimationsOf(context) ? Duration.zero : normal;
 }
 
+/// Spoken lines from the Kijiji welcome, in the order that screen shows them.
+///
+/// These are the village-arrival lines only. Form labels, raw option ids, and
+/// the three self-report placement prompts stay out of this list.
+List<String> kijijiVillageStoryLines(AppLocalizations l10n) => [
+  l10n.onboardingWelcomeToKijijiChaLugha,
+  l10n.onboardingTheLanguageVillageYourJourneyBegins,
+  l10n.onboardingWelcomeTravelerIAmPaLingafriq,
+  l10n.onboardingTellMeWhoAreYou,
+  l10n.onboardingWhyAreYouLearning,
+  l10n.onboardingIAmAdisaTheWeaverChoose,
+  l10n.onboardingIAmNuruTheRhythmMaster,
+  l10n.onboardingIAmZawadiKeeperOfTime,
+  l10n.onboardingChooseYourPath,
+  l10n.onboardingIAmAminaTheGriotHow,
+  l10n.onboardingIAmTheHealerLetMe,
+  l10n.onboardingBuildYourClan,
+  l10n.onboardingALearnerWithoutANameIs,
+  l10n.onboardingLetUsSeeWhereYouStand,
+];
+
 /// Unified Onboarding — reference-led flow (Finch + Speak + Duolingo + Opal + Headspace).
 ///
 /// Recipe order (second pass): Welcome → Language → Goal(+daily) → Level →
@@ -201,6 +223,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
     final isCompleting = useState(false);
     final failedChoice = useState<_AccountChoice?>(null);
     final pendingChoice = useState<_AccountChoice?>(null);
+    final villageStoryOpen = useState(false);
 
     final animationController = useAnimationController(
       duration: const Duration(milliseconds: 800),
@@ -392,6 +415,24 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                 onSkip: isCompleting.value
                     ? null
                     : () => _skipOnboarding(context, ref),
+              ),
+            if (reask.isEmpty &&
+                currentStep.value == 0 &&
+                !villageStoryOpen.value)
+              Positioned(
+                top:
+                    MediaQuery.of(context).padding.top +
+                    ModernGriotSpacing.xxs.h,
+                right: ModernGriotSpacing.sm.w,
+                child: _VillageStoryButton(
+                  onPressed: () => villageStoryOpen.value = true,
+                ),
+              ),
+            if (villageStoryOpen.value)
+              Positioned.fill(
+                child: KijijiVillageStoryPanel(
+                  onClose: () => villageStoryOpen.value = false,
+                ),
               ),
           ],
         ),
@@ -810,4 +851,116 @@ class _SignInTopBar extends StatelessWidget {
       onBack: () => Navigator.of(context).maybePop(),
     ),
   );
+}
+
+/// Opens the Kijiji village story from the welcome step.
+class _VillageStoryButton extends StatelessWidget {
+  const _VillageStoryButton({required this.onPressed});
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final label = l10nOf(context).onboardingWelcomeToKijijiChaLugha;
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
+      child: Semantics(
+        label: _bidi(context, label),
+        button: true,
+        child: IconButton(
+          key: const ValueKey('village-story-open'),
+          tooltip: label,
+          onPressed: onPressed,
+          padding: EdgeInsets.zero,
+          icon: const Icon(
+            Icons.park_rounded,
+            color: ModernGriotColors.onSurface,
+            size: 22,
+          ),
+          style: IconButton.styleFrom(
+            foregroundColor: ModernGriotColors.onSurface,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            minimumSize: const Size(
+              ModernGriotLayout.minTouchTarget,
+              ModernGriotLayout.minTouchTarget,
+            ),
+            maximumSize: const Size(
+              ModernGriotLayout.minTouchTarget,
+              ModernGriotLayout.minTouchTarget,
+            ),
+            padding: EdgeInsets.zero,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Optional village-arrival panel. Closing it returns to the same step.
+class KijijiVillageStoryPanel extends StatelessWidget {
+  const KijijiVillageStoryPanel({required this.onClose, super.key});
+
+  final VoidCallback onClose;
+
+  @override
+  Widget build(BuildContext context) {
+    final lines = kijijiVillageStoryLines(l10nOf(context));
+    return Material(
+      key: const ValueKey('village-story-panel'),
+      color: ModernGriotColors.surface,
+      child: ResponsiveSafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: ModernGriotSpacing.lg.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      for (var index = 0; index < lines.length; index++) ...[
+                        if (index > 0)
+                          SizedBox(height: ModernGriotSpacing.sm.h),
+                        Text(
+                          _bidi(context, lines[index]),
+                          key: ValueKey('village-story-line-$index'),
+                          style: index == 0
+                              ? ModernGriotTypography.titleMedium(
+                                  context: context,
+                                  color: ModernGriotColors.onSurface,
+                                )
+                              : ModernGriotTypography.bodyMedium(
+                                  context: context,
+                                  color: ModernGriotColors.onSurface,
+                                ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+              TextButton(
+                key: const ValueKey('village-story-close'),
+                onPressed: onClose,
+                style: TextButton.styleFrom(
+                  minimumSize: const Size(
+                    double.infinity,
+                    ModernGriotLayout.minTouchTarget,
+                  ),
+                ),
+                child: Text(
+                  _bidi(context, l10nOf(context).onboardingSkipForNow),
+                  style: ModernGriotTypography.labelLarge(
+                    context: context,
+                    color: ModernGriotColors.onSurface,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
