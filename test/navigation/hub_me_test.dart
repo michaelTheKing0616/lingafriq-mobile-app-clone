@@ -11,6 +11,7 @@ import 'package:lingafriq/models/profile_model.dart';
 import 'package:lingafriq/navigation/app_shell.dart';
 import 'package:lingafriq/navigation/hub_me.dart';
 import 'package:lingafriq/navigation/tab_routes.dart';
+import 'package:lingafriq/screens/social/revived_social_screens.dart';
 import 'package:lingafriq/screens/tabs_view/profile/profile_tab.dart';
 import 'package:lingafriq/utils/constants.dart';
 
@@ -124,7 +125,7 @@ void main() {
       MeRoutes.places
           .where((MePlace place) => place.kind == MePlaceKind.ready)
           .map((MePlace place) => place.id),
-      <String>['profile'],
+      <String>['profile', 'family', 'plus'],
     );
     expect(const MeNotAvailable('progress').placeId, 'progress');
   });
@@ -140,8 +141,8 @@ void main() {
       ('progress', 'Progress', MeNotAvailablePage),
       ('achievements', 'Achievements', MeNotAvailablePage),
       ('leagues', 'Leagues', MeNotAvailablePage),
-      ('family', 'Family', MeNotAvailablePage),
-      ('plus', 'Plus', MeNotAvailablePage),
+      ('family', 'Family', RevivedFamilyDashboardScreen),
+      ('plus', 'Plus', PlusEntryScreen),
       ('settings', 'Settings', MeNotAvailablePage),
       ('about', 'About', MeNotAvailablePage),
     ];
@@ -172,8 +173,6 @@ void main() {
       (MeRoutes.progress, 'Progress'),
       (MeRoutes.achievements, 'Achievements'),
       (MeRoutes.leagues, 'Leagues'),
-      (MeRoutes.family, 'Family'),
-      (MeRoutes.plus, 'Plus'),
       (MeRoutes.settings, 'Settings'),
       (MeRoutes.about, 'About'),
     ];

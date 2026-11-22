@@ -10,6 +10,8 @@ import 'package:lingafriq/l10n/l10n_of.dart';
 import 'package:lingafriq/screens/contribute/lesson_item_verification_screen.dart';
 import 'package:lingafriq/screens/contribute/native_speaker_contribution_screen.dart';
 import 'package:lingafriq/screens/gamification/classroom_dashboard_screen.dart';
+import 'package:lingafriq/screens/social/revived_social_screens.dart';
+import 'package:lingafriq/services/social/revived_social.dart';
 import 'package:lingafriq/screens/social_audio/following_screen.dart';
 import 'package:lingafriq/screens/social_audio/scheduled_sessions_screen.dart';
 
@@ -145,6 +147,10 @@ abstract final class VillageRoutes {
   static const String circles = '/village/circles';
   static const String square = '/village/square';
   static const String chats = '/village/chats';
+  static const String chatSearch = '/village/chat-search';
+  static const String contactInfo = '/village/contact-info';
+  static const String moderation = '/village/moderation';
+  static const String chatWelcome = '/village/chat-welcome';
   static const String status = '/village/status';
   static const String clips = '/village/clips';
   static const String radio = '/village/radio';
@@ -190,7 +196,7 @@ abstract final class VillageRoutes {
       id: 'chats',
       path: chats,
       taps: 1,
-      kind: VillagePlaceKind.notAvailable,
+      kind: VillagePlaceKind.ready,
       guardianGated: true,
     ),
     VillagePlace(
@@ -375,6 +381,38 @@ Widget _pageFor(BuildContext context, String path, {required bool anyway}) {
       return buildRadioFollowing(data.audience);
     }
     return buildRadioScheduled(data.audience);
+  }
+  if (path == VillageRoutes.chats ||
+      path == VillageRoutes.chatSearch ||
+      path == VillageRoutes.contactInfo ||
+      path == VillageRoutes.moderation ||
+      path == VillageRoutes.chatWelcome) {
+    final VillageAudience audience = _VillageHubData.of(context).audience;
+    if (audience == VillageAudience.minor) {
+      return VillageLockedPage(
+        place: VillageRoutes.find(VillageRoutes.chats)!,
+        gate: VillageGateKind.guardian,
+      );
+    }
+    final RevivedSocialClient client = liveRevivedSocialClient();
+    return switch (path) {
+      VillageRoutes.chatSearch => RevivedChatSearchScreen(client: client),
+      VillageRoutes.contactInfo => RevivedContactInfoScreen(
+        client: client,
+        userId: 'unknown',
+      ),
+      VillageRoutes.moderation => RevivedModerationScreen(client: client),
+      VillageRoutes.chatWelcome => RevivedChatWelcomeScreen(
+        store: ChatWelcomeStore(),
+        userId: 'local',
+      ),
+      _ => VillageChatToolsScreen(
+        client: client,
+        onOpen: (String next) {
+          Navigator.of(context).pushNamed(next);
+        },
+      ),
+    };
   }
   if (path == VillageRoutes.verify) {
     return LessonItemVerificationScreen(
