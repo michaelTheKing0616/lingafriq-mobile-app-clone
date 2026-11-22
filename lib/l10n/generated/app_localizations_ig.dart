@@ -7286,6 +7286,83 @@ class AppLocalizationsIg extends AppLocalizations {
       'Point at one thing, then open Living Dictionary.';
 
   @override
+  String get practiceGamePlayingLabel => 'Practice game';
+
+  @override
+  String get practiceGameSaveFailedWhat => 'This round was not saved.';
+
+  @override
+  String get practiceGameSaveFailedWhy =>
+      'The learner record did not reach the outbox.';
+
+  @override
+  String get practiceGameSaveFailedNext =>
+      'Try again. This round is not marked saved.';
+
+  @override
+  String get practiceGameRetry => 'Try again';
+
+  @override
+  String get practiceGameSaved => 'Saved to your learner record.';
+
+  @override
+  String get practiceGameUnavailable => 'Unavailable';
+
+  @override
+  String get directoryTitle => 'All features';
+
+  @override
+  String get directoryOpenSemantics => 'Open all features';
+
+  @override
+  String get directorySearchLabel => 'Search features';
+
+  @override
+  String get directoryLocked => 'Locked';
+
+  @override
+  String directoryUnlocksAt(String stage) {
+    return 'Unlocks at $stage.';
+  }
+
+  @override
+  String get directoryPreview => 'Preview';
+
+  @override
+  String directoryOpenFeature(String feature) {
+    return 'Open $feature';
+  }
+
+  @override
+  String directoryLockedSemantics(
+    String feature,
+    String stage,
+    String preview,
+  ) {
+    return '$feature, Locked. Unlocks at $stage. $preview';
+  }
+
+  @override
+  String get directoryEmptyTitle => 'No match';
+
+  @override
+  String directoryEmptyWhat(String query) {
+    return 'Nothing matches $query.';
+  }
+
+  @override
+  String get directoryEmptyWhy => 'That name is not in the directory.';
+
+  @override
+  String get directoryEmptyNext => 'Try another name.';
+
+  @override
+  String get directoryEmptyAction => 'Clear search';
+
+  @override
+  String get directoryBack => 'Back to Me';
+
+  @override
   String get revRvMeHandleTitle => 'Global handle';
 
   @override
