@@ -7284,4 +7284,27 @@ class AppLocalizationsTi extends AppLocalizations {
   @override
   String get lensNoWordNext =>
       'Point at one thing, then open Living Dictionary.';
+
+  @override
+  String get practiceGamePlayingLabel => 'Practice game';
+
+  @override
+  String get practiceGameSaveFailedWhat => 'This round was not saved.';
+
+  @override
+  String get practiceGameSaveFailedWhy =>
+      'The learner record did not reach the outbox.';
+
+  @override
+  String get practiceGameSaveFailedNext =>
+      'Try again. This round is not marked saved.';
+
+  @override
+  String get practiceGameRetry => 'Try again';
+
+  @override
+  String get practiceGameSaved => 'Saved to your learner record.';
+
+  @override
+  String get practiceGameUnavailable => 'Unavailable';
 }
