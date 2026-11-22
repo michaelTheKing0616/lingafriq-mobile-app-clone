@@ -8120,4 +8120,77 @@ class AppLocalizationsSw extends AppLocalizations {
   @override
   String get revRvPlayMasteryOfflineWhy =>
       'Round results are not saved on the phone.';
+
+  @override
+  String get revRvContribTitle => 'Contribute';
+
+  @override
+  String get revRvContribVerifyTitle => 'Verify';
+
+  @override
+  String get revRvContribTeacherTitle => 'Teacher';
+
+  @override
+  String get revRvContribVerifyEmptyWhat => 'No lesson item is waiting.';
+
+  @override
+  String get revRvContribVerifyEmptyWhy => 'There is nothing to check.';
+
+  @override
+  String get revRvContribVerifyEmptyNext => 'Go back to Village.';
+
+  @override
+  String get revRvContribVerifyFailWhat => 'The queue did not open.';
+
+  @override
+  String get revRvContribVerifyFailWhy => 'The lesson items did not come back.';
+
+  @override
+  String get revRvContribVerifyFailNext => 'Try again.';
+
+  @override
+  String get revRvContribVerifyOfflineWhy =>
+      'This queue is not saved on the phone.';
+
+  @override
+  String get revRvContribVerifyLimitedWhat => 'Verify is limited.';
+
+  @override
+  String get revRvContribVerifyLimitedWhy =>
+      'This account is not a verified native speaker.';
+
+  @override
+  String get revRvContribVerifyLimitedNext =>
+      'A verified native speaker can check lesson items.';
+
+  @override
+  String get revRvContribEmptyWhat => 'No prompt is ready.';
+
+  @override
+  String get revRvContribEmptyWhy => 'There is nothing to record.';
+
+  @override
+  String get revRvContribEmptyNext => 'Go back to Village.';
+
+  @override
+  String get revRvContribFailWhat => 'The prompts did not open.';
+
+  @override
+  String get revRvContribFailWhy => 'The prompt list did not come back.';
+
+  @override
+  String get revRvContribFailNext => 'Try again.';
+
+  @override
+  String get revRvContribOfflineWhy =>
+      'These prompts are not saved on the phone.';
+
+  @override
+  String get revRvContribTeacherDeniedWhat => 'This dashboard is closed.';
+
+  @override
+  String get revRvContribTeacherDeniedWhy => 'This account is not a teacher.';
+
+  @override
+  String get revRvContribTeacherDeniedNext => 'Go back to Village.';
 }

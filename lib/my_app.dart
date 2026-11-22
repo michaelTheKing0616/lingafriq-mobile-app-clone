@@ -45,6 +45,9 @@ import 'screens/social/language_villages_screen.dart';
 import 'screens/village/villages_hub_screen.dart';
 import 'screens/social_audio/following_screen.dart';
 import 'screens/social_audio/scheduled_sessions_screen.dart';
+import 'screens/contribute/lesson_item_verification_screen.dart';
+import 'screens/contribute/native_speaker_contribution_screen.dart';
+import 'screens/gamification/classroom_dashboard_screen.dart';
 import 'screens/village/swahili_village_map_screen.dart';
 import 'screens/village/village_market_screen.dart';
 import 'screens/village/village_cafe_screen.dart';
@@ -539,6 +542,25 @@ Route<dynamic>? generateAppRoute(RouteSettings settings) {
     // /village/radio/scheduled
     ScheduledSessionsScreen.routeKey: (_) =>
         const ScheduledSessionsScreen.live(),
+    // /village/verify
+    LessonItemVerificationScreen.routeKey: (_) =>
+        LessonItemVerificationScreen.live(
+          verifiedNativeSpeaker: _passedFlag(
+            settings.arguments,
+            'verifiedNativeSpeaker',
+          ),
+        ),
+    // /village/contribute
+    NativeSpeakerContributionScreen.routeKey: (_) =>
+        const NativeSpeakerContributionScreen.live(),
+    // /village/school/teacher
+    ClassroomDashboardScreen.routeKey: (_) => ClassroomDashboardScreen(
+      tribeId: _passedString(settings.arguments, 'tribeId'),
+      tribeName: _passedString(settings.arguments, 'tribeName'),
+      languageTag: _passedString(settings.arguments, 'languageTag'),
+      classroomCode: _passedStringOrNull(settings.arguments, 'classroomCode'),
+      isTeacher: _passedFlag(settings.arguments, 'teacher'),
+    ),
     // Lesson Flow
     'lesson-flow': (ctx) {
       final args = settings.arguments as Map<String, dynamic>?;
@@ -880,6 +902,34 @@ Route<dynamic>? generateAppRoute(RouteSettings settings) {
 String _normalizeRouteName(String? routeName) {
   if (routeName == null || routeName.isEmpty) return '';
   return routeName.startsWith('/') ? routeName.substring(1) : routeName;
+}
+
+/// True only when the caller, or an account record the caller passed, sets
+/// [key] to true. A missing key is false.
+bool _passedFlag(Object? arguments, String key) {
+  if (arguments is! Map) return false;
+  if (arguments[key] == true) return true;
+  final Object? account = arguments['account'];
+  if (account is Map && account[key] == true) return true;
+  return false;
+}
+
+String _passedString(Object? arguments, String key) {
+  if (arguments is! Map) return '';
+  final Object? value = arguments[key];
+  if (value is String) return value;
+  final Object? account = arguments['account'];
+  if (account is Map) {
+    final Object? nested = account[key];
+    if (nested is String) return nested;
+  }
+  return '';
+}
+
+String? _passedStringOrNull(Object? arguments, String key) {
+  final String value = _passedString(arguments, key);
+  if (value.isEmpty) return null;
+  return value;
 }
 
 class _Unfocus extends StatelessWidget {

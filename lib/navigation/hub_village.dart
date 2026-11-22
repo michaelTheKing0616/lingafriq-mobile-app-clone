@@ -7,6 +7,9 @@ import 'package:lingafriq/design/states/offline_state.dart';
 import 'package:lingafriq/design/tokens.g.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/l10n/l10n_of.dart';
+import 'package:lingafriq/screens/contribute/lesson_item_verification_screen.dart';
+import 'package:lingafriq/screens/contribute/native_speaker_contribution_screen.dart';
+import 'package:lingafriq/screens/gamification/classroom_dashboard_screen.dart';
 import 'package:lingafriq/screens/social_audio/following_screen.dart';
 import 'package:lingafriq/screens/social_audio/scheduled_sessions_screen.dart';
 
@@ -151,7 +154,9 @@ abstract final class VillageRoutes {
   static const String elderHut = '/village/elder-hut';
   static const String corrections = '/village/corrections';
   static const String create = '/village/create';
-  static const String verify = '/village/create/verify';
+  static const String verify = LessonItemVerificationScreen.routePath;
+  static const String contribute = NativeSpeakerContributionScreen.routePath;
+  static const String teacher = ClassroomDashboardScreen.routePath;
 
   static const List<VillagePlace> places = <VillagePlace>[
     VillagePlace(
@@ -240,7 +245,7 @@ abstract final class VillageRoutes {
       id: 'verify',
       path: verify,
       taps: 2,
-      kind: VillagePlaceKind.notAvailable,
+      kind: VillagePlaceKind.ready,
       onRoot: false,
     ),
   ];
@@ -363,13 +368,24 @@ Widget _pageFor(BuildContext context, String path, {required bool anyway}) {
   if (path == VillageRoutes.root || path == VillageRoutes.map) {
     return const VillageHubPage();
   }
+  final _VillageHubData data = _VillageHubData.of(context);
   if (path == VillageRoutes.radioFollowing ||
       path == VillageRoutes.radioScheduled) {
-    final VillageAudience audience = _VillageHubData.of(context).audience;
     if (path == VillageRoutes.radioFollowing) {
-      return buildRadioFollowing(audience);
+      return buildRadioFollowing(data.audience);
     }
-    return buildRadioScheduled(audience);
+    return buildRadioScheduled(data.audience);
+  }
+  if (path == VillageRoutes.verify) {
+    return LessonItemVerificationScreen(
+      verifiedNativeSpeaker: data.verifiedNativeSpeaker,
+    );
+  }
+  if (path == VillageRoutes.contribute) {
+    return const NativeSpeakerContributionScreen();
+  }
+  if (path == VillageRoutes.teacher) {
+    return ClassroomDashboardScreen(isTeacher: data.teacher);
   }
   final VillagePlace? place = VillageRoutes.find(path);
   if (place == null) return VillageUnknownPage(path: path);
@@ -411,6 +427,8 @@ class VillageHub extends StatelessWidget {
     this.initialRoute = VillageRoutes.root,
     this.onRetry,
     this.onClose,
+    this.verifiedNativeSpeaker = false,
+    this.teacher = false,
   });
 
   static Key placeKey(String id) => ValueKey<String>('village-place-$id');
@@ -421,6 +439,10 @@ class VillageHub extends StatelessWidget {
       ValueKey<String>('village-open-anyway-$id');
 
   static const Key verifyKey = ValueKey<String>('village-verify');
+
+  static const Key contributeKey = ValueKey<String>('village-contribute');
+
+  static const Key teacherKey = ValueKey<String>('village-teacher');
 
   static const Key radioFollowingKey = ValueKey<String>(
     'village-radio-following',
@@ -448,6 +470,12 @@ class VillageHub extends StatelessWidget {
   final VoidCallback? onRetry;
   final VoidCallback? onClose;
 
+  /// Passed by the caller. Omitted means this person is not a verified native speaker.
+  final bool verifiedNativeSpeaker;
+
+  /// Passed by the caller. Omitted means this person is not a teacher.
+  final bool teacher;
+
   @override
   Widget build(BuildContext context) {
     return _VillageHubData(
@@ -455,6 +483,8 @@ class VillageHub extends StatelessWidget {
       audience: audience,
       onRetry: onRetry,
       onClose: onClose,
+      verifiedNativeSpeaker: verifiedNativeSpeaker,
+      teacher: teacher,
       child: Navigator(
         initialRoute: initialRoute,
         onGenerateRoute: VillageRoutes.onGenerate,
@@ -474,6 +504,8 @@ class _VillageHubData extends InheritedWidget {
     required this.audience,
     required this.onRetry,
     required this.onClose,
+    required this.verifiedNativeSpeaker,
+    required this.teacher,
     required super.child,
   });
 
@@ -481,6 +513,8 @@ class _VillageHubData extends InheritedWidget {
   final VillageAudience audience;
   final VoidCallback? onRetry;
   final VoidCallback? onClose;
+  final bool verifiedNativeSpeaker;
+  final bool teacher;
 
   static _VillageHubData of(BuildContext context) {
     final _VillageHubData? data = context
@@ -494,7 +528,9 @@ class _VillageHubData extends InheritedWidget {
     return status != oldWidget.status ||
         audience != oldWidget.audience ||
         onRetry != oldWidget.onRetry ||
-        onClose != oldWidget.onClose;
+        onClose != oldWidget.onClose ||
+        verifiedNativeSpeaker != oldWidget.verifiedNativeSpeaker ||
+        teacher != oldWidget.teacher;
   }
 }
 
@@ -864,6 +900,30 @@ class VillageNotAvailablePage extends StatelessWidget {
                   label: villagePlaceLabel(l10n, child.id),
                   unavailableLabel: l10n.commonStateUnavailable,
                   onPressed: () => Navigator.of(context).pushNamed(child.path),
+                  role: LingButtonRole.quiet,
+                ),
+              ],
+              if (gap.placeId == 'create') ...<Widget>[
+                const SizedBox(height: LingAfriqTokens.spacing8),
+                LingButton(
+                  key: VillageHub.contributeKey,
+                  label: l10n.revRvContribTitle,
+                  unavailableLabel: l10n.commonStateUnavailable,
+                  onPressed: () => Navigator.of(
+                    context,
+                  ).pushNamed(VillageRoutes.contribute),
+                  role: LingButtonRole.quiet,
+                ),
+              ],
+              if (gap.placeId == 'school') ...<Widget>[
+                const SizedBox(height: LingAfriqTokens.spacing16),
+                LingButton(
+                  key: VillageHub.teacherKey,
+                  label: l10n.revRvContribTeacherTitle,
+                  unavailableLabel: l10n.commonStateUnavailable,
+                  onPressed: () => Navigator.of(
+                    context,
+                  ).pushNamed(VillageRoutes.teacher),
                   role: LingButtonRole.quiet,
                 ),
               ],

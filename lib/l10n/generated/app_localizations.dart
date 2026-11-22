@@ -14095,6 +14095,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Round results are not saved on the phone.'**
   String get revRvPlayMasteryOfflineWhy;
+
+  /// rev.rv_contrib.title
+  ///
+  /// In en, this message translates to:
+  /// **'Contribute'**
+  String get revRvContribTitle;
+
+  /// rev.rv_contrib.verify.title
+  ///
+  /// In en, this message translates to:
+  /// **'Verify'**
+  String get revRvContribVerifyTitle;
+
+  /// rev.rv_contrib.teacher.title
+  ///
+  /// In en, this message translates to:
+  /// **'Teacher'**
+  String get revRvContribTeacherTitle;
+
+  /// rev.rv_contrib.verify.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No lesson item is waiting.'**
+  String get revRvContribVerifyEmptyWhat;
+
+  /// rev.rv_contrib.verify.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'There is nothing to check.'**
+  String get revRvContribVerifyEmptyWhy;
+
+  /// rev.rv_contrib.verify.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Village.'**
+  String get revRvContribVerifyEmptyNext;
+
+  /// rev.rv_contrib.verify.fail.what
+  ///
+  /// In en, this message translates to:
+  /// **'The queue did not open.'**
+  String get revRvContribVerifyFailWhat;
+
+  /// rev.rv_contrib.verify.fail.why
+  ///
+  /// In en, this message translates to:
+  /// **'The lesson items did not come back.'**
+  String get revRvContribVerifyFailWhy;
+
+  /// rev.rv_contrib.verify.fail.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get revRvContribVerifyFailNext;
+
+  /// rev.rv_contrib.verify.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'This queue is not saved on the phone.'**
+  String get revRvContribVerifyOfflineWhy;
+
+  /// rev.rv_contrib.verify.limited.what
+  ///
+  /// In en, this message translates to:
+  /// **'Verify is limited.'**
+  String get revRvContribVerifyLimitedWhat;
+
+  /// rev.rv_contrib.verify.limited.why
+  ///
+  /// In en, this message translates to:
+  /// **'This account is not a verified native speaker.'**
+  String get revRvContribVerifyLimitedWhy;
+
+  /// rev.rv_contrib.verify.limited.next
+  ///
+  /// In en, this message translates to:
+  /// **'A verified native speaker can check lesson items.'**
+  String get revRvContribVerifyLimitedNext;
+
+  /// rev.rv_contrib.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No prompt is ready.'**
+  String get revRvContribEmptyWhat;
+
+  /// rev.rv_contrib.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'There is nothing to record.'**
+  String get revRvContribEmptyWhy;
+
+  /// rev.rv_contrib.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Village.'**
+  String get revRvContribEmptyNext;
+
+  /// rev.rv_contrib.fail.what
+  ///
+  /// In en, this message translates to:
+  /// **'The prompts did not open.'**
+  String get revRvContribFailWhat;
+
+  /// rev.rv_contrib.fail.why
+  ///
+  /// In en, this message translates to:
+  /// **'The prompt list did not come back.'**
+  String get revRvContribFailWhy;
+
+  /// rev.rv_contrib.fail.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get revRvContribFailNext;
+
+  /// rev.rv_contrib.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'These prompts are not saved on the phone.'**
+  String get revRvContribOfflineWhy;
+
+  /// rev.rv_contrib.teacher.denied.what
+  ///
+  /// In en, this message translates to:
+  /// **'This dashboard is closed.'**
+  String get revRvContribTeacherDeniedWhat;
+
+  /// rev.rv_contrib.teacher.denied.why
+  ///
+  /// In en, this message translates to:
+  /// **'This account is not a teacher.'**
+  String get revRvContribTeacherDeniedWhy;
+
+  /// rev.rv_contrib.teacher.denied.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Village.'**
+  String get revRvContribTeacherDeniedNext;
 }
 
 class _AppLocalizationsDelegate
