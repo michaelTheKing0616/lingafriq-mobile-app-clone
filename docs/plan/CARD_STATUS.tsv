@@ -571,7 +571,7 @@ P3-045	Done	Build global Search for words and features	P3/P3-045.yaml
 P3-046	Done	Add Lens entry with Point & Say, Translate, Import	P3/P3-046.yaml
 P3-047	Done	Build long-press Word Card on every target word	P3/P3-047.yaml
 P3-048	Done	Replace drawer with All features directory	P3/P3-048.yaml
-P3-049	Draft	'Add contextual surfacing rules: lesson, word, camera, tones'	P3/P3-049.yaml
+P3-049	Done	'Add contextual surfacing rules: lesson, word, camera, tones'	P3/P3-049.yaml
 P3-050	Draft	'Add contextual surfacing rules: scenarios, events, social, reminder'	P3/P3-050.yaml
 P3-051	Draft	Implement progressive unlocking stages with open-anyway	P3/P3-051.yaml
 P3-052	Draft	Enforce minor safety gates in Village	P3/P3-052.yaml
