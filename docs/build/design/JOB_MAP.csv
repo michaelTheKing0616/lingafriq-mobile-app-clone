@@ -1,0 +1,329 @@
+row_id,source,feature_id,name,hub,locator,jobs,disposition,owner_card,note,source_file
+F-001,feature,F-001,Home / Today session,Today,F-001,learn it|say it|live it,serves,F-001,"Today session: review, new input, a speaking moment, and a culture card.",docs/build/cards/P7/F-001.yaml
+F-002,feature,F-002,Daily Goals,Today,F-002,learn it|say it|live it,serves,F-002,"Daily intent: words, speaking minutes, or one conversation.",docs/build/cards/P7/F-002.yaml
+F-003,feature,F-003,Daily Challenges (revived),Today,F-003,learn it|live it,serves,F-003,Micro-challenges such as using new words with people.,docs/build/cards/P7/F-003.yaml
+F-004,feature,F-004,Quests,Today,F-004,learn it|say it|live it,serves,F-004,"Story quests that teach, speak, and sit in a cultural scene.",docs/build/cards/P7/F-004.yaml
+F-005,feature,F-005,Seasonal Events / Village Festival,Today,F-005,learn it|live it,serves,F-005,Cultural calendar. Input plus a community moment.,docs/build/cards/P7/F-005.yaml
+F-006,feature,F-006,Streaks & reminders,Today,F-006,learn it,serves,F-006,Streak and reminder that return the learner to retrieval.,docs/build/cards/P7/F-006.yaml
+F-007,feature,F-007,Lessons map / Courses,Learn,F-007,learn it,serves,F-007,Course map. Comprehensible input along the path.,docs/build/cards/P7/F-007.yaml
+F-008,feature,F-008,Authentic Path (A1–C1),Learn,F-008,learn it,serves,F-008,Authentic materials with scaffolding.,docs/build/cards/P7/F-008.yaml
+F-009,feature,F-009,Lesson Flow,Learn,F-009,learn it|say it,serves,F-009,"Lesson player: input, noticing, then a speaking step.",docs/build/cards/P7/F-009.yaml
+F-010,feature,F-010,Lesson detail & Level certificate,Learn,F-010,learn it,serves,F-010,"Lesson detail, can-dos, and a level certificate.",docs/build/cards/P7/F-010.yaml
+F-011,feature,F-011,Learning Path (personal plan),Learn,F-011,learn it,serves,F-011,Personal plan of what to learn next.,docs/build/cards/P7/F-011.yaml
+F-012,feature,F-012,Placement test,Learn,F-012,learn it|say it,serves,F-012,"Placement with listening, reading, and one speaking item.",docs/build/cards/P7/F-012.yaml
+F-013,feature,F-013,Grammar Hub,Learn,F-013,learn it,serves,F-013,"Grammar topics, lessons, and exercises.",docs/build/cards/P7/F-013.yaml
+F-014,feature,F-014,Vocabulary Builder,Learn,F-014,learn it,serves,F-014,Themed vocabulary sets.,docs/build/cards/P7/F-014.yaml
+F-015,feature,F-015,My Words & Review (SRS),Learn,F-015,learn it,serves,F-015,Saved words and flashcard retrieval.,docs/build/cards/P7/F-015.yaml
+F-016,feature,F-016,Review Rush (gamified review),Learn,F-016,learn it,serves,F-016,Timed review of saved words.,docs/build/cards/P7/F-016.yaml
+F-017,feature,F-017,Listening Practice,Learn,F-017,learn it,serves,F-017,Listening exercises.,docs/build/cards/P7/F-017.yaml
+F-018,feature,F-018,Writing Practice,Learn,F-018,learn it,serves,F-018,Writing exercises.,docs/build/cards/P7/F-018.yaml
+F-019,feature,F-019,Phrase DNA,Learn,F-019,learn it,serves,F-019,Phrase frames the learner recombines.,docs/build/cards/P7/F-019.yaml
+F-020,feature,F-020,Tone & Rhythm Trainer,Learn,F-020,say it|learn it,serves,F-020,Tone and rhythm practice.,docs/build/cards/P7/F-020.yaml
+F-021,feature,F-021,Tonal Lesson (Village),Learn,F-021,say it|learn it,serves,F-021,Tone-focused lesson.,docs/build/cards/P7/F-021.yaml
+F-022,feature,F-022,Language Quiz,Learn,F-022,learn it,serves,F-022,Section quizzes.,docs/build/cards/P7/F-022.yaml
+F-023,feature,F-023,History & History Quiz,Learn,F-023,learn it|live it,serves,F-023,History reading and quizzes. Culture as input.,docs/build/cards/P7/F-023.yaml
+F-024,feature,F-024,Mannerisms & etiquette,Learn,F-024,learn it|live it,serves,F-024,Mannerisms and etiquette.,docs/build/cards/P7/F-024.yaml
+F-025,feature,F-025,Cultural Hub,Learn,F-025,learn it|live it,serves,F-025,Hub for cultural content.,docs/build/cards/P7/F-025.yaml
+F-026,feature,F-026,Culture Magazine,Learn,F-026,learn it|live it,serves,F-026,Cultural articles.,docs/build/cards/P7/F-026.yaml
+F-027,feature,F-027,Heritage Milestones,Learn,F-027,learn it|live it,serves,F-027,Heritage-learner milestones.,docs/build/cards/P7/F-027.yaml
+F-028,feature,F-028,FLB Heritage Archive,Learn,F-028,learn it|live it,serves,F-028,Heritage archive: folklore and legends.,docs/build/cards/P7/F-028.yaml
+F-029,feature,F-029,Dialect Preference,Learn,F-029,learn it,serves,F-029,Dialect the learner reads and hears.,docs/build/cards/P7/F-029.yaml
+F-030,feature,F-030,Living Dictionary,Learn,F-030,learn it,serves,F-030,Dictionary the learner can add to.,docs/build/cards/P7/F-030.yaml
+F-031,feature,F-031,Offline Downloads,Learn,F-031,learn it,serves,F-031,Offline lessons so input still opens.,docs/build/cards/P7/F-031.yaml
+F-032,feature,F-032,Language detail & Suggest a language,Learn,F-032,learn it,serves,F-032,Language detail and a request for a new language.,docs/build/cards/P7/F-032.yaml
+F-033,feature,F-033,Passport (proctored test & credential),Learn,F-033,learn it|say it,serves,F-033,Proctored proficiency check and credential.,docs/build/cards/P7/F-033.yaml
+F-034,feature,F-034,Lesson Recap,Learn,F-034,learn it,serves,F-034,End-of-lesson recap.,docs/build/cards/P7/F-034.yaml
+F-035,feature,F-035,Polie AI Tutor workspace,Speak,F-035,say it|learn it,serves,F-035,Polie tutor workspace and mode selection.,docs/build/cards/P7/F-035.yaml
+F-036,feature,F-036,Tutor Dialogue mode,Speak,F-036,say it,serves,F-036,Guided tutor dialogues.,docs/build/cards/P7/F-036.yaml
+F-037,feature,F-037,Tutor Grammar mode,Speak,F-037,learn it,serves,F-037,Tutor grammar explanations and drills.,docs/build/cards/P7/F-037.yaml
+F-038,feature,F-038,Tutor Story mode,Speak,F-038,learn it,serves,F-038,Graded stories from the tutor.,docs/build/cards/P7/F-038.yaml
+F-039,feature,F-039,Tutor Translation mode,Speak,F-039,learn it,serves,F-039,Translation with an explanation.,docs/build/cards/P7/F-039.yaml
+F-040,feature,F-040,Tutor Pronunciation mode,Speak,F-040,say it,serves,F-040,Pronunciation recording and feedback.,docs/build/cards/P7/F-040.yaml
+F-041,feature,F-041,Tutor Assess mode,Speak,F-041,say it,serves,F-041,Assessment conversation.,docs/build/cards/P7/F-041.yaml
+F-042,feature,F-042,Tutor dashboard,Speak,F-042,say it|learn it,serves,F-042,Entry to tutor modes and tutor progress.,docs/build/cards/P7/F-042.yaml
+F-043,feature,F-043,Shadowing (revived),Speak,F-043,say it,serves,F-043,Listen-and-repeat shadowing.,docs/build/cards/P7/F-043.yaml
+F-044,feature,F-044,Conversation Scenarios and Roleplay,Speak,F-044,say it,serves,F-044,Scenario roleplay.,docs/build/cards/P7/F-044.yaml
+F-045,feature,F-045,Conversation Analytics,Speak,F-045,say it,serves,F-045,Record of the learner's conversations.,docs/build/cards/P7/F-045.yaml
+F-046,feature,F-046,Speak Engine Lab coaches,Speak,F-046,say it,serves,F-046,Code-switch and register coaches.,docs/build/cards/P7/F-046.yaml
+F-047,feature,F-047,Speak Missions,Speak,F-047,say it,serves,F-047,Speaking missions.,docs/build/cards/P7/F-047.yaml
+F-048,feature,F-048,Historical Personas,Speak,F-048,say it|live it,serves,F-048,Conversation with historical figures.,docs/build/cards/P7/F-048.yaml
+F-049,feature,F-049,Persona Missions,Speak,F-049,say it|live it,serves,F-049,Missions with historical personas.,docs/build/cards/P7/F-049.yaml
+F-050,feature,F-050,LingChat AI conversation entry,Village,F-050,say it,serves,F-050,AI conversation partner in chat.,docs/build/cards/P7/F-050.yaml
+F-051,feature,F-051,Synthetic Voice Styles,Speak,F-051,say it,serves,F-051,Synthetic voice used when the learner listens and repeats.,docs/build/cards/P7/F-051.yaml
+F-052,feature,F-052,Point and Say Lens,Speak,F-052,learn it|say it,serves,F-052,"Point at an object, learn the word, and say it.",docs/build/cards/P7/F-052.yaml
+F-053,feature,F-053,Live Translate Bridge,Speak,F-053,say it,serves,F-053,Live speech translation.,docs/build/cards/P7/F-053.yaml
+F-054,feature,F-054,Import Media OCR and clips,Speak,F-054,learn it,serves,F-054,Import media and turn it into learning material.,docs/build/cards/P7/F-054.yaml
+F-055,feature,F-055,Games Arcade (hub & catalogue),Play,F-055,learn it|say it|live it,serves,F-055,"Arcade catalogue. Shelves hold retrieval, speech, and cultural play.",docs/build/cards/P8/F-055.yaml
+F-056,feature,F-056,"Game shell, guides & results (revived)",Play,F-056,learn it|say it,serves,F-056,Shared game frame. Results stay with the learner model.,docs/build/cards/P8/F-056.yaml
+F-057,feature,F-057,Word Match,Play,F-057,learn it,serves,F-057,Match words to meanings.,docs/build/cards/P8/F-057.yaml
+F-058,feature,F-058,Word Match (audio),Play,F-058,learn it|say it,serves,F-058,Match a heard word to a meaning.,docs/build/cards/P8/F-058.yaml
+F-059,feature,F-059,Fill in the Blank,Play,F-059,learn it,serves,F-059,Complete a sentence.,docs/build/cards/P8/F-059.yaml
+F-060,feature,F-060,Picture–Word Association,Play,F-060,learn it,serves,F-060,Match a word to an image.,docs/build/cards/P8/F-060.yaml
+F-061,feature,F-061,Memory Map,Play,F-061,learn it,serves,F-061,Memory pairs of word and meaning.,docs/build/cards/P8/F-061.yaml
+F-062,feature,F-062,Speed Challenge,Play,F-062,learn it,serves,F-062,Timed vocabulary challenge.,docs/build/cards/P8/F-062.yaml
+F-063,feature,F-063,Speed Round,Play,F-063,learn it,serves,F-063,Rapid vocabulary rounds.,docs/build/cards/P8/F-063.yaml
+F-064,feature,F-064,Story Builder,Play,F-064,learn it|live it,serves,F-064,Arrange lines into a story.,docs/build/cards/P8/F-064.yaml
+F-065,feature,F-065,Grammar Detective,Play,F-065,learn it,serves,F-065,Find grammar errors.,docs/build/cards/P8/F-065.yaml
+F-066,feature,F-066,Grammar Jam,Play,F-066,learn it,serves,F-066,Grammar practice on a beat.,docs/build/cards/P8/F-066.yaml
+F-067,feature,F-067,Greeting Diplomacy,Play,F-067,say it|live it,serves,F-067,Choose the greeting a situation needs.,docs/build/cards/P8/F-067.yaml
+F-068,feature,F-068,Market Bargaining,Play,F-068,say it|live it,serves,F-068,Haggle with a trader.,docs/build/cards/P8/F-068.yaml
+F-069,feature,F-069,Quiz Chef,Play,F-069,learn it,serves,F-069,Cooking-themed quiz.,docs/build/cards/P8/F-069.yaml
+F-070,feature,F-070,Roleplay Adventure,Play,F-070,say it,serves,F-070,Branching roleplay.,docs/build/cards/P8/F-070.yaml
+F-071,feature,F-071,Taxi Survival,Play,F-071,say it,serves,F-071,Taxi ride in the language.,docs/build/cards/P8/F-071.yaml
+F-072,feature,F-072,Tone Trainer,Play,F-072,say it,serves,F-072,Identify tones.,docs/build/cards/P8/F-072.yaml
+F-073,feature,F-073,Pronunciation Duel,Play,F-073,say it,serves,F-073,Head-to-head pronunciation.,docs/build/cards/P8/F-073.yaml
+F-074,feature,F-074,Pronunciation Game,Play,F-074,say it,serves,F-074,Pronunciation practice game.,docs/build/cards/P8/F-074.yaml
+F-075,feature,F-075,Pronunciation Karaoke,Play,F-075,say it,serves,F-075,Karaoke-style pronunciation.,docs/build/cards/P8/F-075.yaml
+F-076,feature,F-076,Emoji Translator,Play,F-076,learn it,serves,F-076,Turn emoji sequences into words.,docs/build/cards/P8/F-076.yaml
+F-077,feature,F-077,Elders' Blessings,Play,F-077,say it|live it,serves,F-077,Blessings and proverbs from elders.,docs/build/cards/P8/F-077.yaml
+F-078,feature,F-078,Folktale Reconstruction,Play,F-078,learn it|live it,serves,F-078,Reorder a folktale.,docs/build/cards/P8/F-078.yaml
+F-079,feature,F-079,Clan Lineage Story Builder,Play,F-079,learn it|live it,serves,F-079,Build a kinship story.,docs/build/cards/P8/F-079.yaml
+F-080,feature,F-080,Conversation Relay,Play,F-080,say it,serves,F-080,Multi-turn conversation relay.,docs/build/cards/P8/F-080.yaml
+F-081,feature,F-081,Board Word Games,Play,F-081,learn it,serves,F-081,Word-seed board puzzles.,docs/build/cards/P8/F-081.yaml
+F-082,feature,F-082,Cultural Games collection,Play,F-082,learn it|live it,serves,F-082,Launcher for cultural games.,docs/build/cards/P8/F-082.yaml
+F-083,feature,F-083,Accent Puzzle,Play,F-083,say it,serves,F-083,Accent decoding puzzle.,docs/build/cards/P8/F-083.yaml
+F-084,feature,F-084,Call & Response,Play,F-084,say it,serves,F-084,Traditional call and response.,docs/build/cards/P8/F-084.yaml
+F-085,feature,F-085,Cultural Etiquette,Play,F-085,learn it|live it,serves,F-085,Etiquette scenarios.,docs/build/cards/P8/F-085.yaml
+F-086,feature,F-086,Drum Word,Play,F-086,say it|learn it,serves,F-086,Match drum patterns to words.,docs/build/cards/P8/F-086.yaml
+F-087,feature,F-087,Flashcard Safari,Play,F-087,learn it,serves,F-087,Vocabulary scanning game.,docs/build/cards/P8/F-087.yaml
+F-088,feature,F-088,Food Quest,Play,F-088,learn it|live it,serves,F-088,Food vocabulary quest.,docs/build/cards/P8/F-088.yaml
+F-089,feature,F-089,Liar Liar,Play,F-089,learn it,serves,F-089,Detect grammatical errors.,docs/build/cards/P8/F-089.yaml
+F-090,feature,F-090,Multilingual Relay,Play,F-090,say it|learn it,serves,F-090,Relay across languages.,docs/build/cards/P8/F-090.yaml
+F-091,feature,F-091,Phrase Sniper,Play,F-091,learn it,serves,F-091,Hit the right phrase.,docs/build/cards/P8/F-091.yaml
+F-092,feature,F-092,Proverb Unlocker,Play,F-092,learn it|live it,serves,F-092,Proverb fill-in.,docs/build/cards/P8/F-092.yaml
+F-093,feature,F-093,Rhythm Typing,Play,F-093,say it|learn it,serves,F-093,Type to a rhythm.,docs/build/cards/P8/F-093.yaml
+F-094,feature,F-094,Tongue Twister Race,Play,F-094,say it,serves,F-094,Tongue-twister race.,docs/build/cards/P8/F-094.yaml
+F-095,feature,F-095,Village Quest,Play,F-095,say it|live it,serves,F-095,NPC conversation in a village.,docs/build/cards/P8/F-095.yaml
+F-096,feature,F-096,Ayo (mancala),Play,F-096,learn it|live it,serves,F-096,Ayo with a gloss question on a capture.,docs/build/cards/P8/F-096.yaml
+F-097,feature,F-097,Snakes & Ladders (cultural),Play,F-097,learn it|live it,serves,F-097,Snakes and ladders with language questions.,docs/build/cards/P8/F-097.yaml
+F-098,feature,F-098,Language Ludo,Play,F-098,learn it|live it,serves,F-098,Ludo with language challenges.,docs/build/cards/P8/F-098.yaml
+F-099,feature,F-099,Suwe (hopscotch),Play,F-099,learn it|live it,serves,F-099,Hopscotch with gloss challenges.,docs/build/cards/P8/F-099.yaml
+F-100,feature,F-100,Whot!,Play,F-100,learn it|live it,serves,F-100,Whot with calls in the target language.,docs/build/cards/P8/F-100.yaml
+F-101,feature,F-101,Drum Rhythm,Play,F-101,say it|learn it,serves,F-101,Drum rhythm over the word pool. Syllable timing.,docs/build/cards/P8/F-101.yaml
+F-102,feature,F-102,Tone Forge (revived),Play,F-102,say it,serves,F-102,"Shape a tone contour, hear it, then say it.",docs/build/cards/P8/F-102.yaml
+F-103,feature,F-103,Villages hub and Language Villages,Village,F-103,live it|learn it|say it,serves,F-103,Language villages and the places inside them.,docs/build/cards/P9/F-103.yaml
+F-104,feature,F-104,Swahili Village Map template,Village,F-104,live it|learn it,serves,F-104,Swahili village map.,docs/build/cards/P9/F-104.yaml
+F-105,feature,F-105,Village Market,Village,F-105,live it|say it,serves,F-105,Village market.,docs/build/cards/P9/F-105.yaml
+F-106,feature,F-106,Village Café,Village,F-106,live it|say it,serves,F-106,Village cafe.,docs/build/cards/P9/F-106.yaml
+F-107,feature,F-107,Elder Hut,Village,F-107,live it|learn it,serves,F-107,Elder hut.,docs/build/cards/P9/F-107.yaml
+F-108,feature,F-108,Practice Rooms and Sessions,Village,F-108,say it|live it,serves,F-108,Group practice rooms and the session summary.,docs/build/cards/P9/F-108.yaml
+F-109,feature,F-109,Flashcard Focus (group),Village,F-109,learn it|live it,serves,F-109,Group flashcards.,docs/build/cards/P9/F-109.yaml
+F-110,feature,F-110,Matching Pairs (group),Village,F-110,learn it|live it,serves,F-110,Group matching pairs.,docs/build/cards/P9/F-110.yaml
+F-111,feature,F-111,Tribes as Circles,Village,F-111,live it,serves,F-111,Tribes and circles of people.,docs/build/cards/P9/F-111.yaml
+F-112,feature,F-112,Circle Clash competitions,Village,F-112,live it|learn it,serves,F-112,Competitions between circles.,docs/build/cards/P9/F-112.yaml
+F-113,feature,F-113,Global Chat as Language Squares,Village,F-113,live it|say it,serves,F-113,Public chat rooms per language.,docs/build/cards/P9/F-113.yaml
+F-114,feature,F-114,Private Chat (DMs),Village,F-114,live it,serves,F-114,Private messages with another person.,docs/build/cards/P9/F-114.yaml
+F-115,feature,F-115,Call History,Village,F-115,live it,serves,F-115,Log of calls with people. The feature stays.,docs/build/cards/P9/F-115.yaml
+F-116,feature,F-116,Chat Welcome and Community Guidelines,Village,F-116,live it,serves,F-116,Chat welcome and community rules.,docs/build/cards/P9/F-116.yaml
+F-117,feature,F-117,Moderation Tools for Community Stewards,Village,F-117,live it,serves,F-117,Steward tools for the community.,docs/build/cards/P9/F-117.yaml
+F-118,feature,F-118,Social Hub and Connections,Village,F-118,live it,serves,F-118,"Friends, connections, and profiles.",docs/build/cards/P9/F-118.yaml
+F-119,feature,F-119,Friend Quests and Challenge a Friend,Village,F-119,live it|learn it,serves,F-119,Quests and challenges with friends.,docs/build/cards/P9/F-119.yaml
+F-120,feature,F-120,Share Progress,Me,F-120,live it,serves,F-120,Share progress with another person.,docs/build/cards/P9/F-120.yaml
+F-121,feature,F-121,Social Gifting,Village,F-121,live it,serves,F-121,Send a gift to a friend.,docs/build/cards/P9/F-121.yaml
+F-122,feature,F-122,Community Corrections,Village,F-122,live it|learn it,serves,F-122,Native speakers correct a learner submission.,docs/build/cards/P9/F-122.yaml
+F-123,feature,F-123,Ancestral Tree,Village,F-123,live it,serves,F-123,Family tree.,docs/build/cards/P9/F-123.yaml
+F-124,feature,F-124,Micro-Mentors,Village,F-124,live it|say it,serves,F-124,Short sessions with a mentor.,docs/build/cards/P9/F-124.yaml
+F-125,feature,F-125,Live Classroom,Village,F-125,live it|learn it|say it,serves,F-125,"Live class: lobby, notes, queue, and privacy.",docs/build/cards/P9/F-125.yaml
+F-126,feature,F-126,Teacher Classroom Dashboard,Village,F-126,live it|learn it,serves,F-126,Teacher tools for a class.,docs/build/cards/P9/F-126.yaml
+F-127,feature,F-127,Social Audio Rooms,Village,F-127,live it|say it|learn it,serves,F-127,Audio rooms and radio with people.,docs/build/cards/P9/F-127.yaml
+F-128,feature,F-128,Status (WhatsApp-style),Village,F-128,live it,serves,F-128,Status updates among people. The feature stays.,docs/build/cards/P9/F-128.yaml
+F-129,feature,F-129,Starred Messages and Media Gallery,Village,F-129,live it,serves,F-129,Starred messages and shared media. The feature stays.,docs/build/cards/P9/F-129.yaml
+F-130,feature,F-130,Snaps and Streaks,Village,F-130,live it,serves,F-130,"Snaps, stories, and streaks among people. The feature stays.",docs/build/cards/P9/F-130.yaml
+F-131,feature,F-131,Community Feed,Village,F-131,live it,serves,F-131,Public community feed. The feature stays.,docs/build/cards/P9/F-131.yaml
+F-132,feature,F-132,"Explore, Search and Community Profile",Village,F-132,live it,serves,F-132,Find people and community profiles.,docs/build/cards/P9/F-132.yaml
+F-133,feature,F-133,Create Content (UGC),Village,F-133,live it|learn it,serves,F-133,"Learners create lessons, quizzes, and stories.",docs/build/cards/P9/F-133.yaml
+F-134,feature,F-134,Voice Contribution,Village,F-134,say it|live it,serves,F-134,Contribute a voice recording.,docs/build/cards/P9/F-134.yaml
+F-135,feature,F-135,Native Speaker Verification Queue,Village,F-135,live it|learn it,serves,F-135,Native speakers verify lesson items.,docs/build/cards/P9/F-135.yaml
+F-136,feature,F-136,Native Content Review,Village,F-136,live it|learn it,serves,F-136,Review queue for native content.,docs/build/cards/P9/F-136.yaml
+F-137,feature,F-137,Profile,Me,F-137,live it|learn it,serves,F-137,"Profile: the person, languages, and circles.",docs/build/cards/P10/F-137.yaml
+F-138,feature,F-138,Global Handle (@id),Me,F-138,live it,serves,F-138,Handle used in chat and the feed.,docs/build/cards/P10/F-138.yaml
+F-139,feature,F-139,Progress Dashboard,Me,F-139,learn it|say it,serves,F-139,"Progress across skills, including speaking.",docs/build/cards/P10/F-139.yaml
+F-140,feature,F-140,Achievements & Badges,Me,F-140,learn it|say it|live it,serves,F-140,Badges for real milestones in all three jobs.,docs/build/cards/P10/F-140.yaml
+F-141,feature,F-141,Leaderboards,Me,F-141,learn it|live it,serves,F-141,Leagues and boards among people.,docs/build/cards/P10/F-141.yaml
+F-142,feature,F-142,Magic Items,Me,F-142,live it,redesign,F-142,Power-ups and items. Kept. Redesign until the shop serves live it as a cultural wardrobe.,docs/build/cards/P10/F-142.yaml
+F-143,feature,F-143,"Settings, Privacy & Appearance",Me,F-143,learn it|say it|live it,redesign,F-143,"Settings, privacy, and appearance. Kept. Redesign until Learning, voice, and who-can-message-me each open a job.",docs/build/cards/P10/F-143.yaml
+F-144,feature,F-144,Subscription & Plans,Me,F-144,say it|learn it|live it,redesign,F-144,"Plans and purchase. Kept. Redesign until each paid row opens voice, offline input, or a mentor.",docs/build/cards/P10/F-144.yaml
+F-145,feature,F-145,Family / Guardian Dashboard,Me,F-145,live it,serves,F-145,Guardian and family controls for people.,docs/build/cards/P10/F-145.yaml
+F-146,feature,F-146,About & Policy,Me,F-146,live it,redesign,F-146,About and legal policy. Kept. Redesign until Our Story serves live it.,docs/build/cards/P10/F-146.yaml
+F-147,feature,F-147,"Sign in, Sign up & Email Verification",Me,F-147,learn it,redesign,F-147,Sign in and account recovery. Kept. Redesign until the account path opens a first lesson.,docs/build/cards/P10/F-147.yaml
+F-148,feature,F-148,Onboarding & Placement,Me,F-148,learn it|say it,serves,F-148,First run: choose a language and say a greeting.,docs/build/cards/P10/F-148.yaml
+F-149,feature,F-149,Splash,Me,F-149,learn it,redesign,F-149,Launch screen. Kept. Redesign until the greeting is target-language input.,docs/build/cards/P10/F-149.yaml
+F-150,feature,F-150,Features Guide & First-use Tips,Me,F-150,learn it|say it|live it,serves,F-150,Feature directory. Each entry opens one of the three jobs.,docs/build/cards/P10/F-150.yaml
+F-151,feature,F-151,Staff & Micro-mentor Reports,Me,F-151,live it,redesign,F-151,Staff queue of mentor reports. Kept. Redesign until a report opens the mentor session it is about.,docs/build/cards/P10/F-151.yaml
+R:ai_chat_select,route,F-035,Polie AI Tutor workspace,Speak,ai_chat_select,say it|learn it,serves,F-035,Named route in lib/my_app.dart. Kept. Same jobs as F-035.,lib/my_app.dart
+R:passkey-sign-in,route,F-147,"Sign in, Sign up & Email Verification",Me,passkey-sign-in,learn it,redesign,F-147,Named route in lib/my_app.dart. Kept. Redesign owned by F-147.,lib/my_app.dart
+R:passkey-manage,route,F-147,"Sign in, Sign up & Email Verification",Me,passkey-manage,learn it,redesign,F-147,Named route in lib/my_app.dart. Kept. Redesign owned by F-147.,lib/my_app.dart
+R:sign-in-options,route,F-147,"Sign in, Sign up & Email Verification",Me,sign-in-options,learn it,redesign,F-147,Named route in lib/my_app.dart. Kept. Redesign owned by F-147.,lib/my_app.dart
+R:polie_mode_selection,route,F-035,Polie AI Tutor workspace,Speak,polie_mode_selection,say it|learn it,serves,F-035,Named route in lib/my_app.dart. Kept. Same jobs as F-035.,lib/my_app.dart
+R:curriculum,route,F-007,Lessons map / Courses,Learn,curriculum,learn it,serves,F-007,Named route in lib/my_app.dart. Kept. Same jobs as F-007.,lib/my_app.dart
+R:authentic-path,route,F-008,Authentic Path (A1–C1),Learn,authentic-path,learn it,serves,F-008,Named route in lib/my_app.dart. Kept. Same jobs as F-008.,lib/my_app.dart
+R:native-content-review,route,F-136,Native Content Review,Village,native-content-review,live it|learn it,serves,F-136,Named route in lib/my_app.dart. Kept. Same jobs as F-136.,lib/my_app.dart
+R:games,route,F-055,Games Arcade (hub & catalogue),Play,games,learn it|say it|live it,serves,F-055,Named route in lib/my_app.dart. Kept. Same jobs as F-055.,lib/my_app.dart
+R:games_api_languages,route,F-055,Games Arcade (hub & catalogue),Play,games_api_languages,learn it|say it|live it,serves,F-055,Named route in lib/my_app.dart. Kept. Same jobs as F-055.,lib/my_app.dart
+R:games_enhanced_catalog,route,F-055,Games Arcade (hub & catalogue),Play,games_enhanced_catalog,learn it|say it|live it,serves,F-055,Named route in lib/my_app.dart. Kept. Same jobs as F-055.,lib/my_app.dart
+R:daily_goals,route,F-002,Daily Goals,Today,daily_goals,learn it|say it|live it,serves,F-002,Named route in lib/my_app.dart. Kept. Same jobs as F-002.,lib/my_app.dart
+R:progress,route,F-139,Progress Dashboard,Me,progress,learn it|say it,serves,F-139,Named route in lib/my_app.dart. Kept. Same jobs as F-139.,lib/my_app.dart
+R:achievements,route,F-140,Achievements & Badges,Me,achievements,learn it|say it|live it,serves,F-140,Named route in lib/my_app.dart. Kept. Same jobs as F-140.,lib/my_app.dart
+R:badges,route,F-140,Achievements & Badges,Me,badges,learn it|say it|live it,serves,F-140,Named route in lib/my_app.dart. Kept. Same jobs as F-140.,lib/my_app.dart
+R:leaderboard,route,F-141,Leaderboards,Me,leaderboard,learn it|live it,serves,F-141,Named route in lib/my_app.dart. Kept. Same jobs as F-141.,lib/my_app.dart
+R:tribe,route,F-111,Tribes as Circles,Village,tribe,live it,serves,F-111,Named route in lib/my_app.dart. Kept. Same jobs as F-111.,lib/my_app.dart
+R:tribe_vs_tribe,route,F-112,Circle Clash competitions,Village,tribe_vs_tribe,live it|learn it,serves,F-112,Named route in lib/my_app.dart. Kept. Same jobs as F-112.,lib/my_app.dart
+R:tribe-selection,route,F-111,Tribes as Circles,Village,tribe-selection,live it,serves,F-111,Named route in lib/my_app.dart. Kept. Same jobs as F-111.,lib/my_app.dart
+R:tribe_selection,route,F-111,Tribes as Circles,Village,tribe_selection,live it,serves,F-111,Named route in lib/my_app.dart. Kept. Same jobs as F-111.,lib/my_app.dart
+R:villages,route,F-103,Villages hub and Language Villages,Village,villages,live it|learn it|say it,serves,F-103,Named route in lib/my_app.dart. Kept. Same jobs as F-103.,lib/my_app.dart
+R:villages-hub,route,F-103,Villages hub and Language Villages,Village,villages-hub,live it|learn it|say it,serves,F-103,Named route in lib/my_app.dart. Kept. Same jobs as F-103.,lib/my_app.dart
+R:language-village,route,F-103,Villages hub and Language Villages,Village,language-village,live it|learn it|say it,serves,F-103,Named route in lib/my_app.dart. Kept. Same jobs as F-103.,lib/my_app.dart
+R:language-village-place,route,F-103,Villages hub and Language Villages,Village,language-village-place,live it|learn it|say it,serves,F-103,Named route in lib/my_app.dart. Kept. Same jobs as F-103.,lib/my_app.dart
+R:swahili-village-map,route,F-104,Swahili Village Map template,Village,swahili-village-map,live it|learn it,serves,F-104,Named route in lib/my_app.dart. Kept. Same jobs as F-104.,lib/my_app.dart
+R:village-market,route,F-105,Village Market,Village,village-market,live it|say it,serves,F-105,Named route in lib/my_app.dart. Kept. Same jobs as F-105.,lib/my_app.dart
+R:village-cafe,route,F-106,Village Café,Village,village-cafe,live it|say it,serves,F-106,Named route in lib/my_app.dart. Kept. Same jobs as F-106.,lib/my_app.dart
+R:elder-hut,route,F-107,Elder Hut,Village,elder-hut,live it|learn it,serves,F-107,Named route in lib/my_app.dart. Kept. Same jobs as F-107.,lib/my_app.dart
+R:practice-room-setup,route,F-108,Practice Rooms and Sessions,Village,practice-room-setup,say it|live it,serves,F-108,Named route in lib/my_app.dart. Kept. Same jobs as F-108.,lib/my_app.dart
+R:practice-session,route,F-108,Practice Rooms and Sessions,Village,practice-session,say it|live it,serves,F-108,Named route in lib/my_app.dart. Kept. Same jobs as F-108.,lib/my_app.dart
+R:practice-room-collaborative,route,F-108,Practice Rooms and Sessions,Village,practice-room-collaborative,say it|live it,serves,F-108,Named route in lib/my_app.dart. Kept. Same jobs as F-108.,lib/my_app.dart
+R:session-summary,route,F-108,Practice Rooms and Sessions,Village,session-summary,say it|live it,serves,F-108,Named route in lib/my_app.dart. Kept. Same jobs as F-108.,lib/my_app.dart
+R:flashcard-focus,route,F-109,Flashcard Focus (group),Village,flashcard-focus,learn it|live it,serves,F-109,Named route in lib/my_app.dart. Kept. Same jobs as F-109.,lib/my_app.dart
+R:matching-pairs,route,F-110,Matching Pairs (group),Village,matching-pairs,learn it|live it,serves,F-110,Named route in lib/my_app.dart. Kept. Same jobs as F-110.,lib/my_app.dart
+R:tonal-lesson,route,F-021,Tonal Lesson (Village),Learn,tonal-lesson,say it|learn it,serves,F-021,Named route in lib/my_app.dart. Kept. Same jobs as F-021.,lib/my_app.dart
+R:tribe-hub,route,F-111,Tribes as Circles,Village,tribe-hub,live it,serves,F-111,Named route in lib/my_app.dart. Kept. Same jobs as F-111.,lib/my_app.dart
+R:tribe-discovery,route,F-111,Tribes as Circles,Village,tribe-discovery,live it,serves,F-111,Named route in lib/my_app.dart. Kept. Same jobs as F-111.,lib/my_app.dart
+R:my-tribe,route,F-111,Tribes as Circles,Village,my-tribe,live it,serves,F-111,Named route in lib/my_app.dart. Kept. Same jobs as F-111.,lib/my_app.dart
+R:tribal-duel,route,F-112,Circle Clash competitions,Village,tribal-duel,live it|learn it,serves,F-112,Named route in lib/my_app.dart. Kept. Same jobs as F-112.,lib/my_app.dart
+R:inter-tribe-leaderboard,route,F-112,Circle Clash competitions,Village,inter-tribe-leaderboard,live it|learn it,serves,F-112,Named route in lib/my_app.dart. Kept. Same jobs as F-112.,lib/my_app.dart
+R:global_chat,route,F-113,Global Chat as Language Squares,Village,global_chat,live it|say it,serves,F-113,Named route in lib/my_app.dart. Kept. Same jobs as F-113.,lib/my_app.dart
+R:lingchat_ai,route,F-050,LingChat AI conversation entry,Village,lingchat_ai,say it,serves,F-050,Named route in lib/my_app.dart. Kept. Same jobs as F-050.,lib/my_app.dart
+R:connections,route,F-118,Social Hub and Connections,Village,connections,live it,serves,F-118,Named route in lib/my_app.dart. Kept. Same jobs as F-118.,lib/my_app.dart
+R:quest,route,F-004,Quests,Today,quest,learn it|say it|live it,serves,F-004,Named route in lib/my_app.dart. Kept. Same jobs as F-004.,lib/my_app.dart
+R:events,route,F-005,Seasonal Events / Village Festival,Today,events,learn it|live it,serves,F-005,Named route in lib/my_app.dart. Kept. Same jobs as F-005.,lib/my_app.dart
+R:magic_items,route,F-142,Magic Items,Me,magic_items,live it,redesign,F-142,Named route in lib/my_app.dart. Kept. Redesign owned by F-142.,lib/my_app.dart
+R:ancestral_tree,route,F-123,Ancestral Tree,Village,ancestral_tree,live it,serves,F-123,Named route in lib/my_app.dart. Kept. Same jobs as F-123.,lib/my_app.dart
+R:magazine,route,F-026,Culture Magazine,Learn,magazine,learn it|live it,serves,F-026,Named route in lib/my_app.dart. Kept. Same jobs as F-026.,lib/my_app.dart
+R:heritage-milestones,route,F-027,Heritage Milestones,Learn,heritage-milestones,learn it|live it,serves,F-027,Named route in lib/my_app.dart. Kept. Same jobs as F-027.,lib/my_app.dart
+R:living-dictionary,route,F-030,Living Dictionary,Learn,living-dictionary,learn it,serves,F-030,Named route in lib/my_app.dart. Kept. Same jobs as F-030.,lib/my_app.dart
+R:dialect-preference,route,F-029,Dialect Preference,Learn,dialect-preference,learn it,serves,F-029,Named route in lib/my_app.dart. Kept. Same jobs as F-029.,lib/my_app.dart
+R:flb-heritage-archive,route,F-028,FLB Heritage Archive,Learn,flb-heritage-archive,learn it|live it,serves,F-028,Named route in lib/my_app.dart. Kept. Same jobs as F-028.,lib/my_app.dart
+R:flb-heritage-detail,route,F-028,FLB Heritage Archive,Learn,flb-heritage-detail,learn it|live it,serves,F-028,Named route in lib/my_app.dart. Kept. Same jobs as F-028.,lib/my_app.dart
+R:ugc,route,F-133,Create Content (UGC),Village,ugc,live it|learn it,serves,F-133,Named route in lib/my_app.dart. Kept. Same jobs as F-133.,lib/my_app.dart
+R:contribute_voice,route,F-134,Voice Contribution,Village,contribute_voice,say it|live it,serves,F-134,Named route in lib/my_app.dart. Kept. Same jobs as F-134.,lib/my_app.dart
+R:import_media,route,F-054,Import Media OCR and clips,Speak,import_media,learn it,serves,F-054,Named route in lib/my_app.dart. Kept. Same jobs as F-054.,lib/my_app.dart
+R:settings,route,F-143,"Settings, Privacy & Appearance",Me,settings,learn it|say it|live it,redesign,F-143,Named route in lib/my_app.dart. Kept. Redesign owned by F-143.,lib/my_app.dart
+R:stitch-hub,route,F-150,Features Guide & First-use Tips,Me,stitch-hub,learn it|say it|live it,serves,F-150,Named route in lib/my_app.dart. Kept. Same jobs as F-150.,lib/my_app.dart
+R:private-chat-inbox,route,F-114,Private Chat (DMs),Village,private-chat-inbox,live it,serves,F-114,Named route in lib/my_app.dart. Kept. Same jobs as F-114.,lib/my_app.dart
+R:call-history,route,F-115,Call History,Village,call-history,live it,serves,F-115,Named route in lib/my_app.dart. Kept. Same jobs as F-115.,lib/my_app.dart
+R:live-classroom,route,F-125,Live Classroom,Village,live-classroom,live it|learn it|say it,serves,F-125,Named route in lib/my_app.dart. Kept. Same jobs as F-125.,lib/my_app.dart
+R:classroom-lobby,route,F-125,Live Classroom,Village,classroom-lobby,live it|learn it|say it,serves,F-125,Named route in lib/my_app.dart. Kept. Same jobs as F-125.,lib/my_app.dart
+R:family-hub,route,F-145,Family / Guardian Dashboard,Me,family-hub,live it,serves,F-145,Named route in lib/my_app.dart. Kept. Same jobs as F-145.,lib/my_app.dart
+R:guardian-approvals,route,F-145,Family / Guardian Dashboard,Me,guardian-approvals,live it,serves,F-145,Named route in lib/my_app.dart. Kept. Same jobs as F-145.,lib/my_app.dart
+R:guardian-messaging-guide,route,F-145,Family / Guardian Dashboard,Me,guardian-messaging-guide,live it,serves,F-145,Named route in lib/my_app.dart. Kept. Same jobs as F-145.,lib/my_app.dart
+R:village-circles,route,F-111,Tribes as Circles,Village,village-circles,live it,serves,F-111,Named route in lib/my_app.dart. Kept. Same jobs as F-111.,lib/my_app.dart
+R:guardian-child-messages,route,F-145,Family / Guardian Dashboard,Me,guardian-child-messages,live it,serves,F-145,Named route in lib/my_app.dart. Kept. Same jobs as F-145.,lib/my_app.dart
+R:classroom-student-requests-v2,route,F-126,Teacher Classroom Dashboard,Village,classroom-student-requests-v2,live it|learn it,serves,F-126,Named route in lib/my_app.dart. Kept. Same jobs as F-126.,lib/my_app.dart
+R:classroom-notes,route,F-125,Live Classroom,Village,classroom-notes,live it|learn it|say it,serves,F-125,Named route in lib/my_app.dart. Kept. Same jobs as F-125.,lib/my_app.dart
+R:speaker-queue,route,F-125,Live Classroom,Village,speaker-queue,live it|learn it|say it,serves,F-125,Named route in lib/my_app.dart. Kept. Same jobs as F-125.,lib/my_app.dart
+R:classroom-roster-v2,route,F-126,Teacher Classroom Dashboard,Village,classroom-roster-v2,live it|learn it,serves,F-126,Named route in lib/my_app.dart. Kept. Same jobs as F-126.,lib/my_app.dart
+R:classroom-assignments-v2,route,F-126,Teacher Classroom Dashboard,Village,classroom-assignments-v2,live it|learn it,serves,F-126,Named route in lib/my_app.dart. Kept. Same jobs as F-126.,lib/my_app.dart
+R:classroom-privacy-v2,route,F-125,Live Classroom,Village,classroom-privacy-v2,live it|learn it|say it,serves,F-125,Named route in lib/my_app.dart. Kept. Same jobs as F-125.,lib/my_app.dart
+R:features_guide,route,F-150,Features Guide & First-use Tips,Me,features_guide,learn it|say it|live it,serves,F-150,Named route in lib/my_app.dart. Kept. Same jobs as F-150.,lib/my_app.dart
+R:policy,route,F-146,About & Policy,Me,policy,live it,redesign,F-146,Named route in lib/my_app.dart. Kept. Redesign owned by F-146.,lib/my_app.dart
+R:lesson-flow,route,F-009,Lesson Flow,Learn,lesson-flow,learn it|say it,serves,F-009,Named route in lib/my_app.dart. Kept. Same jobs as F-009.,lib/my_app.dart
+R:grammar-hub,route,F-013,Grammar Hub,Learn,grammar-hub,learn it,serves,F-013,Named route in lib/my_app.dart. Kept. Same jobs as F-013.,lib/my_app.dart
+R:grammar-lesson,route,F-013,Grammar Hub,Learn,grammar-lesson,learn it,serves,F-013,Named route in lib/my_app.dart. Kept. Same jobs as F-013.,lib/my_app.dart
+R:grammar-exercise,route,F-013,Grammar Hub,Learn,grammar-exercise,learn it,serves,F-013,Named route in lib/my_app.dart. Kept. Same jobs as F-013.,lib/my_app.dart
+R:social-hub,route,F-118,Social Hub and Connections,Village,social-hub,live it,serves,F-118,Named route in lib/my_app.dart. Kept. Same jobs as F-118.,lib/my_app.dart
+R:friend-profile,route,F-118,Social Hub and Connections,Village,friend-profile,live it,serves,F-118,Named route in lib/my_app.dart. Kept. Same jobs as F-118.,lib/my_app.dart
+R:challenge-friend,route,F-119,Friend Quests and Challenge a Friend,Village,challenge-friend,live it|learn it,serves,F-119,Named route in lib/my_app.dart. Kept. Same jobs as F-119.,lib/my_app.dart
+R:share-progress,route,F-120,Share Progress,Me,share-progress,live it,serves,F-120,Named route in lib/my_app.dart. Kept. Same jobs as F-120.,lib/my_app.dart
+R:conversation-scenarios,route,F-044,Conversation Scenarios and Roleplay,Speak,conversation-scenarios,say it,serves,F-044,Named route in lib/my_app.dart. Kept. Same jobs as F-044.,lib/my_app.dart
+R:speak-engine-lab,route,F-046,Speak Engine Lab coaches,Speak,speak-engine-lab,say it,serves,F-046,Named route in lib/my_app.dart. Kept. Same jobs as F-046.,lib/my_app.dart
+R:tone-rhythm-trainer,route,F-020,Tone & Rhythm Trainer,Learn,tone-rhythm-trainer,say it|learn it,serves,F-020,Named route in lib/my_app.dart. Kept. Same jobs as F-020.,lib/my_app.dart
+R:phrase-dna-templates,route,F-019,Phrase DNA,Learn,phrase-dna-templates,learn it,serves,F-019,Named route in lib/my_app.dart. Kept. Same jobs as F-019.,lib/my_app.dart
+R:synthetic-voice-styles,route,F-051,Synthetic Voice Styles,Speak,synthetic-voice-styles,say it,serves,F-051,Named route in lib/my_app.dart. Kept. Same jobs as F-051.,lib/my_app.dart
+R:point-and-say,route,F-052,Point and Say Lens,Speak,point-and-say,learn it|say it,serves,F-052,Named route in lib/my_app.dart. Kept. Same jobs as F-052.,lib/my_app.dart
+R:passport-proctored,route,F-033,Passport (proctored test & credential),Learn,passport-proctored,learn it|say it,serves,F-033,Named route in lib/my_app.dart. Kept. Same jobs as F-033.,lib/my_app.dart
+R:passport-credential,route,F-033,Passport (proctored test & credential),Learn,passport-credential,learn it|say it,serves,F-033,Named route in lib/my_app.dart. Kept. Same jobs as F-033.,lib/my_app.dart
+R:micro-mentor-hub,route,F-124,Micro-Mentors,Village,micro-mentor-hub,live it|say it,serves,F-124,Named route in lib/my_app.dart. Kept. Same jobs as F-124.,lib/my_app.dart
+R:quality-report,route,,Quality report,,quality-report,learn it,redesign,P5-047,"Content error-rate screen in lib/my_app.dart. Kept. It does not teach, speak, or gather people. Redesign until it serves learn it by guarding the input a learner sees.",lib/my_app.dart
+R:script-track,route,,Script track,Learn,script-track,learn it,serves,P5-083,"Ge'ez, N'Ko, Adlam, Tifinagh, and Ajami lesson track. Comprehensible input for a script.",lib/my_app.dart
+R:stroke-order-practice,route,,Stroke-order practice,Learn,stroke-order-practice,learn it,serves,P5-084,Handwriting practice for a character. Retrieval of the written form.,lib/my_app.dart
+R:suggest-fix,route,F-122,Community Corrections,Village,suggest-fix,live it|learn it,serves,F-122,Named route in lib/my_app.dart. Kept. Same jobs as F-122.,lib/my_app.dart
+R:cultural-hub,route,F-025,Cultural Hub,Learn,cultural-hub,learn it|live it,serves,F-025,Named route in lib/my_app.dart. Kept. Same jobs as F-025.,lib/my_app.dart
+R:vocabulary-builder,route,F-014,Vocabulary Builder,Learn,vocabulary-builder,learn it,serves,F-014,Named route in lib/my_app.dart. Kept. Same jobs as F-014.,lib/my_app.dart
+R:listening-practice,route,F-017,Listening Practice,Learn,listening-practice,learn it,serves,F-017,Named route in lib/my_app.dart. Kept. Same jobs as F-017.,lib/my_app.dart
+R:writing-practice,route,F-018,Writing Practice,Learn,writing-practice,learn it,serves,F-018,Named route in lib/my_app.dart. Kept. Same jobs as F-018.,lib/my_app.dart
+R:learning-path,route,F-011,Learning Path (personal plan),Learn,learning-path,learn it,serves,F-011,Named route in lib/my_app.dart. Kept. Same jobs as F-011.,lib/my_app.dart
+R:friend-quests,route,F-119,Friend Quests and Challenge a Friend,Village,friend-quests,live it|learn it,serves,F-119,Named route in lib/my_app.dart. Kept. Same jobs as F-119.,lib/my_app.dart
+R:create-friend-quest,route,F-119,Friend Quests and Challenge a Friend,Village,create-friend-quest,live it|learn it,serves,F-119,Named route in lib/my_app.dart. Kept. Same jobs as F-119.,lib/my_app.dart
+R:email-verification,route,F-147,"Sign in, Sign up & Email Verification",Me,email-verification,learn it,redesign,F-147,Named route in lib/my_app.dart. Kept. Redesign owned by F-147.,lib/my_app.dart
+R:my-vocabulary,route,F-015,My Words & Review (SRS),Learn,my-vocabulary,learn it,serves,F-015,Named route in lib/my_app.dart. Kept. Same jobs as F-015.,lib/my_app.dart
+R:flashcard-review,route,F-015,My Words & Review (SRS),Learn,flashcard-review,learn it,serves,F-015,Named route in lib/my_app.dart. Kept. Same jobs as F-015.,lib/my_app.dart
+R:wa-status,route,F-128,Status (WhatsApp-style),Village,wa-status,live it,serves,F-128,Named route in lib/my_app.dart. Kept. Same jobs as F-128.,lib/my_app.dart
+R:wa-status-create,route,F-128,Status (WhatsApp-style),Village,wa-status-create,live it,serves,F-128,Named route in lib/my_app.dart. Kept. Same jobs as F-128.,lib/my_app.dart
+R:wa-status-view,route,F-128,Status (WhatsApp-style),Village,wa-status-view,live it,serves,F-128,Named route in lib/my_app.dart. Kept. Same jobs as F-128.,lib/my_app.dart
+R:wa-starred,route,F-129,Starred Messages and Media Gallery,Village,wa-starred,live it,serves,F-129,Named route in lib/my_app.dart. Kept. Same jobs as F-129.,lib/my_app.dart
+R:wa-media-gallery,route,F-129,Starred Messages and Media Gallery,Village,wa-media-gallery,live it,serves,F-129,Named route in lib/my_app.dart. Kept. Same jobs as F-129.,lib/my_app.dart
+R:snap-inbox,route,F-130,Snaps and Streaks,Village,snap-inbox,live it,serves,F-130,Named route in lib/my_app.dart. Kept. Same jobs as F-130.,lib/my_app.dart
+R:snap-story-feed,route,F-130,Snaps and Streaks,Village,snap-story-feed,live it,serves,F-130,Named route in lib/my_app.dart. Kept. Same jobs as F-130.,lib/my_app.dart
+R:snap-camera,route,F-130,Snaps and Streaks,Village,snap-camera,live it,serves,F-130,Named route in lib/my_app.dart. Kept. Same jobs as F-130.,lib/my_app.dart
+R:snap-streaks,route,F-130,Snaps and Streaks,Village,snap-streaks,live it,serves,F-130,Named route in lib/my_app.dart. Kept. Same jobs as F-130.,lib/my_app.dart
+R:snap-viewer,route,F-130,Snaps and Streaks,Village,snap-viewer,live it,serves,F-130,Named route in lib/my_app.dart. Kept. Same jobs as F-130.,lib/my_app.dart
+R:x-feed-home,route,F-131,Community Feed,Village,x-feed-home,live it,serves,F-131,Named route in lib/my_app.dart. Kept. Same jobs as F-131.,lib/my_app.dart
+R:x-compose,route,F-131,Community Feed,Village,x-compose,live it,serves,F-131,Named route in lib/my_app.dart. Kept. Same jobs as F-131.,lib/my_app.dart
+R:x-post-detail,route,F-131,Community Feed,Village,x-post-detail,live it,serves,F-131,Named route in lib/my_app.dart. Kept. Same jobs as F-131.,lib/my_app.dart
+R:x-notifications,route,F-131,Community Feed,Village,x-notifications,live it,serves,F-131,Named route in lib/my_app.dart. Kept. Same jobs as F-131.,lib/my_app.dart
+R:x-explore,route,F-132,"Explore, Search and Community Profile",Village,x-explore,live it,serves,F-132,Named route in lib/my_app.dart. Kept. Same jobs as F-132.,lib/my_app.dart
+R:x-lists,route,F-132,"Explore, Search and Community Profile",Village,x-lists,live it,serves,F-132,Named route in lib/my_app.dart. Kept. Same jobs as F-132.,lib/my_app.dart
+R:x-profile,route,F-132,"Explore, Search and Community Profile",Village,x-profile,live it,serves,F-132,Named route in lib/my_app.dart. Kept. Same jobs as F-132.,lib/my_app.dart
+R:explore-community,route,F-132,"Explore, Search and Community Profile",Village,explore-community,live it,serves,F-132,Named route in lib/my_app.dart. Kept. Same jobs as F-132.,lib/my_app.dart
+R:search-community,route,F-132,"Explore, Search and Community Profile",Village,search-community,live it,serves,F-132,Named route in lib/my_app.dart. Kept. Same jobs as F-132.,lib/my_app.dart
+R:community-profile,route,F-132,"Explore, Search and Community Profile",Village,community-profile,live it,serves,F-132,Named route in lib/my_app.dart. Kept. Same jobs as F-132.,lib/my_app.dart
+R:historical-personas,route,F-048,Historical Personas,Speak,historical-personas,say it|live it,serves,F-048,Named route in lib/my_app.dart. Kept. Same jobs as F-048.,lib/my_app.dart
+R:staff-micro-mentor-reports,route,F-151,Staff & Micro-mentor Reports,Me,staff-micro-mentor-reports,live it,redesign,F-151,Named route in lib/my_app.dart. Kept. Redesign owned by F-151.,lib/my_app.dart
+D:User avatar,drawer,F-137,User avatar,Me,User avatar,live it|learn it,serves,F-137,Drawer header. The person. Same jobs as Profile.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Username: {value},drawer,F-137,Username: {value},Me,Username: {value},live it|learn it,serves,F-137,Drawer header. The person. Same jobs as Profile.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Email: {value},drawer,F-137,Email: {value},Me,Email: {value},live it|learn it,serves,F-137,Drawer header. The person. Same jobs as Profile.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Dashboard,drawer,F-001,Dashboard,Today,Dashboard,learn it|say it|live it,serves,F-001,Drawer item. Opens Today.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Lessons,drawer,F-007,Lessons,Learn,Lessons,learn it,serves,F-007,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Authentic Path (A1–C1),drawer,F-008,Authentic Path (A1–C1),Learn,Authentic Path (A1–C1),learn it,serves,F-008,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Native content review,drawer,F-136,Native content review,Village,Native content review,live it|learn it,serves,F-136,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Polie Tutor,drawer,F-035,Polie Tutor,Speak,Polie Tutor,say it|learn it,serves,F-035,Drawer item in app_drawer_material3.dart.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:AI Chat,drawer,F-050,AI Chat,Village,AI Chat,say it,serves,F-050,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Games,drawer,F-055,Games,Play,Games,learn it|say it|live it,serves,F-055,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Cultural Magazine,drawer,F-026,Cultural Magazine,Learn,Cultural Magazine,learn it|live it,serves,F-026,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Phrase DNA,drawer,F-019,Phrase DNA,Learn,Phrase DNA,learn it,serves,F-019,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Tone & Rhythm,drawer,F-020,Tone & Rhythm,Learn,Tone & Rhythm,say it|learn it,serves,F-020,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:FLB Heritage Archive,drawer,F-028,FLB Heritage Archive,Learn,FLB Heritage Archive,learn it|live it,serves,F-028,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Import Media,drawer,F-054,Import Media,Speak,Import Media,learn it,serves,F-054,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Point & Say,drawer,F-052,Point & Say,Speak,Point & Say,learn it|say it,serves,F-052,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Live translate,drawer,F-053,Live translate,Speak,Live translate,say it,serves,F-053,"Drawer item. Pushed with liveTranslateRoute(), not a named route.",lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Living Dictionary,drawer,F-030,Living Dictionary,Learn,Living Dictionary,learn it,serves,F-030,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Heritage milestones,drawer,F-027,Heritage milestones,Learn,Heritage milestones,learn it|live it,serves,F-027,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Dialect preference,drawer,F-029,Dialect preference,Learn,Dialect preference,learn it,serves,F-029,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Create Content,drawer,F-133,Create Content,Village,Create Content,live it|learn it,serves,F-133,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Global Chat,drawer,F-113,Global Chat,Village,Global Chat,live it|say it,serves,F-113,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Community Feed,drawer,F-131,Community Feed,Village,Community Feed,live it,serves,F-131,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Micro‑Mentors,drawer,F-124,Micro‑Mentors,Village,Micro‑Mentors,live it|say it,serves,F-124,Drawer item. Label uses the hyphen in the drawer source.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Private Chat,drawer,F-114,Private Chat,Village,Private Chat,live it,serves,F-114,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Live Classroom,drawer,F-125,Live Classroom,Village,Live Classroom,live it|learn it|say it,serves,F-125,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Language Villages,drawer,F-103,Language Villages,Village,Language Villages,live it|learn it|say it,serves,F-103,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Practice Rooms,drawer,F-108,Practice Rooms,Village,Practice Rooms,say it|live it,serves,F-108,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:My Tribes,drawer,F-111,My Tribes,Village,My Tribes,live it,serves,F-111,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Historical Personas,drawer,F-048,Historical Personas,Speak,Historical Personas,say it|live it,serves,F-048,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Micro-mentor reports,drawer,F-151,Micro-mentor reports,Me,Micro-mentor reports,live it,redesign,F-151,Staff queue of mentor reports. Kept. Redesign until a report opens the mentor session it is about.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Badges,drawer,F-140,Badges,Me,Badges,learn it|say it|live it,serves,F-140,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Leaderboards,drawer,F-141,Leaderboards,Me,Leaderboards,learn it|live it,serves,F-141,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Profile,drawer,F-137,Profile,Me,Profile,live it|learn it,serves,F-137,Drawer item.,lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Settings,drawer,F-143,Settings,Me,Settings,learn it|say it|live it,redesign,F-143,"Settings, privacy, and appearance. Kept. Redesign until Learning, voice, and who-can-message-me each open a job.",lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Dark mode,drawer,F-143,Dark mode,Me,Dark mode,learn it,redesign,F-143,"Appearance toggle. Kept. It does not teach, speak, or gather people. Redesign stays on Settings and serves learn it as a reading preference.",lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Logout,drawer,F-147,Logout,Me,Logout,learn it,redesign,F-147,"Account exit. Kept. Redesign stays on sign-in, which must open a first lesson (learn it).",lib/screens/tabs_view/app_drawer/app_drawer_material3.dart
+D:Tutor Mode,drawer,F-035,Tutor Mode,Speak,Tutor Mode,say it|learn it,serves,F-035,Older drawer item. Kept.,lib/screens/tabs_view/app_drawer/app_drawer.dart
+D:Grammar Hub,drawer,F-013,Grammar Hub,Learn,Grammar Hub,learn it,serves,F-013,Older drawer item. Kept.,lib/screens/tabs_view/app_drawer/app_drawer.dart
+D:Learning Path,drawer,F-011,Learning Path,Learn,Learning Path,learn it,serves,F-011,Older drawer item. Kept.,lib/screens/tabs_view/app_drawer/app_drawer.dart
+D:Vocabulary Builder,drawer,F-014,Vocabulary Builder,Learn,Vocabulary Builder,learn it,serves,F-014,Older drawer item. Kept.,lib/screens/tabs_view/app_drawer/app_drawer.dart
+D:Conversation Scenarios,drawer,F-044,Conversation Scenarios,Speak,Conversation Scenarios,say it,serves,F-044,Older drawer item. Kept.,lib/screens/tabs_view/app_drawer/app_drawer.dart
+D:Listening Practice,drawer,F-017,Listening Practice,Learn,Listening Practice,learn it,serves,F-017,Older drawer item. Kept.,lib/screens/tabs_view/app_drawer/app_drawer.dart
+D:Writing Practice,drawer,F-018,Writing Practice,Learn,Writing Practice,learn it,serves,F-018,Older drawer item. Kept.,lib/screens/tabs_view/app_drawer/app_drawer.dart
+D:Flashcard Review,drawer,F-015,Flashcard Review,Learn,Flashcard Review,learn it,serves,F-015,Older drawer item. Kept.,lib/screens/tabs_view/app_drawer/app_drawer.dart
+D:Cultural Hub,drawer,F-025,Cultural Hub,Learn,Cultural Hub,learn it|live it,serves,F-025,Older drawer item. Kept.,lib/screens/tabs_view/app_drawer/app_drawer.dart
+D:Persona Missions,drawer,F-049,Persona Missions,Speak,Persona Missions,say it|live it,serves,F-049,Older drawer item. Kept.,lib/screens/tabs_view/app_drawer/app_drawer.dart
+D:Social Hub,drawer,F-118,Social Hub,Village,Social Hub,live it,serves,F-118,Older drawer item. Kept.,lib/screens/tabs_view/app_drawer/app_drawer.dart
+D:Friend Quests,drawer,F-119,Friend Quests,Village,Friend Quests,live it|learn it,serves,F-119,Older drawer item. Kept.,lib/screens/tabs_view/app_drawer/app_drawer.dart
