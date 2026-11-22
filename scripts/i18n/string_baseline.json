@@ -1404,14 +1404,6 @@
       "Next drum",
       "Practice mode — ranked scores unlock when the live scorer is on."
     ],
-    "lib/games/tone_forge/tone_forge_feedback.dart": [
-      "Excellent tonal control! Your pitch matches perfectly.",
-      "Listen closely to the pitch movement. Focus on matching the tone pattern.",
-      "Try to match the rise and fall of the pitch",
-      "The pitch is close but needs refinement. Try again!",
-      "Good effort! Your pitch is getting closer.",
-      "Almost there. Focus on matching the tone pattern more precisely."
-    ],
     "lib/games/tone_forge/tone_forge_game.dart": [
       "Tone Forge",
       "Loading..."
@@ -1421,22 +1413,13 @@
       "ToneGameHardcodedInventoryForbidden: {detail}"
     ],
     "lib/games/tone_forge/tone_forge_screen.dart": [
-      "Tone Forge is not available for this language yet.",
-      "No verified tonal words are ready yet. Check back after more lexicon review.",
-      "We could not load Tone Forge. Check your connection and try again.",
-      "Practice — tone scores are not ranked yet.",
-      "Well heard.",
-      "Listen again to the pitch.",
       "Tone Forge",
-      "Tone Forge · {score}",
-      "No verified tonal words are ready yet. Check back after more lexicon review.",
       "Which tone is on the highlighted syllable?",
       "{value} / {value2}",
       "Check tone",
       "Next word",
       "Tone {value}",
       "{value} {value2}",
-      "Practice mode — tone scores are for learning only until the live scorer is enabled.",
       "Featured game Tone Forge",
       "Tone Forge",
       "Featured",
@@ -4385,10 +4368,6 @@
     ],
     "lib/screens/games/game_mastery_map_screen.dart": [
       "{title}, {date}, {label}"
-    ],
-    "lib/screens/games/game_mastery_results_screen.dart": [
-      "{value}: {value2}% to {value3}%, {changeLabel}",
-      "{value}% → {value2}%"
     ],
     "lib/screens/games/game_onboarding_overlay.dart": [
       "Got it!"

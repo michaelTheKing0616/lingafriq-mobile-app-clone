@@ -25,6 +25,8 @@ import 'screens/ai_chat/polie_mode_selection_screen.dart';
 import 'screens/lessons/lessons_map_entry_screen.dart';
 import 'screens/content/native_content_review_screen.dart';
 import 'screens/curriculum/authentic_curriculum_entry_screen.dart';
+import 'games/tone_forge/tone_forge_screen.dart';
+import 'screens/games/game_mastery_results_screen.dart';
 import 'screens/games/games_screen.dart';
 import 'screens/games/games_screen_enhanced_with_all_games.dart';
 import 'screens/games/games_screen_material3.dart';
@@ -623,6 +625,11 @@ Route<dynamic>? generateAppRoute(RouteSettings settings) {
     'speak-engine-lab': (_) => const SpeakEngineLabScreen(),
     // /speak/shadowing
     ShadowingExerciseScreen.routeKey: (_) => const ShadowingExerciseScreen(),
+    // /play/tone-forge
+    ToneForgeScreen.routeKey: (_) => const ToneForgeScreen.play(),
+    // /play/mastery-results
+    GameMasteryResultsScreen.routeKey: (_) =>
+        const GameMasteryResultsScreen.play(),
     // /speak/coach-insights
     ConversationAnalyticsScreen.routeKey: (_) =>
         const ConversationAnalyticsScreen(),

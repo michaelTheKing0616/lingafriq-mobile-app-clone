@@ -1,55 +1,33 @@
+import '../../l10n/l10n_of.dart';
 import '../gamekit/game_feedback.dart';
 import '../gamekit/game_turn_context.dart';
 import '../gamekit/game_scoring.dart';
+import 'tone_forge_scoring.dart';
 
-/// ToneForge-specific feedback engine
+/// Feedback sentence for one scorer result.
+///
+/// A percent is included only when [toneForgeShownPercent] has one.
+String toneForgeFeedbackMessage(GameScore score) {
+  final int? percent = toneForgeShownPercent(score);
+  if (percent == null) return l10nEn().revRvPlayUnsure;
+  return l10nEn().revRvPlayScoreReturned(percent);
+}
+
+/// Tone Forge feedback. The message follows the real scorer result.
 class ToneForgeFeedbackEngine implements GameFeedbackEngine {
+  const ToneForgeFeedbackEngine();
+
   @override
-  Future<GameFeedback> generate(GameTurnContext context, GameScore score) async {
-    final content = context.content;
-    final details = score.details ?? {};
-
-    if (score.isPerfect) {
-      return GameFeedback.success(
-        message: 'Excellent tonal control! Your pitch matches perfectly.',
-        animationEvent: AnimationEvent.proud,
-        metadata: {
-          'mse': details['mse'],
-          'cultural_context': content.culturalContext,
-        },
-      );
-    }
-
-    if (score.isFail) {
-      final isWithinTolerance = details['is_within_tolerance'] as bool? ?? false;
-      if (!isWithinTolerance) {
-        return GameFeedback.failure(
-          message: 'Listen closely to the pitch movement. Focus on matching the tone pattern.',
-          animationEvent: AnimationEvent.encouraging,
-          metadata: {
-            'hint': 'Try to match the rise and fall of the pitch',
-            'cultural_context': content.culturalContext,
-          },
-        );
-      }
-
-      return GameFeedback.failure(
-        message: 'The pitch is close but needs refinement. Try again!',
-        animationEvent: AnimationEvent.encouraging,
-      );
-    }
-
-    if (score.isCorrect) {
-      return GameFeedback.success(
-        message: 'Good effort! Your pitch is getting closer.',
-        animationEvent: AnimationEvent.happy,
-      );
-    }
-
+  Future<GameFeedback> generate(
+    GameTurnContext context,
+    GameScore score,
+  ) async {
+    final int? percent = toneForgeShownPercent(score);
     return GameFeedback.neutral(
-      message: 'Almost there. Focus on matching the tone pattern more precisely.',
-      animationEvent: AnimationEvent.thinking,
+      message: toneForgeFeedbackMessage(score),
+      animationEvent: percent == null
+          ? AnimationEvent.thinking
+          : AnimationEvent.happy,
     );
   }
 }
-
