@@ -35,13 +35,17 @@ import 'services/monitoring/startup_schedule.dart';
 import 'services/performance_monitor.dart';
 import 'services/deep_link_service.dart';
 import 'config/secrets_manager.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rive/rive.dart';
+import 'app_theme.dart';
 import 'avatars/runtime/rive_file_cache.dart';
+import 'screens/splash/splash_ready_gate.dart';
+import 'screens/splash/splash_screen_material3.dart';
 import 'utils/performance_utils.dart';
 import 'utils/structured_logger.dart';
 import 'utils/polie_design_tokens.dart';
 
-/// P12-012: process start → first rasterized frame → first [MyApp] frame (meaningful).
+/// P12-012: process start → first rasterized frame (splash) → first [MyApp] frame (meaningful).
 final ColdStartTelemetry coldStartTelemetry = ColdStartTelemetry();
 
 class ColdStartTelemetry {
@@ -97,7 +101,14 @@ class _ColdStartMeaningfulMarkerState extends State<_ColdStartMeaningfulMarker> 
   }
 }
 
-void main() async {
+class PreparedLaunch {
+  const PreparedLaunch({required this.prefs, required this.recovery});
+
+  final SharedPreferences prefs;
+  final List<SchemaMigrationFailure> recovery;
+}
+
+void main() {
   coldStartTelemetry.process.start();
   final coldStart = Stopwatch()..start();
   WidgetsFlutterBinding.ensureInitialized();
@@ -113,89 +124,158 @@ void main() async {
     logger.error('uncaught error', context: Map<String, dynamic>.from(report));
   };
 
-  runZonedGuarded(() async {
-    try {
-      await dotenv.load(fileName: ".env");
-      logger.info('Loaded .env file successfully');
-    } catch (e) {
-      logger.debug('Note: .env file not found. Using build-time variables or secure storage.');
-    }
+  runZonedGuarded(() {
+    final launch = _prepareLaunch(coldStart);
+    runApp(SplashLaunchHost(launch: launch));
+  }, (error, stack) {
+    logger.error('Unhandled error', error: error, stackTrace: stack);
+  });
+}
 
-    final recovery = <SchemaMigrationFailure>[];
-    SharedPreferences? prefs;
-    final trace = StartupTrace();
-    coldStartTelemetry.startupTrace = trace;
-    await runStartup(
-      sentry: _startCrashReporter,
-      trace: trace,
-      parallel: {
-        'database': () => _openDatabase(recovery),
-        'preferences': () async {
-          prefs = await SharedPreferences.getInstance();
-        },
-        'firebase': () => Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
-        'rive': RiveNative.init,
-      },
-      deferred: {
-        'offline': _startDeferredServices,
-        'recommendations': () => SmartRecommendationsService().initialize(),
-        'rive_cast': () => RiveFileCache.instance.load(RiveRuntimeAssets.cast),
-      },
-      onFirstFrame: (task) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          unawaited(task());
-        });
-      },
-    );
+/// Shows the splash immediately, then the app once startup has finished.
+class SplashLaunchHost extends StatefulWidget {
+  const SplashLaunchHost({super.key, required this.launch});
 
-    final stored = prefs;
-    if (stored == null) {
-      throw StateError('preferences did not open');
-    }
-    ImageCacheManager.configureCache();
-    PolieTypography.setUseSerifForLanguageText(stored.getBool('polie_serif_language_text') ?? false);
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-    await FirebaseMessagingProvider.init();
-    try {
-      await CredentialStorageService().initialize();
-      logger.info('Auth services initialized successfully');
-    } catch (e) {
-      logger.error('Error initializing auth services', error: e);
-    }
-    await _applyLanguage(stored);
-    try {
-      DeepLinkService().initialize();
-      logger.info('Deep link service initialized successfully');
-    } catch (e) {
-      logger.error('Error initializing deep link service', error: e);
-    }
+  final Future<PreparedLaunch> launch;
 
-    startupPerformance.recordTiming('cold_start', coldStart.elapsed);
-    if (recovery.isNotEmpty) {
-      runApp(SchemaRecoveryApp(failure: recovery.single));
-      return;
-    }
+  @override
+  State<SplashLaunchHost> createState() => _SplashLaunchHostState();
+}
 
-    runApp(ProviderScope(
-      overrides: [
-        sharedPreferencesProvider.overrideWithValue(SharedPreferencesProvider(stored)),
-      ],
-      child: const _ColdStartMeaningfulMarker(child: MyApp()),
-    ));
+class _SplashLaunchHostState extends State<SplashLaunchHost> {
+  PreparedLaunch? _launch;
+  late final Future<void> _splashReady;
+
+  @override
+  void initState() {
+    super.initState();
+    _splashReady = widget.launch.then<void>((_) {});
+    widget.launch.then((value) {
+      if (!mounted) return;
+      setState(() => _launch = value);
+    }, onError: (Object error, StackTrace stack) {
+      logger.error('Unhandled error', error: error, stackTrace: stack);
+    });
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (coldStartTelemetry.firstFrameMs != null) return;
       coldStartTelemetry.firstFrameMs =
           coldStartTelemetry.process.elapsedMilliseconds;
       debugPrint(
         'LingAfriqColdStart: first_frame_ms=${coldStartTelemetry.firstFrameMs}',
       );
     });
-  }, (error, stack) {
-    logger.error('Unhandled error', error: error, stackTrace: stack);
-  });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final launch = _launch;
+    if (launch == null) {
+      return _BootstrapSplash(ready: _splashReady);
+    }
+    if (launch.recovery.isNotEmpty) {
+      return SchemaRecoveryApp(failure: launch.recovery.single);
+    }
+    return ProviderScope(
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(SharedPreferencesProvider(launch.prefs)),
+      ],
+      child: const _ColdStartMeaningfulMarker(child: MyApp()),
+    );
+  }
+}
+
+class _BootstrapSplash extends StatelessWidget {
+  const _BootstrapSplash({required this.ready});
+
+  final Future<void> ready;
+
+  @override
+  Widget build(BuildContext context) {
+    return ScreenUtilInit(
+      designSize: const Size(428, 926),
+      minTextAdapt: true,
+      builder: (context, _) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          builder: (context, child) {
+            ScreenUtil.init(context, designSize: const Size(428, 926));
+            return child ?? const SizedBox.shrink();
+          },
+          home: SplashReadyGate(
+            ready: ready,
+            builder: (context, showProgress) => SplashArtwork(showProgress: showProgress),
+          ),
+        );
+      },
+    );
+  }
+}
+
+Future<PreparedLaunch> _prepareLaunch(Stopwatch coldStart) async {
+  try {
+    await dotenv.load(fileName: ".env");
+    logger.info('Loaded .env file successfully');
+  } catch (e) {
+    logger.debug('Note: .env file not found. Using build-time variables or secure storage.');
+  }
+
+  final recovery = <SchemaMigrationFailure>[];
+  SharedPreferences? prefs;
+  final trace = StartupTrace();
+  coldStartTelemetry.startupTrace = trace;
+  await runStartup(
+    sentry: _startCrashReporter,
+    trace: trace,
+    parallel: {
+      'database': () => _openDatabase(recovery),
+      'preferences': () async {
+        prefs = await SharedPreferences.getInstance();
+      },
+      'firebase': () => Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
+      'rive': RiveNative.init,
+    },
+    deferred: {
+      'offline': _startDeferredServices,
+      'recommendations': () => SmartRecommendationsService().initialize(),
+      'rive_cast': () => RiveFileCache.instance.load(RiveRuntimeAssets.cast),
+    },
+    onFirstFrame: (task) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        unawaited(task());
+      });
+    },
+  );
+
+  final stored = prefs;
+  if (stored == null) {
+    throw StateError('preferences did not open');
+  }
+  ImageCacheManager.configureCache();
+  PolieTypography.setUseSerifForLanguageText(stored.getBool('polie_serif_language_text') ?? false);
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  await FirebaseMessagingProvider.init();
+  try {
+    await CredentialStorageService().initialize();
+    logger.info('Auth services initialized successfully');
+  } catch (e) {
+    logger.error('Error initializing auth services', error: e);
+  }
+  await _applyLanguage(stored);
+  try {
+    DeepLinkService().initialize();
+    logger.info('Deep link service initialized successfully');
+  } catch (e) {
+    logger.error('Error initializing deep link service', error: e);
+  }
+
+  startupPerformance.recordTiming('cold_start', coldStart.elapsed);
+  return PreparedLaunch(prefs: stored, recovery: recovery);
 }
 
 Future<void> _startCrashReporter() async {
