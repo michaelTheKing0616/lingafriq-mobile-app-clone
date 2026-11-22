@@ -8247,6 +8247,128 @@ class AppLocalizationsSn extends AppLocalizations {
   String get polieGrammarWordOrder => 'Word order';
 
   @override
+  String get revChatToolsTitle => 'Chat tools';
+
+  @override
+  String get revChatSearchTitle => 'Search chats';
+
+  @override
+  String get revChatSearchEmptyTitle => 'No messages';
+
+  @override
+  String get revChatSearchEmptyWhat => 'Nothing matched that search.';
+
+  @override
+  String get revChatSearchEmptyWhy => 'The search returned no messages.';
+
+  @override
+  String get revChatSearchEmptyDo => 'Try another word.';
+
+  @override
+  String get revChatSearchEmptyAction => 'Search again';
+
+  @override
+  String get revChatErrorWhat => 'That did not finish.';
+
+  @override
+  String get revChatErrorWhy => 'The server did not return a result.';
+
+  @override
+  String get revChatErrorDo => 'Try again.';
+
+  @override
+  String get revChatErrorAction => 'Try again';
+
+  @override
+  String get revChatLockedTitle => 'Locked';
+
+  @override
+  String get revChatLockedBody => 'A guardian must open this.';
+
+  @override
+  String get revChatBlock => 'Block';
+
+  @override
+  String get revChatReport => 'Report';
+
+  @override
+  String get revChatRetry => 'Try again';
+
+  @override
+  String get revChatBlocked => 'Blocked on the server.';
+
+  @override
+  String get revChatReported => 'Report sent to the server.';
+
+  @override
+  String get revChatActionFailed =>
+      'The server did not accept that. Try again.';
+
+  @override
+  String get revChatModerationTitle => 'Moderation';
+
+  @override
+  String get revChatNotModerator => 'You are not a moderator.';
+
+  @override
+  String get revChatWelcomeTitle => 'Chat guidelines';
+
+  @override
+  String get revChatWelcomeBody =>
+      'Be kind. Do not share private information. Report a problem if someone is unsafe.';
+
+  @override
+  String get revChatWelcomeAccept => 'I agree';
+
+  @override
+  String get revChatWelcomeAccepted => 'Guidelines accepted.';
+
+  @override
+  String get revFamilyTitle => 'Family';
+
+  @override
+  String get revFamilyEmptyTitle => 'No linked children';
+
+  @override
+  String get revFamilyEmptyWhat =>
+      'This guardian has no linked child accounts.';
+
+  @override
+  String get revFamilyEmptyWhy => 'The server returned an empty list.';
+
+  @override
+  String get revFamilyEmptyDo => 'Link a child from the family hub.';
+
+  @override
+  String get revFamilyEmptyAction => 'Refresh';
+
+  @override
+  String get revFamilyDenied => 'This dashboard is for a guardian.';
+
+  @override
+  String get revFamilyErrorWhat => 'The family list did not load.';
+
+  @override
+  String get revPlusTitle => 'Plus';
+
+  @override
+  String get revPlusUnavailableTitle => 'Payments are unavailable';
+
+  @override
+  String get revPlusUnavailableBody =>
+      'The store is not configured. A purchase was not started.';
+
+  @override
+  String get revPlusUnconfirmed =>
+      'Plus was not confirmed by the server. Nothing was unlocked.';
+
+  @override
+  String get revPlusEntitled => 'Plus is confirmed by the server.';
+
+  @override
+  String get revPlusBuy => 'Buy Plus';
+
+  @override
   String get onboardingTheSavedAnswersCouldNotBeRead =>
       'The saved answers could not be read.';
 }

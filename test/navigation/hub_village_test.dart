@@ -162,7 +162,6 @@ void main() {
     const List<String> open = <String>[
       'circles',
       'square',
-      'chats',
       'status',
       'radio',
       'school',

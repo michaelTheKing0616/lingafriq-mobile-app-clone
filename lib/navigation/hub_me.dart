@@ -8,7 +8,9 @@ import 'package:lingafriq/design/tokens.g.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/l10n/l10n_of.dart';
 import 'package:lingafriq/models/profile_model.dart';
+import 'package:lingafriq/screens/social/revived_social_screens.dart';
 import 'package:lingafriq/screens/tabs_view/profile/profile_tab.dart';
+import 'package:lingafriq/services/social/revived_social.dart';
 
 /// How far a Me place is built.
 ///
@@ -42,6 +44,14 @@ final class MeHubOpening extends MeOpening {
 
 final class MeProfileOpening extends MeOpening {
   const MeProfileOpening();
+}
+
+final class MeFamilyOpening extends MeOpening {
+  const MeFamilyOpening();
+}
+
+final class MePlusOpening extends MeOpening {
+  const MePlusOpening();
 }
 
 final class MeGapOpening extends MeOpening {
@@ -93,8 +103,8 @@ abstract final class MeRoutes {
       kind: MePlaceKind.notAvailable,
     ),
     MePlace(id: 'leagues', path: leagues, kind: MePlaceKind.notAvailable),
-    MePlace(id: 'family', path: family, kind: MePlaceKind.notAvailable),
-    MePlace(id: 'plus', path: plus, kind: MePlaceKind.notAvailable),
+    MePlace(id: 'family', path: family, kind: MePlaceKind.ready),
+    MePlace(id: 'plus', path: plus, kind: MePlaceKind.ready),
     MePlace(id: 'settings', path: settings, kind: MePlaceKind.notAvailable),
     MePlace(id: 'about', path: about, kind: MePlaceKind.notAvailable),
   ];
@@ -130,6 +140,8 @@ abstract final class MeRoutes {
     if (path == root) return const MeHubOpening();
     final MePlace? place = find(path);
     if (place == null) return MeUnknownOpening(path);
+    if (place.path == family) return const MeFamilyOpening();
+    if (place.path == plus) return const MePlusOpening();
     if (place.kind == MePlaceKind.notAvailable) {
       return MeGapOpening(MeNotAvailable(place.id));
     }
@@ -170,14 +182,51 @@ void openMeHub(
   );
 }
 
-Widget _pageFor(BuildContext context, String routePath) {
+Widget _pageFor(
+  BuildContext context,
+  String routePath, {
+  RevivedSocialClient? socialClient,
+}) {
   final MeOpening opening = MeRoutes.openingFor(routePath);
+  final RevivedSocialClient client = socialClient ?? offlineSocialClient();
   return switch (opening) {
     MeHubOpening() => const MeHubPage(),
     MeProfileOpening() => const _MeProfileHost(),
     MeGapOpening(:final gap) => MeNotAvailablePage(gap: gap),
+    MeFamilyOpening() => _MeSocialHost(family: true, client: client),
+    MePlusOpening() => _MeSocialHost(family: false, client: client),
     MeUnknownOpening(:final path) => MeUnknownPage(path: path),
   };
+}
+
+class _MeSocialHost extends StatelessWidget {
+  const _MeSocialHost({required this.family, required this.client});
+
+  final bool family;
+  final RevivedSocialClient client;
+
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations l10n = l10nOf(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        LingButton(
+          label: l10n.hubHMeBack,
+          unavailableLabel: l10n.commonStateUnavailable,
+          onPressed: () {
+            final NavigatorState? navigator = Navigator.maybeOf(context);
+            if (navigator != null && navigator.canPop()) navigator.pop();
+          },
+        ),
+        Expanded(
+          child: family
+              ? RevivedFamilyDashboardScreen(client: client)
+              : PlusEntryScreen(client: client),
+        ),
+      ],
+    );
+  }
 }
 
 /// Me hub. The shell Me control pushes this on the current tab.
@@ -188,7 +237,10 @@ class MeHub extends StatefulWidget {
     this.initialRoute = MeRoutes.root,
     this.account,
     this.onRetry,
+    this.socialClient,
   });
+
+  /// Server client for Family and Plus. Null uses a client that fails closed.
 
   static Key placeKey(String id) => ValueKey<String>('me-place-$id');
 
@@ -210,6 +262,8 @@ class MeHub extends StatefulWidget {
   final ProfileModel? account;
 
   final VoidCallback? onRetry;
+
+  final RevivedSocialClient? socialClient;
 
   @override
   State<MeHub> createState() => _MeHubState();
@@ -238,7 +292,11 @@ class _MeHubState extends State<MeHub> {
     final String path = settings.name ?? MeRoutes.root;
     return MaterialPageRoute<void>(
       settings: RouteSettings(name: path, arguments: settings.arguments),
-      builder: (BuildContext context) => _pageFor(context, path),
+      builder: (BuildContext context) => _pageFor(
+        context,
+        path,
+        socialClient: widget.socialClient,
+      ),
     );
   }
 

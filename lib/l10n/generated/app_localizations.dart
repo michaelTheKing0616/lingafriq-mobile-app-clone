@@ -14330,6 +14330,240 @@ abstract class AppLocalizations {
   /// **'Word order'**
   String get polieGrammarWordOrder;
 
+  /// No description provided for @revChatToolsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat tools'**
+  String get revChatToolsTitle;
+
+  /// No description provided for @revChatSearchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search chats'**
+  String get revChatSearchTitle;
+
+  /// No description provided for @revChatSearchEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No messages'**
+  String get revChatSearchEmptyTitle;
+
+  /// No description provided for @revChatSearchEmptyWhat.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing matched that search.'**
+  String get revChatSearchEmptyWhat;
+
+  /// No description provided for @revChatSearchEmptyWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'The search returned no messages.'**
+  String get revChatSearchEmptyWhy;
+
+  /// No description provided for @revChatSearchEmptyDo.
+  ///
+  /// In en, this message translates to:
+  /// **'Try another word.'**
+  String get revChatSearchEmptyDo;
+
+  /// No description provided for @revChatSearchEmptyAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Search again'**
+  String get revChatSearchEmptyAction;
+
+  /// No description provided for @revChatErrorWhat.
+  ///
+  /// In en, this message translates to:
+  /// **'That did not finish.'**
+  String get revChatErrorWhat;
+
+  /// No description provided for @revChatErrorWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'The server did not return a result.'**
+  String get revChatErrorWhy;
+
+  /// No description provided for @revChatErrorDo.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get revChatErrorDo;
+
+  /// No description provided for @revChatErrorAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get revChatErrorAction;
+
+  /// No description provided for @revChatLockedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked'**
+  String get revChatLockedTitle;
+
+  /// No description provided for @revChatLockedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A guardian must open this.'**
+  String get revChatLockedBody;
+
+  /// No description provided for @revChatBlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Block'**
+  String get revChatBlock;
+
+  /// No description provided for @revChatReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get revChatReport;
+
+  /// No description provided for @revChatRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get revChatRetry;
+
+  /// No description provided for @revChatBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked on the server.'**
+  String get revChatBlocked;
+
+  /// No description provided for @revChatReported.
+  ///
+  /// In en, this message translates to:
+  /// **'Report sent to the server.'**
+  String get revChatReported;
+
+  /// No description provided for @revChatActionFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The server did not accept that. Try again.'**
+  String get revChatActionFailed;
+
+  /// No description provided for @revChatModerationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Moderation'**
+  String get revChatModerationTitle;
+
+  /// No description provided for @revChatNotModerator.
+  ///
+  /// In en, this message translates to:
+  /// **'You are not a moderator.'**
+  String get revChatNotModerator;
+
+  /// No description provided for @revChatWelcomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat guidelines'**
+  String get revChatWelcomeTitle;
+
+  /// No description provided for @revChatWelcomeBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Be kind. Do not share private information. Report a problem if someone is unsafe.'**
+  String get revChatWelcomeBody;
+
+  /// No description provided for @revChatWelcomeAccept.
+  ///
+  /// In en, this message translates to:
+  /// **'I agree'**
+  String get revChatWelcomeAccept;
+
+  /// No description provided for @revChatWelcomeAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Guidelines accepted.'**
+  String get revChatWelcomeAccepted;
+
+  /// No description provided for @revFamilyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Family'**
+  String get revFamilyTitle;
+
+  /// No description provided for @revFamilyEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No linked children'**
+  String get revFamilyEmptyTitle;
+
+  /// No description provided for @revFamilyEmptyWhat.
+  ///
+  /// In en, this message translates to:
+  /// **'This guardian has no linked child accounts.'**
+  String get revFamilyEmptyWhat;
+
+  /// No description provided for @revFamilyEmptyWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'The server returned an empty list.'**
+  String get revFamilyEmptyWhy;
+
+  /// No description provided for @revFamilyEmptyDo.
+  ///
+  /// In en, this message translates to:
+  /// **'Link a child from the family hub.'**
+  String get revFamilyEmptyDo;
+
+  /// No description provided for @revFamilyEmptyAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get revFamilyEmptyAction;
+
+  /// No description provided for @revFamilyDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'This dashboard is for a guardian.'**
+  String get revFamilyDenied;
+
+  /// No description provided for @revFamilyErrorWhat.
+  ///
+  /// In en, this message translates to:
+  /// **'The family list did not load.'**
+  String get revFamilyErrorWhat;
+
+  /// No description provided for @revPlusTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Plus'**
+  String get revPlusTitle;
+
+  /// No description provided for @revPlusUnavailableTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payments are unavailable'**
+  String get revPlusUnavailableTitle;
+
+  /// No description provided for @revPlusUnavailableBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The store is not configured. A purchase was not started.'**
+  String get revPlusUnavailableBody;
+
+  /// No description provided for @revPlusUnconfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Plus was not confirmed by the server. Nothing was unlocked.'**
+  String get revPlusUnconfirmed;
+
+  /// No description provided for @revPlusEntitled.
+  ///
+  /// In en, this message translates to:
+  /// **'Plus is confirmed by the server.'**
+  String get revPlusEntitled;
+
+  /// No description provided for @revPlusBuy.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy Plus'**
+  String get revPlusBuy;
+
   /// Shown when a saved onboarding record cannot be read. The flow starts again at step 1.
   ///
   /// In en, this message translates to:
