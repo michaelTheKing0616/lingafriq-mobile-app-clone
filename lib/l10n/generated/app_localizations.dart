@@ -14329,6 +14329,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Word order'**
   String get polieGrammarWordOrder;
+
+  /// Shown when a saved onboarding record cannot be read. The flow starts again at step 1.
+  ///
+  /// In en, this message translates to:
+  /// **'The saved answers could not be read.'**
+  String get onboardingTheSavedAnswersCouldNotBeRead;
 }
 
 class _AppLocalizationsDelegate

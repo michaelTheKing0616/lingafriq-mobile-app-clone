@@ -10956,5 +10956,9 @@
   "polieGrammarTense": "Tense",
   "polieGrammarVerb": "Verb usage",
   "polieGrammarAgreement": "Agreement",
-  "polieGrammarWordOrder": "Word order"
+  "polieGrammarWordOrder": "Word order",
+  "onboardingTheSavedAnswersCouldNotBeRead": "The saved answers could not be read.",
+  "@onboardingTheSavedAnswersCouldNotBeRead": {
+    "description": "Shown when a saved onboarding record cannot be read. The flow starts again at step 1."
+  }
 }

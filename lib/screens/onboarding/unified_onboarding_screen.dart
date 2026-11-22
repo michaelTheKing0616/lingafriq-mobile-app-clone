@@ -6,6 +6,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:file_picker/file_picker.dart';
+
 import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
@@ -28,7 +29,11 @@ import 'package:lingafriq/services/localization/dynamic_localization_service.dar
 import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:lingafriq/avatars/avatars.dart';
 import 'package:lingafriq/models/onboarding_answers.dart';
+import 'package:lingafriq/models/onboarding_state.dart';
+import 'package:lingafriq/services/onboarding_state_service.dart';
+
 import 'placement_test_screen.dart';
+
 import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
 import 'package:lingafriq/services/connectivity_service.dart';
 import 'package:lingafriq/providers/onboarding_provider.dart';
@@ -198,6 +203,39 @@ List<String> kijijiVillageStoryLines(AppLocalizations l10n) => [
   l10n.onboardingLetUsSeeWhereYouStand,
 ];
 
+/// How many steps [UnifiedOnboardingScreen] builds for [reask].
+///
+/// The screen asserts this stays equal to the step list so a saved step
+/// index still points at the same question after a restart.
+int unifiedOnboardingStepCount(List<String> reask) {
+  var count = 0;
+  bool ask(Iterable<String> keys) => reask.isEmpty || keys.any(reask.contains);
+  if (reask.isEmpty) count += 1;
+  if (ask(const ['proficiency_language', 'learning_language'])) count += 1;
+  if (ask(const ['primary_goal', 'learning_reasons'])) count += 1;
+  if (ask(const ['self_reported_level']) || reask.isEmpty) count += 1;
+  if (ask(const ['daily_duration_minutes'])) count += 1;
+  if (reask.isEmpty) count += 1;
+  if (ask(const ['age_category'])) count += 1;
+  if (ask(const ['preferred_time_of_day', 'reminders_enabled'])) count += 1;
+  if (ask(const ['learning_style'])) count += 1;
+  if (ask(const ['app_tone', 'gamification_level'])) count += 1;
+  if (reask.isEmpty) count += 2;
+  return count;
+}
+
+Future<OnboardingStateException?> _saveOnboardingStep(
+  WidgetRef ref, {
+  required int step,
+  required Map<String, dynamic> answer,
+  bool replace = false,
+}) async {
+  final prefs = ref.read(sharedPreferencesProvider).prefs;
+  final saved = await OnboardingStateService(prefs)
+      .saveStep(step: step, answer: answer, replace: replace);
+  return saved.error;
+}
+
 /// Unified Onboarding — reference-led flow (Finch + Speak + Duolingo + Opal + Headspace).
 ///
 /// Recipe order (second pass): Welcome → Language → Goal(+daily) → Level →
@@ -209,15 +247,18 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pageController = usePageController();
-    final currentStep = useState(0);
-    final onboardingData = useState<Map<String, dynamic>>({});
-    final reask =
-        ref
-            .read(sharedPreferencesProvider)
-            .prefs
-            .getStringList('onboarding_reask') ??
-        const <String>[];
+    final prefs = ref.read(sharedPreferencesProvider).prefs;
+    final reask = prefs.getStringList('onboarding_reask') ?? const <String>[];
+    final placed = placeOnboardingResume(
+      OnboardingStateService(prefs).read(),
+      stepCount: unifiedOnboardingStepCount(reask),
+    );
+    final pageController = usePageController(initialPage: placed.pageIndex);
+    final currentStep = useState(placed.pageIndex);
+    final onboardingData = useState<Map<String, dynamic>>(
+      Map<String, dynamic>.from(placed.answers),
+    );
+    final savedStateError = useState<OnboardingStateException?>(placed.error);
     bool ask(Iterable<String> keys) =>
         reask.isEmpty || keys.any(reask.contains);
     final isCompleting = useState(false);
@@ -257,6 +298,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
       reask: reask,
       context: context,
       ref: ref,
+      savedStateError: savedStateError,
     );
     String language() =>
         onboardingData.value['learning_language'] as String? ?? 'yo';
@@ -267,12 +309,25 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
     if (reask.isEmpty) {
       addStep(
         _WelcomeStep(
-          onNext: () => _goToNext(
-            context,
-            pageController,
-            currentStep,
-            animationController,
-          ),
+          onNext: () async {
+            final failure = await _saveOnboardingStep(
+              ref,
+              step: currentStep.value + 1,
+              answer: const {},
+              replace: savedStateError.value != null && currentStep.value == 0,
+            );
+            if (!context.mounted) return;
+            if (failure != null) {
+              savedStateError.value = failure;
+              return;
+            }
+            _goToNext(
+              context,
+              pageController,
+              currentStep,
+              animationController,
+            );
+          },
           onHaveAccount: () {
             ref
                 .read(navigationProvider)
@@ -346,6 +401,20 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
               }
             }
             if (!context.mounted) return;
+            final failure = await _saveOnboardingStep(
+              ref,
+              step: currentStep.value + 1,
+              answer: {
+                'account_choice': choice.name,
+                'account_skipped': choice == _AccountChoice.later,
+              },
+              replace: savedStateError.value != null && currentStep.value == 0,
+            );
+            if (!context.mounted) return;
+            if (failure != null) {
+              savedStateError.value = failure;
+              return;
+            }
             failedChoice.value = null;
             pendingChoice.value = choice;
             isCompleting.value = true;
@@ -374,6 +443,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
     }
 
     stepCount[0] = steps.length;
+    assert(steps.length == unifiedOnboardingStepCount(reask));
     final totalSteps = steps.length;
 
     return Scaffold(
@@ -415,6 +485,33 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                 onSkip: isCompleting.value
                     ? null
                     : () => _skipOnboarding(context, ref),
+              ),
+            if (savedStateError.value != null)
+              Positioned(
+                top:
+                    MediaQuery.of(context).padding.top +
+                    (ModernGriotSpacing.xl + ModernGriotSpacing.lg).h,
+                left: ModernGriotSpacing.sm.w,
+                right: ModernGriotSpacing.sm.w,
+                child: Semantics(
+                  liveRegion: true,
+                  container: true,
+                  child: Material(
+                    key: const ValueKey('onboarding-state-unreadable'),
+                    color: ModernGriotColors.onSurface,
+                    borderRadius: BorderRadius.circular(ModernGriotRadius.md),
+                    child: Padding(
+                      padding: EdgeInsets.all(ModernGriotSpacing.sm.w),
+                      child: Text(
+                        l10nOf(context).onboardingTheSavedAnswersCouldNotBeRead,
+                        style: ModernGriotTypography.bodyMedium(
+                          context: context,
+                          color: ModernGriotColors.surface,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
             if (reask.isEmpty &&
                 currentStep.value == 0 &&
@@ -502,7 +599,19 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
     required List<String> reask,
     required BuildContext context,
     required WidgetRef ref,
+    required ValueNotifier<OnboardingStateException?> savedStateError,
   }) async {
+    final failure = await _saveOnboardingStep(
+      ref,
+      step: currentStep.value + 1,
+      answer: data,
+      replace: savedStateError.value != null && currentStep.value == 0,
+    );
+    if (!context.mounted) return;
+    if (failure != null) {
+      savedStateError.value = failure;
+      return;
+    }
     onboardingData.value = {...onboardingData.value, ...data};
     if (reask.isNotEmpty && currentStep.value + 1 >= stepsLength()) {
       await _completeOnboarding(onboardingData.value, context, ref);
@@ -645,7 +754,8 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                   ),
                 ),
                 content: Text(
-                  l10nOf(context).onboardingWeLlAskAFewShort(learningLanguage.toString()),
+                  l10nOf(context)
+                      .onboardingWeLlAskAFewShort(learningLanguage.toString()),
                   style: ModernGriotTypography.bodyMedium(
                     context: dialogContext,
                     color: _captionInk,
@@ -706,9 +816,8 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
       if (!isLoggedIn && nextScreen is SignInOptionsScreen) {
         // Keep onboarding underneath so sign-in's back returns to this step.
         unawaited(
-          Navigator.of(
-            context,
-          ).push(SmoothPageRoute.platform(child: nextScreen)),
+          Navigator.of(context)
+              .push(SmoothPageRoute.platform(child: nextScreen)),
         );
         return;
       }
@@ -756,7 +865,10 @@ class _OnboardingTopBar extends StatelessWidget {
         children: [
           if (onBack != null)
             Semantics(
-              label: _bidi(context, l10nOf(context).onboardingGoBackToThePreviousStep),
+              label: _bidi(
+                context,
+                l10nOf(context).onboardingGoBackToThePreviousStep,
+              ),
               button: true,
               child: IconButton(
                 onPressed: onBack,
@@ -782,10 +894,16 @@ class _OnboardingTopBar extends StatelessWidget {
             SizedBox(width: ModernGriotLayout.minTouchTarget.w),
           Expanded(
             child: Semantics(
-              label: _bidi(context, l10nOf(context).onboardingOnboardingProgress),
+              label: _bidi(
+                context,
+                l10nOf(context).onboardingOnboardingProgress,
+              ),
               value: _tr(
                 context,
-                l10nOf(context).onboardingStepValueOfTotal('${current + 1}', total.toString()),
+                l10nOf(context).onboardingStepValueOfTotal(
+                  '${current + 1}',
+                  total.toString(),
+                ),
                 onboardingArStep(current + 1, total),
               ),
               child: Padding(

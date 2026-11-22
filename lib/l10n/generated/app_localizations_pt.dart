@@ -8245,4 +8245,8 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get polieGrammarWordOrder => 'Word order';
+
+  @override
+  String get onboardingTheSavedAnswersCouldNotBeRead =>
+      'The saved answers could not be read.';
 }
