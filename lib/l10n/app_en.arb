@@ -5372,15 +5372,15 @@
     "description": "common.state.unavailable"
   },
   "onboardingContinue": "Continue",
-  "@onboardingContinue":   {
+  "@onboardingContinue": {
     "description": "onboarding. Continue"
   },
   "onboardingSelectBirthYear": "Select birth year",
-  "@onboardingSelectBirthYear":   {
+  "@onboardingSelectBirthYear": {
     "description": "onboarding. Select birth year"
   },
   "onboardingBirthYearValue": "Birth year, {value}",
-  "@onboardingBirthYearValue":   {
+  "@onboardingBirthYearValue": {
     "description": "onboarding. Birth year, {value}",
     "placeholders": {
       "value": {
@@ -5389,39 +5389,39 @@
     }
   },
   "onboardingContinueToLessons": "Continue to lessons",
-  "@onboardingContinueToLessons":   {
+  "@onboardingContinueToLessons": {
     "description": "onboarding. Continue to lessons"
   },
   "onboardingWeCouldNotSaveThatYear": "We could not save that year. Try again.",
-  "@onboardingWeCouldNotSaveThatYear":   {
+  "@onboardingWeCouldNotSaveThatYear": {
     "description": "onboarding. We could not save that year. Try again."
   },
   "onboardingChooseTheYearYouWereBorn": "Choose the year you were born to continue.",
-  "@onboardingChooseTheYearYouWereBorn":   {
+  "@onboardingChooseTheYearYouWereBorn": {
     "description": "onboarding. Choose the year you were born to continue."
   },
   "onboardingYourAccountIsReadyForLessons": "Your account is ready for lessons, but chat, Village, and purchases stay paused until a guardian approves.",
-  "@onboardingYourAccountIsReadyForLessons":   {
+  "@onboardingYourAccountIsReadyForLessons": {
     "description": "onboarding. Your account is ready for lessons, but chat, Village, and purchases stay paused "
   },
   "onboardingWeNeedAGuardian": "We need a guardian",
-  "@onboardingWeNeedAGuardian":   {
+  "@onboardingWeNeedAGuardian": {
     "description": "onboarding. We need a guardian"
   },
   "onboardingYouAlreadyEnteredABirthYear": "You already entered a birth year on this device. If something looks wrong, ask a guardian to help from their account.",
-  "@onboardingYouAlreadyEnteredABirthYear":   {
+  "@onboardingYouAlreadyEnteredABirthYear": {
     "description": "onboarding. You already entered a birth year on this device. If something looks wrong, ask a"
   },
   "onboardingWeUseThisToKeepLearners": "We use this to keep learners safe and unlock the right features for your age. We only ask for the year, and we store your age group, not the year itself.",
-  "@onboardingWeUseThisToKeepLearners":   {
+  "@onboardingWeUseThisToKeepLearners": {
     "description": "onboarding. We use this to keep learners safe and unlock the right features for your age. We"
   },
   "onboardingWhatYearWereYouBorn": "What year were you born?",
-  "@onboardingWhatYearWereYouBorn":   {
+  "@onboardingWhatYearWereYouBorn": {
     "description": "onboarding. What year were you born?"
   },
   "onboardingPendingsyncsPendingSyncValue": "{pendingSyncs} pending sync{value}",
-  "@onboardingPendingsyncsPendingSyncValue":   {
+  "@onboardingPendingsyncsPendingSyncValue": {
     "description": "onboarding. {pendingSyncs} pending sync{value}",
     "placeholders": {
       "pendingSyncs": {
@@ -5433,71 +5433,71 @@
     }
   },
   "onboardingCouldNotVerifyAvailabilityYouCan": "Could not verify availability. You can still continue.",
-  "@onboardingCouldNotVerifyAvailabilityYouCan":   {
+  "@onboardingCouldNotVerifyAvailabilityYouCan": {
     "description": "onboarding. Could not verify availability. You can still continue."
   },
   "onboardingOnlyLettersNumbersAndUnderscoresAre": "Only letters, numbers, and underscores are allowed",
-  "@onboardingOnlyLettersNumbersAndUnderscoresAre":   {
+  "@onboardingOnlyLettersNumbersAndUnderscoresAre": {
     "description": "onboarding. Only letters, numbers, and underscores are allowed"
   },
   "onboardingUsernameMustBe30CharactersOr": "Username must be 30 characters or less",
-  "@onboardingUsernameMustBe30CharactersOr":   {
+  "@onboardingUsernameMustBe30CharactersOr": {
     "description": "onboarding. Username must be 30 characters or less"
   },
   "onboardingUsernameMustBeAtLeast3": "Username must be at least 3 characters",
-  "@onboardingUsernameMustBeAtLeast3":   {
+  "@onboardingUsernameMustBeAtLeast3": {
     "description": "onboarding. Username must be at least 3 characters"
   },
   "onboardingUsernameIsAlreadyTaken": "✗ Username is already taken",
-  "@onboardingUsernameIsAlreadyTaken":   {
+  "@onboardingUsernameIsAlreadyTaken": {
     "description": "onboarding. ✗ Username is already taken"
   },
   "onboardingUsernameIsAvailable": "✓ Username is available",
-  "@onboardingUsernameIsAvailable":   {
+  "@onboardingUsernameIsAvailable": {
     "description": "onboarding. ✓ Username is available"
   },
   "onboardingCheckingAvailability": "Checking availability...",
-  "@onboardingCheckingAvailability":   {
+  "@onboardingCheckingAvailability": {
     "description": "onboarding. Checking availability..."
   },
   "onboardingEnterAUsername330Characters": "Enter a username (3-30 characters, letters, numbers, and underscores only)",
-  "@onboardingEnterAUsername330Characters":   {
+  "@onboardingEnterAUsername330Characters": {
     "description": "onboarding. Enter a username (3-30 characters, letters, numbers, and underscores only)"
   },
   "onboardingCompleteOnboarding": "Complete Onboarding",
-  "@onboardingCompleteOnboarding":   {
+  "@onboardingCompleteOnboarding": {
     "description": "onboarding. Complete Onboarding"
   },
   "onboardingChooseAUniqueUsername": "Choose a unique username",
-  "@onboardingChooseAUniqueUsername":   {
+  "@onboardingChooseAUniqueUsername": {
     "description": "onboarding. Choose a unique username"
   },
   "onboardingUsername": "Username",
-  "@onboardingUsername":   {
+  "@onboardingUsername": {
     "description": "onboarding. Username"
   },
   "onboardingChangeAvatar": "Change Avatar",
-  "@onboardingChangeAvatar":   {
+  "@onboardingChangeAvatar": {
     "description": "onboarding. Change Avatar"
   },
   "onboardingSetYourUsernameAvatarIsOptional": "Set your username (avatar is optional)",
-  "@onboardingSetYourUsernameAvatarIsOptional":   {
+  "@onboardingSetYourUsernameAvatarIsOptional": {
     "description": "onboarding. Set your username (avatar is optional)"
   },
   "onboardingCompleteYourProfile": "Complete Your Profile",
-  "@onboardingCompleteYourProfile":   {
+  "@onboardingCompleteYourProfile": {
     "description": "onboarding. Complete Your Profile"
   },
   "onboardingEnableReminders": "Enable Reminders",
-  "@onboardingEnableReminders":   {
+  "@onboardingEnableReminders": {
     "description": "onboarding. Enable Reminders"
   },
   "onboardingPreferredTimeOfDay": "Preferred Time of Day",
-  "@onboardingPreferredTimeOfDay":   {
+  "@onboardingPreferredTimeOfDay": {
     "description": "onboarding. Preferred Time of Day"
   },
   "onboardingValueMinutesPerDay": "{value} minutes per day",
-  "@onboardingValueMinutesPerDay":   {
+  "@onboardingValueMinutesPerDay": {
     "description": "onboarding. {value} minutes per day",
     "placeholders": {
       "value": {
@@ -5506,7 +5506,7 @@
     }
   },
   "onboardingValueMinutes": "{value} minutes",
-  "@onboardingValueMinutes":   {
+  "@onboardingValueMinutes": {
     "description": "onboarding. {value} minutes",
     "placeholders": {
       "value": {
@@ -5515,207 +5515,207 @@
     }
   },
   "onboardingDailyDurationMinutes": "Daily Duration (minutes)",
-  "@onboardingDailyDurationMinutes":   {
+  "@onboardingDailyDurationMinutes": {
     "description": "onboarding. Daily Duration (minutes)"
   },
   "onboardingWhenAndHowLongDoYou": "When and how long do you want to learn?",
-  "@onboardingWhenAndHowLongDoYou":   {
+  "@onboardingWhenAndHowLongDoYou": {
     "description": "onboarding. When and how long do you want to learn?"
   },
   "onboardingSetYourLearningSchedule": "Set your learning schedule",
-  "@onboardingSetYourLearningSchedule":   {
+  "@onboardingSetYourLearningSchedule": {
     "description": "onboarding. Set your learning schedule"
   },
   "onboardingHowShouldPolieCommunicateWithYou": "How should Polie communicate with you?",
-  "@onboardingHowShouldPolieCommunicateWithYou":   {
+  "@onboardingHowShouldPolieCommunicateWithYou": {
     "description": "onboarding. How should Polie communicate with you?"
   },
   "onboardingWhatToneDoYouPrefer": "What tone do you prefer?",
-  "@onboardingWhatToneDoYouPrefer":   {
+  "@onboardingWhatToneDoYouPrefer": {
     "description": "onboarding. What tone do you prefer?"
   },
   "onboardingHowFastDoYouWantTo": "How fast do you want to learn?",
-  "@onboardingHowFastDoYouWantTo":   {
+  "@onboardingHowFastDoYouWantTo": {
     "description": "onboarding. How fast do you want to learn?"
   },
   "onboardingWhatPaceDoYouPrefer": "What pace do you prefer?",
-  "@onboardingWhatPaceDoYouPrefer":   {
+  "@onboardingWhatPaceDoYouPrefer": {
     "description": "onboarding. What pace do you prefer?"
   },
   "onboardingSelectYourPreferredLearningStyle": "Select your preferred learning style",
-  "@onboardingSelectYourPreferredLearningStyle":   {
+  "@onboardingSelectYourPreferredLearningStyle": {
     "description": "onboarding. Select your preferred learning style"
   },
   "onboardingHowDoYouLearnBest": "How do you learn best?",
-  "@onboardingHowDoYouLearnBest":   {
+  "@onboardingHowDoYouLearnBest": {
     "description": "onboarding. How do you learn best?"
   },
   "onboardingChooseYourMainLearningObjective": "Choose your main learning objective",
-  "@onboardingChooseYourMainLearningObjective":   {
+  "@onboardingChooseYourMainLearningObjective": {
     "description": "onboarding. Choose your main learning objective"
   },
   "onboardingWhatSYourPrimaryGoal": "What's your primary goal?",
-  "@onboardingWhatSYourPrimaryGoal":   {
+  "@onboardingWhatSYourPrimaryGoal": {
     "description": "onboarding. What's your primary goal?"
   },
   "onboardingChooseYourDailyLearningGoal": "Choose your daily learning goal",
-  "@onboardingChooseYourDailyLearningGoal":   {
+  "@onboardingChooseYourDailyLearningGoal": {
     "description": "onboarding. Choose your daily learning goal"
   },
   "onboardingHowMuchTimeCanYouCommit": "How much time can you commit daily?",
-  "@onboardingHowMuchTimeCanYouCommit":   {
+  "@onboardingHowMuchTimeCanYouCommit": {
     "description": "onboarding. How much time can you commit daily?"
   },
   "onboardingDedicatedStudy": "Dedicated study",
-  "@onboardingDedicatedStudy":   {
+  "@onboardingDedicatedStudy": {
     "description": "onboarding. Dedicated study"
   },
   "onboardingText20Min": "20 min",
-  "@onboardingText20Min":   {
+  "@onboardingText20Min": {
     "description": "onboarding. 20 min"
   },
   "onboardingBalanced": "Balanced",
-  "@onboardingBalanced":   {
+  "@onboardingBalanced": {
     "description": "onboarding. Balanced"
   },
   "onboardingText15Min": "15 min",
-  "@onboardingText15Min":   {
+  "@onboardingText15Min": {
     "description": "onboarding. 15 min"
   },
   "onboardingLightLearning": "Light learning",
-  "@onboardingLightLearning":   {
+  "@onboardingLightLearning": {
     "description": "onboarding. Light learning"
   },
   "onboardingText10Min": "10 min",
-  "@onboardingText10Min":   {
+  "@onboardingText10Min": {
     "description": "onboarding. 10 min"
   },
   "onboardingQuickPractice": "Quick practice",
-  "@onboardingQuickPractice":   {
+  "@onboardingQuickPractice": {
     "description": "onboarding. Quick practice"
   },
   "onboardingText5Min": "5 min",
-  "@onboardingText5Min":   {
+  "@onboardingText5Min": {
     "description": "onboarding. 5 min"
   },
   "onboardingSelectAllThatApply": "Select all that apply",
-  "@onboardingSelectAllThatApply":   {
+  "@onboardingSelectAllThatApply": {
     "description": "onboarding. Select all that apply"
   },
   "onboardingWhyAreYouLearning": "Why are you learning?",
-  "@onboardingWhyAreYouLearning":   {
+  "@onboardingWhyAreYouLearning": {
     "description": "onboarding. Why are you learning?"
   },
   "onboardingThisHelpsUsPersonalizeYourExperience": "This helps us personalize your experience",
-  "@onboardingThisHelpsUsPersonalizeYourExperience":   {
+  "@onboardingThisHelpsUsPersonalizeYourExperience": {
     "description": "onboarding. This helps us personalize your experience"
   },
   "onboardingWhatSYourAgeCategory": "What's your age category?",
-  "@onboardingWhatSYourAgeCategory":   {
+  "@onboardingWhatSYourAgeCategory": {
     "description": "onboarding. What's your age category?"
   },
   "onboardingSelectTheLanguageYouWantTo": "Select the language you want to learn",
-  "@onboardingSelectTheLanguageYouWantTo":   {
+  "@onboardingSelectTheLanguageYouWantTo": {
     "description": "onboarding. Select the language you want to learn"
   },
   "onboardingWhatLanguageDoYouWishTo": "What language do you wish to learn first?",
-  "@onboardingWhatLanguageDoYouWishTo":   {
+  "@onboardingWhatLanguageDoYouWishTo": {
     "description": "onboarding. What language do you wish to learn first?"
   },
   "onboardingXhosa": "Xhosa",
-  "@onboardingXhosa":   {
+  "@onboardingXhosa": {
     "description": "onboarding. Xhosa"
   },
   "onboardingZulu": "Zulu",
-  "@onboardingZulu":   {
+  "@onboardingZulu": {
     "description": "onboarding. Zulu"
   },
   "onboardingSwahili": "Swahili",
-  "@onboardingSwahili":   {
+  "@onboardingSwahili": {
     "description": "onboarding. Swahili"
   },
   "onboardingNigerianPidginEnglish": "Nigerian Pidgin English",
-  "@onboardingNigerianPidginEnglish":   {
+  "@onboardingNigerianPidginEnglish": {
     "description": "onboarding. Nigerian Pidgin English"
   },
   "onboardingIgbo": "Igbo",
-  "@onboardingIgbo":   {
+  "@onboardingIgbo": {
     "description": "onboarding. Igbo"
   },
   "onboardingHausa": "Hausa",
-  "@onboardingHausa":   {
+  "@onboardingHausa": {
     "description": "onboarding. Hausa"
   },
   "onboardingYoruba": "Yoruba",
-  "@onboardingYoruba":   {
+  "@onboardingYoruba": {
     "description": "onboarding. Yoruba"
   },
   "onboardingHelpUsPersonalizeYourLearningExperienc": "Help us personalize your learning experience",
-  "@onboardingHelpUsPersonalizeYourLearningExperienc":   {
+  "@onboardingHelpUsPersonalizeYourLearningExperienc": {
     "description": "onboarding. Help us personalize your learning experience"
   },
   "onboardingWhatSYourCurrentLevel": "What's your current level?",
-  "@onboardingWhatSYourCurrentLevel":   {
+  "@onboardingWhatSYourCurrentLevel": {
     "description": "onboarding. What's your current level?"
   },
   "onboardingISpeakThisLanguageNatively": "I speak this language natively",
-  "@onboardingISpeakThisLanguageNatively":   {
+  "@onboardingISpeakThisLanguageNatively": {
     "description": "onboarding. I speak this language natively"
   },
   "onboardingNative": "Native",
-  "@onboardingNative":   {
+  "@onboardingNative": {
     "description": "onboarding. Native"
   },
   "onboardingIMQuiteFluent": "I'm quite fluent",
-  "@onboardingIMQuiteFluent":   {
+  "@onboardingIMQuiteFluent": {
     "description": "onboarding. I'm quite fluent"
   },
   "onboardingAdvanced": "Advanced",
-  "@onboardingAdvanced":   {
+  "@onboardingAdvanced": {
     "description": "onboarding. Advanced"
   },
   "onboardingICanHaveBasicConversations": "I can have basic conversations",
-  "@onboardingICanHaveBasicConversations":   {
+  "@onboardingICanHaveBasicConversations": {
     "description": "onboarding. I can have basic conversations"
   },
   "onboardingIntermediate": "Intermediate",
-  "@onboardingIntermediate":   {
+  "@onboardingIntermediate": {
     "description": "onboarding. Intermediate"
   },
   "onboardingIKnowAFewWords": "I know a few words",
-  "@onboardingIKnowAFewWords":   {
+  "@onboardingIKnowAFewWords": {
     "description": "onboarding. I know a few words"
   },
   "onboardingElementary": "Elementary",
-  "@onboardingElementary":   {
+  "@onboardingElementary": {
     "description": "onboarding. Elementary"
   },
   "onboardingIMJustStartingOut": "I'm just starting out",
-  "@onboardingIMJustStartingOut":   {
+  "@onboardingIMJustStartingOut": {
     "description": "onboarding. I'm just starting out"
   },
   "onboardingBeginner": "Beginner",
-  "@onboardingBeginner":   {
+  "@onboardingBeginner": {
     "description": "onboarding. Beginner"
   },
   "onboardingContinueToNextStep": "Continue to next step",
-  "@onboardingContinueToNextStep":   {
+  "@onboardingContinueToNextStep": {
     "description": "onboarding. Continue to next step"
   },
   "onboardingSearchLanguages": "Search languages...",
-  "@onboardingSearchLanguages":   {
+  "@onboardingSearchLanguages": {
     "description": "onboarding. Search languages..."
   },
   "onboardingSearchLanguagesea93": "Search languages",
-  "@onboardingSearchLanguagesea93":   {
+  "@onboardingSearchLanguagesea93": {
     "description": "onboarding. Search languages"
   },
   "onboardingAllLanguages": "All Languages",
-  "@onboardingAllLanguages":   {
+  "@onboardingAllLanguages": {
     "description": "onboarding. All Languages"
   },
   "onboardingShowAllLanguagesValueMore": "Show All Languages ({value} more)",
-  "@onboardingShowAllLanguagesValueMore":   {
+  "@onboardingShowAllLanguagesValueMore": {
     "description": "onboarding. Show All Languages ({value} more)",
     "placeholders": {
       "value": {
@@ -5724,7 +5724,7 @@
     }
   },
   "onboardingShowAllLanguagesValueMoreLanguages": "Show all languages. {value} more languages available.",
-  "@onboardingShowAllLanguagesValueMoreLanguages":   {
+  "@onboardingShowAllLanguagesValueMoreLanguages": {
     "description": "onboarding. Show all languages. {value} more languages available.",
     "placeholders": {
       "value": {
@@ -5733,7 +5733,7 @@
     }
   },
   "onboardingSelectValueAsProficiencyLanguageValue2": "Select {value} as proficiency language. {value2}",
-  "@onboardingSelectValueAsProficiencyLanguageValue2":   {
+  "@onboardingSelectValueAsProficiencyLanguageValue2": {
     "description": "onboarding. Select {value} as proficiency language. {value2}",
     "placeholders": {
       "value": {
@@ -5745,203 +5745,203 @@
     }
   },
   "onboardingPopularLanguages": "Popular Languages",
-  "@onboardingPopularLanguages":   {
+  "@onboardingPopularLanguages": {
     "description": "onboarding. Popular Languages"
   },
   "onboardingWeLlTranslateAllInApp": "We'll translate all in-app content to this language",
-  "@onboardingWeLlTranslateAllInApp":   {
+  "@onboardingWeLlTranslateAllInApp": {
     "description": "onboarding. We'll translate all in-app content to this language"
   },
   "onboardingWhatLanguageDoYouSpeak": "What language do you speak?",
-  "@onboardingWhatLanguageDoYouSpeak":   {
+  "@onboardingWhatLanguageDoYouSpeak": {
     "description": "onboarding. What language do you speak?"
   },
   "onboardingPolish": "Polish",
-  "@onboardingPolish":   {
+  "@onboardingPolish": {
     "description": "onboarding. Polish"
   },
   "onboardingDutch": "Dutch",
-  "@onboardingDutch":   {
+  "@onboardingDutch": {
     "description": "onboarding. Dutch"
   },
   "onboardingTurkish": "Turkish",
-  "@onboardingTurkish":   {
+  "@onboardingTurkish": {
     "description": "onboarding. Turkish"
   },
   "onboardingRussian": "Russian",
-  "@onboardingRussian":   {
+  "@onboardingRussian": {
     "description": "onboarding. Russian"
   },
   "onboardingHindi": "Hindi",
-  "@onboardingHindi":   {
+  "@onboardingHindi": {
     "description": "onboarding. Hindi"
   },
   "onboardingKorean": "Korean",
-  "@onboardingKorean":   {
+  "@onboardingKorean": {
     "description": "onboarding. Korean"
   },
   "onboardingJapanese": "Japanese",
-  "@onboardingJapanese":   {
+  "@onboardingJapanese": {
     "description": "onboarding. Japanese"
   },
   "onboardingChinese": "Chinese",
-  "@onboardingChinese":   {
+  "@onboardingChinese": {
     "description": "onboarding. Chinese"
   },
   "onboardingItalian": "Italian",
-  "@onboardingItalian":   {
+  "@onboardingItalian": {
     "description": "onboarding. Italian"
   },
   "onboardingGerman": "German",
-  "@onboardingGerman":   {
+  "@onboardingGerman": {
     "description": "onboarding. German"
   },
   "onboardingBerber": "Berber",
-  "@onboardingBerber":   {
+  "@onboardingBerber": {
     "description": "onboarding. Berber"
   },
   "onboardingArabic": "Arabic",
-  "@onboardingArabic":   {
+  "@onboardingArabic": {
     "description": "onboarding. Arabic"
   },
   "onboardingSango": "Sango",
-  "@onboardingSango":   {
+  "@onboardingSango": {
     "description": "onboarding. Sango"
   },
   "onboardingKongo": "Kongo",
-  "@onboardingKongo":   {
+  "@onboardingKongo": {
     "description": "onboarding. Kongo"
   },
   "onboardingLingala": "Lingala",
-  "@onboardingLingala":   {
+  "@onboardingLingala": {
     "description": "onboarding. Lingala"
   },
   "onboardingChichewa": "Chichewa",
-  "@onboardingChichewa":   {
+  "@onboardingChichewa": {
     "description": "onboarding. Chichewa"
   },
   "onboardingNdebele": "Ndebele",
-  "@onboardingNdebele":   {
+  "@onboardingNdebele": {
     "description": "onboarding. Ndebele"
   },
   "onboardingSwati": "Swati",
-  "@onboardingSwati":   {
+  "@onboardingSwati": {
     "description": "onboarding. Swati"
   },
   "onboardingTsonga": "Tsonga",
-  "@onboardingTsonga":   {
+  "@onboardingTsonga": {
     "description": "onboarding. Tsonga"
   },
   "onboardingVenda": "Venda",
-  "@onboardingVenda":   {
+  "@onboardingVenda": {
     "description": "onboarding. Venda"
   },
   "onboardingSetswana": "Setswana",
-  "@onboardingSetswana":   {
+  "@onboardingSetswana": {
     "description": "onboarding. Setswana"
   },
   "onboardingSesotho": "Sesotho",
-  "@onboardingSesotho":   {
+  "@onboardingSesotho": {
     "description": "onboarding. Sesotho"
   },
   "onboardingAfrikaans": "Afrikaans",
-  "@onboardingAfrikaans":   {
+  "@onboardingAfrikaans": {
     "description": "onboarding. Afrikaans"
   },
   "onboardingSomali": "Somali",
-  "@onboardingSomali":   {
+  "@onboardingSomali": {
     "description": "onboarding. Somali"
   },
   "onboardingOromo": "Oromo",
-  "@onboardingOromo":   {
+  "@onboardingOromo": {
     "description": "onboarding. Oromo"
   },
   "onboardingTigrinya": "Tigrinya",
-  "@onboardingTigrinya":   {
+  "@onboardingTigrinya": {
     "description": "onboarding. Tigrinya"
   },
   "onboardingAmharic": "Amharic",
-  "@onboardingAmharic":   {
+  "@onboardingAmharic": {
     "description": "onboarding. Amharic"
   },
   "onboardingKirundi": "Kirundi",
-  "@onboardingKirundi":   {
+  "@onboardingKirundi": {
     "description": "onboarding. Kirundi"
   },
   "onboardingKinyarwanda": "Kinyarwanda",
-  "@onboardingKinyarwanda":   {
+  "@onboardingKinyarwanda": {
     "description": "onboarding. Kinyarwanda"
   },
   "onboardingLuganda": "Luganda",
-  "@onboardingLuganda":   {
+  "@onboardingLuganda": {
     "description": "onboarding. Luganda"
   },
   "onboardingLuo": "Luo",
-  "@onboardingLuo":   {
+  "@onboardingLuo": {
     "description": "onboarding. Luo"
   },
   "onboardingKikuyu": "Kikuyu",
-  "@onboardingKikuyu":   {
+  "@onboardingKikuyu": {
     "description": "onboarding. Kikuyu"
   },
   "onboardingFon": "Fon",
-  "@onboardingFon":   {
+  "@onboardingFon": {
     "description": "onboarding. Fon"
   },
   "onboardingEwe": "Ewe",
-  "@onboardingEwe":   {
+  "@onboardingEwe": {
     "description": "onboarding. Ewe"
   },
   "onboardingAkan": "Akan",
-  "@onboardingAkan":   {
+  "@onboardingAkan": {
     "description": "onboarding. Akan"
   },
   "onboardingBambara": "Bambara",
-  "@onboardingBambara":   {
+  "@onboardingBambara": {
     "description": "onboarding. Bambara"
   },
   "onboardingFulfulde": "Fulfulde",
-  "@onboardingFulfulde":   {
+  "@onboardingFulfulde": {
     "description": "onboarding. Fulfulde"
   },
   "onboardingTwi": "Twi",
-  "@onboardingTwi":   {
+  "@onboardingTwi": {
     "description": "onboarding. Twi"
   },
   "onboardingWolof": "Wolof",
-  "@onboardingWolof":   {
+  "@onboardingWolof": {
     "description": "onboarding. Wolof"
   },
   "onboardingNigerianPidgin": "Nigerian Pidgin",
-  "@onboardingNigerianPidgin":   {
+  "@onboardingNigerianPidgin": {
     "description": "onboarding. Nigerian Pidgin"
   },
   "onboardingSpanish": "Spanish",
-  "@onboardingSpanish":   {
+  "@onboardingSpanish": {
     "description": "onboarding. Spanish"
   },
   "onboardingPortuguese": "Portuguese",
-  "@onboardingPortuguese":   {
+  "@onboardingPortuguese": {
     "description": "onboarding. Portuguese"
   },
   "onboardingFrench": "French",
-  "@onboardingFrench":   {
+  "@onboardingFrench": {
     "description": "onboarding. French"
   },
   "onboardingEnglish": "English",
-  "@onboardingEnglish":   {
+  "@onboardingEnglish": {
     "description": "onboarding. English"
   },
   "onboardingTakeTest": "Take Test",
-  "@onboardingTakeTest":   {
+  "@onboardingTakeTest": {
     "description": "onboarding. Take Test"
   },
   "onboardingSkip": "Skip",
-  "@onboardingSkip":   {
+  "@onboardingSkip": {
     "description": "onboarding. Skip"
   },
   "onboardingWouldYouLikeToTakeA": "Would you like to take a placement test to assess your current level in {learningLanguage}? You can skip this and take it later.",
-  "@onboardingWouldYouLikeToTakeA":   {
+  "@onboardingWouldYouLikeToTakeA": {
     "description": "onboarding. Would you like to take a placement test to assess your current level in {learnin",
     "placeholders": {
       "learningLanguage": {
@@ -5950,11 +5950,11 @@
     }
   },
   "onboardingTakePlacementTest": "Take Placement Test?",
-  "@onboardingTakePlacementTest":   {
+  "@onboardingTakePlacementTest": {
     "description": "onboarding. Take Placement Test?"
   },
   "onboardingProgresspercent": "{progressPercent}%",
-  "@onboardingProgresspercent":   {
+  "@onboardingProgresspercent": {
     "description": "onboarding. {progressPercent}%",
     "placeholders": {
       "progressPercent": {
@@ -5963,7 +5963,7 @@
     }
   },
   "onboardingStepValueOfTotalsteps": "Step {value} of {totalSteps}",
-  "@onboardingStepValueOfTotalsteps":   {
+  "@onboardingStepValueOfTotalsteps": {
     "description": "onboarding. Step {value} of {totalSteps}",
     "placeholders": {
       "value": {
@@ -5975,19 +5975,19 @@
     }
   },
   "onboardingSkipOnboarding": "Skip onboarding",
-  "@onboardingSkipOnboarding":   {
+  "@onboardingSkipOnboarding": {
     "description": "onboarding. Skip onboarding"
   },
   "onboardingOnboarding": "Onboarding",
-  "@onboardingOnboarding":   {
+  "@onboardingOnboarding": {
     "description": "onboarding. Onboarding"
   },
   "onboardingGoBackToPreviousStep": "Go back to previous step",
-  "@onboardingGoBackToPreviousStep":   {
+  "@onboardingGoBackToPreviousStep": {
     "description": "onboarding. Go back to previous step"
   },
   "onboardingOnboardingProgressStepValueOfTotalstep": "Onboarding progress. Step {value} of {totalSteps}. {progressPercent} percent complete.",
-  "@onboardingOnboardingProgressStepValueOfTotalstep":   {
+  "@onboardingOnboardingProgressStepValueOfTotalstep": {
     "description": "onboarding. Onboarding progress. Step {value} of {totalSteps}. {progressPercent} percent com",
     "placeholders": {
       "value": {
@@ -6002,11 +6002,11 @@
     }
   },
   "onboardingSkipTest": "Skip test",
-  "@onboardingSkipTest":   {
+  "@onboardingSkipTest": {
     "description": "onboarding. Skip test"
   },
   "onboardingQuestionValueOfTotalquestions": "Question {value} of {totalQuestions}",
-  "@onboardingQuestionValueOfTotalquestions":   {
+  "@onboardingQuestionValueOfTotalquestions": {
     "description": "onboarding. Question {value} of {totalQuestions}",
     "placeholders": {
       "value": {
@@ -6018,299 +6018,299 @@
     }
   },
   "onboardingSkipForNowStartAsBeginner": "Skip for now (start as beginner)",
-  "@onboardingSkipForNowStartAsBeginner":   {
+  "@onboardingSkipForNowStartAsBeginner": {
     "description": "onboarding. Skip for now (start as beginner)"
   },
   "onboardingStartAssessment": "Start Assessment",
-  "@onboardingStartAssessment":   {
+  "@onboardingStartAssessment": {
     "description": "onboarding. Start Assessment"
   },
   "onboardingAnswer3QuickQuestionsToHelp": "Answer 3 quick questions to help us personalize your learning journey.",
-  "@onboardingAnswer3QuickQuestionsToHelp":   {
+  "@onboardingAnswer3QuickQuestionsToHelp": {
     "description": "onboarding. Answer 3 quick questions to help us personalize your learning journey."
   },
   "onboardingLetUsSeeWhereYouStand": "Let us see where you stand, traveler.",
-  "@onboardingLetUsSeeWhereYouStand":   {
+  "@onboardingLetUsSeeWhereYouStand": {
     "description": "onboarding. Let us see where you stand, traveler."
   },
   "onboardingUnderstandComplexDiscussions": "Understand complex discussions",
-  "@onboardingUnderstandComplexDiscussions":   {
+  "@onboardingUnderstandComplexDiscussions": {
     "description": "onboarding. Understand complex discussions"
   },
   "onboardingUnderstandMostEverydayConversations": "Understand most everyday conversations",
-  "@onboardingUnderstandMostEverydayConversations":   {
+  "@onboardingUnderstandMostEverydayConversations": {
     "description": "onboarding. Understand most everyday conversations"
   },
   "onboardingUnderstandShortSimpleConversations": "Understand short, simple conversations",
-  "@onboardingUnderstandShortSimpleConversations":   {
+  "@onboardingUnderstandShortSimpleConversations": {
     "description": "onboarding. Understand short, simple conversations"
   },
   "onboardingUnderstandGreetingsAndSimpleWords": "Understand greetings and simple words",
-  "@onboardingUnderstandGreetingsAndSimpleWords":   {
+  "@onboardingUnderstandGreetingsAndSimpleWords": {
     "description": "onboarding. Understand greetings and simple words"
   },
   "onboardingCannotUnderstandAnything": "Cannot understand anything",
-  "@onboardingCannotUnderstandAnything":   {
+  "@onboardingCannotUnderstandAnything": {
     "description": "onboarding. Cannot understand anything"
   },
   "onboardingHowConfidentAreYouInUnderstanding": "How confident are you in understanding spoken African languages?",
-  "@onboardingHowConfidentAreYouInUnderstanding":   {
+  "@onboardingHowConfidentAreYouInUnderstanding": {
     "description": "onboarding. How confident are you in understanding spoken African languages?"
   },
   "onboardingICanReadFluently": "I can read fluently",
-  "@onboardingICanReadFluently":   {
+  "@onboardingICanReadFluently": {
     "description": "onboarding. I can read fluently"
   },
   "onboardingICanReadSentences": "I can read sentences",
-  "@onboardingICanReadSentences":   {
+  "@onboardingICanReadSentences": {
     "description": "onboarding. I can read sentences"
   },
   "onboardingICanReadSimpleWords": "I can read simple words",
-  "@onboardingICanReadSimpleWords":   {
+  "@onboardingICanReadSimpleWords": {
     "description": "onboarding. I can read simple words"
   },
   "onboardingICanRecognizeSomeLettersCharacters": "I can recognize some letters/characters",
-  "@onboardingICanRecognizeSomeLettersCharacters":   {
+  "@onboardingICanRecognizeSomeLettersCharacters": {
     "description": "onboarding. I can recognize some letters/characters"
   },
   "onboardingNotAtAll": "Not at all",
-  "@onboardingNotAtAll":   {
+  "@onboardingNotAtAll": {
     "description": "onboarding. Not at all"
   },
   "onboardingCanYouReadOrWriteIn": "Can you read or write in the African language you want to learn?",
-  "@onboardingCanYouReadOrWriteIn":   {
+  "@onboardingCanYouReadOrWriteIn": {
     "description": "onboarding. Can you read or write in the African language you want to learn?"
   },
   "onboardingAdvancedSpeakFluently": "Advanced - speak fluently",
-  "@onboardingAdvancedSpeakFluently":   {
+  "@onboardingAdvancedSpeakFluently": {
     "description": "onboarding. Advanced - speak fluently"
   },
   "onboardingIntermediateCanHoldConversations": "Intermediate - can hold conversations",
-  "@onboardingIntermediateCanHoldConversations":   {
+  "@onboardingIntermediateCanHoldConversations": {
     "description": "onboarding. Intermediate - can hold conversations"
   },
   "onboardingBasicCanIntroduceMyself": "Basic - can introduce myself",
-  "@onboardingBasicCanIntroduceMyself":   {
+  "@onboardingBasicCanIntroduceMyself": {
     "description": "onboarding. Basic - can introduce myself"
   },
   "onboardingSomeExposureKnowAFewWords": "Some exposure - know a few words",
-  "@onboardingSomeExposureKnowAFewWords":   {
+  "@onboardingSomeExposureKnowAFewWords": {
     "description": "onboarding. Some exposure - know a few words"
   },
   "onboardingCompleteBeginnerNeverLearnedOne": "Complete beginner - never learned one",
-  "@onboardingCompleteBeginnerNeverLearnedOne":   {
+  "@onboardingCompleteBeginnerNeverLearnedOne": {
     "description": "onboarding. Complete beginner - never learned one"
   },
   "onboardingHowWouldYouDescribeYourFamiliarity": "How would you describe your familiarity with African languages?",
-  "@onboardingHowWouldYouDescribeYourFamiliarity":   {
+  "@onboardingHowWouldYouDescribeYourFamiliarity": {
     "description": "onboarding. How would you describe your familiarity with African languages?"
   },
   "onboardingNext": "Next",
-  "@onboardingNext":   {
+  "@onboardingNext": {
     "description": "onboarding. Next"
   },
   "onboardingEnterYourUsername": "Enter your username",
-  "@onboardingEnterYourUsername":   {
+  "@onboardingEnterYourUsername": {
     "description": "onboarding. Enter your username"
   },
   "onboardingALearnerWithoutANameIs": "A learner without a name is a drum without a rhythm!\nTell us what you wish to be called.",
-  "@onboardingALearnerWithoutANameIs":   {
+  "@onboardingALearnerWithoutANameIs": {
     "description": "onboarding. A learner without a name is a drum without a rhythm!\nTell us what you wish to be"
   },
   "onboardingBuildYourClan": "Build your clan.",
-  "@onboardingBuildYourClan":   {
+  "@onboardingBuildYourClan": {
     "description": "onboarding. Build your clan."
   },
   "onboardingIAmTheHealerLetMe": "I am the Healer.\nLet me make your journey smooth.",
-  "@onboardingIAmTheHealerLetMe":   {
+  "@onboardingIAmTheHealerLetMe": {
     "description": "onboarding. I am the Healer.\nLet me make your journey smooth."
   },
   "onboardingGamification": "Gamification",
-  "@onboardingGamification":   {
+  "@onboardingGamification": {
     "description": "onboarding. Gamification"
   },
   "onboardingTonePreference": "Tone Preference",
-  "@onboardingTonePreference":   {
+  "@onboardingTonePreference": {
     "description": "onboarding. Tone Preference"
   },
   "onboardingIAmAminaTheGriotHow": "I am Amina the Griot.\nHow shall I speak to you?",
-  "@onboardingIAmAminaTheGriotHow":   {
+  "@onboardingIAmAminaTheGriotHow": {
     "description": "onboarding. I am Amina the Griot.\nHow shall I speak to you?"
   },
   "onboardingChooseYourPath": "Choose your path.",
-  "@onboardingChooseYourPath":   {
+  "@onboardingChooseYourPath": {
     "description": "onboarding. Choose your path."
   },
   "onboardingBrainTraining": "Brain Training",
-  "@onboardingBrainTraining":   {
+  "@onboardingBrainTraining": {
     "description": "onboarding. Brain Training"
   },
   "onboardingConfidence": "Confidence",
-  "@onboardingConfidence":   {
+  "@onboardingConfidence": {
     "description": "onboarding. Confidence"
   },
   "onboardingAcademic": "Academic",
-  "@onboardingAcademic":   {
+  "@onboardingAcademic": {
     "description": "onboarding. Academic"
   },
   "onboardingBusiness": "Business",
-  "@onboardingBusiness":   {
+  "@onboardingBusiness": {
     "description": "onboarding. Business"
   },
   "onboardingHeritage": "Heritage",
-  "@onboardingHeritage":   {
+  "@onboardingHeritage": {
     "description": "onboarding. Heritage"
   },
   "onboardingTravel": "Travel",
-  "@onboardingTravel":   {
+  "@onboardingTravel": {
     "description": "onboarding. Travel"
   },
   "onboardingIAmZawadiKeeperOfTime": "I am Zawadi, keeper of time.\nWhen shall we train your tongue?",
-  "@onboardingIAmZawadiKeeperOfTime":   {
+  "@onboardingIAmZawadiKeeperOfTime": {
     "description": "onboarding. I am Zawadi, keeper of time.\nWhen shall we train your tongue?"
   },
   "onboardingIAmNuruTheRhythmMaster": "I am Nuru the Rhythm Master.\nTap the drum that sings to your spirit.",
-  "@onboardingIAmNuruTheRhythmMaster":   {
+  "@onboardingIAmNuruTheRhythmMaster": {
     "description": "onboarding. I am Nuru the Rhythm Master.\nTap the drum that sings to your spirit."
   },
   "onboardingWhatSYourLevel": "What's your level?",
-  "@onboardingWhatSYourLevel":   {
+  "@onboardingWhatSYourLevel": {
     "description": "onboarding. What's your level?"
   },
   "onboardingSelectLanguage": "Select Language",
-  "@onboardingSelectLanguage":   {
+  "@onboardingSelectLanguage": {
     "description": "onboarding. Select Language"
   },
   "onboardingIAmAdisaTheWeaverChoose": "I am Adisa, the Weaver.\nChoose the threads of your voice.",
-  "@onboardingIAmAdisaTheWeaverChoose":   {
+  "@onboardingIAmAdisaTheWeaverChoose": {
     "description": "onboarding. I am Adisa, the Weaver.\nChoose the threads of your voice."
   },
   "onboardingTellMeWhoAreYou": "Tell me: who are you?",
-  "@onboardingTellMeWhoAreYou":   {
+  "@onboardingTellMeWhoAreYou": {
     "description": "onboarding. Tell me: who are you?"
   },
   "onboardingWelcomeTravelerIAmPaLingafriq": "Welcome, traveler. I am Pa LingAfriq,\nkeeper of the village memory.",
-  "@onboardingWelcomeTravelerIAmPaLingafriq":   {
+  "@onboardingWelcomeTravelerIAmPaLingafriq": {
     "description": "onboarding. Welcome, traveler. I am Pa LingAfriq,\nkeeper of the village memory."
   },
   "onboardingBeginJourney": "Begin Journey",
-  "@onboardingBeginJourney":   {
+  "@onboardingBeginJourney": {
     "description": "onboarding. Begin Journey"
   },
   "onboardingTheLanguageVillageYourJourneyBegins": "The Language Village\nYour journey begins here",
-  "@onboardingTheLanguageVillageYourJourneyBegins":   {
+  "@onboardingTheLanguageVillageYourJourneyBegins": {
     "description": "onboarding. The Language Village\nYour journey begins here"
   },
   "onboardingWelcomeToKijijiChaLugha": "Welcome to\nKijiji cha Lugha",
-  "@onboardingWelcomeToKijijiChaLugha":   {
+  "@onboardingWelcomeToKijijiChaLugha": {
     "description": "onboarding. Welcome to\nKijiji cha Lugha"
   },
   "onboardingLoading": "Loading...",
-  "@onboardingLoading":   {
+  "@onboardingLoading": {
     "description": "onboarding. Loading..."
   },
   "onboardingAlreadyLearningLogIn": "Already learning? Log in",
-  "@onboardingAlreadyLearningLogIn":   {
+  "@onboardingAlreadyLearningLogIn": {
     "description": "onboarding. Already learning? Log in"
   },
   "onboardingGetStarted": "Get Started",
-  "@onboardingGetStarted":   {
+  "@onboardingGetStarted": {
     "description": "onboarding. Get Started"
   },
   "onboardingChooseYourPathAndUnlockNew": "Choose your path and unlock new opportunities",
-  "@onboardingChooseYourPathAndUnlockNew":   {
+  "@onboardingChooseYourPathAndUnlockNew": {
     "description": "onboarding. Choose your path and unlock new opportunities"
   },
   "onboardingYourLanguageJourneyStartsHere": "Your Language Journey\nStarts Here!",
-  "@onboardingYourLanguageJourneyStartsHere":   {
+  "@onboardingYourLanguageJourneyStartsHere": {
     "description": "onboarding. Your Language Journey\nStarts Here!"
   },
   "onboardingPrioritizeHowYourCommunityReallySpeaks": "Prioritize how your community really speaks",
-  "@onboardingPrioritizeHowYourCommunityReallySpeaks":   {
+  "@onboardingPrioritizeHowYourCommunityReallySpeaks": {
     "description": "onboarding. Prioritize how your community really speaks"
   },
   "onboardingLocalDialectHeritage": "Local Dialect & Heritage",
-  "@onboardingLocalDialectHeritage":   {
+  "@onboardingLocalDialectHeritage": {
     "description": "onboarding. Local Dialect & Heritage"
   },
   "onboardingPrepareForStudiesAndBroadenKnowledge": "Prepare for studies and broaden knowledge",
-  "@onboardingPrepareForStudiesAndBroadenKnowledge":   {
+  "@onboardingPrepareForStudiesAndBroadenKnowledge": {
     "description": "onboarding. Prepare for studies and broaden knowledge"
   },
   "onboardingExcelAcademically": "Excel Academically",
-  "@onboardingExcelAcademically":   {
+  "@onboardingExcelAcademically": {
     "description": "onboarding. Excel Academically"
   },
   "onboardingOpenDoorsToInternationalOpportunities": "Open doors to international opportunities",
-  "@onboardingOpenDoorsToInternationalOpportunities":   {
+  "@onboardingOpenDoorsToInternationalOpportunities": {
     "description": "onboarding. Open doors to international opportunities"
   },
   "onboardingBoostYourCareer": "Boost Your Career",
-  "@onboardingBoostYourCareer":   {
+  "@onboardingBoostYourCareer": {
     "description": "onboarding. Boost Your Career"
   },
   "onboardingDiscoverTheRichHeritageOfAfrican": "Discover the rich heritage of African languages",
-  "@onboardingDiscoverTheRichHeritageOfAfrican":   {
+  "@onboardingDiscoverTheRichHeritageOfAfrican": {
     "description": "onboarding. Discover the rich heritage of African languages"
   },
   "onboardingExploreCultures": "Explore Cultures",
-  "@onboardingExploreCultures":   {
+  "@onboardingExploreCultures": {
     "description": "onboarding. Explore Cultures"
   },
   "onboardingExplore54Countries2000LanguagesAnd": "Explore 54 countries, 2000+ languages,\nand connect with 1+ billion voices",
-  "@onboardingExplore54Countries2000LanguagesAnd":   {
+  "@onboardingExplore54Countries2000LanguagesAnd": {
     "description": "onboarding. Explore 54 countries, 2000+ languages,\nand connect with 1+ billion voices"
   },
   "onboardingReadyForAPanAfricanAdventure": "Ready for a\npan-African adventure?",
-  "@onboardingReadyForAPanAfricanAdventure":   {
+  "@onboardingReadyForAPanAfricanAdventure": {
     "description": "onboarding. Ready for a\npan-African adventure?"
   },
   "onboardingLearnANewLanguageTheFun": "Learn a new language,\nthe fun way",
-  "@onboardingLearnANewLanguageTheFun":   {
+  "@onboardingLearnANewLanguageTheFun": {
     "description": "onboarding. Learn a new language,\nthe fun way"
   },
   "onboardingLearnAboutHistoryTraditionsAndCultural": "Learn about history, traditions, and cultural expressions",
-  "@onboardingLearnAboutHistoryTraditionsAndCultural":   {
+  "@onboardingLearnAboutHistoryTraditionsAndCultural": {
     "description": "onboarding. Learn about history, traditions, and cultural expressions"
   },
   "onboardingConnectWithCulture": "Connect with culture",
-  "@onboardingConnectWithCulture":   {
+  "@onboardingConnectWithCulture": {
     "description": "onboarding. Connect with culture"
   },
   "onboardingStayMotivatedWithPersonalizedChallenge": "Stay motivated with personalized challenges and daily goals",
-  "@onboardingStayMotivatedWithPersonalizedChallenge":   {
+  "@onboardingStayMotivatedWithPersonalizedChallenge": {
     "description": "onboarding. Stay motivated with personalized challenges and daily goals"
   },
   "onboardingTrackYourProgress": "Track your progress",
-  "@onboardingTrackYourProgress":   {
+  "@onboardingTrackYourProgress": {
     "description": "onboarding. Track your progress"
   },
   "onboardingFunBiteSizedLessonsMakeLearning": "Fun, bite-sized lessons make learning addictive and effective",
-  "@onboardingFunBiteSizedLessonsMakeLearning":   {
+  "@onboardingFunBiteSizedLessonsMakeLearning": {
     "description": "onboarding. Fun, bite-sized lessons make learning addictive and effective"
   },
   "onboardingLearnLanguagesPlayGames": "Learn languages, play games",
-  "@onboardingLearnLanguagesPlayGames":   {
+  "@onboardingLearnLanguagesPlayGames": {
     "description": "onboarding. Learn languages, play games"
   },
   "onboardingDiscoverTheBeautyOfAfricanLanguages": "Discover the beauty of African languages",
-  "@onboardingDiscoverTheBeautyOfAfricanLanguages":   {
+  "@onboardingDiscoverTheBeautyOfAfricanLanguages": {
     "description": "onboarding. Discover the beauty of African languages"
   },
   "onboardingYourJourneyToFluencyStartsNow": "Your journey to fluency\nstarts now!",
-  "@onboardingYourJourneyToFluencyStartsNow":   {
+  "@onboardingYourJourneyToFluencyStartsNow": {
     "description": "onboarding. Your journey to fluency\nstarts now!"
   },
   "onboardingWhatDoWeOfferUniqely": "What Do We Offer Uniqely",
-  "@onboardingWhatDoWeOfferUniqely":   {
+  "@onboardingWhatDoWeOfferUniqely": {
     "description": "onboarding. What Do We Offer Uniqely"
   },
   "onboardingText54Countries2000Languages1Billion": "54 countries, 2000+ languages, 1+ billion voices. One origin. ",
-  "@onboardingText54Countries2000Languages1Billion":   {
+  "@onboardingText54Countries2000Languages1Billion": {
     "description": "onboarding. 54 countries, 2000+ languages, 1+ billion voices. One origin. "
   },
   "onboardingValueValue2": "{value} / {value2}",
-  "@onboardingValueValue2":   {
+  "@onboardingValueValue2": {
     "description": "onboarding. {value} / {value2}",
     "placeholders": {
       "value": {
@@ -6322,51 +6322,51 @@
     }
   },
   "onboardingPlacementTest": "Placement Test",
-  "@onboardingPlacementTest":   {
+  "@onboardingPlacementTest": {
     "description": "onboarding. Placement Test"
   },
   "onboardingGoBack": "Go Back",
-  "@onboardingGoBack":   {
+  "@onboardingGoBack": {
     "description": "onboarding. Go Back"
   },
   "onboardingPleaseTryAgainLater": "Please try again later.",
-  "@onboardingPleaseTryAgainLater":   {
+  "@onboardingPleaseTryAgainLater": {
     "description": "onboarding. Please try again later."
   },
   "onboardingPlacementQuestionsAreNotAvailableRight": "Placement questions are not available right now.",
-  "@onboardingPlacementQuestionsAreNotAvailableRight":   {
+  "@onboardingPlacementQuestionsAreNotAvailableRight": {
     "description": "onboarding. Placement questions are not available right now."
   },
   "onboardingLoadingPlacementTest": "Loading placement test...",
-  "@onboardingLoadingPlacementTest":   {
+  "@onboardingLoadingPlacementTest": {
     "description": "onboarding. Loading placement test..."
   },
   "onboardingAreasForImprovement": "Areas for Improvement",
-  "@onboardingAreasForImprovement":   {
+  "@onboardingAreasForImprovement": {
     "description": "onboarding. Areas for Improvement"
   },
   "onboardingYourProficiencyLevel": "Your Proficiency Level",
-  "@onboardingYourProficiencyLevel":   {
+  "@onboardingYourProficiencyLevel": {
     "description": "onboarding. Your Proficiency Level"
   },
   "onboardingPlacementTestComplete": "Placement Test Complete!",
-  "@onboardingPlacementTestComplete":   {
+  "@onboardingPlacementTestComplete": {
     "description": "onboarding. Placement Test Complete!"
   },
   "onboardingPrevious": "Previous",
-  "@onboardingPrevious":   {
+  "@onboardingPrevious": {
     "description": "onboarding. Previous"
   },
   "onboardingYourAnswer": "Your Answer",
-  "@onboardingYourAnswer":   {
+  "@onboardingYourAnswer": {
     "description": "onboarding. Your Answer"
   },
   "onboardingSelected": "Selected",
-  "@onboardingSelected":   {
+  "@onboardingSelected": {
     "description": "onboarding. Selected"
   },
   "onboardingAnswerOptionOptionValue": "Answer option: {option}{value}",
-  "@onboardingAnswerOptionOptionValue":   {
+  "@onboardingAnswerOptionOptionValue": {
     "description": "onboarding. Answer option: {option}{value}",
     "placeholders": {
       "option": {
@@ -6378,7 +6378,7 @@
     }
   },
   "onboardingQuestionValueOfValue2": "Question {value} of {value2}",
-  "@onboardingQuestionValueOfValue2":   {
+  "@onboardingQuestionValueOfValue2": {
     "description": "onboarding. Question {value} of {value2}",
     "placeholders": {
       "value": {
@@ -6390,7 +6390,7 @@
     }
   },
   "onboardingValueOfValue2": "{value} of {value2}",
-  "@onboardingValueOfValue2":   {
+  "@onboardingValueOfValue2": {
     "description": "onboarding. {value} of {value2}",
     "placeholders": {
       "value": {
@@ -6402,7 +6402,7 @@
     }
   },
   "onboardingProgressQuestionValueOfValue2": "Progress: question {value} of {value2}",
-  "@onboardingProgressQuestionValueOfValue2":   {
+  "@onboardingProgressQuestionValueOfValue2": {
     "description": "onboarding. Progress: question {value} of {value2}",
     "placeholders": {
       "value": {
@@ -6414,131 +6414,131 @@
     }
   },
   "onboardingLoadingTest": "Loading test...",
-  "@onboardingLoadingTest":   {
+  "@onboardingLoadingTest": {
     "description": "onboarding. Loading test..."
   },
   "onboardingTryAgain": "Try Again",
-  "@onboardingTryAgain":   {
+  "@onboardingTryAgain": {
     "description": "onboarding. Try Again"
   },
   "onboardingContinueWithoutTest": "Continue Without Test",
-  "@onboardingContinueWithoutTest":   {
+  "@onboardingContinueWithoutTest": {
     "description": "onboarding. Continue Without Test"
   },
   "onboardingWeCouldnTConnectToThe": "We couldn't connect to the server to generate your placement test. You can continue without it and take it later from your profile.",
-  "@onboardingWeCouldnTConnectToThe":   {
+  "@onboardingWeCouldnTConnectToThe": {
     "description": "onboarding. We couldn't connect to the server to generate your placement test. You can conti"
   },
   "onboardingUnableToGeneratePlacementTest": "Unable to Generate Placement Test",
-  "@onboardingUnableToGeneratePlacementTest":   {
+  "@onboardingUnableToGeneratePlacementTest": {
     "description": "onboarding. Unable to Generate Placement Test"
   },
   "onboardingGeneratingYourPlacementTest": "Generating your placement test...",
-  "@onboardingGeneratingYourPlacementTest":   {
+  "@onboardingGeneratingYourPlacementTest": {
     "description": "onboarding. Generating your placement test..."
   },
   "onboardingPleaseAnswerAllQuestions": "Please answer all questions",
-  "@onboardingPleaseAnswerAllQuestions":   {
+  "@onboardingPleaseAnswerAllQuestions": {
     "description": "onboarding. Please answer all questions"
   },
   "onboardingEngageWithNativeContent": "Engage with native content",
-  "@onboardingEngageWithNativeContent":   {
+  "@onboardingEngageWithNativeContent": {
     "description": "onboarding. Engage with native content"
   },
   "onboardingFocusOnFluencyAndNuance": "Focus on fluency and nuance",
-  "@onboardingFocusOnFluencyAndNuance":   {
+  "@onboardingFocusOnFluencyAndNuance": {
     "description": "onboarding. Focus on fluency and nuance"
   },
   "onboardingAdvancedLessonsRecommended": "Advanced lessons recommended",
-  "@onboardingAdvancedLessonsRecommended":   {
+  "@onboardingAdvancedLessonsRecommended": {
     "description": "onboarding. Advanced lessons recommended"
   },
   "onboardingExpandVocabularyInSpecificTopics": "Expand vocabulary in specific topics",
-  "@onboardingExpandVocabularyInSpecificTopics":   {
+  "@onboardingExpandVocabularyInSpecificTopics": {
     "description": "onboarding. Expand vocabulary in specific topics"
   },
   "onboardingPracticeConversationSkills": "Practice conversation skills",
-  "@onboardingPracticeConversationSkills":   {
+  "@onboardingPracticeConversationSkills": {
     "description": "onboarding. Practice conversation skills"
   },
   "onboardingContinueWithIntermediateContent": "Continue with intermediate content",
-  "@onboardingContinueWithIntermediateContent":   {
+  "@onboardingContinueWithIntermediateContent": {
     "description": "onboarding. Continue with intermediate content"
   },
   "onboardingPracticePronunciationDaily": "Practice pronunciation daily",
-  "@onboardingPracticePronunciationDaily":   {
+  "@onboardingPracticePronunciationDaily": {
     "description": "onboarding. Practice pronunciation daily"
   },
   "onboardingFocusOnVocabularyBuilding": "Focus on vocabulary building",
-  "@onboardingFocusOnVocabularyBuilding":   {
+  "@onboardingFocusOnVocabularyBuilding": {
     "description": "onboarding. Focus on vocabulary building"
   },
   "onboardingStartWithBeginnerLessons": "Start with beginner lessons",
-  "@onboardingStartWithBeginnerLessons":   {
+  "@onboardingStartWithBeginnerLessons": {
     "description": "onboarding. Start with beginner lessons"
   },
   "onboardingStartWithTheFirstLessonsA": "Start with the first lessons. A level waits until calibrated items are available.",
-  "@onboardingStartWithTheFirstLessonsA":   {
+  "@onboardingStartWithTheFirstLessonsA": {
     "description": "onboarding. Start with the first lessons. A level waits until calibrated items are available"
   },
   "onboardingSomeGrammarConceptsNeedReview": "Some grammar concepts need review",
-  "@onboardingSomeGrammarConceptsNeedReview":   {
+  "@onboardingSomeGrammarConceptsNeedReview": {
     "description": "onboarding. Some grammar concepts need review"
   },
   "onboardingGrammarFundamentalsNeeded": "Grammar fundamentals needed",
-  "@onboardingGrammarFundamentalsNeeded":   {
+  "@onboardingGrammarFundamentalsNeeded": {
     "description": "onboarding. Grammar fundamentals needed"
   },
   "onboardingNeedToBuildVocabulary": "Need to build vocabulary",
-  "@onboardingNeedToBuildVocabulary":   {
+  "@onboardingNeedToBuildVocabulary": {
     "description": "onboarding. Need to build vocabulary"
   },
   "onboardingWillingnessToLearn": "Willingness to learn",
-  "@onboardingWillingnessToLearn":   {
+  "@onboardingWillingnessToLearn": {
     "description": "onboarding. Willingness to learn"
   },
   "onboardingBasicVocabularyKnowledge": "Basic vocabulary knowledge",
-  "@onboardingBasicVocabularyKnowledge":   {
+  "@onboardingBasicVocabularyKnowledge": {
     "description": "onboarding. Basic vocabulary knowledge"
   },
   "onboardingGoodUnderstandingOfBasicGrammar": "Good understanding of basic grammar",
-  "@onboardingGoodUnderstandingOfBasicGrammar":   {
+  "@onboardingGoodUnderstandingOfBasicGrammar": {
     "description": "onboarding. Good understanding of basic grammar"
   },
   "onboardingStrongVocabularyFoundation": "Strong vocabulary foundation",
-  "@onboardingStrongVocabularyFoundation":   {
+  "@onboardingStrongVocabularyFoundation": {
     "description": "onboarding. Strong vocabulary foundation"
   },
   "onboardingAPreciseLevelNeedsMoreCalibrated": "A precise level needs more calibrated items",
-  "@onboardingAPreciseLevelNeedsMoreCalibrated":   {
+  "@onboardingAPreciseLevelNeedsMoreCalibrated": {
     "description": "onboarding. A precise level needs more calibrated items"
   },
   "onboardingKeepLearningMyParentWillAdd": "Keep learning. My parent will add it later",
-  "@onboardingKeepLearningMyParentWillAdd":   {
+  "@onboardingKeepLearningMyParentWillAdd": {
     "description": "onboarding. Keep learning. My parent will add it later"
   },
   "onboardingParentSEmail": "Parent's email",
-  "@onboardingParentSEmail":   {
+  "@onboardingParentSEmail": {
     "description": "onboarding. Parent's email"
   },
   "onboardingAParentOrGuardianSaysYes": "A parent or guardian says yes before you chat or share. Add their email so they can approve your account.",
-  "@onboardingAParentOrGuardianSaysYes":   {
+  "@onboardingAParentOrGuardianSaysYes": {
     "description": "onboarding. A parent or guardian says yes before you chat or share. Add their email so they "
   },
   "onboardingAskAParent": "Ask a parent",
-  "@onboardingAskAParent":   {
+  "@onboardingAskAParent": {
     "description": "onboarding. Ask a parent"
   },
   "onboardingYourProfileStaysPrivateAndAdults": "Your profile stays private, and adults cannot send you direct messages.",
-  "@onboardingYourProfileStaysPrivateAndAdults":   {
+  "@onboardingYourProfileStaysPrivateAndAdults": {
     "description": "onboarding. Your profile stays private, and adults cannot send you direct messages."
   },
   "onboardingTypeItInstead": "Type it instead",
-  "@onboardingTypeItInstead":   {
+  "@onboardingTypeItInstead": {
     "description": "onboarding. Type it instead"
   },
   "onboardingValue": "{value}",
-  "@onboardingValue":   {
+  "@onboardingValue": {
     "description": "onboarding. {value}",
     "placeholders": {
       "value": {
@@ -6547,19 +6547,19 @@
     }
   },
   "onboardingSwipeUpOrDownToChange": "Swipe up or down to change the year",
-  "@onboardingSwipeUpOrDownToChange":   {
+  "@onboardingSwipeUpOrDownToChange": {
     "description": "onboarding. Swipe up or down to change the year"
   },
   "onboardingBirthYear": "Birth year",
-  "@onboardingBirthYear":   {
+  "@onboardingBirthYear": {
     "description": "onboarding. Birth year"
   },
   "onboardingUseTheYearWheel": "Use the year wheel",
-  "@onboardingUseTheYearWheel":   {
+  "@onboardingUseTheYearWheel": {
     "description": "onboarding. Use the year wheel"
   },
   "onboardingForExampleValue": "For example {value}",
-  "@onboardingForExampleValue":   {
+  "@onboardingForExampleValue": {
     "description": "onboarding. For example {value}",
     "placeholders": {
       "value": {
@@ -6568,11 +6568,11 @@
     }
   },
   "onboardingThisHelpsUsKeepLingafriqRight": "This helps us keep LingAfriq right for you. We only ask for the year.",
-  "@onboardingThisHelpsUsKeepLingafriqRight":   {
+  "@onboardingThisHelpsUsKeepLingafriqRight": {
     "description": "onboarding. This helps us keep LingAfriq right for you. We only ask for the year."
   },
   "onboardingMinutesMin": "{minutes} min",
-  "@onboardingMinutesMin":   {
+  "@onboardingMinutesMin": {
     "description": "onboarding. {minutes} min",
     "placeholders": {
       "minutes": {
@@ -6581,39 +6581,39 @@
     }
   },
   "onboardingYouCanChangeThisAnyTime": "You can change this any time in Settings.",
-  "@onboardingYouCanChangeThisAnyTime":   {
+  "@onboardingYouCanChangeThisAnyTime": {
     "description": "onboarding. You can change this any time in Settings."
   },
   "onboardingHowMuchTimeADayFeels": "How much time a day feels right?",
-  "@onboardingHowMuchTimeADayFeels":   {
+  "@onboardingHowMuchTimeADayFeels": {
     "description": "onboarding. How much time a day feels right?"
   },
   "onboardingForATripOrABig": "For a trip or a big day soon",
-  "@onboardingForATripOrABig":   {
+  "@onboardingForATripOrABig": {
     "description": "onboarding. For a trip or a big day soon"
   },
   "onboardingHoldAShortChatInWeeks": "Hold a short chat in weeks",
-  "@onboardingHoldAShortChatInWeeks":   {
+  "@onboardingHoldAShortChatInWeeks": {
     "description": "onboarding. Hold a short chat in weeks"
   },
   "onboardingAGoodDailyStart": "A good daily start",
-  "@onboardingAGoodDailyStart":   {
+  "@onboardingAGoodDailyStart": {
     "description": "onboarding. A good daily start"
   },
   "onboardingAGreetingADay": "A greeting a day",
-  "@onboardingAGreetingADay":   {
+  "@onboardingAGreetingADay": {
     "description": "onboarding. A greeting a day"
   },
   "onboardingCanTSpeakNow": "Can't speak now",
-  "@onboardingCanTSpeakNow":   {
+  "@onboardingCanTSpeakNow": {
     "description": "onboarding. Can't speak now"
   },
   "onboardingISaidIt": "I said it",
-  "@onboardingISaidIt":   {
+  "@onboardingISaidIt": {
     "description": "onboarding. I said it"
   },
   "onboardingMarkThatYouSaidValue": "Mark that you said {value}",
-  "@onboardingMarkThatYouSaidValue":   {
+  "@onboardingMarkThatYouSaidValue": {
     "description": "onboarding. Mark that you said {value}",
     "placeholders": {
       "value": {
@@ -6622,31 +6622,31 @@
     }
   },
   "onboardingSayItWithPolie": "Say it with Polie",
-  "@onboardingSayItWithPolie":   {
+  "@onboardingSayItWithPolie": {
     "description": "onboarding. Say it with Polie"
   },
   "onboardingTapTheGreeting": "Tap the greeting",
-  "@onboardingTapTheGreeting":   {
+  "@onboardingTapTheGreeting": {
     "description": "onboarding. Tap the greeting"
   },
   "onboardingWeCouldNotPlaySoundRight": "We could not play sound right now. You can still continue.",
-  "@onboardingWeCouldNotPlaySoundRight":   {
+  "@onboardingWeCouldNotPlaySoundRight": {
     "description": "onboarding. We could not play sound right now. You can still continue."
   },
   "onboardingPlayGreeting": "Play greeting",
-  "@onboardingPlayGreeting":   {
+  "@onboardingPlayGreeting": {
     "description": "onboarding. Play greeting"
   },
   "onboardingAudioUnavailable": "Audio unavailable",
-  "@onboardingAudioUnavailable":   {
+  "@onboardingAudioUnavailable": {
     "description": "onboarding. Audio unavailable"
   },
   "onboardingHeardIt": "Heard it",
-  "@onboardingHeardIt":   {
+  "@onboardingHeardIt": {
     "description": "onboarding. Heard it"
   },
   "onboardingPlayGreetingValue": "Play greeting {value}",
-  "@onboardingPlayGreetingValue":   {
+  "@onboardingPlayGreetingValue": {
     "description": "onboarding. Play greeting {value}",
     "placeholders": {
       "value": {
@@ -6655,15 +6655,15 @@
     }
   },
   "onboardingPlayingGreeting": "Playing greeting",
-  "@onboardingPlayingGreeting":   {
+  "@onboardingPlayingGreeting": {
     "description": "onboarding. Playing greeting"
   },
   "onboardingGreetingPlayed": "Greeting played",
-  "@onboardingGreetingPlayed":   {
+  "@onboardingGreetingPlayed": {
     "description": "onboarding. Greeting played"
   },
   "onboardingHearValue": "Hear: {value}",
-  "@onboardingHearValue":   {
+  "@onboardingHearValue": {
     "description": "onboarding. Hear: {value}",
     "placeholders": {
       "value": {
@@ -6672,7 +6672,7 @@
     }
   },
   "onboardingA60SecondTasteOfValue": "A 60-second taste of {value}. Hear, tap, say.",
-  "@onboardingA60SecondTasteOfValue":   {
+  "@onboardingA60SecondTasteOfValue": {
     "description": "onboarding. A 60-second taste of {value}. Hear, tap, say.",
     "placeholders": {
       "value": {
@@ -6681,35 +6681,35 @@
     }
   },
   "onboardingYourFirstWin": "Your first win",
-  "@onboardingYourFirstWin":   {
+  "@onboardingYourFirstWin": {
     "description": "onboarding. Your first win"
   },
   "onboardingLessonDone": "Lesson done",
-  "@onboardingLessonDone":   {
+  "@onboardingLessonDone": {
     "description": "onboarding. Lesson done"
   },
   "onboardingNewWord": "New word",
-  "@onboardingNewWord":   {
+  "@onboardingNewWord": {
     "description": "onboarding. New word"
   },
   "onboardingCelebrateProgressNotPerfection": "Celebrate progress, not perfection.",
-  "@onboardingCelebrateProgressNotPerfection":   {
+  "@onboardingCelebrateProgressNotPerfection": {
     "description": "onboarding. Celebrate progress, not perfection."
   },
   "onboardingYouDidIt": "You did it!",
-  "@onboardingYouDidIt":   {
+  "@onboardingYouDidIt": {
     "description": "onboarding. You did it!"
   },
   "onboardingKeepGoing": "Keep going",
-  "@onboardingKeepGoing":   {
+  "@onboardingKeepGoing": {
     "description": "onboarding. Keep going"
   },
   "onboardingInaKwana": "Ina kwana",
-  "@onboardingInaKwana":   {
+  "@onboardingInaKwana": {
     "description": "onboarding. Ina kwana"
   },
   "onboardingWordsWordsInYourBasket": "{words} words in your basket",
-  "@onboardingWordsWordsInYourBasket":   {
+  "@onboardingWordsWordsInYourBasket": {
     "description": "onboarding. {words} words in your basket",
     "placeholders": {
       "words": {
@@ -6718,27 +6718,27 @@
     }
   },
   "onboardingPolieIsKeepingYourSeatIn": "Polie is keeping your seat in the village.",
-  "@onboardingPolieIsKeepingYourSeatIn":   {
+  "@onboardingPolieIsKeepingYourSeatIn": {
     "description": "onboarding. Polie is keeping your seat in the village."
   },
   "onboardingKB": "Ẹ kú àbọ̀",
-  "@onboardingKB":   {
+  "@onboardingKB": {
     "description": "onboarding. Ẹ kú àbọ̀"
   },
   "onboardingText": "እንኳን ደህና መጡ",
-  "@onboardingText":   {
+  "@onboardingText": {
     "description": "onboarding. እንኳን ደህና መጡ"
   },
   "onboardingHowFar": "How far?",
-  "@onboardingHowFar":   {
+  "@onboardingHowFar": {
     "description": "onboarding. How far?"
   },
   "onboardingDalalAkJMm": "Dalal ak jàmm",
-  "@onboardingDalalAkJMm":   {
+  "@onboardingDalalAkJMm": {
     "description": "onboarding. Dalal ak jàmm"
   },
   "onboardingValueValue26468": "{value} · {value2}",
-  "@onboardingValueValue26468":   {
+  "@onboardingValueValue26468": {
     "description": "onboarding. {value} · {value2}",
     "placeholders": {
       "value": {
@@ -6750,167 +6750,167 @@
     }
   },
   "onboardingTryARegionAScriptName": "Try a region, a script name, or clear the box.",
-  "@onboardingTryARegionAScriptName":   {
+  "@onboardingTryARegionAScriptName": {
     "description": "onboarding. Try a region, a script name, or clear the box."
   },
   "onboardingNoLanguagesMatchThatSearch": "No languages match that search.",
-  "@onboardingNoLanguagesMatchThatSearch":   {
+  "@onboardingNoLanguagesMatchThatSearch": {
     "description": "onboarding. No languages match that search."
   },
   "onboardingNoLanguagesMatchYourSearch": "No languages match your search",
-  "@onboardingNoLanguagesMatchYourSearch":   {
+  "@onboardingNoLanguagesMatchYourSearch": {
     "description": "onboarding. No languages match your search"
   },
   "onboardingISpeak": "I speak",
-  "@onboardingISpeak":   {
+  "@onboardingISpeak": {
     "description": "onboarding. I speak"
   },
   "onboardingWhatDoYouWantToLearn": "What do you want to learn?",
-  "@onboardingWhatDoYouWantToLearn":   {
+  "@onboardingWhatDoYouWantToLearn": {
     "description": "onboarding. What do you want to learn?"
   },
   "onboardingNorthAfrica": "North Africa",
-  "@onboardingNorthAfrica":   {
+  "@onboardingNorthAfrica": {
     "description": "onboarding. North Africa"
   },
   "onboardingText526f": "ⵜⴰⵎⴰⵣⵉⵖⵜ",
-  "@onboardingText526f":   {
+  "@onboardingText526f": {
     "description": "onboarding. ⵜⴰⵎⴰⵣⵉⵖⵜ"
   },
   "onboardingTamazight": "Tamazight",
-  "@onboardingTamazight":   {
+  "@onboardingTamazight": {
     "description": "onboarding. Tamazight"
   },
   "onboardingTextd271": "الدارجة",
-  "@onboardingTextd271":   {
+  "@onboardingTextd271": {
     "description": "onboarding. الدارجة"
   },
   "onboardingDarija": "Darija",
-  "@onboardingDarija":   {
+  "@onboardingDarija": {
     "description": "onboarding. Darija"
   },
   "onboardingSouthernAfrica": "Southern Africa",
-  "@onboardingSouthernAfrica":   {
+  "@onboardingSouthernAfrica": {
     "description": "onboarding. Southern Africa"
   },
   "onboardingIsixhosa": "isiXhosa",
-  "@onboardingIsixhosa":   {
+  "@onboardingIsixhosa": {
     "description": "onboarding. isiXhosa"
   },
   "onboardingIsizulu": "isiZulu",
-  "@onboardingIsizulu":   {
+  "@onboardingIsizulu": {
     "description": "onboarding. isiZulu"
   },
   "onboardingEastAfrica": "East Africa",
-  "@onboardingEastAfrica":   {
+  "@onboardingEastAfrica": {
     "description": "onboarding. East Africa"
   },
   "onboardingText91cf": "አማርኛ",
-  "@onboardingText91cf":   {
+  "@onboardingText91cf": {
     "description": "onboarding. አማርኛ"
   },
   "onboardingKiswahili": "Kiswahili",
-  "@onboardingKiswahili":   {
+  "@onboardingKiswahili": {
     "description": "onboarding. Kiswahili"
   },
   "onboardingWestAfrica": "West Africa",
-  "@onboardingWestAfrica":   {
+  "@onboardingWestAfrica": {
     "description": "onboarding. West Africa"
   },
   "onboardingNaij": "Naijá",
-  "@onboardingNaij":   {
+  "@onboardingNaij": {
     "description": "onboarding. Naijá"
   },
   "onboardingAsSIgbo": "Asụsụ Igbo",
-  "@onboardingAsSIgbo":   {
+  "@onboardingAsSIgbo": {
     "description": "onboarding. Asụsụ Igbo"
   },
   "onboardingDYorB": "Èdè Yorùbá",
-  "@onboardingDYorB":   {
+  "@onboardingDYorB": {
     "description": "onboarding. Èdè Yorùbá"
   },
   "onboardingText9970": "العربية",
-  "@onboardingText9970":   {
+  "@onboardingText9970": {
     "description": "onboarding. العربية"
   },
   "onboardingPortuguS": "Português",
-  "@onboardingPortuguS":   {
+  "@onboardingPortuguS": {
     "description": "onboarding. Português"
   },
   "onboardingFranAis": "Français",
-  "@onboardingFranAis":   {
+  "@onboardingFranAis": {
     "description": "onboarding. Français"
   },
   "onboardingPickTheStyleThatFeelsMost": "Pick the style that feels most natural.",
-  "@onboardingPickTheStyleThatFeelsMost":   {
+  "@onboardingPickTheStyleThatFeelsMost": {
     "description": "onboarding. Pick the style that feels most natural."
   },
   "onboardingVarietyOfMethods": "Variety of methods",
-  "@onboardingVarietyOfMethods":   {
+  "@onboardingVarietyOfMethods": {
     "description": "onboarding. Variety of methods"
   },
   "onboardingMixed": "Mixed",
-  "@onboardingMixed":   {
+  "@onboardingMixed": {
     "description": "onboarding. Mixed"
   },
   "onboardingTalkToLearn": "Talk to learn",
-  "@onboardingTalkToLearn":   {
+  "@onboardingTalkToLearn": {
     "description": "onboarding. Talk to learn"
   },
   "onboardingConversation": "Conversation",
-  "@onboardingConversation":   {
+  "@onboardingConversation": {
     "description": "onboarding. Conversation"
   },
   "onboardingRepetitionDrills": "Repetition & drills",
-  "@onboardingRepetitionDrills":   {
+  "@onboardingRepetitionDrills": {
     "description": "onboarding. Repetition & drills"
   },
   "onboardingPractice": "Practice",
-  "@onboardingPractice":   {
+  "@onboardingPractice": {
     "description": "onboarding. Practice"
   },
   "onboardingNarrativeLearning": "Narrative learning",
-  "@onboardingNarrativeLearning":   {
+  "@onboardingNarrativeLearning": {
     "description": "onboarding. Narrative learning"
   },
   "onboardingStories": "Stories",
-  "@onboardingStories":   {
+  "@onboardingStories": {
     "description": "onboarding. Stories"
   },
   "onboardingSeeToRemember": "See to remember",
-  "@onboardingSeeToRemember":   {
+  "@onboardingSeeToRemember": {
     "description": "onboarding. See to remember"
   },
   "onboardingVisual": "Visual",
-  "@onboardingVisual":   {
+  "@onboardingVisual": {
     "description": "onboarding. Visual"
   },
   "onboardingLearnByEar": "Learn by ear",
-  "@onboardingLearnByEar":   {
+  "@onboardingLearnByEar": {
     "description": "onboarding. Learn by ear"
   },
   "onboardingListening": "Listening",
-  "@onboardingListening":   {
+  "@onboardingListening": {
     "description": "onboarding. Listening"
   },
   "onboardingKR": "Ẹ káàárọ̀",
-  "@onboardingKR":   {
+  "@onboardingKR": {
     "description": "onboarding. Ẹ káàárọ̀"
   },
   "onboardingNaGode": "Na gode",
-  "@onboardingNaGode":   {
+  "@onboardingNaGode": {
     "description": "onboarding. Na gode"
   },
   "onboardingQuickCheckTapEachWordYou": "Quick check: tap each word you recognize.",
-  "@onboardingQuickCheckTapEachWordYou":   {
+  "@onboardingQuickCheckTapEachWordYou": {
     "description": "onboarding. Quick check: tap each word you recognize."
   },
   "onboardingNotSureTakeA1Minute": "Not sure? Take a 1‑minute check",
-  "@onboardingNotSureTakeA1Minute":   {
+  "@onboardingNotSureTakeA1Minute": {
     "description": "onboarding. Not sure? Take a 1‑minute check"
   },
   "onboardingHowMuchLangnameDoYouKnow": "How much {langName} do you know?",
-  "@onboardingHowMuchLangnameDoYouKnow":   {
+  "@onboardingHowMuchLangnameDoYouKnow": {
     "description": "onboarding. How much {langName} do you know?",
     "placeholders": {
       "langName": {
@@ -6919,47 +6919,47 @@
     }
   },
   "onboardingThisLanguage": "this language",
-  "@onboardingThisLanguage":   {
+  "@onboardingThisLanguage": {
     "description": "onboarding. this language"
   },
   "onboardingICanHoldAConversation": "I can hold a conversation",
-  "@onboardingICanHoldAConversation":   {
+  "@onboardingICanHoldAConversation": {
     "description": "onboarding. I can hold a conversation"
   },
   "onboardingICanTalkAboutVariousTopics": "I can talk about various topics",
-  "@onboardingICanTalkAboutVariousTopics":   {
+  "@onboardingICanTalkAboutVariousTopics": {
     "description": "onboarding. I can talk about various topics"
   },
   "onboardingIKnowSomeCommonWords": "I know some common words",
-  "@onboardingIKnowSomeCommonWords":   {
+  "@onboardingIKnowSomeCommonWords": {
     "description": "onboarding. I know some common words"
   },
   "onboardingIMNew": "I'm new",
-  "@onboardingIMNew":   {
+  "@onboardingIMNew": {
     "description": "onboarding. I'm new"
   },
   "onboardingBestTime": "Best time",
-  "@onboardingBestTime":   {
+  "@onboardingBestTime": {
     "description": "onboarding. Best time"
   },
   "onboardingSeeTheReminderBelowTurnIt": "See the reminder below. Turn it on only if it helps you keep your streak. You pick the time.",
-  "@onboardingSeeTheReminderBelowTurnIt":   {
+  "@onboardingSeeTheReminderBelowTurnIt": {
     "description": "onboarding. See the reminder below. Turn it on only if it helps you keep your streak. You pi"
   },
   "onboardingASoftNudgeWhenItMatters": "A soft nudge when it matters",
-  "@onboardingASoftNudgeWhenItMatters":   {
+  "@onboardingASoftNudgeWhenItMatters": {
     "description": "onboarding. A soft nudge when it matters"
   },
   "onboardingNotNow": "Not now",
-  "@onboardingNotNow":   {
+  "@onboardingNotNow": {
     "description": "onboarding. Not now"
   },
   "onboardingTurnOnReminders": "Turn on reminders",
-  "@onboardingTurnOnReminders":   {
+  "@onboardingTurnOnReminders": {
     "description": "onboarding. Turn on reminders"
   },
   "onboardingDailyminutesMinutes": "{dailyMinutes} minutes",
-  "@onboardingDailyminutesMinutes":   {
+  "@onboardingDailyminutesMinutes": {
     "description": "onboarding. {dailyMinutes} minutes",
     "placeholders": {
       "dailyMinutes": {
@@ -6968,43 +6968,43 @@
     }
   },
   "onboardingText5Minutes": "5 minutes",
-  "@onboardingText5Minutes":   {
+  "@onboardingText5Minutes": {
     "description": "onboarding. 5 minutes"
   },
   "onboardingText810Pm": "8–10 PM",
-  "@onboardingText810Pm":   {
+  "@onboardingText810Pm": {
     "description": "onboarding. 8–10 PM"
   },
   "onboardingNight": "Night",
-  "@onboardingNight":   {
+  "@onboardingNight": {
     "description": "onboarding. Night"
   },
   "onboardingText57Pm": "5–7 PM",
-  "@onboardingText57Pm":   {
+  "@onboardingText57Pm": {
     "description": "onboarding. 5–7 PM"
   },
   "onboardingSunset": "Sunset",
-  "@onboardingSunset":   {
+  "@onboardingSunset": {
     "description": "onboarding. Sunset"
   },
   "onboardingText122Pm": "12–2 PM",
-  "@onboardingText122Pm":   {
+  "@onboardingText122Pm": {
     "description": "onboarding. 12–2 PM"
   },
   "onboardingMidday": "Midday",
-  "@onboardingMidday":   {
+  "@onboardingMidday": {
     "description": "onboarding. Midday"
   },
   "onboardingText69Am": "6–9 AM",
-  "@onboardingText69Am":   {
+  "@onboardingText69Am": {
     "description": "onboarding. 6–9 AM"
   },
   "onboardingSunrise": "Sunrise",
-  "@onboardingSunrise":   {
+  "@onboardingSunrise": {
     "description": "onboarding. Sunrise"
   },
   "onboardingPreviewHowYouAppearInThe": "Preview: how you appear in the village, {shown}",
-  "@onboardingPreviewHowYouAppearInThe":   {
+  "@onboardingPreviewHowYouAppearInThe": {
     "description": "onboarding. Preview: how you appear in the village, {shown}",
     "placeholders": {
       "shown": {
@@ -7013,43 +7013,43 @@
     }
   },
   "onboardingYourName": "Your name",
-  "@onboardingYourName":   {
+  "@onboardingYourName": {
     "description": "onboarding. Your name"
   },
   "onboardingWeCouldnTCheckThatJust": "We couldn't check that just now, but you can still continue",
-  "@onboardingWeCouldnTCheckThatJust":   {
+  "@onboardingWeCouldnTCheckThatJust": {
     "description": "onboarding. We couldn't check that just now, but you can still continue"
   },
   "onboardingOnlyLettersNumbersAndUnderscoresPlease": "Only letters, numbers, and underscores, please",
-  "@onboardingOnlyLettersNumbersAndUnderscoresPlease":   {
+  "@onboardingOnlyLettersNumbersAndUnderscoresPlease": {
     "description": "onboarding. Only letters, numbers, and underscores, please"
   },
   "onboardingKeepItTo30CharactersOr": "Keep it to 30 characters or fewer",
-  "@onboardingKeepItTo30CharactersOr":   {
+  "@onboardingKeepItTo30CharactersOr": {
     "description": "onboarding. Keep it to 30 characters or fewer"
   },
   "onboardingNeedsAtLeast3Characters": "Needs at least 3 characters",
-  "@onboardingNeedsAtLeast3Characters":   {
+  "@onboardingNeedsAtLeast3Characters": {
     "description": "onboarding. Needs at least 3 characters"
   },
   "onboardingSomeoneSAlreadyUsingThatOne": "Someone's already using that one, try another",
-  "@onboardingSomeoneSAlreadyUsingThatOne":   {
+  "@onboardingSomeoneSAlreadyUsingThatOne": {
     "description": "onboarding. Someone's already using that one, try another"
   },
   "onboardingThatNameIsYours": "That name is yours",
-  "@onboardingThatNameIsYours":   {
+  "@onboardingThatNameIsYours": {
     "description": "onboarding. That name is yours"
   },
   "onboardingCheckingIfThatNameIsFree": "Checking if that name is free…",
-  "@onboardingCheckingIfThatNameIsFree":   {
+  "@onboardingCheckingIfThatNameIsFree": {
     "description": "onboarding. Checking if that name is free…"
   },
   "onboardingUse3To30LettersNumbers": "Use 3 to 30 letters, numbers, or underscores",
-  "@onboardingUse3To30LettersNumbers":   {
+  "@onboardingUse3To30LettersNumbers": {
     "description": "onboarding. Use 3 to 30 letters, numbers, or underscores"
   },
   "onboardingUseTheNameIdea": "Use the name {idea}",
-  "@onboardingUseTheNameIdea":   {
+  "@onboardingUseTheNameIdea": {
     "description": "onboarding. Use the name {idea}",
     "placeholders": {
       "idea": {
@@ -7058,39 +7058,39 @@
     }
   },
   "onboardingIdeasFromYourLanguage": "Ideas from your language",
-  "@onboardingIdeasFromYourLanguage":   {
+  "@onboardingIdeasFromYourLanguage": {
     "description": "onboarding. Ideas from your language"
   },
   "onboardingAddAPhotoOptional": "Add a photo (optional)",
-  "@onboardingAddAPhotoOptional":   {
+  "@onboardingAddAPhotoOptional": {
     "description": "onboarding. Add a photo (optional)"
   },
   "onboardingAddAProfilePhotoOptional": "Add a profile photo, optional",
-  "@onboardingAddAProfilePhotoOptional":   {
+  "@onboardingAddAProfilePhotoOptional": {
     "description": "onboarding. Add a profile photo, optional"
   },
   "onboardingALearnerWithoutANameIs56f4": "A learner without a name is a drum without a rhythm.",
-  "@onboardingALearnerWithoutANameIs56f4":   {
+  "@onboardingALearnerWithoutANameIs56f4": {
     "description": "onboarding. A learner without a name is a drum without a rhythm."
   },
   "onboardingPickAName": "Pick a name",
-  "@onboardingPickAName":   {
+  "@onboardingPickAName": {
     "description": "onboarding. Pick a name"
   },
   "onboardingSkipForNow": "Skip for now",
-  "@onboardingSkipForNow":   {
+  "@onboardingSkipForNow": {
     "description": "onboarding. Skip for now"
   },
   "onboardingCompleteSetup": "Complete setup",
-  "@onboardingCompleteSetup":   {
+  "@onboardingCompleteSetup": {
     "description": "onboarding. Complete setup"
   },
   "onboardingPickAllThatFitYourFirst": "Pick all that fit. Your first lessons follow your answer.",
-  "@onboardingPickAllThatFitYourFirst":   {
+  "@onboardingPickAllThatFitYourFirst": {
     "description": "onboarding. Pick all that fit. Your first lessons follow your answer."
   },
   "onboardingWhyAreYouLearningLanguagename": "Why are you learning {languageName}?",
-  "@onboardingWhyAreYouLearningLanguagename":   {
+  "@onboardingWhyAreYouLearningLanguagename": {
     "description": "onboarding. Why are you learning {languageName}?",
     "placeholders": {
       "languageName": {
@@ -7099,67 +7099,67 @@
     }
   },
   "onboardingColleaguesClientsAndCommunity": "Colleagues, clients and community",
-  "@onboardingColleaguesClientsAndCommunity":   {
+  "@onboardingColleaguesClientsAndCommunity": {
     "description": "onboarding. Colleagues, clients and community"
   },
   "onboardingMarketsDirectionsAndSmallTalk": "Markets, directions and small talk",
-  "@onboardingMarketsDirectionsAndSmallTalk":   {
+  "@onboardingMarketsDirectionsAndSmallTalk": {
     "description": "onboarding. Markets, directions and small talk"
   },
   "onboardingProverbsNamesMusicAndStories": "Proverbs, names, music and stories",
-  "@onboardingProverbsNamesMusicAndStories":   {
+  "@onboardingProverbsNamesMusicAndStories": {
     "description": "onboarding. Proverbs, names, music and stories"
   },
   "onboardingHeritageAndCulture": "Heritage and culture",
-  "@onboardingHeritageAndCulture":   {
+  "@onboardingHeritageAndCulture": {
     "description": "onboarding. Heritage and culture"
   },
   "onboardingGreetEldersAndKeepUpAt": "Greet elders and keep up at gatherings",
-  "@onboardingGreetEldersAndKeepUpAt":   {
+  "@onboardingGreetEldersAndKeepUpAt": {
     "description": "onboarding. Greet elders and keep up at gatherings"
   },
   "onboardingTalkToFamily": "Talk to family",
-  "@onboardingTalkToFamily":   {
+  "@onboardingTalkToFamily": {
     "description": "onboarding. Talk to family"
   },
   "onboardingRetry": "Retry",
-  "@onboardingRetry":   {
+  "@onboardingRetry": {
     "description": "onboarding. Retry"
   },
   "onboardingYouReOfflineYourAnswersAre": "You're offline. Your answers are saved on this phone. Connect, then try again.",
-  "@onboardingYouReOfflineYourAnswersAre":   {
+  "@onboardingYouReOfflineYourAnswersAre": {
     "description": "onboarding. You're offline. Your answers are saved on this phone. Connect, then try again."
   },
   "onboardingCouldnTReachSignIn": "Couldn't reach sign-in",
-  "@onboardingCouldnTReachSignIn":   {
+  "@onboardingCouldnTReachSignIn": {
     "description": "onboarding. Couldn't reach sign-in"
   },
   "onboardingError": "Error",
-  "@onboardingError":   {
+  "@onboardingError": {
     "description": "onboarding. Error"
   },
   "onboardingSavingYourProgress": "Saving your progress…",
-  "@onboardingSavingYourProgress":   {
+  "@onboardingSavingYourProgress": {
     "description": "onboarding. Saving your progress…"
   },
   "onboardingIAlreadyHaveAnAccount": "I already have an account",
-  "@onboardingIAlreadyHaveAnAccount":   {
+  "@onboardingIAlreadyHaveAnAccount": {
     "description": "onboarding. I already have an account"
   },
   "onboardingSignUpWithEmail": "Sign up with email",
-  "@onboardingSignUpWithEmail":   {
+  "@onboardingSignUpWithEmail": {
     "description": "onboarding. Sign up with email"
   },
   "onboardingContinueWithApple": "Continue with Apple",
-  "@onboardingContinueWithApple":   {
+  "@onboardingContinueWithApple": {
     "description": "onboarding. Continue with Apple"
   },
   "onboardingContinueWithGoogle": "Continue with Google",
-  "@onboardingContinueWithGoogle":   {
+  "@onboardingContinueWithGoogle": {
     "description": "onboarding. Continue with Google"
   },
   "onboardingYouFinishedYourFirstLessonAnd": "You finished your first lesson and learned {words}. An account keeps your progress safe if you change phones.",
-  "@onboardingYouFinishedYourFirstLessonAnd":   {
+  "@onboardingYouFinishedYourFirstLessonAnd": {
     "description": "onboarding. You finished your first lesson and learned {words}. An account keeps your progre",
     "placeholders": {
       "words": {
@@ -7168,15 +7168,15 @@
     }
   },
   "onboardingSaveYourProgress": "Save your progress?",
-  "@onboardingSaveYourProgress":   {
+  "@onboardingSaveYourProgress": {
     "description": "onboarding. Save your progress?"
   },
   "onboardingLaterMyAnswersStayOnThis": "Later. My answers stay on this phone",
-  "@onboardingLaterMyAnswersStayOnThis":   {
+  "@onboardingLaterMyAnswersStayOnThis": {
     "description": "onboarding. Later. My answers stay on this phone"
   },
   "onboardingWordslearnedWords": "{wordsLearned} words",
-  "@onboardingWordslearnedWords":   {
+  "@onboardingWordslearnedWords": {
     "description": "onboarding. {wordsLearned} words",
     "placeholders": {
       "wordsLearned": {
@@ -7185,127 +7185,127 @@
     }
   },
   "onboardingYouReOfflineKeepGoingYour": "You're offline. Keep going: your answers are saved on this phone and sync when you reconnect.",
-  "@onboardingYouReOfflineKeepGoingYour":   {
+  "@onboardingYouReOfflineKeepGoingYour": {
     "description": "onboarding. You're offline. Keep going: your answers are saved on this phone and sync when y"
   },
   "onboardingDoubleTapToChoose": "Double tap to choose",
-  "@onboardingDoubleTapToChoose":   {
+  "@onboardingDoubleTapToChoose": {
     "description": "onboarding. Double tap to choose"
   },
   "onboardingSaving": "Saving…",
-  "@onboardingSaving":   {
+  "@onboardingSaving": {
     "description": "onboarding. Saving…"
   },
   "onboardingHowMuchGameFeel": "How much game feel?",
-  "@onboardingHowMuchGameFeel":   {
+  "@onboardingHowMuchGameFeel": {
     "description": "onboarding. How much game feel?"
   },
   "onboardingPickTheVoiceThatFeelsLike": "Pick the voice that feels like a good study buddy.",
-  "@onboardingPickTheVoiceThatFeelsLike":   {
+  "@onboardingPickTheVoiceThatFeelsLike": {
     "description": "onboarding. Pick the voice that feels like a good study buddy."
   },
   "onboardingHowShouldPolieSound": "How should Polie sound?",
-  "@onboardingHowShouldPolieSound":   {
+  "@onboardingHowShouldPolieSound": {
     "description": "onboarding. How should Polie sound?"
   },
   "onboardingJustLearning": "Just learning",
-  "@onboardingJustLearning":   {
+  "@onboardingJustLearning": {
     "description": "onboarding. Just learning"
   },
   "onboardingMinimal": "Minimal",
-  "@onboardingMinimal":   {
+  "@onboardingMinimal": {
     "description": "onboarding. Minimal"
   },
   "onboardingProgressTracking": "Progress tracking",
-  "@onboardingProgressTracking":   {
+  "@onboardingProgressTracking": {
     "description": "onboarding. Progress tracking"
   },
   "onboardingModerate": "Moderate",
-  "@onboardingModerate":   {
+  "@onboardingModerate": {
     "description": "onboarding. Moderate"
   },
   "onboardingXpBadgesStreaks": "XP, badges, streaks",
-  "@onboardingXpBadgesStreaks":   {
+  "@onboardingXpBadgesStreaks": {
     "description": "onboarding. XP, badges, streaks"
   },
   "onboardingFull": "Full",
-  "@onboardingFull":   {
+  "@onboardingFull": {
     "description": "onboarding. Full"
   },
   "onboardingWarmCasual": "Warm & casual",
-  "@onboardingWarmCasual":   {
+  "@onboardingWarmCasual": {
     "description": "onboarding. Warm & casual"
   },
   "onboardingFriendly": "Friendly",
-  "@onboardingFriendly":   {
+  "@onboardingFriendly": {
     "description": "onboarding. Friendly"
   },
   "onboardingDirectEfficient": "Direct & efficient",
-  "@onboardingDirectEfficient":   {
+  "@onboardingDirectEfficient": {
     "description": "onboarding. Direct & efficient"
   },
   "onboardingFocused": "Focused",
-  "@onboardingFocused":   {
+  "@onboardingFocused": {
     "description": "onboarding. Focused"
   },
   "onboardingSupportive": "Supportive",
-  "@onboardingSupportive":   {
+  "@onboardingSupportive": {
     "description": "onboarding. Supportive"
   },
   "onboardingEncouraging": "Encouraging",
-  "@onboardingEncouraging":   {
+  "@onboardingEncouraging": {
     "description": "onboarding. Encouraging"
   },
   "onboardingFunLight": "Fun & light",
-  "@onboardingFunLight":   {
+  "@onboardingFunLight": {
     "description": "onboarding. Fun & light"
   },
   "onboardingPlayful": "Playful",
-  "@onboardingPlayful":   {
+  "@onboardingPlayful": {
     "description": "onboarding. Playful"
   },
   "onboardingGetStarted90e4": "Get started",
-  "@onboardingGetStarted90e4":   {
+  "@onboardingGetStarted90e4": {
     "description": "onboarding. Get started"
   },
   "onboardingWorksOfflineAbout2MbPer": "Works offline · about 2 MB per unit",
-  "@onboardingWorksOfflineAbout2MbPer":   {
+  "@onboardingWorksOfflineAbout2MbPer": {
     "description": "onboarding. Works offline · about 2 MB per unit"
   },
   "onboardingWorksOfflineAbout2MegabytesPer": "Works offline, about 2 megabytes per unit",
-  "@onboardingWorksOfflineAbout2MegabytesPer":   {
+  "@onboardingWorksOfflineAbout2MegabytesPer": {
     "description": "onboarding. Works offline, about 2 megabytes per unit"
   },
   "onboardingShortLessonsWithPolieHearTap": "Short lessons with Polie. Hear, tap, and say real phrases.",
-  "@onboardingShortLessonsWithPolieHearTap":   {
+  "@onboardingShortLessonsWithPolieHearTap": {
     "description": "onboarding. Short lessons with Polie. Hear, tap, and say real phrases."
   },
   "onboardingTheLanguageVillageThatGetsYou": "The language village that gets you speaking.",
-  "@onboardingTheLanguageVillageThatGetsYou":   {
+  "@onboardingTheLanguageVillageThatGetsYou": {
     "description": "onboarding. The language village that gets you speaking."
   },
   "onboardingLingafriq": "LingAfriq",
-  "@onboardingLingafriq":   {
+  "@onboardingLingafriq": {
     "description": "onboarding. LingAfriq"
   },
   "onboardingWelcomeTo": "Welcome to",
-  "@onboardingWelcomeTo":   {
+  "@onboardingWelcomeTo": {
     "description": "onboarding. Welcome to"
   },
   "onboardingKBSannuNnKaribuAkwaaba": "Ẹ kú àbọ̀ · Sannu · Nnọọ · Karibu · Akwaaba",
-  "@onboardingKBSannuNnKaribuAkwaaba":   {
+  "@onboardingKBSannuNnKaribuAkwaaba": {
     "description": "onboarding. Ẹ kú àbọ̀ · Sannu · Nnọọ · Karibu · Akwaaba"
   },
   "onboardingPolieGreetsYouWelcomeInYoruba": "Polie greets you: welcome, in Yoruba, Hausa, Igbo, Swahili and Twi.",
-  "@onboardingPolieGreetsYouWelcomeInYoruba":   {
+  "@onboardingPolieGreetsYouWelcomeInYoruba": {
     "description": "onboarding. Polie greets you: welcome, in Yoruba, Hausa, Igbo, Swahili and Twi."
   },
   "onboardingLingafriqSpeakAfricanLanguagesWithConf": "LingAfriq. Speak African languages with confidence. Learn with Polie. Works offline.",
-  "@onboardingLingafriqSpeakAfricanLanguagesWithConf":   {
+  "@onboardingLingafriqSpeakAfricanLanguagesWithConf": {
     "description": "onboarding. LingAfriq. Speak African languages with confidence. Learn with Polie. Works offl"
   },
   "onboardingStepValueOfTotal": "Step {value} of {total}",
-  "@onboardingStepValueOfTotal":   {
+  "@onboardingStepValueOfTotal": {
     "description": "onboarding. Step {value} of {total}",
     "placeholders": {
       "value": {
@@ -7317,23 +7317,23 @@
     }
   },
   "onboardingOnboardingProgress": "Onboarding progress",
-  "@onboardingOnboardingProgress":   {
+  "@onboardingOnboardingProgress": {
     "description": "onboarding. Onboarding progress"
   },
   "onboardingGoBackToThePreviousStep": "Go back to the previous step",
-  "@onboardingGoBackToThePreviousStep":   {
+  "@onboardingGoBackToThePreviousStep": {
     "description": "onboarding. Go back to the previous step"
   },
   "onboardingTakeTheTest": "Take the test",
-  "@onboardingTakeTheTest":   {
+  "@onboardingTakeTheTest": {
     "description": "onboarding. Take the test"
   },
   "onboardingMaybeLater": "Maybe later",
-  "@onboardingMaybeLater":   {
+  "@onboardingMaybeLater": {
     "description": "onboarding. Maybe later"
   },
   "onboardingWeLlAskAFewShort": "We'll ask a few short questions to find your starting level in {learningLanguage}. You can always take it later from your profile.",
-  "@onboardingWeLlAskAFewShort":   {
+  "@onboardingWeLlAskAFewShort": {
     "description": "onboarding. We'll ask a few short questions to find your starting level in {learningLanguage",
     "placeholders": {
       "learningLanguage": {
@@ -7342,327 +7342,327 @@
     }
   },
   "onboardingTakeAQuickPlacementTest": "Take a quick placement test?",
-  "@onboardingTakeAQuickPlacementTest":   {
+  "@onboardingTakeAQuickPlacementTest": {
     "description": "onboarding. Take a quick placement test?"
   },
   "onboardingYouReOfflineRightNowBut": "You're offline right now, but we've saved your answers and will sync them the moment you reconnect.",
-  "@onboardingYouReOfflineRightNowBut":   {
+  "@onboardingYouReOfflineRightNowBut": {
     "description": "onboarding. You're offline right now, but we've saved your answers and will sync them the mo"
   },
   "onboardingKR5MinutesOfYoruba": "Ẹ kú àárọ̀! 5 minutes of Yoruba?",
-  "@onboardingKR5MinutesOfYoruba":   {
+  "@onboardingKR5MinutesOfYoruba": {
     "description": "onboarding. Ẹ kú àárọ̀! 5 minutes of Yoruba?"
   },
   "onboardingBWoHello": "Báwo, Hello",
-  "@onboardingBWoHello":   {
+  "@onboardingBWoHello": {
     "description": "onboarding. Báwo, Hello"
   },
   "onboardingBWoNi": "Báwo ni",
-  "@onboardingBWoNi":   {
+  "@onboardingBWoNi": {
     "description": "onboarding. Báwo ni"
   },
   "onboardingSawubona5MinutesOfZulu": "Sawubona! 5 minutes of Zulu?",
-  "@onboardingSawubona5MinutesOfZulu":   {
+  "@onboardingSawubona5MinutesOfZulu": {
     "description": "onboarding. Sawubona! 5 minutes of Zulu?"
   },
   "onboardingSawubonaHello": "Sawubona, Hello",
-  "@onboardingSawubonaHello":   {
+  "@onboardingSawubonaHello": {
     "description": "onboarding. Sawubona, Hello"
   },
   "onboardingText5MinutesOfAmharic": "ሰላም! 5 minutes of Amharic?",
-  "@onboardingText5MinutesOfAmharic":   {
+  "@onboardingText5MinutesOfAmharic": {
     "description": "onboarding. ሰላም! 5 minutes of Amharic?"
   },
   "onboardingHello": "ሰላም, Hello",
-  "@onboardingHello":   {
+  "@onboardingHello": {
     "description": "onboarding. ሰላም, Hello"
   },
   "onboardingHabari5MinutesOfSwahili": "Habari! 5 minutes of Swahili?",
-  "@onboardingHabari5MinutesOfSwahili":   {
+  "@onboardingHabari5MinutesOfSwahili": {
     "description": "onboarding. Habari! 5 minutes of Swahili?"
   },
   "onboardingHabariHello": "Habari, Hello",
-  "@onboardingHabariHello":   {
+  "@onboardingHabariHello": {
     "description": "onboarding. Habari, Hello"
   },
   "onboardingNdewo5MinutesOfIgbo": "Ndewo! 5 minutes of Igbo?",
-  "@onboardingNdewo5MinutesOfIgbo":   {
+  "@onboardingNdewo5MinutesOfIgbo": {
     "description": "onboarding. Ndewo! 5 minutes of Igbo?"
   },
   "onboardingNdewoHello": "Ndewo, Hello",
-  "@onboardingNdewoHello":   {
+  "@onboardingNdewoHello": {
     "description": "onboarding. Ndewo, Hello"
   },
   "onboardingSannu5MinutesOfHausa": "Sannu! 5 minutes of Hausa?",
-  "@onboardingSannu5MinutesOfHausa":   {
+  "@onboardingSannu5MinutesOfHausa": {
     "description": "onboarding. Sannu! 5 minutes of Hausa?"
   },
   "onboardingSannuHello": "Sannu, Hello",
-  "@onboardingSannuHello":   {
+  "@onboardingSannuHello": {
     "description": "onboarding. Sannu, Hello"
   },
   "onboardingTheAncestorsSmileUponYourDedication": "The ancestors smile upon your dedication.",
-  "@onboardingTheAncestorsSmileUponYourDedication":   {
+  "@onboardingTheAncestorsSmileUponYourDedication": {
     "description": "onboarding. The ancestors smile upon your dedication."
   },
   "onboardingMayYourJourneyBeFilledWith": "May your journey be filled with discovery.",
-  "@onboardingMayYourJourneyBeFilledWith":   {
+  "@onboardingMayYourJourneyBeFilledWith": {
     "description": "onboarding. May your journey be filled with discovery."
   },
   "onboardingVillageElder": "Village Elder",
-  "@onboardingVillageElder":   {
+  "@onboardingVillageElder": {
     "description": "onboarding. Village Elder"
   },
   "onboardingPaLingafriq": "Pa LingAfriq",
-  "@onboardingPaLingafriq":   {
+  "@onboardingPaLingafriq": {
     "description": "onboarding. Pa LingAfriq"
   },
   "onboardingChooseWiselyItWillBeKnown": "Choose wisely — it will be known across the village.",
-  "@onboardingChooseWiselyItWillBeKnown":   {
+  "@onboardingChooseWiselyItWillBeKnown": {
     "description": "onboarding. Choose wisely — it will be known across the village."
   },
   "onboardingEveryVillagerMustHaveAName": "Every villager must have a name.",
-  "@onboardingEveryVillagerMustHaveAName":   {
+  "@onboardingEveryVillagerMustHaveAName": {
     "description": "onboarding. Every villager must have a name."
   },
   "onboardingNowItIsTimeForYour": "Now it is time for your naming ceremony.",
-  "@onboardingNowItIsTimeForYour":   {
+  "@onboardingNowItIsTimeForYour": {
     "description": "onboarding. Now it is time for your naming ceremony."
   },
   "onboardingHowDoesYourSpiritBestReceive": "How does your spirit best receive knowledge?",
-  "@onboardingHowDoesYourSpiritBestReceive":   {
+  "@onboardingHowDoesYourSpiritBestReceive": {
     "description": "onboarding. How does your spirit best receive knowledge?"
   },
   "onboardingEachSoulDancesDifferentlyToThe": "Each soul dances differently to the rhythm of words.",
-  "@onboardingEachSoulDancesDifferentlyToThe":   {
+  "@onboardingEachSoulDancesDifferentlyToThe": {
     "description": "onboarding. Each soul dances differently to the rhythm of words."
   },
   "onboardingLanguageIsMusicTraveler": "Language is music, traveler!",
-  "@onboardingLanguageIsMusicTraveler":   {
+  "@onboardingLanguageIsMusicTraveler": {
     "description": "onboarding. Language is music, traveler!"
   },
   "onboardingTheRhythmMaster": "The Rhythm Master",
-  "@onboardingTheRhythmMaster":   {
+  "@onboardingTheRhythmMaster": {
     "description": "onboarding. The Rhythm Master"
   },
   "onboardingForInEveryWordLiesThe": "For in every word lies the wisdom of generations.",
-  "@onboardingForInEveryWordLiesThe":   {
+  "@onboardingForInEveryWordLiesThe": {
     "description": "onboarding. For in every word lies the wisdom of generations."
   },
   "onboardingLetMeTellYouTheStory": "Let me tell you the story of our languages...",
-  "@onboardingLetMeTellYouTheStory":   {
+  "@onboardingLetMeTellYouTheStory": {
     "description": "onboarding. Let me tell you the story of our languages..."
   },
   "onboardingAhANewStudentIAm": "Ah, a new student! I am Amara, the griot.",
-  "@onboardingAhANewStudentIAm":   {
+  "@onboardingAhANewStudentIAm": {
     "description": "onboarding. Ah, a new student! I am Amara, the griot."
   },
   "onboardingTheGriot": "The Griot",
-  "@onboardingTheGriot":   {
+  "@onboardingTheGriot": {
     "description": "onboarding. The Griot"
   },
   "onboardingHowMuchTimeCanYouDedicate": "How much time can you dedicate each day?",
-  "@onboardingHowMuchTimeCanYouDedicate":   {
+  "@onboardingHowMuchTimeCanYouDedicate": {
     "description": "onboarding. How much time can you dedicate each day?"
   },
   "onboardingConsistencyIsTheHeartbeatOfLearning": "Consistency is the heartbeat of learning.",
-  "@onboardingConsistencyIsTheHeartbeatOfLearning":   {
+  "@onboardingConsistencyIsTheHeartbeatOfLearning": {
     "description": "onboarding. Consistency is the heartbeat of learning."
   },
   "onboardingIAmKofiKeeperOfTime": "I am Kofi, keeper of time and rhythm.",
-  "@onboardingIAmKofiKeeperOfTime":   {
+  "@onboardingIAmKofiKeeperOfTime": {
     "description": "onboarding. I am Kofi, keeper of time and rhythm."
   },
   "onboardingTheTimekeeper": "The Timekeeper",
-  "@onboardingTheTimekeeper":   {
+  "@onboardingTheTimekeeper": {
     "description": "onboarding. The Timekeeper"
   },
   "onboardingWhatBringsYouToLearnThis": "What brings you to learn this beautiful language?",
-  "@onboardingWhatBringsYouToLearnThis":   {
+  "@onboardingWhatBringsYouToLearnThis": {
     "description": "onboarding. What brings you to learn this beautiful language?"
   },
   "onboardingEveryGreatJourneyNeedsADestination": "Every great journey needs a destination.",
-  "@onboardingEveryGreatJourneyNeedsADestination":   {
+  "@onboardingEveryGreatJourneyNeedsADestination": {
     "description": "onboarding. Every great journey needs a destination."
   },
   "onboardingGreetingsTravelerIAmZuriYour": "Greetings, traveler! I am Zuri, your pathfinder.",
-  "@onboardingGreetingsTravelerIAmZuriYour":   {
+  "@onboardingGreetingsTravelerIAmZuriYour": {
     "description": "onboarding. Greetings, traveler! I am Zuri, your pathfinder."
   },
   "onboardingThePathfinder": "The Pathfinder",
-  "@onboardingThePathfinder":   {
+  "@onboardingThePathfinder": {
     "description": "onboarding. The Pathfinder"
   },
   "onboardingWhichThreadShallWeWeaveInto": "Which thread shall we weave into your story?",
-  "@onboardingWhichThreadShallWeWeaveInto":   {
+  "@onboardingWhichThreadShallWeWeaveInto": {
     "description": "onboarding. Which thread shall we weave into your story?"
   },
   "onboardingEachLanguageIsAThreadIn": "Each language is a thread in the tapestry of Africa.",
-  "@onboardingEachLanguageIsAThreadIn":   {
+  "@onboardingEachLanguageIsAThreadIn": {
     "description": "onboarding. Each language is a thread in the tapestry of Africa."
   },
   "onboardingIAmAdisaWeaverOfWords": "I am Adisa, weaver of words and keeper of tongues.",
-  "@onboardingIAmAdisaWeaverOfWords":   {
+  "@onboardingIAmAdisaWeaverOfWords": {
     "description": "onboarding. I am Adisa, weaver of words and keeper of tongues."
   },
   "onboardingTheWeaver": "The Weaver",
-  "@onboardingTheWeaver":   {
+  "@onboardingTheWeaver": {
     "description": "onboarding. The Weaver"
   },
   "onboardingYourJourneyToConnectWithYour": "Your journey to connect with your roots begins here.",
-  "@onboardingYourJourneyToConnectWithYour":   {
+  "@onboardingYourJourneyToConnectWithYour": {
     "description": "onboarding. Your journey to connect with your roots begins here."
   },
   "onboardingIAmPaLingafriqGuardianOf": "I am Pa LingAfriq, guardian of our ancestral tongues.",
-  "@onboardingIAmPaLingafriqGuardianOf":   {
+  "@onboardingIAmPaLingafriqGuardianOf": {
     "description": "onboarding. I am Pa LingAfriq, guardian of our ancestral tongues."
   },
   "onboardingWelcomeYoungOneToOurVillage": "Welcome, young one, to our village of languages.",
-  "@onboardingWelcomeYoungOneToOurVillage":   {
+  "@onboardingWelcomeYoungOneToOurVillage": {
     "description": "onboarding. Welcome, young one, to our village of languages."
   },
   "shellLogout": "Logout",
-  "@shellLogout":   {
+  "@shellLogout": {
     "description": "shell. Logout"
   },
   "shellCancel": "Cancel",
-  "@shellCancel":   {
+  "@shellCancel": {
     "description": "shell. Cancel"
   },
   "shellAreYouSureYouWantTo": "Are you sure you want to logout?",
-  "@shellAreYouSureYouWantTo":   {
+  "@shellAreYouSureYouWantTo": {
     "description": "shell. Are you sure you want to logout?"
   },
   "shellSwitchBetweenLightAndDarkTheme": "Switch between light and dark theme",
-  "@shellSwitchBetweenLightAndDarkTheme":   {
+  "@shellSwitchBetweenLightAndDarkTheme": {
     "description": "shell. Switch between light and dark theme"
   },
   "shellDarkMode": "Dark Mode",
-  "@shellDarkMode":   {
+  "@shellDarkMode": {
     "description": "shell. Dark Mode"
   },
   "shellFriendQuests": "Friend Quests",
-  "@shellFriendQuests":   {
+  "@shellFriendQuests": {
     "description": "shell. Friend Quests"
   },
   "shellSocialHub": "Social Hub",
-  "@shellSocialHub":   {
+  "@shellSocialHub": {
     "description": "shell. Social Hub"
   },
   "shellMicroMentorReports": "Micro-mentor reports",
-  "@shellMicroMentorReports":   {
+  "@shellMicroMentorReports": {
     "description": "shell. Micro-mentor reports"
   },
   "shellPersonaMissions": "Persona Missions",
-  "@shellPersonaMissions":   {
+  "@shellPersonaMissions": {
     "description": "shell. Persona Missions"
   },
   "shellHistoricalPersonas": "Historical Personas",
-  "@shellHistoricalPersonas":   {
+  "@shellHistoricalPersonas": {
     "description": "shell. Historical Personas"
   },
   "shellMyTribes": "My Tribes",
-  "@shellMyTribes":   {
+  "@shellMyTribes": {
     "description": "shell. My Tribes"
   },
   "shellLanguageVillages": "Language Villages",
-  "@shellLanguageVillages":   {
+  "@shellLanguageVillages": {
     "description": "shell. Language Villages"
   },
   "shellPrivateChat": "Private Chat",
-  "@shellPrivateChat":   {
+  "@shellPrivateChat": {
     "description": "shell. Private Chat"
   },
   "shellCommunityFeed": "Community Feed",
-  "@shellCommunityFeed":   {
+  "@shellCommunityFeed": {
     "description": "shell. Community Feed"
   },
   "shellGlobalChat": "Global Chat",
-  "@shellGlobalChat":   {
+  "@shellGlobalChat": {
     "description": "shell. Global Chat"
   },
   "shellCreateContent": "Create Content",
-  "@shellCreateContent":   {
+  "@shellCreateContent": {
     "description": "shell. Create Content"
   },
   "shellLiveTranslate": "Live translate",
-  "@shellLiveTranslate":   {
+  "@shellLiveTranslate": {
     "description": "shell. Live translate"
   },
   "shellPointSay": "Point & Say",
-  "@shellPointSay":   {
+  "@shellPointSay": {
     "description": "shell. Point & Say"
   },
   "shellImportMedia": "Import Media",
-  "@shellImportMedia":   {
+  "@shellImportMedia": {
     "description": "shell. Import Media"
   },
   "shellCulturalMagazine": "Cultural Magazine",
-  "@shellCulturalMagazine":   {
+  "@shellCulturalMagazine": {
     "description": "shell. Cultural Magazine"
   },
   "shellCulturalHub": "Cultural Hub",
-  "@shellCulturalHub":   {
+  "@shellCulturalHub": {
     "description": "shell. Cultural Hub"
   },
   "shellAddWordsInVocabularyBuilderTo": "Add words in Vocabulary Builder to start flashcard review.",
-  "@shellAddWordsInVocabularyBuilderTo":   {
+  "@shellAddWordsInVocabularyBuilderTo": {
     "description": "shell. Add words in Vocabulary Builder to start flashcard review."
   },
   "shellPleaseSelectALanguageFirst": "Please select a language first",
-  "@shellPleaseSelectALanguageFirst":   {
+  "@shellPleaseSelectALanguageFirst": {
     "description": "shell. Please select a language first"
   },
   "shellFlashcardReview": "Flashcard Review",
-  "@shellFlashcardReview":   {
+  "@shellFlashcardReview": {
     "description": "shell. Flashcard Review"
   },
   "shellWritingPractice": "Writing Practice",
-  "@shellWritingPractice":   {
+  "@shellWritingPractice": {
     "description": "shell. Writing Practice"
   },
   "shellListeningPractice": "Listening Practice",
-  "@shellListeningPractice":   {
+  "@shellListeningPractice": {
     "description": "shell. Listening Practice"
   },
   "shellConversationScenarios": "Conversation Scenarios",
-  "@shellConversationScenarios":   {
+  "@shellConversationScenarios": {
     "description": "shell. Conversation Scenarios"
   },
   "shellVocabularyBuilder": "Vocabulary Builder",
-  "@shellVocabularyBuilder":   {
+  "@shellVocabularyBuilder": {
     "description": "shell. Vocabulary Builder"
   },
   "shellLearningPath": "Learning Path",
-  "@shellLearningPath":   {
+  "@shellLearningPath": {
     "description": "shell. Learning Path"
   },
   "shellGrammarHub": "Grammar Hub",
-  "@shellGrammarHub":   {
+  "@shellGrammarHub": {
     "description": "shell. Grammar Hub"
   },
   "shellAiChat": "AI Chat",
-  "@shellAiChat":   {
+  "@shellAiChat": {
     "description": "shell. AI Chat"
   },
   "shellTutorMode": "Tutor Mode",
-  "@shellTutorMode":   {
+  "@shellTutorMode": {
     "description": "shell. Tutor Mode"
   },
   "shellNativeContentReview": "Native content review",
-  "@shellNativeContentReview":   {
+  "@shellNativeContentReview": {
     "description": "shell. Native content review"
   },
   "shellAuthenticPathA1C1": "Authentic Path (A1–C1)",
-  "@shellAuthenticPathA1C1":   {
+  "@shellAuthenticPathA1C1": {
     "description": "shell. Authentic Path (A1–C1)"
   },
   "shellToggleDarkMode": "Toggle Dark Mode",
-  "@shellToggleDarkMode":   {
+  "@shellToggleDarkMode": {
     "description": "shell. Toggle Dark Mode"
   },
   "shellDarkModeValue": "Dark mode {value}",
-  "@shellDarkModeValue":   {
+  "@shellDarkModeValue": {
     "description": "shell. Dark mode {value}",
     "placeholders": {
       "value": {
@@ -7671,7 +7671,7 @@
     }
   },
   "shellTitleSection": "{title} section",
-  "@shellTitleSection":   {
+  "@shellTitleSection": {
     "description": "shell. {title} section",
     "placeholders": {
       "title": {
@@ -7680,47 +7680,47 @@
     }
   },
   "shellToggleTheme": "Toggle theme",
-  "@shellToggleTheme":   {
+  "@shellToggleTheme": {
     "description": "shell. Toggle theme"
   },
   "shellDarkMode9cf8": "Dark mode",
-  "@shellDarkMode9cf8":   {
+  "@shellDarkMode9cf8": {
     "description": "shell. Dark mode"
   },
   "shellPracticeRooms": "Practice Rooms",
-  "@shellPracticeRooms":   {
+  "@shellPracticeRooms": {
     "description": "shell. Practice Rooms"
   },
   "shellLiveClassroom": "Live Classroom",
-  "@shellLiveClassroom":   {
+  "@shellLiveClassroom": {
     "description": "shell. Live Classroom"
   },
   "shellDialectPreference": "Dialect preference",
-  "@shellDialectPreference":   {
+  "@shellDialectPreference": {
     "description": "shell. Dialect preference"
   },
   "shellHeritageMilestones": "Heritage milestones",
-  "@shellHeritageMilestones":   {
+  "@shellHeritageMilestones": {
     "description": "shell. Heritage milestones"
   },
   "shellLivingDictionary": "Living Dictionary",
-  "@shellLivingDictionary":   {
+  "@shellLivingDictionary": {
     "description": "shell. Living Dictionary"
   },
   "shellToneRhythm": "Tone & Rhythm",
-  "@shellToneRhythm":   {
+  "@shellToneRhythm": {
     "description": "shell. Tone & Rhythm"
   },
   "shellPhraseDna": "Phrase DNA",
-  "@shellPhraseDna":   {
+  "@shellPhraseDna": {
     "description": "shell. Phrase DNA"
   },
   "shellPolieTutor": "Polie Tutor",
-  "@shellPolieTutor":   {
+  "@shellPolieTutor": {
     "description": "shell. Polie Tutor"
   },
   "shellEmailValue": "Email: {value}",
-  "@shellEmailValue":   {
+  "@shellEmailValue": {
     "description": "shell. Email: {value}",
     "placeholders": {
       "value": {
@@ -7729,7 +7729,7 @@
     }
   },
   "shellUsernameValue": "Username: {value}",
-  "@shellUsernameValue":   {
+  "@shellUsernameValue": {
     "description": "shell. Username: {value}",
     "placeholders": {
       "value": {
@@ -7738,11 +7738,11 @@
     }
   },
   "shellUserAvatar": "User avatar",
-  "@shellUserAvatar":   {
+  "@shellUserAvatar": {
     "description": "shell. User avatar"
   },
   "shellLessonsCompletedValuePointsEarnedValue2": "Lessons completed: {value} • Points earned: {value2}",
-  "@shellLessonsCompletedValuePointsEarnedValue2":   {
+  "@shellLessonsCompletedValuePointsEarnedValue2": {
     "description": "shell. Lessons completed: {value} • Points earned: {value2}",
     "placeholders": {
       "value": {
@@ -7754,19 +7754,19 @@
     }
   },
   "shellLoadingCourses": "Loading Courses ...",
-  "@shellLoadingCourses":   {
+  "@shellLoadingCourses": {
     "description": "shell. Loading Courses ..."
   },
   "shellStartACourseToSeeYour": "Start a course to see your progress",
-  "@shellStartACourseToSeeYour":   {
+  "@shellStartACourseToSeeYour": {
     "description": "shell. Start a course to see your progress"
   },
   "shellNoCourseStartedYet": "No Course started yet",
-  "@shellNoCourseStartedYet":   {
+  "@shellNoCourseStartedYet": {
     "description": "shell. No Course started yet"
   },
   "shellHiValue": "Hi {value}",
-  "@shellHiValue":   {
+  "@shellHiValue": {
     "description": "shell. Hi {value}",
     "placeholders": {
       "value": {
@@ -7775,11 +7775,11 @@
     }
   },
   "shellYourCourses": "Your Courses!",
-  "@shellYourCourses":   {
+  "@shellYourCourses": {
     "description": "shell. Your Courses!"
   },
   "shellValue": "{value}%",
-  "@shellValue":   {
+  "@shellValue": {
     "description": "shell. {value}%",
     "placeholders": {
       "value": {
@@ -7788,11 +7788,11 @@
     }
   },
   "shellProgress": "Progress",
-  "@shellProgress":   {
+  "@shellProgress": {
     "description": "shell. Progress"
   },
   "shellProgressValue": "Progress {value}%",
-  "@shellProgressValue":   {
+  "@shellProgressValue": {
     "description": "shell. Progress {value}%",
     "placeholders": {
       "value": {
@@ -7801,7 +7801,7 @@
     }
   },
   "shellLessonsCompletedValuePointsValue2": "Lessons completed: {value} • Points: {value2}",
-  "@shellLessonsCompletedValuePointsValue2":   {
+  "@shellLessonsCompletedValuePointsValue2": {
     "description": "shell. Lessons completed: {value} • Points: {value2}",
     "placeholders": {
       "value": {
@@ -7813,7 +7813,7 @@
     }
   },
   "shellValueValue2CompleteTapToOpen": "{value}, {value2}% complete. Tap to open.",
-  "@shellValueValue2CompleteTapToOpen":   {
+  "@shellValueValue2CompleteTapToOpen": {
     "description": "shell. {value}, {value2}% complete. Tap to open.",
     "placeholders": {
       "value": {
@@ -7825,51 +7825,51 @@
     }
   },
   "shellLoadingCourses7098": "Loading Courses...",
-  "@shellLoadingCourses7098":   {
+  "@shellLoadingCourses7098": {
     "description": "shell. Loading Courses..."
   },
   "shellNoLanguagesAvailable": "No languages available",
-  "@shellNoLanguagesAvailable":   {
+  "@shellNoLanguagesAvailable": {
     "description": "shell. No languages available"
   },
   "shellYourProgress": "Your Progress",
-  "@shellYourProgress":   {
+  "@shellYourProgress": {
     "description": "shell. Your Progress"
   },
   "shellMenu": "Menu",
-  "@shellMenu":   {
+  "@shellMenu": {
     "description": "shell. Menu"
   },
   "shellOpenMenu": "Open menu",
-  "@shellOpenMenu":   {
+  "@shellOpenMenu": {
     "description": "shell. Open menu"
   },
   "shellYourCourses9648": "Your Courses",
-  "@shellYourCourses9648":   {
+  "@shellYourCourses9648": {
     "description": "shell. Your Courses"
   },
   "shellNangaDef": "Nanga def",
-  "@shellNangaDef":   {
+  "@shellNangaDef": {
     "description": "shell. Nanga def"
   },
   "shellHowFar": "How far",
-  "@shellHowFar":   {
+  "@shellHowFar": {
     "description": "shell. How far"
   },
   "shellAsSIgbo": "Asụsụ Igbo",
-  "@shellAsSIgbo":   {
+  "@shellAsSIgbo": {
     "description": "shell. Asụsụ Igbo"
   },
   "shellHarshenHausa": "Harshen Hausa",
-  "@shellHarshenHausa":   {
+  "@shellHarshenHausa": {
     "description": "shell. Harshen Hausa"
   },
   "shellKB": "Ẹ káàbọ̀",
-  "@shellKB":   {
+  "@shellKB": {
     "description": "shell. Ẹ káàbọ̀"
   },
   "shellValueTapToOpen": "{value}. Tap to open.",
-  "@shellValueTapToOpen":   {
+  "@shellValueTapToOpen": {
     "description": "shell. {value}. Tap to open.",
     "placeholders": {
       "value": {
@@ -7878,7 +7878,7 @@
     }
   },
   "shellLabelValue": "{label}: {value}",
-  "@shellLabelValue":   {
+  "@shellLabelValue": {
     "description": "shell. {label}: {value}",
     "placeholders": {
       "label": {
@@ -7890,7 +7890,7 @@
     }
   },
   "shellTitleSubtitle": "{title}. {subtitle}",
-  "@shellTitleSubtitle":   {
+  "@shellTitleSubtitle": {
     "description": "shell. {title}. {subtitle}",
     "placeholders": {
       "title": {
@@ -7902,27 +7902,27 @@
     }
   },
   "shellViewDashboard": "View dashboard",
-  "@shellViewDashboard":   {
+  "@shellViewDashboard": {
     "description": "shell. View dashboard"
   },
   "shellConversationWithPolie": "Conversation with Polie",
-  "@shellConversationWithPolie":   {
+  "@shellConversationWithPolie": {
     "description": "shell. Conversation with Polie"
   },
   "shellPolieModesSkills": "Polie modes & skills",
-  "@shellPolieModesSkills":   {
+  "@shellPolieModesSkills": {
     "description": "shell. Polie modes & skills"
   },
   "shellAiTutor": "AI Tutor",
-  "@shellAiTutor":   {
+  "@shellAiTutor": {
     "description": "shell. AI Tutor"
   },
   "shellQuickActions": "Quick Actions",
-  "@shellQuickActions":   {
+  "@shellQuickActions": {
     "description": "shell. Quick Actions"
   },
   "shellValueLanguages": "{value} languages",
-  "@shellValueLanguages":   {
+  "@shellValueLanguages": {
     "description": "shell. {value} languages",
     "placeholders": {
       "value": {
@@ -7931,7 +7931,7 @@
     }
   },
   "shellValueBadges": "{value} badges",
-  "@shellValueBadges":   {
+  "@shellValueBadges": {
     "description": "shell. {value} badges",
     "placeholders": {
       "value": {
@@ -7940,7 +7940,7 @@
     }
   },
   "shellValueDayStreak": "{value} day streak",
-  "@shellValueDayStreak":   {
+  "@shellValueDayStreak": {
     "description": "shell. {value} day streak",
     "placeholders": {
       "value": {
@@ -7949,7 +7949,7 @@
     }
   },
   "shellValueXpToNextLevel": "{value} XP to next level",
-  "@shellValueXpToNextLevel":   {
+  "@shellValueXpToNextLevel": {
     "description": "shell. {value} XP to next level",
     "placeholders": {
       "value": {
@@ -7958,7 +7958,7 @@
     }
   },
   "shellXpValue": "XP {value}",
-  "@shellXpValue":   {
+  "@shellXpValue": {
     "description": "shell. XP {value}",
     "placeholders": {
       "value": {
@@ -7967,11 +7967,11 @@
     }
   },
   "shellLevel": "Level",
-  "@shellLevel":   {
+  "@shellLevel": {
     "description": "shell. Level"
   },
   "shellValue75ce": "{value}",
-  "@shellValue75ce":   {
+  "@shellValue75ce": {
     "description": "shell. {value}",
     "placeholders": {
       "value": {
@@ -7980,7 +7980,7 @@
     }
   },
   "shellLevelValueXpValue2Value3Xp": "Level {value}. XP {value2}. {value3} XP to next level. {value4} day streak. {value5} badges. {value6} languages.",
-  "@shellLevelValueXpValue2Value3Xp":   {
+  "@shellLevelValueXpValue2Value3Xp": {
     "description": "shell. Level {value}. XP {value2}. {value3} XP to next level. {value4} day streak. {val",
     "placeholders": {
       "value": {
@@ -8004,7 +8004,7 @@
     }
   },
   "shellTitleValue": "{title}{value}",
-  "@shellTitleValue":   {
+  "@shellTitleValue": {
     "description": "shell. {title}{value}",
     "placeholders": {
       "title": {
@@ -8016,35 +8016,35 @@
     }
   },
   "shellLoadingLanguages": "Loading Languages ...",
-  "@shellLoadingLanguages":   {
+  "@shellLoadingLanguages": {
     "description": "shell. Loading Languages ..."
   },
   "shellSearchLanguages": "Search languages",
-  "@shellSearchLanguages":   {
+  "@shellSearchLanguages": {
     "description": "shell. Search languages"
   },
   "shellExploreMore": "Explore More",
-  "@shellExploreMore":   {
+  "@shellExploreMore": {
     "description": "shell. Explore More"
   },
   "shellFeaturedLanguages": "Featured Languages",
-  "@shellFeaturedLanguages":   {
+  "@shellFeaturedLanguages": {
     "description": "shell. Featured Languages"
   },
   "shellKBd95e": "Ẹ Káàbọ",
-  "@shellKBd95e":   {
+  "@shellKBd95e": {
     "description": "shell. Ẹ Káàbọ"
   },
   "shellWehcomeO": "Wehcome o",
-  "@shellWehcomeO":   {
+  "@shellWehcomeO": {
     "description": "shell. Wehcome o"
   },
   "shellSannuDaZuwa": "Sannu da zuwa",
-  "@shellSannuDaZuwa":   {
+  "@shellSannuDaZuwa": {
     "description": "shell. Sannu da zuwa"
   },
   "shellPercent": "{percent}%",
-  "@shellPercent":   {
+  "@shellPercent": {
     "description": "shell. {percent}%",
     "placeholders": {
       "percent": {
@@ -8053,55 +8053,55 @@
     }
   },
   "shellKBf733": "Ẹ Káàbọ̀",
-  "@shellKBf733":   {
+  "@shellKBf733": {
     "description": "shell. Ẹ Káàbọ̀"
   },
   "shellWelcomeO": "Welcome o",
-  "@shellWelcomeO":   {
+  "@shellWelcomeO": {
     "description": "shell. Welcome o"
   },
   "shellConnectionTimedOut": "connection timed out",
-  "@shellConnectionTimedOut":   {
+  "@shellConnectionTimedOut": {
     "description": "shell. connection timed out"
   },
   "shellConnectionRefused": "connection refused",
-  "@shellConnectionRefused":   {
+  "@shellConnectionRefused": {
     "description": "shell. connection refused"
   },
   "shellFailedHostLookup": "failed host lookup",
-  "@shellFailedHostLookup":   {
+  "@shellFailedHostLookup": {
     "description": "shell. failed host lookup"
   },
   "shellNetworkIsUnreachable": "network is unreachable",
-  "@shellNetworkIsUnreachable":   {
+  "@shellNetworkIsUnreachable": {
     "description": "shell. network is unreachable"
   },
   "shellNoInternet": "no internet",
-  "@shellNoInternet":   {
+  "@shellNoInternet": {
     "description": "shell. no internet"
   },
   "shellAuthenticPath": "Authentic Path",
-  "@shellAuthenticPath":   {
+  "@shellAuthenticPath": {
     "description": "shell. Authentic Path"
   },
   "shellTakeQuiz": "Take Quiz",
-  "@shellTakeQuiz":   {
+  "@shellTakeQuiz": {
     "description": "shell. Take Quiz"
   },
   "shellBack": "Back",
-  "@shellBack":   {
+  "@shellBack": {
     "description": "shell. Back"
   },
   "shellPickWhereYouWantToLearn": "Pick where you want to learn",
-  "@shellPickWhereYouWantToLearn":   {
+  "@shellPickWhereYouWantToLearn": {
     "description": "shell. Pick where you want to learn"
   },
   "shellStartLearning": "Start learning",
-  "@shellStartLearning":   {
+  "@shellStartLearning": {
     "description": "shell. Start learning"
   },
   "shellValuePts": "{value} pts",
-  "@shellValuePts":   {
+  "@shellValuePts": {
     "description": "shell. {value} pts",
     "placeholders": {
       "value": {
@@ -8110,23 +8110,23 @@
     }
   },
   "shellTryADifferentSearchTerm": "Try a different search term",
-  "@shellTryADifferentSearchTerm":   {
+  "@shellTryADifferentSearchTerm": {
     "description": "shell. Try a different search term"
   },
   "shellNoLanguagesFound": "No languages found",
-  "@shellNoLanguagesFound":   {
+  "@shellNoLanguagesFound": {
     "description": "shell. No languages found"
   },
   "shellClearSearch": "Clear search",
-  "@shellClearSearch":   {
+  "@shellClearSearch": {
     "description": "shell. Clear search"
   },
   "shellSearchLanguages2580": "Search languages...",
-  "@shellSearchLanguages2580":   {
+  "@shellSearchLanguages2580": {
     "description": "shell. Search languages..."
   },
   "shellValuea1d1": "{value} ",
-  "@shellValuea1d1":   {
+  "@shellValuea1d1": {
     "description": "shell. {value} ",
     "placeholders": {
       "value": {
@@ -8135,19 +8135,19 @@
     }
   },
   "shellRetry": "Retry",
-  "@shellRetry":   {
+  "@shellRetry": {
     "description": "shell. Retry"
   },
   "shellFailedToLoadQuizzesPleaseTry": "Failed to load quizzes. Please try again.",
-  "@shellFailedToLoadQuizzesPleaseTry":   {
+  "@shellFailedToLoadQuizzesPleaseTry": {
     "description": "shell. Failed to load quizzes. Please try again."
   },
   "shellConnectionTimedOut52c8": "Connection timed out",
-  "@shellConnectionTimedOut52c8":   {
+  "@shellConnectionTimedOut52c8": {
     "description": "shell. Connection timed out"
   },
   "shellWeReWorkingToAddRandom": "We're working to add random quizzes for {value}!",
-  "@shellWeReWorkingToAddRandom":   {
+  "@shellWeReWorkingToAddRandom": {
     "description": "shell. We're working to add random quizzes for {value}!",
     "placeholders": {
       "value": {
@@ -8156,7 +8156,7 @@
     }
   },
   "shellLoadingQuizzesForValue": "Loading quizzes for {value}...",
-  "@shellLoadingQuizzesForValue":   {
+  "@shellLoadingQuizzesForValue": {
     "description": "shell. Loading quizzes for {value}...",
     "placeholders": {
       "value": {
@@ -8165,111 +8165,111 @@
     }
   },
   "shellChooseAQuizType": "Choose a quiz type",
-  "@shellChooseAQuizType":   {
+  "@shellChooseAQuizType": {
     "description": "shell. Choose a quiz type"
   },
   "shellAppPolicy": "App Policy",
-  "@shellAppPolicy":   {
+  "@shellAppPolicy": {
     "description": "shell. App Policy"
   },
   "shellChangePassword": "Change Password",
-  "@shellChangePassword":   {
+  "@shellChangePassword": {
     "description": "shell. Change Password"
   },
   "shellPasswordChanged": "Password Changed",
-  "@shellPasswordChanged":   {
+  "@shellPasswordChanged": {
     "description": "shell. Password Changed"
   },
   "shellConfirmYourNewPassword": "Confirm your new password",
-  "@shellConfirmYourNewPassword":   {
+  "@shellConfirmYourNewPassword": {
     "description": "shell. Confirm your new password"
   },
   "shellConfirmPassword": "Confirm Password",
-  "@shellConfirmPassword":   {
+  "@shellConfirmPassword": {
     "description": "shell. Confirm Password"
   },
   "shellEnterNewPassword": "Enter new password",
-  "@shellEnterNewPassword":   {
+  "@shellEnterNewPassword": {
     "description": "shell. Enter new password"
   },
   "shellNewPassword": "New Password",
-  "@shellNewPassword":   {
+  "@shellNewPassword": {
     "description": "shell. New Password"
   },
   "shellEnterYourCurrentPassword": "Enter your current password",
-  "@shellEnterYourCurrentPassword":   {
+  "@shellEnterYourCurrentPassword": {
     "description": "shell. Enter your current password"
   },
   "shellCurrentPassword": "Current Password",
-  "@shellCurrentPassword":   {
+  "@shellCurrentPassword": {
     "description": "shell. Current Password"
   },
   "shellDeleteNow": "Delete Now",
-  "@shellDeleteNow":   {
+  "@shellDeleteNow": {
     "description": "shell. Delete Now"
   },
   "shellEnterCurrentPassword": "Enter Current Password",
-  "@shellEnterCurrentPassword":   {
+  "@shellEnterCurrentPassword": {
     "description": "shell. Enter Current Password"
   },
   "shellConfirmation": "Confirmation",
-  "@shellConfirmation":   {
+  "@shellConfirmation": {
     "description": "shell. Confirmation"
   },
   "shellYes": "Yes",
-  "@shellYes":   {
+  "@shellYes": {
     "description": "shell. Yes"
   },
   "shellNo": "No",
-  "@shellNo":   {
+  "@shellNo": {
     "description": "shell. No"
   },
   "shellAreYouSureYouWantToecc5": "Are you sure you want to DELETE account?",
-  "@shellAreYouSureYouWantToecc5":   {
+  "@shellAreYouSureYouWantToecc5": {
     "description": "shell. Are you sure you want to DELETE account?"
   },
   "shellAccountDeleted": "Account Deleted",
-  "@shellAccountDeleted":   {
+  "@shellAccountDeleted": {
     "description": "shell. Account Deleted"
   },
   "shellThisActionIsPermanent": "This action is permanent",
-  "@shellThisActionIsPermanent":   {
+  "@shellThisActionIsPermanent": {
     "description": "shell. This action is permanent"
   },
   "shellDeleteYourAccount": "Delete your account",
-  "@shellDeleteYourAccount":   {
+  "@shellDeleteYourAccount": {
     "description": "shell. Delete your account"
   },
   "shellReadHowYourDataIsProtected": "Read how your data is protected",
-  "@shellReadHowYourDataIsProtected":   {
+  "@shellReadHowYourDataIsProtected": {
     "description": "shell. Read how your data is protected"
   },
   "shellPrivacyUserPolicy": "Privacy & User Policy",
-  "@shellPrivacyUserPolicy":   {
+  "@shellPrivacyUserPolicy": {
     "description": "shell. Privacy & User Policy"
   },
   "shellLearnAboutTheLingafriqMission": "Learn about the LingAfriq mission",
-  "@shellLearnAboutTheLingafriqMission":   {
+  "@shellLearnAboutTheLingafriqMission": {
     "description": "shell. Learn about the LingAfriq mission"
   },
   "shellWhoAreWe": "Who are we?",
-  "@shellWhoAreWe":   {
+  "@shellWhoAreWe": {
     "description": "shell. Who are we?"
   },
   "shellHelpUsImproveLingafriq": "Help us improve LingAfriq",
-  "@shellHelpUsImproveLingafriq":   {
+  "@shellHelpUsImproveLingafriq": {
     "description": "shell. Help us improve LingAfriq"
   },
   "shellGiveUsFeedback": "Give us Feedback",
-  "@shellGiveUsFeedback":   {
+  "@shellGiveUsFeedback": {
     "description": "shell. Give us Feedback"
   },
   "shellUpdateYourCredentialsSecurely": "Update your credentials securely",
-  "@shellUpdateYourCredentialsSecurely":   {
+  "@shellUpdateYourCredentialsSecurely": {
     "description": "shell. Update your credentials securely"
   },
   "shellValue12bd": "#{value}",
-  "@shellValue12bd":   {
+  "@shellValue12bd": {
     "description": "shell. #{value}",
     "placeholders": {
       "value": {
@@ -8278,7 +8278,7 @@
     }
   },
   "shellGlobalRankValue": "Global rank: {value}",
-  "@shellGlobalRankValue":   {
+  "@shellGlobalRankValue": {
     "description": "shell. Global rank: {value}",
     "placeholders": {
       "value": {
@@ -8287,11 +8287,11 @@
     }
   },
   "shellGlobalRanking": "Global Ranking",
-  "@shellGlobalRanking":   {
+  "@shellGlobalRanking": {
     "description": "shell. Global Ranking"
   },
   "shellStreakValue": "Streak {value}",
-  "@shellStreakValue":   {
+  "@shellStreakValue": {
     "description": "shell. Streak {value}",
     "placeholders": {
       "value": {
@@ -8300,7 +8300,7 @@
     }
   },
   "shellValueXp": "{value} XP",
-  "@shellValueXp":   {
+  "@shellValueXp": {
     "description": "shell. {value} XP",
     "placeholders": {
       "value": {
@@ -8309,7 +8309,7 @@
     }
   },
   "shellAchievementProgressUnlockedbadgesOutOfTotal": "Achievement progress: {unlockedBadges} out of {totalBadges} badges unlocked",
-  "@shellAchievementProgressUnlockedbadgesOutOfTotal":   {
+  "@shellAchievementProgressUnlockedbadgesOutOfTotal": {
     "description": "shell. Achievement progress: {unlockedBadges} out of {totalBadges} badges unlocked",
     "placeholders": {
       "unlockedBadges": {
@@ -8321,7 +8321,7 @@
     }
   },
   "shellUnlockedbadgesTotalbadges": "{unlockedBadges}/{totalBadges}",
-  "@shellUnlockedbadgesTotalbadges":   {
+  "@shellUnlockedbadgesTotalbadges": {
     "description": "shell. {unlockedBadges}/{totalBadges}",
     "placeholders": {
       "unlockedBadges": {
@@ -8333,11 +8333,11 @@
     }
   },
   "shellAchievements": "Achievements",
-  "@shellAchievements":   {
+  "@shellAchievements": {
     "description": "shell. Achievements"
   },
   "shellLevelValue": "Level {value}",
-  "@shellLevelValue":   {
+  "@shellLevelValue": {
     "description": "shell. Level {value}",
     "placeholders": {
       "value": {
@@ -8346,7 +8346,7 @@
     }
   },
   "shellProfileValueValue2LevelValue3Streak": "Profile: {value}, {value2}, Level {value3}, Streak {value4}",
-  "@shellProfileValueValue2LevelValue3Streak":   {
+  "@shellProfileValueValue2LevelValue3Streak": {
     "description": "shell. Profile: {value}, {value2}, Level {value3}, Streak {value4}",
     "placeholders": {
       "value": {
@@ -8364,23 +8364,23 @@
     }
   },
   "shellProfileAvatarTapToEditProfile": "Profile avatar. Tap to edit profile",
-  "@shellProfileAvatarTapToEditProfile":   {
+  "@shellProfileAvatarTapToEditProfile": {
     "description": "shell. Profile avatar. Tap to edit profile"
   },
   "shellProfile": "Profile",
-  "@shellProfile":   {
+  "@shellProfile": {
     "description": "shell. Profile"
   },
   "shellSubmit": "Submit",
-  "@shellSubmit":   {
+  "@shellSubmit": {
     "description": "shell. Submit"
   },
   "shellFeedbackFormOnMobileApp": "Feedback Form on Mobile App",
-  "@shellFeedbackFormOnMobileApp":   {
+  "@shellFeedbackFormOnMobileApp": {
     "description": "shell. Feedback Form on Mobile App"
   },
   "shellLanguageCountryCountry": "Language Country:\n{country}\n\n",
-  "@shellLanguageCountryCountry":   {
+  "@shellLanguageCountryCountry": {
     "description": "shell. Language Country:\n{country}\n\n",
     "placeholders": {
       "country": {
@@ -8389,7 +8389,7 @@
     }
   },
   "shellWouldYouLikeToSuggestA": "Would you like to suggest a language? If yes, enter language below:\n{suggestion}\n\n",
-  "@shellWouldYouLikeToSuggestA":   {
+  "@shellWouldYouLikeToSuggestA": {
     "description": "shell. Would you like to suggest a language? If yes, enter language below:\n{suggestion}",
     "placeholders": {
       "suggestion": {
@@ -8398,7 +8398,7 @@
     }
   },
   "shellWhatWouldYouLikeUsTo": "What would you like us to know:\n{reason}\n\n",
-  "@shellWhatWouldYouLikeUsTo":   {
+  "@shellWhatWouldYouLikeUsTo": {
     "description": "shell. What would you like us to know:\n{reason}\n\n",
     "placeholders": {
       "reason": {
@@ -8407,39 +8407,39 @@
     }
   },
   "shellPleaseFillInSomeFields": "Please fill in some fields",
-  "@shellPleaseFillInSomeFields":   {
+  "@shellPleaseFillInSomeFields": {
     "description": "shell. Please fill in some fields"
   },
   "shellLanguageCountry": "Language Country",
-  "@shellLanguageCountry":   {
+  "@shellLanguageCountry": {
     "description": "shell. Language Country"
   },
   "shellWriteYourSuggestionHere": "Write your suggestion here",
-  "@shellWriteYourSuggestionHere":   {
+  "@shellWriteYourSuggestionHere": {
     "description": "shell. Write your suggestion here"
   },
   "shellWouldYouLikeToSuggestAb06a": "Would you like to suggest a language? If yes, enter language below",
-  "@shellWouldYouLikeToSuggestAb06a":   {
+  "@shellWouldYouLikeToSuggestAb06a": {
     "description": "shell. Would you like to suggest a language? If yes, enter language below"
   },
   "shellPleaseExplainWhatWouldYouLike": "Please explain What would you like us to know?",
-  "@shellPleaseExplainWhatWouldYouLike":   {
+  "@shellPleaseExplainWhatWouldYouLike": {
     "description": "shell. Please explain What would you like us to know?"
   },
   "shellWhatWouldYouLikeUsTo0de8": "What would you like us to know?",
-  "@shellWhatWouldYouLikeUsTo0de8":   {
+  "@shellWhatWouldYouLikeUsTo0de8": {
     "description": "shell. What would you like us to know?"
   },
   "shellStartACourseToSeeYoure3fc": "Start a course to see your country ranking",
-  "@shellStartACourseToSeeYoure3fc":   {
+  "@shellStartACourseToSeeYoure3fc": {
     "description": "shell. Start a course to see your country ranking"
   },
   "shellNoPointsEarnedYet": "No points earned yet",
-  "@shellNoPointsEarnedYet":   {
+  "@shellNoPointsEarnedYet": {
     "description": "shell. No points earned yet"
   },
   "shellSpaceTextSpace2": "{space}{text}{space2}",
-  "@shellSpaceTextSpace2":   {
+  "@shellSpaceTextSpace2": {
     "description": "shell. {space}{text}{space2}",
     "placeholders": {
       "space": {
@@ -8454,19 +8454,19 @@
     }
   },
   "shellLoadingLeaderboard": "Loading Leaderboard...",
-  "@shellLoadingLeaderboard":   {
+  "@shellLoadingLeaderboard": {
     "description": "shell. Loading Leaderboard..."
   },
   "shellCountry": "Country",
-  "@shellCountry":   {
+  "@shellCountry": {
     "description": "shell. Country"
   },
   "shellGlobal": "Global",
-  "@shellGlobal":   {
+  "@shellGlobal": {
     "description": "shell. Global"
   },
   "shellLeaderboardViewValueSwitchBetweenGlobal": "Leaderboard view: {value}. Switch between Global and Country.",
-  "@shellLeaderboardViewValueSwitchBetweenGlobal":   {
+  "@shellLeaderboardViewValueSwitchBetweenGlobal": {
     "description": "shell. Leaderboard view: {value}. Switch between Global and Country.",
     "placeholders": {
       "value": {
@@ -8475,67 +8475,67 @@
     }
   },
   "shellLeaderboard": "Leaderboard",
-  "@shellLeaderboard":   {
+  "@shellLeaderboard": {
     "description": "shell. Leaderboard"
   },
   "shellProfileTab": "Profile tab",
-  "@shellProfileTab":   {
+  "@shellProfileTab": {
     "description": "shell. Profile tab"
   },
   "shellSocial": "Social",
-  "@shellSocial":   {
+  "@shellSocial": {
     "description": "shell. Social"
   },
   "shellSocialTab": "Social tab",
-  "@shellSocialTab":   {
+  "@shellSocialTab": {
     "description": "shell. Social tab"
   },
   "shellAi": "AI",
-  "@shellAi":   {
+  "@shellAi": {
     "description": "shell. AI"
   },
   "shellAiTutorTab": "AI Tutor tab",
-  "@shellAiTutorTab":   {
+  "@shellAiTutorTab": {
     "description": "shell. AI Tutor tab"
   },
   "shellCourses": "Courses",
-  "@shellCourses":   {
+  "@shellCourses": {
     "description": "shell. Courses"
   },
   "shellCoursesTab": "Courses tab",
-  "@shellCoursesTab":   {
+  "@shellCoursesTab": {
     "description": "shell. Courses tab"
   },
   "shellHome": "Home",
-  "@shellHome":   {
+  "@shellHome": {
     "description": "shell. Home"
   },
   "shellHomeTab": "Home tab",
-  "@shellHomeTab":   {
+  "@shellHomeTab": {
     "description": "shell. Home tab"
   },
   "shellBackToLearning": "Back to learning",
-  "@shellBackToLearning":   {
+  "@shellBackToLearning": {
     "description": "shell. Back to learning"
   },
   "shellBackToLearningHome": "Back to learning home",
-  "@shellBackToLearningHome":   {
+  "@shellBackToLearningHome": {
     "description": "shell. Back to learning home"
   },
   "shellNotAvailableYet": "Not available yet",
-  "@shellNotAvailableYet":   {
+  "@shellNotAvailableYet": {
     "description": "shell. Not available yet"
   },
   "shellPrivateMessagesCallsSnapsAndThe": "Private messages, calls, snaps, and the public feed unlock when you are 18 and your age is verified. Until then, keep going on lessons, games, and Polie.",
-  "@shellPrivateMessagesCallsSnapsAndThe":   {
+  "@shellPrivateMessagesCallsSnapsAndThe": {
     "description": "shell. Private messages, calls, snaps, and the public feed unlock when you are 18 and y"
   },
   "shellLearningComesFirst": "Learning comes first",
-  "@shellLearningComesFirst":   {
+  "@shellLearningComesFirst": {
     "description": "shell. Learning comes first"
   },
   "onboardingWordsInYourBasket": "{words, plural, =1{1 word in your basket} other{{words} words in your basket}}",
-  "@onboardingWordsInYourBasket":   {
+  "@onboardingWordsInYourBasket": {
     "description": "onboarding. Words in the first-win basket",
     "placeholders": {
       "words": {
@@ -8544,23 +8544,23 @@
     }
   },
   "onboardingNotSelected": "not selected",
-  "@onboardingNotSelected":   {
+  "@onboardingNotSelected": {
     "description": "onboarding. not selected"
   },
   "onboardingAddAvatarOptional": "Add Avatar (Optional)",
-  "@onboardingAddAvatarOptional":   {
+  "@onboardingAddAvatarOptional": {
     "description": "onboarding. Add Avatar (Optional)"
   },
   "onboardingLevelNotPreciseYet": "Level not precise yet",
-  "@onboardingLevelNotPreciseYet":   {
+  "@onboardingLevelNotPreciseYet": {
     "description": "onboarding. Level not precise yet"
   },
   "onboardingSelectedd7a1": ", selected",
-  "@onboardingSelectedd7a1":   {
+  "@onboardingSelectedd7a1": {
     "description": "onboarding. , selected"
   },
   "onboardingUseAYearBetween1900And": "Use a year between 1900 and {nowYear}.",
-  "@onboardingUseAYearBetween1900And":   {
+  "@onboardingUseAYearBetween1900And": {
     "description": "onboarding. Use a year between 1900 and {nowYear}.",
     "placeholders": {
       "nowYear": {
@@ -8569,23 +8569,23 @@
     }
   },
   "onboardingNiceYouSaidIt": "Nice, you said it",
-  "@onboardingNiceYouSaidIt":   {
+  "@onboardingNiceYouSaidIt": {
     "description": "onboarding. Nice, you said it"
   },
   "onboardingYouMarkedThePhraseAsSaid": "You marked the phrase as said",
-  "@onboardingYouMarkedThePhraseAsSaid":   {
+  "@onboardingYouMarkedThePhraseAsSaid": {
     "description": "onboarding. You marked the phrase as said"
   },
   "onboardingFinishLesson": "Finish lesson",
-  "@onboardingFinishLesson":   {
+  "@onboardingFinishLesson": {
     "description": "onboarding. Finish lesson"
   },
   "onboardingText1Word": "1 word",
-  "@onboardingText1Word":   {
+  "@onboardingText1Word": {
     "description": "onboarding. 1 word"
   },
   "shellUsername": ", {username}",
-  "@shellUsername":   {
+  "@shellUsername": {
     "description": "shell. , {username}",
     "placeholders": {
       "username": {
@@ -8968,5 +8968,174 @@
   "hubTodayOfflineNext": "Connect, then try again.",
   "@hubTodayOfflineNext": {
     "description": "hub.h_today.offline_next"
+  },
+  "hubLearnPathAndLessons": "Path and lessons",
+  "@hubLearnPathAndLessons": {
+    "description": "hub.h_learn. Path and lessons"
+  },
+  "hubLearnLessonRecap": "Lesson Recap",
+  "@hubLearnLessonRecap": {
+    "description": "hub.h_learn. Lesson Recap"
+  },
+  "hubLearnWordsAndReview": "Words and Review",
+  "@hubLearnWordsAndReview": {
+    "description": "hub.h_learn. Words and Review"
+  },
+  "hubLearnReviewRush": "Review Rush",
+  "@hubLearnReviewRush": {
+    "description": "hub.h_learn. Review Rush"
+  },
+  "hubLearnGrammar": "Grammar",
+  "@hubLearnGrammar": {
+    "description": "hub.h_learn. Grammar"
+  },
+  "hubLearnPhraseDna": "Phrase DNA",
+  "@hubLearnPhraseDna": {
+    "description": "hub.h_learn. Phrase DNA"
+  },
+  "hubLearnListening": "Listening",
+  "@hubLearnListening": {
+    "description": "hub.h_learn. Listening"
+  },
+  "hubLearnWriting": "Writing",
+  "@hubLearnWriting": {
+    "description": "hub.h_learn. Writing"
+  },
+  "hubLearnToneGym": "Tone Gym",
+  "@hubLearnToneGym": {
+    "description": "hub.h_learn. Tone Gym"
+  },
+  "hubLearnCultureShelf": "Culture shelf",
+  "@hubLearnCultureShelf": {
+    "description": "hub.h_learn. Culture shelf"
+  },
+  "hubLearnMagazine": "Magazine",
+  "@hubLearnMagazine": {
+    "description": "hub.h_learn. Magazine"
+  },
+  "hubLearnHeritage": "Heritage",
+  "@hubLearnHeritage": {
+    "description": "hub.h_learn. Heritage"
+  },
+  "hubLearnHistory": "History",
+  "@hubLearnHistory": {
+    "description": "hub.h_learn. History"
+  },
+  "hubLearnMannerisms": "Mannerisms",
+  "@hubLearnMannerisms": {
+    "description": "hub.h_learn. Mannerisms"
+  },
+  "hubLearnCulturalHub": "Cultural Hub",
+  "@hubLearnCulturalHub": {
+    "description": "hub.h_learn. Cultural Hub"
+  },
+  "hubLearnPassport": "Passport",
+  "@hubLearnPassport": {
+    "description": "hub.h_learn. Passport"
+  },
+  "hubLearnDownloads": "Downloads",
+  "@hubLearnDownloads": {
+    "description": "hub.h_learn. Downloads"
+  },
+  "hubLearnBack": "Back to Learn",
+  "@hubLearnBack": {
+    "description": "hub.h_learn. Back to Learn"
+  },
+  "hubLearnNotAvailableWhat": "This part is not built yet.",
+  "@hubLearnNotAvailableWhat": {
+    "description": "hub.h_learn. What happened when a destination is not built"
+  },
+  "hubLearnNotAvailableWhy": "There is nothing to show.",
+  "@hubLearnNotAvailableWhy": {
+    "description": "hub.h_learn. Why a destination shows nothing"
+  },
+  "hubLearnNotAvailableNext": "Go back to Learn.",
+  "@hubLearnNotAvailableNext": {
+    "description": "hub.h_learn. What to do when a destination is not built"
+  },
+  "hubLearnEmptyTitle": "Nothing is here yet",
+  "@hubLearnEmptyTitle": {
+    "description": "hub.h_learn. Empty hub title"
+  },
+  "hubLearnEmptyWhat": "Learn has no lessons yet.",
+  "@hubLearnEmptyWhat": {
+    "description": "hub.h_learn. What happened when the hub is empty"
+  },
+  "hubLearnEmptyWhy": "No units came back.",
+  "@hubLearnEmptyWhy": {
+    "description": "hub.h_learn. Why the hub is empty"
+  },
+  "hubLearnEmptyNext": "Open Path and start the first lesson.",
+  "@hubLearnEmptyNext": {
+    "description": "hub.h_learn. Next step when the hub is empty"
+  },
+  "hubLearnOpenPath": "Open Path",
+  "@hubLearnOpenPath": {
+    "description": "hub.h_learn. Button that opens Path"
+  },
+  "hubLearnPathEmptyTitle": "This path has no lessons",
+  "@hubLearnPathEmptyTitle": {
+    "description": "hub.h_learn. Empty path title"
+  },
+  "hubLearnPathEmptyWhat": "No units are on this path.",
+  "@hubLearnPathEmptyWhat": {
+    "description": "hub.h_learn. What happened when Path has no units"
+  },
+  "hubLearnPathEmptyWhy": "No units came back to group.",
+  "@hubLearnPathEmptyWhy": {
+    "description": "hub.h_learn. Why Path has no units"
+  },
+  "hubLearnPathEmptyNext": "Try again later.",
+  "@hubLearnPathEmptyNext": {
+    "description": "hub.h_learn. Next step when Path has no units"
+  },
+  "hubLearnGrammarEmptyTitle": "No pattern yet",
+  "@hubLearnGrammarEmptyTitle": {
+    "description": "hub.h_learn. Empty grammar title"
+  },
+  "hubLearnGrammarEmptyWhat": "Grammar has no pattern yet.",
+  "@hubLearnGrammarEmptyWhat": {
+    "description": "hub.h_learn. What happened when Grammar has no pattern"
+  },
+  "hubLearnGrammarEmptyWhy": "No drill came back.",
+  "@hubLearnGrammarEmptyWhy": {
+    "description": "hub.h_learn. Why Grammar has no pattern"
+  },
+  "hubLearnGrammarEmptyNext": "Open Path and start a lesson.",
+  "@hubLearnGrammarEmptyNext": {
+    "description": "hub.h_learn. Next step when Grammar has no pattern"
+  },
+  "hubLearnLevel": "Level {level}",
+  "@hubLearnLevel": {
+    "description": "hub.h_learn. CEFR band heading",
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "hubLearnLevelNotSet": "Level not set",
+  "@hubLearnLevelNotSet": {
+    "description": "hub.h_learn. Heading when a unit has no CEFR band"
+  },
+  "hubLearnErrorWhat": "Learn did not open.",
+  "@hubLearnErrorWhat": {
+    "description": "hub.h_learn. What happened when Learn fails"
+  },
+  "hubLearnErrorWhy": "The lesson list did not come back.",
+  "@hubLearnErrorWhy": {
+    "description": "hub.h_learn. Why Learn failed"
+  },
+  "hubLearnErrorNext": "Try again.",
+  "@hubLearnErrorNext": {
+    "description": "hub.h_learn. What to do when Learn fails"
+  },
+  "hubLearnOfflineWhy": "This path is not saved on the phone.",
+  "@hubLearnOfflineWhy": {
+    "description": "hub.h_learn. Why Learn is offline"
+  },
+  "hubLearnOfflineNext": "Connect, then try again.",
+  "@hubLearnOfflineNext": {
+    "description": "hub.h_learn. What to do when Learn is offline"
   }
 }
