@@ -30,6 +30,7 @@ token_budget: 25000
 file_allowlist:
 - docs/build/design/HARVEST_REPORT.md
 - scripts/nav/harvest_check.py
+- test/scripts/harvest_check_test.py
 context_anchors:
 - ELEVATION.md#§17.5:L2333-L2338
 acceptance_criteria:
@@ -53,6 +54,21 @@ risks: []
 gate: G3
 external_blockers: []
 status: Draft
+harvest_note: |
+  Verification only. The ledger is docs/build/design/HARVEST_REPORT.md.
+  scripts/nav/harvest_check.py writes that report and scans lib/ for imports
+  of variant files the consolidation cards said were deleted or moved under
+  legacy/. A remaining import exits 1 and the report names it. The script
+  does not delete product files. Template files P3-068 kept are listed as
+  Kept, not as a scan failure.
+  Dropped rows use the reason already written on the source card. Approver
+  is Unrecorded. This repo has no human approver, so this card stays Draft.
+  P3-068 stays Draft. A seventh named template class is not in the repo.
+  This card does not invent one. game_template_shell.dart stays because
+  BaseGameScreen and test/games/game_template_shell_test.dart still import it.
+  This run: Moved 64, Dropped 54, Kept 14, Unresolved 11. The import scan
+  exited 0. No lib/ import of a deleted or legacy variant. Kept shell
+  references are named in the report.
 skills:
   worker:
   - adaptive/07-research-and-fact-checking
