@@ -56,6 +56,14 @@ class HomeTab extends StatelessWidget {
       onGenerateRoute: (RouteSettings settings) {
         final String name = settings.name ?? start;
         final TodayRoute? route = TodayHubRoutes.resolve(name);
+        final Widget? opened = route == null ? null : todayOpenedScreen(route);
+        if (route != null && opened != null) {
+          final TodayRoute destination = route;
+          return MaterialPageRoute<void>(
+            settings: RouteSettings(name: destination.path),
+            builder: (BuildContext context) => opened,
+          );
+        }
         return MaterialPageRoute<void>(
           settings: RouteSettings(name: route?.path ?? name),
           builder: (BuildContext context) {
