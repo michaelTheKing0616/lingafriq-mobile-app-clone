@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +26,7 @@ import '../../widgets/pan_african_components.dart';
 import '../../widgets/rive_global_guide.dart';
 import '../../widgets/error_state_widget.dart';
 import '../../widgets/skeleton_loader.dart';
+import '../../games/gamekit/harvested_frame.dart';
 import 'templates/game_template_shell.dart';
 
 /// Base class for all game screens - handles common functionality
@@ -83,6 +85,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
   /// user can one-tap switch to the fully-supported language.
   bool _emptyLanguageFallbackUsed = false;
   late final ComboTracker _comboTracker;
+  late final String _loadingFact;
 
   /// Lowercase set of languages for which `_generateFallbackCards` in
   /// `game_provider.dart` ships a guaranteed curated deck. Keep in sync with
@@ -153,6 +156,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
   void initState() {
     super.initState();
     _comboTracker = ComboTracker();
+    _loadingFact = gameKitLoadingFact(random: Random(widget.language.hashCode));
     _initializeGame();
   }
   
@@ -621,6 +625,15 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
                     Text(
                       'Loading game...',
                       style: PanAfricanTypography.bodyMedium(context),
+                    ),
+                    SizedBox(height: PanAfricanSpacing.sm),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
+                      child: Text(
+                        _loadingFact,
+                        textAlign: TextAlign.center,
+                        style: PanAfricanTypography.bodyMedium(context),
+                      ),
                     ),
                   ],
                 ),

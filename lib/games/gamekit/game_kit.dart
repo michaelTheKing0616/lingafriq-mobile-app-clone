@@ -33,6 +33,7 @@ export 'game_migration_helper.dart';
 // Services and integration
 export 'game_engine_service.dart';
 export 'game_screen_integration.dart';
+export 'harvested_frame.dart';
 
 // Meta layer (for advanced features)
 export 'game_meta_layer.dart';

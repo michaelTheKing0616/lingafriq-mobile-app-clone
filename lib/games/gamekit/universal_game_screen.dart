@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -18,6 +19,7 @@ import 'game_result.dart';
 import 'game_turn_context.dart';
 import 'game_scoring.dart';
 import 'game_engine.dart';
+import 'harvested_frame.dart';
 import '../../services/feature_flag_service.dart';
 import '../../avatars/avatars.dart';
 import '../../learning/learner_model/error_taxonomy.dart';
@@ -30,11 +32,13 @@ import '../../providers/game_provider.dart';
 /// This allows all 37+ games to use the same GameKit implementation
 class UniversalGameScreen extends BaseGameScreen {
   final String gameId;
+  final GameKitStartGuideInput? startGuide;
 
   const UniversalGameScreen({
     super.key,
     required super.language,
     required this.gameId,
+    this.startGuide,
     super.level,
     super.onBack,
   });
@@ -72,6 +76,8 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
   final FeatureFlagService _featureFlags = FeatureFlagService(safeDefault: false);
   bool _practiceNotScored = false;
   String? _lastLearnerRecordingPath;
+  bool _startGuideDone = false;
+  late final String _loadingFact;
 
   // Game avatar controller
   GameAvatarController? _avatarController;
@@ -81,6 +87,7 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
   @override
   void initState() {
     super.initState();
+    _loadingFact = gameKitLoadingFact(random: Random(widget.gameId.hashCode));
     _game = AllGamesRegistry.createGame(ref, widget.gameId);
     _resolvePracticeMode();
     _initializeAvatar();
@@ -380,8 +387,15 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
 
   @override
   Widget buildGameContent(BuildContext context) {
+    if (widget.startGuide != null && !_startGuideDone) {
+      return GameKitStartGuideView(
+        input: widget.startGuide!,
+        onStart: () => setState(() => _startGuideDone = true),
+      );
+    }
+
     if (isLoading || _currentContent == null) {
-      return const Center(child: CircularProgressIndicator());
+      return GameKitLoadingView(fact: _loadingFact);
     }
 
     if (error != null) {
