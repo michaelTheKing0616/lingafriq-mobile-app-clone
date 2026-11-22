@@ -9299,5 +9299,49 @@
   "hubHSpeakPolieOfflineWhy": "Polie needs the network to answer.",
   "@hubHSpeakPolieOfflineWhy": {
     "description": "hub.h_speak.polie.offline.why"
+  },
+  "lensBridge": "Conversation Bridge",
+  "@lensBridge": {
+    "description": "lens.bridge"
+  },
+  "lensPermissionWhat": "The camera is blocked.",
+  "@lensPermissionWhat": {
+    "description": "lens.permission.what"
+  },
+  "lensPermissionWhy": "LingAfriq does not have permission to use the camera.",
+  "@lensPermissionWhy": {
+    "description": "lens.permission.why"
+  },
+  "lensPermissionNext": "Open Settings and allow the camera.",
+  "@lensPermissionNext": {
+    "description": "lens.permission.next"
+  },
+  "lensOfflineTranslateWhy": "Live Translate needs the network to listen and translate.",
+  "@lensOfflineTranslateWhy": {
+    "description": "lens.offline.translate.why"
+  },
+  "lensRecognizerMissingWhat": "Point & Say cannot name this offline.",
+  "@lensRecognizerMissingWhat": {
+    "description": "lens.recognizer.missing.what"
+  },
+  "lensRecognizerMissingWhy": "The on-device recognizer is not on this phone.",
+  "@lensRecognizerMissingWhy": {
+    "description": "lens.recognizer.missing.why"
+  },
+  "lensRecognizerMissingNext": "Connect, then open Point & Say again. This phone has no on-device recognizer.",
+  "@lensRecognizerMissingNext": {
+    "description": "lens.recognizer.missing.next"
+  },
+  "lensNoWordWhat": "No word is open.",
+  "@lensNoWordWhat": {
+    "description": "lens.dictionary.empty.what"
+  },
+  "lensNoWordWhy": "Point & Say has not named a word.",
+  "@lensNoWordWhy": {
+    "description": "lens.dictionary.empty.why"
+  },
+  "lensNoWordNext": "Point at one thing, then open Living Dictionary.",
+  "@lensNoWordNext": {
+    "description": "lens.dictionary.empty.next"
   }
 }

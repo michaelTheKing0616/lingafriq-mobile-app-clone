@@ -6958,4 +6958,43 @@ class AppLocalizationsYo extends AppLocalizations {
 
   @override
   String get hubHSpeakPolieOfflineWhy => 'Polie needs the network to answer.';
+
+  @override
+  String get lensBridge => 'Conversation Bridge';
+
+  @override
+  String get lensPermissionWhat => 'The camera is blocked.';
+
+  @override
+  String get lensPermissionWhy =>
+      'LingAfriq does not have permission to use the camera.';
+
+  @override
+  String get lensPermissionNext => 'Open Settings and allow the camera.';
+
+  @override
+  String get lensOfflineTranslateWhy =>
+      'Live Translate needs the network to listen and translate.';
+
+  @override
+  String get lensRecognizerMissingWhat =>
+      'Point & Say cannot name this offline.';
+
+  @override
+  String get lensRecognizerMissingWhy =>
+      'The on-device recognizer is not on this phone.';
+
+  @override
+  String get lensRecognizerMissingNext =>
+      'Connect, then open Point & Say again. This phone has no on-device recognizer.';
+
+  @override
+  String get lensNoWordWhat => 'No word is open.';
+
+  @override
+  String get lensNoWordWhy => 'Point & Say has not named a word.';
+
+  @override
+  String get lensNoWordNext =>
+      'Point at one thing, then open Living Dictionary.';
 }
