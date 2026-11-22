@@ -12643,6 +12643,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Point at one thing, then open Living Dictionary.'**
   String get lensNoWordNext;
+
+  /// directory. Title of the All features list
+  ///
+  /// In en, this message translates to:
+  /// **'All features'**
+  String get directoryTitle;
+
+  /// directory. Spoken name for the All features button
+  ///
+  /// In en, this message translates to:
+  /// **'Open all features'**
+  String get directoryOpenSemantics;
+
+  /// directory. Search field label
+  ///
+  /// In en, this message translates to:
+  /// **'Search features'**
+  String get directorySearchLabel;
+
+  /// directory. Word on a locked feature
+  ///
+  /// In en, this message translates to:
+  /// **'Locked'**
+  String get directoryLocked;
+
+  /// directory. Unlock line for a locked feature
+  ///
+  /// In en, this message translates to:
+  /// **'Unlocks at {stage}.'**
+  String directoryUnlocksAt(String stage);
+
+  /// directory. Preview button
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get directoryPreview;
+
+  /// directory. Spoken name for an open feature
+  ///
+  /// In en, this message translates to:
+  /// **'Open {feature}'**
+  String directoryOpenFeature(String feature);
+
+  /// directory. Spoken name for a locked feature
+  ///
+  /// In en, this message translates to:
+  /// **'{feature}, Locked. Unlocks at {stage}. {preview}'**
+  String directoryLockedSemantics(String feature, String stage, String preview);
+
+  /// directory. Title when search matches nothing
+  ///
+  /// In en, this message translates to:
+  /// **'No match'**
+  String get directoryEmptyTitle;
+
+  /// directory. What happened when search matches nothing
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing matches {query}.'**
+  String directoryEmptyWhat(String query);
+
+  /// directory. Why search matches nothing
+  ///
+  /// In en, this message translates to:
+  /// **'That name is not in the directory.'**
+  String get directoryEmptyWhy;
+
+  /// directory. What to do when search matches nothing
+  ///
+  /// In en, this message translates to:
+  /// **'Try another name.'**
+  String get directoryEmptyNext;
+
+  /// directory. Button that clears the search
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search'**
+  String get directoryEmptyAction;
+
+  /// directory. Back from All features
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Me'**
+  String get directoryBack;
 }
 
 class _AppLocalizationsDelegate

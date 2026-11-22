@@ -7333,4 +7333,58 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get lensNoWordNext =>
       'Point at one thing, then open Living Dictionary.';
+
+  @override
+  String get directoryTitle => 'All features';
+
+  @override
+  String get directoryOpenSemantics => 'Open all features';
+
+  @override
+  String get directorySearchLabel => 'Search features';
+
+  @override
+  String get directoryLocked => 'Locked';
+
+  @override
+  String directoryUnlocksAt(String stage) {
+    return 'Unlocks at $stage.';
+  }
+
+  @override
+  String get directoryPreview => 'Preview';
+
+  @override
+  String directoryOpenFeature(String feature) {
+    return 'Open $feature';
+  }
+
+  @override
+  String directoryLockedSemantics(
+    String feature,
+    String stage,
+    String preview,
+  ) {
+    return '$feature, Locked. Unlocks at $stage. $preview';
+  }
+
+  @override
+  String get directoryEmptyTitle => 'No match';
+
+  @override
+  String directoryEmptyWhat(String query) {
+    return 'Nothing matches $query.';
+  }
+
+  @override
+  String get directoryEmptyWhy => 'That name is not in the directory.';
+
+  @override
+  String get directoryEmptyNext => 'Try another name.';
+
+  @override
+  String get directoryEmptyAction => 'Clear search';
+
+  @override
+  String get directoryBack => 'Back to Me';
 }
