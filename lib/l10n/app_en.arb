@@ -10538,5 +10538,107 @@
   "unlockFeatureUnknown": "This feature",
   "@unlockFeatureUnknown": {
     "description": "unlock.feature.unknown"
+  },
+  "revRvPlayEmptyWhat": "No word is ready.",
+  "@revRvPlayEmptyWhat": {
+    "description": "rev.rv_play.empty.what"
+  },
+  "revRvPlayEmptyWhy": "Tone Forge has nothing to play.",
+  "@revRvPlayEmptyWhy": {
+    "description": "rev.rv_play.empty.why"
+  },
+  "revRvPlayEmptyNext": "Go back to Play.",
+  "@revRvPlayEmptyNext": {
+    "description": "rev.rv_play.empty.next"
+  },
+  "revRvPlayErrorWhat": "Tone Forge did not open.",
+  "@revRvPlayErrorWhat": {
+    "description": "rev.rv_play.error.what"
+  },
+  "revRvPlayErrorWhy": "The word did not come back.",
+  "@revRvPlayErrorWhy": {
+    "description": "rev.rv_play.error.why"
+  },
+  "revRvPlayErrorNext": "Try again.",
+  "@revRvPlayErrorNext": {
+    "description": "rev.rv_play.error.next"
+  },
+  "revRvPlayScoreErrorWhat": "The attempt was not scored.",
+  "@revRvPlayScoreErrorWhat": {
+    "description": "rev.rv_play.scoreError.what"
+  },
+  "revRvPlayScoreErrorWhy": "Nothing from that attempt is still on screen.",
+  "@revRvPlayScoreErrorWhy": {
+    "description": "rev.rv_play.scoreError.why"
+  },
+  "revRvPlayUnsure": "We could not score this clearly. No score is shown.",
+  "@revRvPlayUnsure": {
+    "description": "rev.rv_play.unsure"
+  },
+  "revRvPlayPractice": "Practice mode. Tone scores are for learning only until the live scorer is enabled.",
+  "@revRvPlayPractice": {
+    "description": "rev.rv_play.practice"
+  },
+  "revRvPlayScoreLabel": "Score",
+  "@revRvPlayScoreLabel": {
+    "description": "rev.rv_play.score.label"
+  },
+  "revRvPlayScoreValue": "{percent}%",
+  "@revRvPlayScoreValue": {
+    "description": "rev.rv_play.score.value",
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "revRvPlayScoreReturned": "The scorer returned {percent}%.",
+  "@revRvPlayScoreReturned": {
+    "description": "rev.rv_play.score.returned",
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "revRvPlayOfflineWhy": "Tone Forge is not saved on the phone.",
+  "@revRvPlayOfflineWhy": {
+    "description": "rev.rv_play.offline.why"
+  },
+  "revRvPlayMasteryTitle": "Round results",
+  "@revRvPlayMasteryTitle": {
+    "description": "rev.rv_play.mastery.title"
+  },
+  "revRvPlayMasteryEmptyWhat": "No round is ready.",
+  "@revRvPlayMasteryEmptyWhat": {
+    "description": "rev.rv_play.mastery.empty.what"
+  },
+  "revRvPlayMasteryEmptyWhy": "There is no result to show.",
+  "@revRvPlayMasteryEmptyWhy": {
+    "description": "rev.rv_play.mastery.empty.why"
+  },
+  "revRvPlayMasteryEmptyNext": "Go back to Play.",
+  "@revRvPlayMasteryEmptyNext": {
+    "description": "rev.rv_play.mastery.empty.next"
+  },
+  "revRvPlayMasteryErrorWhat": "The results did not open.",
+  "@revRvPlayMasteryErrorWhat": {
+    "description": "rev.rv_play.mastery.error.what"
+  },
+  "revRvPlayMasteryErrorWhy": "The round did not come back.",
+  "@revRvPlayMasteryErrorWhy": {
+    "description": "rev.rv_play.mastery.error.why"
+  },
+  "revRvPlayMasteryScoreErrorWhat": "The round was not scored.",
+  "@revRvPlayMasteryScoreErrorWhat": {
+    "description": "rev.rv_play.mastery.scoreError.what"
+  },
+  "revRvPlayMasteryScoreErrorWhy": "Nothing from that round is still on screen.",
+  "@revRvPlayMasteryScoreErrorWhy": {
+    "description": "rev.rv_play.mastery.scoreError.why"
+  },
+  "revRvPlayMasteryOfflineWhy": "Round results are not saved on the phone.",
+  "@revRvPlayMasteryOfflineWhy": {
+    "description": "rev.rv_play.mastery.offline.why"
   }
 }

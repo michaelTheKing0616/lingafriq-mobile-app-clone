@@ -7872,4 +7872,82 @@ class AppLocalizationsSn extends AppLocalizations {
 
   @override
   String get unlockFeatureUnknown => 'This feature';
+
+  @override
+  String get revRvPlayEmptyWhat => 'No word is ready.';
+
+  @override
+  String get revRvPlayEmptyWhy => 'Tone Forge has nothing to play.';
+
+  @override
+  String get revRvPlayEmptyNext => 'Go back to Play.';
+
+  @override
+  String get revRvPlayErrorWhat => 'Tone Forge did not open.';
+
+  @override
+  String get revRvPlayErrorWhy => 'The word did not come back.';
+
+  @override
+  String get revRvPlayErrorNext => 'Try again.';
+
+  @override
+  String get revRvPlayScoreErrorWhat => 'The attempt was not scored.';
+
+  @override
+  String get revRvPlayScoreErrorWhy =>
+      'Nothing from that attempt is still on screen.';
+
+  @override
+  String get revRvPlayUnsure =>
+      'We could not score this clearly. No score is shown.';
+
+  @override
+  String get revRvPlayPractice =>
+      'Practice mode. Tone scores are for learning only until the live scorer is enabled.';
+
+  @override
+  String get revRvPlayScoreLabel => 'Score';
+
+  @override
+  String revRvPlayScoreValue(int percent) {
+    return '$percent%';
+  }
+
+  @override
+  String revRvPlayScoreReturned(int percent) {
+    return 'The scorer returned $percent%.';
+  }
+
+  @override
+  String get revRvPlayOfflineWhy => 'Tone Forge is not saved on the phone.';
+
+  @override
+  String get revRvPlayMasteryTitle => 'Round results';
+
+  @override
+  String get revRvPlayMasteryEmptyWhat => 'No round is ready.';
+
+  @override
+  String get revRvPlayMasteryEmptyWhy => 'There is no result to show.';
+
+  @override
+  String get revRvPlayMasteryEmptyNext => 'Go back to Play.';
+
+  @override
+  String get revRvPlayMasteryErrorWhat => 'The results did not open.';
+
+  @override
+  String get revRvPlayMasteryErrorWhy => 'The round did not come back.';
+
+  @override
+  String get revRvPlayMasteryScoreErrorWhat => 'The round was not scored.';
+
+  @override
+  String get revRvPlayMasteryScoreErrorWhy =>
+      'Nothing from that round is still on screen.';
+
+  @override
+  String get revRvPlayMasteryOfflineWhy =>
+      'Round results are not saved on the phone.';
 }

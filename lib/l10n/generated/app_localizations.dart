@@ -13723,6 +13723,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This feature'**
   String get unlockFeatureUnknown;
+
+  /// rev.rv_play.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No word is ready.'**
+  String get revRvPlayEmptyWhat;
+
+  /// rev.rv_play.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'Tone Forge has nothing to play.'**
+  String get revRvPlayEmptyWhy;
+
+  /// rev.rv_play.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Play.'**
+  String get revRvPlayEmptyNext;
+
+  /// rev.rv_play.error.what
+  ///
+  /// In en, this message translates to:
+  /// **'Tone Forge did not open.'**
+  String get revRvPlayErrorWhat;
+
+  /// rev.rv_play.error.why
+  ///
+  /// In en, this message translates to:
+  /// **'The word did not come back.'**
+  String get revRvPlayErrorWhy;
+
+  /// rev.rv_play.error.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get revRvPlayErrorNext;
+
+  /// rev.rv_play.scoreError.what
+  ///
+  /// In en, this message translates to:
+  /// **'The attempt was not scored.'**
+  String get revRvPlayScoreErrorWhat;
+
+  /// rev.rv_play.scoreError.why
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing from that attempt is still on screen.'**
+  String get revRvPlayScoreErrorWhy;
+
+  /// rev.rv_play.unsure
+  ///
+  /// In en, this message translates to:
+  /// **'We could not score this clearly. No score is shown.'**
+  String get revRvPlayUnsure;
+
+  /// rev.rv_play.practice
+  ///
+  /// In en, this message translates to:
+  /// **'Practice mode. Tone scores are for learning only until the live scorer is enabled.'**
+  String get revRvPlayPractice;
+
+  /// rev.rv_play.score.label
+  ///
+  /// In en, this message translates to:
+  /// **'Score'**
+  String get revRvPlayScoreLabel;
+
+  /// rev.rv_play.score.value
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}%'**
+  String revRvPlayScoreValue(int percent);
+
+  /// rev.rv_play.score.returned
+  ///
+  /// In en, this message translates to:
+  /// **'The scorer returned {percent}%.'**
+  String revRvPlayScoreReturned(int percent);
+
+  /// rev.rv_play.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'Tone Forge is not saved on the phone.'**
+  String get revRvPlayOfflineWhy;
+
+  /// rev.rv_play.mastery.title
+  ///
+  /// In en, this message translates to:
+  /// **'Round results'**
+  String get revRvPlayMasteryTitle;
+
+  /// rev.rv_play.mastery.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No round is ready.'**
+  String get revRvPlayMasteryEmptyWhat;
+
+  /// rev.rv_play.mastery.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'There is no result to show.'**
+  String get revRvPlayMasteryEmptyWhy;
+
+  /// rev.rv_play.mastery.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Play.'**
+  String get revRvPlayMasteryEmptyNext;
+
+  /// rev.rv_play.mastery.error.what
+  ///
+  /// In en, this message translates to:
+  /// **'The results did not open.'**
+  String get revRvPlayMasteryErrorWhat;
+
+  /// rev.rv_play.mastery.error.why
+  ///
+  /// In en, this message translates to:
+  /// **'The round did not come back.'**
+  String get revRvPlayMasteryErrorWhy;
+
+  /// rev.rv_play.mastery.scoreError.what
+  ///
+  /// In en, this message translates to:
+  /// **'The round was not scored.'**
+  String get revRvPlayMasteryScoreErrorWhat;
+
+  /// rev.rv_play.mastery.scoreError.why
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing from that round is still on screen.'**
+  String get revRvPlayMasteryScoreErrorWhy;
+
+  /// rev.rv_play.mastery.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'Round results are not saved on the phone.'**
+  String get revRvPlayMasteryOfflineWhy;
 }
 
 class _AppLocalizationsDelegate
