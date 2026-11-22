@@ -12,4 +12,3 @@ export 'cultural/rhythm_typing_game.dart';
 export 'cultural/multilingual_relay_game.dart';
 export 'cultural/cultural_etiquette_game.dart';
 export 'cultural/drum_word_game.dart';
-export 'cultural/proverb_unlocker_game.dart';

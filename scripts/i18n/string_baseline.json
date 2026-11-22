@@ -1282,6 +1282,26 @@
       "{value}, {value2}",
       "You matched {pct}% of the pairs. Accuracy ranks leagues; speed only breaks ties."
     ],
+    "lib/games/proverb_unlocker/proverb_unlocker_catalog.dart": [
+      "Agbara eniyan ju ti eranko lo",
+      "Human strength surpasses that of animals",
+      "Unity and intelligence overcome brute force",
+      "Haraka haraka haina baraka",
+      "Hurry hurry has no blessing",
+      "Patience leads to better outcomes",
+      "Umuntu ngumuntu ngabantu",
+      "A person is a person through people",
+      "Humanity is defined by community",
+      "Onye aghana nwanne ya",
+      "Be your brother's keeper",
+      "Look after each other always",
+      "Umntu ngumntu ngabantu",
+      "I am because we are",
+      "Individual identity is rooted in collective belonging",
+      "Sew besew yinoralal",
+      "People live through people",
+      "Community support sustains life"
+    ],
     "lib/games/proverb_unlocker/proverb_unlocker_feedback.dart": [
       "Excellent! You understand the wisdom of this proverb.",
       "Not quite right. This proverb means: {value}",

@@ -1,16 +1,19 @@
-// ProverbUnlocker game models
-import 'dart:math' as math;
+import 'proverb_unlocker_catalog.dart';
 
 class ProverbUnlockerContent {
   final String proverb;
   final String translation;
   final String meaning;
   final String context;
-  final List<String> options; // Multiple choice options
+  final List<String> options;
   final String correctAnswer;
   final String contentId;
+  final List<String> words;
+  final List<int> blankIndices;
+  final List<String> tokenOptions;
+  final int seed;
 
-  ProverbUnlockerContent({
+  const ProverbUnlockerContent({
     required this.proverb,
     required this.translation,
     required this.meaning,
@@ -18,40 +21,36 @@ class ProverbUnlockerContent {
     required this.options,
     required this.correctAnswer,
     required this.contentId,
+    required this.words,
+    required this.blankIndices,
+    required this.tokenOptions,
+    required this.seed,
   });
 
-  factory ProverbUnlockerContent.fromPolieContent(Map<String, dynamic> polieData) {
-    final meaning = polieData['meaning'] as String? ?? 
-                   polieData['context'] as String? ?? 
-                   'Wisdom through experience';
-    
-    // Generate distractors
-    final distractors = [
-      'A common greeting',
-      'A traditional dance',
-      'A type of food',
-      'A weather saying',
-    ];
-    
-    final options = [meaning, ...distractors];
-    final random = math.Random();
-    options.shuffle(random);
-    
+  factory ProverbUnlockerContent.fromDeal(ProverbUnlockerDeal deal) {
+    final meaning = deal.correctAnswer;
     return ProverbUnlockerContent(
-      proverb: polieData['proverb'] as String? ?? '',
-      translation: polieData['translation'] as String? ?? '',
+      proverb: deal.proverb.original,
+      translation: deal.proverb.translation,
       meaning: meaning,
-      context: polieData['context'] as String? ?? '',
-      options: options,
+      context: meaning,
+      options: deal.options,
       correctAnswer: meaning,
-      contentId: polieData['content_id'] as String? ?? '',
+      contentId: 'proverb_${deal.proverb.id}_s${deal.seed}_r${deal.roundIndex}',
+      words: deal.words,
+      blankIndices: deal.blankIndices,
+      tokenOptions: deal.tokenOptions,
+      seed: deal.seed,
     );
   }
 }
 
 class ProverbUnlockerInput {
   final String selectedAnswer;
+  final Map<int, String> fills;
 
-  ProverbUnlockerInput({required this.selectedAnswer});
+  const ProverbUnlockerInput({
+    required this.selectedAnswer,
+    this.fills = const {},
+  });
 }
-

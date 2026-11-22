@@ -67,7 +67,23 @@ risks:
 - harvest drift; keep list authoritative
 gate: G3
 external_blockers: []
-status: Draft
+status: Done
+harvest_notes:
+  kept:
+  - Six live fallback proverbs, with id, language, original, translation, meaning, and cefr
+  - GameKit game, factory, scoring, feedback, and screen
+  - Meaning choice, seeded blank indexes, token order, and the fill-match check
+  dropped:
+  - item: Unseeded Random shuffle and blank picker
+    reason: Replaced by Random(seed) so the same seed returns the same proverb and outcome
+  - item: Invented fallback proverb and meaning distractors
+    reason: Wisdom comes from experience, A common greeting, A traditional dance, A type of food, and A weather saying are not in the live proverb list
+  - item: Polie proverb text on the played path
+    reason: Polie can return text that is not in the harvested list, including that invented fallback
+  - item: Placeholder tokens such as word0
+    reason: They are not proverb words. Token options use words from the harvested proverbs only
+  - item: Ancestral tablet widgets
+    reason: The arcade route now builds the GameKit screen. No route builds the old tablet file, which was deleted after the catalog and seed test held the proverb text
 skills:
   worker:
   - adaptive/08-coding-and-debugging
