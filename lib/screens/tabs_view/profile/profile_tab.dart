@@ -6,6 +6,11 @@ import 'package:lingafriq/providers/achievements_provider.dart';
 import 'package:lingafriq/screens/achievements/achievements_screen.dart';
 import 'package:lingafriq/screens/progress/progress_dashboard_data.dart';
 import 'package:lingafriq/screens/progress/progress_dashboard_screen.dart';
+import 'package:lingafriq/design/components/ling_button.dart';
+import 'package:lingafriq/design/components/ling_state.dart';
+import 'package:lingafriq/design/states/empty_state.dart';
+import 'package:lingafriq/design/tokens.g.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/l10n/l10n_of.dart';
 import 'package:lingafriq/providers/gamification_provider.dart';
 import 'package:lingafriq/services/connectivity_service.dart';
@@ -592,9 +597,8 @@ class _StatTile extends StatelessWidget {
                 ),
                 Text(
                   s.label,
-                  style: PanAfricanTypography.bodySmall(
-                    context,
-                  ).copyWith(color: scheme.onSurfaceVariant),
+                  style: PanAfricanTypography.bodySmall(context)
+                      .copyWith(color: scheme.onSurfaceVariant),
                 ),
               ],
             ),
@@ -657,9 +661,8 @@ class _Wallet extends StatelessWidget {
             Text(
               i.$4,
               textAlign: TextAlign.center,
-              style: PanAfricanTypography.bodySmall(
-                context,
-              ).copyWith(color: scheme.onSurfaceVariant),
+              style: PanAfricanTypography.bodySmall(context)
+                  .copyWith(color: scheme.onSurfaceVariant),
             ),
           ],
         ),
@@ -765,9 +768,8 @@ class _Note extends StatelessWidget {
             Expanded(
               child: Text(
                 text,
-                style: PanAfricanTypography.bodySmall(
-                  context,
-                ).copyWith(color: scheme.onSurface),
+                style: PanAfricanTypography.bodySmall(context)
+                    .copyWith(color: scheme.onSurface),
               ),
             ),
           ],
@@ -816,9 +818,8 @@ class _StateBar extends ConsumerWidget {
                 header: true,
                 child: Text(
                   title,
-                  style: PanAfricanTypography.titleLarge(
-                    context,
-                  ).copyWith(fontWeight: FontWeight.w800),
+                  style: PanAfricanTypography.titleLarge(context)
+                      .copyWith(fontWeight: FontWeight.w800),
                 ),
               ),
             ),
@@ -976,9 +977,8 @@ class _Languages extends StatelessWidget {
         padding: EdgeInsets.all(PanAfricanSpacing.sm),
         child: Text(
           l.profLangEmpty,
-          style: PanAfricanTypography.bodyMedium(
-            context,
-          ).copyWith(color: scheme.onSurfaceVariant),
+          style: PanAfricanTypography.bodyMedium(context)
+              .copyWith(color: scheme.onSurfaceVariant),
         ),
       );
     }
@@ -1034,9 +1034,8 @@ class _LangRow extends StatelessWidget {
                 ),
                 Text(
                   l.profLangProgress(lang.level_language, pct),
-                  style: PanAfricanTypography.bodySmall(
-                    context,
-                  ).copyWith(color: scheme.onSurfaceVariant),
+                  style: PanAfricanTypography.bodySmall(context)
+                      .copyWith(color: scheme.onSurfaceVariant),
                 ),
                 SizedBox(height: PanAfricanSpacing.xxs),
                 ClipRRect(
@@ -1170,9 +1169,8 @@ class _BadgeView extends StatelessWidget {
             textAlign: TextAlign.center,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: PanAfricanTypography.bodySmall(
-              context,
-            ).copyWith(color: scheme.onSurface, fontWeight: FontWeight.w700),
+            style: PanAfricanTypography.bodySmall(context)
+                .copyWith(color: scheme.onSurface, fontWeight: FontWeight.w700),
           ),
         ],
       ),
@@ -1229,9 +1227,8 @@ class _ShareCard extends StatelessWidget {
                   SizedBox(height: PanAfricanSpacing.xxs),
                   Text(
                     l.profShareBody,
-                    style: PanAfricanTypography.bodyMedium(
-                      context,
-                    ).copyWith(color: Colors.white),
+                    style: PanAfricanTypography.bodyMedium(context)
+                        .copyWith(color: Colors.white),
                   ),
                   SizedBox(height: PanAfricanSpacing.sm),
                   FilledButton.icon(
@@ -1561,9 +1558,8 @@ class _TeenPrivacyCard extends StatelessWidget {
           Expanded(
             child: Text(
               t,
-              style: PanAfricanTypography.bodySmall(
-                context,
-              ).copyWith(color: scheme.onSurface),
+              style: PanAfricanTypography.bodySmall(context)
+                  .copyWith(color: scheme.onSurface),
             ),
           ),
         ],
@@ -1616,14 +1612,171 @@ class _TeenPrivacyCard extends StatelessWidget {
           SizedBox(height: PanAfricanSpacing.xs),
           Text(
             l.profTeenTitle,
-            style: PanAfricanTypography.titleMedium(
-              context,
-            ).copyWith(fontWeight: FontWeight.w800, color: scheme.onSurface),
+            style: PanAfricanTypography.titleMedium(context)
+                .copyWith(fontWeight: FontWeight.w800, color: scheme.onSurface),
           ),
           line(Icons.visibility_off_rounded, l.profTeenHidden),
           line(Icons.speaker_notes_off_rounded, l.profTeenNoDm),
           line(Icons.family_restroom_rounded, l.profTeenParent),
         ],
+      ),
+    );
+  }
+}
+
+/// Name to show for [account]. Empty parts are skipped. No stand-in name.
+String? meAccountName(ProfileModel? account) {
+  if (account == null) return null;
+  final String joined = <String>[
+    account.first_name.trim(),
+    account.last_name.trim(),
+  ].where((String part) => part.isNotEmpty).join(' ');
+  if (joined.isNotEmpty) return joined;
+  final String username = account.username.trim();
+  if (username.isEmpty) return null;
+  return username;
+}
+
+/// Saved avatar asset for [account]. An unknown key is not replaced.
+String? meAccountAvatarAsset(ProfileModel? account) {
+  final String key = (account?.avatar ?? '').trim();
+  if (key.isEmpty) return null;
+  final String? asset = kAvatarsList[key];
+  if (asset == null || asset.isEmpty) return null;
+  return asset;
+}
+
+/// Profile and avatar opened from Me.
+///
+/// A missing name and avatar is an empty screen. Points, rank, and email
+/// are not painted here.
+class MeProfileScreen extends StatelessWidget {
+  const MeProfileScreen({super.key, this.account, this.onBack});
+
+  static const Key emptyKey = ValueKey<String>('me-profile-empty');
+
+  static const Key nameKey = ValueKey<String>('me-profile-name');
+
+  static const Key avatarKey = ValueKey<String>('me-profile-avatar');
+
+  static const Key noAvatarKey = ValueKey<String>('me-profile-no-avatar');
+
+  static const Key noNameKey = ValueKey<String>('me-profile-no-name');
+
+  final ProfileModel? account;
+
+  final VoidCallback? onBack;
+
+  void _back(BuildContext context) {
+    final VoidCallback? custom = onBack;
+    if (custom != null) {
+      custom();
+      return;
+    }
+    Navigator.of(context).maybePop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations l10n = l10nOf(context);
+    final LingPalette palette = LingPalette.of(Theme.of(context).brightness);
+    final String? name = meAccountName(account);
+    final String? asset = meAccountAvatarAsset(account);
+    final bool ready = name != null || asset != null;
+    return Scaffold(
+      backgroundColor: palette.surface,
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(LingAfriqTokens.spacing16),
+          children: <Widget>[
+            if (!ready)
+              LingEmptyState(
+                key: emptyKey,
+                title: l10n.hubHMeProfile,
+                whatHappened: l10n.hubHMeProfileEmptyWhat,
+                why: l10n.hubHMeProfileEmptyWhy,
+                whatToDo: l10n.hubHMeProfileEmptyNext,
+                actionLabel: l10n.hubHMeBack,
+                unavailableLabel: l10n.commonStateUnavailable,
+                onAction: () => _back(context),
+              )
+            else ...<Widget>[
+              Text(
+                l10n.hubHMeProfile,
+                style: lingBody(palette.onSurface),
+                softWrap: true,
+                overflow: TextOverflow.visible,
+              ),
+              const SizedBox(height: LingAfriqTokens.spacing16),
+              if (name == null)
+                Text(
+                  l10n.hubHMeNoName,
+                  key: noNameKey,
+                  style: lingBody(palette.onSurface),
+                  softWrap: true,
+                  overflow: TextOverflow.visible,
+                )
+              else
+                Semantics(
+                  key: nameKey,
+                  container: true,
+                  label: name,
+                  child: ExcludeSemantics(
+                    child: Text(
+                      name,
+                      style: lingBody(palette.onSurface),
+                      softWrap: true,
+                      overflow: TextOverflow.visible,
+                    ),
+                  ),
+                ),
+              const SizedBox(height: LingAfriqTokens.spacing16),
+              if (asset == null)
+                Text(
+                  l10n.hubHMeNoAvatar,
+                  key: noAvatarKey,
+                  style: lingBody(palette.onSurfaceVariant),
+                  softWrap: true,
+                  overflow: TextOverflow.visible,
+                )
+              else
+                Semantics(
+                  key: avatarKey,
+                  container: true,
+                  image: true,
+                  label: l10n.hubHMeAvatar,
+                  child: ExcludeSemantics(
+                    child: Image.asset(
+                      asset,
+                      width: LingAfriqTokens.spacing64,
+                      height: LingAfriqTokens.spacing64,
+                      fit: BoxFit.contain,
+                      errorBuilder:
+                          (
+                            BuildContext context,
+                            Object error,
+                            StackTrace? stack,
+                          ) {
+                            return Text(
+                              l10n.hubHMeNoAvatar,
+                              key: noAvatarKey,
+                              style: lingBody(palette.onSurfaceVariant),
+                              softWrap: true,
+                              overflow: TextOverflow.visible,
+                            );
+                          },
+                    ),
+                  ),
+                ),
+              const SizedBox(height: LingAfriqTokens.spacing16),
+              LingButton(
+                label: l10n.hubHMeBack,
+                unavailableLabel: l10n.commonStateUnavailable,
+                onPressed: () => _back(context),
+              ),
+            ],
+          ],
+        ),
       ),
     );
   }

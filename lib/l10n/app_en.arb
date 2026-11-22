@@ -9573,5 +9573,126 @@
   "hubHVillageOfflineWhy": "Village is not saved on the phone.",
   "@hubHVillageOfflineWhy": {
     "description": "hub.h_village.offline.why"
+  },
+  "hubHMeTitle": "Me",
+  "@hubHMeTitle": {
+    "description": "hub.h_me.title"
+  },
+  "hubHMeProfile": "Profile and avatar",
+  "@hubHMeProfile": {
+    "description": "hub.h_me.profile"
+  },
+  "hubHMeProgress": "Progress",
+  "@hubHMeProgress": {
+    "description": "hub.h_me.progress"
+  },
+  "hubHMeAchievements": "Achievements",
+  "@hubHMeAchievements": {
+    "description": "hub.h_me.achievements"
+  },
+  "hubHMeLeagues": "Leagues",
+  "@hubHMeLeagues": {
+    "description": "hub.h_me.leagues"
+  },
+  "hubHMeFamily": "Family",
+  "@hubHMeFamily": {
+    "description": "hub.h_me.family"
+  },
+  "hubHMePlus": "Plus",
+  "@hubHMePlus": {
+    "description": "hub.h_me.plus"
+  },
+  "hubHMeSettings": "Settings",
+  "@hubHMeSettings": {
+    "description": "hub.h_me.settings"
+  },
+  "hubHMeAbout": "About",
+  "@hubHMeAbout": {
+    "description": "hub.h_me.about"
+  },
+  "hubHMeBack": "Back to Me",
+  "@hubHMeBack": {
+    "description": "hub.h_me.back"
+  },
+  "hubHMeLeave": "Back",
+  "@hubHMeLeave": {
+    "description": "hub.h_me.leave"
+  },
+  "hubHMeNotAvailableTitle": "Not available yet",
+  "@hubHMeNotAvailableTitle": {
+    "description": "hub.h_me.notAvailable.title"
+  },
+  "hubHMeNotAvailableWhat": "{name} is not available yet.",
+  "@hubHMeNotAvailableWhat": {
+    "description": "hub.h_me.notAvailable.what",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "hubHMeNotAvailableWhy": "This screen is not built yet.",
+  "@hubHMeNotAvailableWhy": {
+    "description": "hub.h_me.notAvailable.why"
+  },
+  "hubHMeNotAvailableNext": "Go back to Me.",
+  "@hubHMeNotAvailableNext": {
+    "description": "hub.h_me.notAvailable.next"
+  },
+  "hubHMeEmptyWhat": "Me has nothing to open yet.",
+  "@hubHMeEmptyWhat": {
+    "description": "hub.h_me.empty.what"
+  },
+  "hubHMeEmptyWhy": "No profile is saved.",
+  "@hubHMeEmptyWhy": {
+    "description": "hub.h_me.empty.why"
+  },
+  "hubHMeEmptyNext": "Open Profile and avatar.",
+  "@hubHMeEmptyNext": {
+    "description": "hub.h_me.empty.next"
+  },
+  "hubHMeOpenProfile": "Open Profile",
+  "@hubHMeOpenProfile": {
+    "description": "hub.h_me.openProfile"
+  },
+  "hubHMeErrorWhat": "Me did not open.",
+  "@hubHMeErrorWhat": {
+    "description": "hub.h_me.error.what"
+  },
+  "hubHMeErrorWhy": "The list did not come back.",
+  "@hubHMeErrorWhy": {
+    "description": "hub.h_me.error.why"
+  },
+  "hubHMeErrorNext": "Try again.",
+  "@hubHMeErrorNext": {
+    "description": "hub.h_me.error.next"
+  },
+  "hubHMeOfflineWhy": "Me is not saved on the phone.",
+  "@hubHMeOfflineWhy": {
+    "description": "hub.h_me.offline.why"
+  },
+  "hubHMeNoName": "No name is saved.",
+  "@hubHMeNoName": {
+    "description": "hub.h_me.profile.noName"
+  },
+  "hubHMeNoAvatar": "No avatar is saved.",
+  "@hubHMeNoAvatar": {
+    "description": "hub.h_me.profile.noAvatar"
+  },
+  "hubHMeAvatar": "Avatar",
+  "@hubHMeAvatar": {
+    "description": "hub.h_me.profile.avatar"
+  },
+  "hubHMeProfileEmptyWhat": "No profile is saved on this phone.",
+  "@hubHMeProfileEmptyWhat": {
+    "description": "hub.h_me.profile.empty.what"
+  },
+  "hubHMeProfileEmptyWhy": "A name and avatar have not been saved.",
+  "@hubHMeProfileEmptyWhy": {
+    "description": "hub.h_me.profile.empty.why"
+  },
+  "hubHMeProfileEmptyNext": "Go back to Me.",
+  "@hubHMeProfileEmptyNext": {
+    "description": "hub.h_me.profile.empty.next"
   }
 }

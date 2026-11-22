@@ -12403,6 +12403,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Village is not saved on the phone.'**
   String get hubHVillageOfflineWhy;
+
+  /// hub.h_me.title
+  ///
+  /// In en, this message translates to:
+  /// **'Me'**
+  String get hubHMeTitle;
+
+  /// hub.h_me.profile
+  ///
+  /// In en, this message translates to:
+  /// **'Profile and avatar'**
+  String get hubHMeProfile;
+
+  /// hub.h_me.progress
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get hubHMeProgress;
+
+  /// hub.h_me.achievements
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements'**
+  String get hubHMeAchievements;
+
+  /// hub.h_me.leagues
+  ///
+  /// In en, this message translates to:
+  /// **'Leagues'**
+  String get hubHMeLeagues;
+
+  /// hub.h_me.family
+  ///
+  /// In en, this message translates to:
+  /// **'Family'**
+  String get hubHMeFamily;
+
+  /// hub.h_me.plus
+  ///
+  /// In en, this message translates to:
+  /// **'Plus'**
+  String get hubHMePlus;
+
+  /// hub.h_me.settings
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get hubHMeSettings;
+
+  /// hub.h_me.about
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get hubHMeAbout;
+
+  /// hub.h_me.back
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Me'**
+  String get hubHMeBack;
+
+  /// hub.h_me.leave
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get hubHMeLeave;
+
+  /// hub.h_me.notAvailable.title
+  ///
+  /// In en, this message translates to:
+  /// **'Not available yet'**
+  String get hubHMeNotAvailableTitle;
+
+  /// hub.h_me.notAvailable.what
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is not available yet.'**
+  String hubHMeNotAvailableWhat(String name);
+
+  /// hub.h_me.notAvailable.why
+  ///
+  /// In en, this message translates to:
+  /// **'This screen is not built yet.'**
+  String get hubHMeNotAvailableWhy;
+
+  /// hub.h_me.notAvailable.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Me.'**
+  String get hubHMeNotAvailableNext;
+
+  /// hub.h_me.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'Me has nothing to open yet.'**
+  String get hubHMeEmptyWhat;
+
+  /// hub.h_me.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'No profile is saved.'**
+  String get hubHMeEmptyWhy;
+
+  /// hub.h_me.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Open Profile and avatar.'**
+  String get hubHMeEmptyNext;
+
+  /// hub.h_me.openProfile
+  ///
+  /// In en, this message translates to:
+  /// **'Open Profile'**
+  String get hubHMeOpenProfile;
+
+  /// hub.h_me.error.what
+  ///
+  /// In en, this message translates to:
+  /// **'Me did not open.'**
+  String get hubHMeErrorWhat;
+
+  /// hub.h_me.error.why
+  ///
+  /// In en, this message translates to:
+  /// **'The list did not come back.'**
+  String get hubHMeErrorWhy;
+
+  /// hub.h_me.error.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get hubHMeErrorNext;
+
+  /// hub.h_me.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'Me is not saved on the phone.'**
+  String get hubHMeOfflineWhy;
+
+  /// hub.h_me.profile.noName
+  ///
+  /// In en, this message translates to:
+  /// **'No name is saved.'**
+  String get hubHMeNoName;
+
+  /// hub.h_me.profile.noAvatar
+  ///
+  /// In en, this message translates to:
+  /// **'No avatar is saved.'**
+  String get hubHMeNoAvatar;
+
+  /// hub.h_me.profile.avatar
+  ///
+  /// In en, this message translates to:
+  /// **'Avatar'**
+  String get hubHMeAvatar;
+
+  /// hub.h_me.profile.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No profile is saved on this phone.'**
+  String get hubHMeProfileEmptyWhat;
+
+  /// hub.h_me.profile.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'A name and avatar have not been saved.'**
+  String get hubHMeProfileEmptyWhy;
+
+  /// hub.h_me.profile.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Me.'**
+  String get hubHMeProfileEmptyNext;
 }
 
 class _AppLocalizationsDelegate
