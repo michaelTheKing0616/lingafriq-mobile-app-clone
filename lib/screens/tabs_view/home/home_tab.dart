@@ -1,662 +1,450 @@
-import 'dart:async';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/design/components/ling_button.dart';
+import 'package:lingafriq/design/components/ling_list_row.dart';
+import 'package:lingafriq/design/components/ling_state.dart';
+import 'package:lingafriq/design/states/empty_state.dart';
+import 'package:lingafriq/design/states/error_state.dart';
+import 'package:lingafriq/design/states/offline_state.dart';
+import 'package:lingafriq/design/tokens.g.dart';
+import 'package:lingafriq/design/typography.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 import 'package:lingafriq/models/language_response.dart';
+import 'package:lingafriq/navigation/hub_today.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
-import 'package:lingafriq/providers/user_provider.dart';
-import 'package:lingafriq/screens/tabs_view/home/search_languages_page.dart';
-import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/utils/constants.dart';
-import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/widgets/adaptive_progress_indicator.dart';
-import 'package:lingafriq/widgets/error_widet.dart';
-import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
-import 'package:lingafriq/providers/gamification_provider.dart';
-import 'package:lingafriq/models/user_gamification_model.dart';
-import 'package:lingafriq/screens/ai_chat/ai_chat_select_screen.dart';
-import 'package:lingafriq/screens/chat/lingchat_ai_conversation_screen.dart';
-import 'package:lingafriq/screens/progress/progress_dashboard_screen.dart';
 
 import '../../../detail_types/introduction_screen.dart';
 import 'language_detail_screen.dart';
-import 'package:lingafriq/l10n/l10n_of.dart';
 
 final languagesProvider = FutureProvider.autoDispose((ref) {
   return ref.read(apiProvider.notifier).getLanguages();
 });
 
-final _timerProvider = Provider((ref) {
-  final welcomeTexts = [
-    l10nEn().shellSannuDaZuwa,
-    l10nEn().shellWehcomeO,
-    'Karibu',
-    l10nEn().shellKBd95e,
-    'Wamukelekile',
-    'Nnọọ',
-    'Welcome',
-  ];
-
-  Timer.periodic(2.seconds, (tick) {
-    final index = tick.tick % welcomeTexts.length;
-    final greeting = welcomeTexts[index];
-    ref.read(_titleProvider.notifier).setTitle(greeting);
+/// Today hub. The daily plan is the root. Other sitemap rows are one tap away.
+class HomeTab extends StatelessWidget {
+  const HomeTab({
+    super.key,
+    this.planSource,
+    this.onOpenPath,
+    this.onStartLesson,
+    this.initialRoute,
   });
-});
 
-class TitleNotifier extends Notifier<String> {
+  /// Real plan provider. Null means the provider is absent.
+  final TodayPlanSource? planSource;
+
+  /// Next step from an empty plan.
+  final VoidCallback? onOpenPath;
+
+  /// Opens the lesson the provider named. Absent means that screen is not built.
+  final ValueChanged<TodayNextLesson>? onStartLesson;
+
+  final String? initialRoute;
+
   @override
-  String build() => "Welcome";
-
-  void setTitle(String value) {
-    state = value;
+  Widget build(BuildContext context) {
+    final String start = initialRoute ?? TodayHubRoutes.hub.path;
+    return Navigator(
+      initialRoute: start,
+      onGenerateRoute: (RouteSettings settings) {
+        final String name = settings.name ?? start;
+        final TodayRoute? route = TodayHubRoutes.resolve(name);
+        return MaterialPageRoute<void>(
+          settings: RouteSettings(name: route?.path ?? name),
+          builder: (BuildContext context) {
+            return _TodayHubPage(
+              route: route,
+              planSource: planSource,
+              onOpenPath: onOpenPath,
+              onStartLesson: onStartLesson,
+            );
+          },
+        );
+      },
+    );
   }
 }
 
-final _titleProvider =
-    NotifierProvider.autoDispose<TitleNotifier, String>(() {
-  return TitleNotifier();
-});
+class _TodayHubPage extends StatefulWidget {
+  const _TodayHubPage({
+    required this.route,
+    required this.planSource,
+    required this.onOpenPath,
+    required this.onStartLesson,
+  });
 
-class HomeTab extends HookConsumerWidget {
-  const HomeTab({super.key});
+  final TodayRoute? route;
+  final TodayPlanSource? planSource;
+  final VoidCallback? onOpenPath;
+  final ValueChanged<TodayNextLesson>? onStartLesson;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final languagesAsync = ref.watch(languagesProvider);
-    ref.watch(_timerProvider);
-    ref.watch(gamificationProvider);
-    final gamification = ref.read(gamificationProvider.notifier).gamification;
-    final user = ref.watch(userProvider);
-    final title = ref.watch(_titleProvider);
+  State<_TodayHubPage> createState() => _TodayHubPageState();
+}
 
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.only(bottom: PanAfricanSpacing.xl),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeroSection(context, ref, title, user?.username, gamification),
-              SizedBox(height: PanAfricanSpacing.lg),
-              _buildQuickActions(context, ref),
-              SizedBox(height: PanAfricanSpacing.lg),
-              _buildProgressHighlights(context, gamification),
-              SizedBox(height: PanAfricanSpacing.lg),
-              Semantics(
-                header: true,
+class _TodayHubPageState extends State<_TodayHubPage> {
+  TodaySurface? _surface;
+  bool _loaded = false;
+
+  TodaySurface _read() {
+    if (_loaded && _surface != null) return _surface!;
+    _loaded = true;
+    _surface = resolveTodaySurface(widget.planSource);
+    return _surface!;
+  }
+
+  void _reload() {
+    setState(() {
+      _loaded = false;
+    });
+  }
+
+  @override
+  void didUpdateWidget(covariant _TodayHubPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.planSource != widget.planSource) {
+      _loaded = false;
+    }
+  }
+
+  void _leave(BuildContext context) {
+    final NavigatorState navigator = Navigator.of(context);
+    if (navigator.canPop()) {
+      navigator.pop();
+      return;
+    }
+    navigator.pushReplacementNamed(TodayHubRoutes.hub.path);
+  }
+
+  void _start(BuildContext context, TodayNextLesson lesson) {
+    final ValueChanged<TodayNextLesson>? open = widget.onStartLesson;
+    if (open != null) {
+      open(lesson);
+      return;
+    }
+    Navigator.of(context).pushNamed(TodayHubRoutes.lessonPlayer);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations l10n = l10nOf(context);
+    final LingPalette palette = LingPalette.of(Theme.of(context).brightness);
+    final TodayRoute? route = widget.route;
+    final bool hub = route?.kind == TodayRouteKind.hub;
+    final bool planRoute =
+        route != null &&
+        route.built &&
+        (route.kind == TodayRouteKind.hub ||
+            route.kind == TodayRouteKind.dailyPlan);
+    final TodaySurface? surface = planRoute ? _read() : null;
+    final List<Widget> children = <Widget>[
+      if (route != null && !hub && route.built)
+        Padding(
+          padding: const EdgeInsets.only(bottom: LingAfriqTokens.spacing16),
+          child: Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: LingButton(
+              label: l10n.hubTodayBack,
+              unavailableLabel: l10n.commonStateUnavailable,
+              onPressed: () => _leave(context),
+              role: LingButtonRole.quiet,
+            ),
+          ),
+        ),
+      if (route != null)
+        Text(
+          todayRouteLabel(l10n, route),
+          style: _display(palette.onSurface),
+          softWrap: true,
+          overflow: TextOverflow.visible,
+        ),
+    ];
+    if (surface != null) {
+      children.add(const SizedBox(height: LingAfriqTokens.spacing16));
+      children.add(_planRegion(context, l10n, palette, surface));
+    } else {
+      children.add(const SizedBox(height: LingAfriqTokens.spacing16));
+      children.add(
+        _marked(
+          const TodaySurfaceBlocked(TodayUnavailableKind.notBuilt),
+          _notice(context, l10n, TodayUnavailableKind.notBuilt),
+        ),
+      );
+    }
+    if (hub) {
+      children.add(const SizedBox(height: LingAfriqTokens.spacing24));
+      for (final TodayRoute link in TodayHubRoutes.links) {
+        children.add(_destination(context, l10n, link));
+        children.add(const SizedBox(height: LingAfriqTokens.spacing8));
+      }
+    }
+    return ColoredBox(
+      color: palette.surface,
+      child: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(LingAfriqTokens.spacing16),
+          children: children,
+        ),
+      ),
+    );
+  }
+
+  Widget _planRegion(
+    BuildContext context,
+    AppLocalizations l10n,
+    LingPalette palette,
+    TodaySurface surface,
+  ) {
+    final Widget body = switch (surface) {
+      TodaySurfaceReady(:final plan) => _ready(context, l10n, palette, plan),
+      TodaySurfaceEmpty() => _empty(l10n),
+      TodaySurfaceBlocked(:final kind) => _notice(context, l10n, kind),
+    };
+    return _marked(surface, body);
+  }
+
+  Widget _marked(TodaySurface surface, Widget child) {
+    return TodayStateMark(
+      kind: todaySurfaceKind(surface),
+      reason: todaySurfaceReason(surface),
+      child: child,
+    );
+  }
+
+  Widget _ready(
+    BuildContext context,
+    AppLocalizations l10n,
+    LingPalette palette,
+    TodayShownPlan plan,
+  ) {
+    final String? target = plan.nextLesson.targetLine;
+    return Column(
+      key: TodayHubMarks.plan,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Text(
+          l10n.hubTodayLead,
+          style: lingBody(palette.onSurfaceVariant),
+          softWrap: true,
+          overflow: TextOverflow.visible,
+        ),
+        const SizedBox(height: LingAfriqTokens.spacing16),
+        Semantics(
+          label: l10n.hubTodayMinutesAbout(plan.minutes),
+          child: Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: palette.surfaceContainer,
+                borderRadius: BorderRadius.circular(LingAfriqTokens.radiuspill),
+              ),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  minHeight: LingAfriqTokens.spacing48,
+                ),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.lg),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: LingAfriqTokens.spacing16,
+                    vertical: LingAfriqTokens.spacing8,
+                  ),
                   child: Text(
-                    l10nOf(context).shellFeaturedLanguages,
-                    style: PanAfricanTypography.titleLarge(context),
+                    l10n.hubTodayMinutes(plan.minutes),
+                    key: TodayHubMarks.minutes,
+                    style: lingBody(palette.onSurface),
+                    softWrap: true,
+                    overflow: TextOverflow.visible,
                   ),
                 ),
               ),
-              SizedBox(height: PanAfricanSpacing.md),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.lg),
-                child: languagesAsync.when(
-                  data: (languageRespponse) {
-                    final languages = languageRespponse.results;
-                    final featuredLanguages = languages.where((e) => e.is_featured).toList();
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        RefreshIndicator(
-                          onRefresh: () {
-                            ref.invalidate(languagesProvider);
-                            return Future.value();
-                          },
-                          child: GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: PanAfricanSpacing.md,
-                              mainAxisSpacing: PanAfricanSpacing.md,
-                              childAspectRatio: 1.05,
-                            ),
-                            itemCount: featuredLanguages.length,
-                            itemBuilder: (context, index) {
-                              return LanguageItem(language: featuredLanguages[index]);
-                            },
-                          ),
-                        ),
-                        SizedBox(height: PanAfricanSpacing.lg),
-                        Semantics(
-                          header: true,
-                          child: Text(
-                            l10nOf(context).shellExploreMore,
-                            style: PanAfricanTypography.titleMedium(context),
-                          ),
-                        ),
-                        SizedBox(height: PanAfricanSpacing.sm),
-                        Semantics(
-                          label: l10nOf(context).shellSearchLanguages,
-                          button: true,
-                          child: PanAfricanCard(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: PanAfricanSpacing.md,
-                              vertical: PanAfricanSpacing.sm,
-                            ),
-                            hasHoverEffect: true,
-                            onTap: () {
-                              showSearch(
-                                context: context,
-                                delegate: SearchLanguageDelegate(languages),
-                              );
-                            },
-                            child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                l10nOf(context).shellSearchLanguages,
-                                style: PanAfricanTypography.bodyLarge(context),
-                              ),
-                              const ExcludeSemantics(
-                                child: Icon(
-                                  Icons.chevron_right_rounded,
-                                  color: PanAfricanColors.textSecondary,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        ),
-                      ],
-                    );
-                  },
-                  error: (e, s) {
-                    return StreamErrorWidget(
-                      error: e,
-                      onTryAgain: () {
-                        ref.invalidate(languagesProvider);
-                      },
-                    );
-                  },
-                  loading: () => AdaptiveProgressIndicator(
-                    message: l10nOf(context).shellLoadingLanguages,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildHeroSection(
-    BuildContext context,
-    WidgetRef ref,
-    String title,
-    String? username,
-    UserGamificationModel gamification,
-  ) {
-    final levelProgress = _getLevelProgress(gamification);
-    final initials = _getInitials(username);
-
-    return TopGradientBox(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.lg),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Semantics(
-                  label: l10nOf(context).shellMenu,
-                  button: true,
-                  child: IconButton(
-                    onPressed: () {
-                      final scaffoldState = ref.read(scaffoldKeyProvider).currentState;
-                      if (scaffoldState != null) {
-                        scaffoldState.openDrawer();
-                      }
-                    },
-                    icon: Icon(Icons.menu_rounded, color: Theme.of(context).colorScheme.onPrimary),
-                  ),
-                ),
-                SizedBox(width: PanAfricanSpacing.xs),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        l10nOf(context).shellTitleValue(title.toString(), username != null ? l10nOf(context).shellUsername(username.toString()) : ''),
-                        style: PanAfricanTypography.displaySmall(context).copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        ),
-                      ),
-                      SizedBox(height: PanAfricanSpacing.xxs),
-                      Text(
-                        gamification.levelTitle,
-                        style: PanAfricanTypography.bodyLarge(context).copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.85),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                PanAfricanAvatar(
-                  initials: initials,
-                  size: PanAfricanSpacing.xl * 2,
-                  showBadge: gamification.dailyStreak > 0,
-                ),
-              ],
-            ),
-            SizedBox(height: PanAfricanSpacing.md),
-            Semantics(
-              label: l10nOf(context).shellLevelValueXpValue2Value3Xp('${gamification.level}', '${gamification.xp}', '${_getXPToNextLevel(gamification)}', '${gamification.dailyStreak}', '${gamification.unlockedBadges.length}', '${gamification.languagesLearned}'),
-              child: PanAfricanCard(
-                backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.08),
-                hasGlow: true,
-                glowColor: PanAfricanColors.primaryLight,
-                padding: EdgeInsets.all(PanAfricanSpacing.md),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: PanAfricanSpacing.xl * 2.2,
-                          height: PanAfricanSpacing.xl * 2.2,
-                          child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            CircularProgressIndicator(
-                              value: levelProgress,
-                              strokeWidth: PanAfricanSpacing.xxs,
-                              backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
-                              valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onPrimary),
-                            ),
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  l10nOf(context).shellValue75ce('${gamification.level}'),
-                                  style: PanAfricanTypography.titleLarge(context).copyWith(
-                                    color: Theme.of(context).colorScheme.onPrimary,
-                                  ),
-                                ),
-                                Text(
-                                  l10nOf(context).shellLevel,
-                                  style: PanAfricanTypography.labelSmall(context).copyWith(
-                                    color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.75),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(width: PanAfricanSpacing.lg),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              l10nOf(context).shellXpValue('${gamification.xp}'),
-                              style: PanAfricanTypography.titleMedium(context).copyWith(
-                                color: Theme.of(context).colorScheme.onPrimary,
-                              ),
-                            ),
-                            SizedBox(height: PanAfricanSpacing.xxs),
-                            Text(
-                              l10nOf(context).shellValueXpToNextLevel('${_getXPToNextLevel(gamification)}'),
-                              style: PanAfricanTypography.bodySmall(context).copyWith(
-                                color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.75),
-                              ),
-                            ),
-                            SizedBox(height: PanAfricanSpacing.sm),
-                            PanAfricanProgressBar(
-                              progress: levelProgress,
-                              color: Theme.of(context).colorScheme.onPrimary,
-                              height: PanAfricanSpacing.xxs,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: PanAfricanSpacing.sm),
-                  Row(
-                    children: [
-                      _HeroPill(
-                        label: l10nOf(context).shellValueDayStreak('${gamification.dailyStreak}'),
-                        icon: Icons.local_fire_department_rounded,
-                        color: PanAfricanColors.tertiary,
-                      ),
-                      SizedBox(width: PanAfricanSpacing.xs),
-                      _HeroPill(
-                        label: l10nOf(context).shellValueBadges('${gamification.unlockedBadges.length}'),
-                        icon: Icons.workspace_premium_rounded,
-                        color: PanAfricanColors.secondary,
-                      ),
-                      SizedBox(width: PanAfricanSpacing.xs),
-                      _HeroPill(
-                        label: l10nOf(context).shellValueLanguages('${gamification.languagesLearned}'),
-                        icon: Icons.public_rounded,
-                        color: PanAfricanColors.kenteBlue,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            ),
-            SizedBox(height: PanAfricanSpacing.lg),
-          ],
+        const SizedBox(height: LingAfriqTokens.spacing24),
+        Text(
+          l10n.hubTodayDueReviews,
+          key: TodayHubMarks.dueReviews,
+          style: lingBody(palette.onSurface),
+          softWrap: true,
+          overflow: TextOverflow.visible,
         ),
-      ),
-    );
-  }
-
-  Widget _buildQuickActions(BuildContext context, WidgetRef ref) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.lg),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Semantics(
-            header: true,
-            child: Text(
-              l10nOf(context).shellQuickActions,
-              style: PanAfricanTypography.titleMedium(context),
-            ),
-          ),
-          SizedBox(height: PanAfricanSpacing.sm),
-          Row(
-            children: [
-              Expanded(
-                child: _QuickActionCard(
-                  title: l10nOf(context).shellAiTutor,
-                  subtitle: l10nOf(context).shellPolieModesSkills,
-                  icon: Icons.auto_awesome_rounded,
-                  color: PanAfricanColors.kenteBlue,
-                  onTap: () {
-                    ref.read(navigationProvider).navigateTo(const AiChatSelectScreen());
-                  },
-                ),
-              ),
-              SizedBox(width: PanAfricanSpacing.md),
-              Expanded(
-                child: _QuickActionCard(
-                  title: l10nOf(context).shellAiChat,
-                  subtitle: l10nOf(context).shellConversationWithPolie,
-                  icon: Icons.chat_bubble_outline_rounded,
-                  color: PanAfricanColors.kenteTeal,
-                  onTap: () {
-                    ref.read(navigationProvider).navigateTo(
-                          const LingChatAiConversationScreen(),
-                        );
-                  },
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: PanAfricanSpacing.sm),
-          Row(
-            children: [
-              Expanded(
-                child: _QuickActionCard(
-                  title: 'Progress',
-                  subtitle: l10nOf(context).shellViewDashboard,
-                  icon: Icons.insights_rounded,
-                  color: PanAfricanColors.primary,
-                  onTap: () {
-                    ref.read(navigationProvider).navigateTo(const ProgressDashboardScreen());
-                  },
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildProgressHighlights(
-    BuildContext context,
-    UserGamificationModel gamification,
-  ) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.lg),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Semantics(
-            header: true,
-            child: Text(
-              l10nOf(context).shellYourProgress,
-              style: PanAfricanTypography.titleMedium(context),
-            ),
-          ),
-          SizedBox(height: PanAfricanSpacing.sm),
-          Row(
-            children: [
-              Expanded(
-                child: _HighlightCard(
-                  label: 'Lessons',
-                  value: '${gamification.lessonsCompleted}',
-                  icon: Icons.school_rounded,
-                  color: PanAfricanColors.primary,
-                ),
-              ),
-              SizedBox(width: PanAfricanSpacing.md),
-              Expanded(
-                child: _HighlightCard(
-                  label: 'Words',
-                  value: '${gamification.wordsLearned}',
-                  icon: Icons.translate_rounded,
-                  color: PanAfricanColors.tertiary,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: PanAfricanSpacing.md),
-          Row(
-            children: [
-              Expanded(
-                child: _HighlightCard(
-                  label: 'Games',
-                  value: '${gamification.gamesPlayed}',
-                  icon: Icons.videogame_asset_rounded,
-                  color: PanAfricanColors.kenteTeal,
-                ),
-              ),
-              SizedBox(width: PanAfricanSpacing.md),
-              Expanded(
-                child: _HighlightCard(
-                  label: 'Polie',
-                  value: '${gamification.polieMessages}',
-                  icon: Icons.chat_bubble_outline_rounded,
-                  color: PanAfricanColors.ankaraPurple,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  double _getLevelProgress(UserGamificationModel gamification) {
-    final currentLevel = gamification.level;
-    final currentXP = gamification.xp;
-    final currentLevelXP = LevelTitles.getXPForLevel(currentLevel);
-    final nextLevelXP = LevelTitles.getXPForLevel(currentLevel + 1);
-    final totalForLevel = (nextLevelXP - currentLevelXP).clamp(1, nextLevelXP);
-    return ((currentXP - currentLevelXP) / totalForLevel).clamp(0.0, 1.0);
-  }
-
-  int _getXPToNextLevel(UserGamificationModel gamification) {
-    final nextLevelXP = LevelTitles.getXPForLevel(gamification.level + 1);
-    return (nextLevelXP - gamification.xp).clamp(0, nextLevelXP);
-  }
-
-  String _getInitials(String? name) {
-    if (name == null || name.trim().isEmpty) {
-      return 'LA';
-    }
-    final parts = name.trim().split(' ');
-    if (parts.length == 1) {
-      return parts.first.substring(0, 1).toUpperCase();
-    }
-    return '${parts.first.substring(0, 1)}${parts.last.substring(0, 1)}'.toUpperCase();
-  }
-}
-
-class _HeroPill extends StatelessWidget {
-  final String label;
-  final IconData icon;
-  final Color color;
-
-  const _HeroPill({
-    required this.label,
-    required this.icon,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: PanAfricanSpacing.sm,
-        vertical: PanAfricanSpacing.xxs,
-      ),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(PanAfricanRadius.pill),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, color: color, size: PanAfricanSpacing.sm, semanticLabel: label),
-          SizedBox(width: PanAfricanSpacing.xxs),
+        const SizedBox(height: LingAfriqTokens.spacing8),
+        for (final TodayDueReview review in plan.dueReviews) ...<Widget>[
           Text(
-            label,
-            style: PanAfricanTypography.labelSmall(context).copyWith(
-              color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.85),
-            ),
+            review.label,
+            key: TodayHubMarks.review(review.id),
+            style: lingBody(palette.onSurfaceVariant),
+            softWrap: true,
+            overflow: TextOverflow.visible,
+          ),
+          const SizedBox(height: LingAfriqTokens.spacing8),
+        ],
+        const SizedBox(height: LingAfriqTokens.spacing12),
+        Text(
+          l10n.hubTodayNextLesson,
+          key: TodayHubMarks.nextLesson,
+          style: lingBody(palette.onSurface),
+          softWrap: true,
+          overflow: TextOverflow.visible,
+        ),
+        const SizedBox(height: LingAfriqTokens.spacing4),
+        Text(
+          plan.nextLesson.title,
+          key: TodayHubMarks.lessonTitle,
+          style: lingBody(palette.onSurface),
+          softWrap: true,
+          overflow: TextOverflow.visible,
+        ),
+        if (target != null) ...<Widget>[
+          const SizedBox(height: LingAfriqTokens.spacing4),
+          Text(
+            target,
+            key: TodayHubMarks.lessonTarget,
+            style: LingAfriqType.target.copyWith(color: palette.onSurface),
+            softWrap: true,
+            overflow: TextOverflow.visible,
           ),
         ],
-      ),
+        const SizedBox(height: LingAfriqTokens.spacing24),
+        Semantics(
+          label: l10n.hubTodayStartPlan(plan.minutes),
+          button: true,
+          onTap: () => _start(context, plan.nextLesson),
+          child: ExcludeSemantics(
+            child: LingButton(
+              label: l10n.hubTodayStart,
+              unavailableLabel: l10n.commonStateUnavailable,
+              onPressed: () => _start(context, plan.nextLesson),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _empty(AppLocalizations l10n) {
+    return LingEmptyState(
+      key: TodayHubMarks.empty,
+      title: l10n.hubTodayEmptyTitle,
+      whatHappened: l10n.hubTodayEmptyWhat,
+      why: l10n.hubTodayEmptyWhy,
+      whatToDo: l10n.hubTodayEmptyNext,
+      actionLabel: l10n.hubTodayOpenPath,
+      unavailableLabel: l10n.commonStateUnavailable,
+      onAction: widget.onOpenPath ?? () {},
+    );
+  }
+
+  Widget _notice(
+    BuildContext context,
+    AppLocalizations l10n,
+    TodayUnavailableKind kind,
+  ) {
+    final TodayBlockedCopy copy = todayBlockedCopy(l10n, kind);
+    if (kind == TodayUnavailableKind.failed) {
+      return LingErrorState(
+        whatHappened: copy.what,
+        why: copy.why,
+        whatToDo: copy.next,
+        actionLabel: copy.action ?? l10n.commonActionTryAgain,
+        unavailableLabel: l10n.commonStateUnavailable,
+        onAction: _reload,
+      );
+    }
+    if (kind == TodayUnavailableKind.offline) {
+      return LingOfflineState(
+        whatHappened: copy.what,
+        why: copy.why,
+        whatToDo: copy.next,
+        queuedActions: 0,
+        actionLabel: copy.action ?? l10n.commonActionTryAgain,
+        unavailableLabel: l10n.commonStateUnavailable,
+        onAction: _reload,
+      );
+    }
+    final String? action = copy.action;
+    return Column(
+      key: TodayHubMarks.notAvailable,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Align(
+          alignment: AlignmentDirectional.centerStart,
+          child: ExcludeSemantics(
+            child: LingCueDisc(
+              fill: LingOfflineState.infoFill(Theme.of(context).brightness),
+              mark: LingOfflineState.infoMark(Theme.of(context).brightness),
+              kind: LingCueKind.info,
+            ),
+          ),
+        ),
+        const SizedBox(height: LingAfriqTokens.spacing16),
+        Text(
+          copy.what,
+          style: lingBody(LingPalette.of(Theme.of(context).brightness).onSurface),
+          softWrap: true,
+          overflow: TextOverflow.visible,
+        ),
+        const SizedBox(height: LingAfriqTokens.spacing16),
+        Text(
+          copy.why,
+          style: lingBody(
+            LingPalette.of(Theme.of(context).brightness).onSurfaceVariant,
+          ),
+          softWrap: true,
+          overflow: TextOverflow.visible,
+        ),
+        const SizedBox(height: LingAfriqTokens.spacing16),
+        Text(
+          copy.next,
+          style: lingBody(
+            LingPalette.of(Theme.of(context).brightness).onSurfaceVariant,
+          ),
+          softWrap: true,
+          overflow: TextOverflow.visible,
+        ),
+        if (action != null) ...<Widget>[
+          const SizedBox(height: LingAfriqTokens.spacing16),
+          LingButton(
+            label: action,
+            unavailableLabel: l10n.commonStateUnavailable,
+            onPressed: () => _leave(context),
+            role: LingButtonRole.quiet,
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _destination(
+    BuildContext context,
+    AppLocalizations l10n,
+    TodayRoute route,
+  ) {
+    return LingListRow(
+      key: TodayHubMarks.destination(route.kind),
+      label: todayRouteLabel(l10n, route),
+      unavailableLabel: l10n.commonStateUnavailable,
+      onPressed: () {
+        Navigator.of(context).pushNamed(route.path);
+      },
     );
   }
 }
 
-class _QuickActionCard extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final IconData icon;
-  final Color color;
-  final VoidCallback onTap;
-
-  const _QuickActionCard({
-    required this.title,
-    required this.subtitle,
-    required this.icon,
-    required this.color,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      label: l10nOf(context).shellTitleSubtitle(title.toString(), subtitle.toString()),
-      button: true,
-      child: PanAfricanCard(
-        hasHoverEffect: true,
-        onTap: onTap,
-        padding: EdgeInsets.all(PanAfricanSpacing.md),
-        child: Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(PanAfricanSpacing.sm),
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.15),
-                borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-              ),
-              child: Icon(icon, color: color, size: PanAfricanSpacing.md, semanticLabel: title),
-            ),
-            SizedBox(width: PanAfricanSpacing.sm),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: PanAfricanTypography.titleSmall(context),
-                  ),
-                  SizedBox(height: PanAfricanSpacing.xxs),
-                  Text(
-                    subtitle,
-                    style: PanAfricanTypography.bodySmall(context).copyWith(
-                      color: PanAfricanColors.textSecondary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _HighlightCard extends StatelessWidget {
-  final String label;
-  final String value;
-  final IconData icon;
-  final Color color;
-
-  const _HighlightCard({
-    required this.label,
-    required this.value,
-    required this.icon,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      label: l10nOf(context).shellLabelValue(label.toString(), value.toString()),
-      child: PanAfricanCard(
-        padding: EdgeInsets.all(PanAfricanSpacing.md),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: EdgeInsets.all(PanAfricanSpacing.sm),
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-              ),
-              child: Icon(icon, color: color, size: PanAfricanSpacing.md, semanticLabel: label),
-            ),
-            SizedBox(height: PanAfricanSpacing.sm),
-            Text(
-              value,
-              style: PanAfricanTypography.titleLarge(context),
-            ),
-            SizedBox(height: PanAfricanSpacing.xxs),
-            Text(
-              label,
-              style: PanAfricanTypography.bodySmall(context).copyWith(
-                color: PanAfricanColors.textSecondary,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+TextStyle _display(Color color) {
+  return TextStyle(
+    fontFamily: LingAfriqType.displayFamily,
+    fontFamilyFallback: LingAfriqType.scriptFallback,
+    fontSize: kTodayDisplaySize,
+    height: kTodayDisplayHeight,
+    color: color,
+  );
 }
 
 class LanguageItem extends ConsumerWidget {
