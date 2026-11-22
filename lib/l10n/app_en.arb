@@ -9738,5 +9738,115 @@
   "lensNoWordNext": "Point at one thing, then open Living Dictionary.",
   "@lensNoWordNext": {
     "description": "lens.dictionary.empty.next"
+  },
+  "practiceGamePlayingLabel": "Practice game",
+  "@practiceGamePlayingLabel": {
+    "description": "practice.game.playing"
+  },
+  "practiceGameSaveFailedWhat": "This round was not saved.",
+  "@practiceGameSaveFailedWhat": {
+    "description": "practice.game.save_failed.what"
+  },
+  "practiceGameSaveFailedWhy": "The learner record did not reach the outbox.",
+  "@practiceGameSaveFailedWhy": {
+    "description": "practice.game.save_failed.why"
+  },
+  "practiceGameSaveFailedNext": "Try again. This round is not marked saved.",
+  "@practiceGameSaveFailedNext": {
+    "description": "practice.game.save_failed.next"
+  },
+  "practiceGameRetry": "Try again",
+  "@practiceGameRetry": {
+    "description": "practice.game.retry"
+  },
+  "practiceGameSaved": "Saved to your learner record.",
+  "@practiceGameSaved": {
+    "description": "practice.game.saved"
+  },
+  "practiceGameUnavailable": "Unavailable",
+  "@practiceGameUnavailable": {
+    "description": "practice.game.unavailable"
+  },
+  "directoryTitle": "All features",
+  "@directoryTitle": {
+    "description": "directory. Title of the All features list"
+  },
+  "directoryOpenSemantics": "Open all features",
+  "@directoryOpenSemantics": {
+    "description": "directory. Spoken name for the All features button"
+  },
+  "directorySearchLabel": "Search features",
+  "@directorySearchLabel": {
+    "description": "directory. Search field label"
+  },
+  "directoryLocked": "Locked",
+  "@directoryLocked": {
+    "description": "directory. Word on a locked feature"
+  },
+  "directoryUnlocksAt": "Unlocks at {stage}.",
+  "@directoryUnlocksAt": {
+    "description": "directory. Unlock line for a locked feature",
+    "placeholders": {
+      "stage": {
+        "type": "String"
+      }
+    }
+  },
+  "directoryPreview": "Preview",
+  "@directoryPreview": {
+    "description": "directory. Preview button"
+  },
+  "directoryOpenFeature": "Open {feature}",
+  "@directoryOpenFeature": {
+    "description": "directory. Spoken name for an open feature",
+    "placeholders": {
+      "feature": {
+        "type": "String"
+      }
+    }
+  },
+  "directoryLockedSemantics": "{feature}, Locked. Unlocks at {stage}. {preview}",
+  "@directoryLockedSemantics": {
+    "description": "directory. Spoken name for a locked feature",
+    "placeholders": {
+      "feature": {
+        "type": "String"
+      },
+      "stage": {
+        "type": "String"
+      },
+      "preview": {
+        "type": "String"
+      }
+    }
+  },
+  "directoryEmptyTitle": "No match",
+  "@directoryEmptyTitle": {
+    "description": "directory. Title when search matches nothing"
+  },
+  "directoryEmptyWhat": "Nothing matches {query}.",
+  "@directoryEmptyWhat": {
+    "description": "directory. What happened when search matches nothing",
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "directoryEmptyWhy": "That name is not in the directory.",
+  "@directoryEmptyWhy": {
+    "description": "directory. Why search matches nothing"
+  },
+  "directoryEmptyNext": "Try another name.",
+  "@directoryEmptyNext": {
+    "description": "directory. What to do when search matches nothing"
+  },
+  "directoryEmptyAction": "Clear search",
+  "@directoryEmptyAction": {
+    "description": "directory. Button that clears the search"
+  },
+  "directoryBack": "Back to Me",
+  "@directoryBack": {
+    "description": "directory. Back from All features"
   }
 }
