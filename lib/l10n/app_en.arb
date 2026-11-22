@@ -8703,5 +8703,156 @@
   "shellOfflineNext": "Connect, then try again.",
   "@shellOfflineNext": {
     "description": "shell. What to do while offline"
+  },
+  "hubTodayTitle": "Today",
+  "@hubTodayTitle": {
+    "description": "hub.h_today.title"
+  },
+  "hubTodayLead": "One plan for today.",
+  "@hubTodayLead": {
+    "description": "hub.h_today.lead"
+  },
+  "hubTodayDailyPlan": "Daily plan",
+  "@hubTodayDailyPlan": {
+    "description": "hub.h_today.daily_plan"
+  },
+  "hubTodayDailyChallenges": "Daily Challenges",
+  "@hubTodayDailyChallenges": {
+    "description": "hub.h_today.daily_challenges"
+  },
+  "hubTodayQuests": "Quests",
+  "@hubTodayQuests": {
+    "description": "hub.h_today.quests"
+  },
+  "hubTodayEvents": "Events and Festivals",
+  "@hubTodayEvents": {
+    "description": "hub.h_today.events"
+  },
+  "hubTodayStreaks": "Streaks",
+  "@hubTodayStreaks": {
+    "description": "hub.h_today.streaks"
+  },
+  "hubTodayBack": "Back to Today",
+  "@hubTodayBack": {
+    "description": "hub.h_today.back"
+  },
+  "hubTodayMinutes": "{minutes} minutes",
+  "@hubTodayMinutes": {
+    "description": "hub.h_today.minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hubTodayMinutesAbout": "About {minutes} minutes",
+  "@hubTodayMinutesAbout": {
+    "description": "hub.h_today.minutes_about",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hubTodayDueReviews": "Due reviews",
+  "@hubTodayDueReviews": {
+    "description": "hub.h_today.due_reviews"
+  },
+  "hubTodayNextLesson": "Next lesson",
+  "@hubTodayNextLesson": {
+    "description": "hub.h_today.next_lesson"
+  },
+  "hubTodayStart": "Start",
+  "@hubTodayStart": {
+    "description": "hub.h_today.start"
+  },
+  "hubTodayStartPlan": "Start the {minutes} minute plan",
+  "@hubTodayStartPlan": {
+    "description": "hub.h_today.start_plan",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hubTodayEmptyTitle": "No plan yet",
+  "@hubTodayEmptyTitle": {
+    "description": "hub.h_today.empty_title"
+  },
+  "hubTodayEmptyWhat": "Today has nothing queued.",
+  "@hubTodayEmptyWhat": {
+    "description": "hub.h_today.empty_what"
+  },
+  "hubTodayEmptyWhy": "There is no review due, and no lesson is chosen.",
+  "@hubTodayEmptyWhy": {
+    "description": "hub.h_today.empty_why"
+  },
+  "hubTodayEmptyNext": "Open Path and start the first lesson.",
+  "@hubTodayEmptyNext": {
+    "description": "hub.h_today.empty_next"
+  },
+  "hubTodayOpenPath": "Open Path",
+  "@hubTodayOpenPath": {
+    "description": "hub.h_today.open_path"
+  },
+  "hubTodayNotBuiltWhat": "This part is not available yet.",
+  "@hubTodayNotBuiltWhat": {
+    "description": "hub.h_today.not_built_what"
+  },
+  "hubTodayNotBuiltWhy": "It is not built yet.",
+  "@hubTodayNotBuiltWhy": {
+    "description": "hub.h_today.not_built_why"
+  },
+  "hubTodayNotBuiltNext": "Go back to Today.",
+  "@hubTodayNotBuiltNext": {
+    "description": "hub.h_today.not_built_next"
+  },
+  "hubTodayProviderWhat": "The daily plan is not available.",
+  "@hubTodayProviderWhat": {
+    "description": "hub.h_today.provider_what"
+  },
+  "hubTodayProviderWhy": "The plan provider is not here.",
+  "@hubTodayProviderWhy": {
+    "description": "hub.h_today.provider_why"
+  },
+  "hubTodayProviderNext": "Come back when the plan is ready.",
+  "@hubTodayProviderNext": {
+    "description": "hub.h_today.provider_next"
+  },
+  "hubTodayRangeWhat": "This plan cannot be shown.",
+  "@hubTodayRangeWhat": {
+    "description": "hub.h_today.range_what"
+  },
+  "hubTodayRangeWhy": "A shown plan is 10 to 15 minutes and lists due reviews and the next lesson.",
+  "@hubTodayRangeWhy": {
+    "description": "hub.h_today.range_why"
+  },
+  "hubTodayRangeNext": "Come back when the plan is ready.",
+  "@hubTodayRangeNext": {
+    "description": "hub.h_today.range_next"
+  },
+  "hubTodayErrorWhat": "The plan did not open.",
+  "@hubTodayErrorWhat": {
+    "description": "hub.h_today.error_what"
+  },
+  "hubTodayErrorWhy": "The lesson list did not come back.",
+  "@hubTodayErrorWhy": {
+    "description": "hub.h_today.error_why"
+  },
+  "hubTodayErrorNext": "Try again.",
+  "@hubTodayErrorNext": {
+    "description": "hub.h_today.error_next"
+  },
+  "hubTodayOfflineWhat": "The phone has no network.",
+  "@hubTodayOfflineWhat": {
+    "description": "hub.h_today.offline_what"
+  },
+  "hubTodayOfflineWhy": "This plan is not saved on the phone.",
+  "@hubTodayOfflineWhy": {
+    "description": "hub.h_today.offline_why"
+  },
+  "hubTodayOfflineNext": "Connect, then try again.",
+  "@hubTodayOfflineNext": {
+    "description": "hub.h_today.offline_next"
   }
 }
