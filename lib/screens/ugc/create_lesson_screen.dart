@@ -3,9 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lingafriq/screens/ugc/ugc_enhanced_rules.dart';
+import 'package:lingafriq/screens/ugc/ugc_quality_badges_widget.dart';
+import 'package:lingafriq/screens/ugc/ugc_validation_feedback_screen.dart';
 import 'package:lingafriq/services/user_generated_content_service.dart';
+import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 
 /// Screen for creating user-generated lessons
 class CreateLessonScreen extends HookConsumerWidget {
@@ -19,9 +25,70 @@ class CreateLessonScreen extends HookConsumerWidget {
     final tagsController = useTextEditingController();
     final selectedLanguage = useState<String>('yoruba');
     final isSubmitting = useState(false);
+    final isValidating = useState(false);
+    final qualityBadges = useState<List<String>>(const <String>[]);
+    final validationPayload = useState<Map<String, dynamic>?>(null);
     
     final languages = ['yoruba', 'hausa', 'igbo', 'swahili', 'zulu', 'afrikaans', 'nigerian_pidgin'];
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final scoreLine = lessonScoreLine(validationPayload.value);
+
+    Future<void> openValidationDetails() async {
+      await Navigator.push(
+        context,
+        SmoothPageRoute(
+          child: const UGCValidationFeedbackScreen(
+            contentId: 'draft',
+            contentType: 'lesson',
+          ),
+        ),
+      );
+    }
+
+    Future<void> validateLesson() async {
+      if (contentController.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              ugcPleaseEnterLessonContent(),
+              style: PanAfricanTypography.bodyMedium(
+                context,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+            ),
+            backgroundColor: PanAfricanColors.error,
+          ),
+        );
+        return;
+      }
+
+      isValidating.value = true;
+      try {
+        final response = await ApiService.post(
+          '/user-content/validate',
+          data: {
+            'content': contentController.text,
+            'contentType': 'lesson',
+            'language': selectedLanguage.value,
+          },
+        );
+        if (response.statusCode == 200) {
+          final body = response.data;
+          Map<String, dynamic>? payload;
+          if (body is Map && body['data'] is Map) {
+            payload = Map<String, dynamic>.from(body['data'] as Map);
+          }
+          validationPayload.value = payload;
+          qualityBadges.value = lessonQualityBadges(payload);
+        }
+      } catch (e) {
+        if (context.mounted) {
+          ErrorHandler.showError(context, e);
+        }
+      } finally {
+        isValidating.value = false;
+      }
+    }
 
     return Scaffold(
       backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
@@ -36,6 +103,14 @@ class CreateLessonScreen extends HookConsumerWidget {
             Navigator.of(context).pop();
           },
         ),
+        actions: [
+          if (validationPayload.value != null)
+            IconButton(
+              icon: const Icon(Icons.info_outline),
+              tooltip: ugcViewValidationDetails(),
+              onPressed: openValidationDetails,
+            ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(PanAfricanSpacing.md),
@@ -134,6 +209,38 @@ class CreateLessonScreen extends HookConsumerWidget {
                 filled: true,
                 fillColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
               ),
+            ),
+            SizedBox(height: PanAfricanSpacing.lg),
+
+            if (qualityBadges.value.isNotEmpty) ...[
+              Text(
+                ugcQualityBadgesLabel(),
+                style: PanAfricanTypography.titleSmall(context),
+              ),
+              SizedBox(height: PanAfricanSpacing.sm),
+              UGCQualityBadgesWidget(
+                badges: qualityBadges.value,
+                isDark: isDark,
+              ),
+              SizedBox(height: PanAfricanSpacing.md),
+            ],
+            if (validationPayload.value != null) ...[
+              Text(
+                ugcValidationSummaryLabel(),
+                style: PanAfricanTypography.titleMedium(context),
+              ),
+              if (scoreLine != null)
+                Text(scoreLine, style: PanAfricanTypography.bodyLarge(context)),
+              TextButton(
+                onPressed: openValidationDetails,
+                child: Text(ugcViewFullDetails()),
+              ),
+              SizedBox(height: PanAfricanSpacing.md),
+            ],
+            OutlinedButton.icon(
+              onPressed: isValidating.value ? null : validateLesson,
+              icon: const Icon(Icons.check_circle),
+              label: Text(ugcValidateContentLabel()),
             ),
             SizedBox(height: PanAfricanSpacing.lg),
             

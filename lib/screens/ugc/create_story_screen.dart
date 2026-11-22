@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lingafriq/screens/ugc/ugc_enhanced_rules.dart';
+import 'package:lingafriq/screens/ugc/ugc_quality_badges_widget.dart';
 import 'package:lingafriq/services/user_generated_content_service.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
@@ -19,6 +21,7 @@ class CreateStoryScreen extends HookConsumerWidget {
     final vocabController = useTextEditingController();
     final selectedLanguage = useState<String>('yoruba');
     final isSubmitting = useState(false);
+    final qualityBadges = useState<List<String>>(const <String>[]);
     
     final languages = ['yoruba', 'hausa', 'igbo', 'swahili', 'zulu', 'afrikaans', 'nigerian_pidgin'];
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -137,15 +140,42 @@ class CreateStoryScreen extends HookConsumerWidget {
               ),
             ),
             SizedBox(height: PanAfricanSpacing.lg),
+
+            if (qualityBadges.value.isNotEmpty)
+              UGCQualityBadgesWidget(
+                badges: qualityBadges.value,
+                isDark: isDark,
+              ),
+            SizedBox(height: PanAfricanSpacing.md),
+            OutlinedButton.icon(
+              onPressed: () {
+                final check = checkEnhancedStory(
+                  title: titleController.text,
+                  content: storyController.text,
+                );
+                qualityBadges.value = check.badges;
+              },
+              icon: const Icon(Icons.check_circle),
+              label: Text(ugcValidateStoryLabel()),
+            ),
+            SizedBox(height: PanAfricanSpacing.lg),
             
             // Submit Button
             FilledButton(
               onPressed: isSubmitting.value ? null : () async {
                 HapticFeedback.mediumImpact();
-                if (titleController.text.isEmpty || storyController.text.isEmpty) {
+                final check = checkEnhancedStory(
+                  title: titleController.text,
+                  content: storyController.text,
+                );
+                qualityBadges.value = check.badges;
+                if (!check.passed) {
+                  final notice = check.message.isEmpty
+                      ? ugcPleaseFixValidation()
+                      : check.message;
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Please fill in title and story content', style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary)),
+                      content: Text(notice, style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary)),
                       backgroundColor: PanAfricanColors.error,
                     ),
                   );
