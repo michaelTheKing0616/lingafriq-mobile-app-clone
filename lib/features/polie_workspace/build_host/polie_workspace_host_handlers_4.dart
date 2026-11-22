@@ -19,6 +19,7 @@ mixin PolieWorkspaceHostHandlers4 on PolieWorkspaceHostState, PolieWorkspaceHost
 Future<void> sendConversation([String? prefilledText]) async {
   final text = (prefilledText ?? conversationInput.text).trim();
   if (text.isEmpty) return;
+  noteConversationUserTurn(text);
   final wantsEnglish =
       conversationIncludeEnglishTranslations.value ||
       RegExp(
@@ -165,6 +166,11 @@ Future<void> sendConversation([String? prefilledText]) async {
         ...conversationMessages.value,
         ConversationTurn.ai(payload),
       ];
+      noteConversationAssistantTurn(
+        userText: text,
+        assistantText: payload.messageTarget,
+        correction: payload.correction.correction,
+      );
       // Update language ratio for the in-app progress bar.
       final targetLetters = RegExp(r'[^\x00-\x7F]').hasMatch(text);
       final oldRatio = languageRatio.value;

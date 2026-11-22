@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/design/components/ling_button.dart';
+import 'package:lingafriq/features/polie_workspace/polie_workspace_screen.dart';
+import 'package:lingafriq/providers/ai_chat_provider_groq.dart' show PolieMode;
 import 'package:lingafriq/design/components/ling_state.dart';
 import 'package:lingafriq/design/icons/lingafriq_icons.dart';
 import 'package:lingafriq/design/states/empty_state.dart';
@@ -11,6 +13,15 @@ import 'package:lingafriq/l10n/l10n_of.dart';
 
 export 'package:lingafriq/features/polie_workspace/polie_workspace_screen.dart'
     show PolieWorkspaceScreen;
+
+/// Old `ai_chat_select` route. The picker did not choose a language.
+Widget polieWorkspaceForLegacyChatRoute() {
+  return const PolieWorkspaceScreen(
+    sourceLanguage: 'English',
+    targetLanguage: '',
+    initialMode: PolieMode.tutor,
+  );
+}
 
 /// The six tutor modes the product already names, in sitemap order.
 ///

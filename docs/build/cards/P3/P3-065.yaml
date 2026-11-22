@@ -72,7 +72,28 @@ risks:
 - harvest drift; keep list authoritative
 gate: G3
 external_blockers: []
-status: Draft
+status: Done
+harvest_note: |
+  Audited at af704a9a. ai_chat_screen.dart, ai_chat_screen_new.dart,
+  ai_chat_screen_with_tracking.dart, and conversation_enhanced_screen.dart were
+  already deleted in 514e70e1 and had no route. ai_mode_selection_screen.dart
+  moved to legacy/ai_chat/ after ai_chat_select started building the Polie workspace.
+  Harvested: legacy mode-id map, Surprise Me limited to modes that have a panel,
+  Conversation on the mode rail, progress button for the tracking dashboards,
+  conversation turn counts and session record on leave, tutor keyword notes merged
+  into the existing tutor session, roleplay turn notes, auto-correction toggle,
+  and topic chips from conversation analytics with the enhanced-screen fallback.
+  Dropped: ai_chat_screen.dart tracking, mode selection, and enhanced controls
+  are not present in the variant. Same route as Polie mode conversation.
+  ai_chat_screen_new.dart per-mode HTTP bodies are the same route as the Polie
+  mode surfaces, which already call the gateway. Grammar and pronunciation stay
+  off the rail because the workspace panel for those modes is empty. Assessment
+  is the same route as Polie mode review. Empty-state starter chips in the
+  tracking chat are the same route as the mode intro banners. The tracking
+  screen's corrections list was never appended to. A second correction prompt
+  was not copied, because it would add another user turn. Roleplay completion
+  navigation stays on the roleplay scenario flow. Vocab free-text addWord was
+  not copied, because scoreSrs already stores the card.
 skills:
   worker:
   - adaptive/08-coding-and-debugging

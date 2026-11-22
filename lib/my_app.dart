@@ -20,8 +20,8 @@ import 'services/device_identity.dart';
 import 'screens/auth/sign_in_options.dart';
 
 // Route screen imports
-import 'screens/ai_chat/ai_mode_selection_screen.dart';
 import 'screens/ai_chat/polie_mode_selection_screen.dart';
+import 'screens/ai_chat/polie_workspace_screen.dart';
 import 'screens/lessons/lessons_map_entry_screen.dart';
 import 'screens/content/native_content_review_screen.dart';
 import 'screens/curriculum/authentic_curriculum_entry_screen.dart';
@@ -328,7 +328,7 @@ Widget _namedRouteArgumentIssueScaffold(
 Route<dynamic>? generateAppRoute(RouteSettings settings) {
   final normalizedRoute = _normalizeRouteName(settings.name);
   final routes = <String, WidgetBuilder>{
-    'ai_chat_select': (_) => const AIModeSelectionScreen(),
+    'ai_chat_select': (_) => polieWorkspaceForLegacyChatRoute(),
     'passkey-sign-in': (_) => PasskeyAccountScreen(
       mode: PasskeyMode.signIn,
       email: settings.arguments is String ? settings.arguments as String : null,

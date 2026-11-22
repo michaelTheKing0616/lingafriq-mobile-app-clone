@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_ui_helpers.dart';
+import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_layout.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_args.dart';
@@ -8,11 +9,21 @@ import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_
 
 Widget buildPolieConversationComposer(PolieModeSurfaceArgs a, PolieModeSurfaceLayout layout) {
   final l10n = AppLocalizations.of(a.context)!;
+  final PolieHarvestController? harvest = PolieHarvestScope.maybeOf(a.context);
   return Padding(
               padding: const EdgeInsets.fromLTRB(12, 6, 12, 12),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  if (harvest != null)
+                    PolieEnhancedConversationBar(
+                      controller: harvest,
+                      input: a.conversationInput,
+                      enabled: !a.isBusy,
+                      topicPrompt: l10n.polieLetsTalkAbout,
+                      correctionOnLabel: l10n.polieAutoCorrectionOn,
+                      correctionOffLabel: l10n.polieAutoCorrectionOff,
+                    ),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Wrap(

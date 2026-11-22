@@ -406,6 +406,11 @@ User message: "$text"
         ),
       ),
     );
+    host.noteConversationAssistantTurn(
+      userText: text,
+      assistantText: payload.messageTarget,
+      correction: payload.correction.correction,
+    );
     unawaited(
       host.ref.read(telemetryServiceProvider).trackPolieConversationTurn(
         language: host.targetLanguage,
@@ -417,6 +422,7 @@ User message: "$text"
       ),
     );
   } catch (e) {
+    host.noteConversationTurnFailed();
     host.modeError.value =
         'Conversation error: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
     unawaited(

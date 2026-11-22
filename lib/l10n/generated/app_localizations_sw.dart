@@ -8193,4 +8193,56 @@ class AppLocalizationsSw extends AppLocalizations {
 
   @override
   String get revRvContribTeacherDeniedNext => 'Go back to Village.';
+
+  @override
+  String get polieSurpriseMe => 'Surprise Me';
+
+  @override
+  String get polieAutoCorrectionOn =>
+      'Auto-correction on. Double tap to turn off.';
+
+  @override
+  String get polieAutoCorrectionOff =>
+      'Auto-correction off. Double tap to turn on.';
+
+  @override
+  String polieLetsTalkAbout(String topic) {
+    return 'Let\'s talk about $topic';
+  }
+
+  @override
+  String get polieTopicGreetings => 'Greetings';
+
+  @override
+  String get polieTopicFood => 'Food & Dining';
+
+  @override
+  String get polieTopicShopping => 'Shopping';
+
+  @override
+  String get polieTopicWeather => 'Weather';
+
+  @override
+  String get polieTopicHobbies => 'Hobbies';
+
+  @override
+  String get polieTopicWork => 'Work';
+
+  @override
+  String get polieTopicHealth => 'Health';
+
+  @override
+  String get polieTutorPracticeTopic => 'Tutor Practice';
+
+  @override
+  String get polieGrammarTense => 'Tense';
+
+  @override
+  String get polieGrammarVerb => 'Verb usage';
+
+  @override
+  String get polieGrammarAgreement => 'Agreement';
+
+  @override
+  String get polieGrammarWordOrder => 'Word order';
 }

@@ -1,5 +1,9 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 import 'package:lingafriq/data/polie_translate_language_options.dart';
 import 'package:lingafriq/features/polie_workspace/build_host/polie_workspace_host_runtime.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_mode_surface.dart';
@@ -14,7 +18,16 @@ Widget polieWorkspaceBuildHostScaffold(
   PolieWorkspaceHostRuntime host,
   ModeTheme modeTheme,
 ) {
-  return Scaffold(
+  final l10n = l10nOf(host.context);
+  return PopScope(
+    onPopInvokedWithResult: (bool didPop, Object? result) {
+      if (didPop) {
+        unawaited(host.flushConversationTracking());
+      }
+    },
+    child: PolieHarvestScope(
+      controller: host.harvest,
+      child: Scaffold(
     backgroundColor: modeTheme.background,
     appBar: AppBar(
       backgroundColor: modeTheme.background,
@@ -138,6 +151,14 @@ Widget polieWorkspaceBuildHostScaffold(
             ),
           ),
         ),
+        IconButton(
+          key: const ValueKey<String>('polie-progress'),
+          tooltip: l10n.shellProgress,
+          onPressed: polieProgressDashboardForMode(host.activeMode.value) == null
+              ? null
+              : host.openHarvestedProgress,
+          icon: const Icon(Icons.analytics_outlined),
+        ),
         if (!host.isCompactTopBar)
           IconButton(
             onPressed: () {},
@@ -170,29 +191,43 @@ Widget polieWorkspaceBuildHostScaffold(
               host.isCompactTopBar ? 8 : 12,
               8,
             ),
-            child: PolieModeSwitcherRail<PolieMode>(
-              selected: host.activeMode.value,
-              items: PolieWorkspaceScreen.modeItems
-                  .map(
-                    (e) => PolieModeSwitcherItem<PolieMode>(
-                      value: e.mode,
-                      icon: e.icon,
-                      label: e.label,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                PolieModeSwitcherRail<PolieMode>(
+                  selected: host.activeMode.value,
+                  items: <PolieModeSwitcherItem<PolieMode>>[
+                    ...PolieWorkspaceScreen.modeItems.map(
+                      (e) => PolieModeSwitcherItem<PolieMode>(
+                        value: e.mode,
+                        icon: e.icon,
+                        label: e.label,
+                      ),
                     ),
-                  )
-                  .toList(),
-              onChanged: (PolieMode mode) async {
-                await host.setMode(mode);
-                if (mode == PolieMode.tutor && host.tutorLesson.value == null) {
-                  await host.loadTutorLesson();
-                }
-              if (mode == PolieMode.vocab && host.vocabCard.value == null) {
-                await host.loadVocabCard();
-              }
-              if (mode == PolieMode.review && host.reviewPayload.value == null) {
-                await host.loadReview();
-              }
-              },
+                    PolieModeSwitcherItem<PolieMode>(
+                      value: PolieMode.conversation,
+                      icon: '\u{1F4AC}',
+                      label: l10n.onboardingConversation,
+                    ),
+                  ],
+                  onChanged: (PolieMode mode) async {
+                    await _openPolieMode(host, mode);
+                  },
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: TextButton(
+                    key: const ValueKey<String>('polie-surprise-mode'),
+                    onPressed: host.isBusy.value
+                        ? null
+                        : () => _openPolieMode(
+                              host,
+                              surprisePolieModeOnSurface(Random()),
+                            ),
+                    child: Text(l10n.polieSurpriseMe),
+                  ),
+                ),
+              ],
             ),
           ),
         Expanded(
@@ -308,5 +343,20 @@ Widget polieWorkspaceBuildHostScaffold(
         ),
       ],
     ),
+      ),
+    ),
   );
+}
+
+Future<void> _openPolieMode(PolieWorkspaceHostRuntime host, PolieMode mode) async {
+  await host.setMode(mode);
+  if (mode == PolieMode.tutor && host.tutorLesson.value == null) {
+    await host.loadTutorLesson();
+  }
+  if (mode == PolieMode.vocab && host.vocabCard.value == null) {
+    await host.loadVocabCard();
+  }
+  if (mode == PolieMode.review && host.reviewPayload.value == null) {
+    await host.loadReview();
+  }
 }
