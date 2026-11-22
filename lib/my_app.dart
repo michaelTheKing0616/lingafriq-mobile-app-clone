@@ -108,6 +108,7 @@ import 'screens/learning/learning_path_screen.dart';
 import 'screens/learning/tone_rhythm/tone_rhythm_trainer_screen.dart';
 import 'screens/learning/phrase_dna/phrase_dna_templates_screen.dart';
 import 'screens/learning/speak_engine_lab_screen.dart';
+import 'screens/tutor/shadowing_exercise_screen.dart';
 import 'screens/settings/synthetic_voice_styles_screen.dart';
 import 'screens/ar/point_and_say_screen.dart';
 import 'screens/quality_report_screen.dart';
@@ -578,6 +579,8 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
       );
     },
     'speak-engine-lab': (_) => const SpeakEngineLabScreen(),
+    // /speak/shadowing
+    ShadowingExerciseScreen.routeKey: (_) => const ShadowingExerciseScreen(),
     'tone-rhythm-trainer': (_) {
       final raw = settings.arguments;
       final map = raw is Map

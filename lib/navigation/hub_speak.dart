@@ -8,6 +8,7 @@ import 'package:lingafriq/design/tokens.g.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/l10n/l10n_of.dart';
 import 'package:lingafriq/screens/ai_chat/polie_workspace_screen.dart';
+import 'package:lingafriq/screens/tutor/shadowing_exercise_screen.dart';
 
 /// How far a Speak place is built.
 ///
@@ -51,6 +52,10 @@ final class SpeakPolieOpening extends SpeakOpening {
   const SpeakPolieOpening();
 }
 
+final class SpeakShadowingOpening extends SpeakOpening {
+  const SpeakShadowingOpening();
+}
+
 final class SpeakGapOpening extends SpeakOpening {
   const SpeakGapOpening(this.gap);
 
@@ -90,7 +95,7 @@ abstract final class SpeakRoutes {
     coachInsights,
   ];
 
-  /// Sitemap order. Polie is ready. The other places are not built yet.
+  /// Sitemap order. Polie and Shadowing are ready. The other places are not built yet.
   static const List<SpeakPlace> places = <SpeakPlace>[
     SpeakPlace(id: 'polie', path: polie, kind: SpeakPlaceKind.ready),
     SpeakPlace(
@@ -109,11 +114,7 @@ abstract final class SpeakRoutes {
       kind: SpeakPlaceKind.notAvailable,
       onRoot: false,
     ),
-    SpeakPlace(
-      id: 'shadowing',
-      path: shadowing,
-      kind: SpeakPlaceKind.notAvailable,
-    ),
+    SpeakPlace(id: 'shadowing', path: shadowing, kind: SpeakPlaceKind.ready),
     SpeakPlace(
       id: 'codeSwitch',
       path: codeSwitch,
@@ -157,6 +158,7 @@ abstract final class SpeakRoutes {
   static SpeakOpening openingFor(String path) {
     if (path == root) return const SpeakHubOpening();
     if (path == polie) return const SpeakPolieOpening();
+    if (path == shadowing) return const SpeakShadowingOpening();
     final SpeakPlace? place = find(path);
     if (place == null) return SpeakUnknownOpening(path);
     if (place.kind == SpeakPlaceKind.notAvailable) {
@@ -202,6 +204,7 @@ Widget _pageFor(BuildContext context, String routePath) {
   return switch (opening) {
     SpeakHubOpening() => const SpeakHubPage(),
     SpeakPolieOpening() => SpeakPolieScreen(onBack: () => _speakBack(context)),
+    SpeakShadowingOpening() => const ShadowingExerciseScreen(),
     SpeakGapOpening(:final gap) => SpeakNotAvailablePage(gap: gap),
     SpeakUnknownOpening(:final path) => SpeakUnknownPage(path: path),
   };
