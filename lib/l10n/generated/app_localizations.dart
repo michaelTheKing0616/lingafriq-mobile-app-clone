@@ -13309,6 +13309,282 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Shadowing is not saved on the phone.'**
   String get revRvShadowOfflineWhy;
+
+  /// unlock.locked
+  ///
+  /// In en, this message translates to:
+  /// **'Locked'**
+  String get unlockLocked;
+
+  /// unlock.unlocksAt
+  ///
+  /// In en, this message translates to:
+  /// **'Unlocks at {stage}.'**
+  String unlockUnlocksAt(String stage);
+
+  /// unlock.stage.day1
+  ///
+  /// In en, this message translates to:
+  /// **'Day 1'**
+  String get unlockStageDay1;
+
+  /// unlock.stage.account
+  ///
+  /// In en, this message translates to:
+  /// **'Account created'**
+  String get unlockStageAccount;
+
+  /// unlock.stage.week1
+  ///
+  /// In en, this message translates to:
+  /// **'Week 1 or A1 unit 3'**
+  String get unlockStageWeek1;
+
+  /// unlock.stage.a2
+  ///
+  /// In en, this message translates to:
+  /// **'A2'**
+  String get unlockStageA2;
+
+  /// unlock.stage.b1
+  ///
+  /// In en, this message translates to:
+  /// **'B1'**
+  String get unlockStageB1;
+
+  /// unlock.native
+  ///
+  /// In en, this message translates to:
+  /// **'Unlocks for native speakers.'**
+  String get unlockNative;
+
+  /// unlock.preview
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get unlockPreview;
+
+  /// unlock.openAnyway
+  ///
+  /// In en, this message translates to:
+  /// **'Open anyway'**
+  String get unlockOpenAnyway;
+
+  /// unlock.preview.note
+  ///
+  /// In en, this message translates to:
+  /// **'This preview does not mark a lesson done.'**
+  String get unlockPreviewNote;
+
+  /// unlock.opened
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is open.'**
+  String unlockOpened(String name);
+
+  /// unlock.safety
+  ///
+  /// In en, this message translates to:
+  /// **'A guardian must open this.'**
+  String get unlockSafety;
+
+  /// unlock.semantics
+  ///
+  /// In en, this message translates to:
+  /// **'{name}, Locked. {line}'**
+  String unlockSemantics(String name, String line);
+
+  /// unlock.back
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get unlockBack;
+
+  /// unlock.feature.today
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get unlockFeatureToday;
+
+  /// unlock.feature.firstUnit
+  ///
+  /// In en, this message translates to:
+  /// **'First unit'**
+  String get unlockFeatureFirstUnit;
+
+  /// unlock.feature.polieBasic
+  ///
+  /// In en, this message translates to:
+  /// **'Polie basic'**
+  String get unlockFeaturePolieBasic;
+
+  /// unlock.feature.lens
+  ///
+  /// In en, this message translates to:
+  /// **'Lens'**
+  String get unlockFeatureLens;
+
+  /// unlock.feature.games
+  ///
+  /// In en, this message translates to:
+  /// **'Games'**
+  String get unlockFeatureGames;
+
+  /// unlock.feature.wordCard
+  ///
+  /// In en, this message translates to:
+  /// **'Word Card'**
+  String get unlockFeatureWordCard;
+
+  /// unlock.feature.magazine
+  ///
+  /// In en, this message translates to:
+  /// **'Magazine'**
+  String get unlockFeatureMagazine;
+
+  /// unlock.feature.events
+  ///
+  /// In en, this message translates to:
+  /// **'Events'**
+  String get unlockFeatureEvents;
+
+  /// unlock.feature.streaks
+  ///
+  /// In en, this message translates to:
+  /// **'Streaks'**
+  String get unlockFeatureStreaks;
+
+  /// unlock.feature.circles
+  ///
+  /// In en, this message translates to:
+  /// **'Circles'**
+  String get unlockFeatureCircles;
+
+  /// unlock.feature.square
+  ///
+  /// In en, this message translates to:
+  /// **'Square'**
+  String get unlockFeatureSquare;
+
+  /// unlock.feature.globalHandle
+  ///
+  /// In en, this message translates to:
+  /// **'Global handle'**
+  String get unlockFeatureGlobalHandle;
+
+  /// unlock.feature.personas
+  ///
+  /// In en, this message translates to:
+  /// **'Personas'**
+  String get unlockFeaturePersonas;
+
+  /// unlock.feature.scenarios
+  ///
+  /// In en, this message translates to:
+  /// **'Scenarios'**
+  String get unlockFeatureScenarios;
+
+  /// unlock.feature.chats
+  ///
+  /// In en, this message translates to:
+  /// **'Chats'**
+  String get unlockFeatureChats;
+
+  /// unlock.feature.status
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get unlockFeatureStatus;
+
+  /// unlock.feature.practice
+  ///
+  /// In en, this message translates to:
+  /// **'Practice'**
+  String get unlockFeaturePractice;
+
+  /// unlock.feature.clips
+  ///
+  /// In en, this message translates to:
+  /// **'Clips'**
+  String get unlockFeatureClips;
+
+  /// unlock.feature.nativeCorrections
+  ///
+  /// In en, this message translates to:
+  /// **'Native Corrections'**
+  String get unlockFeatureNativeCorrections;
+
+  /// unlock.feature.passport
+  ///
+  /// In en, this message translates to:
+  /// **'Passport'**
+  String get unlockFeaturePassport;
+
+  /// unlock.feature.codeSwitch
+  ///
+  /// In en, this message translates to:
+  /// **'Code-Switch'**
+  String get unlockFeatureCodeSwitch;
+
+  /// unlock.feature.respect
+  ///
+  /// In en, this message translates to:
+  /// **'Respect'**
+  String get unlockFeatureRespect;
+
+  /// unlock.feature.radio
+  ///
+  /// In en, this message translates to:
+  /// **'Radio'**
+  String get unlockFeatureRadio;
+
+  /// unlock.feature.create
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get unlockFeatureCreate;
+
+  /// unlock.feature.hostRooms
+  ///
+  /// In en, this message translates to:
+  /// **'Host rooms'**
+  String get unlockFeatureHostRooms;
+
+  /// unlock.feature.mentoring
+  ///
+  /// In en, this message translates to:
+  /// **'Mentoring'**
+  String get unlockFeatureMentoring;
+
+  /// unlock.feature.contribute
+  ///
+  /// In en, this message translates to:
+  /// **'Contribute'**
+  String get unlockFeatureContribute;
+
+  /// unlock.feature.verify
+  ///
+  /// In en, this message translates to:
+  /// **'Verify'**
+  String get unlockFeatureVerify;
+
+  /// unlock.feature.calls
+  ///
+  /// In en, this message translates to:
+  /// **'Calls'**
+  String get unlockFeatureCalls;
+
+  /// unlock.feature.publicPost
+  ///
+  /// In en, this message translates to:
+  /// **'Public post'**
+  String get unlockFeaturePublicPost;
+
+  /// unlock.feature.unknown
+  ///
+  /// In en, this message translates to:
+  /// **'This feature'**
+  String get unlockFeatureUnknown;
 }
 
 class _AppLocalizationsDelegate
