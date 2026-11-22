@@ -12211,6 +12211,198 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open the Arcade'**
   String get hubHPlayOpenArcade;
+
+  /// hub.h_village.title
+  ///
+  /// In en, this message translates to:
+  /// **'Village'**
+  String get hubHVillageTitle;
+
+  /// hub.h_village.map
+  ///
+  /// In en, this message translates to:
+  /// **'Village map'**
+  String get hubHVillageMap;
+
+  /// hub.h_village.circles
+  ///
+  /// In en, this message translates to:
+  /// **'Circles'**
+  String get hubHVillageCircles;
+
+  /// hub.h_village.square
+  ///
+  /// In en, this message translates to:
+  /// **'Square'**
+  String get hubHVillageSquare;
+
+  /// hub.h_village.chats
+  ///
+  /// In en, this message translates to:
+  /// **'Chats'**
+  String get hubHVillageChats;
+
+  /// hub.h_village.status
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get hubHVillageStatus;
+
+  /// hub.h_village.clips
+  ///
+  /// In en, this message translates to:
+  /// **'Clips'**
+  String get hubHVillageClips;
+
+  /// hub.h_village.radio
+  ///
+  /// In en, this message translates to:
+  /// **'Radio'**
+  String get hubHVillageRadio;
+
+  /// hub.h_village.school
+  ///
+  /// In en, this message translates to:
+  /// **'School'**
+  String get hubHVillageSchool;
+
+  /// hub.h_village.elderHut
+  ///
+  /// In en, this message translates to:
+  /// **'Elder Hut'**
+  String get hubHVillageElderHut;
+
+  /// hub.h_village.corrections
+  ///
+  /// In en, this message translates to:
+  /// **'Corrections'**
+  String get hubHVillageCorrections;
+
+  /// hub.h_village.create
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get hubHVillageCreate;
+
+  /// hub.h_village.verify
+  ///
+  /// In en, this message translates to:
+  /// **'Verify'**
+  String get hubHVillageVerify;
+
+  /// hub.h_village.back
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Village'**
+  String get hubHVillageBack;
+
+  /// hub.h_village.locked
+  ///
+  /// In en, this message translates to:
+  /// **'Locked'**
+  String get hubHVillageLocked;
+
+  /// hub.h_village.preview
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get hubHVillagePreview;
+
+  /// hub.h_village.openAnyway
+  ///
+  /// In en, this message translates to:
+  /// **'Open anyway'**
+  String get hubHVillageOpenAnyway;
+
+  /// hub.h_village.guardian
+  ///
+  /// In en, this message translates to:
+  /// **'A guardian must open this.'**
+  String get hubHVillageGuardian;
+
+  /// hub.h_village.unlocksA2
+  ///
+  /// In en, this message translates to:
+  /// **'Unlocks at A2.'**
+  String get hubHVillageUnlocksA2;
+
+  /// hub.h_village.unlocksB1
+  ///
+  /// In en, this message translates to:
+  /// **'Unlocks at B1.'**
+  String get hubHVillageUnlocksB1;
+
+  /// hub.h_village.lockedSemantics
+  ///
+  /// In en, this message translates to:
+  /// **'{name}, Locked. {line}'**
+  String hubHVillageLockedSemantics(String name, String line);
+
+  /// hub.h_village.notAvailable.title
+  ///
+  /// In en, this message translates to:
+  /// **'Not available yet'**
+  String get hubHVillageNotAvailableTitle;
+
+  /// hub.h_village.notAvailable.what
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is not available yet.'**
+  String hubHVillageNotAvailableWhat(String name);
+
+  /// hub.h_village.notAvailable.why
+  ///
+  /// In en, this message translates to:
+  /// **'This screen is not built yet.'**
+  String get hubHVillageNotAvailableWhy;
+
+  /// hub.h_village.notAvailable.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Village.'**
+  String get hubHVillageNotAvailableNext;
+
+  /// hub.h_village.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No places yet.'**
+  String get hubHVillageEmptyWhat;
+
+  /// hub.h_village.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'The place list is empty.'**
+  String get hubHVillageEmptyWhy;
+
+  /// hub.h_village.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get hubHVillageEmptyNext;
+
+  /// hub.h_village.error.what
+  ///
+  /// In en, this message translates to:
+  /// **'Village did not open.'**
+  String get hubHVillageErrorWhat;
+
+  /// hub.h_village.error.why
+  ///
+  /// In en, this message translates to:
+  /// **'The place list did not come back.'**
+  String get hubHVillageErrorWhy;
+
+  /// hub.h_village.error.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get hubHVillageErrorNext;
+
+  /// hub.h_village.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'Village is not saved on the phone.'**
+  String get hubHVillageOfflineWhy;
 }
 
 class _AppLocalizationsDelegate
