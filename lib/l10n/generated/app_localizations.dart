@@ -11095,6 +11095,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **', {username}'**
   String shellUsername(String username);
+
+  /// shell.tab.today tab label
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get shellTabToday;
+
+  /// shell.tab.learn tab label
+  ///
+  /// In en, this message translates to:
+  /// **'Learn'**
+  String get shellTabLearn;
+
+  /// shell.tab.speak tab label
+  ///
+  /// In en, this message translates to:
+  /// **'Speak'**
+  String get shellTabSpeak;
+
+  /// shell.tab.play tab label
+  ///
+  /// In en, this message translates to:
+  /// **'Play'**
+  String get shellTabPlay;
+
+  /// shell.tab.village tab label
+  ///
+  /// In en, this message translates to:
+  /// **'Village'**
+  String get shellTabVillage;
+
+  /// shell. Me control
+  ///
+  /// In en, this message translates to:
+  /// **'Me'**
+  String get shellMe;
+
+  /// shell. Search control
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get shellSearch;
+
+  /// shell. Lens control
+  ///
+  /// In en, this message translates to:
+  /// **'Lens'**
+  String get shellLens;
+
+  /// button that opens a section in the current tab
+  ///
+  /// In en, this message translates to:
+  /// **'Open {tab}'**
+  String shellOpenSection(String tab);
+
+  /// shell. A tab section is open
+  ///
+  /// In en, this message translates to:
+  /// **'{tab} is open'**
+  String shellSectionOpen(String tab);
+
+  /// shell. A line in a tab list
+  ///
+  /// In en, this message translates to:
+  /// **'Line {index} in {tab}'**
+  String shellSectionLine(int index, String tab);
+
+  /// shell. What happened when a link misses
+  ///
+  /// In en, this message translates to:
+  /// **'This link did not open.'**
+  String get shellLinkMissedWhat;
+
+  /// shell. Why a link missed
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing in the app matches {link}.'**
+  String shellLinkMissedWhy(String link);
+
+  /// shell. Why a link missed, with the parser detail
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing in the app matches {link}. {detail}'**
+  String shellLinkMissedWhyWithDetail(String link, String detail);
+
+  /// shell. What to do after a missed link
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Today.'**
+  String get shellLinkMissedNext;
+
+  /// button that leaves a missed link
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Today'**
+  String get shellLinkMissedAction;
+
+  /// shell. A link had no text
+  ///
+  /// In en, this message translates to:
+  /// **'The link was empty.'**
+  String get shellLinkWasEmpty;
+
+  /// shell. What happened while offline
+  ///
+  /// In en, this message translates to:
+  /// **'The phone has no network.'**
+  String get shellOfflineWhat;
+
+  /// shell. Why the shell is offline
+  ///
+  /// In en, this message translates to:
+  /// **'These tabs are not saved offline.'**
+  String get shellOfflineWhy;
+
+  /// shell. What to do while offline
+  ///
+  /// In en, this message translates to:
+  /// **'Connect, then try again.'**
+  String get shellOfflineNext;
 }
 
 class _AppLocalizationsDelegate

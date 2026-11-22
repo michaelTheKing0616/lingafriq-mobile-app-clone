@@ -146,7 +146,9 @@ import 'lessons/models/section_lesson_model.dart';
 import 'lessons/stroke_order_view.dart';
 import 'models/language_response.dart';
 import 'models/offline/local_vocabulary.dart';
-import 'widgets/empty_state_widget.dart';
+import 'navigation/app_shell.dart';
+import 'navigation/tab_routes.dart';
+import 'screens/tabs_view/tabs_view.dart';
 
 /// Union of ARB-backed locales and [DynamicLocalizationService] codes so
 /// `locale` and `AppLocalizations` stay consistent.
@@ -785,17 +787,26 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     return MaterialPageRoute(builder: builder, settings: settings);
   }
 
-  // Fallback screen for unknown routes
-  return MaterialPageRoute(
+  final TabLink link = TabRoutes.resolve(settings.name ?? '');
+  if (link.tab != null) {
+    return MaterialPageRoute<void>(
+      settings: settings,
+      builder: (_) => TabsView(initialLink: settings.name),
+    );
+  }
+
+  return MaterialPageRoute<void>(
     settings: settings,
-    builder: (_) => Scaffold(
-      appBar: AppBar(title: Text(settings.name ?? 'Feature Unavailable')),
-      body: const AppEmptyState(
-        icon: Icons.construction_rounded,
-        title: 'Feature Unavailable',
-        subtitle: 'This route is not available in this build.',
-      ),
-    ),
+    builder: (BuildContext context) {
+      return ShellLinkIssuePage(
+        link: link,
+        onToday: () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute<void>(builder: (_) => const TabsView()),
+          );
+        },
+      );
+    },
   );
 }
 
