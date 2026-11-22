@@ -6958,4 +6958,104 @@ class AppLocalizationsSw extends AppLocalizations {
 
   @override
   String get hubHSpeakPolieOfflineWhy => 'Polie needs the network to answer.';
+
+  @override
+  String get hubHVillageTitle => 'Village';
+
+  @override
+  String get hubHVillageMap => 'Village map';
+
+  @override
+  String get hubHVillageCircles => 'Circles';
+
+  @override
+  String get hubHVillageSquare => 'Square';
+
+  @override
+  String get hubHVillageChats => 'Chats';
+
+  @override
+  String get hubHVillageStatus => 'Status';
+
+  @override
+  String get hubHVillageClips => 'Clips';
+
+  @override
+  String get hubHVillageRadio => 'Radio';
+
+  @override
+  String get hubHVillageSchool => 'School';
+
+  @override
+  String get hubHVillageElderHut => 'Elder Hut';
+
+  @override
+  String get hubHVillageCorrections => 'Corrections';
+
+  @override
+  String get hubHVillageCreate => 'Create';
+
+  @override
+  String get hubHVillageVerify => 'Verify';
+
+  @override
+  String get hubHVillageBack => 'Back to Village';
+
+  @override
+  String get hubHVillageLocked => 'Locked';
+
+  @override
+  String get hubHVillagePreview => 'Preview';
+
+  @override
+  String get hubHVillageOpenAnyway => 'Open anyway';
+
+  @override
+  String get hubHVillageGuardian => 'A guardian must open this.';
+
+  @override
+  String get hubHVillageUnlocksA2 => 'Unlocks at A2.';
+
+  @override
+  String get hubHVillageUnlocksB1 => 'Unlocks at B1.';
+
+  @override
+  String hubHVillageLockedSemantics(String name, String line) {
+    return '$name, Locked. $line';
+  }
+
+  @override
+  String get hubHVillageNotAvailableTitle => 'Not available yet';
+
+  @override
+  String hubHVillageNotAvailableWhat(String name) {
+    return '$name is not available yet.';
+  }
+
+  @override
+  String get hubHVillageNotAvailableWhy => 'This screen is not built yet.';
+
+  @override
+  String get hubHVillageNotAvailableNext => 'Go back to Village.';
+
+  @override
+  String get hubHVillageEmptyWhat => 'No places yet.';
+
+  @override
+  String get hubHVillageEmptyWhy => 'The place list is empty.';
+
+  @override
+  String get hubHVillageEmptyNext => 'Try again.';
+
+  @override
+  String get hubHVillageErrorWhat => 'Village did not open.';
+
+  @override
+  String get hubHVillageErrorWhy => 'The place list did not come back.';
+
+  @override
+  String get hubHVillageErrorNext => 'Try again.';
+
+  @override
+  String get hubHVillageOfflineWhy => 'Village is not saved on the phone.';
 }
