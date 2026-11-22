@@ -10153,5 +10153,78 @@
   "revRvLearnDownloadsInProgress": "Download in progress.",
   "@revRvLearnDownloadsInProgress": {
     "description": "rev.rv_learn.downloads.progress"
+  },
+  "revRvShadowEmptyWhat": "No clip is ready.",
+  "@revRvShadowEmptyWhat": {
+    "description": "rev.rv_shadow.empty.what"
+  },
+  "revRvShadowEmptyWhy": "Shadowing has nothing to play.",
+  "@revRvShadowEmptyWhy": {
+    "description": "rev.rv_shadow.empty.why"
+  },
+  "revRvShadowEmptyNext": "Go back to Speak.",
+  "@revRvShadowEmptyNext": {
+    "description": "rev.rv_shadow.empty.next"
+  },
+  "revRvShadowNoAttemptWhat": "No attempt yet.",
+  "@revRvShadowNoAttemptWhat": {
+    "description": "rev.rv_shadow.attempt.empty.what"
+  },
+  "revRvShadowNoAttemptWhy": "You have not spoken this clip.",
+  "@revRvShadowNoAttemptWhy": {
+    "description": "rev.rv_shadow.attempt.empty.why"
+  },
+  "revRvShadowNoAttemptNext": "Record when you are ready.",
+  "@revRvShadowNoAttemptNext": {
+    "description": "rev.rv_shadow.attempt.empty.next"
+  },
+  "revRvShadowRecord": "Record",
+  "@revRvShadowRecord": {
+    "description": "rev.rv_shadow.record"
+  },
+  "revRvShadowErrorWhat": "Shadowing did not open.",
+  "@revRvShadowErrorWhat": {
+    "description": "rev.rv_shadow.error.what"
+  },
+  "revRvShadowErrorWhy": "The clip did not come back.",
+  "@revRvShadowErrorWhy": {
+    "description": "rev.rv_shadow.error.why"
+  },
+  "revRvShadowScoreErrorWhat": "The attempt was not scored.",
+  "@revRvShadowScoreErrorWhat": {
+    "description": "rev.rv_shadow.scoreError.what"
+  },
+  "revRvShadowScoreErrorWhy": "Nothing from that attempt is still on screen.",
+  "@revRvShadowScoreErrorWhy": {
+    "description": "rev.rv_shadow.scoreError.why"
+  },
+  "revRvShadowErrorNext": "Try again.",
+  "@revRvShadowErrorNext": {
+    "description": "rev.rv_shadow.error.next"
+  },
+  "revRvShadowPractice": "Pronunciation scoring is unavailable. You can keep practising without a ranked score.",
+  "@revRvShadowPractice": {
+    "description": "rev.rv_shadow.practice"
+  },
+  "revRvShadowUnsure": "We could not score this clearly. No score is shown.",
+  "@revRvShadowUnsure": {
+    "description": "rev.rv_shadow.unsure"
+  },
+  "revRvShadowScoreLabel": "Score",
+  "@revRvShadowScoreLabel": {
+    "description": "rev.rv_shadow.score.label"
+  },
+  "revRvShadowScoreValue": "{percent}%",
+  "@revRvShadowScoreValue": {
+    "description": "rev.rv_shadow.score.value",
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "revRvShadowOfflineWhy": "Shadowing is not saved on the phone.",
+  "@revRvShadowOfflineWhy": {
+    "description": "rev.rv_shadow.offline.why"
   }
 }
