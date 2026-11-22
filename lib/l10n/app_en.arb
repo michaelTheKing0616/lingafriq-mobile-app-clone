@@ -10226,5 +10226,115 @@
   "revRvShadowOfflineWhy": "Shadowing is not saved on the phone.",
   "@revRvShadowOfflineWhy": {
     "description": "rev.rv_shadow.offline.why"
+  },
+  "revRvAudioFollowing": "Following",
+  "@revRvAudioFollowing": {
+    "description": "rev.rv_audio.following"
+  },
+  "revRvAudioFollowers": "Followers",
+  "@revRvAudioFollowers": {
+    "description": "rev.rv_audio.followers"
+  },
+  "revRvAudioScheduled": "Scheduled sessions",
+  "@revRvAudioScheduled": {
+    "description": "rev.rv_audio.scheduled"
+  },
+  "revRvAudioSpeak": "Speak",
+  "@revRvAudioSpeak": {
+    "description": "rev.rv_audio.speak"
+  },
+  "revRvAudioHost": "Host",
+  "@revRvAudioHost": {
+    "description": "rev.rv_audio.host"
+  },
+  "revRvAudioBack": "Back to Radio",
+  "@revRvAudioBack": {
+    "description": "rev.rv_audio.back"
+  },
+  "revRvAudioFollowingEmptyWhat": "No one is on this list.",
+  "@revRvAudioFollowingEmptyWhat": {
+    "description": "rev.rv_audio.following.empty.what"
+  },
+  "revRvAudioFollowingEmptyWhy": "There is no one to show.",
+  "@revRvAudioFollowingEmptyWhy": {
+    "description": "rev.rv_audio.following.empty.why"
+  },
+  "revRvAudioFollowingEmptyNext": "Go back to Radio.",
+  "@revRvAudioFollowingEmptyNext": {
+    "description": "rev.rv_audio.following.empty.next"
+  },
+  "revRvAudioFollowingFailWhat": "The list did not open.",
+  "@revRvAudioFollowingFailWhat": {
+    "description": "rev.rv_audio.following.fail.what"
+  },
+  "revRvAudioFollowingFailWhy": "The list did not come back.",
+  "@revRvAudioFollowingFailWhy": {
+    "description": "rev.rv_audio.following.fail.why"
+  },
+  "revRvAudioFollowingFailNext": "Try again.",
+  "@revRvAudioFollowingFailNext": {
+    "description": "rev.rv_audio.following.fail.next"
+  },
+  "revRvAudioFollowingOfflineWhy": "This list is not saved on the phone.",
+  "@revRvAudioFollowingOfflineWhy": {
+    "description": "rev.rv_audio.following.offline.why"
+  },
+  "revRvAudioScheduledEmptyWhat": "No session is scheduled.",
+  "@revRvAudioScheduledEmptyWhat": {
+    "description": "rev.rv_audio.scheduled.empty.what"
+  },
+  "revRvAudioScheduledEmptyWhy": "There is no session to show.",
+  "@revRvAudioScheduledEmptyWhy": {
+    "description": "rev.rv_audio.scheduled.empty.why"
+  },
+  "revRvAudioScheduledEmptyNext": "Go back to Radio.",
+  "@revRvAudioScheduledEmptyNext": {
+    "description": "rev.rv_audio.scheduled.empty.next"
+  },
+  "revRvAudioScheduledFailWhat": "The sessions did not open.",
+  "@revRvAudioScheduledFailWhat": {
+    "description": "rev.rv_audio.scheduled.fail.what"
+  },
+  "revRvAudioScheduledFailWhy": "The session list did not come back.",
+  "@revRvAudioScheduledFailWhy": {
+    "description": "rev.rv_audio.scheduled.fail.why"
+  },
+  "revRvAudioScheduledFailNext": "Try again.",
+  "@revRvAudioScheduledFailNext": {
+    "description": "rev.rv_audio.scheduled.fail.next"
+  },
+  "revRvAudioScheduledOfflineWhy": "These sessions are not saved on the phone.",
+  "@revRvAudioScheduledOfflineWhy": {
+    "description": "rev.rv_audio.scheduled.offline.why"
+  },
+  "revRvAudioHostedBy": "Hosted by {name}",
+  "@revRvAudioHostedBy": {
+    "description": "rev.rv_audio.hostedBy",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "revRvAudioSessionSemantics": "Scheduled session: {name}.",
+  "@revRvAudioSessionSemantics": {
+    "description": "rev.rv_audio.session.semantics",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "revRvAudioSessionWhen": "{date} {time}",
+  "@revRvAudioSessionWhen": {
+    "description": "rev.rv_audio.session.when",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
   }
 }
