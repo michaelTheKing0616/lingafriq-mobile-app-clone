@@ -11216,6 +11216,132 @@ abstract class AppLocalizations {
   /// **'Connect, then try again.'**
   String get shellOfflineNext;
 
+  /// search. Field label
+  ///
+  /// In en, this message translates to:
+  /// **'Search words, features, and content'**
+  String get searchFieldLabel;
+
+  /// search. Words group
+  ///
+  /// In en, this message translates to:
+  /// **'Words'**
+  String get searchWords;
+
+  /// search. Features group
+  ///
+  /// In en, this message translates to:
+  /// **'Features'**
+  String get searchFeatures;
+
+  /// search. Content group
+  ///
+  /// In en, this message translates to:
+  /// **'Content'**
+  String get searchContent;
+
+  /// search. What happened before a query
+  ///
+  /// In en, this message translates to:
+  /// **'Search is ready.'**
+  String get searchIdleWhat;
+
+  /// search. Why nothing is listed yet
+  ///
+  /// In en, this message translates to:
+  /// **'The box is empty.'**
+  String get searchIdleWhy;
+
+  /// search. What to do on an empty box
+  ///
+  /// In en, this message translates to:
+  /// **'Type a word or a feature name.'**
+  String get searchIdleNext;
+
+  /// search. Title when nothing matches
+  ///
+  /// In en, this message translates to:
+  /// **'No match'**
+  String get searchEmptyTitle;
+
+  /// search. What happened when nothing matches
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing matches {query}.'**
+  String searchEmptyWhat(String query);
+
+  /// search. Why nothing matched
+  ///
+  /// In en, this message translates to:
+  /// **'That name is not in words, features, or content on this phone.'**
+  String get searchEmptyWhy;
+
+  /// search. What to do when nothing matches
+  ///
+  /// In en, this message translates to:
+  /// **'Open the directory to see every feature.'**
+  String get searchEmptyNext;
+
+  /// search. Button that opens the directory
+  ///
+  /// In en, this message translates to:
+  /// **'Open the directory'**
+  String get searchEmptyAction;
+
+  /// search. Label on local results while offline
+  ///
+  /// In en, this message translates to:
+  /// **'Offline. Showing results saved on this phone.'**
+  String get searchOfflineLabel;
+
+  /// search. What happened when a feature route is not built
+  ///
+  /// In en, this message translates to:
+  /// **'{feature} is not open yet.'**
+  String searchUnlockWhat(String feature);
+
+  /// search. Why a feature route is not open
+  ///
+  /// In en, this message translates to:
+  /// **'It unlocks at {stage}.'**
+  String searchUnlockWhy(String stage);
+
+  /// search. What to do on an unlock preview
+  ///
+  /// In en, this message translates to:
+  /// **'Read this preview, then go back.'**
+  String get searchUnlockNext;
+
+  /// search. Preview heading
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get searchPreviewLabel;
+
+  /// search. Back from search
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get searchBack;
+
+  /// search. Semantics for a word result
+  ///
+  /// In en, this message translates to:
+  /// **'Open Word Card for {word}'**
+  String searchOpenWord(String word);
+
+  /// search. Semantics for a feature result
+  ///
+  /// In en, this message translates to:
+  /// **'Open {feature}'**
+  String searchOpenFeature(String feature);
+
+  /// search. Semantics for a content result
+  ///
+  /// In en, this message translates to:
+  /// **'Open {title}'**
+  String searchOpenContent(String title);
+
   /// hub.h_today.title
   ///
   /// In en, this message translates to:

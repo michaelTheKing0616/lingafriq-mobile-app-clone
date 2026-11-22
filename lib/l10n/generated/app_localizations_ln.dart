@@ -6530,6 +6530,83 @@ class AppLocalizationsLn extends AppLocalizations {
   String get shellOfflineNext => 'Connect, then try again.';
 
   @override
+  String get searchFieldLabel => 'Search words, features, and content';
+
+  @override
+  String get searchWords => 'Words';
+
+  @override
+  String get searchFeatures => 'Features';
+
+  @override
+  String get searchContent => 'Content';
+
+  @override
+  String get searchIdleWhat => 'Search is ready.';
+
+  @override
+  String get searchIdleWhy => 'The box is empty.';
+
+  @override
+  String get searchIdleNext => 'Type a word or a feature name.';
+
+  @override
+  String get searchEmptyTitle => 'No match';
+
+  @override
+  String searchEmptyWhat(String query) {
+    return 'Nothing matches $query.';
+  }
+
+  @override
+  String get searchEmptyWhy =>
+      'That name is not in words, features, or content on this phone.';
+
+  @override
+  String get searchEmptyNext => 'Open the directory to see every feature.';
+
+  @override
+  String get searchEmptyAction => 'Open the directory';
+
+  @override
+  String get searchOfflineLabel =>
+      'Offline. Showing results saved on this phone.';
+
+  @override
+  String searchUnlockWhat(String feature) {
+    return '$feature is not open yet.';
+  }
+
+  @override
+  String searchUnlockWhy(String stage) {
+    return 'It unlocks at $stage.';
+  }
+
+  @override
+  String get searchUnlockNext => 'Read this preview, then go back.';
+
+  @override
+  String get searchPreviewLabel => 'Preview';
+
+  @override
+  String get searchBack => 'Back';
+
+  @override
+  String searchOpenWord(String word) {
+    return 'Open Word Card for $word';
+  }
+
+  @override
+  String searchOpenFeature(String feature) {
+    return 'Open $feature';
+  }
+
+  @override
+  String searchOpenContent(String title) {
+    return 'Open $title';
+  }
+
+  @override
   String get hubTodayTitle => 'Today';
 
   @override
