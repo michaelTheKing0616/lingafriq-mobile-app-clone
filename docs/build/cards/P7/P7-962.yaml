@@ -1,0 +1,76 @@
+charter: v2
+id: P7-962
+kind: build
+title: Accept video, audio, text, and images, then transcribe and translate
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- F-054
+- F-054.E
+depends_on:
+- E-P1-CONTAINMENT
+- P7-961
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: four intake forms, transcription and translation must stay honest'
+token_budget: 50000
+file_allowlist:
+- lib/content/import_media/media_learning_pipeline.dart
+- lib/services/media/media_import_service.dart
+- test/content/import_media_intake_test.dart
+context_anchors:
+- ELEVATION.md#§18.4:L4264-L4283
+acceptance_criteria:
+- id: AC1
+  text: Given an image, when import runs, then the transcript comes from OCR of that image. Low confidence is named. The step does not invent text that the OCR did not return.
+- id: AC2
+  text: Given an audio clip, when import runs, then the transcript comes from transcription of that audio. A failed transcription shows an error and does not build a lesson.
+- id: AC3
+  text: Given a video, when import runs, then the transcript comes from that video's audio track. If the track is missing, the step says there is no audio and does not invent a transcript. On-screen text is included only when OCR of the frames actually ran.
+- id: AC4
+  text: Given pasted text or a text file, when import runs, then that text is the transcript. The step does not claim it was transcribed.
+- id: AC5
+  text: Given a transcript and the learner's language, when translation runs, then the lesson stores the source sentence and a translation. A machine translation is tagged AI-generated, unreviewed. A failed translation keeps the source and says the translation is unavailable.
+- id: AC6
+  text: Given that transcript, when the P7-961 builder runs, then the structured lesson uses one verbatim source sentence. The translation sits beside it and is not substituted as the model sentence.
+test_plan:
+  unit:
+  - import_media_intake_test.dart
+  integration:
+  - one fixture per form, with a failed transcription and a failed translation
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - source sentence stays verbatim
+  - machine translation stays unreviewed
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "This card does not call a live model in the test. A fixture stands in for OCR, transcription, and translation. A missing result stays missing."
+- "F-054 still draws the four choices and the lesson on the Import screen."
+gate: G7
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging
