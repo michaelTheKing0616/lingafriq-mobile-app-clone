@@ -280,7 +280,7 @@ class SpeakingGameFeedbackEngine implements GameFeedbackEngine {
       return GameFeedback.neutral(
         message:
             score.details?['message'] as String? ??
-            'Practice mode — scoring is unavailable.',
+            'Practice mode. Scoring is unavailable.',
         animationEvent: AnimationEvent.encouraging,
         metadata: const {'honest_practice': true, 'retry': true},
       );
