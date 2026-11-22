@@ -28,7 +28,7 @@ file_allowlist:
 - lib/content/import_media/media_learning_pipeline.dart
 - test/content/import_media_lesson_test.dart
 context_anchors:
-- ELEVATION.md#§18.4:L4264-L4275
+- ELEVATION.md#§18.4:L4264-L4283
 acceptance_criteria:
 - id: AC1
   text: Given a transcript of two sentences, a media id, and a span, when the builder runs, then the model is the first sentence, that sentence occurs verbatim in the transcript, and the shadowing text equals the model.

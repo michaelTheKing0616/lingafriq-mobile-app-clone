@@ -2830,10 +2830,10 @@ Global Lens →
 Practice.
 54 Import Media (OCR &
 clips)
-Speak Works Learn from anything: import a song, a
-WhatsApp voice note, a sermon clip or a sign
-photo, and LingAfriq turns it into a personal
-lesson (transcript, g...
+Speak Works Learn from anything: video, audio, text, or
+an image. Transcribe or read it, translate it,
+and build one personal lesson from a verbatim
+source sentence.
 Global Lens →
 "Import"; share-sheet
 target from other
@@ -4262,16 +4262,20 @@ buttons; confidence indicator. Rendered on the single unified design system (§3
 Noto fonts, 48 dp targets, dark mode and l10n.
 Lives in. Global Lens → "Bridge"; Speak → Practice.
 Import Media (OCR & clips)
-What it is. Import images, audio or video to extract text, transcribe and generate learning material.
+What it is. The learner imports a video, an audio clip, text, or an image. The app transcribes or reads that source, translates it, and builds one structured lesson.
 Code. screens/media/import_media_screen.dart, screens/media/media_clip_player_screen.dart.
 Scan: 2 file(s), 163 lines.
 Current state. Works (route import_media). ML Kit Latin OCR (media_import_service.dart:93);
 transcription and generation through the backend.
 Defects. ML Kit Latin OCR mangles stacked tone marks [verify on device]. Generated content isn't
 reviewed.
-Elevation.Learn from anything: import a song, a WhatsApp voice note, a sermon clip or a sign
-photo, and LingAfriq turns it into a personal lesson (transcript, glosses, Tone Lens, 10 flashcards, a
-shadowing clip). Server OCR with a diacritic-aware second pass (AI stack §3.13). Private by default;
+Elevation.Learn from anything. Video and audio are transcribed from the audio track. An image is
+read by OCR, with a diacritic-aware server pass (AI stack §3.13). Pasted or file text is the transcript
+and is not called a transcription. The transcript is translated into the learner's language. A machine
+translation is tagged AI-generated, unreviewed, unless a cited human translation exists. The lesson
+uses one verbatim source sentence (glosses, Tone Lens, at most 10 flashcards, a shadowing clip).
+The translation is stored beside that sentence and does not replace it. A missing track, a failed
+transcription, or a failed translation is named. The app does not invent text. Private by default;
 copyright notice for sharing.
 UX and render. Import sheet (camera/files/share-sheet target); processing steps shown honestly.
 Rendered on the single unified design system (§3.4), with tone-safe Noto fonts, 48 dp targets, dark

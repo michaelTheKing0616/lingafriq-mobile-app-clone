@@ -15,7 +15,7 @@ dod_evidence:
 - coverage on touched domain code
 - ledger row
 risks:
-- "P7-960 is the shell. This card is the lesson the learner sees, and it stays Draft until P7-961 has built the full lesson object."
+- "P7-960 is the shell. P7-961 is the lesson object. P7-962 is the four-form intake. This screen stays Draft until those three are Done."
 - "A pronunciation result may be unsure. The screen must not show a made-up score."
 tags: []
 token_budget: 80000
@@ -46,12 +46,13 @@ depends_on:
 - E-P1-CONTAINMENT
 - E-P5-CONTENT-REAL
 - P7-961
+- P7-962
 file_allowlist:
 - lib/screens/media/import_media_screen.dart
 - lib/screens/media/media_clip_player_screen.dart
 - lib/services/media/media_import_service.dart
 context_anchors:
-- ELEVATION.md#§18.4:L4264-L4280
+- ELEVATION.md#§18.4:L4264-L4283
 delta:
   current_state: Routed import media with ML Kit Latin OCR and backend transcription generation.
   defects_to_fix:
@@ -60,7 +61,8 @@ delta:
   - A gloss can answer with the word itself, which is not a meaning.
   - Shadowing is text only and is not the audio span of the import.
   elevation_to_build:
-  - One saved lesson from one verbatim sentence of the import. The guided blank hides that one word and leaves the rest of the sentence visible.
+  - The learner can import a video, an audio clip, text, or an image. P7-962 turns that source into a transcript and a translation before this screen draws the lesson.
+  - One saved lesson from one verbatim sentence of the import. The guided blank hides that one word and leaves the rest of the sentence visible. The translation sits beside that sentence and does not replace it.
   - Tone Lens shows the marks in the transcript and does not explain a tone it cannot cite.
   - A gloss is cited to a lexicon or tagged AI-generated, unreviewed. At most 10 flashcards, each taken from the source, each storing the media id and span.
   - Shadowing speaks that same sentence. When the import has no audio for the span, the step says the clip is missing and does not play device speech in its place.
