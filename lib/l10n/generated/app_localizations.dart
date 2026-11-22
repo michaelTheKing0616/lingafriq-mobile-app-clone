@@ -11215,6 +11215,252 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Connect, then try again.'**
   String get shellOfflineNext;
+
+  /// hub.h_learn. Path and lessons
+  ///
+  /// In en, this message translates to:
+  /// **'Path and lessons'**
+  String get hubLearnPathAndLessons;
+
+  /// hub.h_learn. Lesson Recap
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson Recap'**
+  String get hubLearnLessonRecap;
+
+  /// hub.h_learn. Words and Review
+  ///
+  /// In en, this message translates to:
+  /// **'Words and Review'**
+  String get hubLearnWordsAndReview;
+
+  /// hub.h_learn. Review Rush
+  ///
+  /// In en, this message translates to:
+  /// **'Review Rush'**
+  String get hubLearnReviewRush;
+
+  /// hub.h_learn. Grammar
+  ///
+  /// In en, this message translates to:
+  /// **'Grammar'**
+  String get hubLearnGrammar;
+
+  /// hub.h_learn. Phrase DNA
+  ///
+  /// In en, this message translates to:
+  /// **'Phrase DNA'**
+  String get hubLearnPhraseDna;
+
+  /// hub.h_learn. Listening
+  ///
+  /// In en, this message translates to:
+  /// **'Listening'**
+  String get hubLearnListening;
+
+  /// hub.h_learn. Writing
+  ///
+  /// In en, this message translates to:
+  /// **'Writing'**
+  String get hubLearnWriting;
+
+  /// hub.h_learn. Tone Gym
+  ///
+  /// In en, this message translates to:
+  /// **'Tone Gym'**
+  String get hubLearnToneGym;
+
+  /// hub.h_learn. Culture shelf
+  ///
+  /// In en, this message translates to:
+  /// **'Culture shelf'**
+  String get hubLearnCultureShelf;
+
+  /// hub.h_learn. Magazine
+  ///
+  /// In en, this message translates to:
+  /// **'Magazine'**
+  String get hubLearnMagazine;
+
+  /// hub.h_learn. Heritage
+  ///
+  /// In en, this message translates to:
+  /// **'Heritage'**
+  String get hubLearnHeritage;
+
+  /// hub.h_learn. History
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get hubLearnHistory;
+
+  /// hub.h_learn. Mannerisms
+  ///
+  /// In en, this message translates to:
+  /// **'Mannerisms'**
+  String get hubLearnMannerisms;
+
+  /// hub.h_learn. Cultural Hub
+  ///
+  /// In en, this message translates to:
+  /// **'Cultural Hub'**
+  String get hubLearnCulturalHub;
+
+  /// hub.h_learn. Passport
+  ///
+  /// In en, this message translates to:
+  /// **'Passport'**
+  String get hubLearnPassport;
+
+  /// hub.h_learn. Downloads
+  ///
+  /// In en, this message translates to:
+  /// **'Downloads'**
+  String get hubLearnDownloads;
+
+  /// hub.h_learn. Back to Learn
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Learn'**
+  String get hubLearnBack;
+
+  /// hub.h_learn. What happened when a destination is not built
+  ///
+  /// In en, this message translates to:
+  /// **'This part is not built yet.'**
+  String get hubLearnNotAvailableWhat;
+
+  /// hub.h_learn. Why a destination shows nothing
+  ///
+  /// In en, this message translates to:
+  /// **'There is nothing to show.'**
+  String get hubLearnNotAvailableWhy;
+
+  /// hub.h_learn. What to do when a destination is not built
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Learn.'**
+  String get hubLearnNotAvailableNext;
+
+  /// hub.h_learn. Empty hub title
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing is here yet'**
+  String get hubLearnEmptyTitle;
+
+  /// hub.h_learn. What happened when the hub is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Learn has no lessons yet.'**
+  String get hubLearnEmptyWhat;
+
+  /// hub.h_learn. Why the hub is empty
+  ///
+  /// In en, this message translates to:
+  /// **'No units came back.'**
+  String get hubLearnEmptyWhy;
+
+  /// hub.h_learn. Next step when the hub is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Open Path and start the first lesson.'**
+  String get hubLearnEmptyNext;
+
+  /// hub.h_learn. Button that opens Path
+  ///
+  /// In en, this message translates to:
+  /// **'Open Path'**
+  String get hubLearnOpenPath;
+
+  /// hub.h_learn. Empty path title
+  ///
+  /// In en, this message translates to:
+  /// **'This path has no lessons'**
+  String get hubLearnPathEmptyTitle;
+
+  /// hub.h_learn. What happened when Path has no units
+  ///
+  /// In en, this message translates to:
+  /// **'No units are on this path.'**
+  String get hubLearnPathEmptyWhat;
+
+  /// hub.h_learn. Why Path has no units
+  ///
+  /// In en, this message translates to:
+  /// **'No units came back to group.'**
+  String get hubLearnPathEmptyWhy;
+
+  /// hub.h_learn. Next step when Path has no units
+  ///
+  /// In en, this message translates to:
+  /// **'Try again later.'**
+  String get hubLearnPathEmptyNext;
+
+  /// hub.h_learn. Empty grammar title
+  ///
+  /// In en, this message translates to:
+  /// **'No pattern yet'**
+  String get hubLearnGrammarEmptyTitle;
+
+  /// hub.h_learn. What happened when Grammar has no pattern
+  ///
+  /// In en, this message translates to:
+  /// **'Grammar has no pattern yet.'**
+  String get hubLearnGrammarEmptyWhat;
+
+  /// hub.h_learn. Why Grammar has no pattern
+  ///
+  /// In en, this message translates to:
+  /// **'No drill came back.'**
+  String get hubLearnGrammarEmptyWhy;
+
+  /// hub.h_learn. Next step when Grammar has no pattern
+  ///
+  /// In en, this message translates to:
+  /// **'Open Path and start a lesson.'**
+  String get hubLearnGrammarEmptyNext;
+
+  /// hub.h_learn. CEFR band heading
+  ///
+  /// In en, this message translates to:
+  /// **'Level {level}'**
+  String hubLearnLevel(String level);
+
+  /// hub.h_learn. Heading when a unit has no CEFR band
+  ///
+  /// In en, this message translates to:
+  /// **'Level not set'**
+  String get hubLearnLevelNotSet;
+
+  /// hub.h_learn. What happened when Learn fails
+  ///
+  /// In en, this message translates to:
+  /// **'Learn did not open.'**
+  String get hubLearnErrorWhat;
+
+  /// hub.h_learn. Why Learn failed
+  ///
+  /// In en, this message translates to:
+  /// **'The lesson list did not come back.'**
+  String get hubLearnErrorWhy;
+
+  /// hub.h_learn. What to do when Learn fails
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get hubLearnErrorNext;
+
+  /// hub.h_learn. Why Learn is offline
+  ///
+  /// In en, this message translates to:
+  /// **'This path is not saved on the phone.'**
+  String get hubLearnOfflineWhy;
+
+  /// hub.h_learn. What to do when Learn is offline
+  ///
+  /// In en, this message translates to:
+  /// **'Connect, then try again.'**
+  String get hubLearnOfflineNext;
 }
 
 class _AppLocalizationsDelegate

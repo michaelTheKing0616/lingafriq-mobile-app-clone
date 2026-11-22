@@ -6528,4 +6528,129 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get shellOfflineNext => 'Connect, then try again.';
+
+  @override
+  String get hubLearnPathAndLessons => 'Path and lessons';
+
+  @override
+  String get hubLearnLessonRecap => 'Lesson Recap';
+
+  @override
+  String get hubLearnWordsAndReview => 'Words and Review';
+
+  @override
+  String get hubLearnReviewRush => 'Review Rush';
+
+  @override
+  String get hubLearnGrammar => 'Grammar';
+
+  @override
+  String get hubLearnPhraseDna => 'Phrase DNA';
+
+  @override
+  String get hubLearnListening => 'Listening';
+
+  @override
+  String get hubLearnWriting => 'Writing';
+
+  @override
+  String get hubLearnToneGym => 'Tone Gym';
+
+  @override
+  String get hubLearnCultureShelf => 'Culture shelf';
+
+  @override
+  String get hubLearnMagazine => 'Magazine';
+
+  @override
+  String get hubLearnHeritage => 'Heritage';
+
+  @override
+  String get hubLearnHistory => 'History';
+
+  @override
+  String get hubLearnMannerisms => 'Mannerisms';
+
+  @override
+  String get hubLearnCulturalHub => 'Cultural Hub';
+
+  @override
+  String get hubLearnPassport => 'Passport';
+
+  @override
+  String get hubLearnDownloads => 'Downloads';
+
+  @override
+  String get hubLearnBack => 'Back to Learn';
+
+  @override
+  String get hubLearnNotAvailableWhat => 'This part is not built yet.';
+
+  @override
+  String get hubLearnNotAvailableWhy => 'There is nothing to show.';
+
+  @override
+  String get hubLearnNotAvailableNext => 'Go back to Learn.';
+
+  @override
+  String get hubLearnEmptyTitle => 'Nothing is here yet';
+
+  @override
+  String get hubLearnEmptyWhat => 'Learn has no lessons yet.';
+
+  @override
+  String get hubLearnEmptyWhy => 'No units came back.';
+
+  @override
+  String get hubLearnEmptyNext => 'Open Path and start the first lesson.';
+
+  @override
+  String get hubLearnOpenPath => 'Open Path';
+
+  @override
+  String get hubLearnPathEmptyTitle => 'This path has no lessons';
+
+  @override
+  String get hubLearnPathEmptyWhat => 'No units are on this path.';
+
+  @override
+  String get hubLearnPathEmptyWhy => 'No units came back to group.';
+
+  @override
+  String get hubLearnPathEmptyNext => 'Try again later.';
+
+  @override
+  String get hubLearnGrammarEmptyTitle => 'No pattern yet';
+
+  @override
+  String get hubLearnGrammarEmptyWhat => 'Grammar has no pattern yet.';
+
+  @override
+  String get hubLearnGrammarEmptyWhy => 'No drill came back.';
+
+  @override
+  String get hubLearnGrammarEmptyNext => 'Open Path and start a lesson.';
+
+  @override
+  String hubLearnLevel(String level) {
+    return 'Level $level';
+  }
+
+  @override
+  String get hubLearnLevelNotSet => 'Level not set';
+
+  @override
+  String get hubLearnErrorWhat => 'Learn did not open.';
+
+  @override
+  String get hubLearnErrorWhy => 'The lesson list did not come back.';
+
+  @override
+  String get hubLearnErrorNext => 'Try again.';
+
+  @override
+  String get hubLearnOfflineWhy => 'This path is not saved on the phone.';
+
+  @override
+  String get hubLearnOfflineNext => 'Connect, then try again.';
 }

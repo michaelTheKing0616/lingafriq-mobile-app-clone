@@ -8703,5 +8703,174 @@
   "shellOfflineNext": "Connect, then try again.",
   "@shellOfflineNext": {
     "description": "shell. What to do while offline"
+  },
+  "hubLearnPathAndLessons": "Path and lessons",
+  "@hubLearnPathAndLessons": {
+    "description": "hub.h_learn. Path and lessons"
+  },
+  "hubLearnLessonRecap": "Lesson Recap",
+  "@hubLearnLessonRecap": {
+    "description": "hub.h_learn. Lesson Recap"
+  },
+  "hubLearnWordsAndReview": "Words and Review",
+  "@hubLearnWordsAndReview": {
+    "description": "hub.h_learn. Words and Review"
+  },
+  "hubLearnReviewRush": "Review Rush",
+  "@hubLearnReviewRush": {
+    "description": "hub.h_learn. Review Rush"
+  },
+  "hubLearnGrammar": "Grammar",
+  "@hubLearnGrammar": {
+    "description": "hub.h_learn. Grammar"
+  },
+  "hubLearnPhraseDna": "Phrase DNA",
+  "@hubLearnPhraseDna": {
+    "description": "hub.h_learn. Phrase DNA"
+  },
+  "hubLearnListening": "Listening",
+  "@hubLearnListening": {
+    "description": "hub.h_learn. Listening"
+  },
+  "hubLearnWriting": "Writing",
+  "@hubLearnWriting": {
+    "description": "hub.h_learn. Writing"
+  },
+  "hubLearnToneGym": "Tone Gym",
+  "@hubLearnToneGym": {
+    "description": "hub.h_learn. Tone Gym"
+  },
+  "hubLearnCultureShelf": "Culture shelf",
+  "@hubLearnCultureShelf": {
+    "description": "hub.h_learn. Culture shelf"
+  },
+  "hubLearnMagazine": "Magazine",
+  "@hubLearnMagazine": {
+    "description": "hub.h_learn. Magazine"
+  },
+  "hubLearnHeritage": "Heritage",
+  "@hubLearnHeritage": {
+    "description": "hub.h_learn. Heritage"
+  },
+  "hubLearnHistory": "History",
+  "@hubLearnHistory": {
+    "description": "hub.h_learn. History"
+  },
+  "hubLearnMannerisms": "Mannerisms",
+  "@hubLearnMannerisms": {
+    "description": "hub.h_learn. Mannerisms"
+  },
+  "hubLearnCulturalHub": "Cultural Hub",
+  "@hubLearnCulturalHub": {
+    "description": "hub.h_learn. Cultural Hub"
+  },
+  "hubLearnPassport": "Passport",
+  "@hubLearnPassport": {
+    "description": "hub.h_learn. Passport"
+  },
+  "hubLearnDownloads": "Downloads",
+  "@hubLearnDownloads": {
+    "description": "hub.h_learn. Downloads"
+  },
+  "hubLearnBack": "Back to Learn",
+  "@hubLearnBack": {
+    "description": "hub.h_learn. Back to Learn"
+  },
+  "hubLearnNotAvailableWhat": "This part is not built yet.",
+  "@hubLearnNotAvailableWhat": {
+    "description": "hub.h_learn. What happened when a destination is not built"
+  },
+  "hubLearnNotAvailableWhy": "There is nothing to show.",
+  "@hubLearnNotAvailableWhy": {
+    "description": "hub.h_learn. Why a destination shows nothing"
+  },
+  "hubLearnNotAvailableNext": "Go back to Learn.",
+  "@hubLearnNotAvailableNext": {
+    "description": "hub.h_learn. What to do when a destination is not built"
+  },
+  "hubLearnEmptyTitle": "Nothing is here yet",
+  "@hubLearnEmptyTitle": {
+    "description": "hub.h_learn. Empty hub title"
+  },
+  "hubLearnEmptyWhat": "Learn has no lessons yet.",
+  "@hubLearnEmptyWhat": {
+    "description": "hub.h_learn. What happened when the hub is empty"
+  },
+  "hubLearnEmptyWhy": "No units came back.",
+  "@hubLearnEmptyWhy": {
+    "description": "hub.h_learn. Why the hub is empty"
+  },
+  "hubLearnEmptyNext": "Open Path and start the first lesson.",
+  "@hubLearnEmptyNext": {
+    "description": "hub.h_learn. Next step when the hub is empty"
+  },
+  "hubLearnOpenPath": "Open Path",
+  "@hubLearnOpenPath": {
+    "description": "hub.h_learn. Button that opens Path"
+  },
+  "hubLearnPathEmptyTitle": "This path has no lessons",
+  "@hubLearnPathEmptyTitle": {
+    "description": "hub.h_learn. Empty path title"
+  },
+  "hubLearnPathEmptyWhat": "No units are on this path.",
+  "@hubLearnPathEmptyWhat": {
+    "description": "hub.h_learn. What happened when Path has no units"
+  },
+  "hubLearnPathEmptyWhy": "No units came back to group.",
+  "@hubLearnPathEmptyWhy": {
+    "description": "hub.h_learn. Why Path has no units"
+  },
+  "hubLearnPathEmptyNext": "Try again later.",
+  "@hubLearnPathEmptyNext": {
+    "description": "hub.h_learn. Next step when Path has no units"
+  },
+  "hubLearnGrammarEmptyTitle": "No pattern yet",
+  "@hubLearnGrammarEmptyTitle": {
+    "description": "hub.h_learn. Empty grammar title"
+  },
+  "hubLearnGrammarEmptyWhat": "Grammar has no pattern yet.",
+  "@hubLearnGrammarEmptyWhat": {
+    "description": "hub.h_learn. What happened when Grammar has no pattern"
+  },
+  "hubLearnGrammarEmptyWhy": "No drill came back.",
+  "@hubLearnGrammarEmptyWhy": {
+    "description": "hub.h_learn. Why Grammar has no pattern"
+  },
+  "hubLearnGrammarEmptyNext": "Open Path and start a lesson.",
+  "@hubLearnGrammarEmptyNext": {
+    "description": "hub.h_learn. Next step when Grammar has no pattern"
+  },
+  "hubLearnLevel": "Level {level}",
+  "@hubLearnLevel": {
+    "description": "hub.h_learn. CEFR band heading",
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "hubLearnLevelNotSet": "Level not set",
+  "@hubLearnLevelNotSet": {
+    "description": "hub.h_learn. Heading when a unit has no CEFR band"
+  },
+  "hubLearnErrorWhat": "Learn did not open.",
+  "@hubLearnErrorWhat": {
+    "description": "hub.h_learn. What happened when Learn fails"
+  },
+  "hubLearnErrorWhy": "The lesson list did not come back.",
+  "@hubLearnErrorWhy": {
+    "description": "hub.h_learn. Why Learn failed"
+  },
+  "hubLearnErrorNext": "Try again.",
+  "@hubLearnErrorNext": {
+    "description": "hub.h_learn. What to do when Learn fails"
+  },
+  "hubLearnOfflineWhy": "This path is not saved on the phone.",
+  "@hubLearnOfflineWhy": {
+    "description": "hub.h_learn. Why Learn is offline"
+  },
+  "hubLearnOfflineNext": "Connect, then try again.",
+  "@hubLearnOfflineNext": {
+    "description": "hub.h_learn. What to do when Learn is offline"
   }
 }

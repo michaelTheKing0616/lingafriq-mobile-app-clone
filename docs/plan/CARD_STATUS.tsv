@@ -561,7 +561,7 @@ P3-035	Done	Build the single text renderer and diacritic keyboard	P3/P3-035.yaml
 P3-036	Done	Generate route-to-hub map from existing routes	P3/P3-036.yaml
 P3-037	Done	Build five-tab shell with Me and global top bar	P3/P3-037.yaml
 P3-038	Draft	Wire Today hub destinations	P3/P3-038.yaml
-P3-039	Draft	Wire Learn hub destinations	P3/P3-039.yaml
+P3-039	Done	Wire Learn hub destinations	P3/P3-039.yaml
 P3-040	Draft	Wire Speak hub destinations	P3/P3-040.yaml
 P3-041	Draft	Wire Play hub and Arcade shelves	P3/P3-041.yaml
 P3-042	Draft	Wire Village hub destinations	P3/P3-042.yaml
