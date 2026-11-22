@@ -95,6 +95,72 @@
           "max_per_day": 1
         }
       ]
+    },
+    {
+      "id": "scenario_market",
+      "when": {
+        "scenario_unit": "market"
+      },
+      "offers": [
+        {
+          "id": "scenario_theatre",
+          "label": "Scenario Theatre",
+          "place": "scenario"
+        },
+        {
+          "id": "market_haggle",
+          "label": "Market Haggle",
+          "place": "play"
+        }
+      ]
+    },
+    {
+      "id": "weekend",
+      "when": {
+        "weekend": true
+      },
+      "offers": [
+        {
+          "id": "circle_clash",
+          "label": "Circle Clash",
+          "place": "village",
+          "social": true
+        },
+        {
+          "id": "village_radio",
+          "label": "Village Radio show",
+          "place": "radio",
+          "social": true
+        },
+        {
+          "id": "festival_event",
+          "label": "Festival event",
+          "place": "events",
+          "social": true
+        }
+      ]
+    },
+    {
+      "id": "active_adult_a2",
+      "when": {
+        "adult": true,
+        "active": true,
+        "min_level": "A2"
+      },
+      "offers": [
+        {
+          "id": "native_corrections",
+          "label": "Try Native Corrections",
+          "place": "corrections",
+          "social": true
+        },
+        {
+          "id": "post_status",
+          "label": "Post a Status",
+          "place": "status",
+          "social": true
+        }
+      ]
     }
   ]
 }
