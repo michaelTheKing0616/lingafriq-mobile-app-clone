@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
+import 'package:lingafriq/screens/goals/daily_challenges_screen.dart';
 
 /// Shortest daily plan this hub will show, in minutes.
 const int kTodayPlanMinMinutes = 10;
@@ -86,7 +87,7 @@ abstract final class TodayHubRoutes {
     id: 'daily challenges',
     path: '/today/daily-challenges',
     taps: 1,
-    built: false,
+    built: true,
   );
 
   static const TodayRoute quests = TodayRoute(
@@ -284,6 +285,15 @@ TodaySurface resolveTodaySurface(TodayPlanSource? source) {
       ),
     ),
   );
+}
+
+/// Screen for a built Today route. Unbuilt rows stay on the hub placeholder.
+Widget? todayOpenedScreen(TodayRoute route) {
+  if (!route.built) return null;
+  if (route.kind == TodayRouteKind.dailyChallenges) {
+    return const DailyChallengesScreen.saved();
+  }
+  return null;
 }
 
 /// Painted name for a registered route.

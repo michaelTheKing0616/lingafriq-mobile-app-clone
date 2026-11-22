@@ -9969,6 +9969,46 @@
   "@revRvMeAboutOfflineWhy": {
     "description": "rev.rv_me.about.offline.why"
   },
+  "revRvTodayChallengesEmptyWhat": "No challenges are saved.",
+  "@revRvTodayChallengesEmptyWhat": {
+    "description": "rev.rv_today.challenges.empty.what"
+  },
+  "revRvTodayChallengesEmptyWhy": "Today has no challenge list yet.",
+  "@revRvTodayChallengesEmptyWhy": {
+    "description": "rev.rv_today.challenges.empty.why"
+  },
+  "revRvTodayChallengesEmptyNext": "Go back to Today.",
+  "@revRvTodayChallengesEmptyNext": {
+    "description": "rev.rv_today.challenges.empty.next"
+  },
+  "revRvTodayChallengesErrorWhat": "Challenges did not open.",
+  "@revRvTodayChallengesErrorWhat": {
+    "description": "rev.rv_today.challenges.error.what"
+  },
+  "revRvTodayChallengesErrorWhy": "The challenge list did not come back.",
+  "@revRvTodayChallengesErrorWhy": {
+    "description": "rev.rv_today.challenges.error.why"
+  },
+  "revRvTodayChallengesErrorNext": "Try again.",
+  "@revRvTodayChallengesErrorNext": {
+    "description": "rev.rv_today.challenges.error.next"
+  },
+  "revRvTodayChallengesOfflineWhy": "Challenges are not saved on the phone.",
+  "@revRvTodayChallengesOfflineWhy": {
+    "description": "rev.rv_today.challenges.offline.why"
+  },
+  "revRvTodayChallengesProgress": "{current} of {target}",
+  "@revRvTodayChallengesProgress": {
+    "description": "rev.rv_today.challenges.progress",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      }
+    }
+  },
   "revRvLearnReviewDashboard": "Review dashboard",
   "@revRvLearnReviewDashboard": {
     "description": "rev.rv_learn.review.title"

@@ -10,6 +10,10 @@ class PoliePreloader extends StatelessWidget {
 
   const PoliePreloader({super.key, this.onComplete, this.tipStore});
 
+  static const String routePath = '/help/polie-tip';
+
+  static const String routeKey = 'help/polie-tip';
+
   @override
   Widget build(BuildContext context) {
     return FeaturePreloaderScreen(

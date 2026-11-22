@@ -7505,6 +7505,34 @@ class AppLocalizationsFr extends AppLocalizations {
   String get revRvMeAboutOfflineWhy => 'About is not saved on the phone.';
 
   @override
+  String get revRvTodayChallengesEmptyWhat => 'No challenges are saved.';
+
+  @override
+  String get revRvTodayChallengesEmptyWhy => 'Today has no challenge list yet.';
+
+  @override
+  String get revRvTodayChallengesEmptyNext => 'Go back to Today.';
+
+  @override
+  String get revRvTodayChallengesErrorWhat => 'Challenges did not open.';
+
+  @override
+  String get revRvTodayChallengesErrorWhy =>
+      'The challenge list did not come back.';
+
+  @override
+  String get revRvTodayChallengesErrorNext => 'Try again.';
+
+  @override
+  String get revRvTodayChallengesOfflineWhy =>
+      'Challenges are not saved on the phone.';
+
+  @override
+  String revRvTodayChallengesProgress(int current, int target) {
+    return '$current of $target';
+  }
+
+  @override
   String get revRvLearnReviewDashboard => 'Review dashboard';
 
   @override
