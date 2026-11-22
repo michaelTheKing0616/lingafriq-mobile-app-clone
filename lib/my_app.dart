@@ -41,6 +41,8 @@ import 'screens/social/tribe_vs_tribe_screen.dart';
 import 'screens/gamification/tribe_selection_screen.dart';
 import 'screens/social/language_villages_screen.dart';
 import 'screens/village/villages_hub_screen.dart';
+import 'screens/social_audio/following_screen.dart';
+import 'screens/social_audio/scheduled_sessions_screen.dart';
 import 'screens/village/swahili_village_map_screen.dart';
 import 'screens/village/village_market_screen.dart';
 import 'screens/village/village_cafe_screen.dart';
@@ -512,13 +514,19 @@ Route<dynamic>? generateAppRoute(RouteSettings settings) {
     // /learn/review-dashboard
     ReviewDashboardScreen.routeKey: (_) => const ReviewDashboardScreen(),
     // /learn/vocab-dashboard
-    VocabularyDashboardScreen.routeKey: (_) => const VocabularyDashboardScreen(),
+    VocabularyDashboardScreen.routeKey: (_) =>
+        const VocabularyDashboardScreen(),
     // /learn/recap
     LessonRecapScreen.routeKey: (_) => const LessonRecapScreen(),
     // /learn/review-rush
     'learn/review-rush': (_) => const GamifiedReviewScreen(),
     // /learn/downloads
     OfflineDownloadsScreen.routeKey: (_) => const OfflineDownloadsScreen(),
+    // /village/radio/following
+    FollowingScreen.routeKey: (_) => const FollowingScreen.live(),
+    // /village/radio/scheduled
+    ScheduledSessionsScreen.routeKey: (_) =>
+        const ScheduledSessionsScreen.live(),
     // Lesson Flow
     'lesson-flow': (ctx) {
       final args = settings.arguments as Map<String, dynamic>?;

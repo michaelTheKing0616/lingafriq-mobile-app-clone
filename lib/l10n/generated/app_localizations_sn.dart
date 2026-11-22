@@ -7594,4 +7594,82 @@ class AppLocalizationsSn extends AppLocalizations {
 
   @override
   String get revRvLearnDownloadsInProgress => 'Download in progress.';
+
+  @override
+  String get revRvAudioFollowing => 'Following';
+
+  @override
+  String get revRvAudioFollowers => 'Followers';
+
+  @override
+  String get revRvAudioScheduled => 'Scheduled sessions';
+
+  @override
+  String get revRvAudioSpeak => 'Speak';
+
+  @override
+  String get revRvAudioHost => 'Host';
+
+  @override
+  String get revRvAudioBack => 'Back to Radio';
+
+  @override
+  String get revRvAudioFollowingEmptyWhat => 'No one is on this list.';
+
+  @override
+  String get revRvAudioFollowingEmptyWhy => 'There is no one to show.';
+
+  @override
+  String get revRvAudioFollowingEmptyNext => 'Go back to Radio.';
+
+  @override
+  String get revRvAudioFollowingFailWhat => 'The list did not open.';
+
+  @override
+  String get revRvAudioFollowingFailWhy => 'The list did not come back.';
+
+  @override
+  String get revRvAudioFollowingFailNext => 'Try again.';
+
+  @override
+  String get revRvAudioFollowingOfflineWhy =>
+      'This list is not saved on the phone.';
+
+  @override
+  String get revRvAudioScheduledEmptyWhat => 'No session is scheduled.';
+
+  @override
+  String get revRvAudioScheduledEmptyWhy => 'There is no session to show.';
+
+  @override
+  String get revRvAudioScheduledEmptyNext => 'Go back to Radio.';
+
+  @override
+  String get revRvAudioScheduledFailWhat => 'The sessions did not open.';
+
+  @override
+  String get revRvAudioScheduledFailWhy =>
+      'The session list did not come back.';
+
+  @override
+  String get revRvAudioScheduledFailNext => 'Try again.';
+
+  @override
+  String get revRvAudioScheduledOfflineWhy =>
+      'These sessions are not saved on the phone.';
+
+  @override
+  String revRvAudioHostedBy(String name) {
+    return 'Hosted by $name';
+  }
+
+  @override
+  String revRvAudioSessionSemantics(String name) {
+    return 'Scheduled session: $name.';
+  }
+
+  @override
+  String revRvAudioSessionWhen(String date, String time) {
+    return '$date $time';
+  }
 }
