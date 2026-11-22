@@ -10538,5 +10538,97 @@
   "unlockFeatureUnknown": "This feature",
   "@unlockFeatureUnknown": {
     "description": "unlock.feature.unknown"
+  },
+  "revRvContribTitle": "Contribute",
+  "@revRvContribTitle": {
+    "description": "rev.rv_contrib.title"
+  },
+  "revRvContribVerifyTitle": "Verify",
+  "@revRvContribVerifyTitle": {
+    "description": "rev.rv_contrib.verify.title"
+  },
+  "revRvContribTeacherTitle": "Teacher",
+  "@revRvContribTeacherTitle": {
+    "description": "rev.rv_contrib.teacher.title"
+  },
+  "revRvContribVerifyEmptyWhat": "No lesson item is waiting.",
+  "@revRvContribVerifyEmptyWhat": {
+    "description": "rev.rv_contrib.verify.empty.what"
+  },
+  "revRvContribVerifyEmptyWhy": "There is nothing to check.",
+  "@revRvContribVerifyEmptyWhy": {
+    "description": "rev.rv_contrib.verify.empty.why"
+  },
+  "revRvContribVerifyEmptyNext": "Go back to Village.",
+  "@revRvContribVerifyEmptyNext": {
+    "description": "rev.rv_contrib.verify.empty.next"
+  },
+  "revRvContribVerifyFailWhat": "The queue did not open.",
+  "@revRvContribVerifyFailWhat": {
+    "description": "rev.rv_contrib.verify.fail.what"
+  },
+  "revRvContribVerifyFailWhy": "The lesson items did not come back.",
+  "@revRvContribVerifyFailWhy": {
+    "description": "rev.rv_contrib.verify.fail.why"
+  },
+  "revRvContribVerifyFailNext": "Try again.",
+  "@revRvContribVerifyFailNext": {
+    "description": "rev.rv_contrib.verify.fail.next"
+  },
+  "revRvContribVerifyOfflineWhy": "This queue is not saved on the phone.",
+  "@revRvContribVerifyOfflineWhy": {
+    "description": "rev.rv_contrib.verify.offline.why"
+  },
+  "revRvContribVerifyLimitedWhat": "Verify is limited.",
+  "@revRvContribVerifyLimitedWhat": {
+    "description": "rev.rv_contrib.verify.limited.what"
+  },
+  "revRvContribVerifyLimitedWhy": "This account is not a verified native speaker.",
+  "@revRvContribVerifyLimitedWhy": {
+    "description": "rev.rv_contrib.verify.limited.why"
+  },
+  "revRvContribVerifyLimitedNext": "A verified native speaker can check lesson items.",
+  "@revRvContribVerifyLimitedNext": {
+    "description": "rev.rv_contrib.verify.limited.next"
+  },
+  "revRvContribEmptyWhat": "No prompt is ready.",
+  "@revRvContribEmptyWhat": {
+    "description": "rev.rv_contrib.empty.what"
+  },
+  "revRvContribEmptyWhy": "There is nothing to record.",
+  "@revRvContribEmptyWhy": {
+    "description": "rev.rv_contrib.empty.why"
+  },
+  "revRvContribEmptyNext": "Go back to Village.",
+  "@revRvContribEmptyNext": {
+    "description": "rev.rv_contrib.empty.next"
+  },
+  "revRvContribFailWhat": "The prompts did not open.",
+  "@revRvContribFailWhat": {
+    "description": "rev.rv_contrib.fail.what"
+  },
+  "revRvContribFailWhy": "The prompt list did not come back.",
+  "@revRvContribFailWhy": {
+    "description": "rev.rv_contrib.fail.why"
+  },
+  "revRvContribFailNext": "Try again.",
+  "@revRvContribFailNext": {
+    "description": "rev.rv_contrib.fail.next"
+  },
+  "revRvContribOfflineWhy": "These prompts are not saved on the phone.",
+  "@revRvContribOfflineWhy": {
+    "description": "rev.rv_contrib.offline.why"
+  },
+  "revRvContribTeacherDeniedWhat": "This dashboard is closed.",
+  "@revRvContribTeacherDeniedWhat": {
+    "description": "rev.rv_contrib.teacher.denied.what"
+  },
+  "revRvContribTeacherDeniedWhy": "This account is not a teacher.",
+  "@revRvContribTeacherDeniedWhy": {
+    "description": "rev.rv_contrib.teacher.denied.why"
+  },
+  "revRvContribTeacherDeniedNext": "Go back to Village.",
+  "@revRvContribTeacherDeniedNext": {
+    "description": "rev.rv_contrib.teacher.denied.next"
   }
 }

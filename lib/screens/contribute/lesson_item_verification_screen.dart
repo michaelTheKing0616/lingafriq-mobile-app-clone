@@ -1,453 +1,347 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../models/lesson_item_model.dart';
-import '../../services/lesson_item_verification_service.dart';
-import '../../utils/screen_helpers.dart';
+import 'package:lingafriq/design/components/ling_button.dart';
+import 'package:lingafriq/design/components/ling_state.dart';
+import 'package:lingafriq/design/states/empty_state.dart';
+import 'package:lingafriq/design/states/error_state.dart';
+import 'package:lingafriq/design/states/offline_state.dart';
+import 'package:lingafriq/design/tokens.g.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
+import 'package:lingafriq/models/lesson_item_model.dart';
+import 'package:lingafriq/services/lesson_item_verification_service.dart';
 
-class LessonItemVerificationScreen extends ConsumerStatefulWidget {
-  final String? languageCode;
+/// What a verification load returned. [ready] is the only status with items.
+enum VerificationListStatus { loading, ready, empty, error, offline, limited }
 
+/// Lesson items waiting for a verified native speaker.
+///
+/// A row with no text is dropped. No stand-in line is added.
+List<LessonItem> verificationItemsFromRows(List<Map<String, dynamic>> rows) {
+  final List<LessonItem> items = <LessonItem>[];
+  for (final Map<String, dynamic> row in rows) {
+    final LessonItem item = LessonItem.fromJson(row);
+    if (item.text.trim().isEmpty) continue;
+    items.add(item);
+  }
+  return items;
+}
+
+/// Verify queue for lesson items.
+///
+/// [verifiedNativeSpeaker] is passed by the caller. When it is omitted or
+/// false, the queue stays closed and no item is loaded. A failed load clears
+/// the previous list.
+class LessonItemVerificationScreen extends StatefulWidget {
   const LessonItemVerificationScreen({
     super.key,
     this.languageCode,
-  });
+    this.verifiedNativeSpeaker = false,
+    this.load,
+  }) : live = false;
+
+  const LessonItemVerificationScreen.live({
+    super.key,
+    this.languageCode,
+    this.verifiedNativeSpeaker = false,
+  }) : load = null,
+       live = true;
+
+  /// App route `/village/verify`. The map key drops the leading slash.
+  static const String routePath = '/village/verify';
+
+  static const String routeKey = 'village/verify';
+
+  static const Key emptyKey = ValueKey<String>('verify-empty');
+
+  static const Key errorKey = ValueKey<String>('verify-error');
+
+  static const Key offlineKey = ValueKey<String>('verify-offline');
+
+  static const Key limitedKey = ValueKey<String>('verify-limited');
+
+  static const Key listKey = ValueKey<String>('verify-list');
+
+  final String? languageCode;
+
+  /// True only when the caller passes that this person is a verified native speaker.
+  final bool verifiedNativeSpeaker;
+
+  final Future<VerificationQueue> Function()? load;
+
+  /// Reads the pending queue from the existing client.
+  final bool live;
 
   @override
-  ConsumerState<LessonItemVerificationScreen> createState() => _LessonItemVerificationScreenState();
+  State<LessonItemVerificationScreen> createState() =>
+      _LessonItemVerificationScreenState();
 }
 
-class _LessonItemVerificationScreenState extends ConsumerState<LessonItemVerificationScreen> {
-  late final LessonItemVerificationService _verificationService;
-  final TextEditingController _commentsController = TextEditingController();
-  final TextEditingController _textCorrectionController = TextEditingController();
-  final TextEditingController _translationCorrectionController = TextEditingController();
-
-  List<LessonItem> _pendingItems = [];
-  LessonItem? _currentItem;
-  int _currentIndex = 0;
-  bool _isLoading = true;
-  String? _error;
-
-  bool? _toneCorrect;
-  bool? _pronunciationCorrect;
-  bool? _translationAccurate;
-  bool? _culturalAppropriate;
-  String _selectedStatus = 'approved';
-  double _confidenceScore = 0.8;
-  bool _showCorrections = false;
-  bool _isSubmitting = false;
+class _LessonItemVerificationScreenState
+    extends State<LessonItemVerificationScreen> {
+  VerificationListStatus _status = VerificationListStatus.loading;
+  List<LessonItem> _items = const <LessonItem>[];
+  int _generation = 0;
 
   @override
   void initState() {
     super.initState();
-    _loadPendingItems();
-  }
-
-  Future<void> _loadPendingItems() async {
-    setState(() {
-      _isLoading = true;
-      _error = null;
-    });
-
-    try {
-      final items = await safeAsync(
-        () => _verificationService.getPendingVerification(
-          languageCode: widget.languageCode,
-          limit: 50,
-        ),
-        onError: (error) {
-          setState(() {
-            _error = error.toString();
-            _isLoading = false;
-          });
-          return <Map<String, dynamic>>[];
-        },
-      );
-
-      if (items != null) {
-        setState(() {
-          _pendingItems = items.map((json) => LessonItem.fromJson(json)).toList();
-          if (_pendingItems.isNotEmpty) {
-            _currentItem = _pendingItems[0];
-          }
-          _isLoading = false;
-        });
-      }
-    } catch (e) {
-      setState(() {
-        _error = e.toString();
-        _isLoading = false;
-      });
+    if (!widget.verifiedNativeSpeaker) {
+      _status = VerificationListStatus.limited;
+      return;
     }
-  }
-
-  Future<void> _submitVerification() async {
-    if (_currentItem == null) return;
-
-    setState(() {
-      _isSubmitting = true;
-    });
-
-    try {
-      final corrections = _showCorrections && (
-        _textCorrectionController.text.isNotEmpty ||
-        _translationCorrectionController.text.isNotEmpty
-      ) ? {
-        if (_textCorrectionController.text.isNotEmpty)
-          'text': _textCorrectionController.text,
-        if (_translationCorrectionController.text.isNotEmpty)
-          'translation': _translationCorrectionController.text,
-      } : null;
-
-      await safeAsync(
-        () => _verificationService.submitVerification(
-          itemId: _currentItem!.id,
-          status: _selectedStatus,
-          toneCorrect: _toneCorrect,
-          pronunciationCorrect: _pronunciationCorrect,
-          translationAccurate: _translationAccurate,
-          culturalAppropriate: _culturalAppropriate,
-          comments: _commentsController.text.isEmpty ? null : _commentsController.text,
-          corrections: corrections,
-          confidenceScore: _confidenceScore,
-        ),
-      );
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Verification submitted successfully')),
-        );
-
-        _loadNextItem();
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: ${e.toString()}')),
-        );
-      }
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isSubmitting = false;
-        });
-      }
+    if (widget.load == null && !widget.live) {
+      _status = VerificationListStatus.empty;
+      return;
     }
-  }
-
-  void _loadNextItem() {
-    if (_currentIndex < _pendingItems.length - 1) {
-      setState(() {
-        _currentIndex++;
-        _currentItem = _pendingItems[_currentIndex];
-        _resetForm();
-      });
-    } else {
-      _loadPendingItems();
-    }
-  }
-
-  void _resetForm() {
-    _toneCorrect = null;
-    _pronunciationCorrect = null;
-    _translationAccurate = null;
-    _culturalAppropriate = null;
-    _selectedStatus = 'approved';
-    _confidenceScore = 0.8;
-    _showCorrections = false;
-    _commentsController.clear();
-    _textCorrectionController.clear();
-    _translationCorrectionController.clear();
+    _schedule(_generation);
   }
 
   @override
-  void dispose() {
-    _commentsController.dispose();
-    _textCorrectionController.dispose();
-    _translationCorrectionController.dispose();
-    super.dispose();
+  void didUpdateWidget(LessonItemVerificationScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (identical(oldWidget.load, widget.load) &&
+        oldWidget.live == widget.live &&
+        oldWidget.verifiedNativeSpeaker == widget.verifiedNativeSpeaker &&
+        oldWidget.languageCode == widget.languageCode) {
+      return;
+    }
+    _items = const <LessonItem>[];
+    _generation += 1;
+    if (!widget.verifiedNativeSpeaker) {
+      _status = VerificationListStatus.limited;
+      return;
+    }
+    if (widget.load == null && !widget.live) {
+      _status = VerificationListStatus.empty;
+      return;
+    }
+    _status = VerificationListStatus.loading;
+    _schedule(_generation);
+  }
+
+  void _schedule(int generation) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || generation != _generation) return;
+      _run(generation);
+    });
+  }
+
+  Future<void> _run(int generation) async {
+    if (!widget.verifiedNativeSpeaker) return;
+    final Future<VerificationQueue> Function() load = widget.load ?? _loadLive;
+    try {
+      final VerificationQueue view = await load();
+      if (!mounted || generation != _generation) return;
+      setState(() => _apply(view));
+    } catch (_) {
+      if (!mounted || generation != _generation) return;
+      setState(() {
+        _status = VerificationListStatus.error;
+        _items = const <LessonItem>[];
+      });
+    }
+  }
+
+  Future<VerificationQueue> _loadLive() async {
+    final ProviderContainer? container = _container();
+    if (container == null) return const VerificationQueue.empty();
+    final LessonItemVerificationService service = container.read(
+      lessonItemVerificationServiceProvider,
+    );
+    return service.loadPending(languageCode: widget.languageCode);
+  }
+
+  ProviderContainer? _container() {
+    try {
+      return ProviderScope.containerOf(context, listen: false);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  void _apply(VerificationQueue view) {
+    final List<LessonItem> items = verificationItemsFromRows(view.items);
+    if (view.status == VerificationQueueStatus.ready && items.isNotEmpty) {
+      _status = VerificationListStatus.ready;
+      _items = List<LessonItem>.unmodifiable(items);
+      return;
+    }
+    _items = const <LessonItem>[];
+    if (view.status == VerificationQueueStatus.offline) {
+      _status = VerificationListStatus.offline;
+    } else if (view.status == VerificationQueueStatus.error) {
+      _status = VerificationListStatus.error;
+    } else {
+      _status = VerificationListStatus.empty;
+    }
+  }
+
+  void _retry() {
+    if (!widget.verifiedNativeSpeaker) return;
+    setState(() {
+      _items = const <LessonItem>[];
+      _status = VerificationListStatus.loading;
+      _generation += 1;
+    });
+    _schedule(_generation);
+  }
+
+  void _back() {
+    final NavigatorState nav = Navigator.of(context);
+    nav.popUntil((Route<dynamic> route) {
+      final String? name = route.settings.name;
+      return name == '/village' || name == '/village/map' || route.isFirst;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    _verificationService = ref.read(lessonItemVerificationServiceProvider);
+    final AppLocalizations l10n = l10nOf(context);
+    final Widget body = switch (_status) {
+      VerificationListStatus.loading => _loading(context, l10n),
+      VerificationListStatus.limited => _limited(context, l10n),
+      VerificationListStatus.empty => LingEmptyState(
+        key: LessonItemVerificationScreen.emptyKey,
+        title: l10n.revRvContribVerifyTitle,
+        whatHappened: l10n.revRvContribVerifyEmptyWhat,
+        why: l10n.revRvContribVerifyEmptyWhy,
+        whatToDo: l10n.revRvContribVerifyEmptyNext,
+        actionLabel: l10n.hubHVillageBack,
+        unavailableLabel: l10n.commonStateUnavailable,
+        onAction: _back,
+      ),
+      VerificationListStatus.error => LingErrorState(
+        key: LessonItemVerificationScreen.errorKey,
+        whatHappened: l10n.revRvContribVerifyFailWhat,
+        why: l10n.revRvContribVerifyFailWhy,
+        whatToDo: l10n.revRvContribVerifyFailNext,
+        actionLabel: l10n.commonActionTryAgain,
+        unavailableLabel: l10n.commonStateUnavailable,
+        onAction: _retry,
+      ),
+      VerificationListStatus.offline => LingOfflineState(
+        key: LessonItemVerificationScreen.offlineKey,
+        whatHappened: l10n.shellOfflineWhat,
+        why: l10n.revRvContribVerifyOfflineWhy,
+        whatToDo: l10n.shellOfflineNext,
+        queuedActions: 0,
+        actionLabel: l10n.commonActionTryAgain,
+        unavailableLabel: l10n.commonStateUnavailable,
+        onAction: _retry,
+      ),
+      VerificationListStatus.ready => _list(context, l10n),
+    };
+    return _frame(context, l10n, body);
+  }
+
+  Widget _loading(BuildContext context, AppLocalizations l10n) {
+    return Text(
+      l10n.loading,
+      style: lingBody(LingPalette.of(Theme.of(context).brightness).onSurface),
+      softWrap: true,
+      overflow: TextOverflow.visible,
+    );
+  }
+
+  Widget _limited(BuildContext context, AppLocalizations l10n) {
+    final LingPalette palette = LingPalette.of(Theme.of(context).brightness);
+    return Column(
+      key: LessonItemVerificationScreen.limitedKey,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Text(
+          l10n.revRvContribVerifyLimitedWhat,
+          style: lingBody(palette.onSurface),
+          softWrap: true,
+          overflow: TextOverflow.visible,
+        ),
+        const SizedBox(height: LingAfriqTokens.spacing16),
+        Text(
+          l10n.revRvContribVerifyLimitedWhy,
+          style: lingBody(palette.onSurfaceVariant),
+          softWrap: true,
+          overflow: TextOverflow.visible,
+        ),
+        const SizedBox(height: LingAfriqTokens.spacing16),
+        Text(
+          l10n.revRvContribVerifyLimitedNext,
+          style: lingBody(palette.onSurfaceVariant),
+          softWrap: true,
+          overflow: TextOverflow.visible,
+        ),
+        const SizedBox(height: LingAfriqTokens.spacing16),
+        LingButton(
+          label: l10n.hubHVillageBack,
+          unavailableLabel: l10n.commonStateUnavailable,
+          onPressed: _back,
+        ),
+      ],
+    );
+  }
+
+  Widget _frame(BuildContext context, AppLocalizations l10n, Widget body) {
+    final LingPalette palette = LingPalette.of(Theme.of(context).brightness);
+    final bool canLeave =
+        _status == VerificationListStatus.loading ||
+        _status == VerificationListStatus.ready;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Verify Lesson Items'),
-        actions: [
-          if (_pendingItems.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Center(
-                child: Text('${_currentIndex + 1}/${_pendingItems.length}'),
-              ),
-            ),
-        ],
-      ),
-      body: withErrorBoundary(
-        _buildBody(),
-        onRetry: _loadPendingItems,
-      ),
-    );
-  }
-
-  Widget _buildBody() {
-    if (_isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    if (_error != null) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.error_outline, size: 64, color: Colors.red),
-            const SizedBox(height: 16),
-            Text(_error!),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _loadPendingItems,
-              child: const Text('Retry'),
-            ),
-          ],
-        ),
-      );
-    }
-
-    if (_currentItem == null) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.check_circle_outline, size: 64, color: Colors.green),
-            const SizedBox(height: 16),
-            const Text('No items pending verification'),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _loadPendingItems,
-              child: const Text('Refresh'),
-            ),
-          ],
-        ),
-      );
-    }
-
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _buildLessonItemCard(),
-          const SizedBox(height: 24),
-          _buildVerificationForm(),
-          const SizedBox(height: 24),
-          _buildSubmitButton(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLessonItemCard() {
-    final item = _currentItem!;
-    
-    return Card(
-      elevation: 4,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Chip(label: Text(item.language)),
-                const SizedBox(width: 8),
-                Chip(label: Text(item.level)),
-                const SizedBox(width: 8),
-                Chip(label: Text(item.category)),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Text(
-              item.text,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            if (item.ipa != null) ...[
-              const SizedBox(height: 8),
+      backgroundColor: palette.surface,
+      body: SafeArea(
+        child: Semantics(
+          container: true,
+          label: l10n.revRvContribVerifyTitle,
+          child: ListView(
+            padding: const EdgeInsets.all(LingAfriqTokens.spacing16),
+            children: <Widget>[
               Text(
-                '/${item.ipa}/',
-                style: TextStyle(fontSize: 18, color: Colors.grey[600], fontStyle: FontStyle.italic),
+                l10n.revRvContribVerifyTitle,
+                style: lingBody(palette.onSurface),
+                softWrap: true,
+                overflow: TextOverflow.visible,
               ),
+              const SizedBox(height: LingAfriqTokens.spacing16),
+              body,
+              if (canLeave) ...<Widget>[
+                const SizedBox(height: LingAfriqTokens.spacing16),
+                LingButton(
+                  label: l10n.hubHVillageBack,
+                  unavailableLabel: l10n.commonStateUnavailable,
+                  onPressed: _back,
+                ),
+              ],
             ],
-            if (item.tonePattern != null && item.tonePattern!.isNotEmpty) ...[
-              const SizedBox(height: 8),
-              Wrap(
-                spacing: 4,
-                children: item.tonePattern!.map((tone) => Chip(
-                  label: Text(tone, style: const TextStyle(fontSize: 12)),
-                  visualDensity: VisualDensity.compact,
-                )).toList(),
-              ),
-            ],
-            const Divider(height: 32),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _list(BuildContext context, AppLocalizations l10n) {
+    final LingPalette palette = LingPalette.of(Theme.of(context).brightness);
+    return Column(
+      key: LessonItemVerificationScreen.listKey,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        for (final LessonItem item in _items) ...<Widget>[
+          Text(
+            item.text,
+            style: lingBody(palette.onSurface),
+            softWrap: true,
+            overflow: TextOverflow.visible,
+          ),
+          if (item.translation.trim().isNotEmpty) ...<Widget>[
+            const SizedBox(height: LingAfriqTokens.spacing8),
             Text(
               item.translation,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-            ),
-            if (item.culturalNote != null) ...[
-              const SizedBox(height: 16),
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.blue[50],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.info_outline, size: 20),
-                    const SizedBox(width: 8),
-                    Expanded(child: Text(item.culturalNote!)),
-                  ],
-                ),
-              ),
-            ],
-            if (item.exampleSentences != null && item.exampleSentences!.isNotEmpty) ...[
-              const SizedBox(height: 16),
-              ...item.exampleSentences!.map((example) => Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(example.text, style: const TextStyle(fontWeight: FontWeight.w500)),
-                    Text(example.translation, style: TextStyle(color: Colors.grey[600])),
-                  ],
-                ),
-              )),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildVerificationForm() {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Text(
-              'Verification Checklist',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            _buildCheckboxField(
-              'Tone correct',
-              _toneCorrect,
-              (value) => setState(() => _toneCorrect = value),
-            ),
-            _buildCheckboxField(
-              'Pronunciation correct',
-              _pronunciationCorrect,
-              (value) => setState(() => _pronunciationCorrect = value),
-            ),
-            _buildCheckboxField(
-              'Translation accurate',
-              _translationAccurate,
-              (value) => setState(() => _translationAccurate = value),
-            ),
-            _buildCheckboxField(
-              'Culturally appropriate',
-              _culturalAppropriate,
-              (value) => setState(() => _culturalAppropriate = value),
-            ),
-            const SizedBox(height: 16),
-            const Text('Status:'),
-            SegmentedButton<String>(
-              segments: const [
-                ButtonSegment(value: 'approved', label: Text('Approve')),
-                ButtonSegment(value: 'rejected', label: Text('Reject')),
-                ButtonSegment(value: 'needs_revision', label: Text('Revise')),
-              ],
-              selected: {_selectedStatus},
-              onSelectionChanged: (Set<String> newSelection) {
-                setState(() {
-                  _selectedStatus = newSelection.first;
-                });
-              },
-            ),
-            const SizedBox(height: 16),
-            const Text('Confidence Score:'),
-            Slider(
-              value: _confidenceScore,
-              min: 0.0,
-              max: 1.0,
-              divisions: 10,
-              label: _confidenceScore.toStringAsFixed(1),
-              onChanged: (value) => setState(() => _confidenceScore = value),
-            ),
-            const SizedBox(height: 16),
-            CheckboxListTile(
-              title: const Text('Provide corrections'),
-              value: _showCorrections,
-              onChanged: (value) => setState(() => _showCorrections = value ?? false),
-            ),
-            if (_showCorrections) ...[
-              TextField(
-                controller: _textCorrectionController,
-                decoration: const InputDecoration(
-                  labelText: 'Text correction',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: _translationCorrectionController,
-                decoration: const InputDecoration(
-                  labelText: 'Translation correction',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ],
-            const SizedBox(height: 16),
-            TextField(
-              controller: _commentsController,
-              decoration: const InputDecoration(
-                labelText: 'Comments (optional)',
-                border: OutlineInputBorder(),
-              ),
-              maxLines: 3,
+              style: lingBody(palette.onSurfaceVariant),
+              softWrap: true,
+              overflow: TextOverflow.visible,
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCheckboxField(String label, bool? value, ValueChanged<bool?> onChanged) {
-    return CheckboxListTile(
-      title: Text(label),
-      value: value,
-      onChanged: onChanged,
-      controlAffinity: ListTileControlAffinity.leading,
-    );
-  }
-
-  Widget _buildSubmitButton() {
-    return ElevatedButton.icon(
-      onPressed: _isSubmitting ? null : _submitVerification,
-      icon: _isSubmitting
-          ? const SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            )
-          : const Icon(Icons.check),
-      label: Text(_isSubmitting ? 'Submitting...' : 'Submit Verification'),
-      style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(vertical: 16),
-      ),
+          const SizedBox(height: LingAfriqTokens.spacing16),
+        ],
+      ],
     );
   }
 }
-

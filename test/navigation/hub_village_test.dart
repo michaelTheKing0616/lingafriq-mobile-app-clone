@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:lingafriq/design/tokens.g.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/navigation/hub_village.dart';
+import 'package:lingafriq/screens/contribute/lesson_item_verification_screen.dart';
 import 'package:lingafriq/screens/village/villages_hub_screen.dart';
 
 const List<String> _fake = <String>[
@@ -134,12 +135,11 @@ void main() {
     );
     expect(
       VillageRoutes.openingFor(VillageRoutes.verify),
-      isA<VillageGapOpening>().having(
-        (VillageGapOpening opening) => opening.gap.placeId,
-        'place',
-        'verify',
-      ),
+      isA<VillageHubOpening>(),
     );
+    expect(VillageRoutes.verify, '/village/verify');
+    expect(VillageRoutes.contribute, '/village/contribute');
+    expect(VillageRoutes.teacher, '/village/school/teacher');
   });
 
   testWidgets('every village sitemap row opens in two taps or fewer', (
@@ -207,12 +207,17 @@ void main() {
       VillageRoutes.create,
     );
     await _tap(tester, find.byKey(VillageHub.verifyKey));
-    expect(find.byType(VillageNotAvailablePage), findsOneWidget);
+    expect(find.byType(LessonItemVerificationScreen), findsOneWidget);
     final String verifyRoute = ModalRoute.of(
-      tester.element(find.byType(VillageNotAvailablePage)),
+      tester.element(find.byType(LessonItemVerificationScreen)),
     )!.settings.name!;
     expect(verifyRoute, VillageRoutes.verify);
+    expect(verifyRoute, '/village/verify');
     expect(VillageRoutes.tapsFor(verifyRoute), 2);
+    expect(
+      find.text('This account is not a verified native speaker.'),
+      findsOneWidget,
+    );
     await _tap(tester, find.text('Back to Village'));
     expect(find.byType(VillageHubPage), findsOneWidget);
     expect(find.text('Create'), findsOneWidget);
