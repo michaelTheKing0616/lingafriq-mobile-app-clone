@@ -32,7 +32,28 @@ TutorSessionResult polieBuildTutorSessionResult({
   required String answer,
   required TutorFeedbackPayload verdict,
   required String concept,
+  List<String> extraTopics = const <String>[],
+  List<String> extraGrammar = const <String>[],
+  List<String> vocabularyOverride = const <String>[],
+  Map<String, dynamic> extraMetadata = const <String, dynamic>{},
 }) {
+  final List<String> topics = <String>[
+    concept,
+    for (final String topic in extraTopics)
+      if (topic != concept) topic,
+  ];
+  final List<String> grammar = <String>[
+    concept,
+    for (final String point in extraGrammar)
+      if (point != concept) point,
+  ];
+  final List<String> vocabulary = vocabularyOverride.isNotEmpty
+      ? vocabularyOverride
+      : answer
+          .split(RegExp(r'\s+'))
+          .where((String word) => word.length > 2)
+          .take(8)
+          .toList();
   return TutorSessionResult(
     sessionId: 'polie_tutor_${DateTime.now().millisecondsSinceEpoch}',
     language: language,
@@ -54,14 +75,11 @@ TutorSessionResult polieBuildTutorSessionResult({
       'comprehension': verdict.score.toDouble(),
       'pronunciation': verdict.score.toDouble(),
     },
-    topicsCovered: [concept],
-    vocabularyLearned: answer
-        .split(RegExp(r'\s+'))
-        .where((w) => w.length > 2)
-        .take(8)
-        .toList(),
-    grammarPoints: [concept],
+    topicsCovered: topics,
+    vocabularyLearned: vocabulary,
+    grammarPoints: grammar,
     timeSpent: 1,
     completedAt: DateTime.now(),
+    metadata: extraMetadata,
   );
 }

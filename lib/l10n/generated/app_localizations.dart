@@ -14233,6 +14233,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Go back to Village.'**
   String get revRvContribTeacherDeniedNext;
+
+  /// Random mode from the old AI mode picker.
+  ///
+  /// In en, this message translates to:
+  /// **'Surprise Me'**
+  String get polieSurpriseMe;
+
+  /// Conversation auto-correction is on.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-correction on. Double tap to turn off.'**
+  String get polieAutoCorrectionOn;
+
+  /// Conversation auto-correction is off.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-correction off. Double tap to turn on.'**
+  String get polieAutoCorrectionOff;
+
+  /// Fills the composer when a topic chip is chosen.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s talk about {topic}'**
+  String polieLetsTalkAbout(String topic);
+
+  /// No description provided for @polieTopicGreetings.
+  ///
+  /// In en, this message translates to:
+  /// **'Greetings'**
+  String get polieTopicGreetings;
+
+  /// No description provided for @polieTopicFood.
+  ///
+  /// In en, this message translates to:
+  /// **'Food & Dining'**
+  String get polieTopicFood;
+
+  /// No description provided for @polieTopicShopping.
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping'**
+  String get polieTopicShopping;
+
+  /// No description provided for @polieTopicWeather.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather'**
+  String get polieTopicWeather;
+
+  /// No description provided for @polieTopicHobbies.
+  ///
+  /// In en, this message translates to:
+  /// **'Hobbies'**
+  String get polieTopicHobbies;
+
+  /// No description provided for @polieTopicWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Work'**
+  String get polieTopicWork;
+
+  /// No description provided for @polieTopicHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Health'**
+  String get polieTopicHealth;
+
+  /// No description provided for @polieTutorPracticeTopic.
+  ///
+  /// In en, this message translates to:
+  /// **'Tutor Practice'**
+  String get polieTutorPracticeTopic;
+
+  /// No description provided for @polieGrammarTense.
+  ///
+  /// In en, this message translates to:
+  /// **'Tense'**
+  String get polieGrammarTense;
+
+  /// No description provided for @polieGrammarVerb.
+  ///
+  /// In en, this message translates to:
+  /// **'Verb usage'**
+  String get polieGrammarVerb;
+
+  /// No description provided for @polieGrammarAgreement.
+  ///
+  /// In en, this message translates to:
+  /// **'Agreement'**
+  String get polieGrammarAgreement;
+
+  /// No description provided for @polieGrammarWordOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Word order'**
+  String get polieGrammarWordOrder;
 }
 
 class _AppLocalizationsDelegate

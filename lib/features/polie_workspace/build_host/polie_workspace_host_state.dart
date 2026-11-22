@@ -10,7 +10,12 @@ import 'package:lingafriq/services/polie_tutor_saved_cards_service.dart';
 import 'package:lingafriq/services/ai/conversation_persistence_service.dart';
 import 'package:lingafriq/services/ai/polie_voice_input_service.dart';
 import 'package:lingafriq/services/ai_gateway_client.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
+import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
+import 'package:lingafriq/services/ai_chat_integration_service.dart';
+import 'package:lingafriq/services/conversation_analytics_service.dart';
 import 'package:lingafriq/services/review_progress_service.dart';
+import 'package:lingafriq/utils/ai_chat_navigation_helper.dart';
 import 'package:lingafriq/services/translation_history_service.dart';
 import 'package:lingafriq/services/tutor_progress_service.dart';
 import 'package:lingafriq/services/vocabulary/vocabulary_service.dart';
@@ -83,6 +88,7 @@ class PolieWorkspaceHostState {
     required this.vocabularyService,
     required this.reviewProgress,
     required this.streakDays,
+    required this.harvest,
   });
 
   final BuildContext context;
@@ -159,6 +165,129 @@ class PolieWorkspaceHostState {
   final VocabularyService vocabularyService;
   final ReviewProgressService reviewProgress;
   final ValueNotifier<int> streakDays;
+  final PolieHarvestController harvest;
 
   String get targetLanguage => activeTargetLanguage.value;
+
+  Future<void> loadTopicSuggestions() async {
+    try {
+      final analytics = await ref
+          .read(conversationAnalyticsServiceProvider)
+          .loadAnalytics(targetLanguage);
+      harvest.topicSuggestions.value = analytics
+          .getTopTopics(limit: 10)
+          .map((entry) => entry.key)
+          .toList();
+    } catch (_) {
+      if (!context.mounted) return;
+      harvest.topicSuggestions.value = polieFallbackTopics(l10nOf(context));
+    }
+  }
+
+  Future<void> refreshTopicSuggestions(String message) async {
+    try {
+      final analytics = await ref
+          .read(conversationAnalyticsServiceProvider)
+          .loadAnalytics(targetLanguage);
+      harvest.topicSuggestions.value = polieMergeTopicSuggestions(
+        message: message,
+        allTopics: analytics.allTopics.toList(),
+        topTopics: analytics
+            .getTopTopics(limit: 5)
+            .map((entry) => entry.key)
+            .toList(),
+        current: harvest.topicSuggestions.value,
+      );
+    } catch (_) {}
+  }
+
+  void noteConversationUserTurn(String text) {
+    harvest.session.recordUserMessage(text);
+    unawaited(refreshTopicSuggestions(text));
+  }
+
+  void noteConversationAssistantTurn({
+    required String userText,
+    required String assistantText,
+    String? correction,
+  }) {
+    harvest.session.recordAssistantText(assistantText);
+    if (correction != null &&
+        polieAutoCorrectionDiffers(userText, correction)) {
+      harvest.session.corrections.add(correction.trim());
+    }
+  }
+
+  void noteConversationTurnFailed() {
+    harvest.session.recordError();
+  }
+
+  Future<void> flushConversationTracking() async {
+    final PolieChatTrackingSession session = harvest.session;
+    if (session.startedAt == null || session.flushed) return;
+    final bool inConversation = screen.conversationOnly ||
+        activeMode.value == PolieMode.conversation ||
+        session.messageCount > 0;
+    if (!inConversation) return;
+    session.flushed = true;
+    final integration = ref.read(aiChatIntegrationServiceProvider);
+    final double fluency = integration.calculateConversationFluency(
+      messageCount: session.messageCount,
+      wordCount: session.wordCount,
+      errorCount: session.errors,
+      vocabularyUsed: session.vocabularyUsed,
+    );
+    await integration.recordConversationSession(
+      sessionId: session.startedAt!.millisecondsSinceEpoch.toString(),
+      language: targetLanguage,
+      startTime: session.startedAt!,
+      messageCount: session.messageCount,
+      wordCount: session.wordCount,
+      topics: session.topics.toList(),
+      fluencyScore: fluency,
+      errorCount: session.errors,
+      corrections: List<String>.from(session.corrections),
+      vocabularyUsed: Map<String, int>.from(session.vocabularyUsed),
+      metadata: const <String, dynamic>{},
+    );
+  }
+
+  void openHarvestedProgress() {
+    final PolieProgressDashboard? kind =
+        polieProgressDashboardForMode(activeMode.value);
+    if (kind == null) return;
+    final String languageName = targetLanguage;
+    switch (kind) {
+      case PolieProgressDashboard.roleplay:
+        navigateToRoleplayProgressDashboard(
+          context,
+          language: languageName,
+          languageName: languageName,
+        );
+      case PolieProgressDashboard.tutor:
+        navigateToTutorProgressDashboard(
+          context,
+          language: languageName,
+          languageName: languageName,
+        );
+      case PolieProgressDashboard.conversation:
+        navigateToConversationAnalytics(
+          context,
+          language: languageName,
+          languageName: languageName,
+        );
+      case PolieProgressDashboard.vocabulary:
+        navigateToVocabularyDashboard(
+          context,
+          language: languageName,
+          languageName: languageName,
+        );
+      case PolieProgressDashboard.review:
+        navigateToReviewDashboard(
+          context,
+          language: languageName,
+          languageName: languageName,
+        );
+    }
+  }
 }
