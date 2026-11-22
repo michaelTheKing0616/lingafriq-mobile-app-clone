@@ -589,7 +589,7 @@ P3-063	Draft	Revive Family and Guardian dashboard	P3/P3-063.yaml
 P3-064	Draft	Verify all 25 revived features are reachable	P3/P3-064.yaml
 P3-065	Done	Consolidate five AI chat variants into Polie workspace	P3/P3-065.yaml
 P3-066	Done	Consolidate four classroom variants into live classroom	P3/P3-066.yaml
-P3-067	Draft	Consolidate onboarding variants into unified onboarding	P3/P3-067.yaml
+P3-067	Done	Consolidate onboarding variants into unified onboarding	P3/P3-067.yaml
 P3-068	Draft	Consolidate game templates, loaders and results into GameKit	P3/P3-068.yaml
 P3-069	Done	Replace live proverb unlocker with the GameKit rewrite	P3/P3-069.yaml
 P3-070	Draft	Fold enhanced variants into live counterparts	P3/P3-070.yaml

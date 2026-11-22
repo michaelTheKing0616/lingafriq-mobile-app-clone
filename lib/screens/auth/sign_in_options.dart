@@ -7,7 +7,7 @@ import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/auth/email_verification_screen.dart';
-import 'package:lingafriq/screens/onboarding/onboarding_screen_material3.dart';
+import 'package:lingafriq/screens/onboarding/unified_onboarding_screen.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
 import 'package:lingafriq/screens/auth/sign_in_errors.dart';
 import 'package:lingafriq/utils/modern_griot_design_system.dart';
@@ -599,7 +599,7 @@ class _SignInOptionsScreenState extends ConsumerState<SignInOptionsScreen> {
     ref
         .read(navigationProvider)
         .navigateOffAll(
-          seen ? const TabsViewMaterial3() : const OnboardingScreenMaterial3(),
+          seen ? const TabsViewMaterial3() : const UnifiedOnboardingScreen(),
         );
   }
 
