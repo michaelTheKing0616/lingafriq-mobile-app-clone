@@ -10539,6 +10539,197 @@
   "@unlockFeatureUnknown": {
     "description": "unlock.feature.unknown"
   },
+  "hubHSpeakRoleplaySummary": "Scenario summary",
+  "@hubHSpeakRoleplaySummary": {
+    "description": "hub.h_speak.roleplaySummary"
+  },
+  "hubHSpeakRoleplayProgress": "Roleplay progress",
+  "@hubHSpeakRoleplayProgress": {
+    "description": "hub.h_speak.roleplayProgress"
+  },
+  "revRvSpeakCoachEmptyWhat": "No conversation is saved.",
+  "@revRvSpeakCoachEmptyWhat": {
+    "description": "rev.rv_speak.coach.empty.what"
+  },
+  "revRvSpeakCoachEmptyWhy": "There is no conversation story to show.",
+  "@revRvSpeakCoachEmptyWhy": {
+    "description": "rev.rv_speak.coach.empty.why"
+  },
+  "revRvSpeakCoachEmptyNext": "Go back to Speak.",
+  "@revRvSpeakCoachEmptyNext": {
+    "description": "rev.rv_speak.coach.empty.next"
+  },
+  "revRvSpeakCoachErrorWhat": "Coach insights did not open.",
+  "@revRvSpeakCoachErrorWhat": {
+    "description": "rev.rv_speak.coach.error.what"
+  },
+  "revRvSpeakCoachErrorWhy": "The conversation story did not come back.",
+  "@revRvSpeakCoachErrorWhy": {
+    "description": "rev.rv_speak.coach.error.why"
+  },
+  "revRvSpeakCoachErrorNext": "Try again.",
+  "@revRvSpeakCoachErrorNext": {
+    "description": "rev.rv_speak.coach.error.next"
+  },
+  "revRvSpeakCoachOfflineWhy": "Coach insights are not saved on the phone.",
+  "@revRvSpeakCoachOfflineWhy": {
+    "description": "rev.rv_speak.coach.offline.why"
+  },
+  "revRvSpeakSummaryEmptyWhat": "No scenario summary is ready.",
+  "@revRvSpeakSummaryEmptyWhat": {
+    "description": "rev.rv_speak.summary.empty.what"
+  },
+  "revRvSpeakSummaryEmptyWhy": "No completed scenario is saved.",
+  "@revRvSpeakSummaryEmptyWhy": {
+    "description": "rev.rv_speak.summary.empty.why"
+  },
+  "revRvSpeakSummaryEmptyNext": "Go back to Speak.",
+  "@revRvSpeakSummaryEmptyNext": {
+    "description": "rev.rv_speak.summary.empty.next"
+  },
+  "revRvSpeakSummaryErrorWhat": "The scenario summary did not open.",
+  "@revRvSpeakSummaryErrorWhat": {
+    "description": "rev.rv_speak.summary.error.what"
+  },
+  "revRvSpeakSummaryErrorWhy": "Nothing from that scenario is still on screen.",
+  "@revRvSpeakSummaryErrorWhy": {
+    "description": "rev.rv_speak.summary.error.why"
+  },
+  "revRvSpeakSummaryErrorNext": "Try again.",
+  "@revRvSpeakSummaryErrorNext": {
+    "description": "rev.rv_speak.summary.error.next"
+  },
+  "revRvSpeakSummaryOfflineWhy": "This summary is not saved on the phone.",
+  "@revRvSpeakSummaryOfflineWhy": {
+    "description": "rev.rv_speak.summary.offline.why"
+  },
+  "revRvSpeakProgressEmptyWhat": "No scenarios are listed.",
+  "@revRvSpeakProgressEmptyWhat": {
+    "description": "rev.rv_speak.progress.empty.what"
+  },
+  "revRvSpeakProgressEmptyWhy": "No completed scenario is saved.",
+  "@revRvSpeakProgressEmptyWhy": {
+    "description": "rev.rv_speak.progress.empty.why"
+  },
+  "revRvSpeakProgressEmptyNext": "Go back to Speak.",
+  "@revRvSpeakProgressEmptyNext": {
+    "description": "rev.rv_speak.progress.empty.next"
+  },
+  "revRvSpeakProgressErrorWhat": "Roleplay progress did not open.",
+  "@revRvSpeakProgressErrorWhat": {
+    "description": "rev.rv_speak.progress.error.what"
+  },
+  "revRvSpeakProgressErrorWhy": "The scenario list did not come back.",
+  "@revRvSpeakProgressErrorWhy": {
+    "description": "rev.rv_speak.progress.error.why"
+  },
+  "revRvSpeakProgressErrorNext": "Try again.",
+  "@revRvSpeakProgressErrorNext": {
+    "description": "rev.rv_speak.progress.error.next"
+  },
+  "revRvSpeakProgressOfflineWhy": "Roleplay progress is not saved on the phone.",
+  "@revRvSpeakProgressOfflineWhy": {
+    "description": "rev.rv_speak.progress.offline.why"
+  },
+  "revRvSpeakPronunciation": "Pronunciation",
+  "@revRvSpeakPronunciation": {
+    "description": "rev.rv_speak.pronunciation"
+  },
+  "revRvSpeakTone": "Tone",
+  "@revRvSpeakTone": {
+    "description": "rev.rv_speak.tone"
+  },
+  "revRvSpeakScoreValue": "{percent}%",
+  "@revRvSpeakScoreValue": {
+    "description": "rev.rv_speak.score.value",
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "revRvSpeakUnsure": "We could not score this clearly. No score is shown.",
+  "@revRvSpeakUnsure": {
+    "description": "rev.rv_speak.unsure"
+  },
+  "revRvSpeakPractice": "Pronunciation scoring is unavailable. You can keep practising without a ranked score.",
+  "@revRvSpeakPractice": {
+    "description": "rev.rv_speak.practice"
+  },
+  "revRvSpeakTopics": "Topics",
+  "@revRvSpeakTopics": {
+    "description": "rev.rv_speak.topics"
+  },
+  "revRvSpeakVocabulary": "Words from this scenario",
+  "@revRvSpeakVocabulary": {
+    "description": "rev.rv_speak.vocabulary"
+  },
+  "revRvSpeakGrammar": "Grammar from this scenario",
+  "@revRvSpeakGrammar": {
+    "description": "rev.rv_speak.grammar"
+  },
+  "revRvSpeakCorrections": "Corrections",
+  "@revRvSpeakCorrections": {
+    "description": "rev.rv_speak.corrections"
+  },
+  "revRvSpeakRefresh": "Refresh",
+  "@revRvSpeakRefresh": {
+    "description": "rev.rv_speak.refresh"
+  },
+  "revRvSpeakSessionCount": "{count, plural, =1{1 session} other{{count} sessions}}",
+  "@revRvSpeakSessionCount": {
+    "description": "rev.rv_speak.sessionCount",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "revRvSpeakMessageCount": "{count, plural, =1{1 message} other{{count} messages}}",
+  "@revRvSpeakMessageCount": {
+    "description": "rev.rv_speak.messageCount",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "revRvSpeakWordCount": "{count, plural, =1{1 word} other{{count} words}}",
+  "@revRvSpeakWordCount": {
+    "description": "rev.rv_speak.wordCount",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "revRvSpeakTurnCount": "{count, plural, =1{1 turn} other{{count} turns}}",
+  "@revRvSpeakTurnCount": {
+    "description": "rev.rv_speak.turnCount",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "revRvSpeakCompletedCount": "{count, plural, =1{Completed 1 time} other{Completed {count} times}}",
+  "@revRvSpeakCompletedCount": {
+    "description": "rev.rv_speak.completedCount",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "revRvSpeakSceneSemantics": "Scenario: {name}.",
+  "@revRvSpeakSceneSemantics": {
+    "description": "rev.rv_speak.scene.semantics",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "revRvPlayEmptyWhat": "No word is ready.",
   "@revRvPlayEmptyWhat": {
     "description": "rev.rv_play.empty.what"

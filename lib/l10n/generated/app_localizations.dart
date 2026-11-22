@@ -13724,6 +13724,240 @@ abstract class AppLocalizations {
   /// **'This feature'**
   String get unlockFeatureUnknown;
 
+  /// hub.h_speak.roleplaySummary
+  ///
+  /// In en, this message translates to:
+  /// **'Scenario summary'**
+  String get hubHSpeakRoleplaySummary;
+
+  /// hub.h_speak.roleplayProgress
+  ///
+  /// In en, this message translates to:
+  /// **'Roleplay progress'**
+  String get hubHSpeakRoleplayProgress;
+
+  /// rev.rv_speak.coach.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No conversation is saved.'**
+  String get revRvSpeakCoachEmptyWhat;
+
+  /// rev.rv_speak.coach.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'There is no conversation story to show.'**
+  String get revRvSpeakCoachEmptyWhy;
+
+  /// rev.rv_speak.coach.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Speak.'**
+  String get revRvSpeakCoachEmptyNext;
+
+  /// rev.rv_speak.coach.error.what
+  ///
+  /// In en, this message translates to:
+  /// **'Coach insights did not open.'**
+  String get revRvSpeakCoachErrorWhat;
+
+  /// rev.rv_speak.coach.error.why
+  ///
+  /// In en, this message translates to:
+  /// **'The conversation story did not come back.'**
+  String get revRvSpeakCoachErrorWhy;
+
+  /// rev.rv_speak.coach.error.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get revRvSpeakCoachErrorNext;
+
+  /// rev.rv_speak.coach.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'Coach insights are not saved on the phone.'**
+  String get revRvSpeakCoachOfflineWhy;
+
+  /// rev.rv_speak.summary.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No scenario summary is ready.'**
+  String get revRvSpeakSummaryEmptyWhat;
+
+  /// rev.rv_speak.summary.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'No completed scenario is saved.'**
+  String get revRvSpeakSummaryEmptyWhy;
+
+  /// rev.rv_speak.summary.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Speak.'**
+  String get revRvSpeakSummaryEmptyNext;
+
+  /// rev.rv_speak.summary.error.what
+  ///
+  /// In en, this message translates to:
+  /// **'The scenario summary did not open.'**
+  String get revRvSpeakSummaryErrorWhat;
+
+  /// rev.rv_speak.summary.error.why
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing from that scenario is still on screen.'**
+  String get revRvSpeakSummaryErrorWhy;
+
+  /// rev.rv_speak.summary.error.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get revRvSpeakSummaryErrorNext;
+
+  /// rev.rv_speak.summary.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'This summary is not saved on the phone.'**
+  String get revRvSpeakSummaryOfflineWhy;
+
+  /// rev.rv_speak.progress.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No scenarios are listed.'**
+  String get revRvSpeakProgressEmptyWhat;
+
+  /// rev.rv_speak.progress.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'No completed scenario is saved.'**
+  String get revRvSpeakProgressEmptyWhy;
+
+  /// rev.rv_speak.progress.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Speak.'**
+  String get revRvSpeakProgressEmptyNext;
+
+  /// rev.rv_speak.progress.error.what
+  ///
+  /// In en, this message translates to:
+  /// **'Roleplay progress did not open.'**
+  String get revRvSpeakProgressErrorWhat;
+
+  /// rev.rv_speak.progress.error.why
+  ///
+  /// In en, this message translates to:
+  /// **'The scenario list did not come back.'**
+  String get revRvSpeakProgressErrorWhy;
+
+  /// rev.rv_speak.progress.error.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get revRvSpeakProgressErrorNext;
+
+  /// rev.rv_speak.progress.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'Roleplay progress is not saved on the phone.'**
+  String get revRvSpeakProgressOfflineWhy;
+
+  /// rev.rv_speak.pronunciation
+  ///
+  /// In en, this message translates to:
+  /// **'Pronunciation'**
+  String get revRvSpeakPronunciation;
+
+  /// rev.rv_speak.tone
+  ///
+  /// In en, this message translates to:
+  /// **'Tone'**
+  String get revRvSpeakTone;
+
+  /// rev.rv_speak.score.value
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}%'**
+  String revRvSpeakScoreValue(int percent);
+
+  /// rev.rv_speak.unsure
+  ///
+  /// In en, this message translates to:
+  /// **'We could not score this clearly. No score is shown.'**
+  String get revRvSpeakUnsure;
+
+  /// rev.rv_speak.practice
+  ///
+  /// In en, this message translates to:
+  /// **'Pronunciation scoring is unavailable. You can keep practising without a ranked score.'**
+  String get revRvSpeakPractice;
+
+  /// rev.rv_speak.topics
+  ///
+  /// In en, this message translates to:
+  /// **'Topics'**
+  String get revRvSpeakTopics;
+
+  /// rev.rv_speak.vocabulary
+  ///
+  /// In en, this message translates to:
+  /// **'Words from this scenario'**
+  String get revRvSpeakVocabulary;
+
+  /// rev.rv_speak.grammar
+  ///
+  /// In en, this message translates to:
+  /// **'Grammar from this scenario'**
+  String get revRvSpeakGrammar;
+
+  /// rev.rv_speak.corrections
+  ///
+  /// In en, this message translates to:
+  /// **'Corrections'**
+  String get revRvSpeakCorrections;
+
+  /// rev.rv_speak.refresh
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get revRvSpeakRefresh;
+
+  /// rev.rv_speak.sessionCount
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 session} other{{count} sessions}}'**
+  String revRvSpeakSessionCount(int count);
+
+  /// rev.rv_speak.messageCount
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 message} other{{count} messages}}'**
+  String revRvSpeakMessageCount(int count);
+
+  /// rev.rv_speak.wordCount
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 word} other{{count} words}}'**
+  String revRvSpeakWordCount(int count);
+
+  /// rev.rv_speak.turnCount
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 turn} other{{count} turns}}'**
+  String revRvSpeakTurnCount(int count);
+
+  /// rev.rv_speak.completedCount
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Completed 1 time} other{Completed {count} times}}'**
+  String revRvSpeakCompletedCount(int count);
+
+  /// rev.rv_speak.scene.semantics
+  ///
+  /// In en, this message translates to:
+  /// **'Scenario: {name}.'**
+  String revRvSpeakSceneSemantics(String name);
+
   /// rev.rv_play.empty.what
   ///
   /// In en, this message translates to:

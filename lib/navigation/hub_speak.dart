@@ -7,7 +7,10 @@ import 'package:lingafriq/design/states/offline_state.dart';
 import 'package:lingafriq/design/tokens.g.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/l10n/l10n_of.dart';
+import 'package:lingafriq/screens/ai_chat/conversation_analytics_screen.dart';
 import 'package:lingafriq/screens/ai_chat/polie_workspace_screen.dart';
+import 'package:lingafriq/screens/ai_chat/roleplay_completion_summary_screen.dart';
+import 'package:lingafriq/screens/ai_chat/roleplay_progress_dashboard_screen.dart';
 import 'package:lingafriq/screens/tutor/shadowing_exercise_screen.dart';
 
 /// How far a Speak place is built.
@@ -56,6 +59,18 @@ final class SpeakShadowingOpening extends SpeakOpening {
   const SpeakShadowingOpening();
 }
 
+final class SpeakCoachOpening extends SpeakOpening {
+  const SpeakCoachOpening();
+}
+
+final class SpeakRoleplaySummaryOpening extends SpeakOpening {
+  const SpeakRoleplaySummaryOpening();
+}
+
+final class SpeakRoleplayProgressOpening extends SpeakOpening {
+  const SpeakRoleplayProgressOpening();
+}
+
 final class SpeakGapOpening extends SpeakOpening {
   const SpeakGapOpening(this.gap);
 
@@ -82,6 +97,8 @@ abstract final class SpeakRoutes {
   static const String codeSwitch = '/speak/code-switch';
   static const String missions = '/speak/missions';
   static const String coachInsights = '/speak/coach-insights';
+  static const String roleplaySummary = '/speak/roleplay-summary';
+  static const String roleplayProgress = '/speak/roleplay-progress';
 
   static const List<String> paths = <String>[
     root,
@@ -93,9 +110,12 @@ abstract final class SpeakRoutes {
     codeSwitch,
     missions,
     coachInsights,
+    roleplaySummary,
+    roleplayProgress,
   ];
 
-  /// Sitemap order. Polie and Shadowing are ready. The other places are not built yet.
+  /// Sitemap order. Polie, Shadowing, Coach insights, and the roleplay
+  /// summary and progress places are ready. The other places are not built yet.
   static const List<SpeakPlace> places = <SpeakPlace>[
     SpeakPlace(id: 'polie', path: polie, kind: SpeakPlaceKind.ready),
     SpeakPlace(
@@ -125,10 +145,16 @@ abstract final class SpeakRoutes {
       path: missions,
       kind: SpeakPlaceKind.notAvailable,
     ),
+    SpeakPlace(id: 'coach', path: coachInsights, kind: SpeakPlaceKind.ready),
     SpeakPlace(
-      id: 'coach',
-      path: coachInsights,
-      kind: SpeakPlaceKind.notAvailable,
+      id: 'roleplaySummary',
+      path: roleplaySummary,
+      kind: SpeakPlaceKind.ready,
+    ),
+    SpeakPlace(
+      id: 'roleplayProgress',
+      path: roleplayProgress,
+      kind: SpeakPlaceKind.ready,
     ),
   ];
 
@@ -159,6 +185,9 @@ abstract final class SpeakRoutes {
     if (path == root) return const SpeakHubOpening();
     if (path == polie) return const SpeakPolieOpening();
     if (path == shadowing) return const SpeakShadowingOpening();
+    if (path == coachInsights) return const SpeakCoachOpening();
+    if (path == roleplaySummary) return const SpeakRoleplaySummaryOpening();
+    if (path == roleplayProgress) return const SpeakRoleplayProgressOpening();
     final SpeakPlace? place = find(path);
     if (place == null) return SpeakUnknownOpening(path);
     if (place.kind == SpeakPlaceKind.notAvailable) {
@@ -186,6 +215,8 @@ String speakPlaceLabel(AppLocalizations l10n, String placeId) {
     'codeSwitch' => l10n.hubHSpeakCodeSwitch,
     'missions' => l10n.hubHSpeakMissions,
     'coach' => l10n.hubHSpeakCoach,
+    'roleplaySummary' => l10n.hubHSpeakRoleplaySummary,
+    'roleplayProgress' => l10n.hubHSpeakRoleplayProgress,
     _ => l10n.hubHSpeakNotAvailableTitle,
   };
 }
@@ -205,6 +236,9 @@ Widget _pageFor(BuildContext context, String routePath) {
     SpeakHubOpening() => const SpeakHubPage(),
     SpeakPolieOpening() => SpeakPolieScreen(onBack: () => _speakBack(context)),
     SpeakShadowingOpening() => const ShadowingExerciseScreen(),
+    SpeakCoachOpening() => const ConversationAnalyticsScreen(),
+    SpeakRoleplaySummaryOpening() => const RoleplayCompletionSummaryScreen(),
+    SpeakRoleplayProgressOpening() => const RoleplayProgressDashboardScreen(),
     SpeakGapOpening(:final gap) => SpeakNotAvailablePage(gap: gap),
     SpeakUnknownOpening(:final path) => SpeakUnknownPage(path: path),
   };
