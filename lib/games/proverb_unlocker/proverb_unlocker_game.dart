@@ -6,11 +6,14 @@ import '../gamekit/game_turn_context.dart';
 import '../gamekit/game_animation_bridge.dart';
 import '../gamekit/game_difficulty.dart';
 import '../../services/polie_game_client.dart';
+import 'proverb_unlocker_catalog.dart';
 import 'proverb_unlocker_models.dart';
 import 'proverb_unlocker_scoring.dart';
 import 'proverb_unlocker_feedback.dart';
 
-/// GameKit engine adapter for proverb_unlocker (flagship UI: [ProverbWeaverScreen] P8-924).
+/// GameKit proverb unlocker. Proverb text is the harvested live catalog.
+/// [polieClient] is kept so [GameEngineService] can construct the game.
+/// The played path does not ask Polie for a proverb.
 class ProverbUnlockerGame extends Game<ProverbUnlockerContent, ProverbUnlockerInput> {
   final PolieGameClient polieClient;
 
@@ -23,50 +26,31 @@ class ProverbUnlockerGame extends Game<ProverbUnlockerContent, ProverbUnlockerIn
   GameConfig get config => const GameConfig(
         gameId: 'proverb_unlocker',
         displayName: 'Proverb Unlocker',
-        defaultCardCount: 5,
+        defaultCardCount: 6,
         supportsAudio: false,
         supportsVoiceInput: false,
       );
 
   @override
   Future<ProverbUnlockerContent> loadContent(GameSession session) async {
-    try {
-      final polieContent = await polieClient.generateContent(
-        gameId: config.gameId,
-        language: session.language,
-        difficulty: session.level ?? 'A2',
-        userId: session.userId,
-        sessionId: session.sessionId,
-        previousPerformance: session.performanceProfile,
-        learningGoals: ['proverbs', 'cultural_wisdom'],
-      );
-
-      // Convert Polie content to game-specific format
-      // Polie returns structured data that we parse
-      return ProverbUnlockerContent.fromPolieContent({
-        'proverb': polieContent.text,
-        'translation': polieContent.metadata?['translation'] ?? '',
-        'meaning': polieContent.culturalContext ?? polieContent.metadata?['meaning'] ?? '',
-        'context': polieContent.culturalContext ?? '',
-        'content_id': polieContent.contentId,
-      });
-    } catch (e) {
-      // Return fallback content
-      return ProverbUnlockerContent(
-        proverb: 'Wisdom comes from experience',
-        translation: 'Wisdom comes from experience',
-        meaning: 'Learning through practice and experience',
-        context: 'A common saying about the value of experience',
-        options: [
-          'Learning through practice and experience',
-          'A common greeting',
-          'A traditional dance',
-          'A type of food',
-        ],
-        correctAnswer: 'Learning through practice and experience',
-        contentId: 'fallback_${DateTime.now().millisecondsSinceEpoch}',
-      );
-    }
+    final raw = session.metadata['seed'];
+    final seed = raw is int
+        ? raw
+        : raw is num
+            ? raw.toInt()
+            : proverbUnlockerStableSeed(session.language, session.level);
+    final roundRaw = session.metadata['round_index'];
+    final roundIndex = roundRaw is int
+        ? roundRaw
+        : roundRaw is num
+            ? roundRaw.toInt()
+            : 0;
+    final deal = dealProverbUnlocker(
+      seed: seed,
+      language: session.language,
+      roundIndex: roundIndex,
+    );
+    return ProverbUnlockerContent.fromDeal(deal);
   }
 
   @override
@@ -81,7 +65,7 @@ class ProverbUnlockerGame extends Game<ProverbUnlockerContent, ProverbUnlockerIn
       session: session,
     );
 
-    return await engine.resolve(context);
+    return engine.resolve(context);
   }
 }
 
@@ -104,4 +88,3 @@ class ProverbUnlockerGameFactory {
     );
   }
 }
-
