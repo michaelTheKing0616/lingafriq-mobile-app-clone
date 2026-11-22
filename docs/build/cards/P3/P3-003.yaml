@@ -57,7 +57,7 @@ risks: []
 gate: G3
 external_blockers:
 - EXT-14
-status: Draft
+status: Done
 skills:
   worker:
   - prime/design-dna
