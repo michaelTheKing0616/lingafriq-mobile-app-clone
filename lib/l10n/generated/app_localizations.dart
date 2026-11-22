@@ -12020,6 +12020,198 @@ abstract class AppLocalizations {
   /// **'Polie needs the network to answer.'**
   String get hubHSpeakPolieOfflineWhy;
 
+  /// hub.h_play.title
+  ///
+  /// In en, this message translates to:
+  /// **'Play'**
+  String get hubHPlayTitle;
+
+  /// hub.h_play.subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Games sit on skill shelves.'**
+  String get hubHPlaySubtitle;
+
+  /// hub.h_play.shelf.tone
+  ///
+  /// In en, this message translates to:
+  /// **'Tone & Sound'**
+  String get hubHPlayShelfTone;
+
+  /// hub.h_play.shelf.words
+  ///
+  /// In en, this message translates to:
+  /// **'Words'**
+  String get hubHPlayShelfWords;
+
+  /// hub.h_play.shelf.grammar
+  ///
+  /// In en, this message translates to:
+  /// **'Grammar'**
+  String get hubHPlayShelfGrammar;
+
+  /// hub.h_play.shelf.speaking
+  ///
+  /// In en, this message translates to:
+  /// **'Speaking'**
+  String get hubHPlayShelfSpeaking;
+
+  /// hub.h_play.shelf.culture
+  ///
+  /// In en, this message translates to:
+  /// **'Culture'**
+  String get hubHPlayShelfCulture;
+
+  /// hub.h_play.shelf.traditional
+  ///
+  /// In en, this message translates to:
+  /// **'Traditional'**
+  String get hubHPlayShelfTraditional;
+
+  /// hub.h_play.shelf.multiplayer
+  ///
+  /// In en, this message translates to:
+  /// **'Multiplayer'**
+  String get hubHPlayShelfMultiplayer;
+
+  /// hub.h_play.toneForge
+  ///
+  /// In en, this message translates to:
+  /// **'Tone Forge'**
+  String get hubHPlayToneForge;
+
+  /// hub.h_play.game.games
+  ///
+  /// In en, this message translates to:
+  /// **'Games'**
+  String get hubHPlayGameGames;
+
+  /// hub.h_play.game.challengeFriend
+  ///
+  /// In en, this message translates to:
+  /// **'Challenge Friend'**
+  String get hubHPlayGameChallengeFriend;
+
+  /// hub.h_play.game.flashcardFocus
+  ///
+  /// In en, this message translates to:
+  /// **'Flashcard Focus'**
+  String get hubHPlayGameFlashcardFocus;
+
+  /// hub.h_play.game.apiLanguages
+  ///
+  /// In en, this message translates to:
+  /// **'Games API Languages'**
+  String get hubHPlayGameApiLanguages;
+
+  /// hub.h_play.game.enhancedCatalog
+  ///
+  /// In en, this message translates to:
+  /// **'Games Enhanced Catalog'**
+  String get hubHPlayGameEnhancedCatalog;
+
+  /// hub.h_play.game.matchingPairs
+  ///
+  /// In en, this message translates to:
+  /// **'Matching Pairs'**
+  String get hubHPlayGameMatchingPairs;
+
+  /// hub.h_play.back
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Play'**
+  String get hubHPlayBack;
+
+  /// hub.h_play.notAvailable.title
+  ///
+  /// In en, this message translates to:
+  /// **'Not available yet'**
+  String get hubHPlayNotAvailableTitle;
+
+  /// hub.h_play.notAvailable.what
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is not available yet.'**
+  String hubHPlayNotAvailableWhat(String name);
+
+  /// hub.h_play.notAvailable.why
+  ///
+  /// In en, this message translates to:
+  /// **'This screen is not built yet.'**
+  String get hubHPlayNotAvailableWhy;
+
+  /// hub.h_play.notAvailable.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Play.'**
+  String get hubHPlayNotAvailableNext;
+
+  /// hub.h_play.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'The shelves have no games.'**
+  String get hubHPlayEmptyWhat;
+
+  /// hub.h_play.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'No game came back.'**
+  String get hubHPlayEmptyWhy;
+
+  /// hub.h_play.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get hubHPlayEmptyNext;
+
+  /// hub.h_play.error.what
+  ///
+  /// In en, this message translates to:
+  /// **'The game list did not open.'**
+  String get hubHPlayErrorWhat;
+
+  /// hub.h_play.error.why
+  ///
+  /// In en, this message translates to:
+  /// **'The list did not come back.'**
+  String get hubHPlayErrorWhy;
+
+  /// hub.h_play.error.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get hubHPlayErrorNext;
+
+  /// hub.h_play.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'These games are not saved on the phone.'**
+  String get hubHPlayOfflineWhy;
+
+  /// hub.h_play.shelfEmpty.what
+  ///
+  /// In en, this message translates to:
+  /// **'This shelf has no game.'**
+  String get hubHPlayShelfEmptyWhat;
+
+  /// hub.h_play.shelfEmpty.why
+  ///
+  /// In en, this message translates to:
+  /// **'No game is listed on this shelf.'**
+  String get hubHPlayShelfEmptyWhy;
+
+  /// hub.h_play.shelfEmpty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Open the Arcade.'**
+  String get hubHPlayShelfEmptyNext;
+
+  /// hub.h_play.openArcade
+  ///
+  /// In en, this message translates to:
+  /// **'Open the Arcade'**
+  String get hubHPlayOpenArcade;
+
   /// hub.h_village.title
   ///
   /// In en, this message translates to:
