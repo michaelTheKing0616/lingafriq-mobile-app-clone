@@ -8,6 +8,8 @@ enum LearnPlace {
   lesson,
   recap,
   words,
+  reviewDashboard,
+  vocabDashboard,
   reviewRush,
   grammar,
   phraseDna,
@@ -65,6 +67,8 @@ abstract final class LearnRoutes {
   static const String lesson = '/learn/lesson';
   static const String recap = '/learn/recap';
   static const String words = '/learn/words';
+  static const String reviewDashboard = '/learn/review-dashboard';
+  static const String vocabDashboard = '/learn/vocab-dashboard';
   static const String reviewRush = '/learn/review-rush';
   static const String grammar = '/learn/grammar';
   static const String phraseDna = '/learn/phrase-dna';
@@ -146,6 +150,20 @@ const List<LearnDestination> learnDestinations = <LearnDestination>[
   LearnDestination(
     place: LearnPlace.words,
     route: LearnRoutes.words,
+    parent: LearnPlace.hub,
+    onRoot: true,
+    staticChild: false,
+  ),
+  LearnDestination(
+    place: LearnPlace.reviewDashboard,
+    route: LearnRoutes.reviewDashboard,
+    parent: LearnPlace.hub,
+    onRoot: true,
+    staticChild: false,
+  ),
+  LearnDestination(
+    place: LearnPlace.vocabDashboard,
+    route: LearnRoutes.vocabDashboard,
     parent: LearnPlace.hub,
     onRoot: true,
     staticChild: false,

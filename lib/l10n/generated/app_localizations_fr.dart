@@ -7503,4 +7503,116 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get revRvMeAboutOfflineWhy => 'About is not saved on the phone.';
+
+  @override
+  String get revRvLearnReviewDashboard => 'Review dashboard';
+
+  @override
+  String get revRvLearnReviewEmptyWhat => 'No review is saved.';
+
+  @override
+  String get revRvLearnReviewEmptyWhy => 'There is no review to show.';
+
+  @override
+  String get revRvLearnReviewEmptyNext => 'Open Path and start a lesson.';
+
+  @override
+  String get revRvLearnReviewFailWhat => 'The review did not open.';
+
+  @override
+  String get revRvLearnReviewFailWhy => 'The review list did not come back.';
+
+  @override
+  String get revRvLearnReviewFailNext => 'Try again.';
+
+  @override
+  String get revRvLearnReviewOfflineWhy =>
+      'This review is not saved on the phone.';
+
+  @override
+  String get revRvLearnVocabDashboard => 'Vocabulary dashboard';
+
+  @override
+  String get revRvLearnVocabEmptyWhat => 'No saved word yet.';
+
+  @override
+  String get revRvLearnVocabEmptyWhy => 'Words you save show up here.';
+
+  @override
+  String get revRvLearnVocabEmptyNext =>
+      'Long-press a target-language word and save it.';
+
+  @override
+  String get revRvLearnVocabFailWhat => 'The word list did not open.';
+
+  @override
+  String get revRvLearnVocabFailWhy => 'The saved words did not come back.';
+
+  @override
+  String get revRvLearnVocabFailNext => 'Try again.';
+
+  @override
+  String get revRvLearnVocabOfflineWhy =>
+      'These words are not saved on the phone.';
+
+  @override
+  String get revRvLearnRecapEmptyTitle => 'No recap yet';
+
+  @override
+  String get revRvLearnRecapEmptyWhat => 'This lesson has no recap.';
+
+  @override
+  String get revRvLearnRecapEmptyWhy => 'The lesson has not been finished.';
+
+  @override
+  String get revRvLearnRecapEmptyNext => 'Open Path and start a lesson.';
+
+  @override
+  String get revRvLearnRecapFailWhat => 'The recap did not open.';
+
+  @override
+  String get revRvLearnRecapFailWhy => 'The lesson recap did not come back.';
+
+  @override
+  String get revRvLearnRecapFailNext => 'Try again.';
+
+  @override
+  String get revRvLearnRecapOfflineWhy =>
+      'This recap is not saved on the phone.';
+
+  @override
+  String get revRvLearnRecapWords => 'Words from this lesson';
+
+  @override
+  String get revRvLearnDownloadsEmptyTitle => 'Nothing is saved';
+
+  @override
+  String get revRvLearnDownloadsEmptyWhat => 'Nothing is saved on the phone.';
+
+  @override
+  String get revRvLearnDownloadsEmptyWhy => 'No lesson pack is on this phone.';
+
+  @override
+  String get revRvLearnDownloadsEmptyNext =>
+      'Open Path and choose a lesson to save.';
+
+  @override
+  String get revRvLearnDownloadsFailWhat => 'The download did not finish.';
+
+  @override
+  String get revRvLearnDownloadsFailWhy => 'The lesson pack did not come back.';
+
+  @override
+  String get revRvLearnDownloadsFailNext => 'Try again.';
+
+  @override
+  String get revRvLearnDownloadsStorageUnknown => 'Storage use is unknown.';
+
+  @override
+  String revRvLearnDownloadsStorage(String size) {
+    return 'Storage use: $size';
+  }
+
+  @override
+  String get revRvLearnDownloadsInProgress => 'Download in progress.';
 }

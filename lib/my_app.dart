@@ -90,6 +90,11 @@ import 'screens/classroom/speaker_queue_screen.dart';
 import 'screens/tabs_view/profile/app_policy_screen.dart';
 import 'screens/tabs_view/profile/about_us_screen.dart';
 import 'screens/profile/global_handle_edit_screen.dart';
+import 'screens/ai_chat/review_dashboard_screen.dart';
+import 'screens/ai_chat/vocabulary_dashboard_screen.dart';
+import 'screens/learning/lesson_recap_screen.dart';
+import 'screens/review/gamified_review_screen.dart';
+import 'providers/offline_download_provider.dart';
 import 'screens/lesson/lesson_flow_screen.dart';
 import 'screens/grammar/grammar_hub_screen.dart'
     show GrammarHubScreen, GrammarTopic;
@@ -268,7 +273,7 @@ class MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
                   ),
                 );
               },
-              onGenerateRoute: _onGenerateRoute,
+              onGenerateRoute: generateAppRoute,
               home: child,
             );
           },
@@ -298,7 +303,7 @@ Widget _namedRouteArgumentIssueScaffold(
 }
 
 /// Route name -> Screen widget mapping for drawer navigation.
-Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
+Route<dynamic>? generateAppRoute(RouteSettings settings) {
   final normalizedRoute = _normalizeRouteName(settings.name);
   final routes = <String, WidgetBuilder>{
     'ai_chat_select': (_) => const AIModeSelectionScreen(),
@@ -494,6 +499,16 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     GlobalHandleEditScreen.routeKey: (_) => const GlobalHandleEditScreen(),
     // /me/about
     AboutUsScreen.routeKey: (_) => const AboutUsScreen(),
+    // /learn/review-dashboard
+    ReviewDashboardScreen.routeKey: (_) => const ReviewDashboardScreen(),
+    // /learn/vocab-dashboard
+    VocabularyDashboardScreen.routeKey: (_) => const VocabularyDashboardScreen(),
+    // /learn/recap
+    LessonRecapScreen.routeKey: (_) => const LessonRecapScreen(),
+    // /learn/review-rush
+    'learn/review-rush': (_) => const GamifiedReviewScreen(),
+    // /learn/downloads
+    OfflineDownloadsScreen.routeKey: (_) => const OfflineDownloadsScreen(),
     // Lesson Flow
     'lesson-flow': (ctx) {
       final args = settings.arguments as Map<String, dynamic>?;

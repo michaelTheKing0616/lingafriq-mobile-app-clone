@@ -9968,5 +9968,150 @@
   "revRvMeAboutOfflineWhy": "About is not saved on the phone.",
   "@revRvMeAboutOfflineWhy": {
     "description": "rev.rv_me.about.offline.why"
+  },
+  "revRvLearnReviewDashboard": "Review dashboard",
+  "@revRvLearnReviewDashboard": {
+    "description": "rev.rv_learn.review.title"
+  },
+  "revRvLearnReviewEmptyWhat": "No review is saved.",
+  "@revRvLearnReviewEmptyWhat": {
+    "description": "rev.rv_learn.review.empty.what"
+  },
+  "revRvLearnReviewEmptyWhy": "There is no review to show.",
+  "@revRvLearnReviewEmptyWhy": {
+    "description": "rev.rv_learn.review.empty.why"
+  },
+  "revRvLearnReviewEmptyNext": "Open Path and start a lesson.",
+  "@revRvLearnReviewEmptyNext": {
+    "description": "rev.rv_learn.review.empty.next"
+  },
+  "revRvLearnReviewFailWhat": "The review did not open.",
+  "@revRvLearnReviewFailWhat": {
+    "description": "rev.rv_learn.review.fail.what"
+  },
+  "revRvLearnReviewFailWhy": "The review list did not come back.",
+  "@revRvLearnReviewFailWhy": {
+    "description": "rev.rv_learn.review.fail.why"
+  },
+  "revRvLearnReviewFailNext": "Try again.",
+  "@revRvLearnReviewFailNext": {
+    "description": "rev.rv_learn.review.fail.next"
+  },
+  "revRvLearnReviewOfflineWhy": "This review is not saved on the phone.",
+  "@revRvLearnReviewOfflineWhy": {
+    "description": "rev.rv_learn.review.offline.why"
+  },
+  "revRvLearnVocabDashboard": "Vocabulary dashboard",
+  "@revRvLearnVocabDashboard": {
+    "description": "rev.rv_learn.vocab.title"
+  },
+  "revRvLearnVocabEmptyWhat": "No saved word yet.",
+  "@revRvLearnVocabEmptyWhat": {
+    "description": "rev.rv_learn.vocab.empty.what"
+  },
+  "revRvLearnVocabEmptyWhy": "Words you save show up here.",
+  "@revRvLearnVocabEmptyWhy": {
+    "description": "rev.rv_learn.vocab.empty.why"
+  },
+  "revRvLearnVocabEmptyNext": "Long-press a target-language word and save it.",
+  "@revRvLearnVocabEmptyNext": {
+    "description": "rev.rv_learn.vocab.empty.next"
+  },
+  "revRvLearnVocabFailWhat": "The word list did not open.",
+  "@revRvLearnVocabFailWhat": {
+    "description": "rev.rv_learn.vocab.fail.what"
+  },
+  "revRvLearnVocabFailWhy": "The saved words did not come back.",
+  "@revRvLearnVocabFailWhy": {
+    "description": "rev.rv_learn.vocab.fail.why"
+  },
+  "revRvLearnVocabFailNext": "Try again.",
+  "@revRvLearnVocabFailNext": {
+    "description": "rev.rv_learn.vocab.fail.next"
+  },
+  "revRvLearnVocabOfflineWhy": "These words are not saved on the phone.",
+  "@revRvLearnVocabOfflineWhy": {
+    "description": "rev.rv_learn.vocab.offline.why"
+  },
+  "revRvLearnRecapEmptyTitle": "No recap yet",
+  "@revRvLearnRecapEmptyTitle": {
+    "description": "rev.rv_learn.recap.empty.title"
+  },
+  "revRvLearnRecapEmptyWhat": "This lesson has no recap.",
+  "@revRvLearnRecapEmptyWhat": {
+    "description": "rev.rv_learn.recap.empty.what"
+  },
+  "revRvLearnRecapEmptyWhy": "The lesson has not been finished.",
+  "@revRvLearnRecapEmptyWhy": {
+    "description": "rev.rv_learn.recap.empty.why"
+  },
+  "revRvLearnRecapEmptyNext": "Open Path and start a lesson.",
+  "@revRvLearnRecapEmptyNext": {
+    "description": "rev.rv_learn.recap.empty.next"
+  },
+  "revRvLearnRecapFailWhat": "The recap did not open.",
+  "@revRvLearnRecapFailWhat": {
+    "description": "rev.rv_learn.recap.fail.what"
+  },
+  "revRvLearnRecapFailWhy": "The lesson recap did not come back.",
+  "@revRvLearnRecapFailWhy": {
+    "description": "rev.rv_learn.recap.fail.why"
+  },
+  "revRvLearnRecapFailNext": "Try again.",
+  "@revRvLearnRecapFailNext": {
+    "description": "rev.rv_learn.recap.fail.next"
+  },
+  "revRvLearnRecapOfflineWhy": "This recap is not saved on the phone.",
+  "@revRvLearnRecapOfflineWhy": {
+    "description": "rev.rv_learn.recap.offline.why"
+  },
+  "revRvLearnRecapWords": "Words from this lesson",
+  "@revRvLearnRecapWords": {
+    "description": "rev.rv_learn.recap.words"
+  },
+  "revRvLearnDownloadsEmptyTitle": "Nothing is saved",
+  "@revRvLearnDownloadsEmptyTitle": {
+    "description": "rev.rv_learn.downloads.empty.title"
+  },
+  "revRvLearnDownloadsEmptyWhat": "Nothing is saved on the phone.",
+  "@revRvLearnDownloadsEmptyWhat": {
+    "description": "rev.rv_learn.downloads.empty.what"
+  },
+  "revRvLearnDownloadsEmptyWhy": "No lesson pack is on this phone.",
+  "@revRvLearnDownloadsEmptyWhy": {
+    "description": "rev.rv_learn.downloads.empty.why"
+  },
+  "revRvLearnDownloadsEmptyNext": "Open Path and choose a lesson to save.",
+  "@revRvLearnDownloadsEmptyNext": {
+    "description": "rev.rv_learn.downloads.empty.next"
+  },
+  "revRvLearnDownloadsFailWhat": "The download did not finish.",
+  "@revRvLearnDownloadsFailWhat": {
+    "description": "rev.rv_learn.downloads.fail.what"
+  },
+  "revRvLearnDownloadsFailWhy": "The lesson pack did not come back.",
+  "@revRvLearnDownloadsFailWhy": {
+    "description": "rev.rv_learn.downloads.fail.why"
+  },
+  "revRvLearnDownloadsFailNext": "Try again.",
+  "@revRvLearnDownloadsFailNext": {
+    "description": "rev.rv_learn.downloads.fail.next"
+  },
+  "revRvLearnDownloadsStorageUnknown": "Storage use is unknown.",
+  "@revRvLearnDownloadsStorageUnknown": {
+    "description": "rev.rv_learn.downloads.storage.unknown"
+  },
+  "revRvLearnDownloadsStorage": "Storage use: {size}",
+  "@revRvLearnDownloadsStorage": {
+    "description": "rev.rv_learn.downloads.storage",
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "revRvLearnDownloadsInProgress": "Download in progress.",
+  "@revRvLearnDownloadsInProgress": {
+    "description": "rev.rv_learn.downloads.progress"
   }
 }
