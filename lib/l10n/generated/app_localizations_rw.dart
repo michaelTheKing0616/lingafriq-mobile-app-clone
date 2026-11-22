@@ -7596,6 +7596,62 @@ class AppLocalizationsRw extends AppLocalizations {
   String get revRvLearnDownloadsInProgress => 'Download in progress.';
 
   @override
+  String get revRvShadowEmptyWhat => 'No clip is ready.';
+
+  @override
+  String get revRvShadowEmptyWhy => 'Shadowing has nothing to play.';
+
+  @override
+  String get revRvShadowEmptyNext => 'Go back to Speak.';
+
+  @override
+  String get revRvShadowNoAttemptWhat => 'No attempt yet.';
+
+  @override
+  String get revRvShadowNoAttemptWhy => 'You have not spoken this clip.';
+
+  @override
+  String get revRvShadowNoAttemptNext => 'Record when you are ready.';
+
+  @override
+  String get revRvShadowRecord => 'Record';
+
+  @override
+  String get revRvShadowErrorWhat => 'Shadowing did not open.';
+
+  @override
+  String get revRvShadowErrorWhy => 'The clip did not come back.';
+
+  @override
+  String get revRvShadowScoreErrorWhat => 'The attempt was not scored.';
+
+  @override
+  String get revRvShadowScoreErrorWhy =>
+      'Nothing from that attempt is still on screen.';
+
+  @override
+  String get revRvShadowErrorNext => 'Try again.';
+
+  @override
+  String get revRvShadowPractice =>
+      'Pronunciation scoring is unavailable. You can keep practising without a ranked score.';
+
+  @override
+  String get revRvShadowUnsure =>
+      'We could not score this clearly. No score is shown.';
+
+  @override
+  String get revRvShadowScoreLabel => 'Score';
+
+  @override
+  String revRvShadowScoreValue(int percent) {
+    return '$percent%';
+  }
+
+  @override
+  String get revRvShadowOfflineWhy => 'Shadowing is not saved on the phone.';
+
+  @override
   String get revRvAudioFollowing => 'Following';
 
   @override

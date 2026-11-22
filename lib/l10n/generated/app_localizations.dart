@@ -13208,6 +13208,108 @@ abstract class AppLocalizations {
   /// **'Download in progress.'**
   String get revRvLearnDownloadsInProgress;
 
+  /// rev.rv_shadow.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No clip is ready.'**
+  String get revRvShadowEmptyWhat;
+
+  /// rev.rv_shadow.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'Shadowing has nothing to play.'**
+  String get revRvShadowEmptyWhy;
+
+  /// rev.rv_shadow.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Speak.'**
+  String get revRvShadowEmptyNext;
+
+  /// rev.rv_shadow.attempt.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No attempt yet.'**
+  String get revRvShadowNoAttemptWhat;
+
+  /// rev.rv_shadow.attempt.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'You have not spoken this clip.'**
+  String get revRvShadowNoAttemptWhy;
+
+  /// rev.rv_shadow.attempt.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Record when you are ready.'**
+  String get revRvShadowNoAttemptNext;
+
+  /// rev.rv_shadow.record
+  ///
+  /// In en, this message translates to:
+  /// **'Record'**
+  String get revRvShadowRecord;
+
+  /// rev.rv_shadow.error.what
+  ///
+  /// In en, this message translates to:
+  /// **'Shadowing did not open.'**
+  String get revRvShadowErrorWhat;
+
+  /// rev.rv_shadow.error.why
+  ///
+  /// In en, this message translates to:
+  /// **'The clip did not come back.'**
+  String get revRvShadowErrorWhy;
+
+  /// rev.rv_shadow.scoreError.what
+  ///
+  /// In en, this message translates to:
+  /// **'The attempt was not scored.'**
+  String get revRvShadowScoreErrorWhat;
+
+  /// rev.rv_shadow.scoreError.why
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing from that attempt is still on screen.'**
+  String get revRvShadowScoreErrorWhy;
+
+  /// rev.rv_shadow.error.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get revRvShadowErrorNext;
+
+  /// rev.rv_shadow.practice
+  ///
+  /// In en, this message translates to:
+  /// **'Pronunciation scoring is unavailable. You can keep practising without a ranked score.'**
+  String get revRvShadowPractice;
+
+  /// rev.rv_shadow.unsure
+  ///
+  /// In en, this message translates to:
+  /// **'We could not score this clearly. No score is shown.'**
+  String get revRvShadowUnsure;
+
+  /// rev.rv_shadow.score.label
+  ///
+  /// In en, this message translates to:
+  /// **'Score'**
+  String get revRvShadowScoreLabel;
+
+  /// rev.rv_shadow.score.value
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}%'**
+  String revRvShadowScoreValue(int percent);
+
+  /// rev.rv_shadow.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'Shadowing is not saved on the phone.'**
+  String get revRvShadowOfflineWhy;
+
   /// rev.rv_audio.following
   ///
   /// In en, this message translates to:

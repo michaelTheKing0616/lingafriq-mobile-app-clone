@@ -5,6 +5,7 @@ import 'package:lingafriq/design/tokens.g.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/navigation/hub_speak.dart';
 import 'package:lingafriq/screens/ai_chat/polie_workspace_screen.dart';
+import 'package:lingafriq/screens/tutor/shadowing_exercise_screen.dart';
 
 Widget _host(Widget child, {double scale = 1, bool reduced = false}) {
   return MaterialApp(
@@ -52,6 +53,10 @@ void main() {
 
     expect(SpeakRoutes.openingFor(SpeakRoutes.root), isA<SpeakHubOpening>());
     expect(SpeakRoutes.openingFor(SpeakRoutes.polie), isA<SpeakPolieOpening>());
+    expect(
+      SpeakRoutes.openingFor(SpeakRoutes.shadowing),
+      isA<SpeakShadowingOpening>(),
+    );
     for (final SpeakPlace place in SpeakRoutes.places) {
       if (place.kind != SpeakPlaceKind.notAvailable) continue;
       final SpeakOpening opening = SpeakRoutes.openingFor(place.path);
@@ -63,7 +68,7 @@ void main() {
       SpeakRoutes.places
           .where((SpeakPlace place) => place.kind == SpeakPlaceKind.ready)
           .map((SpeakPlace place) => place.id),
-      <String>['polie'],
+      <String>['polie', 'shadowing'],
     );
     expect(SpeakTutorMode.values, hasLength(6));
     expect(SpeakTutorMode.values, <SpeakTutorMode>[
@@ -85,7 +90,7 @@ void main() {
       ('polie', 'Polie', SpeakPolieScreen),
       ('scenarios', 'Scenarios', SpeakNotAvailablePage),
       ('personas', 'Personas and Missions', SpeakNotAvailablePage),
-      ('shadowing', 'Shadowing', SpeakNotAvailablePage),
+      ('shadowing', 'Shadowing', ShadowingExerciseScreen),
       ('codeSwitch', 'Code-Switch and Respect', SpeakNotAvailablePage),
       ('missions', 'Speak Missions', SpeakNotAvailablePage),
       ('coach', 'Coach insights', SpeakNotAvailablePage),

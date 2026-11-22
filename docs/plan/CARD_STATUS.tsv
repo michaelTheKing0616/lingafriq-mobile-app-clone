@@ -572,13 +572,13 @@ P3-046	Done	Add Lens entry with Point & Say, Translate, Import	P3/P3-046.yaml
 P3-047	Done	Build long-press Word Card on every target word	P3/P3-047.yaml
 P3-048	Done	Replace drawer with All features directory	P3/P3-048.yaml
 P3-049	Done	'Add contextual surfacing rules: lesson, word, camera, tones'	P3/P3-049.yaml
-P3-050	Draft	'Add contextual surfacing rules: scenarios, events, social, reminder'	P3/P3-050.yaml
+P3-050	Done	'Add contextual surfacing rules: scenarios, events, social, reminder'	P3/P3-050.yaml
 P3-051	Draft	Implement progressive unlocking stages with open-anyway	P3/P3-051.yaml
 P3-052	Draft	Enforce minor safety gates in Village	P3/P3-052.yaml
 P3-053	Done	Revive Words & Review dashboards, Recap, Rush, Downloads	P3/P3-053.yaml
 P3-054	Done	Revive Daily Challenges and first-use tips	P3/P3-054.yaml
 P3-055	Draft	Revive Conversation Analytics and Roleplay summaries	P3/P3-055.yaml
-P3-056	Draft	Revive Shadowing exercise	P3/P3-056.yaml
+P3-056	Done	Revive Shadowing exercise	P3/P3-056.yaml
 P3-057	Draft	Revive Tone Forge and Game Mastery Results	P3/P3-057.yaml
 P3-058	Draft	Revive Chat Search, Contact Info, Moderation, Welcome	P3/P3-058.yaml
 P3-059	Done	Revive Social Audio Following and Scheduled Sessions	P3/P3-059.yaml
