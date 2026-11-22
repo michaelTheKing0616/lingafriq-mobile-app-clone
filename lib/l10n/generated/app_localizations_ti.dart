@@ -6958,4 +6958,93 @@ class AppLocalizationsTi extends AppLocalizations {
 
   @override
   String get hubHSpeakPolieOfflineWhy => 'Polie needs the network to answer.';
+
+  @override
+  String get hubHMeTitle => 'Me';
+
+  @override
+  String get hubHMeProfile => 'Profile and avatar';
+
+  @override
+  String get hubHMeProgress => 'Progress';
+
+  @override
+  String get hubHMeAchievements => 'Achievements';
+
+  @override
+  String get hubHMeLeagues => 'Leagues';
+
+  @override
+  String get hubHMeFamily => 'Family';
+
+  @override
+  String get hubHMePlus => 'Plus';
+
+  @override
+  String get hubHMeSettings => 'Settings';
+
+  @override
+  String get hubHMeAbout => 'About';
+
+  @override
+  String get hubHMeBack => 'Back to Me';
+
+  @override
+  String get hubHMeLeave => 'Back';
+
+  @override
+  String get hubHMeNotAvailableTitle => 'Not available yet';
+
+  @override
+  String hubHMeNotAvailableWhat(String name) {
+    return '$name is not available yet.';
+  }
+
+  @override
+  String get hubHMeNotAvailableWhy => 'This screen is not built yet.';
+
+  @override
+  String get hubHMeNotAvailableNext => 'Go back to Me.';
+
+  @override
+  String get hubHMeEmptyWhat => 'Me has nothing to open yet.';
+
+  @override
+  String get hubHMeEmptyWhy => 'No profile is saved.';
+
+  @override
+  String get hubHMeEmptyNext => 'Open Profile and avatar.';
+
+  @override
+  String get hubHMeOpenProfile => 'Open Profile';
+
+  @override
+  String get hubHMeErrorWhat => 'Me did not open.';
+
+  @override
+  String get hubHMeErrorWhy => 'The list did not come back.';
+
+  @override
+  String get hubHMeErrorNext => 'Try again.';
+
+  @override
+  String get hubHMeOfflineWhy => 'Me is not saved on the phone.';
+
+  @override
+  String get hubHMeNoName => 'No name is saved.';
+
+  @override
+  String get hubHMeNoAvatar => 'No avatar is saved.';
+
+  @override
+  String get hubHMeAvatar => 'Avatar';
+
+  @override
+  String get hubHMeProfileEmptyWhat => 'No profile is saved on this phone.';
+
+  @override
+  String get hubHMeProfileEmptyWhy => 'A name and avatar have not been saved.';
+
+  @override
+  String get hubHMeProfileEmptyNext => 'Go back to Me.';
 }
