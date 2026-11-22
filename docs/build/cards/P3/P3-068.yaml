@@ -69,6 +69,63 @@ risks:
 gate: G3
 external_blockers: []
 status: Draft
+harvest_audit:
+  templates:
+    moved:
+    - template_match_board.dart play slot board, action slot controls
+    - template_narrative.dart play slot narrativeContent, action slot actions
+    - template_pronunciation.dart play slot content, action slot micControls
+    - template_rhythm.dart play slot rhythmArea, action slot controls
+    - template_strategic.dart play slot board, action slot controls
+    - template_timed_quiz.dart play slot questionArea, action slot actions
+    - GameKitTemplateFrame places those slots on the shared game shell
+    seventh: not present
+    kept:
+    - The six template files stay. No route builds them. test/games/game_template_shell_test.dart still builds GameTemplateShell, and that test is outside this card.
+    - game_template_shell.dart stays. BaseGameScreen and that shell test import it. The live loader now also shows a harvested loading fact.
+  universal_loading_screen.dart:
+    moved:
+    - Five loading facts, with the caller's fact winning even when it is empty
+    - Skip only when a skip callback is set
+    - Back only when the route can pop
+    - Dot index (value * 3).floor() clamped to 0, 1, or 2
+    - Pulse 2400 ms, progress 8 s, dots 1800 ms
+    - LingAfriq, Did You Know?, and Skip
+    - BaseGameScreen and UniversalGameScreen show the fact while a game loads
+    dropped:
+    - Three em dashes in the Yoruba, Ge'ez, and Wolof facts were replaced with periods. The card forbids an em dash. The meaning is unchanged.
+    - Unseeded Random() on the live path was replaced with Random(language or game id hash) so the same language or game shows the same fact. The list and nextInt pick are unchanged.
+    - Full-page ModernGriot scaffold, pulse rings, and gradient bar stay on the old screen. A second scaffold inside the game shell would stack app bars. The old screen has no route.
+  universal_game_screen.dart:
+    screens_path: not present
+    survivor: lib/games/gamekit/universal_game_screen.dart
+    moved:
+    - The GameKit screen already plays a generic game. It now shows the harvested loader, and a start guide when the caller passes one.
+    kept:
+    - End of play still opens GameMasteryResultsScreen. Elevation revives that screen as the standard results view. Replacing it would drop skill deltas.
+  game_start_guide_screen.dart:
+    moved:
+    - Character name and title, game title, mission objective, cultural tip
+    - XP label +N XP
+    - How to Play keeps the first three steps and drops the rest
+    - Start Mission and Review Vocabulary
+    dropped:
+    - Hero art, bento grid, and pattern background. They are decoration on an unrouted screen. The steps, labels, and actions are the behavior.
+  victory_results_screen.dart:
+    moved:
+    - Mission complete, XP as +N, vocabulary, score, idioms, griot rank, mastery percent
+    - Mastery bar value is mastery percent divided by 100
+    - Claim Rewards and Replay Mission
+    dropped:
+    - Glow animation and glass stat cards. They are decoration on an unrouted screen. The totals and actions are the behavior.
+    - UniversalGameScreen does not replace mastery results with this view. See universal_game_screen kept.
+  routes:
+    - No route in my_app.dart or game_router.dart builds the six templates, the loading screen, the start guide, or the victory screen. Nothing was retargeted. UniversalGameScreen does not already play Listen and Sketch, so that route stays on ListenSketchGame.
+  gaps:
+    - A seventh named template class is not present. The card stays Draft.
+    - lib/screens/games/universal_game_screen.dart is not present.
+    - lib/games/base_game_screen.dart is not present.
+    - Old files were not deleted. The shell is still imported, and the other harvested screens are outside this card's edit list. No route points at them.
 skills:
   worker:
   - adaptive/08-coding-and-debugging
