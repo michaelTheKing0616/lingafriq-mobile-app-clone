@@ -10337,6 +10337,208 @@
       }
     }
   },
+  "unlockLocked": "Locked",
+  "@unlockLocked": {
+    "description": "unlock.locked"
+  },
+  "unlockUnlocksAt": "Unlocks at {stage}.",
+  "@unlockUnlocksAt": {
+    "description": "unlock.unlocksAt",
+    "placeholders": {
+      "stage": {
+        "type": "String"
+      }
+    }
+  },
+  "unlockStageDay1": "Day 1",
+  "@unlockStageDay1": {
+    "description": "unlock.stage.day1"
+  },
+  "unlockStageAccount": "Account created",
+  "@unlockStageAccount": {
+    "description": "unlock.stage.account"
+  },
+  "unlockStageWeek1": "Week 1 or A1 unit 3",
+  "@unlockStageWeek1": {
+    "description": "unlock.stage.week1"
+  },
+  "unlockStageA2": "A2",
+  "@unlockStageA2": {
+    "description": "unlock.stage.a2"
+  },
+  "unlockStageB1": "B1",
+  "@unlockStageB1": {
+    "description": "unlock.stage.b1"
+  },
+  "unlockNative": "Unlocks for native speakers.",
+  "@unlockNative": {
+    "description": "unlock.native"
+  },
+  "unlockPreview": "Preview",
+  "@unlockPreview": {
+    "description": "unlock.preview"
+  },
+  "unlockOpenAnyway": "Open anyway",
+  "@unlockOpenAnyway": {
+    "description": "unlock.openAnyway"
+  },
+  "unlockPreviewNote": "This preview does not mark a lesson done.",
+  "@unlockPreviewNote": {
+    "description": "unlock.preview.note"
+  },
+  "unlockOpened": "{name} is open.",
+  "@unlockOpened": {
+    "description": "unlock.opened",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "unlockSafety": "A guardian must open this.",
+  "@unlockSafety": {
+    "description": "unlock.safety"
+  },
+  "unlockSemantics": "{name}, Locked. {line}",
+  "@unlockSemantics": {
+    "description": "unlock.semantics",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "line": {
+        "type": "String"
+      }
+    }
+  },
+  "unlockBack": "Back",
+  "@unlockBack": {
+    "description": "unlock.back"
+  },
+  "unlockFeatureToday": "Today",
+  "@unlockFeatureToday": {
+    "description": "unlock.feature.today"
+  },
+  "unlockFeatureFirstUnit": "First unit",
+  "@unlockFeatureFirstUnit": {
+    "description": "unlock.feature.firstUnit"
+  },
+  "unlockFeaturePolieBasic": "Polie basic",
+  "@unlockFeaturePolieBasic": {
+    "description": "unlock.feature.polieBasic"
+  },
+  "unlockFeatureLens": "Lens",
+  "@unlockFeatureLens": {
+    "description": "unlock.feature.lens"
+  },
+  "unlockFeatureGames": "Games",
+  "@unlockFeatureGames": {
+    "description": "unlock.feature.games"
+  },
+  "unlockFeatureWordCard": "Word Card",
+  "@unlockFeatureWordCard": {
+    "description": "unlock.feature.wordCard"
+  },
+  "unlockFeatureMagazine": "Magazine",
+  "@unlockFeatureMagazine": {
+    "description": "unlock.feature.magazine"
+  },
+  "unlockFeatureEvents": "Events",
+  "@unlockFeatureEvents": {
+    "description": "unlock.feature.events"
+  },
+  "unlockFeatureStreaks": "Streaks",
+  "@unlockFeatureStreaks": {
+    "description": "unlock.feature.streaks"
+  },
+  "unlockFeatureCircles": "Circles",
+  "@unlockFeatureCircles": {
+    "description": "unlock.feature.circles"
+  },
+  "unlockFeatureSquare": "Square",
+  "@unlockFeatureSquare": {
+    "description": "unlock.feature.square"
+  },
+  "unlockFeatureGlobalHandle": "Global handle",
+  "@unlockFeatureGlobalHandle": {
+    "description": "unlock.feature.globalHandle"
+  },
+  "unlockFeaturePersonas": "Personas",
+  "@unlockFeaturePersonas": {
+    "description": "unlock.feature.personas"
+  },
+  "unlockFeatureScenarios": "Scenarios",
+  "@unlockFeatureScenarios": {
+    "description": "unlock.feature.scenarios"
+  },
+  "unlockFeatureChats": "Chats",
+  "@unlockFeatureChats": {
+    "description": "unlock.feature.chats"
+  },
+  "unlockFeatureStatus": "Status",
+  "@unlockFeatureStatus": {
+    "description": "unlock.feature.status"
+  },
+  "unlockFeaturePractice": "Practice",
+  "@unlockFeaturePractice": {
+    "description": "unlock.feature.practice"
+  },
+  "unlockFeatureClips": "Clips",
+  "@unlockFeatureClips": {
+    "description": "unlock.feature.clips"
+  },
+  "unlockFeatureNativeCorrections": "Native Corrections",
+  "@unlockFeatureNativeCorrections": {
+    "description": "unlock.feature.nativeCorrections"
+  },
+  "unlockFeaturePassport": "Passport",
+  "@unlockFeaturePassport": {
+    "description": "unlock.feature.passport"
+  },
+  "unlockFeatureCodeSwitch": "Code-Switch",
+  "@unlockFeatureCodeSwitch": {
+    "description": "unlock.feature.codeSwitch"
+  },
+  "unlockFeatureRespect": "Respect",
+  "@unlockFeatureRespect": {
+    "description": "unlock.feature.respect"
+  },
+  "unlockFeatureRadio": "Radio",
+  "@unlockFeatureRadio": {
+    "description": "unlock.feature.radio"
+  },
+  "unlockFeatureCreate": "Create",
+  "@unlockFeatureCreate": {
+    "description": "unlock.feature.create"
+  },
+  "unlockFeatureHostRooms": "Host rooms",
+  "@unlockFeatureHostRooms": {
+    "description": "unlock.feature.hostRooms"
+  },
+  "unlockFeatureMentoring": "Mentoring",
+  "@unlockFeatureMentoring": {
+    "description": "unlock.feature.mentoring"
+  },
+  "unlockFeatureContribute": "Contribute",
+  "@unlockFeatureContribute": {
+    "description": "unlock.feature.contribute"
+  },
+  "unlockFeatureVerify": "Verify",
+  "@unlockFeatureVerify": {
+    "description": "unlock.feature.verify"
+  },
+  "unlockFeatureCalls": "Calls",
+  "@unlockFeatureCalls": {
+    "description": "unlock.feature.calls"
+  },
+  "unlockFeaturePublicPost": "Public post",
+  "@unlockFeaturePublicPost": {
+    "description": "unlock.feature.publicPost"
+  },
+  "unlockFeatureUnknown": "This feature",
+  "@unlockFeatureUnknown": {
+    "description": "unlock.feature.unknown"
+  },
   "hubHSpeakRoleplaySummary": "Scenario summary",
   "@hubHSpeakRoleplaySummary": {
     "description": "hub.h_speak.roleplaySummary"

@@ -7787,6 +7787,150 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get unlockLocked => 'Locked';
+
+  @override
+  String unlockUnlocksAt(String stage) {
+    return 'Unlocks at $stage.';
+  }
+
+  @override
+  String get unlockStageDay1 => 'Day 1';
+
+  @override
+  String get unlockStageAccount => 'Account created';
+
+  @override
+  String get unlockStageWeek1 => 'Week 1 or A1 unit 3';
+
+  @override
+  String get unlockStageA2 => 'A2';
+
+  @override
+  String get unlockStageB1 => 'B1';
+
+  @override
+  String get unlockNative => 'Unlocks for native speakers.';
+
+  @override
+  String get unlockPreview => 'Preview';
+
+  @override
+  String get unlockOpenAnyway => 'Open anyway';
+
+  @override
+  String get unlockPreviewNote => 'This preview does not mark a lesson done.';
+
+  @override
+  String unlockOpened(String name) {
+    return '$name is open.';
+  }
+
+  @override
+  String get unlockSafety => 'A guardian must open this.';
+
+  @override
+  String unlockSemantics(String name, String line) {
+    return '$name, Locked. $line';
+  }
+
+  @override
+  String get unlockBack => 'Back';
+
+  @override
+  String get unlockFeatureToday => 'Today';
+
+  @override
+  String get unlockFeatureFirstUnit => 'First unit';
+
+  @override
+  String get unlockFeaturePolieBasic => 'Polie basic';
+
+  @override
+  String get unlockFeatureLens => 'Lens';
+
+  @override
+  String get unlockFeatureGames => 'Games';
+
+  @override
+  String get unlockFeatureWordCard => 'Word Card';
+
+  @override
+  String get unlockFeatureMagazine => 'Magazine';
+
+  @override
+  String get unlockFeatureEvents => 'Events';
+
+  @override
+  String get unlockFeatureStreaks => 'Streaks';
+
+  @override
+  String get unlockFeatureCircles => 'Circles';
+
+  @override
+  String get unlockFeatureSquare => 'Square';
+
+  @override
+  String get unlockFeatureGlobalHandle => 'Global handle';
+
+  @override
+  String get unlockFeaturePersonas => 'Personas';
+
+  @override
+  String get unlockFeatureScenarios => 'Scenarios';
+
+  @override
+  String get unlockFeatureChats => 'Chats';
+
+  @override
+  String get unlockFeatureStatus => 'Status';
+
+  @override
+  String get unlockFeaturePractice => 'Practice';
+
+  @override
+  String get unlockFeatureClips => 'Clips';
+
+  @override
+  String get unlockFeatureNativeCorrections => 'Native Corrections';
+
+  @override
+  String get unlockFeaturePassport => 'Passport';
+
+  @override
+  String get unlockFeatureCodeSwitch => 'Code-Switch';
+
+  @override
+  String get unlockFeatureRespect => 'Respect';
+
+  @override
+  String get unlockFeatureRadio => 'Radio';
+
+  @override
+  String get unlockFeatureCreate => 'Create';
+
+  @override
+  String get unlockFeatureHostRooms => 'Host rooms';
+
+  @override
+  String get unlockFeatureMentoring => 'Mentoring';
+
+  @override
+  String get unlockFeatureContribute => 'Contribute';
+
+  @override
+  String get unlockFeatureVerify => 'Verify';
+
+  @override
+  String get unlockFeatureCalls => 'Calls';
+
+  @override
+  String get unlockFeaturePublicPost => 'Public post';
+
+  @override
+  String get unlockFeatureUnknown => 'This feature';
+
+  @override
   String get hubHSpeakRoleplaySummary => 'Scenario summary';
 
   @override

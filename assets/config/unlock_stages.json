@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "stages": [
+    {
+      "id": "day_1",
+      "requires": "none",
+      "opens": [
+        "today",
+        "first_unit",
+        "polie_basic",
+        "lens",
+        "games",
+        "word_card",
+        "magazine",
+        "events"
+      ]
+    },
+    {
+      "id": "account",
+      "requires": "account",
+      "opens": [
+        "streaks",
+        "games",
+        "circles",
+        "square",
+        "global_handle"
+      ]
+    },
+    {
+      "id": "week_1_or_a1_unit_3",
+      "requires": "week_1_or_a1_unit_3",
+      "opens": [
+        "personas",
+        "scenarios",
+        "chats",
+        "status",
+        "practice"
+      ]
+    },
+    {
+      "id": "a2",
+      "requires": "level",
+      "level": "A2",
+      "opens": [
+        "clips",
+        "native_corrections",
+        "passport",
+        "code_switch",
+        "respect",
+        "radio"
+      ]
+    },
+    {
+      "id": "b1",
+      "requires": "level",
+      "level": "B1",
+      "opens": [
+        "create",
+        "host_rooms",
+        "mentoring"
+      ]
+    },
+    {
+      "id": "native_speaker",
+      "requires": "native_speaker",
+      "opens": [
+        "contribute",
+        "verify"
+      ]
+    }
+  ],
+  "features": [
+    {"id": "today"},
+    {"id": "first_unit"},
+    {"id": "polie_basic", "access": "basic"},
+    {"id": "lens", "access": "point_say"},
+    {"id": "games", "day1_count": 3, "all_on": "account"},
+    {"id": "word_card"},
+    {"id": "magazine", "access": "read_only"},
+    {"id": "events", "access": "read_only"},
+    {"id": "streaks"},
+    {"id": "circles", "access": "join"},
+    {"id": "square", "access": "read"},
+    {"id": "global_handle"},
+    {"id": "personas"},
+    {"id": "scenarios"},
+    {"id": "chats", "audience": "adult", "safety": "guardian"},
+    {"id": "status"},
+    {"id": "practice"},
+    {"id": "clips"},
+    {"id": "native_corrections", "access": "post"},
+    {"id": "passport"},
+    {"id": "code_switch"},
+    {"id": "respect"},
+    {"id": "radio", "access": "speak"},
+    {"id": "create", "access": "ugc"},
+    {"id": "host_rooms"},
+    {"id": "mentoring"},
+    {"id": "contribute"},
+    {"id": "verify"},
+    {"id": "calls", "safety": "guardian"},
+    {"id": "public_post", "safety": "guardian"}
+  ]
+}
