@@ -6,8 +6,10 @@ import 'package:lingafriq/design/states/error_state.dart';
 import 'package:lingafriq/design/states/offline_state.dart';
 import 'package:lingafriq/design/tokens.g.dart';
 import 'package:lingafriq/games/gamekit/play_shelves.dart';
+import 'package:lingafriq/games/tone_forge/tone_forge_screen.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/l10n/l10n_of.dart';
+import 'package:lingafriq/screens/games/game_mastery_results_screen.dart';
 
 /// Play root, or a load that has no list, failed, or has no network.
 enum PlayHubStatus { ready, empty, error, offline }
@@ -34,6 +36,14 @@ final class PlayShelfOpening extends PlayOpening {
   final PlayShelfId shelf;
 }
 
+final class PlayToneForgeOpening extends PlayOpening {
+  const PlayToneForgeOpening();
+}
+
+final class PlayMasteryResultsOpening extends PlayOpening {
+  const PlayMasteryResultsOpening();
+}
+
 final class PlayGapOpening extends PlayOpening {
   const PlayGapOpening(this.gap);
 
@@ -50,8 +60,10 @@ final class PlayUnknownOpening extends PlayOpening {
 abstract final class PlayRoutes {
   static const String root = '/play';
   static const String toneForge = '/play/tone-forge';
+  static const String masteryResults = '/play/mastery-results';
 
   static const String toneForgeId = 'tone-forge';
+  static const String masteryResultsId = 'mastery-results';
 
   static List<String> get shelfPaths => <String>[
     for (final PlayShelfId shelf in kPlayShelfOrder) shelf.path,
@@ -65,6 +77,7 @@ abstract final class PlayRoutes {
     root,
     ...shelfPaths,
     toneForge,
+    masteryResults,
     ...gamePaths,
   ];
 
@@ -99,9 +112,8 @@ abstract final class PlayRoutes {
     if (path == root) return const PlayHubOpening();
     final PlayShelfId? shelf = shelfForPath(path);
     if (shelf != null) return PlayShelfOpening(shelf);
-    if (path == toneForge) {
-      return const PlayGapOpening(PlayNotAvailable(toneForgeId));
-    }
+    if (path == toneForge) return const PlayToneForgeOpening();
+    if (path == masteryResults) return const PlayMasteryResultsOpening();
     final PlayShelfGame? game = gameForPath(path);
     if (game != null) return PlayGapOpening(PlayNotAvailable(game.key));
     return PlayUnknownOpening(path);
@@ -111,7 +123,7 @@ abstract final class PlayRoutes {
     final String path = settings.name ?? root;
     return MaterialPageRoute<void>(
       settings: RouteSettings(name: path, arguments: settings.arguments),
-      builder: (BuildContext context) => _pageFor(path),
+      builder: (BuildContext context) => _pageFor(context, path),
     );
   }
 }
@@ -145,6 +157,9 @@ String playPlaceLabel(AppLocalizations l10n, String placeId) {
     if (shelf.segment == placeId) return playShelfLabel(l10n, shelf);
   }
   if (placeId == PlayRoutes.toneForgeId) return l10n.hubHPlayToneForge;
+  if (placeId == PlayRoutes.masteryResultsId) {
+    return l10n.revRvPlayMasteryTitle;
+  }
   if (playGameByKey(placeId) != null) return playGameLabel(l10n, placeId);
   return l10n.hubHPlayNotAvailableTitle;
 }
@@ -164,11 +179,17 @@ void playBackToRoot(BuildContext context) {
   }
 }
 
-Widget _pageFor(String routePath) {
+Widget _pageFor(BuildContext context, String routePath) {
   final PlayOpening opening = PlayRoutes.openingFor(routePath);
   return switch (opening) {
     PlayHubOpening() => const PlayHubPage(),
     PlayShelfOpening(:final shelf) => PlayShelfPage(shelf: shelf),
+    PlayToneForgeOpening() => ToneForgeScreen.play(
+      onBack: () => playBackToRoot(context),
+    ),
+    PlayMasteryResultsOpening() => GameMasteryResultsScreen.play(
+      onDone: () => playBackToRoot(context),
+    ),
     PlayGapOpening(:final gap) => PlayNotAvailablePage(gap: gap),
     PlayUnknownOpening(:final path) => PlayUnknownPage(path: path),
   };
@@ -189,6 +210,8 @@ class PlayHub extends StatelessWidget {
   static Key gameKey(String key) => ValueKey<String>('play-game-$key');
 
   static const Key toneForgeKey = ValueKey<String>('play-tone-forge');
+
+  static const Key masteryResultsKey = ValueKey<String>('play-mastery-results');
 
   static const Key emptyKey = ValueKey<String>('play-hub-empty');
 
@@ -321,6 +344,13 @@ class PlayHubPage extends StatelessWidget {
           label: l10n.hubHPlayToneForge,
           palette: palette,
           onTap: () => Navigator.of(context).pushNamed(PlayRoutes.toneForge),
+        ),
+        _PlayRow(
+          rowKey: PlayHub.masteryResultsKey,
+          label: l10n.revRvPlayMasteryTitle,
+          palette: palette,
+          onTap: () =>
+              Navigator.of(context).pushNamed(PlayRoutes.masteryResults),
         ),
       ],
     );

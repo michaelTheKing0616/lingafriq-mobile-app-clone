@@ -7874,6 +7874,254 @@ class AppLocalizationsHa extends AppLocalizations {
   String get unlockFeatureUnknown => 'This feature';
 
   @override
+  String get hubHSpeakRoleplaySummary => 'Scenario summary';
+
+  @override
+  String get hubHSpeakRoleplayProgress => 'Roleplay progress';
+
+  @override
+  String get revRvSpeakCoachEmptyWhat => 'No conversation is saved.';
+
+  @override
+  String get revRvSpeakCoachEmptyWhy =>
+      'There is no conversation story to show.';
+
+  @override
+  String get revRvSpeakCoachEmptyNext => 'Go back to Speak.';
+
+  @override
+  String get revRvSpeakCoachErrorWhat => 'Coach insights did not open.';
+
+  @override
+  String get revRvSpeakCoachErrorWhy =>
+      'The conversation story did not come back.';
+
+  @override
+  String get revRvSpeakCoachErrorNext => 'Try again.';
+
+  @override
+  String get revRvSpeakCoachOfflineWhy =>
+      'Coach insights are not saved on the phone.';
+
+  @override
+  String get revRvSpeakSummaryEmptyWhat => 'No scenario summary is ready.';
+
+  @override
+  String get revRvSpeakSummaryEmptyWhy => 'No completed scenario is saved.';
+
+  @override
+  String get revRvSpeakSummaryEmptyNext => 'Go back to Speak.';
+
+  @override
+  String get revRvSpeakSummaryErrorWhat => 'The scenario summary did not open.';
+
+  @override
+  String get revRvSpeakSummaryErrorWhy =>
+      'Nothing from that scenario is still on screen.';
+
+  @override
+  String get revRvSpeakSummaryErrorNext => 'Try again.';
+
+  @override
+  String get revRvSpeakSummaryOfflineWhy =>
+      'This summary is not saved on the phone.';
+
+  @override
+  String get revRvSpeakProgressEmptyWhat => 'No scenarios are listed.';
+
+  @override
+  String get revRvSpeakProgressEmptyWhy => 'No completed scenario is saved.';
+
+  @override
+  String get revRvSpeakProgressEmptyNext => 'Go back to Speak.';
+
+  @override
+  String get revRvSpeakProgressErrorWhat => 'Roleplay progress did not open.';
+
+  @override
+  String get revRvSpeakProgressErrorWhy =>
+      'The scenario list did not come back.';
+
+  @override
+  String get revRvSpeakProgressErrorNext => 'Try again.';
+
+  @override
+  String get revRvSpeakProgressOfflineWhy =>
+      'Roleplay progress is not saved on the phone.';
+
+  @override
+  String get revRvSpeakPronunciation => 'Pronunciation';
+
+  @override
+  String get revRvSpeakTone => 'Tone';
+
+  @override
+  String revRvSpeakScoreValue(int percent) {
+    return '$percent%';
+  }
+
+  @override
+  String get revRvSpeakUnsure =>
+      'We could not score this clearly. No score is shown.';
+
+  @override
+  String get revRvSpeakPractice =>
+      'Pronunciation scoring is unavailable. You can keep practising without a ranked score.';
+
+  @override
+  String get revRvSpeakTopics => 'Topics';
+
+  @override
+  String get revRvSpeakVocabulary => 'Words from this scenario';
+
+  @override
+  String get revRvSpeakGrammar => 'Grammar from this scenario';
+
+  @override
+  String get revRvSpeakCorrections => 'Corrections';
+
+  @override
+  String get revRvSpeakRefresh => 'Refresh';
+
+  @override
+  String revRvSpeakSessionCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sessions',
+      one: '1 session',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String revRvSpeakMessageCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count messages',
+      one: '1 message',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String revRvSpeakWordCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count words',
+      one: '1 word',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String revRvSpeakTurnCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count turns',
+      one: '1 turn',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String revRvSpeakCompletedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Completed $count times',
+      one: 'Completed 1 time',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String revRvSpeakSceneSemantics(String name) {
+    return 'Scenario: $name.';
+  }
+
+  @override
+  String get revRvPlayEmptyWhat => 'No word is ready.';
+
+  @override
+  String get revRvPlayEmptyWhy => 'Tone Forge has nothing to play.';
+
+  @override
+  String get revRvPlayEmptyNext => 'Go back to Play.';
+
+  @override
+  String get revRvPlayErrorWhat => 'Tone Forge did not open.';
+
+  @override
+  String get revRvPlayErrorWhy => 'The word did not come back.';
+
+  @override
+  String get revRvPlayErrorNext => 'Try again.';
+
+  @override
+  String get revRvPlayScoreErrorWhat => 'The attempt was not scored.';
+
+  @override
+  String get revRvPlayScoreErrorWhy =>
+      'Nothing from that attempt is still on screen.';
+
+  @override
+  String get revRvPlayUnsure =>
+      'We could not score this clearly. No score is shown.';
+
+  @override
+  String get revRvPlayPractice =>
+      'Practice mode. Tone scores are for learning only until the live scorer is enabled.';
+
+  @override
+  String get revRvPlayScoreLabel => 'Score';
+
+  @override
+  String revRvPlayScoreValue(int percent) {
+    return '$percent%';
+  }
+
+  @override
+  String revRvPlayScoreReturned(int percent) {
+    return 'The scorer returned $percent%.';
+  }
+
+  @override
+  String get revRvPlayOfflineWhy => 'Tone Forge is not saved on the phone.';
+
+  @override
+  String get revRvPlayMasteryTitle => 'Round results';
+
+  @override
+  String get revRvPlayMasteryEmptyWhat => 'No round is ready.';
+
+  @override
+  String get revRvPlayMasteryEmptyWhy => 'There is no result to show.';
+
+  @override
+  String get revRvPlayMasteryEmptyNext => 'Go back to Play.';
+
+  @override
+  String get revRvPlayMasteryErrorWhat => 'The results did not open.';
+
+  @override
+  String get revRvPlayMasteryErrorWhy => 'The round did not come back.';
+
+  @override
+  String get revRvPlayMasteryScoreErrorWhat => 'The round was not scored.';
+
+  @override
+  String get revRvPlayMasteryScoreErrorWhy =>
+      'Nothing from that round is still on screen.';
+
+  @override
+  String get revRvPlayMasteryOfflineWhy =>
+      'Round results are not saved on the phone.';
+
+  @override
   String get revRvContribTitle => 'Contribute';
 
   @override

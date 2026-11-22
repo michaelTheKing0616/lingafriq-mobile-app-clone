@@ -25,6 +25,8 @@ import 'screens/ai_chat/polie_mode_selection_screen.dart';
 import 'screens/lessons/lessons_map_entry_screen.dart';
 import 'screens/content/native_content_review_screen.dart';
 import 'screens/curriculum/authentic_curriculum_entry_screen.dart';
+import 'games/tone_forge/tone_forge_screen.dart';
+import 'screens/games/game_mastery_results_screen.dart';
 import 'screens/games/games_screen.dart';
 import 'screens/games/games_screen_enhanced_with_all_games.dart';
 import 'screens/games/games_screen_material3.dart';
@@ -81,7 +83,9 @@ import 'screens/settings/settings_screen_material3.dart';
 import 'screens/help/features_guide_screen.dart';
 import 'screens/help/stitch_navigation_hub_screen.dart';
 import 'screens/chat/chat_list_screen.dart';
+
 import 'package:lingafriq/screens/home_screen.dart';
+
 import 'screens/chat/call_history_screen.dart';
 import 'screens/chat/live_classroom_screen_material3.dart';
 import 'screens/classroom/classroom_lobby_screen.dart';
@@ -123,6 +127,9 @@ import 'screens/learning/learning_path_screen.dart';
 import 'screens/learning/tone_rhythm/tone_rhythm_trainer_screen.dart';
 import 'screens/learning/phrase_dna/phrase_dna_templates_screen.dart';
 import 'screens/learning/speak_engine_lab_screen.dart';
+import 'screens/ai_chat/conversation_analytics_screen.dart';
+import 'screens/ai_chat/roleplay_completion_summary_screen.dart';
+import 'screens/ai_chat/roleplay_progress_dashboard_screen.dart';
 import 'screens/tutor/shadowing_exercise_screen.dart';
 import 'screens/settings/synthetic_voice_styles_screen.dart';
 import 'screens/ar/point_and_say_screen.dart';
@@ -143,6 +150,7 @@ import 'screens/snap/snap_story_feed_screen.dart';
 import 'screens/snap/snap_camera_screen.dart';
 import 'screens/snap/snap_streaks_screen.dart';
 import 'screens/snap/snap_viewer_screen.dart';
+
 import 'package:lingafriq/screens/feed/community_profile_screen.dart';
 import 'package:lingafriq/screens/feed/explore_community_screen.dart';
 import 'package:lingafriq/screens/feed/search_community_screen.dart';
@@ -152,12 +160,15 @@ import 'package:lingafriq/screens/feed/x_feed_home_screen.dart';
 import 'package:lingafriq/screens/feed/x_lists_screen.dart';
 import 'package:lingafriq/screens/feed/x_post_detail_screen.dart';
 import 'package:lingafriq/screens/feed/x_profile_screen.dart';
+
 import 'screens/personalities/personality_selection_screen.dart';
+
 import 'package:lingafriq/screens/staff/micro_mentor_reports_screen.dart';
 import 'package:lingafriq/screens/passport/passport_route_args.dart';
 import 'package:lingafriq/screens/passport/passport_proctored_session_screen.dart';
 import 'package:lingafriq/screens/passport/passport_credential_screen.dart';
 import 'package:lingafriq/screens/community/micro_mentor_hub_screen.dart';
+
 import 'lessons/handwriting_practice.dart';
 import 'lessons/script_track.dart';
 import 'lessons/models/section_lesson_model.dart';
@@ -636,6 +647,20 @@ Route<dynamic>? generateAppRoute(RouteSettings settings) {
     'speak-engine-lab': (_) => const SpeakEngineLabScreen(),
     // /speak/shadowing
     ShadowingExerciseScreen.routeKey: (_) => const ShadowingExerciseScreen(),
+    // /play/tone-forge
+    ToneForgeScreen.routeKey: (_) => const ToneForgeScreen.play(),
+    // /play/mastery-results
+    GameMasteryResultsScreen.routeKey: (_) =>
+        const GameMasteryResultsScreen.play(),
+    // /speak/coach-insights
+    ConversationAnalyticsScreen.routeKey: (_) =>
+        const ConversationAnalyticsScreen(),
+    // /speak/roleplay-summary
+    RoleplayCompletionSummaryScreen.routeKey: (_) =>
+        const RoleplayCompletionSummaryScreen(),
+    // /speak/roleplay-progress
+    RoleplayProgressDashboardScreen.routeKey: (_) =>
+        const RoleplayProgressDashboardScreen(),
     'tone-rhythm-trainer': (_) {
       final raw = settings.arguments;
       final map = raw is Map

@@ -2,10 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lingafriq/design/states/empty_state.dart';
 import 'package:lingafriq/design/tokens.g.dart';
 import 'package:lingafriq/games/gamekit/play_shelves.dart';
+import 'package:lingafriq/games/tone_forge/tone_forge_screen.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/navigation/hub_play.dart';
+import 'package:lingafriq/screens/games/game_mastery_results_screen.dart';
 import 'package:lingafriq/services/search_index_service.dart';
 
 Widget _host(Widget child, {double scale = 1, bool reduced = false}) {
@@ -48,6 +51,7 @@ void main() {
       '/play/traditional',
       '/play/multiplayer',
       PlayRoutes.toneForge,
+      PlayRoutes.masteryResults,
     ];
     for (final String path in required) {
       expect(PlayRoutes.isRegistered(path), isTrue, reason: path);
@@ -58,11 +62,19 @@ void main() {
     expect(PlayRoutes.tapsFromRoot('/play/words'), 1);
     expect(PlayRoutes.tapsFromRoot('/play/words/flashcard-focus'), 2);
     expect(PlayRoutes.tapsFromRoot(PlayRoutes.toneForge), 1);
+    expect(PlayRoutes.tapsFromRoot(PlayRoutes.masteryResults), 1);
     expect(PlayRoutes.tapsFromRoot('/play/nope'), -1);
 
     expect(PlayRoutes.openingFor(PlayRoutes.root), isA<PlayHubOpening>());
     expect(PlayRoutes.openingFor('/play/words'), isA<PlayShelfOpening>());
-    expect(PlayRoutes.openingFor(PlayRoutes.toneForge), isA<PlayGapOpening>());
+    expect(
+      PlayRoutes.openingFor(PlayRoutes.toneForge),
+      isA<PlayToneForgeOpening>(),
+    );
+    expect(
+      PlayRoutes.openingFor(PlayRoutes.masteryResults),
+      isA<PlayMasteryResultsOpening>(),
+    );
     for (final PlayShelfGame game in kPlayShelfGames) {
       expect(PlayRoutes.isRegistered(game.path), isTrue, reason: game.path);
       expect(PlayRoutes.tapsFromRoot(game.path), 2);
@@ -168,14 +180,28 @@ void main() {
 
     await tester.tap(find.byKey(PlayHub.toneForgeKey));
     await tester.pumpAndSettle();
-    expect(find.byType(PlayNotAvailablePage), findsOneWidget);
+    expect(find.byType(ToneForgeScreen), findsOneWidget);
+    expect(find.byType(PlayNotAvailablePage), findsNothing);
     expect(
       ModalRoute.of(
-        tester.element(find.byType(PlayNotAvailablePage)),
+        tester.element(find.byType(ToneForgeScreen)),
       )!.settings.name,
       PlayRoutes.toneForge,
     );
     expect(PlayRoutes.tapsFromRoot(PlayRoutes.toneForge), lessThanOrEqualTo(2));
+    await tester.tap(find.text('Back to Play'));
+    await tester.pumpAndSettle();
+    expect(find.byType(PlayHubPage), findsOneWidget);
+
+    await tester.tap(find.byKey(PlayHub.masteryResultsKey));
+    await tester.pumpAndSettle();
+    expect(find.byType(GameMasteryResultsScreen), findsOneWidget);
+    expect(
+      ModalRoute.of(
+        tester.element(find.byType(GameMasteryResultsScreen)),
+      )!.settings.name,
+      PlayRoutes.masteryResults,
+    );
     await tester.tap(find.text('Back to Play'));
     await tester.pumpAndSettle();
     expect(find.byType(PlayHubPage), findsOneWidget);
@@ -229,24 +255,23 @@ void main() {
     expect(lines.contains('Ọmọ'), isFalse);
   });
 
-  testWidgets('tone forge shows the not-available state', (tester) async {
+  testWidgets('tone forge opens with an empty state', (tester) async {
     await tester.pumpWidget(
       _host(const PlayHub(initialRoute: PlayRoutes.toneForge)),
     );
     await tester.pumpAndSettle();
-    expect(PlayRoutes.openingFor(PlayRoutes.toneForge), isA<PlayGapOpening>());
-    final Set<String> tone = tester
-        .widgetList<Text>(find.byType(Text))
-        .map((Text text) => text.data ?? '')
-        .toSet();
-    expect(tone, <String>{
-      'Tone Forge',
-      'Not available yet',
-      'Tone Forge is not available yet.',
-      'This screen is not built yet.',
-      'Go back to Play.',
-      'Back to Play',
-    });
+    expect(
+      PlayRoutes.openingFor(PlayRoutes.toneForge),
+      isA<PlayToneForgeOpening>(),
+    );
+    expect(find.byType(ToneForgeScreen), findsOneWidget);
+    expect(find.byType(LingEmptyState), findsOneWidget);
+    expect(find.byKey(ToneForgeScreen.emptyKey), findsOneWidget);
+    expect(find.text('No word is ready.'), findsOneWidget);
+    expect(find.text('Not available yet'), findsNothing);
+    expect(find.text('0'), findsNothing);
+    expect(find.text('80'), findsNothing);
+    expect(find.text('100'), findsNothing);
   });
 
   testWidgets('an empty shelf points back to the arcade', (tester) async {

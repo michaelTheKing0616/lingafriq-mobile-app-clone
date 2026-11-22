@@ -1,239 +1,402 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../design/components/ling_button.dart';
+import '../../design/components/ling_state.dart';
+import '../../design/states/empty_state.dart';
+import '../../design/states/error_state.dart';
+import '../../design/states/offline_state.dart';
+import '../../design/tokens.g.dart';
 import '../../games/gamekit/game_result.dart';
+import '../../games/gamekit/game_scoring.dart';
+import '../../games/tone_forge/tone_forge_scoring.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../../l10n/l10n_of.dart';
 import 'game_mastery_map_screen.dart';
-import '../../utils/pan_african_design_system.dart';
 
-/// Standard post-game results for GameKit sessions (P8-915).
-class GameMasteryResultsScreen extends ConsumerWidget {
+/// A load that failed because the phone is offline, or for another reason.
+class MasteryResultsUnavailable implements Exception {
+  const MasteryResultsUnavailable({this.offline = false});
+
+  final bool offline;
+}
+
+/// What the results page is showing.
+enum MasteryPageStatus { loading, empty, error, offline, scored, unsure }
+
+/// Percent across turns that each came from the real scorer.
+///
+/// One unsure, unavailable, or local turn drops the number.
+int? masteryShownPercent(GameMasteryResultsPayload payload) {
+  if (payload.practiceNotScored) return null;
+  final turns = payload.session.turns;
+  if (turns.isEmpty) return null;
+  var sum = 0;
+  for (final turn in turns) {
+    final int? percent = toneForgeShownPercent(turn.score);
+    if (percent == null) return null;
+    sum += percent;
+  }
+  return (sum / turns.length).round();
+}
+
+/// Standard post-game results for GameKit sessions.
+///
+/// With no payload and no loader, the page is empty. A failed load clears the
+/// previous percent. A number is painted only when the real scorer returned it.
+class GameMasteryResultsScreen extends StatefulWidget {
   const GameMasteryResultsScreen({
     super.key,
-    required this.payload,
+    this.payload,
     this.onDone,
+    this.load,
   });
 
-  final GameMasteryResultsPayload payload;
+  const GameMasteryResultsScreen.play({super.key, this.load, this.onDone})
+    : payload = null;
+
+  /// App route `/play/mastery-results`. The map key drops the leading slash.
+  static const String routePath = '/play/mastery-results';
+
+  static const String routeKey = 'play/mastery-results';
+
+  static const Key emptyKey = ValueKey<String>('play-mastery-empty');
+
+  static const Key errorKey = ValueKey<String>('play-mastery-error');
+
+  static const Key offlineKey = ValueKey<String>('play-mastery-offline');
+
+  static const Key scoreKey = ValueKey<String>('play-mastery-score');
+
+  static const Key unsureKey = ValueKey<String>('play-mastery-unsure');
+
+  final GameMasteryResultsPayload? payload;
   final VoidCallback? onDone;
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context)!;
-    final cs = Theme.of(context).colorScheme;
-    final reduceMotion = MediaQuery.disableAnimationsOf(context);
-    final session = payload.session;
-    final accuracyPct = (session.accuracy * 100).round();
+  /// Loads one result. Null means this open has no round.
+  final Future<GameScore?> Function()? load;
 
+  @override
+  State<GameMasteryResultsScreen> createState() =>
+      _GameMasteryResultsScreenState();
+}
+
+class _GameMasteryResultsScreenState extends State<GameMasteryResultsScreen> {
+  MasteryPageStatus _status = MasteryPageStatus.empty;
+  int? _percent;
+  bool _scoreFault = false;
+  GameMasteryResultsPayload? _payload;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.load != null) {
+      _status = MasteryPageStatus.loading;
+      _run(initial: true);
+      return;
+    }
+    _applyPayload(widget.payload);
+  }
+
+  @override
+  void didUpdateWidget(GameMasteryResultsScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (identical(oldWidget.load, widget.load) &&
+        identical(oldWidget.payload, widget.payload)) {
+      return;
+    }
+    _percent = null;
+    _payload = null;
+    _scoreFault = false;
+    if (widget.load != null) {
+      _status = MasteryPageStatus.loading;
+      _run();
+      return;
+    }
+    _applyPayload(widget.payload);
+  }
+
+  void _applyPayload(GameMasteryResultsPayload? payload) {
+    if (payload == null ||
+        (payload.session.turns.isEmpty && payload.skillDeltas.isEmpty)) {
+      _status = MasteryPageStatus.empty;
+      _percent = null;
+      _payload = null;
+      _scoreFault = false;
+      return;
+    }
+    final int? percent = masteryShownPercent(payload);
+    if (percent != null) {
+      _status = MasteryPageStatus.scored;
+      _percent = percent;
+      _payload = payload;
+      _scoreFault = false;
+      return;
+    }
+    _status = MasteryPageStatus.unsure;
+    _percent = null;
+    _payload = null;
+    _scoreFault = false;
+  }
+
+  Future<void> _run({bool initial = false}) async {
+    final Future<GameScore?> Function()? load = widget.load;
+    if (load == null) {
+      if (!mounted) return;
+      setState(() => _applyPayload(widget.payload));
+      return;
+    }
+    if (!initial) {
+      setState(() {
+        _status = MasteryPageStatus.loading;
+        _percent = null;
+        _payload = null;
+        _scoreFault = false;
+      });
+    }
+    try {
+      final GameScore? score = await load();
+      if (!mounted) return;
+      if (score == null) {
+        setState(() => _applyPayload(null));
+        return;
+      }
+      final int? percent = toneForgeShownPercent(score);
+      setState(() {
+        _payload = null;
+        _scoreFault = false;
+        if (percent != null &&
+            toneForgeScoreView(score) == ToneForgeScoreView.scored) {
+          _status = MasteryPageStatus.scored;
+          _percent = percent;
+          return;
+        }
+        _percent = null;
+        _status = MasteryPageStatus.unsure;
+      });
+    } on MasteryResultsUnavailable catch (error) {
+      if (!mounted) return;
+      setState(() {
+        _percent = null;
+        _payload = null;
+        _scoreFault = false;
+        _status = error.offline
+            ? MasteryPageStatus.offline
+            : MasteryPageStatus.error;
+      });
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _percent = null;
+        _payload = null;
+        _scoreFault = true;
+        _status = MasteryPageStatus.error;
+      });
+    }
+  }
+
+  void _done() {
+    final VoidCallback? onDone = widget.onDone;
+    if (onDone != null) {
+      onDone();
+      return;
+    }
+    final NavigatorState? navigator = Navigator.maybeOf(context);
+    if (navigator != null && navigator.canPop()) {
+      navigator.pop();
+      return;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations l10n = l10nOf(context);
+    final LingPalette palette = LingPalette.of(Theme.of(context).brightness);
+    final bool backInEmpty = _status == MasteryPageStatus.empty;
     return Scaffold(
-      backgroundColor: cs.surface,
-      appBar: AppBar(
-        title: Text(l10n.gamesGameMasteryResultsTitle),
-      ),
+      backgroundColor: palette.surface,
       body: SafeArea(
         child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.lg.w, vertical: PanAfricanSpacing.md.h),
-          children: [
-            if (payload.practiceNotScored)
-              Semantics(
-                label: l10n.gamesGameMasteryResultsPracticeLabel,
-                child: MaterialBanner(
-                  backgroundColor: cs.surfaceContainerHighest,
-                  leading: const Icon(Icons.hearing_outlined),
-                  content: Text(l10n.gamesGameMasteryResultsPracticeLabel),
-                  actions: const [SizedBox.shrink()],
-                ),
-              ),
-            SizedBox(height: PanAfricanSpacing.md.h),
+          padding: const EdgeInsets.all(LingAfriqTokens.spacing16),
+          children: <Widget>[
             Text(
-              l10n.gamesGameMasteryResultsInstructions,
-              style: PanAfricanTypography.bodyLarge(context, color: cs.onSurfaceVariant),
+              l10n.revRvPlayMasteryTitle,
+              style: lingBody(palette.onSurface),
+              softWrap: true,
+              overflow: TextOverflow.visible,
             ),
-            SizedBox(height: PanAfricanSpacing.lg.h),
-            _SummaryCard(
-              accuracyLabel: '$accuracyPct%',
-              turnsLabel: '${session.correctCount}/${session.totalTurns}',
-              xpLabel: payload.serverXpAwarded != null
-                  ? '+${payload.serverXpAwarded}'
-                  : '—',
-            ),
-            SizedBox(height: PanAfricanSpacing.lg.h),
-            Text(
-              l10n.gamesGameMasteryResultsSkillsHeading,
-              style: PanAfricanTypography.titleMedium(context, color: cs.onSurface),
-            ),
-            SizedBox(height: PanAfricanSpacing.sm.h),
-            if (payload.skillDeltas.isEmpty)
+            const SizedBox(height: LingAfriqTokens.spacing16),
+            _body(l10n, palette),
+            if (_status == MasteryPageStatus.scored &&
+                _payload != null &&
+                _payload!.skillDeltas.isNotEmpty) ...<Widget>[
+              const SizedBox(height: LingAfriqTokens.spacing16),
               Text(
-                l10n.gamesGameMasteryResultsError,
-                style: PanAfricanTypography.bodyMedium(context, color: cs.error),
-              )
-            else
-              ...payload.skillDeltas.map(
-                (delta) => _SkillDeltaRow(delta: delta, l10n: l10n, reduceMotion: reduceMotion),
+                l10n.gamesGameMasteryResultsSkillsHeading,
+                style: lingBody(palette.onSurface),
+                softWrap: true,
+                overflow: TextOverflow.visible,
               ),
-            SizedBox(height: PanAfricanSpacing.xl.h),
-            SizedBox(
-              width: double.infinity,
-              height: 48.h,
-              child: OutlinedButton.icon(
+              const SizedBox(height: LingAfriqTokens.spacing16),
+              for (final GameMasterySkillDelta delta in _payload!.skillDeltas)
+                _SkillDeltaRow(delta: delta, l10n: l10n),
+              const SizedBox(height: LingAfriqTokens.spacing16),
+              LingButton(
+                label: l10n.gamesMasteryMapTitle,
+                unavailableLabel: l10n.commonStateUnavailable,
                 onPressed: () {
                   HapticFeedback.selectionClick();
                   Navigator.of(context).push(
                     MaterialPageRoute<void>(
-                      builder: (_) => GameMasteryMapScreen(learnerId: session.userId),
+                      builder: (_) => GameMasteryMapScreen(
+                        learnerId: _payload!.session.userId,
+                      ),
                     ),
                   );
                 },
-                icon: const Icon(Icons.map_outlined),
-                label: Text(l10n.gamesMasteryMapTitle),
               ),
-            ),
-            SizedBox(height: PanAfricanSpacing.sm.h),
-            SizedBox(
-              width: double.infinity,
-              height: 48.h,
-              child: FilledButton(
-                onPressed: () {
-                  HapticFeedback.lightImpact();
-                  if (onDone != null) {
-                    onDone!();
-                  } else {
-                    Navigator.of(context).popUntil((route) => route.isFirst);
-                  }
-                },
-                child: Text(l10n.gamesGameMasteryResultsDone),
+            ],
+            if (!backInEmpty) ...<Widget>[
+              const SizedBox(height: LingAfriqTokens.spacing16),
+              LingButton(
+                label: l10n.hubHPlayBack,
+                unavailableLabel: l10n.commonStateUnavailable,
+                onPressed: _done,
               ),
-            ),
+            ],
           ],
         ),
       ),
     );
   }
-}
 
-class _SummaryCard extends StatelessWidget {
-  const _SummaryCard({
-    required this.accuracyLabel,
-    required this.turnsLabel,
-    required this.xpLabel,
-  });
-
-  final String accuracyLabel;
-  final String turnsLabel;
-  final String xpLabel;
-
-  @override
-  Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    return Container(
-      padding: EdgeInsets.all(PanAfricanSpacing.md.r),
-      decoration: BoxDecoration(
-        color: cs.surfaceContainerLow,
-        borderRadius: PanAfricanRadius.lgBR,
-        border: Border.all(color: cs.outlineVariant.withValues(alpha: 0.4)),
-      ),
-      child: Row(
-        children: [
-          Expanded(child: _StatTile(label: 'Accuracy', value: accuracyLabel)),
-          Expanded(child: _StatTile(label: 'Correct', value: turnsLabel)),
-          Expanded(child: _StatTile(label: 'XP', value: xpLabel)),
-        ],
-      ),
-    );
+  Widget _body(AppLocalizations l10n, LingPalette palette) {
+    switch (_status) {
+      case MasteryPageStatus.loading:
+        return Text(
+          l10n.loading,
+          style: lingBody(palette.onSurface),
+          softWrap: true,
+          overflow: TextOverflow.visible,
+        );
+      case MasteryPageStatus.empty:
+        return LingEmptyState(
+          key: GameMasteryResultsScreen.emptyKey,
+          title: l10n.revRvPlayMasteryTitle,
+          whatHappened: l10n.revRvPlayMasteryEmptyWhat,
+          why: l10n.revRvPlayMasteryEmptyWhy,
+          whatToDo: l10n.revRvPlayMasteryEmptyNext,
+          actionLabel: l10n.hubHPlayBack,
+          unavailableLabel: l10n.commonStateUnavailable,
+          onAction: _done,
+        );
+      case MasteryPageStatus.error:
+        return LingErrorState(
+          key: GameMasteryResultsScreen.errorKey,
+          whatHappened: _scoreFault
+              ? l10n.revRvPlayMasteryScoreErrorWhat
+              : l10n.revRvPlayMasteryErrorWhat,
+          why: _scoreFault
+              ? l10n.revRvPlayMasteryScoreErrorWhy
+              : l10n.revRvPlayMasteryErrorWhy,
+          whatToDo: l10n.revRvPlayErrorNext,
+          actionLabel: l10n.commonActionTryAgain,
+          unavailableLabel: l10n.commonStateUnavailable,
+          onAction: _run,
+        );
+      case MasteryPageStatus.offline:
+        return LingOfflineState(
+          key: GameMasteryResultsScreen.offlineKey,
+          whatHappened: l10n.shellOfflineWhat,
+          why: l10n.revRvPlayMasteryOfflineWhy,
+          whatToDo: l10n.shellOfflineNext,
+          queuedActions: 0,
+          actionLabel: l10n.commonActionTryAgain,
+          unavailableLabel: l10n.commonStateUnavailable,
+          onAction: _run,
+        );
+      case MasteryPageStatus.scored:
+        final int? percent = _percent;
+        if (percent == null) return _unsure(l10n, palette);
+        final String value = l10n.revRvPlayScoreValue(percent);
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Text(
+              l10n.revRvPlayScoreLabel,
+              style: lingBody(palette.onSurface),
+              softWrap: true,
+              overflow: TextOverflow.visible,
+            ),
+            const SizedBox(height: LingAfriqTokens.spacing16),
+            Semantics(
+              container: true,
+              label: value,
+              child: Text(
+                value,
+                key: GameMasteryResultsScreen.scoreKey,
+                style: lingBody(palette.onSurface),
+                softWrap: true,
+                overflow: TextOverflow.visible,
+              ),
+            ),
+          ],
+        );
+      case MasteryPageStatus.unsure:
+        return _unsure(l10n, palette);
+    }
   }
-}
 
-class _StatTile extends StatelessWidget {
-  const _StatTile({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(value, style: PanAfricanTypography.titleLarge(context)),
-        Text(label, style: PanAfricanTypography.labelMedium(context)),
-      ],
+  Widget _unsure(AppLocalizations l10n, LingPalette palette) {
+    return Text(
+      l10n.revRvPlayUnsure,
+      key: GameMasteryResultsScreen.unsureKey,
+      style: lingBody(palette.onSurface),
+      softWrap: true,
+      overflow: TextOverflow.visible,
     );
   }
 }
 
 class _SkillDeltaRow extends StatelessWidget {
-  const _SkillDeltaRow({
-    required this.delta,
-    required this.l10n,
-    required this.reduceMotion,
-  });
+  const _SkillDeltaRow({required this.delta, required this.l10n});
 
   final GameMasterySkillDelta delta;
   final AppLocalizations l10n;
-  final bool reduceMotion;
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    final changeLabel = switch (delta.changeKind) {
+    final LingPalette palette = LingPalette.of(Theme.of(context).brightness);
+    final String changeLabel = switch (delta.changeKind) {
       GameMasteryChangeKind.improved => l10n.gamesGameMasteryResultsImproved,
       GameMasteryChangeKind.declined => l10n.gamesGameMasteryResultsDeclined,
       GameMasteryChangeKind.noChange => l10n.gamesGameMasteryResultsNoChange,
     };
-    final changeIcon = switch (delta.changeKind) {
-      GameMasteryChangeKind.improved => Icons.trending_up,
-      GameMasteryChangeKind.declined => Icons.trending_down,
-      GameMasteryChangeKind.noChange => Icons.horizontal_rule,
-    };
-    final changeColor = switch (delta.changeKind) {
-      GameMasteryChangeKind.improved => PanAfricanColors.primary,
-      GameMasteryChangeKind.declined => PanAfricanColors.kenteRed,
-      GameMasteryChangeKind.noChange => cs.onSurfaceVariant,
-    };
-
+    final String name = delta.skillId.replaceAll('_', ' ');
     return Semantics(
-      label:
-          '${delta.skillId}: ${delta.masteryBeforePercent()}% to ${delta.masteryAfterPercent()}%, $changeLabel',
-      child: Card(
-        margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm.h),
-        child: Padding(
-          padding: EdgeInsets.all(PanAfricanSpacing.md.r),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(changeIcon, color: changeColor, semanticLabel: changeLabel),
-              SizedBox(width: PanAfricanSpacing.sm.w),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _humanizeSkillId(delta.skillId),
-                      style: PanAfricanTypography.titleSmall(context),
-                    ),
-                    SizedBox(height: 4.h),
-                    Text(
-                      '${delta.masteryBeforePercent()}% → ${delta.masteryAfterPercent()}%',
-                      style: PanAfricanTypography.bodyMedium(context),
-                    ),
-                    SizedBox(height: 4.h),
-                    Text(
-                      changeLabel,
-                      style: PanAfricanTypography.labelLarge(context, color: changeColor),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+      container: true,
+      label: name,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: LingAfriqTokens.spacing16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              name,
+              style: lingBody(palette.onSurface),
+              softWrap: true,
+              overflow: TextOverflow.visible,
+            ),
+            const SizedBox(height: LingAfriqTokens.spacing8),
+            Text(
+              changeLabel,
+              style: lingBody(palette.onSurfaceVariant),
+              softWrap: true,
+              overflow: TextOverflow.visible,
+            ),
+          ],
         ),
       ),
     );
-  }
-
-  String _humanizeSkillId(String id) {
-    return id.replaceAll('_', ' ');
   }
 }

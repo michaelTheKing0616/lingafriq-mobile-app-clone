@@ -13724,6 +13724,378 @@ abstract class AppLocalizations {
   /// **'This feature'**
   String get unlockFeatureUnknown;
 
+  /// hub.h_speak.roleplaySummary
+  ///
+  /// In en, this message translates to:
+  /// **'Scenario summary'**
+  String get hubHSpeakRoleplaySummary;
+
+  /// hub.h_speak.roleplayProgress
+  ///
+  /// In en, this message translates to:
+  /// **'Roleplay progress'**
+  String get hubHSpeakRoleplayProgress;
+
+  /// rev.rv_speak.coach.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No conversation is saved.'**
+  String get revRvSpeakCoachEmptyWhat;
+
+  /// rev.rv_speak.coach.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'There is no conversation story to show.'**
+  String get revRvSpeakCoachEmptyWhy;
+
+  /// rev.rv_speak.coach.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Speak.'**
+  String get revRvSpeakCoachEmptyNext;
+
+  /// rev.rv_speak.coach.error.what
+  ///
+  /// In en, this message translates to:
+  /// **'Coach insights did not open.'**
+  String get revRvSpeakCoachErrorWhat;
+
+  /// rev.rv_speak.coach.error.why
+  ///
+  /// In en, this message translates to:
+  /// **'The conversation story did not come back.'**
+  String get revRvSpeakCoachErrorWhy;
+
+  /// rev.rv_speak.coach.error.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get revRvSpeakCoachErrorNext;
+
+  /// rev.rv_speak.coach.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'Coach insights are not saved on the phone.'**
+  String get revRvSpeakCoachOfflineWhy;
+
+  /// rev.rv_speak.summary.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No scenario summary is ready.'**
+  String get revRvSpeakSummaryEmptyWhat;
+
+  /// rev.rv_speak.summary.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'No completed scenario is saved.'**
+  String get revRvSpeakSummaryEmptyWhy;
+
+  /// rev.rv_speak.summary.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Speak.'**
+  String get revRvSpeakSummaryEmptyNext;
+
+  /// rev.rv_speak.summary.error.what
+  ///
+  /// In en, this message translates to:
+  /// **'The scenario summary did not open.'**
+  String get revRvSpeakSummaryErrorWhat;
+
+  /// rev.rv_speak.summary.error.why
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing from that scenario is still on screen.'**
+  String get revRvSpeakSummaryErrorWhy;
+
+  /// rev.rv_speak.summary.error.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get revRvSpeakSummaryErrorNext;
+
+  /// rev.rv_speak.summary.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'This summary is not saved on the phone.'**
+  String get revRvSpeakSummaryOfflineWhy;
+
+  /// rev.rv_speak.progress.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No scenarios are listed.'**
+  String get revRvSpeakProgressEmptyWhat;
+
+  /// rev.rv_speak.progress.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'No completed scenario is saved.'**
+  String get revRvSpeakProgressEmptyWhy;
+
+  /// rev.rv_speak.progress.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Speak.'**
+  String get revRvSpeakProgressEmptyNext;
+
+  /// rev.rv_speak.progress.error.what
+  ///
+  /// In en, this message translates to:
+  /// **'Roleplay progress did not open.'**
+  String get revRvSpeakProgressErrorWhat;
+
+  /// rev.rv_speak.progress.error.why
+  ///
+  /// In en, this message translates to:
+  /// **'The scenario list did not come back.'**
+  String get revRvSpeakProgressErrorWhy;
+
+  /// rev.rv_speak.progress.error.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get revRvSpeakProgressErrorNext;
+
+  /// rev.rv_speak.progress.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'Roleplay progress is not saved on the phone.'**
+  String get revRvSpeakProgressOfflineWhy;
+
+  /// rev.rv_speak.pronunciation
+  ///
+  /// In en, this message translates to:
+  /// **'Pronunciation'**
+  String get revRvSpeakPronunciation;
+
+  /// rev.rv_speak.tone
+  ///
+  /// In en, this message translates to:
+  /// **'Tone'**
+  String get revRvSpeakTone;
+
+  /// rev.rv_speak.score.value
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}%'**
+  String revRvSpeakScoreValue(int percent);
+
+  /// rev.rv_speak.unsure
+  ///
+  /// In en, this message translates to:
+  /// **'We could not score this clearly. No score is shown.'**
+  String get revRvSpeakUnsure;
+
+  /// rev.rv_speak.practice
+  ///
+  /// In en, this message translates to:
+  /// **'Pronunciation scoring is unavailable. You can keep practising without a ranked score.'**
+  String get revRvSpeakPractice;
+
+  /// rev.rv_speak.topics
+  ///
+  /// In en, this message translates to:
+  /// **'Topics'**
+  String get revRvSpeakTopics;
+
+  /// rev.rv_speak.vocabulary
+  ///
+  /// In en, this message translates to:
+  /// **'Words from this scenario'**
+  String get revRvSpeakVocabulary;
+
+  /// rev.rv_speak.grammar
+  ///
+  /// In en, this message translates to:
+  /// **'Grammar from this scenario'**
+  String get revRvSpeakGrammar;
+
+  /// rev.rv_speak.corrections
+  ///
+  /// In en, this message translates to:
+  /// **'Corrections'**
+  String get revRvSpeakCorrections;
+
+  /// rev.rv_speak.refresh
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get revRvSpeakRefresh;
+
+  /// rev.rv_speak.sessionCount
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 session} other{{count} sessions}}'**
+  String revRvSpeakSessionCount(int count);
+
+  /// rev.rv_speak.messageCount
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 message} other{{count} messages}}'**
+  String revRvSpeakMessageCount(int count);
+
+  /// rev.rv_speak.wordCount
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 word} other{{count} words}}'**
+  String revRvSpeakWordCount(int count);
+
+  /// rev.rv_speak.turnCount
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 turn} other{{count} turns}}'**
+  String revRvSpeakTurnCount(int count);
+
+  /// rev.rv_speak.completedCount
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Completed 1 time} other{Completed {count} times}}'**
+  String revRvSpeakCompletedCount(int count);
+
+  /// rev.rv_speak.scene.semantics
+  ///
+  /// In en, this message translates to:
+  /// **'Scenario: {name}.'**
+  String revRvSpeakSceneSemantics(String name);
+
+  /// rev.rv_play.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No word is ready.'**
+  String get revRvPlayEmptyWhat;
+
+  /// rev.rv_play.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'Tone Forge has nothing to play.'**
+  String get revRvPlayEmptyWhy;
+
+  /// rev.rv_play.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Play.'**
+  String get revRvPlayEmptyNext;
+
+  /// rev.rv_play.error.what
+  ///
+  /// In en, this message translates to:
+  /// **'Tone Forge did not open.'**
+  String get revRvPlayErrorWhat;
+
+  /// rev.rv_play.error.why
+  ///
+  /// In en, this message translates to:
+  /// **'The word did not come back.'**
+  String get revRvPlayErrorWhy;
+
+  /// rev.rv_play.error.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get revRvPlayErrorNext;
+
+  /// rev.rv_play.scoreError.what
+  ///
+  /// In en, this message translates to:
+  /// **'The attempt was not scored.'**
+  String get revRvPlayScoreErrorWhat;
+
+  /// rev.rv_play.scoreError.why
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing from that attempt is still on screen.'**
+  String get revRvPlayScoreErrorWhy;
+
+  /// rev.rv_play.unsure
+  ///
+  /// In en, this message translates to:
+  /// **'We could not score this clearly. No score is shown.'**
+  String get revRvPlayUnsure;
+
+  /// rev.rv_play.practice
+  ///
+  /// In en, this message translates to:
+  /// **'Practice mode. Tone scores are for learning only until the live scorer is enabled.'**
+  String get revRvPlayPractice;
+
+  /// rev.rv_play.score.label
+  ///
+  /// In en, this message translates to:
+  /// **'Score'**
+  String get revRvPlayScoreLabel;
+
+  /// rev.rv_play.score.value
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}%'**
+  String revRvPlayScoreValue(int percent);
+
+  /// rev.rv_play.score.returned
+  ///
+  /// In en, this message translates to:
+  /// **'The scorer returned {percent}%.'**
+  String revRvPlayScoreReturned(int percent);
+
+  /// rev.rv_play.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'Tone Forge is not saved on the phone.'**
+  String get revRvPlayOfflineWhy;
+
+  /// rev.rv_play.mastery.title
+  ///
+  /// In en, this message translates to:
+  /// **'Round results'**
+  String get revRvPlayMasteryTitle;
+
+  /// rev.rv_play.mastery.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No round is ready.'**
+  String get revRvPlayMasteryEmptyWhat;
+
+  /// rev.rv_play.mastery.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'There is no result to show.'**
+  String get revRvPlayMasteryEmptyWhy;
+
+  /// rev.rv_play.mastery.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Play.'**
+  String get revRvPlayMasteryEmptyNext;
+
+  /// rev.rv_play.mastery.error.what
+  ///
+  /// In en, this message translates to:
+  /// **'The results did not open.'**
+  String get revRvPlayMasteryErrorWhat;
+
+  /// rev.rv_play.mastery.error.why
+  ///
+  /// In en, this message translates to:
+  /// **'The round did not come back.'**
+  String get revRvPlayMasteryErrorWhy;
+
+  /// rev.rv_play.mastery.scoreError.what
+  ///
+  /// In en, this message translates to:
+  /// **'The round was not scored.'**
+  String get revRvPlayMasteryScoreErrorWhat;
+
+  /// rev.rv_play.mastery.scoreError.why
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing from that round is still on screen.'**
+  String get revRvPlayMasteryScoreErrorWhy;
+
+  /// rev.rv_play.mastery.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'Round results are not saved on the phone.'**
+  String get revRvPlayMasteryOfflineWhy;
+
   /// rev.rv_contrib.title
   ///
   /// In en, this message translates to:

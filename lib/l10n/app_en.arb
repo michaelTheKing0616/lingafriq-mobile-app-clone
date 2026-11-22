@@ -10539,6 +10539,299 @@
   "@unlockFeatureUnknown": {
     "description": "unlock.feature.unknown"
   },
+  "hubHSpeakRoleplaySummary": "Scenario summary",
+  "@hubHSpeakRoleplaySummary": {
+    "description": "hub.h_speak.roleplaySummary"
+  },
+  "hubHSpeakRoleplayProgress": "Roleplay progress",
+  "@hubHSpeakRoleplayProgress": {
+    "description": "hub.h_speak.roleplayProgress"
+  },
+  "revRvSpeakCoachEmptyWhat": "No conversation is saved.",
+  "@revRvSpeakCoachEmptyWhat": {
+    "description": "rev.rv_speak.coach.empty.what"
+  },
+  "revRvSpeakCoachEmptyWhy": "There is no conversation story to show.",
+  "@revRvSpeakCoachEmptyWhy": {
+    "description": "rev.rv_speak.coach.empty.why"
+  },
+  "revRvSpeakCoachEmptyNext": "Go back to Speak.",
+  "@revRvSpeakCoachEmptyNext": {
+    "description": "rev.rv_speak.coach.empty.next"
+  },
+  "revRvSpeakCoachErrorWhat": "Coach insights did not open.",
+  "@revRvSpeakCoachErrorWhat": {
+    "description": "rev.rv_speak.coach.error.what"
+  },
+  "revRvSpeakCoachErrorWhy": "The conversation story did not come back.",
+  "@revRvSpeakCoachErrorWhy": {
+    "description": "rev.rv_speak.coach.error.why"
+  },
+  "revRvSpeakCoachErrorNext": "Try again.",
+  "@revRvSpeakCoachErrorNext": {
+    "description": "rev.rv_speak.coach.error.next"
+  },
+  "revRvSpeakCoachOfflineWhy": "Coach insights are not saved on the phone.",
+  "@revRvSpeakCoachOfflineWhy": {
+    "description": "rev.rv_speak.coach.offline.why"
+  },
+  "revRvSpeakSummaryEmptyWhat": "No scenario summary is ready.",
+  "@revRvSpeakSummaryEmptyWhat": {
+    "description": "rev.rv_speak.summary.empty.what"
+  },
+  "revRvSpeakSummaryEmptyWhy": "No completed scenario is saved.",
+  "@revRvSpeakSummaryEmptyWhy": {
+    "description": "rev.rv_speak.summary.empty.why"
+  },
+  "revRvSpeakSummaryEmptyNext": "Go back to Speak.",
+  "@revRvSpeakSummaryEmptyNext": {
+    "description": "rev.rv_speak.summary.empty.next"
+  },
+  "revRvSpeakSummaryErrorWhat": "The scenario summary did not open.",
+  "@revRvSpeakSummaryErrorWhat": {
+    "description": "rev.rv_speak.summary.error.what"
+  },
+  "revRvSpeakSummaryErrorWhy": "Nothing from that scenario is still on screen.",
+  "@revRvSpeakSummaryErrorWhy": {
+    "description": "rev.rv_speak.summary.error.why"
+  },
+  "revRvSpeakSummaryErrorNext": "Try again.",
+  "@revRvSpeakSummaryErrorNext": {
+    "description": "rev.rv_speak.summary.error.next"
+  },
+  "revRvSpeakSummaryOfflineWhy": "This summary is not saved on the phone.",
+  "@revRvSpeakSummaryOfflineWhy": {
+    "description": "rev.rv_speak.summary.offline.why"
+  },
+  "revRvSpeakProgressEmptyWhat": "No scenarios are listed.",
+  "@revRvSpeakProgressEmptyWhat": {
+    "description": "rev.rv_speak.progress.empty.what"
+  },
+  "revRvSpeakProgressEmptyWhy": "No completed scenario is saved.",
+  "@revRvSpeakProgressEmptyWhy": {
+    "description": "rev.rv_speak.progress.empty.why"
+  },
+  "revRvSpeakProgressEmptyNext": "Go back to Speak.",
+  "@revRvSpeakProgressEmptyNext": {
+    "description": "rev.rv_speak.progress.empty.next"
+  },
+  "revRvSpeakProgressErrorWhat": "Roleplay progress did not open.",
+  "@revRvSpeakProgressErrorWhat": {
+    "description": "rev.rv_speak.progress.error.what"
+  },
+  "revRvSpeakProgressErrorWhy": "The scenario list did not come back.",
+  "@revRvSpeakProgressErrorWhy": {
+    "description": "rev.rv_speak.progress.error.why"
+  },
+  "revRvSpeakProgressErrorNext": "Try again.",
+  "@revRvSpeakProgressErrorNext": {
+    "description": "rev.rv_speak.progress.error.next"
+  },
+  "revRvSpeakProgressOfflineWhy": "Roleplay progress is not saved on the phone.",
+  "@revRvSpeakProgressOfflineWhy": {
+    "description": "rev.rv_speak.progress.offline.why"
+  },
+  "revRvSpeakPronunciation": "Pronunciation",
+  "@revRvSpeakPronunciation": {
+    "description": "rev.rv_speak.pronunciation"
+  },
+  "revRvSpeakTone": "Tone",
+  "@revRvSpeakTone": {
+    "description": "rev.rv_speak.tone"
+  },
+  "revRvSpeakScoreValue": "{percent}%",
+  "@revRvSpeakScoreValue": {
+    "description": "rev.rv_speak.score.value",
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "revRvSpeakUnsure": "We could not score this clearly. No score is shown.",
+  "@revRvSpeakUnsure": {
+    "description": "rev.rv_speak.unsure"
+  },
+  "revRvSpeakPractice": "Pronunciation scoring is unavailable. You can keep practising without a ranked score.",
+  "@revRvSpeakPractice": {
+    "description": "rev.rv_speak.practice"
+  },
+  "revRvSpeakTopics": "Topics",
+  "@revRvSpeakTopics": {
+    "description": "rev.rv_speak.topics"
+  },
+  "revRvSpeakVocabulary": "Words from this scenario",
+  "@revRvSpeakVocabulary": {
+    "description": "rev.rv_speak.vocabulary"
+  },
+  "revRvSpeakGrammar": "Grammar from this scenario",
+  "@revRvSpeakGrammar": {
+    "description": "rev.rv_speak.grammar"
+  },
+  "revRvSpeakCorrections": "Corrections",
+  "@revRvSpeakCorrections": {
+    "description": "rev.rv_speak.corrections"
+  },
+  "revRvSpeakRefresh": "Refresh",
+  "@revRvSpeakRefresh": {
+    "description": "rev.rv_speak.refresh"
+  },
+  "revRvSpeakSessionCount": "{count, plural, =1{1 session} other{{count} sessions}}",
+  "@revRvSpeakSessionCount": {
+    "description": "rev.rv_speak.sessionCount",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "revRvSpeakMessageCount": "{count, plural, =1{1 message} other{{count} messages}}",
+  "@revRvSpeakMessageCount": {
+    "description": "rev.rv_speak.messageCount",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "revRvSpeakWordCount": "{count, plural, =1{1 word} other{{count} words}}",
+  "@revRvSpeakWordCount": {
+    "description": "rev.rv_speak.wordCount",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "revRvSpeakTurnCount": "{count, plural, =1{1 turn} other{{count} turns}}",
+  "@revRvSpeakTurnCount": {
+    "description": "rev.rv_speak.turnCount",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "revRvSpeakCompletedCount": "{count, plural, =1{Completed 1 time} other{Completed {count} times}}",
+  "@revRvSpeakCompletedCount": {
+    "description": "rev.rv_speak.completedCount",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "revRvSpeakSceneSemantics": "Scenario: {name}.",
+  "@revRvSpeakSceneSemantics": {
+    "description": "rev.rv_speak.scene.semantics",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "revRvPlayEmptyWhat": "No word is ready.",
+  "@revRvPlayEmptyWhat": {
+    "description": "rev.rv_play.empty.what"
+  },
+  "revRvPlayEmptyWhy": "Tone Forge has nothing to play.",
+  "@revRvPlayEmptyWhy": {
+    "description": "rev.rv_play.empty.why"
+  },
+  "revRvPlayEmptyNext": "Go back to Play.",
+  "@revRvPlayEmptyNext": {
+    "description": "rev.rv_play.empty.next"
+  },
+  "revRvPlayErrorWhat": "Tone Forge did not open.",
+  "@revRvPlayErrorWhat": {
+    "description": "rev.rv_play.error.what"
+  },
+  "revRvPlayErrorWhy": "The word did not come back.",
+  "@revRvPlayErrorWhy": {
+    "description": "rev.rv_play.error.why"
+  },
+  "revRvPlayErrorNext": "Try again.",
+  "@revRvPlayErrorNext": {
+    "description": "rev.rv_play.error.next"
+  },
+  "revRvPlayScoreErrorWhat": "The attempt was not scored.",
+  "@revRvPlayScoreErrorWhat": {
+    "description": "rev.rv_play.scoreError.what"
+  },
+  "revRvPlayScoreErrorWhy": "Nothing from that attempt is still on screen.",
+  "@revRvPlayScoreErrorWhy": {
+    "description": "rev.rv_play.scoreError.why"
+  },
+  "revRvPlayUnsure": "We could not score this clearly. No score is shown.",
+  "@revRvPlayUnsure": {
+    "description": "rev.rv_play.unsure"
+  },
+  "revRvPlayPractice": "Practice mode. Tone scores are for learning only until the live scorer is enabled.",
+  "@revRvPlayPractice": {
+    "description": "rev.rv_play.practice"
+  },
+  "revRvPlayScoreLabel": "Score",
+  "@revRvPlayScoreLabel": {
+    "description": "rev.rv_play.score.label"
+  },
+  "revRvPlayScoreValue": "{percent}%",
+  "@revRvPlayScoreValue": {
+    "description": "rev.rv_play.score.value",
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "revRvPlayScoreReturned": "The scorer returned {percent}%.",
+  "@revRvPlayScoreReturned": {
+    "description": "rev.rv_play.score.returned",
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "revRvPlayOfflineWhy": "Tone Forge is not saved on the phone.",
+  "@revRvPlayOfflineWhy": {
+    "description": "rev.rv_play.offline.why"
+  },
+  "revRvPlayMasteryTitle": "Round results",
+  "@revRvPlayMasteryTitle": {
+    "description": "rev.rv_play.mastery.title"
+  },
+  "revRvPlayMasteryEmptyWhat": "No round is ready.",
+  "@revRvPlayMasteryEmptyWhat": {
+    "description": "rev.rv_play.mastery.empty.what"
+  },
+  "revRvPlayMasteryEmptyWhy": "There is no result to show.",
+  "@revRvPlayMasteryEmptyWhy": {
+    "description": "rev.rv_play.mastery.empty.why"
+  },
+  "revRvPlayMasteryEmptyNext": "Go back to Play.",
+  "@revRvPlayMasteryEmptyNext": {
+    "description": "rev.rv_play.mastery.empty.next"
+  },
+  "revRvPlayMasteryErrorWhat": "The results did not open.",
+  "@revRvPlayMasteryErrorWhat": {
+    "description": "rev.rv_play.mastery.error.what"
+  },
+  "revRvPlayMasteryErrorWhy": "The round did not come back.",
+  "@revRvPlayMasteryErrorWhy": {
+    "description": "rev.rv_play.mastery.error.why"
+  },
+  "revRvPlayMasteryScoreErrorWhat": "The round was not scored.",
+  "@revRvPlayMasteryScoreErrorWhat": {
+    "description": "rev.rv_play.mastery.scoreError.what"
+  },
+  "revRvPlayMasteryScoreErrorWhy": "Nothing from that round is still on screen.",
+  "@revRvPlayMasteryScoreErrorWhy": {
+    "description": "rev.rv_play.mastery.scoreError.why"
+  },
+  "revRvPlayMasteryOfflineWhy": "Round results are not saved on the phone.",
+  "@revRvPlayMasteryOfflineWhy": {
+    "description": "rev.rv_play.mastery.offline.why"
+  },
   "revRvContribTitle": "Contribute",
   "@revRvContribTitle": {
     "description": "rev.rv_contrib.title"
