@@ -596,7 +596,7 @@ P3-070	Done	Fold enhanced variants into live counterparts	P3/P3-070.yaml
 P3-071	Done	Move developer examples to dev/ outside the app build	P3/P3-071.yaml
 P3-072	Draft	Verify consolidation harvest lists are complete	P3/P3-072.yaml
 P3-073	Done	Remove forced splash delay	P3/P3-073.yaml
-P3-074	Draft	Persist onboarding steps with typed JSON	P3/P3-074.yaml
+P3-074	Done	Persist onboarding steps with typed JSON	P3/P3-074.yaml
 P3-075	Draft	'Build onboarding step 1: language tiles with greeting audio'	P3/P3-075.yaml
 P3-076	Draft	'Build onboarding step 2: first spoken word screen'	P3/P3-076.yaml
 P3-077	Draft	Give honest scorer feedback on the first syllable	P3/P3-077.yaml

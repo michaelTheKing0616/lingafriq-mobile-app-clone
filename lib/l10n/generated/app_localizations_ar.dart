@@ -8424,4 +8424,8 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get revPlusBuy => 'Buy Plus';
+
+  @override
+  String get onboardingTheSavedAnswersCouldNotBeRead =>
+      'The saved answers could not be read.';
 }

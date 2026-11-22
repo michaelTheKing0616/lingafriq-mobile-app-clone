@@ -10995,5 +10995,9 @@
   "revPlusUnavailableBody": "The store is not configured. A purchase was not started.",
   "revPlusUnconfirmed": "Plus was not confirmed by the server. Nothing was unlocked.",
   "revPlusEntitled": "Plus is confirmed by the server.",
-  "revPlusBuy": "Buy Plus"
+  "revPlusBuy": "Buy Plus",
+  "onboardingTheSavedAnswersCouldNotBeRead": "The saved answers could not be read.",
+  "@onboardingTheSavedAnswersCouldNotBeRead": {
+    "description": "Shown when a saved onboarding record cannot be read. The flow starts again at step 1."
+  }
 }
