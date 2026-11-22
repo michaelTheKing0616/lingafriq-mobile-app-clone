@@ -6530,6 +6530,318 @@ class AppLocalizationsSw extends AppLocalizations {
   String get shellOfflineNext => 'Connect, then try again.';
 
   @override
+  String get searchFieldLabel => 'Search words, features, and content';
+
+  @override
+  String get searchWords => 'Words';
+
+  @override
+  String get searchFeatures => 'Features';
+
+  @override
+  String get searchContent => 'Content';
+
+  @override
+  String get searchIdleWhat => 'Search is ready.';
+
+  @override
+  String get searchIdleWhy => 'The box is empty.';
+
+  @override
+  String get searchIdleNext => 'Type a word or a feature name.';
+
+  @override
+  String get searchEmptyTitle => 'No match';
+
+  @override
+  String searchEmptyWhat(String query) {
+    return 'Nothing matches $query.';
+  }
+
+  @override
+  String get searchEmptyWhy =>
+      'That name is not in words, features, or content on this phone.';
+
+  @override
+  String get searchEmptyNext => 'Open the directory to see every feature.';
+
+  @override
+  String get searchEmptyAction => 'Open the directory';
+
+  @override
+  String get searchOfflineLabel =>
+      'Offline. Showing results saved on this phone.';
+
+  @override
+  String searchUnlockWhat(String feature) {
+    return '$feature is not open yet.';
+  }
+
+  @override
+  String searchUnlockWhy(String stage) {
+    return 'It unlocks at $stage.';
+  }
+
+  @override
+  String get searchUnlockNext => 'Read this preview, then go back.';
+
+  @override
+  String get searchPreviewLabel => 'Preview';
+
+  @override
+  String get searchBack => 'Back';
+
+  @override
+  String searchOpenWord(String word) {
+    return 'Open Word Card for $word';
+  }
+
+  @override
+  String searchOpenFeature(String feature) {
+    return 'Open $feature';
+  }
+
+  @override
+  String searchOpenContent(String title) {
+    return 'Open $title';
+  }
+
+  @override
+  String get hubTodayTitle => 'Today';
+
+  @override
+  String get hubTodayLead => 'One plan for today.';
+
+  @override
+  String get hubTodayDailyPlan => 'Daily plan';
+
+  @override
+  String get hubTodayDailyChallenges => 'Daily Challenges';
+
+  @override
+  String get hubTodayQuests => 'Quests';
+
+  @override
+  String get hubTodayEvents => 'Events and Festivals';
+
+  @override
+  String get hubTodayStreaks => 'Streaks';
+
+  @override
+  String get hubTodayBack => 'Back to Today';
+
+  @override
+  String hubTodayMinutes(int minutes) {
+    return '$minutes minutes';
+  }
+
+  @override
+  String hubTodayMinutesAbout(int minutes) {
+    return 'About $minutes minutes';
+  }
+
+  @override
+  String get hubTodayDueReviews => 'Due reviews';
+
+  @override
+  String get hubTodayNextLesson => 'Next lesson';
+
+  @override
+  String get hubTodayStart => 'Start';
+
+  @override
+  String hubTodayStartPlan(int minutes) {
+    return 'Start the $minutes minute plan';
+  }
+
+  @override
+  String get hubTodayEmptyTitle => 'No plan yet';
+
+  @override
+  String get hubTodayEmptyWhat => 'Today has nothing queued.';
+
+  @override
+  String get hubTodayEmptyWhy =>
+      'There is no review due, and no lesson is chosen.';
+
+  @override
+  String get hubTodayEmptyNext => 'Open Path and start the first lesson.';
+
+  @override
+  String get hubTodayOpenPath => 'Open Path';
+
+  @override
+  String get hubTodayNotBuiltWhat => 'This part is not available yet.';
+
+  @override
+  String get hubTodayNotBuiltWhy => 'It is not built yet.';
+
+  @override
+  String get hubTodayNotBuiltNext => 'Go back to Today.';
+
+  @override
+  String get hubTodayProviderWhat => 'The daily plan is not available.';
+
+  @override
+  String get hubTodayProviderWhy => 'The plan provider is not here.';
+
+  @override
+  String get hubTodayProviderNext => 'Come back when the plan is ready.';
+
+  @override
+  String get hubTodayRangeWhat => 'This plan cannot be shown.';
+
+  @override
+  String get hubTodayRangeWhy =>
+      'A shown plan is 10 to 15 minutes and lists due reviews and the next lesson.';
+
+  @override
+  String get hubTodayRangeNext => 'Come back when the plan is ready.';
+
+  @override
+  String get hubTodayErrorWhat => 'The plan did not open.';
+
+  @override
+  String get hubTodayErrorWhy => 'The lesson list did not come back.';
+
+  @override
+  String get hubTodayErrorNext => 'Try again.';
+
+  @override
+  String get hubTodayOfflineWhat => 'The phone has no network.';
+
+  @override
+  String get hubTodayOfflineWhy => 'This plan is not saved on the phone.';
+
+  @override
+  String get hubTodayOfflineNext => 'Connect, then try again.';
+
+  @override
+  String get hubLearnPathAndLessons => 'Path and lessons';
+
+  @override
+  String get hubLearnLessonRecap => 'Lesson Recap';
+
+  @override
+  String get hubLearnWordsAndReview => 'Words and Review';
+
+  @override
+  String get hubLearnReviewRush => 'Review Rush';
+
+  @override
+  String get hubLearnGrammar => 'Grammar';
+
+  @override
+  String get hubLearnPhraseDna => 'Phrase DNA';
+
+  @override
+  String get hubLearnListening => 'Listening';
+
+  @override
+  String get hubLearnWriting => 'Writing';
+
+  @override
+  String get hubLearnToneGym => 'Tone Gym';
+
+  @override
+  String get hubLearnCultureShelf => 'Culture shelf';
+
+  @override
+  String get hubLearnMagazine => 'Magazine';
+
+  @override
+  String get hubLearnHeritage => 'Heritage';
+
+  @override
+  String get hubLearnHistory => 'History';
+
+  @override
+  String get hubLearnMannerisms => 'Mannerisms';
+
+  @override
+  String get hubLearnCulturalHub => 'Cultural Hub';
+
+  @override
+  String get hubLearnPassport => 'Passport';
+
+  @override
+  String get hubLearnDownloads => 'Downloads';
+
+  @override
+  String get hubLearnBack => 'Back to Learn';
+
+  @override
+  String get hubLearnNotAvailableWhat => 'This part is not built yet.';
+
+  @override
+  String get hubLearnNotAvailableWhy => 'There is nothing to show.';
+
+  @override
+  String get hubLearnNotAvailableNext => 'Go back to Learn.';
+
+  @override
+  String get hubLearnEmptyTitle => 'Nothing is here yet';
+
+  @override
+  String get hubLearnEmptyWhat => 'Learn has no lessons yet.';
+
+  @override
+  String get hubLearnEmptyWhy => 'No units came back.';
+
+  @override
+  String get hubLearnEmptyNext => 'Open Path and start the first lesson.';
+
+  @override
+  String get hubLearnOpenPath => 'Open Path';
+
+  @override
+  String get hubLearnPathEmptyTitle => 'This path has no lessons';
+
+  @override
+  String get hubLearnPathEmptyWhat => 'No units are on this path.';
+
+  @override
+  String get hubLearnPathEmptyWhy => 'No units came back to group.';
+
+  @override
+  String get hubLearnPathEmptyNext => 'Try again later.';
+
+  @override
+  String get hubLearnGrammarEmptyTitle => 'No pattern yet';
+
+  @override
+  String get hubLearnGrammarEmptyWhat => 'Grammar has no pattern yet.';
+
+  @override
+  String get hubLearnGrammarEmptyWhy => 'No drill came back.';
+
+  @override
+  String get hubLearnGrammarEmptyNext => 'Open Path and start a lesson.';
+
+  @override
+  String hubLearnLevel(String level) {
+    return 'Level $level';
+  }
+
+  @override
+  String get hubLearnLevelNotSet => 'Level not set';
+
+  @override
+  String get hubLearnErrorWhat => 'Learn did not open.';
+
+  @override
+  String get hubLearnErrorWhy => 'The lesson list did not come back.';
+
+  @override
+  String get hubLearnErrorNext => 'Try again.';
+
+  @override
+  String get hubLearnOfflineWhy => 'This path is not saved on the phone.';
+
+  @override
+  String get hubLearnOfflineNext => 'Connect, then try again.';
+
+  @override
   String get hubHSpeakTitle => 'Speak';
 
   @override
