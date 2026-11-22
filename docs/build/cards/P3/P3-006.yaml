@@ -51,7 +51,7 @@ dod_evidence:
 risks: []
 gate: G3
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/10-analysis-and-decision-support
