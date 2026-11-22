@@ -592,7 +592,7 @@ P3-066	Done	Consolidate four classroom variants into live classroom	P3/P3-066.ya
 P3-067	Done	Consolidate onboarding variants into unified onboarding	P3/P3-067.yaml
 P3-068	Draft	Consolidate game templates, loaders and results into GameKit	P3/P3-068.yaml
 P3-069	Done	Replace live proverb unlocker with the GameKit rewrite	P3/P3-069.yaml
-P3-070	Draft	Fold enhanced variants into live counterparts	P3/P3-070.yaml
+P3-070	Done	Fold enhanced variants into live counterparts	P3/P3-070.yaml
 P3-071	Done	Move developer examples to dev/ outside the app build	P3/P3-071.yaml
 P3-072	Draft	Verify consolidation harvest lists are complete	P3/P3-072.yaml
 P3-073	Done	Remove forced splash delay	P3/P3-073.yaml
