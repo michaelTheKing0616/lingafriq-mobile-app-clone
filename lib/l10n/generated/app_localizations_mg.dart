@@ -6958,4 +6958,102 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get hubHSpeakPolieOfflineWhy => 'Polie needs the network to answer.';
+
+  @override
+  String get hubHPlayTitle => 'Play';
+
+  @override
+  String get hubHPlaySubtitle => 'Games sit on skill shelves.';
+
+  @override
+  String get hubHPlayShelfTone => 'Tone & Sound';
+
+  @override
+  String get hubHPlayShelfWords => 'Words';
+
+  @override
+  String get hubHPlayShelfGrammar => 'Grammar';
+
+  @override
+  String get hubHPlayShelfSpeaking => 'Speaking';
+
+  @override
+  String get hubHPlayShelfCulture => 'Culture';
+
+  @override
+  String get hubHPlayShelfTraditional => 'Traditional';
+
+  @override
+  String get hubHPlayShelfMultiplayer => 'Multiplayer';
+
+  @override
+  String get hubHPlayToneForge => 'Tone Forge';
+
+  @override
+  String get hubHPlayGameGames => 'Games';
+
+  @override
+  String get hubHPlayGameChallengeFriend => 'Challenge Friend';
+
+  @override
+  String get hubHPlayGameFlashcardFocus => 'Flashcard Focus';
+
+  @override
+  String get hubHPlayGameApiLanguages => 'Games API Languages';
+
+  @override
+  String get hubHPlayGameEnhancedCatalog => 'Games Enhanced Catalog';
+
+  @override
+  String get hubHPlayGameMatchingPairs => 'Matching Pairs';
+
+  @override
+  String get hubHPlayBack => 'Back to Play';
+
+  @override
+  String get hubHPlayNotAvailableTitle => 'Not available yet';
+
+  @override
+  String hubHPlayNotAvailableWhat(String name) {
+    return '$name is not available yet.';
+  }
+
+  @override
+  String get hubHPlayNotAvailableWhy => 'This screen is not built yet.';
+
+  @override
+  String get hubHPlayNotAvailableNext => 'Go back to Play.';
+
+  @override
+  String get hubHPlayEmptyWhat => 'The shelves have no games.';
+
+  @override
+  String get hubHPlayEmptyWhy => 'No game came back.';
+
+  @override
+  String get hubHPlayEmptyNext => 'Try again.';
+
+  @override
+  String get hubHPlayErrorWhat => 'The game list did not open.';
+
+  @override
+  String get hubHPlayErrorWhy => 'The list did not come back.';
+
+  @override
+  String get hubHPlayErrorNext => 'Try again.';
+
+  @override
+  String get hubHPlayOfflineWhy => 'These games are not saved on the phone.';
+
+  @override
+  String get hubHPlayShelfEmptyWhat => 'This shelf has no game.';
+
+  @override
+  String get hubHPlayShelfEmptyWhy => 'No game is listed on this shelf.';
+
+  @override
+  String get hubHPlayShelfEmptyNext => 'Open the Arcade.';
+
+  @override
+  String get hubHPlayOpenArcade => 'Open the Arcade';
 }
