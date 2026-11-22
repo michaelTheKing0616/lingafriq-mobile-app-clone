@@ -195,6 +195,10 @@ class PolieWorkspaceBuildHost extends HookConsumerWidget {
     final vocabularyService = ref.read(vocabularyServiceProvider);
     final reviewProgress = ref.read(reviewProgressServiceProvider);
     final streakDays = useState<int>(0);
+    final harvest = useMemoized(PolieHarvestController.new);
+    useEffect(() {
+      return harvest.dispose;
+    }, const <Object?>[]);
 
     final host = PolieWorkspaceHostRuntime(
       context: context,
@@ -261,6 +265,7 @@ class PolieWorkspaceBuildHost extends HookConsumerWidget {
       vocabularyService: vocabularyService,
       reviewProgress: reviewProgress,
       streakDays: streakDays,
+      harvest: harvest,
     );
 
     useEffect(() {
@@ -277,6 +282,11 @@ class PolieWorkspaceBuildHost extends HookConsumerWidget {
       });
       return null;
     }, [targetLanguage]);
+
+    useEffect(() {
+      unawaited(host.loadTopicSuggestions());
+      return null;
+    }, <Object?>[targetLanguage]);
 
     useEffect(() {
       final init = screen.conversationOnly ? PolieMode.conversation : screen.initialMode;

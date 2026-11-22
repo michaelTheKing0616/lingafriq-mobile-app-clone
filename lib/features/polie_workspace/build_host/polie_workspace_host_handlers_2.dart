@@ -5,6 +5,8 @@ import 'package:lingafriq/features/polie_workspace/polie_workspace_models.dart';
 import 'package:lingafriq/services/ai/polie_voice_input_service.dart';
 import 'package:lingafriq/services/polie_tutor_saved_cards_service.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
+import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
 
 
 import 'package:lingafriq/features/polie_workspace/build_host/polie_workspace_host_state.dart';
@@ -304,12 +306,28 @@ Evaluate pedagogically:
         json,
         modeResponse.value,
       );
+      final PolieTutorTurnDraft draft = polieTutorTurnDraft(
+        userInput: answer,
+        response: <String>[
+          tutorFeedback.value!.why,
+          tutorFeedback.value!.correction,
+        ].join(' '),
+        hasBackendEvaluator: const bool.fromEnvironment(
+          'ENABLE_BACKEND_TUTOR_EVALUATOR',
+        ),
+        names: polieTutorTopicNames(l10nOf(context)),
+      );
+      harvest.tutorTurns.add(draft);
       await tutorProgress.recordSession(
         polieBuildTutorSessionResult(
           language: targetLanguage,
           answer: answer,
           verdict: tutorFeedback.value!,
           concept: tutorLesson.value!.concept,
+          extraTopics: draft.topics,
+          extraGrammar: draft.grammar,
+          vocabularyOverride: draft.vocabulary,
+          extraMetadata: Map<String, dynamic>.from(draft.metadata),
         ),
       );
     }
@@ -357,12 +375,17 @@ User line: "$input"
 Stay in character. Respond naturally for the scene.
 ''');
     if (json != null) {
+      final RoleplayPayload payload = RoleplayPayload.fromJson(
+        json,
+        modeResponse.value,
+      );
       roleplayMessages.value = [
         ...roleplayMessages.value,
-        RoleplayTurn.ai(
-          RoleplayPayload.fromJson(json, modeResponse.value),
-        ),
+        RoleplayTurn.ai(payload),
       ];
+      harvest.roleplayNotes.add(
+        polieRoleplayTurnNote(input, payload.characterResponse.targetLang),
+      );
     } else {
       roleplayMessages.value = [
         ...roleplayMessages.value,

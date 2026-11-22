@@ -10923,5 +10923,38 @@
   "revRvContribTeacherDeniedNext": "Go back to Village.",
   "@revRvContribTeacherDeniedNext": {
     "description": "rev.rv_contrib.teacher.denied.next"
-  }
+  },
+  "polieSurpriseMe": "Surprise Me",
+  "@polieSurpriseMe": {
+    "description": "Random mode from the old AI mode picker."
+  },
+  "polieAutoCorrectionOn": "Auto-correction on. Double tap to turn off.",
+  "@polieAutoCorrectionOn": {
+    "description": "Conversation auto-correction is on."
+  },
+  "polieAutoCorrectionOff": "Auto-correction off. Double tap to turn on.",
+  "@polieAutoCorrectionOff": {
+    "description": "Conversation auto-correction is off."
+  },
+  "polieLetsTalkAbout": "Let's talk about {topic}",
+  "@polieLetsTalkAbout": {
+    "description": "Fills the composer when a topic chip is chosen.",
+    "placeholders": {
+      "topic": {
+        "type": "String"
+      }
+    }
+  },
+  "polieTopicGreetings": "Greetings",
+  "polieTopicFood": "Food & Dining",
+  "polieTopicShopping": "Shopping",
+  "polieTopicWeather": "Weather",
+  "polieTopicHobbies": "Hobbies",
+  "polieTopicWork": "Work",
+  "polieTopicHealth": "Health",
+  "polieTutorPracticeTopic": "Tutor Practice",
+  "polieGrammarTense": "Tense",
+  "polieGrammarVerb": "Verb usage",
+  "polieGrammarAgreement": "Agreement",
+  "polieGrammarWordOrder": "Word order"
 }

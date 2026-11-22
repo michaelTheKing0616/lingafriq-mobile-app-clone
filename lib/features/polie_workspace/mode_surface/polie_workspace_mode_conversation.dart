@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_args.dart';
+import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_conversation_composer.dart';
 
 Widget buildPolieConversationModeSurface(PolieModeSurfaceArgs a) {
@@ -277,29 +278,19 @@ Widget buildPolieConversationModeSurface(PolieModeSurfaceArgs a) {
                               ),
                             ),
                           ],
-                          if (ai.correction.hasCorrection)
-                            Padding(
-                              padding: const EdgeInsets.only(top: 6),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    ai.correction.uxFeedbackLine(),
-                                    style: layout.bodyStyle.copyWith(
-                                      color: Colors.orange.shade800,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  if ((ai.correction.correction ?? '').isNotEmpty)
-                                    Text(
-                                      ai.correction.correction!,
-                                      style: layout.bodyStyle.copyWith(
-                                        color: Colors.orange.shade700,
-                                      ),
-                                    ),
-                                ],
-                              ),
+                          PolieConversationCorrectionLine(
+                            harvest: PolieHarvestScope.maybeOf(ctx),
+                            hasCorrection: ai.correction.hasCorrection,
+                            feedbackLine: ai.correction.uxFeedbackLine(),
+                            correction: ai.correction.correction,
+                            feedbackStyle: layout.bodyStyle.copyWith(
+                              color: Colors.orange.shade800,
+                              fontWeight: FontWeight.w600,
                             ),
+                            correctionStyle: layout.bodyStyle.copyWith(
+                              color: Colors.orange.shade700,
+                            ),
+                          ),
                           if (ai.newVocab.isNotEmpty) ...[
                             const SizedBox(height: 8),
                             Container(

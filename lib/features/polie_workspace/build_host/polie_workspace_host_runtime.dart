@@ -78,5 +78,6 @@ class PolieWorkspaceHostRuntime extends PolieWorkspaceHostState
     required super.vocabularyService,
     required super.reviewProgress,
     required super.streakDays,
+    required super.harvest,
   });
 }
