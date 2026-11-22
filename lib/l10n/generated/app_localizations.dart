@@ -12020,6 +12020,564 @@ abstract class AppLocalizations {
   /// **'Polie needs the network to answer.'**
   String get hubHSpeakPolieOfflineWhy;
 
+  /// hub.h_play.title
+  ///
+  /// In en, this message translates to:
+  /// **'Play'**
+  String get hubHPlayTitle;
+
+  /// hub.h_play.subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Games sit on skill shelves.'**
+  String get hubHPlaySubtitle;
+
+  /// hub.h_play.shelf.tone
+  ///
+  /// In en, this message translates to:
+  /// **'Tone & Sound'**
+  String get hubHPlayShelfTone;
+
+  /// hub.h_play.shelf.words
+  ///
+  /// In en, this message translates to:
+  /// **'Words'**
+  String get hubHPlayShelfWords;
+
+  /// hub.h_play.shelf.grammar
+  ///
+  /// In en, this message translates to:
+  /// **'Grammar'**
+  String get hubHPlayShelfGrammar;
+
+  /// hub.h_play.shelf.speaking
+  ///
+  /// In en, this message translates to:
+  /// **'Speaking'**
+  String get hubHPlayShelfSpeaking;
+
+  /// hub.h_play.shelf.culture
+  ///
+  /// In en, this message translates to:
+  /// **'Culture'**
+  String get hubHPlayShelfCulture;
+
+  /// hub.h_play.shelf.traditional
+  ///
+  /// In en, this message translates to:
+  /// **'Traditional'**
+  String get hubHPlayShelfTraditional;
+
+  /// hub.h_play.shelf.multiplayer
+  ///
+  /// In en, this message translates to:
+  /// **'Multiplayer'**
+  String get hubHPlayShelfMultiplayer;
+
+  /// hub.h_play.toneForge
+  ///
+  /// In en, this message translates to:
+  /// **'Tone Forge'**
+  String get hubHPlayToneForge;
+
+  /// hub.h_play.game.games
+  ///
+  /// In en, this message translates to:
+  /// **'Games'**
+  String get hubHPlayGameGames;
+
+  /// hub.h_play.game.challengeFriend
+  ///
+  /// In en, this message translates to:
+  /// **'Challenge Friend'**
+  String get hubHPlayGameChallengeFriend;
+
+  /// hub.h_play.game.flashcardFocus
+  ///
+  /// In en, this message translates to:
+  /// **'Flashcard Focus'**
+  String get hubHPlayGameFlashcardFocus;
+
+  /// hub.h_play.game.apiLanguages
+  ///
+  /// In en, this message translates to:
+  /// **'Games API Languages'**
+  String get hubHPlayGameApiLanguages;
+
+  /// hub.h_play.game.enhancedCatalog
+  ///
+  /// In en, this message translates to:
+  /// **'Games Enhanced Catalog'**
+  String get hubHPlayGameEnhancedCatalog;
+
+  /// hub.h_play.game.matchingPairs
+  ///
+  /// In en, this message translates to:
+  /// **'Matching Pairs'**
+  String get hubHPlayGameMatchingPairs;
+
+  /// hub.h_play.back
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Play'**
+  String get hubHPlayBack;
+
+  /// hub.h_play.notAvailable.title
+  ///
+  /// In en, this message translates to:
+  /// **'Not available yet'**
+  String get hubHPlayNotAvailableTitle;
+
+  /// hub.h_play.notAvailable.what
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is not available yet.'**
+  String hubHPlayNotAvailableWhat(String name);
+
+  /// hub.h_play.notAvailable.why
+  ///
+  /// In en, this message translates to:
+  /// **'This screen is not built yet.'**
+  String get hubHPlayNotAvailableWhy;
+
+  /// hub.h_play.notAvailable.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Play.'**
+  String get hubHPlayNotAvailableNext;
+
+  /// hub.h_play.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'The shelves have no games.'**
+  String get hubHPlayEmptyWhat;
+
+  /// hub.h_play.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'No game came back.'**
+  String get hubHPlayEmptyWhy;
+
+  /// hub.h_play.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get hubHPlayEmptyNext;
+
+  /// hub.h_play.error.what
+  ///
+  /// In en, this message translates to:
+  /// **'The game list did not open.'**
+  String get hubHPlayErrorWhat;
+
+  /// hub.h_play.error.why
+  ///
+  /// In en, this message translates to:
+  /// **'The list did not come back.'**
+  String get hubHPlayErrorWhy;
+
+  /// hub.h_play.error.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get hubHPlayErrorNext;
+
+  /// hub.h_play.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'These games are not saved on the phone.'**
+  String get hubHPlayOfflineWhy;
+
+  /// hub.h_play.shelfEmpty.what
+  ///
+  /// In en, this message translates to:
+  /// **'This shelf has no game.'**
+  String get hubHPlayShelfEmptyWhat;
+
+  /// hub.h_play.shelfEmpty.why
+  ///
+  /// In en, this message translates to:
+  /// **'No game is listed on this shelf.'**
+  String get hubHPlayShelfEmptyWhy;
+
+  /// hub.h_play.shelfEmpty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Open the Arcade.'**
+  String get hubHPlayShelfEmptyNext;
+
+  /// hub.h_play.openArcade
+  ///
+  /// In en, this message translates to:
+  /// **'Open the Arcade'**
+  String get hubHPlayOpenArcade;
+
+  /// hub.h_village.title
+  ///
+  /// In en, this message translates to:
+  /// **'Village'**
+  String get hubHVillageTitle;
+
+  /// hub.h_village.map
+  ///
+  /// In en, this message translates to:
+  /// **'Village map'**
+  String get hubHVillageMap;
+
+  /// hub.h_village.circles
+  ///
+  /// In en, this message translates to:
+  /// **'Circles'**
+  String get hubHVillageCircles;
+
+  /// hub.h_village.square
+  ///
+  /// In en, this message translates to:
+  /// **'Square'**
+  String get hubHVillageSquare;
+
+  /// hub.h_village.chats
+  ///
+  /// In en, this message translates to:
+  /// **'Chats'**
+  String get hubHVillageChats;
+
+  /// hub.h_village.status
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get hubHVillageStatus;
+
+  /// hub.h_village.clips
+  ///
+  /// In en, this message translates to:
+  /// **'Clips'**
+  String get hubHVillageClips;
+
+  /// hub.h_village.radio
+  ///
+  /// In en, this message translates to:
+  /// **'Radio'**
+  String get hubHVillageRadio;
+
+  /// hub.h_village.school
+  ///
+  /// In en, this message translates to:
+  /// **'School'**
+  String get hubHVillageSchool;
+
+  /// hub.h_village.elderHut
+  ///
+  /// In en, this message translates to:
+  /// **'Elder Hut'**
+  String get hubHVillageElderHut;
+
+  /// hub.h_village.corrections
+  ///
+  /// In en, this message translates to:
+  /// **'Corrections'**
+  String get hubHVillageCorrections;
+
+  /// hub.h_village.create
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get hubHVillageCreate;
+
+  /// hub.h_village.verify
+  ///
+  /// In en, this message translates to:
+  /// **'Verify'**
+  String get hubHVillageVerify;
+
+  /// hub.h_village.back
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Village'**
+  String get hubHVillageBack;
+
+  /// hub.h_village.locked
+  ///
+  /// In en, this message translates to:
+  /// **'Locked'**
+  String get hubHVillageLocked;
+
+  /// hub.h_village.preview
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get hubHVillagePreview;
+
+  /// hub.h_village.openAnyway
+  ///
+  /// In en, this message translates to:
+  /// **'Open anyway'**
+  String get hubHVillageOpenAnyway;
+
+  /// hub.h_village.guardian
+  ///
+  /// In en, this message translates to:
+  /// **'A guardian must open this.'**
+  String get hubHVillageGuardian;
+
+  /// hub.h_village.unlocksA2
+  ///
+  /// In en, this message translates to:
+  /// **'Unlocks at A2.'**
+  String get hubHVillageUnlocksA2;
+
+  /// hub.h_village.unlocksB1
+  ///
+  /// In en, this message translates to:
+  /// **'Unlocks at B1.'**
+  String get hubHVillageUnlocksB1;
+
+  /// hub.h_village.lockedSemantics
+  ///
+  /// In en, this message translates to:
+  /// **'{name}, Locked. {line}'**
+  String hubHVillageLockedSemantics(String name, String line);
+
+  /// hub.h_village.notAvailable.title
+  ///
+  /// In en, this message translates to:
+  /// **'Not available yet'**
+  String get hubHVillageNotAvailableTitle;
+
+  /// hub.h_village.notAvailable.what
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is not available yet.'**
+  String hubHVillageNotAvailableWhat(String name);
+
+  /// hub.h_village.notAvailable.why
+  ///
+  /// In en, this message translates to:
+  /// **'This screen is not built yet.'**
+  String get hubHVillageNotAvailableWhy;
+
+  /// hub.h_village.notAvailable.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Village.'**
+  String get hubHVillageNotAvailableNext;
+
+  /// hub.h_village.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No places yet.'**
+  String get hubHVillageEmptyWhat;
+
+  /// hub.h_village.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'The place list is empty.'**
+  String get hubHVillageEmptyWhy;
+
+  /// hub.h_village.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get hubHVillageEmptyNext;
+
+  /// hub.h_village.error.what
+  ///
+  /// In en, this message translates to:
+  /// **'Village did not open.'**
+  String get hubHVillageErrorWhat;
+
+  /// hub.h_village.error.why
+  ///
+  /// In en, this message translates to:
+  /// **'The place list did not come back.'**
+  String get hubHVillageErrorWhy;
+
+  /// hub.h_village.error.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get hubHVillageErrorNext;
+
+  /// hub.h_village.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'Village is not saved on the phone.'**
+  String get hubHVillageOfflineWhy;
+
+  /// hub.h_me.title
+  ///
+  /// In en, this message translates to:
+  /// **'Me'**
+  String get hubHMeTitle;
+
+  /// hub.h_me.profile
+  ///
+  /// In en, this message translates to:
+  /// **'Profile and avatar'**
+  String get hubHMeProfile;
+
+  /// hub.h_me.progress
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get hubHMeProgress;
+
+  /// hub.h_me.achievements
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements'**
+  String get hubHMeAchievements;
+
+  /// hub.h_me.leagues
+  ///
+  /// In en, this message translates to:
+  /// **'Leagues'**
+  String get hubHMeLeagues;
+
+  /// hub.h_me.family
+  ///
+  /// In en, this message translates to:
+  /// **'Family'**
+  String get hubHMeFamily;
+
+  /// hub.h_me.plus
+  ///
+  /// In en, this message translates to:
+  /// **'Plus'**
+  String get hubHMePlus;
+
+  /// hub.h_me.settings
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get hubHMeSettings;
+
+  /// hub.h_me.about
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get hubHMeAbout;
+
+  /// hub.h_me.back
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Me'**
+  String get hubHMeBack;
+
+  /// hub.h_me.leave
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get hubHMeLeave;
+
+  /// hub.h_me.notAvailable.title
+  ///
+  /// In en, this message translates to:
+  /// **'Not available yet'**
+  String get hubHMeNotAvailableTitle;
+
+  /// hub.h_me.notAvailable.what
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is not available yet.'**
+  String hubHMeNotAvailableWhat(String name);
+
+  /// hub.h_me.notAvailable.why
+  ///
+  /// In en, this message translates to:
+  /// **'This screen is not built yet.'**
+  String get hubHMeNotAvailableWhy;
+
+  /// hub.h_me.notAvailable.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Me.'**
+  String get hubHMeNotAvailableNext;
+
+  /// hub.h_me.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'Me has nothing to open yet.'**
+  String get hubHMeEmptyWhat;
+
+  /// hub.h_me.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'No profile is saved.'**
+  String get hubHMeEmptyWhy;
+
+  /// hub.h_me.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Open Profile and avatar.'**
+  String get hubHMeEmptyNext;
+
+  /// hub.h_me.openProfile
+  ///
+  /// In en, this message translates to:
+  /// **'Open Profile'**
+  String get hubHMeOpenProfile;
+
+  /// hub.h_me.error.what
+  ///
+  /// In en, this message translates to:
+  /// **'Me did not open.'**
+  String get hubHMeErrorWhat;
+
+  /// hub.h_me.error.why
+  ///
+  /// In en, this message translates to:
+  /// **'The list did not come back.'**
+  String get hubHMeErrorWhy;
+
+  /// hub.h_me.error.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get hubHMeErrorNext;
+
+  /// hub.h_me.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'Me is not saved on the phone.'**
+  String get hubHMeOfflineWhy;
+
+  /// hub.h_me.profile.noName
+  ///
+  /// In en, this message translates to:
+  /// **'No name is saved.'**
+  String get hubHMeNoName;
+
+  /// hub.h_me.profile.noAvatar
+  ///
+  /// In en, this message translates to:
+  /// **'No avatar is saved.'**
+  String get hubHMeNoAvatar;
+
+  /// hub.h_me.profile.avatar
+  ///
+  /// In en, this message translates to:
+  /// **'Avatar'**
+  String get hubHMeAvatar;
+
+  /// hub.h_me.profile.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No profile is saved on this phone.'**
+  String get hubHMeProfileEmptyWhat;
+
+  /// hub.h_me.profile.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'A name and avatar have not been saved.'**
+  String get hubHMeProfileEmptyWhy;
+
+  /// hub.h_me.profile.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Go back to Me.'**
+  String get hubHMeProfileEmptyNext;
+
   /// lens.bridge
   ///
   /// In en, this message translates to:

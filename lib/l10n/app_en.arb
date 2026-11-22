@@ -9300,6 +9300,401 @@
   "@hubHSpeakPolieOfflineWhy": {
     "description": "hub.h_speak.polie.offline.why"
   },
+  "hubHPlayTitle": "Play",
+  "@hubHPlayTitle": {
+    "description": "hub.h_play.title"
+  },
+  "hubHPlaySubtitle": "Games sit on skill shelves.",
+  "@hubHPlaySubtitle": {
+    "description": "hub.h_play.subtitle"
+  },
+  "hubHPlayShelfTone": "Tone & Sound",
+  "@hubHPlayShelfTone": {
+    "description": "hub.h_play.shelf.tone"
+  },
+  "hubHPlayShelfWords": "Words",
+  "@hubHPlayShelfWords": {
+    "description": "hub.h_play.shelf.words"
+  },
+  "hubHPlayShelfGrammar": "Grammar",
+  "@hubHPlayShelfGrammar": {
+    "description": "hub.h_play.shelf.grammar"
+  },
+  "hubHPlayShelfSpeaking": "Speaking",
+  "@hubHPlayShelfSpeaking": {
+    "description": "hub.h_play.shelf.speaking"
+  },
+  "hubHPlayShelfCulture": "Culture",
+  "@hubHPlayShelfCulture": {
+    "description": "hub.h_play.shelf.culture"
+  },
+  "hubHPlayShelfTraditional": "Traditional",
+  "@hubHPlayShelfTraditional": {
+    "description": "hub.h_play.shelf.traditional"
+  },
+  "hubHPlayShelfMultiplayer": "Multiplayer",
+  "@hubHPlayShelfMultiplayer": {
+    "description": "hub.h_play.shelf.multiplayer"
+  },
+  "hubHPlayToneForge": "Tone Forge",
+  "@hubHPlayToneForge": {
+    "description": "hub.h_play.toneForge"
+  },
+  "hubHPlayGameGames": "Games",
+  "@hubHPlayGameGames": {
+    "description": "hub.h_play.game.games"
+  },
+  "hubHPlayGameChallengeFriend": "Challenge Friend",
+  "@hubHPlayGameChallengeFriend": {
+    "description": "hub.h_play.game.challengeFriend"
+  },
+  "hubHPlayGameFlashcardFocus": "Flashcard Focus",
+  "@hubHPlayGameFlashcardFocus": {
+    "description": "hub.h_play.game.flashcardFocus"
+  },
+  "hubHPlayGameApiLanguages": "Games API Languages",
+  "@hubHPlayGameApiLanguages": {
+    "description": "hub.h_play.game.apiLanguages"
+  },
+  "hubHPlayGameEnhancedCatalog": "Games Enhanced Catalog",
+  "@hubHPlayGameEnhancedCatalog": {
+    "description": "hub.h_play.game.enhancedCatalog"
+  },
+  "hubHPlayGameMatchingPairs": "Matching Pairs",
+  "@hubHPlayGameMatchingPairs": {
+    "description": "hub.h_play.game.matchingPairs"
+  },
+  "hubHPlayBack": "Back to Play",
+  "@hubHPlayBack": {
+    "description": "hub.h_play.back"
+  },
+  "hubHPlayNotAvailableTitle": "Not available yet",
+  "@hubHPlayNotAvailableTitle": {
+    "description": "hub.h_play.notAvailable.title"
+  },
+  "hubHPlayNotAvailableWhat": "{name} is not available yet.",
+  "@hubHPlayNotAvailableWhat": {
+    "description": "hub.h_play.notAvailable.what",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "hubHPlayNotAvailableWhy": "This screen is not built yet.",
+  "@hubHPlayNotAvailableWhy": {
+    "description": "hub.h_play.notAvailable.why"
+  },
+  "hubHPlayNotAvailableNext": "Go back to Play.",
+  "@hubHPlayNotAvailableNext": {
+    "description": "hub.h_play.notAvailable.next"
+  },
+  "hubHPlayEmptyWhat": "The shelves have no games.",
+  "@hubHPlayEmptyWhat": {
+    "description": "hub.h_play.empty.what"
+  },
+  "hubHPlayEmptyWhy": "No game came back.",
+  "@hubHPlayEmptyWhy": {
+    "description": "hub.h_play.empty.why"
+  },
+  "hubHPlayEmptyNext": "Try again.",
+  "@hubHPlayEmptyNext": {
+    "description": "hub.h_play.empty.next"
+  },
+  "hubHPlayErrorWhat": "The game list did not open.",
+  "@hubHPlayErrorWhat": {
+    "description": "hub.h_play.error.what"
+  },
+  "hubHPlayErrorWhy": "The list did not come back.",
+  "@hubHPlayErrorWhy": {
+    "description": "hub.h_play.error.why"
+  },
+  "hubHPlayErrorNext": "Try again.",
+  "@hubHPlayErrorNext": {
+    "description": "hub.h_play.error.next"
+  },
+  "hubHPlayOfflineWhy": "These games are not saved on the phone.",
+  "@hubHPlayOfflineWhy": {
+    "description": "hub.h_play.offline.why"
+  },
+  "hubHPlayShelfEmptyWhat": "This shelf has no game.",
+  "@hubHPlayShelfEmptyWhat": {
+    "description": "hub.h_play.shelfEmpty.what"
+  },
+  "hubHPlayShelfEmptyWhy": "No game is listed on this shelf.",
+  "@hubHPlayShelfEmptyWhy": {
+    "description": "hub.h_play.shelfEmpty.why"
+  },
+  "hubHPlayShelfEmptyNext": "Open the Arcade.",
+  "@hubHPlayShelfEmptyNext": {
+    "description": "hub.h_play.shelfEmpty.next"
+  },
+  "hubHPlayOpenArcade": "Open the Arcade",
+  "@hubHPlayOpenArcade": {
+    "description": "hub.h_play.openArcade"
+  },
+  "hubHVillageTitle": "Village",
+  "@hubHVillageTitle": {
+    "description": "hub.h_village.title"
+  },
+  "hubHVillageMap": "Village map",
+  "@hubHVillageMap": {
+    "description": "hub.h_village.map"
+  },
+  "hubHVillageCircles": "Circles",
+  "@hubHVillageCircles": {
+    "description": "hub.h_village.circles"
+  },
+  "hubHVillageSquare": "Square",
+  "@hubHVillageSquare": {
+    "description": "hub.h_village.square"
+  },
+  "hubHVillageChats": "Chats",
+  "@hubHVillageChats": {
+    "description": "hub.h_village.chats"
+  },
+  "hubHVillageStatus": "Status",
+  "@hubHVillageStatus": {
+    "description": "hub.h_village.status"
+  },
+  "hubHVillageClips": "Clips",
+  "@hubHVillageClips": {
+    "description": "hub.h_village.clips"
+  },
+  "hubHVillageRadio": "Radio",
+  "@hubHVillageRadio": {
+    "description": "hub.h_village.radio"
+  },
+  "hubHVillageSchool": "School",
+  "@hubHVillageSchool": {
+    "description": "hub.h_village.school"
+  },
+  "hubHVillageElderHut": "Elder Hut",
+  "@hubHVillageElderHut": {
+    "description": "hub.h_village.elderHut"
+  },
+  "hubHVillageCorrections": "Corrections",
+  "@hubHVillageCorrections": {
+    "description": "hub.h_village.corrections"
+  },
+  "hubHVillageCreate": "Create",
+  "@hubHVillageCreate": {
+    "description": "hub.h_village.create"
+  },
+  "hubHVillageVerify": "Verify",
+  "@hubHVillageVerify": {
+    "description": "hub.h_village.verify"
+  },
+  "hubHVillageBack": "Back to Village",
+  "@hubHVillageBack": {
+    "description": "hub.h_village.back"
+  },
+  "hubHVillageLocked": "Locked",
+  "@hubHVillageLocked": {
+    "description": "hub.h_village.locked"
+  },
+  "hubHVillagePreview": "Preview",
+  "@hubHVillagePreview": {
+    "description": "hub.h_village.preview"
+  },
+  "hubHVillageOpenAnyway": "Open anyway",
+  "@hubHVillageOpenAnyway": {
+    "description": "hub.h_village.openAnyway"
+  },
+  "hubHVillageGuardian": "A guardian must open this.",
+  "@hubHVillageGuardian": {
+    "description": "hub.h_village.guardian"
+  },
+  "hubHVillageUnlocksA2": "Unlocks at A2.",
+  "@hubHVillageUnlocksA2": {
+    "description": "hub.h_village.unlocksA2"
+  },
+  "hubHVillageUnlocksB1": "Unlocks at B1.",
+  "@hubHVillageUnlocksB1": {
+    "description": "hub.h_village.unlocksB1"
+  },
+  "hubHVillageLockedSemantics": "{name}, Locked. {line}",
+  "@hubHVillageLockedSemantics": {
+    "description": "hub.h_village.lockedSemantics",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "line": {
+        "type": "String"
+      }
+    }
+  },
+  "hubHVillageNotAvailableTitle": "Not available yet",
+  "@hubHVillageNotAvailableTitle": {
+    "description": "hub.h_village.notAvailable.title"
+  },
+  "hubHVillageNotAvailableWhat": "{name} is not available yet.",
+  "@hubHVillageNotAvailableWhat": {
+    "description": "hub.h_village.notAvailable.what",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "hubHVillageNotAvailableWhy": "This screen is not built yet.",
+  "@hubHVillageNotAvailableWhy": {
+    "description": "hub.h_village.notAvailable.why"
+  },
+  "hubHVillageNotAvailableNext": "Go back to Village.",
+  "@hubHVillageNotAvailableNext": {
+    "description": "hub.h_village.notAvailable.next"
+  },
+  "hubHVillageEmptyWhat": "No places yet.",
+  "@hubHVillageEmptyWhat": {
+    "description": "hub.h_village.empty.what"
+  },
+  "hubHVillageEmptyWhy": "The place list is empty.",
+  "@hubHVillageEmptyWhy": {
+    "description": "hub.h_village.empty.why"
+  },
+  "hubHVillageEmptyNext": "Try again.",
+  "@hubHVillageEmptyNext": {
+    "description": "hub.h_village.empty.next"
+  },
+  "hubHVillageErrorWhat": "Village did not open.",
+  "@hubHVillageErrorWhat": {
+    "description": "hub.h_village.error.what"
+  },
+  "hubHVillageErrorWhy": "The place list did not come back.",
+  "@hubHVillageErrorWhy": {
+    "description": "hub.h_village.error.why"
+  },
+  "hubHVillageErrorNext": "Try again.",
+  "@hubHVillageErrorNext": {
+    "description": "hub.h_village.error.next"
+  },
+  "hubHVillageOfflineWhy": "Village is not saved on the phone.",
+  "@hubHVillageOfflineWhy": {
+    "description": "hub.h_village.offline.why"
+  },
+  "hubHMeTitle": "Me",
+  "@hubHMeTitle": {
+    "description": "hub.h_me.title"
+  },
+  "hubHMeProfile": "Profile and avatar",
+  "@hubHMeProfile": {
+    "description": "hub.h_me.profile"
+  },
+  "hubHMeProgress": "Progress",
+  "@hubHMeProgress": {
+    "description": "hub.h_me.progress"
+  },
+  "hubHMeAchievements": "Achievements",
+  "@hubHMeAchievements": {
+    "description": "hub.h_me.achievements"
+  },
+  "hubHMeLeagues": "Leagues",
+  "@hubHMeLeagues": {
+    "description": "hub.h_me.leagues"
+  },
+  "hubHMeFamily": "Family",
+  "@hubHMeFamily": {
+    "description": "hub.h_me.family"
+  },
+  "hubHMePlus": "Plus",
+  "@hubHMePlus": {
+    "description": "hub.h_me.plus"
+  },
+  "hubHMeSettings": "Settings",
+  "@hubHMeSettings": {
+    "description": "hub.h_me.settings"
+  },
+  "hubHMeAbout": "About",
+  "@hubHMeAbout": {
+    "description": "hub.h_me.about"
+  },
+  "hubHMeBack": "Back to Me",
+  "@hubHMeBack": {
+    "description": "hub.h_me.back"
+  },
+  "hubHMeLeave": "Back",
+  "@hubHMeLeave": {
+    "description": "hub.h_me.leave"
+  },
+  "hubHMeNotAvailableTitle": "Not available yet",
+  "@hubHMeNotAvailableTitle": {
+    "description": "hub.h_me.notAvailable.title"
+  },
+  "hubHMeNotAvailableWhat": "{name} is not available yet.",
+  "@hubHMeNotAvailableWhat": {
+    "description": "hub.h_me.notAvailable.what",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "hubHMeNotAvailableWhy": "This screen is not built yet.",
+  "@hubHMeNotAvailableWhy": {
+    "description": "hub.h_me.notAvailable.why"
+  },
+  "hubHMeNotAvailableNext": "Go back to Me.",
+  "@hubHMeNotAvailableNext": {
+    "description": "hub.h_me.notAvailable.next"
+  },
+  "hubHMeEmptyWhat": "Me has nothing to open yet.",
+  "@hubHMeEmptyWhat": {
+    "description": "hub.h_me.empty.what"
+  },
+  "hubHMeEmptyWhy": "No profile is saved.",
+  "@hubHMeEmptyWhy": {
+    "description": "hub.h_me.empty.why"
+  },
+  "hubHMeEmptyNext": "Open Profile and avatar.",
+  "@hubHMeEmptyNext": {
+    "description": "hub.h_me.empty.next"
+  },
+  "hubHMeOpenProfile": "Open Profile",
+  "@hubHMeOpenProfile": {
+    "description": "hub.h_me.openProfile"
+  },
+  "hubHMeErrorWhat": "Me did not open.",
+  "@hubHMeErrorWhat": {
+    "description": "hub.h_me.error.what"
+  },
+  "hubHMeErrorWhy": "The list did not come back.",
+  "@hubHMeErrorWhy": {
+    "description": "hub.h_me.error.why"
+  },
+  "hubHMeErrorNext": "Try again.",
+  "@hubHMeErrorNext": {
+    "description": "hub.h_me.error.next"
+  },
+  "hubHMeOfflineWhy": "Me is not saved on the phone.",
+  "@hubHMeOfflineWhy": {
+    "description": "hub.h_me.offline.why"
+  },
+  "hubHMeNoName": "No name is saved.",
+  "@hubHMeNoName": {
+    "description": "hub.h_me.profile.noName"
+  },
+  "hubHMeNoAvatar": "No avatar is saved.",
+  "@hubHMeNoAvatar": {
+    "description": "hub.h_me.profile.noAvatar"
+  },
+  "hubHMeAvatar": "Avatar",
+  "@hubHMeAvatar": {
+    "description": "hub.h_me.profile.avatar"
+  },
+  "hubHMeProfileEmptyWhat": "No profile is saved on this phone.",
+  "@hubHMeProfileEmptyWhat": {
+    "description": "hub.h_me.profile.empty.what"
+  },
+  "hubHMeProfileEmptyWhy": "A name and avatar have not been saved.",
+  "@hubHMeProfileEmptyWhy": {
+    "description": "hub.h_me.profile.empty.why"
+  },
+  "hubHMeProfileEmptyNext": "Go back to Me.",
+  "@hubHMeProfileEmptyNext": {
+    "description": "hub.h_me.profile.empty.next"
+  },
   "lensBridge": "Conversation Bridge",
   "@lensBridge": {
     "description": "lens.bridge"
