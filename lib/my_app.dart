@@ -18,6 +18,8 @@ import 'screens/splash/splash_screen.dart';
 import 'services/passkey_service.dart';
 import 'services/device_identity.dart';
 import 'screens/auth/sign_in_options.dart';
+import 'screens/social/revived_social_screens.dart';
+import 'services/social/revived_social.dart';
 
 // Route screen imports
 import 'screens/ai_chat/polie_mode_selection_screen.dart';
@@ -527,6 +529,25 @@ Route<dynamic>? generateAppRoute(RouteSettings settings) {
     GlobalHandleEditScreen.routeKey: (_) => const GlobalHandleEditScreen(),
     // /me/about
     AboutUsScreen.routeKey: (_) => const AboutUsScreen(),
+    VillageChatToolsScreen.searchPath: (_) => RevivedChatSearchScreen(
+      client: liveRevivedSocialClient(),
+    ),
+    'village/contact-info': (_) => RevivedContactInfoScreen(
+      client: liveRevivedSocialClient(),
+      userId: 'route',
+    ),
+    'village/moderation': (_) =>
+        RevivedModerationScreen(client: liveRevivedSocialClient()),
+    'village/chat-welcome': (_) => RevivedChatWelcomeScreen(
+      store: ChatWelcomeStore(),
+      userId: 'route',
+    ),
+    RevivedFamilyDashboardScreen.routeKey: (_) => RevivedFamilyDashboardScreen(
+      client: liveRevivedSocialClient(),
+    ),
+    RevivedPlusScreen.routeKey: (_) => PlusEntryScreen(
+      client: liveRevivedSocialClient(),
+    ),
     // /learn/review-dashboard
     ReviewDashboardScreen.routeKey: (_) => const ReviewDashboardScreen(),
     // /learn/vocab-dashboard
