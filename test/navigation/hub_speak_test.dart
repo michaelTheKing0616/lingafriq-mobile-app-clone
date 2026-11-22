@@ -4,7 +4,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:lingafriq/design/tokens.g.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/navigation/hub_speak.dart';
+import 'package:lingafriq/screens/ai_chat/conversation_analytics_screen.dart';
 import 'package:lingafriq/screens/ai_chat/polie_workspace_screen.dart';
+import 'package:lingafriq/screens/ai_chat/roleplay_completion_summary_screen.dart';
+import 'package:lingafriq/screens/ai_chat/roleplay_progress_dashboard_screen.dart';
 import 'package:lingafriq/screens/tutor/shadowing_exercise_screen.dart';
 
 Widget _host(Widget child, {double scale = 1, bool reduced = false}) {
@@ -40,6 +43,8 @@ void main() {
       SpeakRoutes.codeSwitch,
       SpeakRoutes.missions,
       SpeakRoutes.coachInsights,
+      SpeakRoutes.roleplaySummary,
+      SpeakRoutes.roleplayProgress,
     ];
     expect(SpeakRoutes.paths, required);
     for (final String path in required) {
@@ -68,7 +73,13 @@ void main() {
       SpeakRoutes.places
           .where((SpeakPlace place) => place.kind == SpeakPlaceKind.ready)
           .map((SpeakPlace place) => place.id),
-      <String>['polie', 'shadowing'],
+      <String>[
+        'polie',
+        'shadowing',
+        'coach',
+        'roleplaySummary',
+        'roleplayProgress',
+      ],
     );
     expect(SpeakTutorMode.values, hasLength(6));
     expect(SpeakTutorMode.values, <SpeakTutorMode>[
@@ -93,12 +104,20 @@ void main() {
       ('shadowing', 'Shadowing', ShadowingExerciseScreen),
       ('codeSwitch', 'Code-Switch and Respect', SpeakNotAvailablePage),
       ('missions', 'Speak Missions', SpeakNotAvailablePage),
-      ('coach', 'Coach insights', SpeakNotAvailablePage),
+      ('coach', 'Coach insights', ConversationAnalyticsScreen),
+      ('roleplaySummary', 'Scenario summary', RoleplayCompletionSummaryScreen),
+      (
+        'roleplayProgress',
+        'Roleplay progress',
+        RoleplayProgressDashboardScreen,
+      ),
     ];
 
     for (final (String id, String label, Type page) in rows) {
+      final Finder place = find.byKey(SpeakHub.placeKey(id));
+      await tester.ensureVisible(place);
       expect(find.text(label), findsOneWidget);
-      await tester.tap(find.byKey(SpeakHub.placeKey(id)));
+      await tester.tap(place);
       await tester.pumpAndSettle();
       expect(find.byType(page), findsOneWidget);
       final ModalRoute<dynamic> route = ModalRoute.of(
@@ -174,9 +193,9 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(SpeakPolieScreen), findsOneWidget);
     expect(
-      ModalRoute.of(
-        tester.element(find.byType(SpeakPolieScreen)),
-      )!.settings.name,
+      ModalRoute.of(tester.element(find.byType(SpeakPolieScreen)))!
+          .settings
+          .name,
       polieRoute,
     );
     expect(

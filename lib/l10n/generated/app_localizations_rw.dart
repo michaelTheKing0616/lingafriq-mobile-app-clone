@@ -7728,4 +7728,174 @@ class AppLocalizationsRw extends AppLocalizations {
   String revRvAudioSessionWhen(String date, String time) {
     return '$date $time';
   }
+
+  @override
+  String get hubHSpeakRoleplaySummary => 'Scenario summary';
+
+  @override
+  String get hubHSpeakRoleplayProgress => 'Roleplay progress';
+
+  @override
+  String get revRvSpeakCoachEmptyWhat => 'No conversation is saved.';
+
+  @override
+  String get revRvSpeakCoachEmptyWhy =>
+      'There is no conversation story to show.';
+
+  @override
+  String get revRvSpeakCoachEmptyNext => 'Go back to Speak.';
+
+  @override
+  String get revRvSpeakCoachErrorWhat => 'Coach insights did not open.';
+
+  @override
+  String get revRvSpeakCoachErrorWhy =>
+      'The conversation story did not come back.';
+
+  @override
+  String get revRvSpeakCoachErrorNext => 'Try again.';
+
+  @override
+  String get revRvSpeakCoachOfflineWhy =>
+      'Coach insights are not saved on the phone.';
+
+  @override
+  String get revRvSpeakSummaryEmptyWhat => 'No scenario summary is ready.';
+
+  @override
+  String get revRvSpeakSummaryEmptyWhy => 'No completed scenario is saved.';
+
+  @override
+  String get revRvSpeakSummaryEmptyNext => 'Go back to Speak.';
+
+  @override
+  String get revRvSpeakSummaryErrorWhat => 'The scenario summary did not open.';
+
+  @override
+  String get revRvSpeakSummaryErrorWhy =>
+      'Nothing from that scenario is still on screen.';
+
+  @override
+  String get revRvSpeakSummaryErrorNext => 'Try again.';
+
+  @override
+  String get revRvSpeakSummaryOfflineWhy =>
+      'This summary is not saved on the phone.';
+
+  @override
+  String get revRvSpeakProgressEmptyWhat => 'No scenarios are listed.';
+
+  @override
+  String get revRvSpeakProgressEmptyWhy => 'No completed scenario is saved.';
+
+  @override
+  String get revRvSpeakProgressEmptyNext => 'Go back to Speak.';
+
+  @override
+  String get revRvSpeakProgressErrorWhat => 'Roleplay progress did not open.';
+
+  @override
+  String get revRvSpeakProgressErrorWhy =>
+      'The scenario list did not come back.';
+
+  @override
+  String get revRvSpeakProgressErrorNext => 'Try again.';
+
+  @override
+  String get revRvSpeakProgressOfflineWhy =>
+      'Roleplay progress is not saved on the phone.';
+
+  @override
+  String get revRvSpeakPronunciation => 'Pronunciation';
+
+  @override
+  String get revRvSpeakTone => 'Tone';
+
+  @override
+  String revRvSpeakScoreValue(int percent) {
+    return '$percent%';
+  }
+
+  @override
+  String get revRvSpeakUnsure =>
+      'We could not score this clearly. No score is shown.';
+
+  @override
+  String get revRvSpeakPractice =>
+      'Pronunciation scoring is unavailable. You can keep practising without a ranked score.';
+
+  @override
+  String get revRvSpeakTopics => 'Topics';
+
+  @override
+  String get revRvSpeakVocabulary => 'Words from this scenario';
+
+  @override
+  String get revRvSpeakGrammar => 'Grammar from this scenario';
+
+  @override
+  String get revRvSpeakCorrections => 'Corrections';
+
+  @override
+  String get revRvSpeakRefresh => 'Refresh';
+
+  @override
+  String revRvSpeakSessionCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sessions',
+      one: '1 session',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String revRvSpeakMessageCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count messages',
+      one: '1 message',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String revRvSpeakWordCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count words',
+      one: '1 word',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String revRvSpeakTurnCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count turns',
+      one: '1 turn',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String revRvSpeakCompletedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Completed $count times',
+      one: 'Completed 1 time',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String revRvSpeakSceneSemantics(String name) {
+    return 'Scenario: $name.';
+  }
 }
