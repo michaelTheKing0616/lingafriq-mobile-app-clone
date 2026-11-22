@@ -12997,6 +12997,216 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{current} of {target}'**
   String revRvTodayChallengesProgress(int current, int target);
+
+  /// rev.rv_learn.review.title
+  ///
+  /// In en, this message translates to:
+  /// **'Review dashboard'**
+  String get revRvLearnReviewDashboard;
+
+  /// rev.rv_learn.review.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No review is saved.'**
+  String get revRvLearnReviewEmptyWhat;
+
+  /// rev.rv_learn.review.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'There is no review to show.'**
+  String get revRvLearnReviewEmptyWhy;
+
+  /// rev.rv_learn.review.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Open Path and start a lesson.'**
+  String get revRvLearnReviewEmptyNext;
+
+  /// rev.rv_learn.review.fail.what
+  ///
+  /// In en, this message translates to:
+  /// **'The review did not open.'**
+  String get revRvLearnReviewFailWhat;
+
+  /// rev.rv_learn.review.fail.why
+  ///
+  /// In en, this message translates to:
+  /// **'The review list did not come back.'**
+  String get revRvLearnReviewFailWhy;
+
+  /// rev.rv_learn.review.fail.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get revRvLearnReviewFailNext;
+
+  /// rev.rv_learn.review.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'This review is not saved on the phone.'**
+  String get revRvLearnReviewOfflineWhy;
+
+  /// rev.rv_learn.vocab.title
+  ///
+  /// In en, this message translates to:
+  /// **'Vocabulary dashboard'**
+  String get revRvLearnVocabDashboard;
+
+  /// rev.rv_learn.vocab.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'No saved word yet.'**
+  String get revRvLearnVocabEmptyWhat;
+
+  /// rev.rv_learn.vocab.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'Words you save show up here.'**
+  String get revRvLearnVocabEmptyWhy;
+
+  /// rev.rv_learn.vocab.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Long-press a target-language word and save it.'**
+  String get revRvLearnVocabEmptyNext;
+
+  /// rev.rv_learn.vocab.fail.what
+  ///
+  /// In en, this message translates to:
+  /// **'The word list did not open.'**
+  String get revRvLearnVocabFailWhat;
+
+  /// rev.rv_learn.vocab.fail.why
+  ///
+  /// In en, this message translates to:
+  /// **'The saved words did not come back.'**
+  String get revRvLearnVocabFailWhy;
+
+  /// rev.rv_learn.vocab.fail.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get revRvLearnVocabFailNext;
+
+  /// rev.rv_learn.vocab.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'These words are not saved on the phone.'**
+  String get revRvLearnVocabOfflineWhy;
+
+  /// rev.rv_learn.recap.empty.title
+  ///
+  /// In en, this message translates to:
+  /// **'No recap yet'**
+  String get revRvLearnRecapEmptyTitle;
+
+  /// rev.rv_learn.recap.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'This lesson has no recap.'**
+  String get revRvLearnRecapEmptyWhat;
+
+  /// rev.rv_learn.recap.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'The lesson has not been finished.'**
+  String get revRvLearnRecapEmptyWhy;
+
+  /// rev.rv_learn.recap.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Open Path and start a lesson.'**
+  String get revRvLearnRecapEmptyNext;
+
+  /// rev.rv_learn.recap.fail.what
+  ///
+  /// In en, this message translates to:
+  /// **'The recap did not open.'**
+  String get revRvLearnRecapFailWhat;
+
+  /// rev.rv_learn.recap.fail.why
+  ///
+  /// In en, this message translates to:
+  /// **'The lesson recap did not come back.'**
+  String get revRvLearnRecapFailWhy;
+
+  /// rev.rv_learn.recap.fail.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get revRvLearnRecapFailNext;
+
+  /// rev.rv_learn.recap.offline.why
+  ///
+  /// In en, this message translates to:
+  /// **'This recap is not saved on the phone.'**
+  String get revRvLearnRecapOfflineWhy;
+
+  /// rev.rv_learn.recap.words
+  ///
+  /// In en, this message translates to:
+  /// **'Words from this lesson'**
+  String get revRvLearnRecapWords;
+
+  /// rev.rv_learn.downloads.empty.title
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing is saved'**
+  String get revRvLearnDownloadsEmptyTitle;
+
+  /// rev.rv_learn.downloads.empty.what
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing is saved on the phone.'**
+  String get revRvLearnDownloadsEmptyWhat;
+
+  /// rev.rv_learn.downloads.empty.why
+  ///
+  /// In en, this message translates to:
+  /// **'No lesson pack is on this phone.'**
+  String get revRvLearnDownloadsEmptyWhy;
+
+  /// rev.rv_learn.downloads.empty.next
+  ///
+  /// In en, this message translates to:
+  /// **'Open Path and choose a lesson to save.'**
+  String get revRvLearnDownloadsEmptyNext;
+
+  /// rev.rv_learn.downloads.fail.what
+  ///
+  /// In en, this message translates to:
+  /// **'The download did not finish.'**
+  String get revRvLearnDownloadsFailWhat;
+
+  /// rev.rv_learn.downloads.fail.why
+  ///
+  /// In en, this message translates to:
+  /// **'The lesson pack did not come back.'**
+  String get revRvLearnDownloadsFailWhy;
+
+  /// rev.rv_learn.downloads.fail.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again.'**
+  String get revRvLearnDownloadsFailNext;
+
+  /// rev.rv_learn.downloads.storage.unknown
+  ///
+  /// In en, this message translates to:
+  /// **'Storage use is unknown.'**
+  String get revRvLearnDownloadsStorageUnknown;
+
+  /// rev.rv_learn.downloads.storage
+  ///
+  /// In en, this message translates to:
+  /// **'Storage use: {size}'**
+  String revRvLearnDownloadsStorage(String size);
+
+  /// rev.rv_learn.downloads.progress
+  ///
+  /// In en, this message translates to:
+  /// **'Download in progress.'**
+  String get revRvLearnDownloadsInProgress;
 }
 
 class _AppLocalizationsDelegate

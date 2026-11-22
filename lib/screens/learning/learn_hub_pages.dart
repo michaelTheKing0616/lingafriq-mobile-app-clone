@@ -44,6 +44,8 @@ String learnPlaceLabel(AppLocalizations l10n, LearnPlace place) {
     LearnPlace.lesson => l10n.hubLearnPathAndLessons,
     LearnPlace.recap => l10n.hubLearnLessonRecap,
     LearnPlace.words => l10n.hubLearnWordsAndReview,
+    LearnPlace.reviewDashboard => l10n.revRvLearnReviewDashboard,
+    LearnPlace.vocabDashboard => l10n.revRvLearnVocabDashboard,
     LearnPlace.reviewRush => l10n.hubLearnReviewRush,
     LearnPlace.grammar => l10n.hubLearnGrammar,
     LearnPlace.phraseDna => l10n.hubLearnPhraseDna,
