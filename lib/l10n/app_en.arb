@@ -9739,6 +9739,34 @@
   "@lensNoWordNext": {
     "description": "lens.dictionary.empty.next"
   },
+  "practiceGamePlayingLabel": "Practice game",
+  "@practiceGamePlayingLabel": {
+    "description": "practice.game.playing"
+  },
+  "practiceGameSaveFailedWhat": "This round was not saved.",
+  "@practiceGameSaveFailedWhat": {
+    "description": "practice.game.save_failed.what"
+  },
+  "practiceGameSaveFailedWhy": "The learner record did not reach the outbox.",
+  "@practiceGameSaveFailedWhy": {
+    "description": "practice.game.save_failed.why"
+  },
+  "practiceGameSaveFailedNext": "Try again. This round is not marked saved.",
+  "@practiceGameSaveFailedNext": {
+    "description": "practice.game.save_failed.next"
+  },
+  "practiceGameRetry": "Try again",
+  "@practiceGameRetry": {
+    "description": "practice.game.retry"
+  },
+  "practiceGameSaved": "Saved to your learner record.",
+  "@practiceGameSaved": {
+    "description": "practice.game.saved"
+  },
+  "practiceGameUnavailable": "Unavailable",
+  "@practiceGameUnavailable": {
+    "description": "practice.game.unavailable"
+  },
   "directoryTitle": "All features",
   "@directoryTitle": {
     "description": "directory. Title of the All features list"

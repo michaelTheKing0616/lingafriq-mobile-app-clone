@@ -12644,6 +12644,48 @@ abstract class AppLocalizations {
   /// **'Point at one thing, then open Living Dictionary.'**
   String get lensNoWordNext;
 
+  /// practice.game.playing
+  ///
+  /// In en, this message translates to:
+  /// **'Practice game'**
+  String get practiceGamePlayingLabel;
+
+  /// practice.game.save_failed.what
+  ///
+  /// In en, this message translates to:
+  /// **'This round was not saved.'**
+  String get practiceGameSaveFailedWhat;
+
+  /// practice.game.save_failed.why
+  ///
+  /// In en, this message translates to:
+  /// **'The learner record did not reach the outbox.'**
+  String get practiceGameSaveFailedWhy;
+
+  /// practice.game.save_failed.next
+  ///
+  /// In en, this message translates to:
+  /// **'Try again. This round is not marked saved.'**
+  String get practiceGameSaveFailedNext;
+
+  /// practice.game.retry
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get practiceGameRetry;
+
+  /// practice.game.saved
+  ///
+  /// In en, this message translates to:
+  /// **'Saved to your learner record.'**
+  String get practiceGameSaved;
+
+  /// practice.game.unavailable
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable'**
+  String get practiceGameUnavailable;
+
   /// directory. Title of the All features list
   ///
   /// In en, this message translates to:
