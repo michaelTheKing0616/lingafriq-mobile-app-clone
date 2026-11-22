@@ -28,7 +28,12 @@ import 'screens/curriculum/authentic_curriculum_entry_screen.dart';
 import 'screens/games/games_screen.dart';
 import 'screens/games/games_screen_enhanced_with_all_games.dart';
 import 'screens/games/games_screen_material3.dart';
+import 'screens/goals/daily_challenges_screen.dart';
 import 'screens/goals/daily_goals_screen.dart';
+import 'screens/help/feature_preloader_screen.dart';
+import 'screens/help/games_preloader.dart';
+import 'screens/help/gamification_preloader.dart';
+import 'screens/help/polie_preloader.dart';
 import 'screens/progress/progress_dashboard_screen.dart';
 import 'screens/achievements/achievements_screen.dart';
 import 'screens/gamification/leaderboard_screen.dart';
@@ -90,6 +95,11 @@ import 'screens/classroom/speaker_queue_screen.dart';
 import 'screens/tabs_view/profile/app_policy_screen.dart';
 import 'screens/tabs_view/profile/about_us_screen.dart';
 import 'screens/profile/global_handle_edit_screen.dart';
+import 'screens/ai_chat/review_dashboard_screen.dart';
+import 'screens/ai_chat/vocabulary_dashboard_screen.dart';
+import 'screens/learning/lesson_recap_screen.dart';
+import 'screens/review/gamified_review_screen.dart';
+import 'providers/offline_download_provider.dart';
 import 'screens/lesson/lesson_flow_screen.dart';
 import 'screens/grammar/grammar_hub_screen.dart'
     show GrammarHubScreen, GrammarTopic;
@@ -269,7 +279,7 @@ class MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
                   ),
                 );
               },
-              onGenerateRoute: _onGenerateRoute,
+              onGenerateRoute: generateAppRoute,
               home: child,
             );
           },
@@ -299,7 +309,7 @@ Widget _namedRouteArgumentIssueScaffold(
 }
 
 /// Route name -> Screen widget mapping for drawer navigation.
-Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
+Route<dynamic>? generateAppRoute(RouteSettings settings) {
   final normalizedRoute = _normalizeRouteName(settings.name);
   final routes = <String, WidgetBuilder>{
     'ai_chat_select': (_) => const AIModeSelectionScreen(),
@@ -325,6 +335,11 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     /// Full static catalog (35+ games) with hub-aligned [AppLanguage] dropdown.
     'games_enhanced_catalog': (_) => const GamesScreenEnhanced(),
     'daily_goals': (_) => const DailyGoalsScreen(),
+    DailyChallengesScreen.routeKey: (_) => const DailyChallengesScreen.saved(),
+    GamesPreloader.routeKey: (_) => const GamesPreloader(),
+    GamificationPreloader.routeKey: (_) => const GamificationPreloader(),
+    PoliePreloader.routeKey: (_) => const PoliePreloader(),
+    FeaturesHelpPreloader.routeKey: (_) => const FeaturesHelpPreloader(),
     'progress': (_) => const ProgressDashboardScreen(),
     'achievements': (_) => const AchievementsScreen(),
     'badges': (_) =>
@@ -495,6 +510,16 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     GlobalHandleEditScreen.routeKey: (_) => const GlobalHandleEditScreen(),
     // /me/about
     AboutUsScreen.routeKey: (_) => const AboutUsScreen(),
+    // /learn/review-dashboard
+    ReviewDashboardScreen.routeKey: (_) => const ReviewDashboardScreen(),
+    // /learn/vocab-dashboard
+    VocabularyDashboardScreen.routeKey: (_) => const VocabularyDashboardScreen(),
+    // /learn/recap
+    LessonRecapScreen.routeKey: (_) => const LessonRecapScreen(),
+    // /learn/review-rush
+    'learn/review-rush': (_) => const GamifiedReviewScreen(),
+    // /learn/downloads
+    OfflineDownloadsScreen.routeKey: (_) => const OfflineDownloadsScreen(),
     // Lesson Flow
     'lesson-flow': (ctx) {
       final args = settings.arguments as Map<String, dynamic>?;

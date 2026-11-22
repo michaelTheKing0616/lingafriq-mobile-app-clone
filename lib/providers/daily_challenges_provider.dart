@@ -7,9 +7,91 @@ import 'gamification_provider.dart';
 import '../utils/structured_logger.dart';
 
 /// Provider for daily challenges
-final dailyChallengesProvider = NotifierProvider<DailyChallengesNotifier, DailyChallengesState>(() {
-  return DailyChallengesNotifier();
-});
+final dailyChallengesProvider =
+    NotifierProvider<DailyChallengesNotifier, DailyChallengesState>(() {
+      return DailyChallengesNotifier();
+    });
+
+/// Keys for the on-device challenge board. Nothing here is a server save.
+abstract final class DailyChallengeStoreKeys {
+  static const String challenges = 'daily_challenges';
+  static const String day = 'daily_challenges_date';
+}
+
+/// What a challenge load returned. [ready] is the only status with rows.
+enum DailyChallengeBoardStatus { loading, ready, empty, error, offline }
+
+class DailyChallengeBoard {
+  const DailyChallengeBoard._(this.status, this.challenges);
+
+  const DailyChallengeBoard.ready(List<DailyChallenge> challenges)
+    : this._(DailyChallengeBoardStatus.ready, challenges);
+
+  const DailyChallengeBoard.empty()
+    : this._(DailyChallengeBoardStatus.empty, const <DailyChallenge>[]);
+
+  const DailyChallengeBoard.error()
+    : this._(DailyChallengeBoardStatus.error, const <DailyChallenge>[]);
+
+  const DailyChallengeBoard.offline()
+    : this._(DailyChallengeBoardStatus.offline, const <DailyChallenge>[]);
+
+  final DailyChallengeBoardStatus status;
+  final List<DailyChallenge> challenges;
+}
+
+String dailyChallengeDayKey(DateTime day) =>
+    '${day.year}-${day.month}-${day.day}';
+
+/// Reads the board saved on the phone. An empty store is an empty board.
+/// A read or parse failure returns no rows.
+Future<DailyChallengeBoard> loadSavedDailyChallenges() async {
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    final String today = dailyChallengeDayKey(DateTime.now());
+    final String? savedDay = prefs.getString(DailyChallengeStoreKeys.day);
+    if (savedDay != today) {
+      return const DailyChallengeBoard.empty();
+    }
+    final String? raw = prefs.getString(DailyChallengeStoreKeys.challenges);
+    if (raw == null || raw.trim().isEmpty) {
+      return const DailyChallengeBoard.empty();
+    }
+    final Object? decoded = jsonDecode(raw);
+    if (decoded is! List) {
+      return const DailyChallengeBoard.error();
+    }
+    final List<DailyChallenge> rows = <DailyChallenge>[];
+    for (final Object? item in decoded) {
+      if (item is! Map) {
+        return const DailyChallengeBoard.error();
+      }
+      rows.add(DailyChallenge.fromJson(Map<String, dynamic>.from(item)));
+    }
+    final List<DailyChallenge> visible = <DailyChallenge>[
+      for (final DailyChallenge row in rows)
+        if (!row.isExpired && row.title.trim().isNotEmpty) row,
+    ];
+    if (visible.isEmpty) {
+      return const DailyChallengeBoard.empty();
+    }
+    return DailyChallengeBoard.ready(
+      List<DailyChallenge>.unmodifiable(visible),
+    );
+  } catch (_) {
+    return const DailyChallengeBoard.error();
+  }
+}
+
+/// A failed load. The previous rows are not copied onto the new state.
+DailyChallengesState dailyChallengesAfterLoadFailure(Object error) {
+  return DailyChallengesState(
+    isLoading: false,
+    error: error.toString(),
+    challenges: const <DailyChallenge>[],
+    weekendChallenges: const <DailyChallenge>[],
+  );
+}
 
 class DailyChallengesState {
   final List<DailyChallenge> challenges;
@@ -27,7 +109,7 @@ class DailyChallengesState {
   });
 
   /// Get active (non-expired, non-claimed) challenges
-  List<DailyChallenge> get activeChallenges => 
+  List<DailyChallenge> get activeChallenges =>
       challenges.where((c) => !c.isExpired && !c.isClaimed).toList();
 
   /// Get completed but unclaimed challenges
@@ -62,8 +144,8 @@ class DailyChallengesState {
 }
 
 class DailyChallengesNotifier extends Notifier<DailyChallengesState> {
-  static const String _storageKey = 'daily_challenges';
-  static const String _lastDateKey = 'daily_challenges_date';
+  static const String _storageKey = DailyChallengeStoreKeys.challenges;
+  static const String _lastDateKey = DailyChallengeStoreKeys.day;
 
   @override
   DailyChallengesState build() {
@@ -71,55 +153,47 @@ class DailyChallengesNotifier extends Notifier<DailyChallengesState> {
     return DailyChallengesState(isLoading: true);
   }
 
-  /// Load challenges from storage or generate new ones
+  /// Load challenges saved on the phone. A failed read drops any rows already
+  /// held in memory. It does not fill the board with a new list.
   Future<void> _loadChallenges() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final lastDateStr = prefs.getString(_lastDateKey);
-      final today = DateTime.now();
-      final todayStr = '${today.year}-${today.month}-${today.day}';
-
-      // Check if we need to generate new challenges
-      if (lastDateStr != todayStr) {
+      final DailyChallengeBoard board = await loadSavedDailyChallenges();
+      if (board.status == DailyChallengeBoardStatus.error ||
+          board.status == DailyChallengeBoardStatus.offline) {
+        state = dailyChallengesAfterLoadFailure(
+          board.status == DailyChallengeBoardStatus.offline
+              ? 'offline'
+              : 'load-failed',
+        );
+        return;
+      }
+      if (board.challenges.isEmpty) {
         await _generateNewChallenges();
         return;
       }
-
-      // Load existing challenges
-      final challengesJson = prefs.getString(_storageKey);
-      if (challengesJson != null) {
-        final List<dynamic> decoded = jsonDecode(challengesJson);
-        final challenges = decoded
-            .map((json) => DailyChallenge.fromJson(json as Map<String, dynamic>))
-            .toList();
-        
-        // Filter out expired challenges
-        final validChallenges = challenges.where((c) => !c.isExpired).toList();
-        
-        state = state.copyWith(
-          challenges: validChallenges,
-          weekendChallenges: state.isWeekend 
-              ? DailyChallengeTemplates.generateWeekendChallenges()
-              : [],
-          isLoading: false,
-          lastRefresh: today,
-        );
-      } else {
-        await _generateNewChallenges();
-      }
+      state = DailyChallengesState(
+        challenges: board.challenges,
+        weekendChallenges: const <DailyChallenge>[],
+        isLoading: false,
+        lastRefresh: DateTime.now(),
+      );
     } catch (e) {
-      logger.error('Error loading daily challenges', tag: 'daily-challenges', error: e);
-      await _generateNewChallenges();
+      logger.error(
+        'Error loading daily challenges',
+        tag: 'daily-challenges',
+        error: e,
+      );
+      state = dailyChallengesAfterLoadFailure(e);
     }
   }
 
   /// Generate new daily challenges
   Future<void> _generateNewChallenges() async {
     final challenges = DailyChallengeTemplates.generateDailyChallenges();
-    final weekendChallenges = state.isWeekend 
+    final weekendChallenges = state.isWeekend
         ? DailyChallengeTemplates.generateWeekendChallenges()
         : <DailyChallenge>[];
-    
+
     state = state.copyWith(
       challenges: challenges,
       weekendChallenges: weekendChallenges,
@@ -134,31 +208,41 @@ class DailyChallengesNotifier extends Notifier<DailyChallengesState> {
   Future<void> _saveChallenges() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final today = DateTime.now();
-      final todayStr = '${today.year}-${today.month}-${today.day}';
-      
+      final String todayStr = dailyChallengeDayKey(DateTime.now());
+
       final allChallenges = [...state.challenges, ...state.weekendChallenges];
-      final challengesJson = jsonEncode(allChallenges.map((c) => c.toJson()).toList());
-      
+      final challengesJson = jsonEncode(
+        allChallenges.map((c) => c.toJson()).toList(),
+      );
+
       await prefs.setString(_storageKey, challengesJson);
       await prefs.setString(_lastDateKey, todayStr);
     } catch (e) {
-      logger.error('Error saving daily challenges', tag: 'daily-challenges', error: e);
+      logger.error(
+        'Error saving daily challenges',
+        tag: 'daily-challenges',
+        error: e,
+      );
     }
   }
 
   /// Update progress for a challenge type
   Future<void> updateProgress(ChallengeType type, int amount) async {
     final updatedChallenges = state.challenges.map((challenge) {
-      if (challenge.type == type && !challenge.isCompleted && !challenge.isExpired) {
-        final newProgress = (challenge.progress + amount).clamp(0, challenge.target);
+      if (challenge.type == type &&
+          !challenge.isCompleted &&
+          !challenge.isExpired) {
+        final newProgress = (challenge.progress + amount).clamp(
+          0,
+          challenge.target,
+        );
         final isCompleted = newProgress >= challenge.target;
-        
+
         if (isCompleted && !challenge.isCompleted) {
           // Play completion sound
           ref.read(soundEffectsProvider).play(SoundEffect.celebration);
         }
-        
+
         return challenge.copyWith(
           progress: newProgress,
           isCompleted: isCompleted,
@@ -169,8 +253,13 @@ class DailyChallengesNotifier extends Notifier<DailyChallengesState> {
 
     // Update weekend challenges too
     final updatedWeekendChallenges = state.weekendChallenges.map((challenge) {
-      if (challenge.type == type && !challenge.isCompleted && !challenge.isExpired) {
-        final newProgress = (challenge.progress + amount).clamp(0, challenge.target);
+      if (challenge.type == type &&
+          !challenge.isCompleted &&
+          !challenge.isExpired) {
+        final newProgress = (challenge.progress + amount).clamp(
+          0,
+          challenge.target,
+        );
         final isCompleted = newProgress >= challenge.target;
         return challenge.copyWith(
           progress: newProgress,
@@ -190,8 +279,12 @@ class DailyChallengesNotifier extends Notifier<DailyChallengesState> {
 
   /// Claim rewards for a completed challenge
   Future<bool> claimChallenge(String challengeId) async {
-    final challengeIndex = state.challenges.indexWhere((c) => c.id == challengeId);
-    final weekendIndex = state.weekendChallenges.indexWhere((c) => c.id == challengeId);
+    final challengeIndex = state.challenges.indexWhere(
+      (c) => c.id == challengeId,
+    );
+    final weekendIndex = state.weekendChallenges.indexWhere(
+      (c) => c.id == challengeId,
+    );
 
     DailyChallenge? challenge;
     bool isWeekendChallenge = false;
@@ -209,15 +302,17 @@ class DailyChallengesNotifier extends Notifier<DailyChallengesState> {
 
     try {
       // Award XP and cowries
-      await ref.read(gamificationProvider.notifier).awardXP(
-        'daily_challenge',
-        multiplier: _getDifficultyMultiplier(challenge.difficulty),
-        sourceId: challengeId,
-      );
-      
-      await ref.read(gamificationProvider.notifier).awardCurrency(
-        cowries: challenge.cowriesReward,
-      );
+      await ref
+          .read(gamificationProvider.notifier)
+          .awardXP(
+            'daily_challenge',
+            multiplier: _getDifficultyMultiplier(challenge.difficulty),
+            sourceId: challengeId,
+          );
+
+      await ref
+          .read(gamificationProvider.notifier)
+          .awardCurrency(cowries: challenge.cowriesReward);
 
       // Play reward sound
       ref.read(soundEffectsProvider).playCelebration();
@@ -236,7 +331,11 @@ class DailyChallengesNotifier extends Notifier<DailyChallengesState> {
       await _saveChallenges();
       return true;
     } catch (e) {
-      logger.error('Error claiming challenge', tag: 'daily-challenges', error: e);
+      logger.error(
+        'Error claiming challenge',
+        tag: 'daily-challenges',
+        error: e,
+      );
       return false;
     }
   }
@@ -244,12 +343,12 @@ class DailyChallengesNotifier extends Notifier<DailyChallengesState> {
   /// Claim all completed challenges
   Future<int> claimAllChallenges() async {
     int claimedCount = 0;
-    
+
     for (final challenge in state.claimableChallenges) {
       final success = await claimChallenge(challenge.id);
       if (success) claimedCount++;
     }
-    
+
     return claimedCount;
   }
 
@@ -266,9 +365,10 @@ class DailyChallengesNotifier extends Notifier<DailyChallengesState> {
     }
   }
 
-  /// Force refresh challenges
+  /// Force refresh challenges. Rows from the previous load are cleared first
+  /// so a failed refresh cannot keep them on screen.
   Future<void> refresh() async {
-    state = state.copyWith(isLoading: true);
+    state = DailyChallengesState(isLoading: true);
     await _loadChallenges();
   }
 }
@@ -277,52 +377,71 @@ class DailyChallengesNotifier extends Notifier<DailyChallengesState> {
 extension DailyChallengeTracking on WidgetRef {
   /// Track lesson completion
   void trackLessonComplete() {
-    read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.lessonsComplete, 1);
+    read(
+      dailyChallengesProvider.notifier,
+    ).updateProgress(ChallengeType.lessonsComplete, 1);
   }
 
   /// Track XP earned
   void trackXPEarned(int amount) {
-    read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.xpEarned, amount);
+    read(
+      dailyChallengesProvider.notifier,
+    ).updateProgress(ChallengeType.xpEarned, amount);
   }
 
   /// Track perfect quiz
   void trackPerfectQuiz() {
-    read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.perfectQuiz, 1);
+    read(
+      dailyChallengesProvider.notifier,
+    ).updateProgress(ChallengeType.perfectQuiz, 1);
   }
 
   /// Track words learned
   void trackWordsLearned(int count) {
-    read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.wordsLearned, count);
+    read(
+      dailyChallengesProvider.notifier,
+    ).updateProgress(ChallengeType.wordsLearned, count);
   }
 
   /// Track games played
   void trackGamesPlayed() {
-    read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.gamesPlayed, 1);
+    read(
+      dailyChallengesProvider.notifier,
+    ).updateProgress(ChallengeType.gamesPlayed, 1);
   }
 
   /// Track time spent (in minutes)
   void trackTimeSpent(int minutes) {
-    read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.timeSpent, minutes);
+    read(
+      dailyChallengesProvider.notifier,
+    ).updateProgress(ChallengeType.timeSpent, minutes);
   }
 
   /// Track chat messages
   void trackChatMessage() {
-    read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.chatMessages, 1);
+    read(
+      dailyChallengesProvider.notifier,
+    ).updateProgress(ChallengeType.chatMessages, 1);
   }
 
   /// Track story chapters
   void trackStoryChapter() {
-    read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.storyChapters, 1);
+    read(
+      dailyChallengesProvider.notifier,
+    ).updateProgress(ChallengeType.storyChapters, 1);
   }
 
   /// Track cultural content read
   void trackCulturalContent() {
-    read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.culturalContent, 1);
+    read(
+      dailyChallengesProvider.notifier,
+    ).updateProgress(ChallengeType.culturalContent, 1);
   }
 
   /// Track voice recordings
   void trackVoiceRecording() {
-    read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.voiceRecordings, 1);
+    read(
+      dailyChallengesProvider.notifier,
+    ).updateProgress(ChallengeType.voiceRecordings, 1);
   }
 }
-

@@ -10,6 +10,10 @@ class GamificationPreloader extends StatelessWidget {
 
   const GamificationPreloader({super.key, this.onComplete, this.tipStore});
 
+  static const String routePath = '/help/gamification-tip';
+
+  static const String routeKey = 'help/gamification-tip';
+
   @override
   Widget build(BuildContext context) {
     return FeaturePreloaderScreen(

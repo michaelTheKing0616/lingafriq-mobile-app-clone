@@ -3,7 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:lingafriq/design/tokens.g.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/navigation/hub_today.dart';
+import 'package:lingafriq/screens/goals/daily_challenges_screen.dart';
 import 'package:lingafriq/screens/tabs_view/home/home_tab.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const List<String> _sitemap = <String>[
   '/today',
@@ -92,6 +94,10 @@ TodayPlan _plan({int minutes = 12, bool lesson = true, bool reviews = true}) {
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+
+  setUp(() {
+    SharedPreferences.setMockInitialValues(<String, Object>{});
+  });
 
   test('sitemap routes are registered and within two taps', () {
     expect(TodayHubRoutes.all.map((TodayRoute route) => route.id), _sitemap);
@@ -188,6 +194,21 @@ void main() {
       expect(size.height, greaterThanOrEqualTo(LingAfriqTokens.spacing48));
       await tester.tap(row);
       await tester.pumpAndSettle();
+      if (link.kind == TodayRouteKind.dailyChallenges) {
+        expect(link.built, isTrue);
+        expect(find.byType(DailyChallengesScreen), findsOneWidget);
+        final ModalRoute<dynamic> named = ModalRoute.of(
+          tester.element(find.byType(DailyChallengesScreen)),
+        )!;
+        expect(named.settings.name, TodayHubRoutes.dailyChallenges.path);
+        expect(find.byKey(DailyChallengesScreen.emptyKey), findsOneWidget);
+        expect(find.text('This part is not available yet.'), findsNothing);
+        expect(find.text('Daily Learner'), findsNothing);
+        await tester.tap(find.byKey(DailyChallengesScreen.backKey));
+        await tester.pumpAndSettle();
+        expect(find.text('Today'), findsOneWidget);
+        continue;
+      }
       expect(find.text('This part is not available yet.'), findsOneWidget);
       expect(find.text('It is not built yet.'), findsOneWidget);
       expect(find.byKey(TodayHubMarks.plan), findsNothing);
