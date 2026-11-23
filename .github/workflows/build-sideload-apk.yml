@@ -1,7 +1,11 @@
 name: Build Sideload Tester APK
 
-# Manual-only workflow for external QA. Does NOT bump version or touch Play signing.
+# External QA package. Does NOT bump version or touch Play signing.
+# A push to cloud-handoff builds the default tester APK. workflow_dispatch
+# can override the backend URL and the ABI list.
 on:
+  push:
+    branches: [cloud-handoff]
   workflow_dispatch:
     inputs:
       backend_url:
