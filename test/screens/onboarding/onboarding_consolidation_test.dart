@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lingafriq/avatars/cast/cast_file_cache.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/screens/onboarding/unified_onboarding_screen.dart';
+import 'package:rive/rive.dart' hide File;
 
 import 'unified_onboarding_screen_test.dart' hide main;
 
@@ -39,8 +41,10 @@ Finder _line(String text) => find.byWidgetPredicate(
   description: 'story line',
 );
 
-void main() {
+Future<void> main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
+  CastFileCache.instance.renderer = Factory.flutter;
+  await RiveNative.init();
 
   test('village story lines are the Kijiji dialogue in screen order', () {
     final lines = kijijiVillageStoryLines(

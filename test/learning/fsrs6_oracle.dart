@@ -303,6 +303,41 @@ void verifyFsrs6Rounding(int Function(double value) round) {
   expect(round(2.6), 3);
 }
 
+void verifyFsrs6SameDay(dynamic scheduler) {
+  expect(
+    scheduler.retrievability(elapsedDays: 0.0, stability: 2.0),
+    closeTo(1, 1e-9),
+  );
+  expect(scheduler.intervalDays(0.1), 1);
+}
+
+void verifyFsrs6Migration(Function migrate) {
+  final at = DateTime.utc(2026, 1, 1);
+  final fresh = migrate(
+    easeFactor: 2.5,
+    intervalDays: 0,
+    repetitions: 0,
+    lastReview: at,
+  );
+  expect(fresh.phase, FsrsPhase.learning);
+  final known = migrate(
+    easeFactor: 2.5,
+    intervalDays: 3,
+    repetitions: 1,
+    lastReview: at,
+  );
+  expect(known.phase, FsrsPhase.review);
+}
+
+void verifyFsrs6LearnerSteps(dynamic scheduler) {
+  final t0 = DateTime.utc(2026, 1, 1);
+  final reviewed = scheduler.review(const MemoryState(), FsrsRating.hard, t0);
+  expect(
+    reviewed.due.difference(t0),
+    const Duration(minutes: 5, seconds: 30),
+  );
+}
+
 void verifyFsrs6Ease(
   double Function(double ease) difficultyFromEase,
   double Function(double difficulty) easeFromDifficulty,

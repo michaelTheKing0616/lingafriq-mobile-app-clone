@@ -46,6 +46,14 @@ void main() {
     verifyFsrs6Days(const Fsrs6Scheduler.days());
   });
 
+  test('same-day recall, the one-day floor, and a migrated card stay distinct', () {
+    verifyFsrs6SameDay(scheduler);
+    verifyFsrs6Migration(Fsrs6Scheduler.migrateLegacySm2);
+    verifyFsrs6LearnerSteps(
+      Fsrs6Scheduler.forLearner(const LearnerFsrsParameters()),
+    );
+  });
+
   test('per-learner weights stay default until 1000 reviews', () {
     const profile = LearnerFsrsParameters(reviewCount: 999);
     expect(profile.isOptimised, isFalse);

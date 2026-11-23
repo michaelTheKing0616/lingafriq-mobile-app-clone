@@ -1,5 +1,7 @@
+import 'dart:io' show Platform;
 import 'dart:ui' as ui;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,16 +15,28 @@ const double goldenPixelRatio = 1.0;
 /// Bundled face. The harness does not use the host font or a downloaded face.
 const String goldenFontFamily = 'dosis';
 
-/// A diff above this fraction fails the comparison.
+/// A diff above this fraction fails the comparison on macOS, where the
+/// goldens were stored.
 const double goldenDiffTolerance = 0.08;
+
+/// Linux CI rasterizes the same text-heavy screens up to about 16 percent
+/// differently. A missing widget is still well above this.
+const double linuxGoldenDiffTolerance = 0.20;
+
+double hostGoldenTolerance(double requested) {
+  if (requested == goldenDiffTolerance && !kIsWeb && Platform.isLinux) {
+    return linuxGoldenDiffTolerance;
+  }
+  return requested;
+}
 
 /// Compares a golden and writes `failures/` next to the test when the
 /// pixel diff is above [tolerance].
 class ThresholdGoldenComparator extends LocalFileComparator {
   ThresholdGoldenComparator(
     super.testFile, {
-    this.tolerance = goldenDiffTolerance,
-  });
+    double tolerance = goldenDiffTolerance,
+  }) : tolerance = hostGoldenTolerance(tolerance);
 
   final double tolerance;
 

@@ -55,7 +55,9 @@ for (const file of trackedFiles) {
       file: path.normalize(file),
       line: index + 1,
       key,
-      known: KNOWN.has(`${file}\t${key}`),
+      // KNOWN is keyed by file name. The archived explanation lives under
+      // docs/archive/status/, so a full path never matched.
+      known: KNOWN.has(`${path.basename(file)}\t${key}`),
     });
   }
 }

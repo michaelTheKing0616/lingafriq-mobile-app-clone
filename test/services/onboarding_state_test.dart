@@ -5,14 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/avatars/cast/cast_file_cache.dart';
 import 'package:lingafriq/models/onboarding_state.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/screens/onboarding/unified_onboarding_screen.dart';
 import 'package:lingafriq/services/onboarding_state_service.dart';
+import 'package:rive/rive.dart' hide File;
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+Future<void> main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
+  CastFileCache.instance.renderer = Factory.flutter;
+  await RiveNative.init();
 
   const previouslyWritten =
       '{"resume_step":4,"steps":{"1":{},"2":{"proficiency_language":"en","learning_language":"yo"},"3":{"primary_goal":"heritage","learning_reasons":["heritage","travel"]},"4":{"daily_duration_minutes":10,"reminders_enabled":true}}}';

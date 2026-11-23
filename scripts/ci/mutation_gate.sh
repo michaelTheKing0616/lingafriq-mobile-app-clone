@@ -292,7 +292,8 @@ def self_test(config, source, mutants):
     if any(mutant.old == "1e-9" or mutant.new == "1e-9" for mutant in mutants):
         raise SystemExit("self-test mutated inside the 1e-9 literal")
     for mutant in mutants:
-        if 5 <= mutant.line <= 9:
+        line_text = source.splitlines()[mutant.line - 1].lstrip()
+        if line_text.startswith("//") or line_text.startswith("*"):
             raise SystemExit(f"self-test mutated a comment: {mutant.describe(config['module'])}")
         if mutant.old == "<":
             previous = previous_identifier(mask_numbers(mask_non_code(source)), mutant.start)
@@ -355,6 +356,9 @@ def calls(prefix):
         f"    verifyFsrs6Days({prefix}.Fsrs6Scheduler.days());",
         f"    verifyFsrs6Rounding({prefix}.pythonRound);",
         f"    verifyFsrs6Ease({prefix}.Fsrs6Scheduler.difficultyFromEase, {prefix}.Fsrs6Scheduler.easeFromDifficulty);",
+        f"    verifyFsrs6SameDay({prefix}.Fsrs6Scheduler());",
+        f"    verifyFsrs6Migration({prefix}.Fsrs6Scheduler.migrateLegacySm2);",
+        f"    verifyFsrs6LearnerSteps({prefix}.Fsrs6Scheduler.forLearner(const {prefix}.LearnerFsrsParameters()));",
     ])
 
 
