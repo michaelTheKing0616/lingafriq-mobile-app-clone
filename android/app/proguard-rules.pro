@@ -40,3 +40,7 @@
 -dontwarn com.google.mlkit.vision.text.devanagari.**
 -dontwarn com.google.mlkit.vision.text.japanese.**
 -dontwarn com.google.mlkit.vision.text.korean.**
+
+# TFLite GPU delegate is optional and not bundled. R8 otherwise fails the
+# release shrinker on GpuDelegateFactory$Options.
+-dontwarn org.tensorflow.lite.gpu.**
