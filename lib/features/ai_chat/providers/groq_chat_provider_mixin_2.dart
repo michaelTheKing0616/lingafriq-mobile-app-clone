@@ -485,26 +485,7 @@ mixin GroqChatProviderMixin2 on GroqChatStreamHelpers {
         }
 
         state = state.copyWith(isLoading: false);
-
-        String errorMessage;
-        if (e is DioException) {
-          if (e.response != null) {
-            final errorData = e.response!.data;
-            if (e.response!.statusCode == 400) {
-              logger.error('Gateway API 400 error', tag: 'ai-chat', context: {'errorData': errorData});
-            }
-          }
-          errorMessage = TransportErrorPolicy.toUserMessage(e);
-        } else if (e is TimeoutException) {
-          errorMessage = 'Request timed out. Please try again.';
-        } else {
-          final errorStr = e.toString();
-          if (errorStr.contains('Invalid request format')) {
-            errorMessage = errorStr;
-          } else {
-            errorMessage = 'Failed to send message: ${errorStr.replaceAll('Exception: ', '')}';
-          }
-        }
+        final String errorMessage = groqSendFailureMessage(e);
         setProviderError(errorMessage);
         stopSendTracking();
         throw Exception(errorMessage);

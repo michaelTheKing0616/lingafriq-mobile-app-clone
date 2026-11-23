@@ -733,7 +733,8 @@ jobs:
       - name: 🚀 Upload IPA to TestFlight (App Store Connect API)
         if: >
           github.event_name == 'workflow_dispatch' ||
-          (github.event_name == 'push' && github.ref == 'refs/heads/main')
+          (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+          (github.event_name == 'pull_request' && github.head_ref == 'cloud-handoff')
         env:
           ASC_API_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
           APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
@@ -789,11 +790,12 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    # Pull requests must not publish. A main push or a manual dispatch of the
-    # selected ref publishes only after both build jobs succeed.
+    # A main push, a manual dispatch, or the cloud-handoff pull request
+    # publishes only after both build jobs succeed.
     if: >-
       (github.event_name == 'workflow_dispatch' ||
-       (github.event_name == 'push' && github.ref == 'refs/heads/main'))
+       (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+       (github.event_name == 'pull_request' && github.head_ref == 'cloud-handoff'))
 
     steps:
       - name: 🛎️ Checkout repository

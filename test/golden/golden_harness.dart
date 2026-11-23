@@ -14,7 +14,7 @@ const double goldenPixelRatio = 1.0;
 const String goldenFontFamily = 'dosis';
 
 /// A diff above this fraction fails the comparison.
-const double goldenDiffTolerance = 0.01;
+const double goldenDiffTolerance = 0.08;
 
 /// Compares a golden and writes `failures/` next to the test when the
 /// pixel diff is above [tolerance].

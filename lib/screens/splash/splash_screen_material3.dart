@@ -81,7 +81,10 @@ class SplashArtwork extends StatelessWidget {
         ),
         child: ResponsiveSafeArea(
           child: Center(
-            child: Column(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Column(
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 AppLogo(
@@ -117,6 +120,7 @@ class SplashArtwork extends StatelessWidget {
                     .fadeIn(delay: 400.ms, duration: 600.ms)
                     .slideY(begin: 0.2, duration: 600.ms),
               ],
+            ),
             ),
           ),
         ),

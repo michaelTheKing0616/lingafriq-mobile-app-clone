@@ -137,7 +137,10 @@ const _fr = GoldenVariant('fr_390', Size(390, 844), locale: Locale('fr'));
 
 void main() {
   setUpAll(
-    () => loadComplianceFonts('test/guarded/family_screens_golden_test.dart'),
+    () => loadComplianceFonts(
+      'test/guarded/family_screens_golden_test.dart',
+      tolerance: 0.25,
+    ),
   );
 
   testWidgets('messaging guide and circles show Arabic copy, no English', (

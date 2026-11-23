@@ -985,7 +985,8 @@ class _VillageStoryButton extends StatelessWidget {
       child: Semantics(
         label: _bidi(context, label),
         button: true,
-        child: IconButton(
+        child: ExcludeSemantics(
+          child: IconButton(
           key: const ValueKey('village-story-open'),
           tooltip: label,
           onPressed: onPressed,
@@ -1008,6 +1009,7 @@ class _VillageStoryButton extends StatelessWidget {
             ),
             padding: EdgeInsets.zero,
           ),
+        ),
         ),
       ),
     );

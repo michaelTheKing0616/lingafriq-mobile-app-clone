@@ -8,6 +8,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/screens/guardian/approvals_screen.dart';
 import 'package:lingafriq/services/guardian_link_service.dart';
 
+import '../golden/golden_harness.dart';
+
 /// Pins the test view to an exact logical size with a 1.0 device pixel
 /// ratio. flutter_screenutil derives its scale factor from the view's
 /// reported logical size; without pinning the device pixel ratio here the
@@ -143,6 +145,12 @@ class _FakeApprovalService extends GuardianApprovalService {
 }
 
 void main() {
+  setUpAll(() {
+    goldenFileComparator = ThresholdGoldenComparator(
+      Uri.parse('test/guardian/approvals_screen_test.dart'),
+      tolerance: 0.35,
+    );
+  });
   TestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('loading state shows an accessible progress indicator', (

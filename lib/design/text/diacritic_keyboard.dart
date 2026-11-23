@@ -301,7 +301,11 @@ class _DiacriticKey extends StatelessWidget {
   Widget build(BuildContext context) {
     final dark = Theme.of(context).brightness == Brightness.dark;
     final elevation = dark ? LingAfriqTokens.elevationDarksm : LingAfriqTokens.elevationLightsm;
-    return Semantics(
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
+      onLongPress: onLongPress,
+      child: Semantics(
       button: true,
       label: grapheme,
       child: Material(
@@ -326,12 +330,14 @@ class _DiacriticKey extends StatelessWidget {
                   child: TargetText(
                     text: grapheme,
                     textAlign: TextAlign.center,
+                    openWordCard: false,
                   ),
                 ),
               ),
             ),
           ),
         ),
+      ),
       ),
     );
   }

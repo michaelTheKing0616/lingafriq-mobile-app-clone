@@ -11,7 +11,8 @@ class _NotificationsStep extends HookConsumerWidget {
   final int dailyMinutes;
   final String learningLanguage;
 
-  static _times(BuildContext context) => [
+  static List<Map<String, String>> _times(BuildContext context) =>
+      <Map<String, String>>[
     {'id': 'sunrise', 'label': l10nOf(context).onboardingSunrise, 'time': l10nOf(context).onboardingText69Am},
     {'id': 'midday', 'label': l10nOf(context).onboardingMidday, 'time': l10nOf(context).onboardingText122Pm},
     {'id': 'sunset', 'label': l10nOf(context).onboardingSunset, 'time': l10nOf(context).onboardingText57Pm},
@@ -143,11 +144,16 @@ class _NotificationsStep extends HookConsumerWidget {
                   child: Text(
                     _bidi(
                       context,
-                      _times(context).firstWhere(
-                            (t) => t['id'] == selectedTime.value,
-                            orElse: () => _times(context).first,
-                          )['time']
-                          as String,
+                      () {
+                        final List<Map<String, String>> times = _times(
+                          context,
+                        );
+                        return times.firstWhere(
+                          (Map<String, String> slot) =>
+                              slot['id'] == selectedTime.value,
+                          orElse: () => times.first,
+                        )['time']!;
+                      }(),
                     ),
                     style: ModernGriotTypography.labelLarge(
                       context: context,

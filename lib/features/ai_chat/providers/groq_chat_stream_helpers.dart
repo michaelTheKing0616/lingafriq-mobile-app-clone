@@ -1,5 +1,28 @@
 part of 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 
+/// User-facing text for a failed Groq send. Kept out of the mixin so that
+/// file stays under the 500-line provider split.
+String groqSendFailureMessage(Object error) {
+  if (error is DioException) {
+    if (error.response != null && error.response!.statusCode == 400) {
+      logger.error(
+        'Gateway API 400 error',
+        tag: 'ai-chat',
+        context: {'errorData': error.response!.data},
+      );
+    }
+    return TransportErrorPolicy.toUserMessage(error);
+  }
+  if (error is TimeoutException) {
+    return 'Request timed out. Please try again.';
+  }
+  final String errorStr = error.toString();
+  if (errorStr.contains('Invalid request format')) {
+    return errorStr;
+  }
+  return 'Failed to send message: ${errorStr.replaceAll('Exception: ', '')}';
+}
+
 mixin GroqChatStreamHelpers on GroqChatProviderMixin1 {
   String _adaptiveTutorPrompt(String language) {
     if (_random.nextDouble() < 0.3) {

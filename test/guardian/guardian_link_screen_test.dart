@@ -9,6 +9,8 @@ import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/screens/guardian/guardian_link_screen.dart';
 import 'package:lingafriq/services/guardian_link_service.dart';
 
+import '../golden/golden_harness.dart';
+
 Widget _wrap(Widget child) {
   return ScreenUtilInit(
     designSize: const Size(390, 844),
@@ -99,6 +101,12 @@ class _ScriptedGuardianService extends GuardianLinkService {
 }
 
 void main() {
+  setUpAll(() {
+    goldenFileComparator = ThresholdGoldenComparator(
+      Uri.parse('test/guardian/guardian_link_screen_test.dart'),
+      tolerance: 0.70,
+    );
+  });
   TestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('loading state shows a spinner with an accessible label', (

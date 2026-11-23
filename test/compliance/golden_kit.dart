@@ -46,9 +46,15 @@ Future<ByteData> _bytes(String path) =>
 
 /// Loads real glyph fonts (Roboto, Material icons, the bundled SPEC families)
 /// so goldens show text, icons and Arabic instead of boxes.
-Future<void> loadComplianceFonts(String testPath) async {
+Future<void> loadComplianceFonts(
+  String testPath, {
+  double tolerance = goldenDiffTolerance,
+}) async {
   GoogleFonts.config.allowRuntimeFetching = false;
-  goldenFileComparator = ThresholdGoldenComparator(Uri.parse(testPath));
+  goldenFileComparator = ThresholdGoldenComparator(
+    Uri.parse(testPath),
+    tolerance: tolerance,
+  );
   final sdk =
       '${io.Platform.environment['FLUTTER_ROOT']}/bin/cache/'
       'artifacts/material_fonts';
