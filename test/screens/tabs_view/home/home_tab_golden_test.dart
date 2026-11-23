@@ -333,7 +333,7 @@ void main() {
     }
 
     final names = [
-      ...kLanguageIdentities.keys,
+      ...kLanguageIdentities().keys,
       'Fulfulde',
       'Kanuri',
       'Oromo',
@@ -354,7 +354,7 @@ void main() {
       'hausa',
       'zulu',
       'igbo',
-    ].map((k) => HSLColor.fromColor(kLanguageIdentities[k]!.base).hue).toList();
+    ].map((k) => HSLColor.fromColor(kLanguageIdentities()[k]!.base).hue).toList();
     for (var i = 0; i < hues.length; i++) {
       for (var j = i + 1; j < hues.length; j++) {
         final d = (hues[i] - hues[j]).abs();

@@ -44,7 +44,7 @@ void main() {
   });
 
   test('a missing caption or transcript is flagged for review', () {
-    final LingCaptionPlayer missing = LingCaptionPlayer(
+    final LingCaptionPlayer missing = const LingCaptionPlayer(
       title: _title,
       captionsOn: true,
       playing: false,
@@ -54,7 +54,7 @@ void main() {
     expect(missing.showsMissing, isTrue);
     expect(missing.showsCaption, isFalse);
 
-    final LingCaptionPlayer ready = LingCaptionPlayer(
+    final LingCaptionPlayer ready = const LingCaptionPlayer(
       title: _title,
       caption: _caption,
       captionsOn: true,
@@ -64,7 +64,7 @@ void main() {
     expect(ready.flaggedForReview, isFalse);
     expect(ready.showsCaption, isTrue);
 
-    final LingCaptionPlayer hidden = LingCaptionPlayer(
+    final LingCaptionPlayer hidden = const LingCaptionPlayer(
       title: _title,
       caption: _caption,
       captionsOn: false,

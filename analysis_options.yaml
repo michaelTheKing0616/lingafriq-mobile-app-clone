@@ -29,6 +29,10 @@ analyzer:
     - ios/**
     - web/**
     - dev/**
+    # Parked screens and the separate Widgetbook package are not part of the
+    # shipping app. The root analyzer cannot resolve their own imports.
+    - legacy/**
+    - widgetbook/**
 
 linter:
   # The lint rules applied to this project can be customized in the

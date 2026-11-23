@@ -10999,5 +10999,93 @@
   "onboardingTheSavedAnswersCouldNotBeRead": "The saved answers could not be read.",
   "@onboardingTheSavedAnswersCouldNotBeRead": {
     "description": "Shown when a saved onboarding record cannot be read. The flow starts again at step 1."
+  },
+  "gamekitBrand": "LingAfriq",
+  "@gamekitBrand": {
+    "description": "Wordmark on the GameKit loading frame"
+  },
+  "gamekitDidYouKnow": "Did You Know?",
+  "@gamekitDidYouKnow": {
+    "description": "Title above a GameKit loading fact"
+  },
+  "gamekitSkip": "Skip",
+  "@gamekitSkip": {
+    "description": "Skip the GameKit loading frame"
+  },
+  "gamekitMissionObjective": "Mission Objective",
+  "@gamekitMissionObjective": {
+    "description": "Start-guide label for the mission objective"
+  },
+  "gamekitHowToPlay": "How to Play",
+  "@gamekitHowToPlay": {
+    "description": "Start-guide label for the steps"
+  },
+  "gamekitCulturalTip": "Cultural Tip",
+  "@gamekitCulturalTip": {
+    "description": "Start-guide label for the cultural tip"
+  },
+  "gamekitStartMission": "Start Mission",
+  "@gamekitStartMission": {
+    "description": "Starts the GameKit mission"
+  },
+  "gamekitReviewVocabulary": "Review Vocabulary",
+  "@gamekitReviewVocabulary": {
+    "description": "Opens the GameKit vocabulary review"
+  },
+  "gamekitMissionComplete": "Mission complete",
+  "@gamekitMissionComplete": {
+    "description": "Victory frame status"
+  },
+  "gamekitMissionCompleteTitle": "Mission Complete!",
+  "@gamekitMissionCompleteTitle": {
+    "description": "Victory frame title"
+  },
+  "gamekitRewardsEarned": "You've earned your rewards",
+  "@gamekitRewardsEarned": {
+    "description": "Victory frame reward line"
+  },
+  "gamekitXp": "XP",
+  "@gamekitXp": {
+    "description": "Label beside the XP total"
+  },
+  "gamekitVocabulary": "Vocabulary",
+  "@gamekitVocabulary": {
+    "description": "Label beside the vocabulary total"
+  },
+  "gamekitScore": "Score",
+  "@gamekitScore": {
+    "description": "Label beside the mission score"
+  },
+  "gamekitMasteryInsights": "Mastery Insights",
+  "@gamekitMasteryInsights": {
+    "description": "Victory frame mastery heading"
+  },
+  "gamekitIdiomsLearnt": "Idioms Learnt",
+  "@gamekitIdiomsLearnt": {
+    "description": "Label beside the idiom total"
+  },
+  "gamekitGriotRank": "Griot Rank",
+  "@gamekitGriotRank": {
+    "description": "Label beside the griot rank"
+  },
+  "gamekitClaimRewards": "Claim Rewards",
+  "@gamekitClaimRewards": {
+    "description": "Claims the GameKit rewards"
+  },
+  "gamekitReplayMission": "Replay Mission",
+  "@gamekitReplayMission": {
+    "description": "Replays the GameKit mission"
+  },
+  "gamekitStepLine": "{number}. {step}",
+  "@gamekitStepLine": {
+    "description": "Numbered step in the GameKit start guide",
+    "placeholders": {
+      "number": {
+        "type": "int"
+      },
+      "step": {
+        "type": "String"
+      }
+    }
   }
 }

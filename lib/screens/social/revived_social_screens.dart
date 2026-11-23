@@ -541,12 +541,10 @@ class RevivedPlusScreen extends StatefulWidget {
 
 class _RevivedPlusScreenState extends State<RevivedPlusScreen> {
   PlusEntitlement? _result;
-  bool _purchaseStarted = false;
 
   Future<void> _buy() async {
     if (!widget.storeConfigured) {
       setState(() {
-        _purchaseStarted = false;
         _result = const PlusEntitlement(
           storeConfigured: false,
           serverConfirmed: false,
@@ -560,13 +558,11 @@ class _RevivedPlusScreenState extends State<RevivedPlusScreen> {
       );
       if (!mounted) return;
       setState(() {
-        _purchaseStarted = result.serverConfirmed;
         _result = result;
       });
     } catch (error) {
       if (!mounted) return;
       setState(() {
-        _purchaseStarted = false;
         _result = PlusEntitlement(
           storeConfigured: true,
           serverConfirmed: false,

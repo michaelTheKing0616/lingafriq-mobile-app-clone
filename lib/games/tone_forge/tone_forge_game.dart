@@ -84,7 +84,7 @@ class ToneForgeGameFactory {
     final engine = GameEngine(
       scoring: ToneForgeScoringEngine(),
       difficulty: DefaultGameDifficultyEngine(),
-      feedback: ToneForgeFeedbackEngine(),
+      feedback: const ToneForgeFeedbackEngine(),
       animation: animationBridge,
     );
 

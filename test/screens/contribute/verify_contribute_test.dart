@@ -277,7 +277,7 @@ void main() {
       _host(
         LessonItemVerificationScreen(
           verifiedNativeSpeaker: true,
-          load: () async => VerificationQueue.ready(<Map<String, dynamic>>[
+          load: () async => const VerificationQueue.ready(<Map<String, dynamic>>[
             <String, dynamic>{
               'id': '1',
               'text': 'Bawo ni',
@@ -372,7 +372,7 @@ void main() {
         LessonItemVerificationScreen(
           load: () async {
             calls += 1;
-            return VerificationQueue.ready(<Map<String, dynamic>>[
+            return const VerificationQueue.ready(<Map<String, dynamic>>[
               <String, dynamic>{'id': '1', 'text': 'Bawo ni'},
             ]);
           },
@@ -397,7 +397,7 @@ void main() {
           verifiedNativeSpeaker: false,
           load: () async {
             calls += 1;
-            return VerificationQueue.ready(<Map<String, dynamic>>[
+            return const VerificationQueue.ready(<Map<String, dynamic>>[
               <String, dynamic>{'id': '1', 'text': 'Bawo ni'},
             ]);
           },

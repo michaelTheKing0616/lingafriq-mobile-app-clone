@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../../l10n/l10n_of.dart';
 import '../../screens/games/templates/game_template_shell.dart';
 
 /// Six template classes live under lib/screens/games/templates/.
@@ -108,6 +109,8 @@ List<String> gameKitStartGuideSteps(List<String> steps) {
 
 String gameKitVictoryXpLabel(int xpEarned) => '+$xpEarned';
 
+String gameKitMasteryPercentLabel(int masteryPercent) => '$masteryPercent%';
+
 String gameKitStartGuideXpLabel(int objectiveXp) => '+$objectiveXp XP';
 
 /// Mastery bar fraction from the victory screen: percent divided by 100.
@@ -178,13 +181,14 @@ class GameKitLoadingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = l10nOf(context);
     final activeDot = dotIndex < 0 ? 0 : (dotIndex > 2 ? 2 : dotIndex);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('LingAfriq', style: theme.textTheme.headlineMedium),
+        Text(l10n.gamekitBrand, style: theme.textTheme.headlineMedium),
         const SizedBox(height: 12),
-        Text('Did You Know?', style: theme.textTheme.titleSmall),
+        Text(l10n.gamekitDidYouKnow, style: theme.textTheme.titleSmall),
         const SizedBox(height: 8),
         Text(fact, textAlign: TextAlign.center),
         const SizedBox(height: 12),
@@ -206,7 +210,7 @@ class GameKitLoadingView extends StatelessWidget {
           }),
         ),
         if (gameKitLoadingShowsSkip(onSkip != null))
-          TextButton(onPressed: onSkip, child: const Text('Skip')),
+          TextButton(onPressed: onSkip, child: Text(l10n.gamekitSkip)),
         if (gameKitLoadingShowsBack(canPop))
           IconButton(
             onPressed: onBack,
@@ -253,6 +257,7 @@ class GameKitStartGuideView extends StatelessWidget {
   Widget build(BuildContext context) {
     final shown = gameKitStartGuideSteps(input.steps);
     final theme = Theme.of(context);
+    final l10n = l10nOf(context);
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -263,19 +268,20 @@ class GameKitStartGuideView extends StatelessWidget {
           Text(input.gameTitle, style: theme.textTheme.headlineSmall),
           const SizedBox(height: 12),
           Text(gameKitStartGuideXpLabel(input.objectiveXp)),
-          const Text('Mission Objective'),
+          Text(l10n.gamekitMissionObjective),
           Text(input.gameDescription),
           const SizedBox(height: 12),
-          const Text('How to Play'),
-          for (var i = 0; i < shown.length; i++) Text('${i + 1}. ${shown[i]}'),
+          Text(l10n.gamekitHowToPlay),
+          for (var i = 0; i < shown.length; i++)
+            Text(l10n.gamekitStepLine(i + 1, shown[i])),
           const SizedBox(height: 12),
-          const Text('Cultural Tip'),
+          Text(l10n.gamekitCulturalTip),
           Text(input.culturalTip),
           const SizedBox(height: 16),
-          FilledButton(onPressed: onStart, child: const Text('Start Mission')),
+          FilledButton(onPressed: onStart, child: Text(l10n.gamekitStartMission)),
           TextButton(
             onPressed: onReviewVocab,
-            child: const Text('Review Vocabulary'),
+            child: Text(l10n.gamekitReviewVocabulary),
           ),
         ],
       ),
@@ -316,37 +322,38 @@ class GameKitVictoryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fraction = gameKitVictoryMasteryFraction(input.masteryPercent);
+    final l10n = l10nOf(context);
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text('Mission complete'),
-          const Text('Mission Complete!'),
-          const Text('You\'ve earned your rewards'),
+          Text(l10n.gamekitMissionComplete),
+          Text(l10n.gamekitMissionCompleteTitle),
+          Text(l10n.gamekitRewardsEarned),
           Text(gameKitVictoryXpLabel(input.xpEarned)),
-          const Text('XP'),
-          Text('${input.vocabularyLearned}'),
-          const Text('Vocabulary'),
-          Text('${input.finalScore}'),
-          const Text('Score'),
-          const Text('Mastery Insights'),
-          const Text('Idioms Learnt'),
-          Text('${input.idiomsLearnt}'),
-          const Text('Griot Rank'),
+          Text(l10n.gamekitXp),
+          Text(input.vocabularyLearned.toString()),
+          Text(l10n.gamekitVocabulary),
+          Text(input.finalScore.toString()),
+          Text(l10n.gamekitScore),
+          Text(l10n.gamekitMasteryInsights),
+          Text(l10n.gamekitIdiomsLearnt),
+          Text(input.idiomsLearnt.toString()),
+          Text(l10n.gamekitGriotRank),
           Text(input.griotRank),
-          Text('${input.masteryPercent}%'),
+          Text(gameKitMasteryPercentLabel(input.masteryPercent)),
           LinearProgressIndicator(
             key: const Key('gamekit-victory-mastery'),
             value: fraction,
           ),
           FilledButton(
             onPressed: onClaimRewards,
-            child: const Text('Claim Rewards'),
+            child: Text(l10n.gamekitClaimRewards),
           ),
           TextButton(
             onPressed: onReplayMission,
-            child: const Text('Replay Mission'),
+            child: Text(l10n.gamekitReplayMission),
           ),
         ],
       ),

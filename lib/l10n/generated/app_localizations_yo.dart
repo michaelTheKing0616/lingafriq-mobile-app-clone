@@ -8371,4 +8371,66 @@ class AppLocalizationsYo extends AppLocalizations {
   @override
   String get onboardingTheSavedAnswersCouldNotBeRead =>
       'The saved answers could not be read.';
+
+  @override
+  String get gamekitBrand => 'LingAfriq';
+
+  @override
+  String get gamekitDidYouKnow => 'Did You Know?';
+
+  @override
+  String get gamekitSkip => 'Skip';
+
+  @override
+  String get gamekitMissionObjective => 'Mission Objective';
+
+  @override
+  String get gamekitHowToPlay => 'How to Play';
+
+  @override
+  String get gamekitCulturalTip => 'Cultural Tip';
+
+  @override
+  String get gamekitStartMission => 'Start Mission';
+
+  @override
+  String get gamekitReviewVocabulary => 'Review Vocabulary';
+
+  @override
+  String get gamekitMissionComplete => 'Mission complete';
+
+  @override
+  String get gamekitMissionCompleteTitle => 'Mission Complete!';
+
+  @override
+  String get gamekitRewardsEarned => 'You\'ve earned your rewards';
+
+  @override
+  String get gamekitXp => 'XP';
+
+  @override
+  String get gamekitVocabulary => 'Vocabulary';
+
+  @override
+  String get gamekitScore => 'Score';
+
+  @override
+  String get gamekitMasteryInsights => 'Mastery Insights';
+
+  @override
+  String get gamekitIdiomsLearnt => 'Idioms Learnt';
+
+  @override
+  String get gamekitGriotRank => 'Griot Rank';
+
+  @override
+  String get gamekitClaimRewards => 'Claim Rewards';
+
+  @override
+  String get gamekitReplayMission => 'Replay Mission';
+
+  @override
+  String gamekitStepLine(int number, String step) {
+    return '$number. $step';
+  }
 }

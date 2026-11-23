@@ -14569,6 +14569,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The saved answers could not be read.'**
   String get onboardingTheSavedAnswersCouldNotBeRead;
+
+  /// Wordmark on the GameKit loading frame
+  ///
+  /// In en, this message translates to:
+  /// **'LingAfriq'**
+  String get gamekitBrand;
+
+  /// Title above a GameKit loading fact
+  ///
+  /// In en, this message translates to:
+  /// **'Did You Know?'**
+  String get gamekitDidYouKnow;
+
+  /// Skip the GameKit loading frame
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get gamekitSkip;
+
+  /// Start-guide label for the mission objective
+  ///
+  /// In en, this message translates to:
+  /// **'Mission Objective'**
+  String get gamekitMissionObjective;
+
+  /// Start-guide label for the steps
+  ///
+  /// In en, this message translates to:
+  /// **'How to Play'**
+  String get gamekitHowToPlay;
+
+  /// Start-guide label for the cultural tip
+  ///
+  /// In en, this message translates to:
+  /// **'Cultural Tip'**
+  String get gamekitCulturalTip;
+
+  /// Starts the GameKit mission
+  ///
+  /// In en, this message translates to:
+  /// **'Start Mission'**
+  String get gamekitStartMission;
+
+  /// Opens the GameKit vocabulary review
+  ///
+  /// In en, this message translates to:
+  /// **'Review Vocabulary'**
+  String get gamekitReviewVocabulary;
+
+  /// Victory frame status
+  ///
+  /// In en, this message translates to:
+  /// **'Mission complete'**
+  String get gamekitMissionComplete;
+
+  /// Victory frame title
+  ///
+  /// In en, this message translates to:
+  /// **'Mission Complete!'**
+  String get gamekitMissionCompleteTitle;
+
+  /// Victory frame reward line
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve earned your rewards'**
+  String get gamekitRewardsEarned;
+
+  /// Label beside the XP total
+  ///
+  /// In en, this message translates to:
+  /// **'XP'**
+  String get gamekitXp;
+
+  /// Label beside the vocabulary total
+  ///
+  /// In en, this message translates to:
+  /// **'Vocabulary'**
+  String get gamekitVocabulary;
+
+  /// Label beside the mission score
+  ///
+  /// In en, this message translates to:
+  /// **'Score'**
+  String get gamekitScore;
+
+  /// Victory frame mastery heading
+  ///
+  /// In en, this message translates to:
+  /// **'Mastery Insights'**
+  String get gamekitMasteryInsights;
+
+  /// Label beside the idiom total
+  ///
+  /// In en, this message translates to:
+  /// **'Idioms Learnt'**
+  String get gamekitIdiomsLearnt;
+
+  /// Label beside the griot rank
+  ///
+  /// In en, this message translates to:
+  /// **'Griot Rank'**
+  String get gamekitGriotRank;
+
+  /// Claims the GameKit rewards
+  ///
+  /// In en, this message translates to:
+  /// **'Claim Rewards'**
+  String get gamekitClaimRewards;
+
+  /// Replays the GameKit mission
+  ///
+  /// In en, this message translates to:
+  /// **'Replay Mission'**
+  String get gamekitReplayMission;
+
+  /// Numbered step in the GameKit start guide
+  ///
+  /// In en, this message translates to:
+  /// **'{number}. {step}'**
+  String gamekitStepLine(int number, String step);
 }
 
 class _AppLocalizationsDelegate

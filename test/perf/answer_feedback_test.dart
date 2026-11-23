@@ -320,7 +320,7 @@ void main() {
       motion.duration,
       const Duration(milliseconds: LingAfriqTokens.motionProductFast),
     );
-    final Tween<double> tween = motion.tween as Tween<double>;
+    final Tween<double> tween = motion.tween;
     expect(tween.begin, tween.end);
     final SemanticsHandle handle = tester.ensureSemantics();
     expect(
