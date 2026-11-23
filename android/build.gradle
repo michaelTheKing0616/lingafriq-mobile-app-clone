@@ -1,4 +1,4 @@
-// Top-level build file for LingAfriq (Gradle 8.11.1 / AGP 8.9.2 / Kotlin 2.x compatible)
+// Top-level build file for LingAfriq (Gradle 8.14 / AGP 8.9.2 / Kotlin 2.x compatible)
 
 buildscript {
     ext {
