@@ -112,6 +112,9 @@ chmod +x android/gradlew || true
 echo "==> flutter pub get"
 flutter pub get
 
+echo "==> firebase native config"
+bash scripts/ci/write_firebase_native_config.sh
+
 # Phone ABIs only (exclude emulator x86). Play AAB path is unchanged when unset.
 export ORG_GRADLE_PROJECT_lingafriqAbiFilters="$LINGAFRIQ_ABI_FILTERS"
 export ORG_GRADLE_PROJECT_lingafriqSideloadNoMinify="$LINGAFRIQ_SIDELOAD_NO_MINIFY"

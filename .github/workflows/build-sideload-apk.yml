@@ -1,7 +1,11 @@
 name: Build Sideload Tester APK
 
-# Manual-only workflow for external QA. Does NOT bump version or touch Play signing.
+# External QA package. Does NOT bump version or touch Play signing.
+# A push to cloud-handoff builds the default tester APK. workflow_dispatch
+# can override the backend URL and the ABI list.
 on:
+  push:
+    branches: [cloud-handoff]
   workflow_dispatch:
     inputs:
       backend_url:
@@ -72,6 +76,8 @@ jobs:
           BACKEND_URL: ${{ inputs.backend_url || 'https://admin.lingafriq.com' }}
           CDN_URL: ${{ inputs.backend_url || 'https://admin.lingafriq.com' }}
           APP_WEB_URL: https://lingafriq.com
+          FIREBASE_API_KEY_ANDROID: ${{ secrets.FIREBASE_API_KEY_ANDROID }}
+          FIREBASE_API_KEY_IOS: ${{ secrets.FIREBASE_API_KEY_IOS }}
           LINGAFRIQ_ABI_FILTERS: ${{ inputs.abi_filters || 'armeabi-v7a,arm64-v8a' }}
           LINGAFRIQ_SIDELOAD_NO_MINIFY: "true"
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
