@@ -233,7 +233,16 @@ Future<PreparedLaunch> _prepareLaunch(Stopwatch coldStart) async {
       'preferences': () async {
         prefs = await SharedPreferences.getInstance();
       },
-      'firebase': () => Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
+      'firebase': () async {
+        final options = DefaultFirebaseOptions.currentPlatform;
+        if (options.apiKey.isEmpty) {
+          logger.warning('Firebase API key is missing; push setup is skipped');
+          return;
+        }
+        if (Firebase.apps.isEmpty) {
+          await Firebase.initializeApp(options: options);
+        }
+      },
       'rive': RiveNative.init,
     },
     deferred: {
@@ -258,8 +267,10 @@ Future<PreparedLaunch> _prepareLaunch(Stopwatch coldStart) async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-  await FirebaseMessagingProvider.init();
+  if (Firebase.apps.isNotEmpty) {
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+    await FirebaseMessagingProvider.init();
+  }
   try {
     await CredentialStorageService().initialize();
     logger.info('Auth services initialized successfully');
