@@ -42,7 +42,7 @@ class _NotificationsStep extends HookConsumerWidget {
             await ref
                 .read(firebaseMessagingProvider)
                 .messaging
-                .requestPermission();
+                ?.requestPermission();
           } catch (e) {
             logger.warn('Notification permission request failed', error: e);
           }
