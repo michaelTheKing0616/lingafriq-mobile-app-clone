@@ -8,7 +8,7 @@ import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/screens/ai_chat/ai_chat_language_setup_screen.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
-import 'package:lingafriq/screens/games/games_screen_material3.dart';
+import 'package:lingafriq/navigation/hub_play.dart';
 import 'package:lingafriq/screens/tabs_view/home/take_quiz_screen.dart';
 import 'package:lingafriq/lessons/screens/lessons_list_screen.dart';
 import 'package:lingafriq/screens/vocabulary/vocabulary_screen.dart';
@@ -216,7 +216,7 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
       case 'quizzes':
         _pickLanguage(lessons: false);
       case 'games':
-        navigation.navigateTo(const GamesScreenMaterial3());
+        navigation.navigateTo(const PlayHub());
       case 'chat_minutes':
         navigation.navigateTo(
           const AiChatLanguageSetupScreen(initialMode: PolieMode.translation),

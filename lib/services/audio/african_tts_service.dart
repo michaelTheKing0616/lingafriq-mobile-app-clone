@@ -372,32 +372,40 @@ class AfricanTtsService {
         prefs.getString('auth_token') ?? prefs.getString('access_token');
     final base = EnvConfig.backendBaseUrl.replaceFirst(RegExp(r'/+$'), '');
     final clipped = text.length > 500 ? text.substring(0, 500) : text;
-    final headers = <String, String>{
-      'Content-Type': 'application/json',
+    final auth = <String, String>{
       if (token != null && token.isNotEmpty) 'Authorization': 'Bearer $token',
     };
+    final fields = <String, String>{
+      'text': clipped,
+      'language': language,
+      if (voice != null && voice.trim().isNotEmpty) 'voice': voice.trim(),
+      'speed': '$speed',
+    };
     try {
-      final synth = await http
-          .post(
-            Uri.parse('$base/api/voice/tts/synthesize'),
-            headers: headers,
-            body: jsonEncode({
-              'text': clipped,
-              'language': language,
-              if (voice != null && voice.trim().isNotEmpty) 'voice': voice.trim(),
-              'speed': speed,
-            }),
-          )
-          .timeout(const Duration(seconds: 45));
-      if (synth.statusCode == 200 &&
-          synth.bodyBytes.isNotEmpty &&
-          !synth.headers['content-type'].toString().contains('json')) {
-        return synth.bodyBytes;
-      }
-      if (synth.statusCode == 503) {
-        final code = _unavailableCode(synth.body);
-        if (code != null) {
-          throw TtsUnavailable(code);
+      // The voice service reads form fields. The app backend also accepts JSON.
+      for (final asJson in <bool>[false, true]) {
+        final synth = await http
+            .post(
+              Uri.parse('$base/api/voice/tts/synthesize'),
+              headers: {
+                ...auth,
+                'Content-Type': asJson
+                    ? 'application/json'
+                    : 'application/x-www-form-urlencoded',
+              },
+              body: asJson ? jsonEncode(fields) : fields,
+            )
+            .timeout(const Duration(seconds: 45));
+        if (synth.statusCode == 200 &&
+            synth.bodyBytes.isNotEmpty &&
+            !synth.headers['content-type'].toString().contains('json')) {
+          return synth.bodyBytes;
+        }
+        if (synth.statusCode == 503) {
+          final code = _unavailableCode(synth.body);
+          if (code != null) {
+            throw TtsUnavailable(code);
+          }
         }
       }
     } on TtsUnavailable {

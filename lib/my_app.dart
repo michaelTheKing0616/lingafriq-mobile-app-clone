@@ -22,7 +22,8 @@ import 'screens/social/revived_social_screens.dart';
 import 'services/social/revived_social.dart';
 
 // Route screen imports
-import 'screens/ai_chat/polie_mode_selection_screen.dart';
+import 'navigation/hub_play.dart';
+import 'screens/chat/lingchat_ai_conversation_screen.dart';
 import 'screens/ai_chat/polie_workspace_screen.dart';
 import 'screens/lessons/lessons_map_entry_screen.dart';
 import 'screens/content/native_content_review_screen.dart';
@@ -31,7 +32,6 @@ import 'games/tone_forge/tone_forge_screen.dart';
 import 'screens/games/game_mastery_results_screen.dart';
 import 'screens/games/games_screen.dart';
 import 'screens/games/games_screen_enhanced_with_all_games.dart';
-import 'screens/games/games_screen_material3.dart';
 import 'screens/goals/daily_challenges_screen.dart';
 import 'screens/goals/daily_goals_screen.dart';
 import 'screens/help/feature_preloader_screen.dart';
@@ -66,7 +66,6 @@ import 'screens/village/my_tribe_screen.dart';
 import 'screens/village/tribal_duel_screen.dart';
 import 'screens/village/inter_tribe_leaderboard_screen.dart';
 import 'screens/chat/global_chat_screen_material3.dart';
-import 'screens/chat/lingchat_ai_conversation_screen.dart';
 import 'screens/social/user_connections_screen.dart';
 import 'screens/gamification/quest_screen.dart';
 import 'screens/gamification/seasonal_events_screen.dart';
@@ -341,11 +340,11 @@ Route<dynamic>? generateAppRoute(RouteSettings settings) {
       googleIdToken: DeviceIdentity.googleIdToken,
       appleIdToken: DeviceIdentity.appleIdToken,
     ),
-    'polie_mode_selection': (_) => const PolieModeSelectionScreen(),
+    'polie_mode_selection': (_) => const LearnerPolieScreen(),
     'curriculum': (_) => const LessonsMapEntryScreen(),
     'authentic-path': (_) => const AuthenticCurriculumEntryScreen(),
     'native-content-review': (_) => const NativeContentReviewScreen(),
-    'games': (_) => const GamesScreenMaterial3(),
+    'games': (_) => const PlayHub(),
 
     /// Legacy flow: languages from `getLanguages()` API, then [GameTypesScreen].
     'games_api_languages': (_) => const GamesScreen(),

@@ -8,7 +8,7 @@ import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart' show l
 import 'package:lingafriq/screens/tabs_view/courses/courses_tab_material3.dart';
 import 'package:lingafriq/screens/tabs_view/profile/profile_tab_material3.dart';
 import 'package:lingafriq/screens/dashboard/dashboard_screen_material3.dart';
-import 'package:lingafriq/screens/ai_chat/polie_mode_selection_screen.dart';
+import 'package:lingafriq/screens/chat/lingchat_ai_conversation_screen.dart';
 import 'package:lingafriq/screens/social/language_villages_screen.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/offline/offline_indicator.dart';
@@ -43,7 +43,7 @@ class _TabsViewMaterial3State extends ConsumerState<TabsViewMaterial3> {
       case 1:
         return const CoursesTabMaterial3();
       case 2:
-        return const PolieModeSelectionScreen();
+        return const LearnerPolieScreen();
       case 3:
         return const LanguageVillagesScreen();
       case 4:

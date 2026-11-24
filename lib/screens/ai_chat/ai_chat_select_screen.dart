@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/polie_design_tokens.dart';
-import 'package:lingafriq/screens/ai_chat/polie_mode_selection_screen.dart';
+import 'package:lingafriq/screens/chat/lingchat_ai_conversation_screen.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 
 /// AI Chat Select Screen - Entry point for Polie
@@ -18,7 +18,7 @@ class AiChatSelectScreen extends HookConsumerWidget {
       Navigator.pushReplacement(
         context,
         SmoothPageRoute(
-          child: PolieModeSelectionScreen(onBack: onBack),
+          child: const LearnerPolieScreen(),
         ),
       );
     });
