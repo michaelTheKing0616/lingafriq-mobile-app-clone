@@ -11,16 +11,34 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
+        with:
+          fetch-depth: 0
+
+      - name: OpenAPI spec has a version
+        run: python3 -c "import json; d=json.load(open('docs/api/openapi.v1.json')); assert d['openapi'].startswith('3.'); assert d['info']['version']"
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+
+      - name: Dependency audit
+        run: |
+          bash scripts/ci/dep_audit.sh --self-test
+          bash scripts/ci/dep_audit.sh
+
+      - name: Fail on an unpinned action
+        run: python3 scripts/ci/check_pinned_actions.py .github/workflows
 
       - name: 🔧 Ensure Gradle wrapper is executable
         run: |
           chmod +x android/gradlew || true
       
       - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
         with:
-          flutter-version: '3.35.0'
+          flutter-version: '3.47.9'
           channel: 'stable'
       
       - name: 🔧 Install CMake (required for rive_common native builds)
@@ -34,10 +52,7 @@ jobs:
         run: flutter pub get
 
       - name: Flutter analyze
-        run: |
-          echo "🔍 Running Flutter analyze..."
-          flutter analyze --no-fatal-infos --no-fatal-warnings
-          echo "✅ Flutter analyze passed"
+        run: bash scripts/ci/analyze_new_code.sh
 
       - name: i18n literal gate
         run: dart run tool/i18n_gate.dart
@@ -45,11 +60,84 @@ jobs:
       - name: TTS purity gate (no flutter_tts outside AfricanTtsService)
         run: dart run tool/tts_purity_gate.dart
 
+      - name: GameKit dark-pattern lint (P8-907)
+        run: |
+          python3 scripts/lint_dark_patterns.py --self-test
+          python3 scripts/lint_dark_patterns.py
+
+      - name: Token compliance (P3-013)
+        run: |
+          python3 test/scripts/token_compliance_test.py
+          python3 scripts/lint/token_compliance.py
+
+      - name: WCAG contrast (P3-089)
+        run: |
+          python3 scripts/lint/contrast_check.py --self-test
+          python3 scripts/lint/contrast_check.py
+
+      - name: Placeholder / template bundle linter
+        run: |
+          python3 scripts/ci/placeholder_linter.py assets/data
+          python3 scripts/ci/placeholder_linter.py schemas/v2
+          python3 scripts/ci/placeholder_lint.py --baseline scripts/ci/lint_baseline.tsv
+          # Claim lint reads bundled curriculum only. Runtime Import Media lessons are not in this job.
+          python3 scripts/ci/claim_lint.py --baseline scripts/ci/lint_baseline.tsv
+          python3 scripts/ci/dedupe_assets_check.py
+          python3 scripts/ci/asset_audit.py
+          python3 scripts/ci/asset_budget_check.py --self-test
+          python3 scripts/ci/asset_budget_check.py
+          python3 scripts/ci/list_virtualisation_check.py --self-test
+          python3 scripts/ci/list_virtualisation_check.py
+          flutter test test/perf/rebuild_count_test.dart
+          chmod +x scripts/ci/apk_size_gate.sh
+          bash scripts/ci/apk_size_gate.sh --self-test
+          python3 test/ci/lint_fixtures_test.py
+
+      - name: Secrets
+        run: |
+          node scripts/secrets-hygiene-check.mjs --strict
+          curl -sSL -o /tmp/gitleaks.tar.gz https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz
+          mkdir -p "$HOME/bin"
+          tar -xzf /tmp/gitleaks.tar.gz -C "$HOME/bin" gitleaks
+          if [ -n "${GITHUB_BASE_REF:-}" ]; then
+            range="origin/${GITHUB_BASE_REF}..HEAD"
+          elif [ -n "${GITHUB_EVENT_BEFORE:-}" ] && [ "$GITHUB_EVENT_BEFORE" != "0000000000000000000000000000000000000000" ]; then
+            range="${GITHUB_EVENT_BEFORE}..HEAD"
+          else
+            range="HEAD~1..HEAD"
+          fi
+          "$HOME/bin/gitleaks" git --redact --no-banner --log-opts="$range"
+
+      - name: Prepare Rive native runtime
+        run: |
+          dart run rive_native:setup --platform linux
+          echo "LD_LIBRARY_PATH=$PWD/build/rive_native/native/build/linux/bin/lib/debug_shared" >> $GITHUB_ENV
+
+      - name: Avatar contract
+        run: flutter test test/avatar/contract_test.dart
+
+      - name: Onboarding first lesson sync
+        run: flutter test -d flutter-tester integration_test/onboarding_first_lesson_sync_test.dart
+
       - name: Flutter test
         run: |
           echo "🧪 Running Flutter tests..."
-          flutter test
+          flutter test --coverage
           echo "✅ Flutter tests passed"
+
+      - name: Upload golden diffs
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: golden-diffs
+          path: test/golden/failures
+          if-no-files-found: ignore
+
+      - name: Domain coverage gate
+        run: python3 scripts/ci/coverage_gate.py coverage/lcov.info
+
+      - name: FSRS mutation gate
+        run: bash scripts/ci/mutation_gate.sh
 
       - name: 🧹 Comprehensive Cache Clearing (Before Build)
         run: |
@@ -96,9 +184,8 @@ jobs:
       - name: Build APK
         run: |
           flutter build apk --release \
-            --dart-define=GROQ_API_KEY=${{ secrets.GROQ_API_KEY }} \
-            --dart-define=STABILITY_AI_KEY=${{ secrets.STABILITY_AI_KEY }} \
-            --dart-define=HUGGINGFACE_TOKEN=${{ secrets.HUGGINGFACE_TOKEN }} \
+            --dart-define=FIREBASE_API_KEY_ANDROID="${{ secrets.FIREBASE_API_KEY_ANDROID }}" \
+            --dart-define=FIREBASE_API_KEY_IOS="${{ secrets.FIREBASE_API_KEY_IOS }}" \
             --dart-define=REPLICATE_API_KEY=${{ secrets.REPLICATE_API_KEY }} \
             --dart-define=LEONARDO_API_KEY=${{ secrets.LEONARDO_API_KEY }}
         continue-on-error: true # Build will work even if some secrets are missing
@@ -106,22 +193,21 @@ jobs:
       - name: Build App Bundle (for Play Store)
         run: |
           flutter build appbundle --release \
-            --dart-define=GROQ_API_KEY=${{ secrets.GROQ_API_KEY }} \
-            --dart-define=STABILITY_AI_KEY=${{ secrets.STABILITY_AI_KEY }} \
-            --dart-define=HUGGINGFACE_TOKEN=${{ secrets.HUGGINGFACE_TOKEN }} \
+            --dart-define=FIREBASE_API_KEY_ANDROID="${{ secrets.FIREBASE_API_KEY_ANDROID }}" \
+            --dart-define=FIREBASE_API_KEY_IOS="${{ secrets.FIREBASE_API_KEY_IOS }}" \
             --dart-define=REPLICATE_API_KEY=${{ secrets.REPLICATE_API_KEY }} \
             --dart-define=LEONARDO_API_KEY=${{ secrets.LEONARDO_API_KEY }}
         continue-on-error: true
       
       - name: Upload APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: success()
         with:
           name: release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
       
       - name: Upload App Bundle
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: success()
         with:
           name: release-appbundle

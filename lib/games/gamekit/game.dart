@@ -27,6 +27,7 @@ abstract class Game<TContent, TInput> {
 class GameConfig {
   final String gameId;
   final String displayName;
+  final GameCoreVerb? coreVerb;
   final int defaultCardCount;
   final bool supportsAudio;
   final bool supportsVoiceInput;
@@ -35,6 +36,7 @@ class GameConfig {
   const GameConfig({
     required this.gameId,
     required this.displayName,
+    this.coreVerb,
     this.defaultCardCount = 10,
     this.supportsAudio = false,
     this.supportsVoiceInput = false,

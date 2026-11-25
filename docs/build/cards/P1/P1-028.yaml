@@ -1,0 +1,68 @@
+charter: v2
+id: P1-028
+kind: build
+title: Correct Nkrumah persona data and independence claim
+phase: P1
+epic: E-P1-CONTENT-HONESTY
+req_ids:
+- RM-P0-07
+depends_on:
+- E-P0-INTAKE
+size: S
+difficulty:
+  score: 2
+  blast: 1
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T2
+  justification: score 2; blast 1
+token_budget: 25000
+file_allowlist:
+- node-backend/src/scripts/extendedHistoricalPersonas/personas-e01.ts
+- node-backend/src/__test__/P1-028.nkrumah.test.ts
+context_anchors:
+- ELEVATION.md#§16.1:L2039-L2041
+acceptance_criteria:
+- id: AC1
+  text: Given the Nkrumah persona record, when read, then languages list his actual home language Nzema (from Nkroful) and
+    not Twi
+- id: AC2
+  text: Given the independence claim in the same file, when read, then the wording is qualified so it does not assert first
+    sub-Saharan colony without nuance
+- id: AC3
+  text: Given a content test, when run, then the Nkrumah record has a source citation for each corrected field and a historian-review
+    flag set to pending
+test_plan:
+  unit:
+  - persona data schema
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - field-by-field source check
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "Historian review stays pending (EXT-15). Yankah also records Fante. The language list is Nzema and English, not Twi. The drafted path src/data/personas-e01.ts does not exist."
+gate: G1
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

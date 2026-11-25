@@ -1,0 +1,164 @@
+charter: v2
+id: P3-099
+kind: design
+title: Review G3 design gate with UX and UI Scorecards
+phase: P3
+epic: E-P3-DESIGN-WORKFLOW
+req_ids:
+- EP-§3.1-02
+- EP-§3.4-01
+depends_on:
+- P3-001
+- P3-002
+- P3-003
+- P3-004
+- P3-005
+- P3-006
+- P3-007
+- P3-008
+- P3-009
+- P3-010
+- P3-011
+- P3-012
+- P3-013
+- P3-014
+- P3-015
+- P3-016
+- P3-017
+- P3-018
+- P3-019
+- P3-020
+- P3-021
+- P3-022
+- P3-023
+- P3-024
+- P3-025
+- P3-026
+- P3-027
+- P3-028
+- P3-029
+- P3-030
+- P3-031
+- P3-032
+- P3-033
+- P3-034
+- P3-035
+- P3-036
+- P3-037
+- P3-038
+- P3-039
+- P3-040
+- P3-041
+- P3-042
+- P3-043
+- P3-044
+- P3-045
+- P3-046
+- P3-047
+- P3-048
+- P3-049
+- P3-050
+- P3-051
+- P3-052
+- P3-053
+- P3-054
+- P3-055
+- P3-056
+- P3-057
+- P3-058
+- P3-059
+- P3-060
+- P3-061
+- P3-062
+- P3-063
+- P3-064
+- P3-065
+- P3-066
+- P3-067
+- P3-068
+- P3-069
+- P3-070
+- P3-071
+- P3-072
+- P3-073
+- P3-074
+- P3-075
+- P3-076
+- P3-077
+- P3-078
+- P3-079
+- P3-080
+- P3-081
+- P3-082
+- P3-083
+- P3-084
+- P3-085
+- P3-086
+- P3-087
+- P3-088
+- P3-089
+- P3-090
+- P3-091
+- P3-092
+- P3-093
+- P3-094
+- P3-095
+- P3-096
+- P3-097
+- P3-098
+size: M
+difficulty:
+  score: 3
+  blast: 0
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T4
+  justification: gate review by T4 with screenshots
+token_budget: 60000
+file_allowlist:
+- docs/build/gate/G3/GATE_PACKET.md
+context_anchors:
+- ELEVATION.md#§3.1:L768-L772
+acceptance_criteria:
+- id: AC1
+  text: Given the UX Scorecard and UI Scorecard in docs/build/05_UX_DESIGN_BAR.md, when scored on the shell and onboarding,
+    then both meet or beat the targets and the baselines in BENCHMARK.md
+- id: AC2
+  text: Given the 12 signature screens, when reviewed, then each is approved in light and dark with evidence in docs/build/gate/G3/
+- id: AC3
+  text: Given ADR-010 and ADR-012, when checked, then both are accepted and the EXT-14 sign-off state is recorded
+- id: AC4
+  text: Given the token-compliance and honest-copy lints, when run, then new design code shows 0 violations
+- id: AC5
+  text: Given every P3 card, when listed, then each is Done or Blocked-External with a reason
+- id: AC6
+  text: Given any scorecard below target, when found, then the gate fails and lists the remediation cards
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: true
+dod_evidence:
+- tester report
+- ledger row
+- T4 visual approval with exported frames
+risks: []
+gate: G3
+external_blockers:
+- EXT-14
+status: Draft
+skills:
+  worker:
+  - prime/design-critique
+  - prime/critique-visual-hierarchy
+  - prime/design-to-code-check
+  reviewer_extra:
+  - prime/critique-visual-hierarchy
+  - prime/critique-typography
+  - prime/design-to-code-check

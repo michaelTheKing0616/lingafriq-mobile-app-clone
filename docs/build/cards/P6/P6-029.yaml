@@ -1,0 +1,75 @@
+charter: v2
+id: P6-029
+kind: build
+title: Build Translator-with-teaching behind per-pair quality gate
+phase: P6
+epic: E-P6-MODES
+req_ids:
+- EP-§7.3-07
+- EP-§7.3-24
+- EP-§7.3-25
+depends_on:
+- P6-003
+- P6-008
+- P6-011
+- P6-014
+- P6-056
+size: M
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 2
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 3, ambiguity 2, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/modes/translate.ts
+- node-backend/src/ai-gateway/prompts/templates/translate.md
+context_anchors:
+- ELEVATION.md#§7.3:L1422-L1425
+acceptance_criteria:
+- id: AC1
+  text: Given a language pair without a passing quality gate, when translation is requested, then typed error pair_not_gated
+    is returned
+- id: AC2
+  text: Given a gated pair, when translated, then the answer includes the translation and an explanation of why
+- id: AC3
+  text: Given the codebase, when scanned, then no unofficial Google scraper path remains
+- id: AC9
+  text: Given the mode eval set in CI, when run on a prompt or model change, then the mode meets the thresholds in the eval
+    config or the deploy is blocked
+test_plan:
+  unit:
+  - gate lookup
+  integration:
+  - scraper absent
+  security:
+  - scraper grep
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

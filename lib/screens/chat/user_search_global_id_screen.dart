@@ -101,11 +101,11 @@ class UserSearchGlobalIdScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Find User'),
+        title: const Text('Find User'),
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.close),
+          icon: const Icon(Icons.close),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -113,7 +113,7 @@ class UserSearchGlobalIdScreen extends HookConsumerWidget {
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : LinearGradient(
+              : const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -211,7 +211,7 @@ class UserSearchGlobalIdScreen extends HookConsumerWidget {
                         ? ListView.builder(
                             padding: EdgeInsets.all(PanAfricanSpacing.lg),
                             itemCount: 4,
-                            itemBuilder: (_, __) => SkeletonListCard(),
+                            itemBuilder: (_, __) => const SkeletonListCard(),
                           )
                         : searchResults.value.isEmpty
                             ? AppEmptyState(
@@ -342,7 +342,7 @@ class _UserResultCard extends StatelessWidget {
                           vertical: 2,
                         ),
                         decoration: BoxDecoration(
-                          color: PanAfricanColors.primary.withOpacity(0.1),
+                          color: PanAfricanColors.primary.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(PanAfricanRadius.xs),
                         ),
                         child: Text(

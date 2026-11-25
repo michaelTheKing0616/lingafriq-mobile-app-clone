@@ -1,0 +1,50 @@
+name: Audit
+
+on:
+  pull_request:
+  push:
+    branches: [main, cloud-handoff]
+
+jobs:
+  npm-audit:
+    name: npm audit production dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+
+      - name: A seeded high advisory fails the gate
+        run: bash scripts/ci/dep_audit.sh --self-test
+
+      - name: Audit lockfiles in this repo
+        run: bash scripts/ci/dep_audit.sh
+
+  honest-copy:
+    name: Honest UI copy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Banned words, em dashes, and fake confidence
+        run: |
+          python3 test/scripts/honest_copy_test.py
+          python3 scripts/lint/honest_copy.py
+
+      - name: Target-language text uses TargetText
+        run: |
+          python3 test/design/target_text_only_lint_test.py
+          python3 scripts/lint/target_text_only.py
+
+      - name: Hard-coded UI strings stay under the baseline
+        run: |
+          python3 test/scripts/extract_strings_test.py
+          python3 scripts/i18n/extract_strings.py
+
+      - name: Pseudo locale expands shell and onboarding copy
+        run: python3 scripts/i18n/pseudo_locale.py --self-test

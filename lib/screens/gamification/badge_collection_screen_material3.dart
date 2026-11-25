@@ -54,13 +54,13 @@ class BadgeCollectionScreenMaterial3 extends HookConsumerWidget {
               vertical: PanAfricanSpacing.xs,
             ),
             decoration: BoxDecoration(
-              color: PanAfricanColors.secondary.withOpacity(0.2),
+              color: context.panSecondary.withValues(alpha: 0.2),
               borderRadius: PanAfricanRadius.roundBR,
             ),
             child: Center(
               child: Text(
                 '${unlockedBadgeIds.length}/${allBadgeMaps.length}',
-                style: PanAfricanTypography.titleMedium(context, color: PanAfricanColors.secondary),
+                style: PanAfricanTypography.titleMedium(context, color: context.panSecondary),
               ),
             ),
           ),
@@ -119,13 +119,13 @@ class BadgeCollectionScreenMaterial3 extends HookConsumerWidget {
                               width: 80.w,
                               height: 80.w,
                               decoration: BoxDecoration(
-                                color: PanAfricanColors.secondary.withOpacity(0.1),
+                                color: context.panSecondary.withValues(alpha: 0.1),
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(
                                 Icons.workspace_premium_outlined,
                                 size: 48.sp,
-                                color: PanAfricanColors.secondary,
+                                color: context.panSecondary,
                               ),
                             ),
                           ),
@@ -188,7 +188,7 @@ class _BadgeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final rarity = badge['rarity'] ?? 'common';
-    final color = _getRarityColor(rarity);
+    final color = _getRarityColor(context, rarity);
     final icon = badge['icon'] ?? '🏆';
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -227,7 +227,7 @@ class _BadgeCard extends StatelessWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        PanAfricanColors.secondary.withOpacity(0.15),
+                        context.panSecondary.withValues(alpha: 0.15),
                         Colors.transparent,
                       ],
                     ),
@@ -246,7 +246,7 @@ class _BadgeCard extends StatelessWidget {
                     height: 64.w,
                     decoration: BoxDecoration(
                       color: isUnlocked
-                          ? color.withOpacity(0.15)
+                          ? color.withValues(alpha: 0.15)
                           : (isDark
                               ? PanAfricanColors.surfaceContainerHighDark
                               : PanAfricanColors.surfaceContainerHighLight),
@@ -282,7 +282,7 @@ class _BadgeCard extends StatelessWidget {
                       vertical: PanAfricanSpacing.xxxs,
                     ),
                     decoration: BoxDecoration(
-                      color: color.withOpacity(0.2),
+                      color: color.withValues(alpha: 0.2),
                       borderRadius: PanAfricanRadius.roundBR,
                     ),
                     child: Text(
@@ -298,7 +298,7 @@ class _BadgeCard extends StatelessWidget {
               Positioned.fill(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: (isDark ? Theme.of(context).colorScheme.scrim : colorScheme.surface).withOpacity(0.6),
+                    color: (isDark ? Theme.of(context).colorScheme.scrim : colorScheme.surface).withValues(alpha: 0.6),
                     borderRadius: PanAfricanRadius.lgBR,
                   ),
                   child: Center(
@@ -318,10 +318,10 @@ class _BadgeCard extends StatelessWidget {
     );
   }
 
-  Color _getRarityColor(String rarity) {
+  Color _getRarityColor(BuildContext context, String rarity) {
     switch (rarity.toLowerCase()) {
       case 'legendary':
-        return PanAfricanColors.secondary;
+        return context.panSecondary;
       case 'epic':
         return PanAfricanColors.ankaraPurple;
       case 'rare':

@@ -1,8 +1,10 @@
 import 'dart:developer';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/learning/reminders/reminder_policy.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/utils/utils.dart';
 
@@ -13,7 +15,11 @@ final firebaseMessagingProvider = Provider<FirebaseMessagingProvider>((ref) {
 class FirebaseMessagingProvider {
   FirebaseMessagingProvider(this.read);
   final Ref read;
-  final messaging = FirebaseMessaging.instance;
+
+  /// Null until [Firebase.initializeApp] has run. Touching
+  /// [FirebaseMessaging.instance] before that throws and takes the app down.
+  FirebaseMessaging? get messaging =>
+      Firebase.apps.isEmpty ? null : FirebaseMessaging.instance;
 
   static final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
@@ -28,15 +34,18 @@ class FirebaseMessagingProvider {
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
+    if (Firebase.apps.isEmpty) return;
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(alert: true, badge: true, sound: true);
   }
 
   Future<void> disableForegroundNotification() async {
+    if (messaging == null) return;
     await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions();
   }
 
   Future<void> enableForegroundNotification() async {
+    if (messaging == null) return;
     await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true,
       badge: true,
@@ -45,6 +54,8 @@ class FirebaseMessagingProvider {
   }
 
   Future<void> initFCM() async {
+    final messaging = this.messaging;
+    if (messaging == null) return;
     final settings = await messaging.requestPermission();
     log(
       'User granted permission: ${settings.authorizationStatus}',
@@ -67,10 +78,21 @@ class FirebaseMessagingProvider {
       final notification = message.notification;
       final android = message.notification?.android;
       if (notification != null && android != null) {
+        final nowLocal = DateTime.now();
+        final localHour = nowLocal.hour;
+        if (ReminderPolicy.inQuietAt(nowLocal) &&
+            (message.data['kind'] == 'reminder' || message.data['type'] == 'study_reminder')) {
+          return;
+        }
+        final sanitized = ReminderPolicy.sanitizePushCopy(
+          title: notification.title ?? 'LingAfriq',
+          body: notification.body ?? '',
+          localHour: localHour,
+        );
         flutterLocalNotificationsPlugin.show(
           notification.hashCode,
-          notification.title,
-          notification.body,
+          sanitized.title,
+          sanitized.body,
           NotificationDetails(
             android: AndroidNotificationDetails(
               channel.id,
@@ -84,7 +106,7 @@ class FirebaseMessagingProvider {
       }
     });
 
-    final message = await FirebaseMessaging.instance.getInitialMessage();
+    final message = await messaging.getInitialMessage();
     if (message != null) {
       log('App opened from terminated state via notification', name: 'FirebaseMessagingProvider');
       log('Initial message data: ${message.data}', name: 'FirebaseMessagingProvider');
@@ -95,6 +117,8 @@ class FirebaseMessagingProvider {
   }
 
   Future<String?> getToken() {
+    final messaging = this.messaging;
+    if (messaging == null) return Future<String?>.value();
     return messaging.getToken();
   }
 

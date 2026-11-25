@@ -72,7 +72,7 @@ class AdaptiveLearningPanel extends ConsumerWidget {
                           vertical: PanAfricanSpacing.xxxs,
                         ),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.scrim.withOpacity(0.25),
+                      color: Theme.of(context).colorScheme.scrim.withValues(alpha: 0.25),
                       borderRadius:
                           BorderRadius.circular(PanAfricanRadius.round),
                     ),
@@ -174,7 +174,7 @@ class _AdaptiveStatChip extends StatelessWidget {
         vertical: PanAfricanSpacing.xs,
       ),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.scrim.withOpacity(0.25),
+        color: Theme.of(context).colorScheme.scrim.withValues(alpha: 0.25),
         borderRadius: BorderRadius.circular(PanAfricanRadius.round),
       ),
       child: Column(
@@ -183,7 +183,7 @@ class _AdaptiveStatChip extends StatelessWidget {
           Text(
             label,
             style: PanAfricanTypography.labelSmall(context).copyWith(
-              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.8),
+              color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.8),
             ),
           ),
           SizedBox(height: PanAfricanSpacing.xxxs),
@@ -217,7 +217,7 @@ class _AdaptiveRecommendationTile extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 1.h),
       decoration: BoxDecoration(
         color:
-            isDark ? PanAfricanColors.cardDark : Theme.of(context).colorScheme.surface.withOpacity(0.95),
+            isDark ? PanAfricanColors.cardDark : Theme.of(context).colorScheme.surface.withValues(alpha: 0.95),
         borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
         boxShadow: PanAfricanShadows.sm,
         border: Border.all(

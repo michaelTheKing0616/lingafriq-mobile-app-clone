@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../models/league_model.dart';
 import '../../providers/league_provider.dart';
 import '../../utils/pan_african_design_system.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// League/Division Widget showing user's tier and leaderboard position
 class LeagueWidget extends ConsumerStatefulWidget {
@@ -54,7 +55,7 @@ class _LeagueWidgetState extends ConsumerState<LeagueWidget> {
           end: Alignment.bottomCenter,
         ),
         borderRadius: PanAfricanRadius.lgBR,
-        border: Border.all(color: config.color.withOpacity(0.3), width: 2),
+        border: Border.all(color: config.color.withValues(alpha: 0.3), width: 2),
         boxShadow: PanAfricanShadows.md,
       ),
       child: Column(
@@ -84,9 +85,9 @@ class _LeagueWidgetState extends ConsumerState<LeagueWidget> {
             width: 56.w,
             height: 56.w,
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+              color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
               shape: BoxShape.circle,
-              border: Border.all(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.5), width: 2),
+              border: Border.all(color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.5), width: 2),
             ),
             child: Center(
               child: Text(config.emoji, style: TextStyle(fontSize: 32.sp)),
@@ -107,7 +108,7 @@ class _LeagueWidgetState extends ConsumerState<LeagueWidget> {
                 Text(
                   'Week ends in ${_formatDuration(state.timeRemaining)}',
                   style: PanAfricanTypography.bodySmall(context).copyWith(
-                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                    color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9),
                   ),
                 ),
               ],
@@ -116,7 +117,7 @@ class _LeagueWidgetState extends ConsumerState<LeagueWidget> {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+              color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
               borderRadius: PanAfricanRadius.roundBR,
             ),
             child: Column(
@@ -131,7 +132,7 @@ class _LeagueWidgetState extends ConsumerState<LeagueWidget> {
                 ),
                 Text(
                   'XP Bonus',
-                  style: TextStyle(fontSize: 10.sp, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7)),
+                  style: TextStyle(fontSize: 10.sp, color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.7)),
                 ),
               ],
             ),
@@ -162,20 +163,20 @@ class _LeagueWidgetState extends ConsumerState<LeagueWidget> {
             padding: EdgeInsets.all(PanAfricanSpacing.sm),
             decoration: BoxDecoration(
               color: state.willPromote
-                  ? PanAfricanColors.primary.withOpacity(0.1)
-                  : (state.willDemote ? PanAfricanColors.tertiary.withOpacity(0.1) : (isDark ? Theme.of(context).colorScheme.surface.withOpacity(0.05) : PanAfricanColors.surface)),
+                  ? PanAfricanColors.primary.withValues(alpha: 0.1)
+                  : (state.willDemote ? context.panTertiary.withValues(alpha: 0.1) : (isDark ? Theme.of(context).colorScheme.surface.withValues(alpha: 0.05) : PanAfricanColors.surface)),
               borderRadius: PanAfricanRadius.mdBR,
               border: Border.all(
                 color: state.willPromote
-                    ? PanAfricanColors.primary.withOpacity(0.3)
-                    : (state.willDemote ? PanAfricanColors.tertiary.withOpacity(0.3) : Colors.transparent),
+                    ? PanAfricanColors.primary.withValues(alpha: 0.3)
+                    : (state.willDemote ? context.panTertiary.withValues(alpha: 0.3) : Colors.transparent),
               ),
             ),
             child: Row(
               children: [
                 Icon(
                   state.willPromote ? Icons.arrow_upward_rounded : (state.willDemote ? Icons.arrow_downward_rounded : Icons.info_outline_rounded),
-                  color: state.willPromote ? PanAfricanColors.primary : (state.willDemote ? PanAfricanColors.tertiary : (isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7) : PanAfricanColors.textSecondary)),
+                  color: state.willPromote ? PanAfricanColors.primary : (state.willDemote ? context.panTertiary : (isDark ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7) : PanAfricanColors.textSecondary)),
                   size: 20.sp,
                 ),
                 SizedBox(width: PanAfricanSpacing.xs),
@@ -198,7 +199,7 @@ class _LeagueWidgetState extends ConsumerState<LeagueWidget> {
   Widget _buildStatItem(String label, String value, IconData icon, bool isDark) {
     return Column(
       children: [
-        Icon(icon, color: PanAfricanColors.secondary, size: 24.sp),
+        Icon(icon, color: context.panSecondary, size: 24.sp),
         SizedBox(height: 4.h),
         Text(
           value,
@@ -210,7 +211,7 @@ class _LeagueWidgetState extends ConsumerState<LeagueWidget> {
         Text(
           label,
           style: PanAfricanTypography.bodySmall(context).copyWith(
-            color: isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.6) : PanAfricanColors.textSecondary,
+            color: isDark ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6) : PanAfricanColors.textSecondary,
           ),
         ),
       ],
@@ -226,7 +227,7 @@ class _LeagueWidgetState extends ConsumerState<LeagueWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Divider(color: isDark ? Theme.of(context).colorScheme.surface.withOpacity(0.12) : PanAfricanColors.outline.withOpacity(0.2)),
+          Divider(color: isDark ? Theme.of(context).colorScheme.surface.withValues(alpha: 0.12) : PanAfricanColors.outline.withValues(alpha: 0.2)),
           Padding(
             padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.sm),
             child: Row(
@@ -239,7 +240,7 @@ class _LeagueWidgetState extends ConsumerState<LeagueWidget> {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
                   decoration: BoxDecoration(
-                    color: PanAfricanColors.primary.withOpacity(0.1),
+                    color: PanAfricanColors.primary.withValues(alpha: 0.1),
                     borderRadius: PanAfricanRadius.roundBR,
                   ),
                   child: Text(
@@ -264,8 +265,8 @@ class _LeagueWidgetState extends ConsumerState<LeagueWidget> {
       padding: EdgeInsets.all(PanAfricanSpacing.sm),
       decoration: BoxDecoration(
         color: isCurrentUser
-            ? PanAfricanColors.primary.withOpacity(0.15)
-            : (pos.willPromote ? PanAfricanColors.primary.withOpacity(0.05) : (pos.willDemote ? PanAfricanColors.tertiary.withOpacity(0.05) : Colors.transparent)),
+            ? PanAfricanColors.primary.withValues(alpha: 0.15)
+            : (pos.willPromote ? PanAfricanColors.primary.withValues(alpha: 0.05) : (pos.willDemote ? context.panTertiary.withValues(alpha: 0.05) : Colors.transparent)),
         borderRadius: PanAfricanRadius.smBR,
         border: isCurrentUser ? Border.all(color: PanAfricanColors.primary, width: 2) : null,
       ),
@@ -284,7 +285,7 @@ class _LeagueWidgetState extends ConsumerState<LeagueWidget> {
           ),
           CircleAvatar(
             radius: 16.r,
-            backgroundColor: isDark ? Theme.of(context).colorScheme.surface.withOpacity(0.12) : PanAfricanColors.surface,
+            backgroundColor: isDark ? Theme.of(context).colorScheme.surface.withValues(alpha: 0.12) : PanAfricanColors.surface,
             backgroundImage: pos.profilePicUrl != null ? NetworkImage(pos.profilePicUrl!) : null,
             child: pos.profilePicUrl == null
                 ? Text(pos.username[0].toUpperCase(), style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold))
@@ -304,12 +305,12 @@ class _LeagueWidgetState extends ConsumerState<LeagueWidget> {
           if (pos.willPromote)
             Icon(Icons.arrow_upward_rounded, color: PanAfricanColors.primary, size: 16.sp),
           if (pos.willDemote)
-            Icon(Icons.arrow_downward_rounded, color: PanAfricanColors.tertiary, size: 16.sp),
+            Icon(Icons.arrow_downward_rounded, color: context.panTertiary, size: 16.sp),
           SizedBox(width: PanAfricanSpacing.xs),
           Text(
             '${pos.weeklyXP} XP',
             style: PanAfricanTypography.labelMedium(context).copyWith(
-              color: PanAfricanColors.secondary,
+              color: context.panSecondary,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -330,18 +331,18 @@ class _LeagueWidgetState extends ConsumerState<LeagueWidget> {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
               decoration: BoxDecoration(
-                color: PanAfricanColors.tertiary.withOpacity(0.1),
+                color: context.panTertiary.withValues(alpha: 0.1),
                 borderRadius: PanAfricanRadius.roundBR,
               ),
               child: Text(
                 'Bottom ${config.demoteCount} demote ↓',
-                style: TextStyle(fontSize: 10.sp, color: PanAfricanColors.tertiary, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 10.sp, color: context.panTertiary, fontWeight: FontWeight.bold),
               ),
             ),
           TextButton.icon(
             onPressed: () => ref.read(leagueProvider.notifier).refreshLeaderboard(),
             icon: Icon(Icons.refresh_rounded, size: 16.sp),
-            label: Text('Refresh'),
+            label: const Text('Refresh'),
             style: TextButton.styleFrom(foregroundColor: PanAfricanColors.primary),
           ),
         ],
@@ -360,7 +361,7 @@ class _LeagueWidgetState extends ConsumerState<LeagueWidget> {
 
   Color _getRankColor(int rank) {
     switch (rank) {
-      case 1: return const Color(0xFFFFD700);
+      case 1: return LingAfriqTokens.hexFFFFD700;
       case 2: return const Color(0xFFC0C0C0);
       case 3: return const Color(0xFFCD7F32);
       default: return PanAfricanColors.textSecondary;

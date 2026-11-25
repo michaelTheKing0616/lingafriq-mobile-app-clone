@@ -1,5 +1,3 @@
-import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,7 +8,7 @@ import 'package:lingafriq/services/connectivity_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
-import '../../widgets/game/game_widgets.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 class PracticeRoomSetupScreen extends ConsumerStatefulWidget {
   const PracticeRoomSetupScreen({super.key});
@@ -27,7 +25,7 @@ class _PracticeRoomSetupScreenState
   int _selectedGoal = 0;
 
   static const _languages = [
-    _LangOption('Yoruba', Color(0xFF006B3E), Color(0xFFFFFFFF)),
+    _LangOption('Yoruba', Color(0xFF006B3E), LingAfriqTokens.hexFFFFFFFF),
     _LangOption('Zulu', Color(0xFF002395), Color(0xFFE03C31)),
     _LangOption('Swahili', Color(0xFF1EB53A), Color(0xFF006233)),
   ];

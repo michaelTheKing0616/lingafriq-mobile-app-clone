@@ -1,0 +1,106 @@
+charter: v2
+id: F-019
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Phrase DNA
+phase: P7
+epic: E-P7-HUBS
+hub: Learn
+req_ids:
+- F-019
+- F-019.D
+- F-019.E
+- F-019.U
+- F-019.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P5-CONTENT-REAL
+- E-P6-SCORER
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: hub feature delta spec'
+token_budget: 80000
+file_allowlist:
+- lib/screens/learning/phrase_dna/phrase_dna_templates_screen.dart
+- lib/screens/learning/phrase_dna/phrase_dna_session_screen.dart
+context_anchors:
+- ELEVATION.md#§18.3:L3769-L3781
+delta:
+  current_state: Phrase DNA templates and session routes work on thin templates.
+  defects_to_fix:
+  - Templates reuse same thin content pool.
+  elevation_to_build:
+  - Speakable sentence frames with learner word slots, tone sandhi context, and scored full-sentence production.
+  ux_and_render:
+  - Slot chips snap in place; Tone Lens updates live.
+  hub_placement: Learn → Skills → Phrase DNA; Speak → Warm-ups.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given filled slots, when learner speaks sentence, then real scorer results display without fake scores.
+- id: AC2
+  text: Given sandhi language, when slots change, then Tone Lens reflects contextual tone shifts.
+- id: AC3
+  text: Given the scorer is unavailable or its confidence is below the gate threshold, when a score would be shown, then the
+    UI shows the 'unsure' state, stores no number and never shows a fabricated score.
+test_plan:
+  unit:
+  - domain rules for feature delta
+  integration:
+  - navigation and data wiring from hub placement
+  e2e:
+  - primary happy path from Lives in entry
+  a11y:
+  - goldens at 100%/200% text
+  - semantics order
+  content:
+  - honest labels on shown curriculum or media
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - learn.f_019.*
+tags:
+- shows_score
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

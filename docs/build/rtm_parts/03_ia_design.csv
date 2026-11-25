@@ -1,0 +1,77 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+EP-§3.1-01,ELEVATION,§3.1:L768-L769,requirement,"daily, voice-first practice companion that gets diaspora, heritage and curious learners speaking",P1,agent,,Open
+EP-§3.1-02,ELEVATION,§3.1:L769-L770,constraint,Every screen should serve one of three jobs,P1,agent,,Open
+EP-§3.1-03,ELEVATION,§3.1:L770,requirement,learn it (comprehensible input + retrieval),P1,agent,,Open
+EP-§3.1-04,ELEVATION,§3.1:L770-L771,requirement,"say it (pronunciation, tone, conversation)",P1,agent,,Open
+EP-§3.1-05,ELEVATION,§3.1:L771,requirement,"live it (community, culture, people)",P1,agent,,Open
+EP-§3.1-06,ELEVATION,§3.1:L771-L772,requirement,Every existing feature is mapped to at least one of these,P1,agent,,Open
+EP-§3.1-07,ELEVATION,§3.1:L772,constraint,"a feature that doesn't yet serve one is redesigned until it does",P1,agent,,Open
+EP-§3.2-01,ELEVATION,§3.2:L774,informational,my_app.dart:277-480 registers roughly 120 named routes,P1,agent,,Open
+EP-§3.2-02,ELEVATION,§3.2:L774,metric,roughly 120 named routes,P1,agent,,Open
+EP-§3.2-03,ELEVATION,§3.2:L774-L775,informational,"including WhatsApp-, Snapchat- and X-style surfaces",P1,agent,,Open
+EP-§3.2-04,ELEVATION,§3.2:L775-L776,metric,The 36-item drawer,P1,agent,,Open
+EP-§3.2-05,ELEVATION,§3.2:L776-L777,informational,features compete for attention instead of feeding one learning loop,P1,agent,,Open
+EP-§3.2-06,ELEVATION,§3.2:L777-L778,constraint,"The fix is placement and depth (§17, §18), not removal.",P1,agent,,Open
+EP-§3.2-07,ELEVATION,§3.2:L779,metric,Seven design systems at once,P1,agent,,Open
+EP-§3.2-08,ELEVATION,§3.2:L779-L781,informational,"utils/african_theme.dart, app_colors.dart, design_system.dart, modern_griot_design_system.dart, pan_african_design_system.dart, polie_design_tokens.dart, stitch_theme_extensions.dart",P1,agent,,Open
+EP-§3.2-09,ELEVATION,§3.2:L781-L783,metric,There are 740 hard-coded Color(0x...) literals,P1,agent,,Open
+EP-§3.2-10,ELEVATION,§3.2:L783-L784,metric,10+ font families (Nunito,P1,agent,,Open
+EP-§3.2-11,ELEVATION,§3.2:L784,informational,Bundled Dosis is almost unused.,P1,agent,,Open
+EP-§3.2-12,ELEVATION,§3.2:L785,informational,google_fonts fetches fonts at runtime.,P1,agent,,Open
+EP-§3.2-13,ELEVATION,§3.2:L785-L786,risk,"On a first offline launch the fonts fall back, and stacked",P1,agent,,Open
+EP-§3.2-14,ELEVATION,§3.2:L787,informational,Every state does not exist (Playbook law 8).,P1,agent,,Open
+EP-§3.2-15,ELEVATION,§3.2:L787-L788,informational,Errors are caught and swallowed in most screens,P1,agent,,Open
+EP-§3.2-16,ELEVATION,§3.2:L788-L789,informational,Users see wrong data rather than an error state.,P1,agent,,Open
+EP-§3.3-01,ELEVATION,§3.3:L790,decision,Target IA (five tabs + Me; every feature kept),P1,Tope,,Open
+EP-§3.3-02,ELEVATION,§3.3:L790,metric,five tabs + Me,P1,agent,,Open
+EP-§3.3-03,ELEVATION,§3.3:L792-L796,requirement,Today: One adaptive session (10–15 min) mixing review,P1,agent,,Open
+EP-§3.3-04,ELEVATION,§3.3:L792,metric,One adaptive session (10–15 min),P1,agent,,Open
+EP-§3.3-05,ELEVATION,§3.3:L797-L801,requirement,"Learn: CEFR-aligned Path, lessons, Words & Review, Grammar,",P1,agent,,Open
+EP-§3.3-06,ELEVATION,§3.3:L802-L805,requirement,Speak: Polie with all tutor modes,P1,agent,,Open
+EP-§3.3-07,ELEVATION,§3.3:L806-L809,requirement,Play: The Arcade: every game on skill shelves,P1,agent,,Open
+EP-§3.3-08,ELEVATION,§3.3:L810-L813,requirement,"Village Map, Circles, Square feed, Chats, Status, Clips, Radio, School,",P1,agent,,Open
+EP-§3.3-09,ELEVATION,§3.3:L814-L819,requirement,"Me (avatar, top-left): Avatar, progress, achievements, leagues, family, Plus,",P1,agent,,Open
+EP-§3.3-10,ELEVATION,§3.3:L820,requirement,"Global Search, the Lens camera",P1,agent,,Open
+EP-§3.3-11,ELEVATION,§3.3:L820,requirement,"the Lens camera (Point & Say, Live Translate, Import Media)",P1,agent,,Open
+EP-§3.3-12,ELEVATION,§3.3:L820-L821,requirement,the long-press Word Card (Living Dictionary) are available on every tab,P1,agent,,Open
+EP-§3.3-13,ELEVATION,§3.3:L821-L822,requirement,Games are a full destination (Play),P1,agent,,Open
+EP-§3.3-14,ELEVATION,§3.3:L821-L822,requirement,surfaced inside Today and Path as practice formats,P1,agent,,Open
+EP-§3.3-15,ELEVATION,§3.3:L822,requirement,so they update the learner model,P1,agent,,Open
+EP-§3.4-01,ELEVATION,§3.4:L825,requirement,Tokens in one package (lib/design/),P1,agent,,Open
+EP-§3.4-02,ELEVATION,§3.4:L825,requirement,colour roles in OKLCH ramps,P1,agent,,Open
+EP-§3.4-03,ELEVATION,§3.4:L825-L826,constraint,one accent with one meaning,P1,agent,,Open
+EP-§3.4-04,ELEVATION,§3.4:L826,metric,a 4-pt spacing scale,P1,agent,,Open
+EP-§3.4-05,ELEVATION,§3.4:L826,requirement,"radius, elevation, motion curves",P1,agent,,Open
+EP-§3.4-06,ELEVATION,§3.4:L826-L827,metric,"ease-out cubic-bezier(0.23,1,0.32,1)",P1,agent,,Open
+EP-§3.4-07,ELEVATION,§3.4:L827,metric,≤ 300 ms for product UI,P1,agent,,Open
+EP-§3.4-08,ELEVATION,§3.4:L827-L828,requirement,Generate them from a single JSON shared with the admin panel,P1,agent,,Open
+EP-§3.4-09,ELEVATION,§3.4:L828,requirement,the Rive files (colours bound through Rive data binding,P1,agent,,Open
+EP-§3.4-10,ELEVATION,§3.4:L829,requirement,Pick faces by glyph coverage,P1,agent,,Open
+EP-§3.4-11,ELEVATION,§3.4:L829-L831,requirement,Test every candidate with: Ẹ kú àárọ̀ · Ọ̀ ṣun,P1,agent,,Open
+EP-§3.4-12,ELEVATION,§3.4:L831-L832,decision,"Recommended: SIL Andika (designed for literacy, unambiguous letterforms and diacritics)",P1,Tope,,Open
+EP-§3.4-13,ELEVATION,§3.4:L832-L833,requirement,Noto Sans Ethiopic / N'Ko / Tifinagh / Adlam for those scripts,P1,agent,,Open
+EP-§3.4-14,ELEVATION,§3.4:L833,requirement,one characterful display face verified against the string,P1,Tope,,Open
+EP-§3.4-15,ELEVATION,§3.4:L833-L834,constraint,Bundle all of them (no runtime fetch).,P1,agent,,Open
+EP-§3.4-16,ELEVATION,§3.4:L834,metric,Target-language text never below 18 sp,P1,agent,,Open
+EP-§3.4-17,ELEVATION,§3.4:L834,metric,with leading ≥ 1.5 so tone marks don't collide,P1,agent,,Open
+EP-§3.4-18,ELEVATION,§3.4:L835-L836,requirement,"Every target-language word can show a thin pitch contour above it (H/M/L/rising/falling/downstep)",P1,agent,,Open
+EP-§3.4-19,ELEVATION,§3.4:L836-L837,requirement,derived from orthography and validated audio,P1,agent,,Open
+EP-§3.4-20,ELEVATION,§3.4:L837,constraint,"It looks the same in lessons, chat, games, personas and the dictionary.",P1,agent,,Open
+EP-§3.4-21,ELEVATION,§3.4:L838-L839,constraint,It must never be colour-only (accessibility); use contour shape plus optional colour.,P1,agent,,Open
+EP-§3.4-22,ELEVATION,§3.4:L840-L841,constraint,kente stripes on every card are the same trap,P1,agent,,Open
+EP-§3.4-23,ELEVATION,§3.4:L841-L842,requirement,"Commission a pattern library per culture (adire, uli/nsibidi motifs,",P1,external,,Open
+EP-§3.4-24,ELEVATION,§3.4:L842,constraint,used sparingly as unit and region identity,P1,agent,,Open
+EP-§3.4-25,ELEVATION,§3.4:L843,constraint,credited to the artists,P1,agent,,Open
+EP-§3.4-26,ELEVATION,§3.4:L843,external,with a cultural consultant's sign-off,P1,external,,Open
+EP-§3.4-27,ELEVATION,§3.4:L845,requirement,States kit: skeletons matching layout,P1,agent,,Open
+EP-§3.4-28,ELEVATION,§3.4:L845,requirement,empty states that point forward,P1,agent,,Open
+EP-§3.4-29,ELEVATION,§3.4:L845-L846,requirement,"error anatomy (what happened, why, what to do; Playbook §15.4)",P1,agent,,Open
+EP-§3.4-30,ELEVATION,§3.4:L846,requirement,offline state,P1,agent,,Open
+EP-§3.4-31,ELEVATION,§3.4:L846,requirement,"""AI unavailable"" state",P1,agent,,Open
+EP-§3.4-32,ELEVATION,§3.4:L846-L847,requirement,"""content under review"" state",P1,agent,,Open
+EP-§3.4-33,ELEVATION,§3.4:L848,constraint,"Motion: celebrations only in the rare tier (lesson complete, level up).",P1,agent,,Open
+EP-§3.4-34,ELEVATION,§3.4:L848-L849,metric,Answer feedback ≤ 160 ms with haptic plus sound.,P1,agent,,Open
+EP-§3.4-35,ELEVATION,§3.4:L849,requirement,Honour reduced motion (gentler,P1,agent,,Open
+EP-§3.4-36,ELEVATION,§3.4:L850,constraint,Kill the slop tells (Playbook §9): emoji as icons,P1,agent,,Open
+EP-§3.4-37,ELEVATION,§3.4:L850-L851,constraint,"fake-precise numbers (the ""confidence 0.9"" chips)",P1,agent,,Open
+EP-§3.4-38,ELEVATION,§3.4:L851,constraint,"""World-class""/""Elite"" copy in UI strings.",P1,agent,,Open

@@ -1,0 +1,66 @@
+charter: v2
+id: P5-020
+kind: build
+title: Create Pattern Library schema and linter
+phase: P5
+epic: E-P5-A1
+req_ids:
+- CP-§4-10
+- CP-§4-11
+depends_on:
+- P5-008
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- schemas/v2/pattern.schema.json
+- tools/content/pattern_linter.py
+- test/content/pattern_test.py
+context_anchors:
+- CURRICULUM.md#§4:L563-L565
+acceptance_criteria:
+- id: AC1
+  text: Given a pattern entry, when validated, then it holds examples, contrasts, common learner errors and citations
+- id: AC2
+  text: Given a pattern lacking a citation or example, when linted, then it fails PL-001
+- id: AC3
+  text: Given each of the 7 Stage-1 languages, when A1 is built, then every pattern in its language kit list has an entry
+    or a typed PatternMissing
+test_plan:
+  unit:
+  - schema
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - coverage per language
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

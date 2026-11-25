@@ -1,0 +1,66 @@
+charter: v2
+id: P6-010
+kind: build
+title: Constrain generation to approved lexicon at lower levels
+phase: P6
+epic: E-P6-GATEWAY
+req_ids:
+- EP-§7.6-11
+depends_on:
+- P6-008
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/lexiconConstraint.ts
+- node-backend/src/ai-gateway/outputValidator.ts
+context_anchors:
+- ELEVATION.md#§7.6:L1462-L1475
+acceptance_criteria:
+- id: AC1
+  text: Given levels L0 to the configured lower-level cutoff, when a request is built, then generation is constrained to the
+    approved lexicon for that level in the prompt and verified post-hoc
+- id: AC2
+  text: Given a model output containing out-of-lexicon words, when validated, then the response is regenerated once and a
+    second failure returns typed error out_of_level
+- id: AC3
+  text: Given the validator, when it runs, then it never edits model text itself
+test_plan:
+  unit:
+  - out-of-lexicon detect
+  integration:
+  - regenerate once
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - lexicon fixtures per language
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

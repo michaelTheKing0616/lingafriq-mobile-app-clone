@@ -1,0 +1,27 @@
+{
+  "persona_id": "shaka_zulu",
+  "display_name": "Shaka kaSenzangakhona",
+  "death_date": "1828-09-22",
+  "delivery_mode": "narrated_as_told_by",
+  "primary_sources": [
+    {
+      "source_id": "src-shaka-hist-1980s",
+      "type": "monograph",
+      "title": "Peer-reviewed Zulu state formation studies (synthesis)",
+      "year": 1986,
+      "licence_status": "approved"
+    }
+  ],
+  "secondary_sources": [],
+  "contested_points": ["Early oral traditions about Shaka vary; military reforms are better attested than anecdotal cruelty claims."],
+  "known_myths": ["Hollywood-style exaggerations of every battle outcome."],
+  "review": { "historian_id": "historian-seed-shaka", "signed_at": "2026-10-27T12:00:00Z" },
+  "retrieval_cards": [
+    {
+      "card_id": "shaka.card.regiments",
+      "source_id": "src-shaka-hist-1980s",
+      "text": "Historians describe reorganized regiments and closer-combat tactics associated with the early Zulu kingdom.",
+      "terms": ["zulu", "regiments", "military"]
+    }
+  ]
+}

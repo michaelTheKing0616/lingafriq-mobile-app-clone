@@ -1,0 +1,68 @@
+charter: v2
+id: P5-045
+kind: build
+title: Run 300-item calibration sets and compute Cohen kappa
+phase: P5
+epic: E-P5-QUALITY
+req_ids:
+- CP-§5-06
+- CP-§5-07
+- CP-§5-08
+depends_on:
+- P5-044
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- tools/content/calibration_kappa.py
+- test/content/calibration_kappa_test.py
+context_anchors:
+- CURRICULUM.md#§5:L601-L603
+acceptance_criteria:
+- id: AC1
+  text: Given a language, when calibration runs, then about 300 items are double-reviewed
+- id: AC2
+  text: Given two reviews, when scored, then Cohen kappa per language is stored
+- id: AC3
+  text: Given kappa, when applied, then the confidence score is calibrated and the method is recorded
+- id: AC4
+  text: Given an incomplete set, when computed, then it fails CalibrationIncomplete
+test_plan:
+  unit:
+  - kappa formula
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers:
+- EXT-11
+status: Draft
+skills:
+  worker:
+  - adaptive/11-data-and-quantitative-work
+  - adaptive/07-research-and-fact-checking

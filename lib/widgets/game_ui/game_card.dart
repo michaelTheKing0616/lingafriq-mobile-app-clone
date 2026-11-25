@@ -27,18 +27,18 @@ class GameCard extends StatelessWidget {
     switch (state) {
       case GameCardState.selected:
         borderColor = PanAfricanColors.primary;
-        bg = PanAfricanColors.primary.withOpacity(0.08);
+        bg = PanAfricanColors.primary.withValues(alpha: 0.08);
         break;
       case GameCardState.correct:
-        borderColor = PanAfricanColors.success;
-        bg = PanAfricanColors.success.withOpacity(0.12);
+        borderColor = context.panSuccess;
+        bg = context.panSuccess.withValues(alpha: 0.12);
         break;
       case GameCardState.incorrect:
-        borderColor = PanAfricanColors.error;
-        bg = PanAfricanColors.error.withOpacity(0.12);
+        borderColor = context.panError;
+        bg = context.panError.withValues(alpha: 0.12);
         break;
       case GameCardState.disabled:
-        bg = baseBg.withOpacity(0.5);
+        bg = baseBg.withValues(alpha: 0.5);
         break;
       case GameCardState.normal:
         break;

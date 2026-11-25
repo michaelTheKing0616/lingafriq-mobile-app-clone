@@ -1,9 +1,10 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/onboarding_data_model.dart';
+import 'package:lingafriq/models/onboarding_answers.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
-import 'package:lingafriq/providers/backend_sync_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
+import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
 
 class OnboardingNotifier extends Notifier<OnboardingData> {
   SharedPreferencesProvider get _prefs => ref.read(sharedPreferencesProvider);
@@ -477,15 +478,14 @@ class OnboardingNotifier extends Notifier<OnboardingData> {
     try {
       final user = ref.read(userProvider);
       if (user != null) {
-        final syncProvider = ref.read(backendSyncProvider.notifier);
-        await syncProvider.queueSync(SyncTask(
-          type: SyncType.onboarding,
+        await PersistedOutboxService.instance.enqueue(
+          type: 'onboarding_sync',
           data: {
             'user_id': user.id.toString(),
             'onboarding_data': state.toJson(),
             'timestamp': DateTime.now().toIso8601String(),
           },
-        ));
+        );
       }
     } catch (e) {
       logger.error('Error queuing onboarding sync', tag: 'onboarding', error: e);
@@ -493,15 +493,41 @@ class OnboardingNotifier extends Notifier<OnboardingData> {
   }
   
   Future<void> _loadOnboardingData() async {
-    final data = _prefs.prefs.getString('onboarding_data');
-    if (data != null) {
-      try {
-        state = OnboardingData.fromJson(data);
-      } catch (e) {
-        // If parsing fails, start fresh
-        state = OnboardingData();
-      }
+    final migration = await OnboardingAnswers.migrate(_prefs.prefs);
+    if (migration.error != null) {
+      logger.error(
+        'Onboarding answers could not be read',
+        tag: 'onboarding',
+        error: migration.error,
+      );
+      return;
     }
+    final data = _prefs.prefs.getString('onboarding_data');
+    if (data == null || data.isEmpty) return;
+    final loaded = OnboardingAnswers.read(data);
+    if (loaded.legacyProvider) {
+      state = OnboardingData.fromJson(data);
+      return;
+    }
+    state = loaded.answers.toOnboardingData();
+  }
+
+  /// P1-020 — birth year only; band is computed server-side at register.
+  Future<void> persistRegistrationBirthYear(int birthYear, String ageBand) async {
+    await _prefs.prefs.setInt('registration_birth_year', birthYear);
+    await _prefs.prefs.setString('registration_age_band', ageBand);
+    updateAgeCategory(ageBand);
+  }
+
+  int? get registrationBirthYear => _prefs.prefs.getInt('registration_birth_year');
+
+  String? get registrationAgeBand => _prefs.prefs.getString('registration_age_band');
+
+  Map<String, dynamic> registrationAgePayload() {
+    final year = registrationBirthYear;
+    final band = registrationAgeBand;
+    if (year == null || band == null) return {};
+    return {'birth_year': year, 'age_band': band};
   }
 }
 

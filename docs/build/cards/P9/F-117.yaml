@@ -1,0 +1,112 @@
+charter: v2
+id: F-117
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Moderation Tools for Community Stewards
+phase: P9
+epic: E-P9-SAFETY
+hub: Village
+req_ids:
+- F-117
+- F-117.D
+- F-117.E
+- F-117.U
+- F-117.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P9-SAFETY
+- P9-936
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T4
+  justification: 'score 7: social/village feature complexity and coupling; gate-critical (security / child safety / legal
+    / design direction): Fable reviews'
+token_budget: 80000
+file_allowlist:
+- lib/screens/chat/moderation_tools_screen.dart
+- lib/screens/social_audio/moderation_screen.dart
+context_anchors:
+- ELEVATION.md#§18.6:L5163-L5176
+delta:
+  current_state: Chat moderation tools unrouted; audio moderation works separately.
+  defects_to_fix:
+  - No moderation surface for text chat in Village
+  elevation_to_build:
+  - Community Stewards queue with mute, timeout, slow mode, pinned rules
+  - Escalation to staff and required steward training module
+  ux_and_render:
+  - Queue cards with context and quick actions
+  hub_placement: Village → Circles → Steward tools (role-gated)
+  unlock_stage: per §17.4
+  harvest_list:
+  - Revive chat moderation_tools_screen into steward role gate
+acceptance_criteria:
+- id: AC1
+  text: Given a steward role, when opening tools, then reported queue items show context and quick actions
+- id: AC2
+  text: Given an action, when applied, then mute, timeout, or slow mode persists server-side and surfaces in chat UI
+- id: AC3
+  text: Given a non-steward, when navigating to tools, then access is denied without leaking queue content
+- id: AC4
+  text: Given the account is under 18 or age-unknown, when this surface is opened, then it is hidden or guardian-gated until
+    E-P9-SAFETY is Done, and the restriction is enforced server-side.
+test_plan:
+  unit:
+  - delta defects covered
+  - routing and state transitions
+  integration:
+  - hub navigation and backend contracts
+  e2e:
+  - primary user journey on device
+  a11y:
+  - semantics
+  - 200% text scale goldens
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f-117.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+tags:
+- under18_social
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux
+  - adaptive/14-safety-and-high-stakes

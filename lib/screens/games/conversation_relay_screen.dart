@@ -1,10 +1,8 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lingafriq/models/game/game_content_models.dart';
 import 'package:lingafriq/models/game/game_session_model.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/screens/games/base_game_screen.dart';

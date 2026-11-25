@@ -262,7 +262,7 @@ class _RoomDetailScreenState extends ConsumerState<RoomDetailScreen> {
                       const Spacer(),
                       Chip(
                         label: Text(_room!.language),
-                        backgroundColor: PanAfricanColors.primary.withOpacity(0.1),
+                        backgroundColor: PanAfricanColors.primary.withValues(alpha: 0.1),
                       ),
                     ],
                   ),
@@ -318,6 +318,55 @@ class _RoomDetailScreenState extends ConsumerState<RoomDetailScreen> {
                     _room!.description,
                     style: TextStyle(fontSize: 16.sp),
                   ),
+                  if (_room!.isPracticeRoom) ...[
+                    SizedBox(height: 2.h),
+                    Card(
+                      elevation: 0,
+                      color: PanAfricanColors.primary.withValues(alpha: 0.08),
+                      child: Padding(
+                        padding: EdgeInsets.all(PanAfricanSpacing.md),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Practice room',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w600,
+                                color: PanAfricanColors.primary,
+                              ),
+                            ),
+                            if (_room!.practiceTopic != null)
+                              Text('Topic: ${_room!.practiceTopic}', style: TextStyle(fontSize: 15.sp)),
+                            if (_room!.cefrLevel != null)
+                              Text('Level: ${_room!.cefrLevel}', style: TextStyle(fontSize: 15.sp)),
+                            SizedBox(height: 1.h),
+                            Text(
+                              'Speaking follows host turn order. Raise hand to get the mic.',
+                              style: TextStyle(fontSize: 13.sp, color: PanAfricanColors.textSecondary),
+                            ),
+                            if (_room!.aiFacilitatorEnabled) ...[
+                              SizedBox(height: 1.h),
+                              Row(
+                                children: [
+                                  Icon(Icons.smart_toy_outlined, size: 18.sp, color: PanAfricanColors.textSecondary),
+                                  SizedBox(width: 1.w),
+                                  Expanded(
+                                    child: Text(
+                                      _room!.aiFacilitatorMuted
+                                          ? 'AI facilitator muted by host'
+                                          : 'AI facilitator may suggest prompts (labelled AI)',
+                                      style: TextStyle(fontSize: 13.sp),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                   SizedBox(height: 2.h),
 
                   // Scheduled time
@@ -325,7 +374,7 @@ class _RoomDetailScreenState extends ConsumerState<RoomDetailScreen> {
                     Container(
                       padding: EdgeInsets.all(4.w),
                       decoration: BoxDecoration(
-                        color: Colors.blue.withOpacity(0.1),
+                        color: Colors.blue.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                       ),
                       child: Row(
@@ -357,7 +406,7 @@ class _RoomDetailScreenState extends ConsumerState<RoomDetailScreen> {
                   // Room type
                   Chip(
                     label: Text(_getRoomTypeLabel(_room!.type)),
-                    backgroundColor: PanAfricanColors.kenteRed.withOpacity(0.1),
+                    backgroundColor: PanAfricanColors.kenteRed.withValues(alpha: 0.1),
                   ),
                   SizedBox(height: 4.h),
 

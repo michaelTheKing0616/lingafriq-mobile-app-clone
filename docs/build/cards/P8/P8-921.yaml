@@ -1,0 +1,131 @@
+charter: v2
+id: P8-921
+kind: build
+title: 'Flagship: Minimal Pair Duel'
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.3-02
+- EP-§10.3-02a
+- EP-§10.3-02b
+- EP-§10.3-02c
+- EP-§10.3-02d
+depends_on:
+- P8-900
+- P8-901
+- P8-909
+- P8-906
+- P8-908
+- P8-912
+- P8-913
+- E-P4-CONTENT-ENGINE
+- E-P9-SAFETY
+- E-P3-DESIGN-SYSTEM
+size: L
+difficulty:
+  score: 8
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 2, coupling 2; P0 area'
+token_budget: 150000
+file_allowlist:
+- lib/games/minimal_pair_duel/minimal_pair_duel_game.dart
+- lib/games/minimal_pair_duel/minimal_pair_duel_screen.dart
+- lib/games/minimal_pair_duel/league_scoring.dart
+- node-backend/src/services/game_matchmaking.service.ts
+- node-backend/src/services/socket.service.ts
+- lib/games/gamekit/all_games_registry.dart
+context_anchors:
+- ELEVATION.md#§10.3:L1692-L1701
+acceptance_criteria:
+- id: AC1
+  text: Given a minimal_pairs record in the lexicon, when a turn starts, then one of 2–4 near-identical words plays and the
+    learner taps the matching picture
+- id: AC2
+  text: Given words with missing audio or picture, when the pool builds, then the set is excluded
+- id: AC3
+  text: Given a friend challenge, when sent, then the same item set is played asynchronously by both and the result posts
+    when both finish
+- id: AC4
+  text: Given league standings, when computed, then rank uses accuracy first and speed only as a tiebreak
+- id: AC5
+  text: Given a learner under 18, when a challenge is created, then friend lists and matching follow the E-P9-SAFETY rules
+- id: AC6
+  text: Given a bot opponent, when used, then it is labelled per P8-908 and excluded from leagues
+- id: AC7
+  text: Given a wrong tap, when feedback shows, then the explanation plays the confused pair
+test_plan:
+  unit:
+  - league ranking
+  - item set determinism
+  integration:
+  - async duel
+  security:
+  - server-side result verification
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - minimal pair fixtures
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - ready
+  - playing
+  - correct
+  - wrong
+  - why_wrong
+  - results
+  - error
+  - offline
+  - practice_mode
+  - waiting_for_opponent
+  copy_keys:
+  - games.minimal_pair_duel.title
+  - games.minimal_pair_duel.instructions
+  - games.minimal_pair_duel.why_wrong
+  - games.minimal_pair_duel.practice_label
+  - games.minimal_pair_duel.error
+  tokens:
+  - color.surface.game
+  - color.feedback.correct
+  - color.feedback.wrong
+  - space.4
+  - radius.card
+  - type.title
+  motion_tier: product
+  a11y:
+  - screen-reader labels on every answer control
+  - reduced-motion variant
+  - correctness shown by icon and text not colour alone
+  - touch targets ≥48dp
+  goldens:
+  - minimal_pair_duel_playing
+  - minimal_pair_duel_why_wrong
+  - minimal_pair_duel_results
+tags:
+- uses_source
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

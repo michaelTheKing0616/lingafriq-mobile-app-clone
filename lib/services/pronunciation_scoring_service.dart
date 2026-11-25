@@ -13,6 +13,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import '../config/api_contract.dart';
 import 'env_config.dart';
+import 'error/typed_errors.dart';
 
 /// Phoneme error detail
 class PhonemeError {
@@ -178,9 +179,13 @@ class PronunciationResult {
 class PronunciationScoringService {
   static final PronunciationScoringService _instance = PronunciationScoringService._internal();
   factory PronunciationScoringService() => _instance;
-  PronunciationScoringService._internal();
 
-  final Dio _dio = Dio();
+  final Dio _dio;
+
+  PronunciationScoringService._internal() : _dio = Dio();
+
+  @visibleForTesting
+  PronunciationScoringService.testing(this._dio);
   
   // MFA service URL (optional)
   String? get _mfaServiceUrl => EnvConfig.mfaServiceUrl;
@@ -222,11 +227,9 @@ class PronunciationScoringService {
       return backendResult;
     } catch (e) {
       debugPrint('Backend pronunciation scoring failed: $e');
-      // Fall through to basic scoring
     }
 
-    // Final fallback: basic heuristic scoring
-    return _basicScoring(referenceText, language);
+    throw pronunciationUnavailable;
   }
 
   /// Score using MFA service
@@ -300,10 +303,15 @@ class PronunciationScoringService {
 
     if (response.statusCode == 200 && response.data != null) {
       final data = response.data;
-      final isFallback = data['model'] == 'fallback';
-      
+      if (data['model'] == 'fallback' || data['code'] == 'pronunciation_unavailable') {
+        throw pronunciationUnavailable;
+      }
+      final rawScore = data['score'];
+      if (rawScore is! num) throw pronunciationUnavailable;
+      final isFallback = false;
+
       return PronunciationResult(
-        overallScore: (data['score'] ?? 0.75).toDouble(),
+        overallScore: rawScore.toDouble(),
         phonemeErrors: (data['phonemeErrors'] ?? [])
             .map<PhonemeError>((e) => PhonemeError.fromJson(e))
             .toList(),
@@ -314,7 +322,7 @@ class PronunciationScoringService {
             ? PronunciationAlignment.fromJson(data['alignment'])
             : null,
         feedback: data['feedback'] ?? _generateFeedback(
-          (data['score'] ?? 0.75).toDouble(),
+          rawScore.toDouble(),
           [],
           language,
         ),
@@ -327,35 +335,6 @@ class PronunciationScoringService {
     }
 
     throw Exception('Invalid backend response');
-  }
-
-  /// Basic heuristic scoring (final fallback)
-  PronunciationResult _basicScoring(String referenceText, String language) {
-    // Generate a reasonable default score based on text complexity
-    final words = referenceText.split(RegExp(r'\s+'));
-    final wordCount = words.length;
-    
-    // Longer texts are harder to pronounce perfectly
-    double baseScore = 0.75;
-    if (wordCount > 10) baseScore = 0.7;
-    if (wordCount > 20) baseScore = 0.65;
-    
-    // Add some variance to seem more natural
-    final variance = (DateTime.now().millisecond % 10) / 100; // 0-0.1
-    final score = (baseScore + variance).clamp(0.5, 0.85);
-
-    return PronunciationResult(
-      overallScore: score,
-      phonemeErrors: [],
-      wordErrors: [],
-      feedback: _generateFeedback(score, [], language),
-      model: 'basic-heuristic',
-      usedFallback: true,
-      metadata: {
-        'note': 'Basic scoring used. Enable MFA service for detailed analysis.',
-        'wordCount': wordCount,
-      },
-    );
   }
 
   /// Generate human-readable feedback

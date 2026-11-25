@@ -1,0 +1,62 @@
+charter: v2
+id: P6-067
+kind: build
+title: Add culture factuality metric
+phase: P6
+epic: E-P6-EVALS
+req_ids:
+- EP-§7.6-19
+depends_on:
+- P6-056
+- P6-070
+size: S
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 2, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist:
+- evals/metrics/cultureFactuality.ts
+context_anchors:
+- ELEVATION.md#§7.6:L1471
+acceptance_criteria:
+- id: AC1
+  text: Given culture questions with native-verified answers, when scored, then factual accuracy per language is reported
+- id: AC2
+  text: Given an unverifiable claim, when scored, then it counts as wrong and is listed
+test_plan:
+  unit:
+  - scoring
+  integration:
+  - harness wiring
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/11-data-and-quantitative-work
+  - adaptive/07-research-and-fact-checking

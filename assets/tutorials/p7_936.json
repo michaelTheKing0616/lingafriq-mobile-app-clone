@@ -1,0 +1,98 @@
+{
+  "card": "P7-936",
+  "built": "2026-10-27",
+  "language_code": "ha",
+  "pack_citation": "register:fsi-hausa; CURRICULUM.md#§3.3:L527; ELEVATION.md#§11.2:L1789; assets/data/keyboard/layouts.json",
+  "publish_status": "draft",
+  "native_reviewer_sign_offs": [],
+  "tutorials": [
+    {
+      "id": "ha-sound-implosive-ejective",
+      "title": "Implosives ɓ ɗ and ejective ƙ",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 22,
+          "body_en": "Standard Hausa Boko uses hooked letters ɓ and ɗ (implosives) and ƙ (ejective), plus ƴ and glottal ʼ, on the diacritic keyboard (assets/data/keyboard/layouts.json, ha; CURRICULUM.md#§3.3:L527). Pedagogical tone marks stay kit-defined — this tutorial focuses on consonant letters, not tone labels.",
+          "source_ids": [
+            "assets/data/keyboard/layouts.json#ha",
+            "CURRICULUM.md#§3.3:L527",
+            "ELEVATION.md#§11.2:L1789",
+            "register:fsi-hausa"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 26,
+          "body_en": "Watch mouth placement for ɗ in ɗan (son) and ƙ in ƙasa (earth, down), then notice medial ɓ in the A1 lemma yallaɓai. Native mouth video and clips fill in after EXT-13 capture (P7-933).",
+          "source_ids": [
+            "assets/data/lexicon/a1/ha.json#ha.lex.144de805a8ea",
+            "assets/data/lexicon/a1/ha.json#ha.lex.1d0be8b2965f",
+            "assets/data/lexicon/a1/ha.json#ha.lex.33b1da1acf8d",
+            "assets/data/lens/ocr_diacritic_fixtures.json#ha.karshe"
+          ],
+          "mouth_video_uri": null,
+          "audio_uri": null,
+          "hooked_consonant_examples": [
+            {
+              "phoneme": "ɓ",
+              "lemma": "yallaɓai",
+              "gloss_en": "Christians (collective)",
+              "lexicon_id": "ha.lex.33b1da1acf8d",
+              "position": "medial",
+              "frequency_source_id": "leipzig",
+              "licence_id": "leipzig",
+              "audio_uri": null,
+              "mouth_video_uri": null,
+              "media_gate": "EXT-13_native_capture"
+            },
+            {
+              "phoneme": "ɗ",
+              "lemma": "ɗan",
+              "gloss_en": "son (of); small amount of",
+              "lexicon_id": "ha.lex.144de805a8ea",
+              "position": "initial",
+              "frequency_source_id": "leipzig",
+              "licence_id": "leipzig",
+              "audio_uri": null,
+              "mouth_video_uri": null,
+              "media_gate": "EXT-13_native_capture"
+            },
+            {
+              "phoneme": "ƙ",
+              "lemma": "ƙasa",
+              "gloss_en": "earth; ground; down",
+              "lexicon_id": "ha.lex.1d0be8b2965f",
+              "position": "initial",
+              "frequency_source_id": "leipzig",
+              "licence_id": "leipzig",
+              "audio_uri": null,
+              "mouth_video_uri": null,
+              "media_gate": "EXT-13_native_capture"
+            }
+          ],
+          "ocr_contrast": {
+            "fixture_id": "ha.karshe",
+            "gold_text": "A ƙarshe",
+            "gloss_en": "finally",
+            "source_id": "assets/data/audio_manifest.json#manifest_key=hausa|A ƙarshe",
+            "note_en": "Phrase clip cites licensed audio manifest; ƙ is word-medial in ƙarshe."
+          }
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 24,
+          "body_en": "Which spelling matches the A1 lexicon for son (ɗan): ɗan or dan?",
+          "source_ids": [
+            "assets/data/lexicon/a1/ha.json#ha.lex.144de805a8ea"
+          ],
+          "choices": [
+            {"form": "ɗan", "lexicon_ref": "ha.lex.144de805a8ea"},
+            {"form": "dan", "lexicon_ref": null}
+          ],
+          "correct_lexicon_ref": "ha.lex.144de805a8ea"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "layouts": {
+    "yo": {
+      "letters": ["ẹ", "ọ", "ṣ", "Ẹ", "Ọ", "Ṣ"],
+      "marks": [
+        {"copy_key": "keyboard.tone.low", "insert": "\u0300", "a11y": "Low tone mark"},
+        {"copy_key": "keyboard.tone.high", "insert": "\u0301", "a11y": "High tone mark"},
+        {"copy_key": "keyboard.tone.mid", "insert": "\u0304", "a11y": "Mid tone mark"},
+        {"copy_key": "keyboard.dot_below", "insert": "\u0323", "a11y": "Dot below"}
+      ]
+    },
+    "ig": {
+      "letters": ["ị", "ọ", "ụ", "ṅ", "Ị", "Ọ", "Ụ"],
+      "marks": [
+        {"copy_key": "keyboard.tone.low", "insert": "\u0300", "a11y": "Low tone mark"},
+        {"copy_key": "keyboard.tone.high", "insert": "\u0301", "a11y": "High tone mark"},
+        {"copy_key": "keyboard.tone.mid", "insert": "\u0304", "a11y": "Mid tone mark"},
+        {"copy_key": "keyboard.dot_below", "insert": "\u0323", "a11y": "Dot below"}
+      ]
+    },
+    "ha": {
+      "letters": ["ɓ", "ɗ", "ƙ", "ƴ", "Ɓ", "Ɗ", "Ƙ"],
+      "marks": [
+        {"copy_key": "keyboard.tone.low", "insert": "\u0300", "a11y": "Low tone mark"},
+        {"copy_key": "keyboard.tone.high", "insert": "\u0301", "a11y": "High tone mark"}
+      ]
+    },
+    "tw": {
+      "letters": ["ɛ", "ɔ", "Ɛ", "Ɔ"],
+      "marks": [
+        {"copy_key": "keyboard.tone.low", "insert": "\u0300", "a11y": "Low tone mark"},
+        {"copy_key": "keyboard.tone.high", "insert": "\u0301", "a11y": "High tone mark"}
+      ]
+    }
+  }
+}

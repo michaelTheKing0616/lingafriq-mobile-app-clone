@@ -1,0 +1,391 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://lingafriq.app/schema/curriculum-item.json",
+ "title": "LingAfriq curriculum item (elevation plan §6.5 + curriculum plan §5 extensions)",
+ "type": "object",
+ "required": [
+  "id",
+  "lang",
+  "type",
+  "cefr",
+  "can_do",
+  "text",
+  "provenance",
+  "claims",
+  "confidence",
+  "risk_tags",
+  "status",
+  "label",
+  "audio",
+  "feature_hooks"
+ ],
+ "properties": {
+  "id": {
+   "type": "string",
+   "pattern": "^(yo|ig|ha|pcm|sw|zu|xh)\\.(lex|sen|pat|dlg|cul|prv|syn)\\.[0-9a-f]{12}$",
+   "description": "ASCII content hash id, never orthography"
+  },
+  "lang": {
+   "enum": [
+    "yo",
+    "ig",
+    "ha",
+    "pcm",
+    "sw",
+    "zu",
+    "xh"
+   ]
+  },
+  "type": {
+   "enum": [
+    "lexeme",
+    "sentence",
+    "pattern",
+    "dialogue",
+    "culture_note",
+    "proverb"
+   ]
+  },
+  "cefr": {
+   "enum": [
+    "A1",
+    "A2",
+    "B1",
+    "B2",
+    "C1",
+    "C2"
+   ]
+  },
+  "can_do": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   },
+   "minItems": 1
+  },
+  "text": {
+   "type": "string",
+   "minLength": 1,
+   "description": "NFC. Lexeme lemma / sentence / pattern title / dialogue scene / culture title"
+  },
+  "orthography": {
+   "type": "object",
+   "properties": {
+    "standard": {
+     "type": "string"
+    },
+    "ascii_fallback": {
+     "type": "string"
+    },
+    "script": {
+     "const": "Latn"
+    },
+    "tone_marked": {
+     "type": "boolean"
+    },
+    "tones_withheld_reason": {
+     "type": [
+      "string",
+      "null"
+     ]
+    }
+   }
+  },
+  "pos": {
+   "type": [
+    "string",
+    "null"
+   ]
+  },
+  "noun_class": {
+   "type": [
+    "object",
+    "null"
+   ],
+   "properties": {
+    "sg": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "pl": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "plural_form": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "sadilar_agrees": {
+     "type": [
+      "boolean",
+      "null"
+     ]
+    }
+   }
+  },
+  "senses": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "gloss_en"
+    ],
+    "properties": {
+     "gloss_en": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "gloss_status": {
+      "enum": [
+       "beta",
+       "needs-review"
+      ]
+     }
+    }
+   }
+  },
+  "frequency_rank": {
+   "type": [
+    "integer",
+    "null"
+   ]
+  },
+  "corpus_count": {
+   "type": [
+    "integer",
+    "null"
+   ]
+  },
+  "examples": {
+   "type": "array",
+   "items": {
+    "type": "string",
+    "description": "ids of sentence items"
+   }
+  },
+  "translation_en": {
+   "type": [
+    "object",
+    "null"
+   ],
+   "properties": {
+    "text": {
+     "type": "string"
+    },
+    "alignment": {
+     "enum": [
+      "page",
+      "sentence"
+     ]
+    },
+    "status": {
+     "enum": [
+      "beta",
+      "needs-review"
+     ]
+    }
+   }
+  },
+  "turns": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "speaker": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "text": {
+      "type": "string"
+     }
+    }
+   }
+  },
+  "pattern": {
+   "type": "object",
+   "description": "for type=pattern: form, examples[], description (null until linguist writes it), evidence excerpt"
+  },
+  "provenance": {
+   "type": "object",
+   "required": [
+    "sources"
+   ],
+   "properties": {
+    "sources": {
+     "type": "array",
+     "minItems": 1,
+     "items": {
+      "type": "object",
+      "required": [
+       "source_id",
+       "licence"
+      ],
+      "properties": {
+       "source_id": {
+        "type": "string"
+       },
+       "licence": {
+        "type": "string"
+       },
+       "locator": {
+        "type": "string"
+       },
+       "role": {
+        "enum": [
+         "shipped_text",
+         "anchor",
+         "cross_check"
+        ]
+       }
+      }
+     }
+    },
+    "created_at": {
+     "type": "string"
+    },
+    "ai_assisted": {
+     "type": "boolean"
+    }
+   }
+  },
+  "claims": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "text",
+     "source_id",
+     "locator"
+    ],
+    "properties": {
+     "text": {
+      "type": "string"
+     },
+     "source_id": {
+      "type": "string"
+     },
+     "locator": {
+      "type": "string"
+     }
+    }
+   }
+  },
+  "confidence": {
+   "type": "number",
+   "minimum": 0,
+   "maximum": 1
+  },
+  "risk_tags": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "status": {
+   "enum": [
+    "Beta",
+    "needs-review"
+   ]
+  },
+  "label": {
+   "enum": [
+    "beta",
+    "expert",
+    "native"
+   ]
+  },
+  "audio": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "uri",
+     "licence",
+     "kind"
+    ],
+    "properties": {
+     "uri": {
+      "type": "string"
+     },
+     "licence": {
+      "enum": [
+       "CC0",
+       "CC BY 4.0"
+      ]
+     },
+     "kind": {
+      "enum": [
+       "human",
+       "tts"
+      ]
+     },
+     "source_id": {
+      "type": "string"
+     }
+    }
+   }
+  },
+  "feature_hooks": {
+   "type": "object",
+   "properties": {
+    "lessons": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "games": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "point_and_say": {
+     "type": "boolean"
+    },
+    "living_dictionary": {
+     "type": "boolean"
+    },
+    "personas": {
+     "type": "object"
+    }
+   }
+  },
+  "source_type": {
+   "enum": [
+    "attested",
+    "synthesized"
+   ]
+  },
+  "category": {
+   "type": "string"
+  },
+  "token_evidence": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "token": {
+      "type": "string"
+     },
+     "count": {
+      "type": "integer"
+     },
+     "locator": {
+      "type": "string"
+     }
+    }
+   }
+  }
+ }
+}

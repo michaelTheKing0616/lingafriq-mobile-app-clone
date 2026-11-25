@@ -1,0 +1,46 @@
+{
+  "card": "P5-027",
+  "built": "2026-10-26",
+  "languages": {
+    "yo": {
+      "tonal": true,
+      "system_id": "yoruba_hml_glides",
+      "levels": ["H", "M", "L"],
+      "contour_kinds": ["H", "M", "L", "R", "F"],
+      "source_id": "ELEVATION.md#§7.4:L3792-L3793; register:fsi-yoruba; CURRICULUM.md#§7:L710-L713"
+    },
+    "ig": {
+      "tonal": true,
+      "system_id": "igbo_hl_downstep",
+      "levels": ["H", "L"],
+      "contour_kinds": ["H", "L", "D"],
+      "has_downstep": true,
+      "source_id": "ELEVATION.md#§7.4:L3792-L3793; register:fsi-igbo; CURRICULUM.md#§2.4:L319-L323"
+    },
+    "ha": {
+      "tonal": true,
+      "system_id": "hausa_hlf",
+      "levels": ["H", "L", "F"],
+      "contour_kinds": ["H", "L", "F"],
+      "source_id": "ELEVATION.md#§7.4:L3792-L3793; register:fsi-hausa; CURRICULUM.md#§4:L563-L565"
+    },
+    "sw": {
+      "tonal": false,
+      "source_id": "ELEVATION.md#§10.1:L4543"
+    },
+    "pcm": {
+      "tonal": false,
+      "source_id": "ELEVATION.md#§10.1"
+    },
+    "zu": {
+      "tonal": false,
+      "note": "lexical_tone_deferred_wave1",
+      "source_id": "ELEVATION.md#§7.4:L3793"
+    },
+    "xh": {
+      "tonal": false,
+      "note": "lexical_tone_deferred_wave1",
+      "source_id": "ELEVATION.md#§7.4:L3793"
+    }
+  }
+}

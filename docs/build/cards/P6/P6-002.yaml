@@ -1,0 +1,78 @@
+charter: v2
+id: P6-002
+kind: build
+title: Build gateway core with mode enum and authN/Z
+phase: P6
+epic: E-P6-GATEWAY
+req_ids:
+- EP-§7.2-03
+- EP-§7.2-05
+depends_on:
+- P6-001
+- E-P1-CONTAINMENT
+size: M
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 3, ambiguity 1, coupling 2, depth 2'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/index.ts
+- node-backend/src/ai-gateway/modes.ts
+- node-backend/src/ai-gateway/auth.ts
+- node-backend/src/ai-gateway/routes/chat.route.ts
+- node-backend/src/middleware/auth.middleware.ts
+context_anchors:
+- ELEVATION.md#§7.2:L1367-L1387
+acceptance_criteria:
+- id: AC1
+  text: Given the closed mode enum (conversation, roleplay, tutor_explain, tutor_correct, story, shadowing, translate, live_translate),
+    when a request carries any other mode, then the gateway returns typed error mode_unknown with HTTP 400 and no model call
+- id: AC2
+  text: Given a request without a valid user token, when it reaches any gateway route, then HTTP 401 is returned and no provider
+    is called
+- id: AC3
+  text: Given an authenticated user whose tier lacks a mode, when the mode is requested, then typed error mode_forbidden with
+    HTTP 403 is returned
+- id: AC4
+  text: Given a body containing a client-supplied system prompt field, when it is posted, then the request is rejected with
+    typed error client_prompt_forbidden
+test_plan:
+  unit:
+  - mode enum parse
+  - authZ matrix
+  integration:
+  - route auth per mode
+  security:
+  - unauthenticated and forged token
+  - client prompt injection field
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

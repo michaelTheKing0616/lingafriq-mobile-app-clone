@@ -1,0 +1,110 @@
+charter: v2
+id: P8-904
+kind: build
+title: 'GameKit: ''why was I wrong'' explanation with audio'
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.2-08
+depends_on:
+- E-P8-PLAY
+- P8-901
+- E-P3-DESIGN-SYSTEM
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T1
+  justification: 'score 5: blast 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/games/gamekit/game_feedback.dart
+- lib/games/gamekit/game_result.dart
+- lib/games/gamekit/universal_game_screen.dart
+- lib/learning/learner_model/error_taxonomy.dart
+- lib/models/game/game_content_models.dart
+context_anchors:
+- ELEVATION.md#§10.2:L1672-L1673
+acceptance_criteria:
+- id: AC1
+  text: Given a wrong answer, when feedback shows, then an explanation names the error type from the error taxonomy and offers
+    a play-audio control for the correct item
+- id: AC2
+  text: Given the correct item has no audio asset, when the explanation renders, then it shows an explicit 'no audio yet'
+    state and never plays synthesised substitute audio for a tonal language
+- id: AC3
+  text: Given the learner replays the explanation audio, when playback starts, then it begins within 300 ms from cache or
+    shows a loading state
+- id: AC4
+  text: Given a wrong answer, when the explanation is shown, then the error is also written as the typed error in the learner-model
+    event
+test_plan:
+  unit:
+  - error to copy mapping
+  integration:
+  - explanation audio from cache
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - every error type has copy
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - ready
+  - playing
+  - correct
+  - wrong
+  - why_wrong
+  - results
+  - error
+  - offline
+  - practice_mode
+  copy_keys:
+  - games.gamekit_why_wrong.title
+  - games.gamekit_why_wrong.instructions
+  - games.gamekit_why_wrong.why_wrong
+  - games.gamekit_why_wrong.practice_label
+  - games.gamekit_why_wrong.error
+  tokens:
+  - color.surface.game
+  - color.feedback.correct
+  - color.feedback.wrong
+  - space.4
+  - radius.card
+  - type.title
+  motion_tier: product
+  a11y:
+  - screen-reader labels on every answer control
+  - reduced-motion variant
+  - correctness shown by icon and text not colour alone
+  - touch targets ≥48dp
+  goldens:
+  - gamekit_why_wrong_playing
+  - gamekit_why_wrong_why_wrong
+  - gamekit_why_wrong_results
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

@@ -1,0 +1,94 @@
+charter: v2
+id: P7-946
+kind: build
+title: Map Point and Say labels to dictionary entries
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- TR-R1-04
+- TR-R1-06
+depends_on:
+- P7-945
+- P4-168
+- P6-085
+- P7-909
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 6; blast 2
+token_budget: 60000
+file_allowlist:
+- lib/services/lens/point_say_dictionary.dart
+- lib/screens/ar/point_and_say_screen.dart
+- lib/services/lens/lens_collection_service.dart
+- test/services/lens/point_say_dictionary_test.dart
+context_anchors:
+- ELEVATION.md#§17.6:L2376
+- ELEVATION.md#§18.4:L4236-L4245
+acceptance_criteria:
+- id: AC1
+  text: Given a label with a Living Dictionary entry for the active language, when it is shown, then the screen shows the word, the example sentence, and plays audio through the human-first resolver
+- id: AC2
+  text: Given a label with no entry, when it is shown, then the copy says not in the dictionary yet and offers to submit the word to the review queue
+- id: AC3
+  text: Given the learner saves a recognised word, when the save succeeds, then the word is added once to the Lens collection used by spaced repetition
+- id: AC4
+  text: Given a suggestion, when it is queued, then the text is stored as submitted and is not rewritten
+test_plan:
+  unit:
+  - hit mapping
+  - missing entry
+  - collection dedupe
+  integration:
+  - suggestion queue
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - missing-entry state announced
+  content:
+  - suggestion text unchanged
+user_facing: true
+ux_spec:
+  states:
+  - entry
+  - not_in_dictionary
+  - suggestion_sent
+  - saved
+  copy_keys:
+  - lens.point_say.not_in_dictionary
+  - lens.point_say.suggest
+  tokens:
+  - color.surface.scrim
+  motion_tier: product
+  a11y:
+  - suggestion action labelled
+  goldens:
+  - entry
+  - not_in_dictionary
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "A label with no entry stays honest. It is not filled with a generated translation."
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

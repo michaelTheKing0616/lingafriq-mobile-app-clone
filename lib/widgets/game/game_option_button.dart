@@ -157,7 +157,7 @@ class _GameOptionButtonState extends State<GameOptionButton>
                       Text(
                         widget.sublabel!,
                         style: PanAfricanTypography.bodySmall(context).copyWith(
-                          color: resolved.foreground.withOpacity(0.7),
+                          color: resolved.foreground.withValues(alpha: 0.7),
                         ),
                       ),
                     ],
@@ -208,7 +208,7 @@ class _GameOptionButtonState extends State<GameOptionButton>
         );
       case GameOptionState.selected:
         return _OptionStyle(
-          background: cs.primaryContainer.withOpacity(0.3),
+          background: cs.primaryContainer.withValues(alpha: 0.3),
           borderColor: cs.primary,
           borderWidth: 2.0,
           foreground: cs.onSurface,
@@ -216,19 +216,19 @@ class _GameOptionButtonState extends State<GameOptionButton>
         );
       case GameOptionState.correct:
         return _OptionStyle(
-          background: PanAfricanColors.success.withOpacity(0.12),
-          borderColor: PanAfricanColors.success,
+          background: context.panSuccess.withValues(alpha: 0.12),
+          borderColor: context.panSuccess,
           borderWidth: 2.0,
-          foreground: PanAfricanColors.success,
-          trailingColor: PanAfricanColors.success,
+          foreground: context.panSuccess,
+          trailingColor: context.panSuccess,
         );
       case GameOptionState.wrong:
         return _OptionStyle(
-          background: PanAfricanColors.error.withOpacity(0.12),
-          borderColor: PanAfricanColors.error,
+          background: context.panError.withValues(alpha: 0.12),
+          borderColor: context.panError,
           borderWidth: 2.0,
-          foreground: PanAfricanColors.error,
-          trailingColor: PanAfricanColors.error,
+          foreground: context.panError,
+          trailingColor: context.panError,
         );
     }
   }

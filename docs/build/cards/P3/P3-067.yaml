@@ -1,0 +1,125 @@
+charter: v2
+id: P3-067
+kind: build
+title: Consolidate onboarding variants into unified onboarding
+phase: P3
+epic: E-P3-REVIVE
+req_ids:
+- CON-03
+- EP-§5.1-09
+depends_on:
+- P3-037
+size: M
+difficulty:
+  score: 6
+  blast: 1
+  ambiguity: 2
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: ambiguity from merge choices, coupling across variants'
+token_budget: 60000
+file_allowlist:
+- lib/screens/onboarding/unified_onboarding_screen.dart
+- lib/screens/onboarding/kijiji_onboarding_screen.dart
+- lib/screens/onboarding/placement_quiz_screen.dart
+- lib/screens/onboarding/placement_test_screen.dart
+context_anchors:
+- ELEVATION.md#§17.5:L2333-L2338
+acceptance_criteria:
+- id: AC1
+  text: Given the variants, when compared, then each is audited and harvest_list items are moved into the surviving feature
+    or listed as dropped with a reason
+- id: AC2
+  text: Given the surviving feature, when tested, then it passes the golden and behaviour tests of the replaced variants
+- id: AC3
+  text: Given the old variant files, when consolidation ends, then they are deleted or moved under legacy/ and no route points
+    to them
+- id: AC4
+  text: Given any harvested item is missing at review, when checked, then the card fails (No-Cut rule)
+- id: AC5
+  text: Given Kijiji's village story, when harvested, then it appears in the unified flow as the optional story panel
+test_plan:
+  unit:
+  - parity tests
+  integration:
+  - route check
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+harvest_list:
+- kijiji_onboarding_screen.dart village story
+- enhanced_onboarding_flow_screen.dart
+- modern_onboarding_screen.dart
+- onboarding_screen.dart
+- onboarding_screen_material3.dart
+- placement_quiz_screen.dart
+- placement_test_screen.dart
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+harvest_audit:
+  "kijiji_onboarding_screen.dart village story":
+    moved:
+    - optional panel on the unified welcome step
+    - spoken lines in screen order: welcome, Pa LingAfriq, who you are, why you are learning, Adisa the Weaver, Nuru the Rhythm Master, Zawadi, choose your path, Amina the Griot, the Healer, build your clan, the naming line, let us see where you stand
+    dropped:
+    - age, reason, language, level, duration, path, tone, and gamification controls. The unified steps already save those answers.
+    - healer switches. Titles are camelCase keys split by a regex, not strings from the catalogue.
+    - clan chips. Labels are the raw ids solo, buddies, community, and teacher_guided.
+    - rhythm options. Labels are the raw ids audio, visual, stories, drills, and conversation. The unified learning-style step already saves those ids.
+    - three self-report placement prompts inside _PlacementTestScreen. They assign fixed levels A0 through B2. The unified flow already opens PlacementTestScreen when self_reported_level is unsure. This card does not copy those prompts.
+  enhanced_onboarding_flow_screen.dart:
+    moved: []
+    dropped:
+    - proficiency language, learning language, age, reasons, daily time, primary goal, learning style, app tone, schedule, and profile. The unified steps already save those keys.
+    - proficiency_level and pace_preference. Nothing else in lib reads those keys. Pace options render the raw ids slow, steady, fast, and surprise.
+    - the placement dialog. Unified already asks, then opens PlacementTestScreen.
+    - no generateAppRoute entry. The class was only constructed by its own file.
+  modern_onboarding_screen.dart:
+    moved: []
+    dropped:
+    - four marketing pages. Get started calls setOnboardingSeen, registerDevice, and TabsViewMaterial3. It does not read the path card.
+    - path cards call updatePath, including dialect, and then the next screen ignores selectedPath.
+    - onboardingExplore54Countries2000LanguagesAnd is the frozen unverified language-count claim in MARKETING_CLAIMS_FREEZE.md.
+    - no generateAppRoute entry and no other file constructed the class.
+  onboarding_screen.dart:
+    moved: []
+    dropped:
+    - page 4 calls navigateOffAll(TabsViewMaterial3) and saves no answers.
+    - three descriptions are hard-coded English, including the frozen 2000-language claim.
+    - no generateAppRoute entry and no other file constructed the class.
+  onboarding_screen_material3.dart:
+    moved:
+    - its build method already returned UnifiedOnboardingScreen. auth_provider, sign_in_options, and passkey_service now construct UnifiedOnboardingScreen directly.
+    dropped:
+    - the wrapper class. It had no other child.
+  placement_quiz_screen.dart:
+    moved: []
+    dropped:
+    - loads questions with PlacementTestService.loadQuestionsForLanguage and scores them with PlacementTestService.evaluate. The file contains no question text.
+    - updatePlacementTest and updateProficiency write onboardingProvider.placementTestResults. No reachable screen reads that field.
+    - no generateAppRoute entry and no other file constructed the class. Unified opens PlacementTestScreen instead.
+  placement_test_screen.dart:
+    kept: the unified completion dialog already pushes this screen when self_reported_level is unsure. Questions come from the generate endpoint and PlacementTestService. This card does not copy a question into a new widget. Moving the file would leave that dialog with no screen.
+    dropped: []
+risks:
+- harvest drift; keep list authoritative
+gate: G3
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

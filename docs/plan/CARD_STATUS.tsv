@@ -1,0 +1,1098 @@
+id	status	title	path
+ADR-001	Done	'ADR: Three-label interim content policy (D1)'	P0/ADR-001.yaml
+ADR-002	Done	'ADR: Lexicon-anchored tone Beta rule and verification principles'	P0/ADR-002.yaml
+ADR-003	Done	ADR-003 L1 audio readiness + isiXhosa voice path (docs/build/adr/ADR-003.md)	P0/ADR-003.yaml
+ADR-004	Done	'ADR-004: Choose Drift/SQLite or Isar as the one local database'	P2/ADR-004.yaml
+ADR-020	Done	Cowries only soft currency; ADR-020-soft-currency-cowries.md	P10/ADR-020.yaml
+ADR-021	Done	North-star + guardrails in ADR-021-analytics-north-star.md	P10/ADR-021.yaml
+E-P0-INTAKE	Draft	'Intake: RTM, charter enforcement, repo map, verification cards'	P0/E-P0-INTAKE.yaml
+E-P1-AI-GATEWAY	Draft	'AI gateway: auth, quotas, server-owned prompts'	P1/E-P1-AI-GATEWAY.yaml
+E-P1-AUTH	Draft	Auth, API hardening and supply chain	P1/E-P1-AUTH.yaml
+E-P1-CONTAINMENT	Draft	'Containment: close all 27 P0s with evidence'	P1/E-P1-CONTAINMENT.yaml
+E-P1-CONTENT-HONESTY	Draft	'Content honesty: persona, scoring, placeholders'	P1/E-P1-CONTENT-HONESTY.yaml
+E-P1-ECONOMY	Draft	'Economy: server-only rewards and reconciliation'	P1/E-P1-ECONOMY.yaml
+E-P1-LICENCES	Draft	'Licences: remove non-commercial models and scraper'	P1/E-P1-LICENCES.yaml
+E-P1-MINORS	Draft	Minors and moderation containment	P1/E-P1-MINORS.yaml
+E-P1-OFFLINE-DATA	Draft	Offline, onboarding and notification data integrity	P1/E-P1-OFFLINE-DATA.yaml
+E-P1-PAYMENTS	Draft	'Payments: server-side entitlements'	P1/E-P1-PAYMENTS.yaml
+E-P1-SECRETS	Draft	'Secrets: purge, revoke, gate'	P1/E-P1-SECRETS.yaml
+E-P1-SOCKETS	Draft	'Sockets: ACL, identity, scoped emits'	P1/E-P1-SOCKETS.yaml
+E-P10-ANALYTICS	Draft	Analytics, experiments and copy rules	P10/E-P10-ANALYTICS.yaml
+E-P10-CREDENTIALS	Draft	Passport credentials	P10/E-P10-CREDENTIALS.yaml
+E-P10-GAMIFICATION	Draft	Ethical gamification and rewards	P10/E-P10-GAMIFICATION.yaml
+E-P10-ME	Draft	Me hub, monetisation, credentials, offline packs	P10/E-P10-ME.yaml
+E-P10-PRIVACY	Draft	Privacy and compliance programme	P10/E-P10-PRIVACY.yaml
+E-P11-PERSONAS-AVATARS	Draft	Personas v1 and Avatar v1	P11/E-P11-PERSONAS-AVATARS.yaml
+E-P12-RELEASE	Draft	Hardening, privacy programme, a11y audit, release readiness	P12/E-P12-RELEASE.yaml
+E-P13-SCALE	Draft	'Scale: Waves 2–4, contributor programme, moonshots'	P13/E-P13-SCALE.yaml
+E-P2-PLATFORM	Draft	'Platform foundation: CI gates, OpenAPI client, outbox, auth v2, observability, learner model'	P2/E-P2-PLATFORM.yaml
+E-P3-A11Y-I18N	Draft	Accessibility baseline and localisation	P3/E-P3-A11Y-I18N.yaml
+E-P3-COMPONENTS	Draft	Component library with every state	P3/E-P3-COMPONENTS.yaml
+E-P3-DESIGN-SYSTEM	Draft	Design system, IA shell, onboarding v2	P3/E-P3-DESIGN-SYSTEM.yaml
+E-P3-DESIGN-WORKFLOW	Draft	'Design workflow: benchmark to hi-fi screens'	P3/E-P3-DESIGN-WORKFLOW.yaml
+E-P3-ONBOARDING	Draft	Onboarding v2 in eight steps	P3/E-P3-ONBOARDING.yaml
+E-P3-REVIVE	Draft	Revive, consolidate, dev move	P3/E-P3-REVIVE.yaml
+E-P3-SHELL	Draft	Five-tab shell, search, lens, directory	P3/E-P3-SHELL.yaml
+E-P3-TOKENS	Draft	Tokens, type and compliance lint	P3/E-P3-TOKENS.yaml
+E-P4-CONTENT-ENGINE	Draft	'Content engine: licence register, language kits, linters, Studio, pipeline'	P4/E-P4-CONTENT-ENGINE.yaml
+E-P4-LANGUAGE-KITS	Draft	'Sub-epic: Language Kits'	P4/E-P4-LANGUAGE-KITS.yaml
+E-P4-LEGACY-REBUILD	Draft	'Sub-epic: Legacy Rebuild'	P4/E-P4-LEGACY-REBUILD.yaml
+E-P4-LICENCES	Draft	'Sub-epic: Licences'	P4/E-P4-LICENCES.yaml
+E-P4-LINTERS	Draft	'Sub-epic: Linters'	P4/E-P4-LINTERS.yaml
+E-P4-PIPELINE	Draft	'Sub-epic: Pipeline'	P4/E-P4-PIPELINE.yaml
+E-P4-STUDIO	Draft	'Sub-epic: Studio'	P4/E-P4-STUDIO.yaml
+E-P5-A1	Draft	A1 Beta content wave	P5/E-P5-A1.yaml
+E-P5-A2	Draft	A2 content wave and promotion	P5/E-P5-A2.yaml
+E-P5-AUDIO	Draft	Audio policy, TTS gates and replacement	P5/E-P5-AUDIO.yaml
+E-P5-B1	Draft	B1 content wave and Wave 2 L0	P5/E-P5-B1.yaml
+E-P5-CONTENT-REAL	Draft	Stage-1 content waves A1→A2→B1 with honest labels	P5/E-P5-CONTENT-REAL.yaml
+E-P5-QUALITY	Draft	Quality mechanisms, labels and accuracy tiers	P5/E-P5-QUALITY.yaml
+E-P6-EVALS	Draft	Per-language eval sets, ASR evals and CI blocker	P6/E-P6-EVALS.yaml
+E-P6-GATEWAY	Draft	'Gateway: modes, prompts, quotas, grounding, speech stack'	P6/E-P6-GATEWAY.yaml
+E-P6-MODES	Draft	Eight server-owned AI modes with grounding and evals	P6/E-P6-MODES.yaml
+E-P6-REALTIME	Draft	Realtime speech-to-speech with barge-in	P6/E-P6-REALTIME.yaml
+E-P6-SCORER	Draft	'Speech and AI: real scorer, gated TTS, realtime voice, gateway modes'	P6/E-P6-SCORER.yaml
+E-P6-SCORING	Draft	Pronunciation and tone scorer parts and calibration	P6/E-P6-SCORING.yaml
+E-P6-TTS	Draft	TTS strategy, tone-accuracy gate and per-language voices	P6/E-P6-TTS.yaml
+E-P7-HUBS	Draft	'Today, Learn and Speak hubs: every feature kept, wired and elevated'	P7/E-P7-HUBS.yaml
+E-P8-PLAY	Draft	'Play hub: flagship games on real scoring, every game on a shelf'	P8/E-P8-PLAY.yaml
+E-P9-E2EE	Draft	MLS end-to-end encrypted adult messaging and group calls	P9/E-P9-E2EE.yaml
+E-P9-GUARDIAN	Draft	Guardian hub, age tiers, consent and minor defaults	P9/E-P9-GUARDIAN.yaml
+E-P9-MODERATION	Draft	'Moderation stack: prevention, detection, response, transparency'	P9/E-P9-MODERATION.yaml
+E-P9-REALTIME	Draft	'Realtime infra: Redis scale-out, room authz, schemas, rate limits, messaging core'	P9/E-P9-REALTIME.yaml
+E-P9-SAFETY	Draft	'Safety and social: guardian hub, age tiers, moderation, E2EE, pen test'	P9/E-P9-SAFETY.yaml
+E-P9-VILLAGE	Draft	'Village social engines: circles, chat, rooms, clips, classrooms, events'	P9/E-P9-VILLAGE.yaml
+EXT-01	Done	Companion doc at docs/plan/LINGAFRIQ_AI_MODEL_STACK.md (EXT-01)	EXT/EXT-01.yaml
+EXT-03	Blocked-External	'Obtain: Counsel sign-off on the licence register'	EXT/EXT-03.yaml
+EXT-04	Blocked-External	'Obtain: Oxford Languages datasets (yo, ig, ha, xh; sw via API) quote + licence'	EXT/EXT-04.yaml
+EXT-05	Blocked-External	'Obtain: IgboAPI dataset licence (Nkọwa okwu)'	EXT/EXT-05.yaml
+EXT-06	Blocked-External	'Obtain: isiZulu dictionary licence (Doke–Vilakazi publisher / isiZulu NLU) [verify]'	EXT/EXT-06.yaml
+EXT-07	Blocked-External	'Obtain: PanLex written permission'	EXT/EXT-07.yaml
+EXT-08	Blocked-External	'Obtain: NaijaVoices commercial waiver ($5k+/yr) — optional'	EXT/EXT-08.yaml
+EXT-09	Blocked-External	'Obtain: Helsinki Corpus of Swahili (ELRA €7.5k/15k) — optional'	EXT/EXT-09.yaml
+EXT-10	Blocked-External	'Obtain: Kamusi licence — optional'	EXT/EXT-10.yaml
+EXT-11	Blocked-External	'Obtain: 2 part-time linguists per Stage-1 language (14), consent + IP clause'	EXT/EXT-11.yaml
+EXT-12	Blocked-External	'Obtain: isiXhosa custom voice commission (2 actors, 5–10 h, buy-out) [quote]'	EXT/EXT-12.yaml
+EXT-13	Blocked-External	'Obtain: Native validators and voice talent (≥2 voices L0/L1, ≥4 L2 per language)'	EXT/EXT-13.yaml
+EXT-14	Blocked-External	'Obtain: Cultural consultant (patterns, avatars, imagery)'	EXT/EXT-14.yaml
+EXT-15	Blocked-External	'Obtain: Historians per persona (5 at v1)'	EXT/EXT-15.yaml
+EXT-16	Blocked-External	'Obtain: Rive / illustration artists (`.riv`, illustration packs, music, sounds)'	EXT/EXT-16.yaml
+EXT-17	Blocked-External	'Obtain: Third-party penetration test'	EXT/EXT-17.yaml
+EXT-18	Blocked-External	'Obtain: NDPC registration check + DPIA (incl. voice data thresholds [verify with counsel])'	EXT/EXT-18.yaml
+EXT-19	Blocked-External	'Obtain: App-store and payment set-up (RevenueCat webhooks secret, Play/App Store)'	EXT/EXT-19.yaml
+EXT-20	Blocked-External	'Obtain: Efficacy-study partner'	EXT/EXT-20.yaml
+EXT-21	Blocked-External	'Obtain: Key revocation (Firebase SA, Apple .p8, 5 AI keys) and history purge — human-run'	EXT/EXT-21.yaml
+EXT-22	Blocked-External	'Obtain: Reference grammars/dictionaries [purchase]: Bámgbóṣé, Emenanjo, Newman, Faraclas, Ashton, Poulos & Msimang'	EXT/EXT-22.yaml
+EXT-23	Blocked-External	'Obtain: Live-server facts marked [Unverified]: PM2 double scheduler, RevenueCat key injection, live translate path'	EXT/EXT-23.yaml
+EXT-24	Blocked-External	'Obtain: Professional UI translation + native sign-off of ARB strings with diacritics (20 locales)'	EXT/EXT-24.yaml
+EXT-25	Blocked-External	'Obtain: CSAM hash-matching vendor account (e.g. PhotoDNA/Safer-class) and hotline / law-enforcement reporting contacts'	EXT/EXT-25.yaml
+EXT-26	Blocked-External	'Obtain: Native-moderator lexicons and moderator panel per Stage-1 language'	EXT/EXT-26.yaml
+EXT-27	Blocked-External	'Obtain: Accessibility audit with disabled users (WCAG 2.2 AA)'	EXT/EXT-27.yaml
+EXT-28	Blocked-External	'Obtain: Paid contributors for the open tone corpus (moonshot)'	EXT/EXT-28.yaml
+EXT-29	Blocked-External	'Obtain: Museum / university partners for living history and AR scenes (moonshot)'	EXT/EXT-29.yaml
+EXT-30	Blocked-External	'Obtain: Verified native tutors for the teacher marketplace (moonshot)'	EXT/EXT-30.yaml
+F-001	Draft	Elevate Home / Today session	P7/F-001.yaml
+F-002	Draft	Elevate Daily Goals	P7/F-002.yaml
+F-003	Draft	Elevate Daily Challenges (revived)	P7/F-003.yaml
+F-004	Draft	Elevate Quests	P7/F-004.yaml
+F-005	Draft	Elevate Seasonal Events / Village Festival	P7/F-005.yaml
+F-006	Draft	Elevate Streaks & reminders	P7/F-006.yaml
+F-007	Draft	Elevate Lessons map / Courses	P7/F-007.yaml
+F-008	Draft	Elevate Authentic Path (A1–C1)	P7/F-008.yaml
+F-009	Draft	Elevate Lesson Flow	P7/F-009.yaml
+F-010	Draft	Elevate Lesson detail & Level certificate	P7/F-010.yaml
+F-011	Draft	Elevate Learning Path (personal plan)	P7/F-011.yaml
+F-012	Draft	Elevate Placement test	P7/F-012.yaml
+F-013	Draft	Elevate Grammar Hub	P7/F-013.yaml
+F-014	Draft	Elevate Vocabulary Builder	P7/F-014.yaml
+F-015	Draft	Elevate My Words & Review (SRS)	P7/F-015.yaml
+F-016	Draft	Elevate Review Rush (gamified review)	P7/F-016.yaml
+F-017	Draft	Elevate Listening Practice	P7/F-017.yaml
+F-018	Draft	Elevate Writing Practice	P7/F-018.yaml
+F-019	Draft	Elevate Phrase DNA	P7/F-019.yaml
+F-020	Draft	Elevate Tone & Rhythm Trainer	P7/F-020.yaml
+F-021	Draft	Elevate Tonal Lesson (Village)	P7/F-021.yaml
+F-022	Draft	Elevate Language Quiz	P7/F-022.yaml
+F-023	Draft	Elevate History & History Quiz	P7/F-023.yaml
+F-024	Draft	Elevate Mannerisms & etiquette	P7/F-024.yaml
+F-025	Draft	Elevate Cultural Hub	P7/F-025.yaml
+F-026	Draft	Elevate Culture Magazine	P7/F-026.yaml
+F-027	Draft	Elevate Heritage Milestones	P7/F-027.yaml
+F-028	Draft	Elevate FLB Heritage Archive	P7/F-028.yaml
+F-029	Draft	Elevate Dialect Preference	P7/F-029.yaml
+F-030	Draft	Elevate Living Dictionary	P7/F-030.yaml
+F-031	Draft	Elevate Offline Downloads	P7/F-031.yaml
+F-032	Draft	Elevate Language detail & Suggest a language	P7/F-032.yaml
+F-033	Draft	Elevate Passport (proctored test & credential)	P7/F-033.yaml
+F-034	Draft	Elevate Lesson Recap	P7/F-034.yaml
+F-035	Draft	Elevate Polie AI Tutor workspace	P7/F-035.yaml
+F-036	Draft	Elevate Tutor Dialogue mode	P7/F-036.yaml
+F-037	Draft	Elevate Tutor Grammar mode	P7/F-037.yaml
+F-038	Draft	Elevate Tutor Story mode	P7/F-038.yaml
+F-039	Draft	Elevate Tutor Translation mode	P7/F-039.yaml
+F-040	Draft	Elevate Tutor Pronunciation mode	P7/F-040.yaml
+F-041	Draft	Elevate Tutor Assess mode	P7/F-041.yaml
+F-042	Draft	Elevate Tutor dashboard	P7/F-042.yaml
+F-043	Draft	Elevate Shadowing (revived)	P7/F-043.yaml
+F-044	Draft	Elevate Conversation Scenarios and Roleplay	P7/F-044.yaml
+F-045	Draft	Elevate Conversation Analytics	P7/F-045.yaml
+F-046	Draft	Elevate Speak Engine Lab coaches	P7/F-046.yaml
+F-047	Draft	Elevate Speak Missions	P7/F-047.yaml
+F-048	Draft	Elevate Historical Personas	P7/F-048.yaml
+F-049	Draft	Elevate Persona Missions	P7/F-049.yaml
+F-050	Draft	Elevate LingChat AI conversation entry	P7/F-050.yaml
+F-051	Draft	Elevate Synthetic Voice Styles	P7/F-051.yaml
+F-052	Draft	Elevate Point and Say Lens	P7/F-052.yaml
+F-053	Draft	Elevate Live Translate Bridge	P7/F-053.yaml
+F-054	Draft	Elevate Import Media OCR and clips	P7/F-054.yaml
+F-055	Draft	Elevate Games Arcade (hub & catalogue)	P8/F-055.yaml
+F-056	Draft	Elevate Game shell, guides & results (revived)	P8/F-056.yaml
+F-057	Draft	Elevate Word Match	P8/F-057.yaml
+F-058	Draft	Elevate Word Match (audio)	P8/F-058.yaml
+F-059	Draft	Elevate Fill in the Blank	P8/F-059.yaml
+F-060	Draft	Elevate Picture–Word Association	P8/F-060.yaml
+F-061	Draft	Elevate Memory Map	P8/F-061.yaml
+F-062	Draft	Elevate Speed Challenge	P8/F-062.yaml
+F-063	Draft	Elevate Speed Round	P8/F-063.yaml
+F-064	Draft	Elevate Story Builder	P8/F-064.yaml
+F-065	Draft	Elevate Grammar Detective	P8/F-065.yaml
+F-066	Draft	Elevate Grammar Jam	P8/F-066.yaml
+F-067	Draft	Elevate Greeting Diplomacy	P8/F-067.yaml
+F-068	Draft	Elevate Market Bargaining	P8/F-068.yaml
+F-069	Draft	Elevate Quiz Chef	P8/F-069.yaml
+F-070	Draft	Elevate Roleplay Adventure	P8/F-070.yaml
+F-071	Draft	Elevate Taxi Survival	P8/F-071.yaml
+F-072	Draft	Elevate Tone Trainer	P8/F-072.yaml
+F-073	Draft	Elevate Pronunciation Duel	P8/F-073.yaml
+F-074	Draft	Elevate Pronunciation Game	P8/F-074.yaml
+F-075	Draft	Elevate Pronunciation Karaoke	P8/F-075.yaml
+F-076	Draft	Elevate Emoji Translator	P8/F-076.yaml
+F-077	Draft	Elevate Elders' Blessings	P8/F-077.yaml
+F-078	Draft	Elevate Folktale Reconstruction	P8/F-078.yaml
+F-079	Draft	Elevate Clan Lineage Story Builder	P8/F-079.yaml
+F-080	Draft	Elevate Conversation Relay	P8/F-080.yaml
+F-081	Draft	Elevate Board Word Games	P8/F-081.yaml
+F-082	Draft	Elevate Cultural Games collection	P8/F-082.yaml
+F-083	Draft	Elevate Accent Puzzle	P8/F-083.yaml
+F-084	Draft	Elevate Call & Response	P8/F-084.yaml
+F-085	Draft	Elevate Cultural Etiquette	P8/F-085.yaml
+F-086	Draft	Elevate Drum Word	P8/F-086.yaml
+F-087	Draft	Elevate Flashcard Safari	P8/F-087.yaml
+F-088	Draft	Elevate Food Quest	P8/F-088.yaml
+F-089	Draft	Elevate Liar Liar	P8/F-089.yaml
+F-090	Draft	Elevate Multilingual Relay	P8/F-090.yaml
+F-091	Draft	Elevate Phrase Sniper	P8/F-091.yaml
+F-092	Draft	Elevate Proverb Unlocker	P8/F-092.yaml
+F-093	Draft	Elevate Rhythm Typing	P8/F-093.yaml
+F-094	Draft	Elevate Tongue Twister Race	P8/F-094.yaml
+F-095	Draft	Elevate Village Quest	P8/F-095.yaml
+F-096	Draft	Elevate Ayo (mancala)	P8/F-096.yaml
+F-097	Draft	Elevate Snakes & Ladders (cultural)	P8/F-097.yaml
+F-098	Draft	Elevate Language Ludo	P8/F-098.yaml
+F-099	Draft	Elevate Suwe (hopscotch)	P8/F-099.yaml
+F-100	Draft	Elevate Whot!	P8/F-100.yaml
+F-101	Draft	Elevate Drum Rhythm	P8/F-101.yaml
+F-102	Draft	Elevate Tone Forge (revived)	P8/F-102.yaml
+F-103	Draft	Elevate Villages hub and Language Villages	P9/F-103.yaml
+F-104	Draft	Elevate Swahili Village Map template	P9/F-104.yaml
+F-105	Draft	Elevate Village Market	P9/F-105.yaml
+F-106	Draft	Elevate Village Café	P9/F-106.yaml
+F-107	Draft	Elevate Elder Hut	P9/F-107.yaml
+F-108	Draft	Elevate Practice Rooms and Sessions	P9/F-108.yaml
+F-109	Draft	Elevate Flashcard Focus (group)	P9/F-109.yaml
+F-110	Draft	Elevate Matching Pairs (group)	P9/F-110.yaml
+F-111	Draft	Elevate Tribes as Circles	P9/F-111.yaml
+F-112	Draft	Elevate Circle Clash competitions	P9/F-112.yaml
+F-113	Draft	Elevate Global Chat as Language Squares	P9/F-113.yaml
+F-114	Done	Elevate private chat: learning tools + voice transcript + contact report/block (private_chat_screen.dart)	P9/F-114.yaml
+F-115	Draft	Elevate Call History	P9/F-115.yaml
+F-116	Draft	Elevate Chat Welcome and Community Guidelines	P9/F-116.yaml
+F-117	Draft	Elevate Moderation Tools for Community Stewards	P9/F-117.yaml
+F-118	Draft	Elevate Social Hub and Connections	P9/F-118.yaml
+F-119	Draft	Elevate Friend Quests and Challenge a Friend	P9/F-119.yaml
+F-120	Draft	Elevate Share Progress	P9/F-120.yaml
+F-121	Draft	Elevate Social Gifting	P9/F-121.yaml
+F-122	Draft	Elevate Community Corrections	P9/F-122.yaml
+F-123	Draft	Elevate Ancestral Tree	P9/F-123.yaml
+F-124	Draft	Elevate Micro-Mentors	P9/F-124.yaml
+F-125	Draft	Elevate Live Classroom	P9/F-125.yaml
+F-126	Draft	Elevate Teacher Classroom Dashboard	P9/F-126.yaml
+F-127	Draft	Elevate Social Audio Rooms	P9/F-127.yaml
+F-128	Draft	Elevate Status (WhatsApp-style)	P9/F-128.yaml
+F-129	Draft	Elevate Starred Messages and Media Gallery	P9/F-129.yaml
+F-130	Draft	Elevate Snaps and Streaks	P9/F-130.yaml
+F-131	Draft	Elevate Community Feed	P9/F-131.yaml
+F-132	Draft	Elevate Explore, Search and Community Profile	P9/F-132.yaml
+F-133	Draft	Elevate Create Content (UGC)	P9/F-133.yaml
+F-134	Draft	Elevate Voice Contribution	P9/F-134.yaml
+F-135	Draft	Elevate Native Speaker Verification Queue	P9/F-135.yaml
+F-136	Draft	Elevate Native Content Review	P9/F-136.yaml
+F-137	Draft	Elevate Profile	P10/F-137.yaml
+F-138	Draft	Elevate Global Handle (@id)	P10/F-138.yaml
+F-139	Draft	Elevate Progress Dashboard	P10/F-139.yaml
+F-140	Draft	Elevate Achievements & Badges	P10/F-140.yaml
+F-141	Draft	Elevate Leaderboards	P10/F-141.yaml
+F-142	Draft	Elevate Magic Items	P10/F-142.yaml
+F-143	Draft	Elevate Settings, Privacy & Appearance	P10/F-143.yaml
+F-144	Draft	Elevate Subscription & Plans	P10/F-144.yaml
+F-145	Draft	Elevate Family / Guardian Dashboard	P10/F-145.yaml
+F-146	Draft	Elevate About & Policy	P10/F-146.yaml
+F-147	Draft	Elevate Sign in, Sign up & Email Verification	P10/F-147.yaml
+F-148	Draft	Elevate Onboarding & Placement	P10/F-148.yaml
+F-149	Draft	Elevate Splash	P10/F-149.yaml
+F-150	Draft	Elevate Features Guide & First-use Tips	P10/F-150.yaml
+F-151	Draft	Elevate Staff & Micro-mentor Reports	P10/F-151.yaml
+P0-INT-01	Done	Install token-economy charter rule and root AGENTS.md	P0/P0-INT-01.yaml
+P0-INT-02	Done	Wire agent-file charter check into pre-commit and CI (.githooks, install_hooks.sh, agent-files.yml)	P0/P0-INT-02.yaml
+P0-INT-03	Done	Add charter prefixes to worker, tester, reviewer briefs	P0/P0-INT-03.yaml
+P0-INT-04	Done	Add gate-time routing review over LEDGER.csv (routing_review.py)	P0/P0-INT-04.yaml
+P0-INT-05	Done	Convert source PDFs to anchored text	P0/P0-INT-05.yaml
+P0-INT-06	Done	Build RTM from segmented extraction parts	P0/P0-INT-06.yaml
+P0-INT-07	Done	Provide card validation and coverage tooling	P0/P0-INT-07.yaml
+P0-INT-08	Done	Generate REPO_MAP.md with routes, screens, reachability	P0/P0-INT-08.yaml
+P0-INT-09	Done	Archive root status Markdown files with manifest (archive_status_md.py, pre-commit --check)	P0/P0-INT-09.yaml
+P0-INT-10	Done	Containment evidence index (containment_index.py, CONTAINMENT_EVIDENCE.md)	P0/P0-INT-10.yaml
+P0-VER-01	Blocked-External	Verify which live-translate path runs in production	P0/P0-VER-01.yaml
+P0-VER-02	Draft	Verify social audio rooms status on staging	P0/P0-VER-02.yaml
+P0-VER-03	Draft	Verify Yoruba diacritics render in fallback fonts	P0/P0-VER-03.yaml
+P0-VER-04	Draft	Verify assets/audio is absent from pubspec	P0/P0-VER-04.yaml
+P0-VER-05	Draft	Benchmark Omnilingual 300M on mid-range Android	P0/P0-VER-05.yaml
+P0-VER-06	Blocked-External	Confirm DPIA thresholds for voice data with counsel	P0/P0-VER-06.yaml
+P0-VER-07	Draft	Test Latin-only OCR on stacked diacritics	P0/P0-VER-07.yaml
+P0-VER-08	Draft	Confirm Point and Say OCR mangles tone marks	P0/P0-VER-08.yaml
+P0-VER-09	Draft	Trace whether Pronunciation Game records audio	P0/P0-VER-09.yaml
+P0-VER-10	Draft	Inspect micro-mentor verification, safeguarding and payment flow	P0/P0-VER-10.yaml
+P0-VER-11	Blocked-External	Check consent and licensing of recorded UGC	P0/P0-VER-11.yaml
+P0-VER-12	Draft	Read the wait and loading screen content	P0/P0-VER-12.yaml
+P0-VER-13	Draft	Test role checks on staff tooling in consumer app	P0/P0-VER-13.yaml
+P0-VER-14	Blocked-External	Verify Igbo Ọnwụ orthography citation	P0/P0-VER-14.yaml
+P0-VER-15	Blocked-External	Purchase and confirm first reference grammar	P0/P0-VER-15.yaml
+P0-VER-16	Blocked-External	Purchase and confirm grammar and corpora set	P0/P0-VER-16.yaml
+P0-VER-17	Blocked-External	Verify BAKITA Kiswahili Sanifu citation	P0/P0-VER-17.yaml
+P0-VER-18	Blocked-External	Purchase and confirm Emenanjo reference	P0/P0-VER-18.yaml
+P0-VER-19	Blocked-External	Purchase and confirm Zulu references and SADiLaR terms	P0/P0-VER-19.yaml
+P0-VER-20	Draft	Scan for a mature open Xhosa morphological analyser	P0/P0-VER-20.yaml
+P0-VER-21	Draft	Re-estimate Curriculum Studio effort from cards	P0/P0-VER-21.yaml
+P0-VER-22	Blocked-External	Obtain isiXhosa custom voice quote	P0/P0-VER-22.yaml
+P0-VER-23	Blocked-External	Obtain data licence cost quotes	P0/P0-VER-23.yaml
+P1-001	Blocked-External	Write history-purge script and key revocation checklist	P1/P1-001.yaml
+P1-002	Blocked-External	Remove committed credentials and load Firebase key from secret store	P1/P1-002.yaml
+P1-003	Draft	Add gitleaks config, pre-commit hook and blocking CI gate	P1/P1-003.yaml
+P1-004	Draft	Decide secrets manager (Doppler, 1Password or GCP)	P1/P1-004.yaml
+P1-005	Draft	Add quarterly secret-rotation calendar and reminder workflow	P1/P1-005.yaml
+P1-006	Draft	Strip AI provider keys from client builds and add guard	P1/P1-006.yaml
+P1-007	Done	Build authenticated AI gateway with server-owned prompt templates	P1/P1-007.yaml
+P1-008	Done	Enforce token clamps, per-user quotas and cost budgets in gateway	P1/P1-008.yaml
+P1-009	Draft	Move Groq, HF, Stability, Replicate and Leonardo calls server-side	P1/P1-009.yaml
+P1-010	Done	Play Integrity + App Attest gate (integrityVerify.service.ts, app_attest_service.dart, log/enforce, replay/outage)	P1/P1-010.yaml
+P1-011	Draft	Route client AI chat providers through the gateway	P1/P1-011.yaml
+P1-012	Done	Route persona missions through gateway with honest error state	P1/P1-012.yaml
+P1-013	Done	Add server-side room membership ACL and opaque room ids	P1/P1-013.yaml
+P1-014	Done	Derive socket identity only from verified JWT	P1/P1-014.yaml
+P1-015	Done	Scope all socket emits to rooms and friend-only presence	P1/P1-015.yaml
+P1-016	Done	Build socket authorisation test suite	P1/P1-016.yaml
+P1-017	Done	Make currency grants server-only via event rules	P1/P1-017.yaml
+P1-018	Done	Compute XP server-side with idempotency keys and daily caps	P1/P1-018.yaml
+P1-019	Done	Reconcile and remove fraudulent currency and XP balances	P1/P1-019.yaml
+P1-020	Done	Age gate before account creation: birth year only, server band validation, child blocked without consent	P1/P1-020.yaml
+P1-021	Done	ageRestriction.middleware.ts: DM/snap/public feed + socket acks, age_restricted (P1/P1-021.yaml)
+P1-022	Done	Hide social for under-18/unknown: age_policy_provider, home_screen, chat_list_screen	P1/P1-022.yaml
+P1-023	Done	Replace toxicity filter with hosted moderation API	P1/P1-023.yaml
+P1-024	Done	Add report and block endpoints and UX	P1/P1-024.yaml
+P1-025	Done	Hard-delete expired snaps, signed upload URLs, external URL reject (snapStorage, snapExpiry.worker)	P1/P1-025.yaml
+P1-026	Done	Disclose AI persona and remove deny-being-AI instruction	P1/P1-026.yaml
+P1-027	Done	Replace persona substring filter with policy classifier	P1/P1-027.yaml
+P1-028	Done	Correct Nkrumah persona data and independence claim	P1/P1-028.yaml
+P1-029	Done	Pull placeholder bundles from build and add placeholder linter	P1/P1-029.yaml
+P1-030	Done	Pull false tone and grammar teaching from game content	P1/P1-030.yaml
+P1-031	Done	Replace fake pronunciation scores with honest practice mode	P1/P1-031.yaml
+P1-032	Done	Return 503 retryable from pronunciation backend and fall back	P1/P1-032.yaml
+P1-033	Done	Delete semver logout and add schema-versioned local migrations	P1/P1-033.yaml
+P1-034	Done	Add typed onboarding model and corrupted-value migration	P1/P1-034.yaml
+P1-035	Done	Consolidate to one durable outbox and delete the stub	P1/P1-035.yaml
+P1-036	Done	Use authenticated encryption for cached data	P1/P1-036.yaml
+P1-037	Done	Run one leader-elected notification scheduler	P1/P1-037.yaml
+P1-038	Done	Send one reminder per day in local time with quiet hours (reminders.service.ts, P1-038.scheduler.test.ts)	P1/P1-038.yaml
+P1-039	Draft	Verify live scheduler count and RevenueCat key injection	P1/P1-039.yaml
+P1-040	Done	Remove MMS-TTS, XTTS-v2 and NLLB client config; piper-only routing; 503 sidecars (P1-040)	P1/P1-040.yaml
+P1-041	Draft	Choose commercial TTS and MT replacements named in source	P1/P1-041.yaml
+P1-042	Done	Remove unofficial Google Translate scraper	P1/P1-042.yaml
+P1-043	Done	Generic login errors + scrubbed logs (loginCredentials.ts, logger scrub, P1-043.login.test.ts)	P1/P1-043.yaml
+P1-044	Done	Add per-account progressive lockout and backoff	P1/P1-044.yaml
+P1-045	Done	Enforce 8-char password with breached check and Argon2id rehash	P1/P1-045.yaml
+P1-046	Done	Fix JWT secret handling and move to asymmetric keys with kid rotation	P1/P1-046.yaml
+P1-047	Done	Issue short-lived access tokens with rotating revocable refresh tokens	P1/P1-047.yaml
+P1-048	Done	Add passkey sign-in	P1/P1-048.yaml
+P1-049	Done	Add Google and Apple sign-in and email magic link	P1/P1-049.yaml
+P1-050	Done	Apply schema validation and per-route size limits on every route	P1/P1-050.yaml
+P1-051	Done	Remove client-supplied identity fields across the API	P1/P1-051.yaml
+P1-052	Done	Build IDOR authorisation suite over every id route	P1/P1-052.yaml
+P1-053	Done	Build rate-limit and lockout test suite	P1/P1-053.yaml
+P1-054	Done	Decide certificate pinning approach	P1/P1-054.yaml
+P1-055	Done	Implement certificate pinning consistently per ADR	P1/P1-055.yaml
+P1-056	Done	Obfuscate release builds	P1/P1-056.yaml
+P1-057	Done	Enable dependency update bot, audit gate and monthly pub check	P1/P1-057.yaml
+P1-058	Done	Generate SBOM and pin GitHub Actions by SHA	P1/P1-058.yaml
+P1-059	Done	Upgrade admin panel React and Vite	P1/P1-059.yaml
+P1-060	Done	Prepare penetration test scope document	P1/P1-060.yaml
+P1-061	Done	Add RevenueCat webhook receiver and entitlement table	P1/P1-061.yaml
+P1-062	Done	Enforce premium gates server-side from entitlements	P1/P1-062.yaml
+P10-900	Done	Server reward ledger; CLIENT_REWARD_REJECTED; /api/rewards/*	P10/P10-900.yaml
+P10-901	Done	Compute XP from evidence with diminishing returns (xp.rules.ts, xp.service.ts, competence_gamification.dart)	P10/P10-901.yaml
+P10-902	Done	Migrate legacy balances to Cowries (migrate-currencies.ts, ADR-020 1:1 ledger)	P10/P10-902.yaml
+P10-903	Done	Cowries shop sinks: sinks.service.ts, cowries_shop_screen.dart, ledger debit	P10/P10-903.yaml
+P10-904	Done	Heritage Fund donate API + screen (preservation-fund.service.ts, preservation_fund_screen.dart)	P10/P10-904.yaml
+P10-905	Done	Ethical streaks: weekly/daily cadence, freezes, repair window (streak.service.ts, game_streak.dart)	P10/P10-905.yaml
+P10-906	Done	One/day quiet-hours reminders (reminders.service.ts, reminder_settings_screen.dart)	P10/P10-906.yaml
+P10-907	Done	Challenge Mode opt-in; hearts only in runs (challenge_mode_screen.dart)	P10/P10-907.yaml
+P10-908	Done	Opt-in leagues, learning-XP ranks, minor circle-only (leagues.service.ts, leagues_screen.dart)	P10/P10-908.yaml
+P10-909	Done	Circle quests, family phrase teach-back, Heritage Tree (quests.service.ts, circle_quest_screen.dart, heritage_tree_screen.dart)	P10/P10-909.yaml
+P10-910	Done	Shareable can-do badges after checkpoints (cando-badges.service.ts, cando_badge_screen.dart)	P10/P10-910.yaml
+P10-911	Done	Replace fake co-learners and friend pushes (flashcard roster, friend-waiting push gate)	P10/P10-911.yaml
+P10-912	Done	Monetisation guardrails (purchase-guard.service.ts, sinks.service.ts, monetisation_guard_test.dart)	P10/P10-912.yaml
+P10-913	Done	Verify gamification guardrails AC1–AC7 (gamificationGuardrails.service.ts, p10_913_guardrails_test.dart, ledger)	P10/P10-913.yaml
+P10-914	Done	Publish Passport CEFR methodology (METHODOLOGY.md, passport-methodology.service.ts, credential screen)	P10/P10-914.yaml
+P10-915	Done	Build an evidence portfolio of passed can-do tasks (passport-portfolio.service.ts)	P10/P10-915.yaml
+P10-916	Done	Proctored adaptive CAT (passport-cat.service.ts, proctored session UI)	P10/P10-916.yaml
+P10-917	Done	OB3 VC issue/verify (credential-issuer.service.ts, credentials.routes.ts, passport_credential_screen.dart)	P10/P10-917.yaml
+P10-918	Done	Revoke credentials and publish status (credential-status.service.ts, passport_credential_screen.dart)	P10/P10-918.yaml
+P10-919	Done	DPIA draft (docs/privacy/DPIA.md, dpia_check.py); counsel pending EXT-18	P10/P10-919.yaml
+P10-920	Done	RETENTION.yaml + DATA_MAP.md + data_map_check.py (137 collections, CI --gate)	P10/P10-920.yaml
+P10-921	Done	Run logged purge jobs per RETENTION.yaml (retention-purge.job.ts, PurgeLog)	P10/P10-921.yaml
+P10-922	Done	Voice storage opt-in, delete-after-scoring, guardian gate (voice-consent, audio-retention)	P10/P10-922.yaml
+P10-923	Done	Separate training-contribution consent (training-consent.service.ts, privacy_settings_screen.dart)	P10/P10-923.yaml
+P10-924	Done	ADR-022 benefit-sharing + contracted payment; test_adr_022.py	P10/P10-924.yaml
+P10-925	Done	Data export + account deletion (userExport.ts, deleteUserAccount.ts, data_export_screen.dart)	P10/P10-925.yaml
+P10-926	Draft	Verify NDPC data-controller registration need	P10/P10-926.yaml
+P10-927	Done	Plain-language PRIVACY_POLICY.md + in-app screen, ack on version bump	P10/P10-927.yaml
+P10-928	Draft	Verify POPIA and other jurisdiction duties with counsel	P10/P10-928.yaml
+P10-929	Draft	Label AI content and personas under EU AI Act Art. 50	P10/P10-929.yaml
+P10-930	Done	Define the versioned analytics event schema (events.v1.json, analytics-schema.service.ts, lint_schema.py)	P10/P10-930.yaml
+P10-931	Done	LearningAnalyticsService v1 envelopes, offline queue, exercise_answered/content_report	P10/P10-931.yaml
+P10-932	Done	Emit speech and AI turn events (analytics_service, ai-gateway.analytics)	P10/P10-932.yaml
+P10-933	Done	Send on-device aggregates where possible (analytics_aggregator.dart)	P10/P10-933.yaml
+P10-934	Done	North-star dashboard (northstar.ts, metrics.service.ts, GET /admin/analytics/northstar)	P10/P10-934.yaml
+P10-935	Done	experiments.service.ts, Experiment.ts, EXPERIMENT_RULES.md; pre-reg, sticky assign, guardrail stop	P10/P10-935.yaml
+P10-936	Done	EFFICACY_STUDY_BRIEF.md: OPI pre/post, blinded raters yo/zu, EXT-20 open	P10/P10-936.yaml
+P10-937	Done	ADR-023: yo tonal WA + zu Bantu efficacy pair	P10/P10-937.yaml
+P10-938	Done	Lint UI strings for dashes, banned words and verbs (lint_ui_strings.py)	P10/P10-938.yaml
+P10-939	Done	Grade-7 readability + name continuity gates (readability_gate.py, name_continuity.py)	P10/P10-939.yaml
+P10-940	Done	error_copy_check.py, COPY_RULES.md, app_en.arb three-part errors + character voice scope	P10/P10-940.yaml
+P11-001	Done	ADR-031 persona delivery modes + v1 roster; test_adr_031.py	P11/P11-001.yaml
+P11-002	Done	Define persona dossier schema and retrieval index (dossier.schema.ts, retrieval.service.ts, v1 dossiers, dossierRoster)	P11/P11-002.yaml
+P11-003	Done	Validate persona answer contract server-side (answerContract.ts, answerValidator.ts)	P11/P11-003.yaml
+P11-004	Done	Enforce knowledge horizon with LLM classifier (knowledgeHorizon.ts, epistemic_classifier.dart)	P11/P11-004.yaml
+P11-005	Done	Show Source and Inferred chips on persona claims (persona_claim_chip.dart)	P11/P11-005.yaml
+P11-006	Done	Replace persona blocklist with sensitivity classifier and age tiers (sensitivityPolicy.ts, roleplay_safety_filter.dart)	P11/P11-006.yaml
+P11-007	Done	Make AI disclosure always visible on personas (persona_disclosure_badge.dart, historical_roleplay_controller.dart)	P11/P11-007.yaml
+P11-008	Done	Route persona turns through AI gateway with typed errors (historical-roleplay/turn, PersonaTurnGatewayError)	P11/P11-008.yaml
+P11-009	Done	killSwitch.ts, persona.routes PersonaDisabled, persona_providers availability	P11/P11-009.yaml
+P11-010	Done	Yaa Asantewaa dossier + personas/index.ts prompts/probes; EXT-15 gates learner enable	P11/P11-010.yaml
+P11-011	Done	kwame_nkrumah.json dossier + personas/index.ts (en/nzi, 50 probes; EXT-15 gates learner enable)	P11/P11-011.yaml
+P11-012	Done	shaka_kasenzangakhona.json + personas/index.ts (zu narrated_as_told_by, 50 probes; EXT-15 gates learner enable)	P11/P11-012.yaml
+P11-013	Done	Author Ahmed Baba persona dossier and prompts (ahmed_baba.json, index.ts)	P11/P11-013.yaml
+P11-014	Done	Author Thomas Mofolo persona dossier and prompts (thomas_mofolo.json, index.ts)	P11/P11-014.yaml
+P11-015	Done	Four persona packs with language pairings (packs.ts, persona_packs.dart)	P11/P11-015.yaml
+P11-016	Done	Yaa Golden Stool quest.json (4 ch, A2–B1, 25m) + quest_runner.dart replay vocab	P11/P11-016.yaml
+P11-017	Done	Chapter 1 scene: ambience manifest, Tone Lens scorer, kneel mapping (scene_chapter1.dart)	P11/P11-017.yaml
+P11-018	Done	Bilingual demand dialogue, 3-sentence checkpoint, council sentence builder (chapter3.dart)	P11/P11-018.yaml
+P11-019	Done	Historian note gate, mini-quiz, primary source card, idempotent deck merge (debrief.dart)	P11/P11-019.yaml
+P11-020	Done	Authored v1 beat graphs (beats_schema.dart) + beatRunner guardrails/off_rails	P11/P11-020.yaml
+P11-021	Done	Teacher persona-chapter assign, can-do turn grades, debrief sheet (assignment.service.ts, teacher_assignment.dart)	P11/P11-021.yaml
+P11-022	Done	Specify persona voice casting, consent and labelling (voice_casting_brief.md)	P11/P11-022.yaml
+P11-023	Draft	Create era-accurate persona bust artboards	P11/P11-023.yaml
+P11-024	Draft	Build 50-probe scripted eval harness per persona	P11/P11-024.yaml
+P11-025	Draft	Build adversarial persona suite with age-tier policy	P11/P11-025.yaml
+P11-026	Draft	Verify persona language quality with native reviewers	P11/P11-026.yaml
+P11-027	Draft	Verify historian review for all five personas	P11/P11-027.yaml
+P11-028	Draft	Write one-page character bible per v1 character	P11/P11-028.yaml
+P11-029	Done	ADR-030 CharacterVM expression enum + Rive VM contract	P11/P11-029.yaml
+P11-030	Done	ADR-032 avatar economy: mastery vs Cowries vs adult fiat; no loot boxes	P11/P11-030.yaml
+P11-031	Done	ADR-033 forced aligner: Omnilingual CTC primary, MFA/Rhubarb/Azure fallbacks per lang	P11/P11-031.yaml
+P11-032	Done	ADR-034 Rive Renderer on Impeller; 2 ms/frame budget math	P11/P11-032.yaml
+P11-033	Done	ADR-035 scarification/tribal marks: opt-in 18+, not v1, EXT-14 per pattern	P11/P11-033.yaml
+P11-034	Done	Avatar cultural design bible: hair/headwear/textiles, 12 skin tones, disability, EXT-14 review gates	P11/P11-034.yaml
+P11-035	Done	CharacterVM schema, Dart bindings, .riv CI contract test	P11/P11-035.yaml
+P11-036	Done	Version-control single .riv source with changelog (CHANGELOG.md, check_riv_version.py)	P11/P11-036.yaml
+P11-037	Done	Polie rig in lingafriq_cast.riv: Character/Chip/Bust, L1–L5 SM, contract tests	P11/P11-037.yaml
+P11-038	Done	Layer isolation gate L1–L5 (check_layer_isolation.py, layer_isolation_test.dart)	P11/P11-038.yaml
+P11-039	Done	chip_artboard_spec.md: 128 canvas, ≥2px@64, silhouette gate, contract-aligned	P11/P11-039.yaml
+P11-040	Done	Golden CharacterChip renders at 32/48/64 px × five expressions (chip_golden_test.dart)	P11/P11-040.yaml
+P11-041	Done	Polie activity states, idle micro-motion, ≤300 ms transitions (state_transition_test.dart)	P11/P11-041.yaml
+P11-042	Done	Viseme enum, timing sidecar JSON, per-language phoneme maps (lipsync/)	P11/P11-042.yaml
+P11-043	Done	Schedule visemes on audio clock with RMS jaw fallback (viseme_scheduler.dart, rms_jaw.dart)	P11/P11-043.yaml
+P11-044	Draft	Verify lip-sync rated natural by native viewers (Blocked-External EXT-13)	P11/P11-044.yaml
+P11-045	Done	Nested artboard slot_binding.dart: VM Artboard swaps, ≥6 hair/≥4 headwear, stream >10	P11/P11-045.yaml
+P11-046	Done	Build skin-tone and colour properties across ≥10 tones (palette.dart)	P11/P11-046.yaml
+P11-047	Done	Enforce avatar size, frame-cost and draw-call budgets (check_budgets.py, avatars_perf_test.dart)	P11/P11-047.yaml
+P11-048	Done	Upgrade to rive 0.14.11 with rive_native and controller cache	P11/P11-048.yaml
+P11-049	Done	AvatarDirector learning events → CharacterVM; retired engine scaffolding	P11/P11-049.yaml
+P11-050	Done	Pause offscreen avatars and use static chips in lists (visibility_pause.dart, chip_static.dart)	P11/P11-050.yaml
+P11-051	Done	Avatar reduced motion VM + screen-reader semantics (avatar_semantics.dart)	P11/P11-051.yaml
+P11-052	Draft	Expand cast to archetypes and per-language hosts	P11/P11-052.yaml
+P11-053	Done	Learner avatar editor on shared rig (avatar_editor_screen.dart, slot parity tests)	P11/P11-053.yaml
+P11-054	Done	Server-verified avatar mastery entitlements (avatarEntitlements.service.ts, unlock_client.dart)	P11/P11-054.yaml
+P11-055	Done	Generate stickers, reactions and speaking share cards (sticker_generator.dart, speaking_card.dart)	P11/P11-055.yaml
+P12-001	Done	Remove duplicated curriculum JSONs from the bundle (dedupe_assets_check.py, pubspec)	P12/P12-001.yaml
+P12-002	Done	asset_audit.py, dev/examples, Dosis trim (golden Regular+Bold only)	P12/P12-002.yaml
+P12-003	Done	Downloadable CMS language packs: pack_catalog, PackDownloadService, core Yo bundled	P12/P12-003.yaml
+P12-004	Done	Per-ABI APK download size gate in CI (apk_size_gate.sh, 40MB)	P12/P12-004.yaml
+P12-005	Done	Split polie_workspace into modules ≤500 lines (build_host mixins + scaffold)	P12/P12-005.yaml
+P12-006	Done	Split ai_chat_provider_groq and api_provider (feature mixins ≤500 lines)	P12/P12-006.yaml
+P12-007	Done	Split game_provider into games mixins + barrel; boundary test (P12-007)	P12/P12-007.yaml
+P12-008	Done	Delete superseded duplicate screens; dead_screen_report.py (P12-008)	P12/P12-008.yaml
+P12-009	Done	Enforce image and Rive asset budgets in CI (asset_budget_check.py)	P12/P12-009.yaml
+P12-010	Done	Const lints + list virtualisation CI (list_virtualisation_check.py)	P12/P12-010.yaml
+P12-011	Done	GamificationState + rebuild_slice_providers + rebuild_count_test (P12-011)	P12/P12-011.yaml
+P12-012	Done	Cold-start trace harness: first/meaningful frame logs, median gate (cold_start_trace.sh)	P12/P12-012.yaml
+P12-013	Done	Frame-cost harness: frame_cost_harness.dart, frame_budget.sh, frame_cost_test	P12/P12-013.yaml
+P12-014	Done	Add API read load test with p95 under 300 ms	P12/P12-014.yaml
+P12-015	Done	Chat delivery socket load test p95 under 500 ms (chat_delivery_p95.js)	P12/P12-015.yaml
+P12-016	Done	Staged rollout gate + staged-rollout.yml (rollout_gate.py, release/gates.yaml)	P12/P12-016.yaml
+P12-017	Done	Rollback drill at 10% gate failure (rollback_drill.py, rollback-drill.yml)	P12/P12-017.yaml
+P12-018	Done	Quarterly Mongo PIT restore drill (mongo_pit_restore_drill.py, mongo-pit-restore-drill.yml)	P12/P12-018.yaml
+P12-019	Done	Chaos/offline resilience: fault injector, harness, AC1–AC4 tests	P12/P12-019.yaml
+P12-020	Done	Rehearse schema-versioned local migrations drill (local_migration_drill_harness.dart, local_migration_drill.py)	P12/P12-020.yaml
+P12-021	Draft	Conduct accessibility audit with disabled users	P12/P12-021.yaml
+P12-022	Done	Release readiness from CI evidence only (release_readiness_checklist.py, items yaml)	P12/P12-022.yaml
+P13-001	Done	Later-wave admission YAML template + validator (later_wave_admission.py)	P13/P13-001.yaml
+P13-002	Done	Lanfrica discovery worksheet + FSI/Peace Corps cross-check (lanfrica_discovery.py)	P13/P13-002.yaml
+P13-003	Done	Block later-wave languages beyond L0 without a lexicon (lexicon_gate.py)	P13/P13-003.yaml
+P13-004	Done	ADR-037 moonshot start gate + rm_stop_01 evidence (moonshot_start_gate.py)	P13/P13-004.yaml
+P13-005	Done	Living Archive path design (living_archive_path.md, build_cards.json)	P13/P13-005.yaml
+P13-006	Draft	Design open tone corpus and on-device tone model	P13/P13-006.yaml
+P13-007	Done	Grandma Mode design: consent, family_sourced label, purge SLA (grandma_mode_design.md)	P13/P13-007.yaml
+P13-008	Draft	Design living history and AR grounded in archives	P13/P13-008.yaml
+P13-009	Draft	Design Ajami, Nsibidi, Adinkra and Ge'ez script journeys	P13/P13-009.yaml
+P13-010	Draft	Decide Heritage Language Fund mechanics and in-app progress	P13/P13-010.yaml
+P13-011	Draft	Design verified native teacher marketplace	P13/P13-011.yaml
+P2-001	Done	Make flutter analyze fatal on warnings for new code	P2/P2-001.yaml
+P2-002	Done	Add placeholder and claim linters over source and content	P2/P2-002.yaml
+P2-003	Done	Run gitleaks in pre-commit and CI	P2/P2-003.yaml
+P2-004	Done	Build content schema validator as blocking CI job	P2/P2-004.yaml
+P2-005	Done	Block merges on prompt or model changes without AI eval	P2/P2-005.yaml
+P2-006	Done	Block on high-severity dependency audit findings	P2/P2-006.yaml
+P2-007	Done	Generate SBOM, pin Actions by SHA, drop auto-commit step	P2/P2-007.yaml
+P2-008	Done	Gate 70% coverage on domain logic	P2/P2-008.yaml
+P2-009	Done	Add object-level authorisation test suite for /:id routes	P2/P2-009.yaml
+P2-010	Done	Add golden test harness for design system and Rive chips	P2/P2-010.yaml
+P2-011	Done	Generate versioned OpenAPI spec from backend code	P2/P2-011.yaml
+P2-012	Done	Generate Dart client and delete multi-path guessing	P2/P2-012.yaml
+P2-013	Done	Add backend contract tests from OpenAPI spec	P2/P2-013.yaml
+P2-014	Done	Add schema-versioned local migrations without logout on update	P2/P2-014.yaml
+P2-015	Done	Build one durable outbox with idempotency keys and backoff	P2/P2-015.yaml
+P2-016	Done	Consolidate competing offline systems into the outbox	P2/P2-016.yaml
+P2-017	Done	Show a visible sync state	P2/P2-017.yaml
+P2-018	Done	Replace fake-success paths with typed errors and visible states	P2/P2-018.yaml
+P2-019	Done	Manage downloadable units, storage and Wi-Fi-only default	P2/P2-019.yaml
+P2-020	Done	Add low-bandwidth mode honouring Android Data Saver	P2/P2-020.yaml
+P2-021	Done	Specify on-device tone feedback hook for offline practice	P2/P2-021.yaml
+P2-022	Done	Add integration test for onboarding, first lesson and sync	P2/P2-022.yaml
+P2-023	Done	Issue short-lived asymmetric access tokens with kid rotation	P2/P2-023.yaml
+P2-024	Done	Add rotating revocable refresh tokens with reuse detection	P2/P2-024.yaml
+P2-025	Done	Add passkey sign-in and sign-up	P2/P2-025.yaml
+P2-026	Done	Add Google and Apple sign-in	P2/P2-026.yaml
+P2-027	Done	Add email magic link sign-in	P2/P2-027.yaml
+P2-028	Done	Rehash legacy passwords with Argon2id and enforce password rules	P2/P2-028.yaml
+P2-029	Done	Start Sentry first and cut cold start under 2 s	P2/P2-029.yaml
+P2-030	Done	Split worker service on BullMQ with leader-elected cron	P2/P2-030.yaml
+P2-031	Done	Health/readiness probes, SIGTERM drain (`health.controller.ts`, `health.probes.test.ts`, `infra/lb/README.md`)	P2/P2-031.yaml
+P2-032	Blocked-External	Configure Atlas backups and quarterly restore drill	P2/P2-032.yaml
+P2-033	Done	Add OpenTelemetry traces across app, API, AI gateway and speech	P2/P2-033.yaml
+P2-034	Done	Emit RED metrics and alert on latency SLOs	P2/P2-034.yaml
+P2-035	Done	Add per-feature AI cost dashboards and fallback-rate alert	P2/P2-035.yaml
+P2-036	Done	Emit structured logs without PII or credentials	P2/P2-036.yaml
+P2-037	Done	Report crashes and ANRs with release gates	P2/P2-037.yaml
+P2-038	Done	Add feature flags and staged rollout stages	P2/P2-038.yaml
+P2-039	Done	'ADR: Decide on Shorebird Dart patching'	P2/P2-039.yaml
+P2-040	Done	Archive status docs and generate honest STATUS.md	P2/P2-040.yaml
+P2-041	Done	'ADR: Single Learner Knowledge Graph replaces four learner models'	P2/P2-041.yaml
+P2-042	Done	Build idempotent learning event log	P2/P2-042.yaml
+P2-043	Done	Implement FSRS-6 scheduler on device	P2/P2-043.yaml
+P2-044	Done	Add mutation testing gate on FSRS	P2/P2-044.yaml
+P2-045	Done	Model Learner Knowledge Graph nodes and error counts	P2/P2-045.yaml
+P2-046	Done	Expose graph queries for session builder and Polie context	P2/P2-046.yaml
+P2-047	Done	Build item bank schema and storage	P2/P2-047.yaml
+P2-048	Done	Consolidate four quiz systems into the item bank	P2/P2-048.yaml
+P2-049	Done	Calibrate IRT parameters from pilot responses	P2/P2-049.yaml
+P2-050	Done	Build CAT placement engine with reported confidence	P2/P2-050.yaml
+P2-051	Done	Add listening, tone and picture item types	P2/P2-051.yaml
+P2-052	Done	Add dictation and sentence-building item types	P2/P2-052.yaml
+P2-053	Done	Add speaking prompt items scored by the real scorer	P2/P2-053.yaml
+P2-054	Done	Add conversation tasks scored against can-dos	P2/P2-054.yaml
+P2-055	Done	Show correct form with audio and a one-sentence reason	P2/P2-055.yaml
+P2-056	Done	Map unit checkpoints to can-dos and credential evidence	P2/P2-056.yaml
+P2-057	Done	Revive preloader help screens as contextual first-use tips	P2/P2-057.yaml
+P3-001	Draft	Benchmark Duolingo and three rivals into baselines	P3/P3-001.yaml
+P3-002	Done	Write design principles and three job journey maps	P3/P3-002.yaml
+P3-003	Done	Design three art directions with hero screens	P3/P3-003.yaml
+P3-004	Done	'ADR-010: choose the art direction'	P3/P3-004.yaml
+P3-005	Done	'ADR-012: choose typography (Andika, Noto, display face)'	P3/P3-005.yaml
+P3-006	Done	'ADR-011: ratify five tabs, Me and three global tools'	P3/P3-006.yaml
+P3-007	Done	Generate Dart, CSS and Rive tokens from one JSON	P3/P3-007.yaml
+P3-008	Done	Define OKLCH colour ramps with one accent and dark mode	P3/P3-008.yaml
+P3-009	Done	Add 4-pt spacing, radius, elevation and stroke tokens	P3/P3-009.yaml
+P3-010	Done	Add motion tokens with the ease-out curve	P3/P3-010.yaml
+P3-011	Done	Bundle Andika and Noto, drop runtime font fetch	P3/P3-011.yaml
+P3-012	Done	Define type scale with 18 sp floor and 1.5 leading	P3/P3-012.yaml
+P3-013	Done	Add token-compliance lint for colours, sizes, fonts, strings	P3/P3-013.yaml
+P3-014	Done	Retire six design systems behind token shims	P3/P3-014.yaml
+P3-015	Done	Design hi-fi Today, Path map and Lesson player	P3/P3-015.yaml
+P3-016	Done	Design hi-fi Tone Lens, Word Card and Lens camera	P3/P3-016.yaml
+P3-017	Done	Design hi-fi Village map, Arcade shelf and Polie voice	P3/P3-017.yaml
+P3-018	Done	Design hi-fi Profile, level-up and first spoken word	P3/P3-018.yaml
+P3-019	Done	Create isolated Widgetbook catalogue with golden harness	P3/P3-019.yaml
+P3-020	Done	'Build core components: buttons, cards, inputs, sheets'	P3/P3-020.yaml
+P3-021	Done	Build skeleton and forward-pointing empty states	P3/P3-021.yaml
+P3-022	Done	Build error anatomy and offline state, stop swallowed errors	P3/P3-022.yaml
+P3-023	Done	Build AI-unavailable and content-under-review states	P3/P3-023.yaml
+P3-024	Done	Ship a custom icon set with no emoji icons	P3/P3-024.yaml
+P3-025	Draft	Specify the illustration system	P3/P3-025.yaml
+P3-026	Draft	Integrate credited culture pattern library	P3/P3-026.yaml
+P3-027	Done	Lint banned words and fake-precision chips	P3/P3-027.yaml
+P3-028	Done	Build answer feedback helper under 160 ms	P3/P3-028.yaml
+P3-029	Done	Specify motion, sound palette and haptic map	P3/P3-029.yaml
+P3-030	Done	Write copy deck and voice guide	P3/P3-030.yaml
+P3-031	Done	Draw wireflows for Today, Learn and Speak	P3/P3-031.yaml
+P3-032	Done	Draw wireflows for Play, Village and Me	P3/P3-032.yaml
+P3-033	Done	Write usability-test protocol with success targets	P3/P3-033.yaml
+P3-034	Done	Build the Tone Lens renderer, never colour-only	P3/P3-034.yaml
+P3-035	Done	Build the single text renderer and diacritic keyboard	P3/P3-035.yaml
+P3-036	Done	Generate route-to-hub map from existing routes	P3/P3-036.yaml
+P3-037	Done	Build five-tab shell with Me and global top bar	P3/P3-037.yaml
+P3-038	Done	Wire Today hub destinations	P3/P3-038.yaml
+P3-039	Done	Wire Learn hub destinations	P3/P3-039.yaml
+P3-040	Done	Wire Speak hub destinations	P3/P3-040.yaml
+P3-041	Done	Wire Play hub and Arcade shelves	P3/P3-041.yaml
+P3-042	Done	Wire Village hub destinations	P3/P3-042.yaml
+P3-043	Done	Wire Me hub destinations	P3/P3-043.yaml
+P3-044	Done	Surface games as practice formats in Today and Path	P3/P3-044.yaml
+P3-045	Done	Build global Search for words and features	P3/P3-045.yaml
+P3-046	Done	Add Lens entry with Point & Say, Translate, Import	P3/P3-046.yaml
+P3-047	Done	Build long-press Word Card on every target word	P3/P3-047.yaml
+P3-048	Done	Replace drawer with All features directory	P3/P3-048.yaml
+P3-049	Done	'Add contextual surfacing rules: lesson, word, camera, tones'	P3/P3-049.yaml
+P3-050	Done	'Add contextual surfacing rules: scenarios, events, social, reminder'	P3/P3-050.yaml
+P3-051	Done	Implement progressive unlocking stages with open-anyway	P3/P3-051.yaml
+P3-052	Draft	Enforce minor safety gates in Village	P3/P3-052.yaml
+P3-053	Done	Revive Words & Review dashboards, Recap, Rush, Downloads	P3/P3-053.yaml
+P3-054	Done	Revive Daily Challenges and first-use tips	P3/P3-054.yaml
+P3-055	Done	Revive Conversation Analytics and Roleplay summaries	P3/P3-055.yaml
+P3-056	Done	Revive Shadowing exercise	P3/P3-056.yaml
+P3-057	Done	Revive Tone Forge and Game Mastery Results	P3/P3-057.yaml
+P3-058	Done	Revive Chat Search, Contact Info, Moderation, Welcome	P3/P3-058.yaml
+P3-059	Done	Revive Social Audio Following and Scheduled Sessions	P3/P3-059.yaml
+P3-060	Done	Revive Verification, Contribution and Teacher dashboard	P3/P3-060.yaml
+P3-061	Done	Revive Global Handle edit and About Us	P3/P3-061.yaml
+P3-062	Done	Revive Subscription screen behind payments flag	P3/P3-062.yaml
+P3-063	Done	Revive Family and Guardian dashboard	P3/P3-063.yaml
+P3-064	Draft	Verify all 25 revived features are reachable	P3/P3-064.yaml
+P3-065	Done	Consolidate five AI chat variants into Polie workspace	P3/P3-065.yaml
+P3-066	Done	Consolidate four classroom variants into live classroom	P3/P3-066.yaml
+P3-067	Done	Consolidate onboarding variants into unified onboarding	P3/P3-067.yaml
+P3-068	Draft	Consolidate game templates, loaders and results into GameKit	P3/P3-068.yaml
+P3-069	Done	Replace live proverb unlocker with the GameKit rewrite	P3/P3-069.yaml
+P3-070	Done	Fold enhanced variants into live counterparts	P3/P3-070.yaml
+P3-071	Done	Move developer examples to dev/ outside the app build	P3/P3-071.yaml
+P3-072	Draft	Verify consolidation harvest lists are complete	P3/P3-072.yaml
+P3-073	Done	Remove forced splash delay	P3/P3-073.yaml
+P3-074	Done	Persist onboarding steps with typed JSON	P3/P3-074.yaml
+P3-075	Draft	'Build onboarding step 1: language tiles with greeting audio'	P3/P3-075.yaml
+P3-076	Draft	'Build onboarding step 2: first spoken word screen'	P3/P3-076.yaml
+P3-077	Draft	Give honest scorer feedback on the first syllable	P3/P3-077.yaml
+P3-078	Draft	'Build onboarding step 3: disguised micro-placement'	P3/P3-078.yaml
+P3-079	Draft	'Build onboarding step 4: goal and daily time'	P3/P3-079.yaml
+P3-080	Draft	Replace village questionnaire copy with grade-7 strings	P3/P3-080.yaml
+P3-081	Draft	'Build onboarding step 5: neutral age assurance'	P3/P3-081.yaml
+P3-082	Draft	Route under-13 learners to the guardian flow	P3/P3-082.yaml
+P3-083	Draft	'Build step 6: account later after lesson 1'	P3/P3-083.yaml
+P3-084	Draft	Ask for notifications in context after lesson 1	P3/P3-084.yaml
+P3-085	Draft	Unlock optional avatar creation after lesson 2	P3/P3-085.yaml
+P3-086	Draft	Track onboarding funnel and time to first word	P3/P3-086.yaml
+P3-087	Done	Audit screen-reader labels and switch or keyboard navigation	P3/P3-087.yaml
+P3-088	Done	Support 200% text without clipping	P3/P3-088.yaml
+P3-089	Done	Enforce WCAG 2.2 AA contrast in CI	P3/P3-089.yaml
+P3-090	Done	Add captions and transcripts for audio and video	P3/P3-090.yaml
+P3-091	Done	Add haptic and visual alternatives and visual pitch path	P3/P3-091.yaml
+P3-092	Done	Honour reduced motion with gentler animation	P3/P3-092.yaml
+P3-093	Done	Offer a dyslexia-friendly reading option on Andika	P3/P3-093.yaml
+P3-094	Done	Extract 1,104 hard-coded strings to ARB	P3/P3-094.yaml
+P3-095	Done	Add pseudo-localisation to CI	P3/P3-095.yaml
+P3-096	Done	Support RTL layouts for Arabic and Ajami	P3/P3-096.yaml
+P3-097	Draft	Import reviewed UI translations in nine languages	P3/P3-097.yaml
+P3-098	Draft	Deliver explanations in the learner's L1	P3/P3-098.yaml
+P3-099	Draft	Review G3 design gate with UX and UI Scorecards	P3/P3-099.yaml
+P4-001	Done	Define licence register schema and validator	P4/P4-001.yaml
+P4-002	Done	Seed register with US-government public-domain courses	P4/P4-002.yaml
+P4-003	Done	Seed share-alike evidence sources in register	P4/P4-003.yaml
+P4-004	Done	Seed CC BY corpora and storybook entries	P4/P4-004.yaml
+P4-005	Done	Seed Common Voice audio entries with hours	P4/P4-005.yaml
+P4-006	Done	Verify African Storybook has Igbo titles	P4/P4-006.yaml
+P4-007	Done	Add discovery-only sources and compatibility checklist	P4/P4-007.yaml
+P4-008	Blocked-External	Gate register rows on counsel and owner sign-off	P4/P4-008.yaml
+P4-009	Done	Lint share-alike containment of evidence layer	P4/P4-009.yaml
+P4-010	Done	Enforce non-commercial exclusion rule and exclusion table	P4/P4-010.yaml
+P4-011	Done	Declare JW300, MAFAND-MT and MasakhaNER excluded	P4/P4-011.yaml
+P4-012	Done	Exclude AfriSenti pending creator confirmation	P4/P4-012.yaml
+P4-013	Done	Exclude PanLex pending written permission	P4/P4-013.yaml
+P4-014	Done	Exclude NaijaVoices unless waiver purchased	P4/P4-014.yaml
+P4-015	Done	Exclude IgboAPI data pending licence from Nkọwa okwu	P4/P4-015.yaml
+P4-016	Done	Exclude Kamusi pending commercial licence	P4/P4-016.yaml
+P4-017	Done	Exclude Helsinki Corpus of Swahili without ELRA licence	P4/P4-017.yaml
+P4-018	Done	Record Oxford datasets as licence-required sources	P4/P4-018.yaml
+P4-019	Done	Verify copyright status of Bargery and classic dictionaries	P4/P4-019.yaml
+P4-020	Done	Decide buy-or-exclude for each restricted source	P4/P4-020.yaml
+P4-021	Done	Define language kit schema and loader	P4/P4-021.yaml
+P4-022	Done	Record Yoruba source stack in kit	P4/P4-022.yaml
+P4-023	Blocked-External	Verify and purchase Yoruba reference grammar	P4/P4-023.yaml
+P4-024	Done	Record Igbo source stack in kit	P4/P4-024.yaml
+P4-025	Blocked-External	Verify Ọnwụ orthography and purchase Igbo grammar	P4/P4-025.yaml
+P4-026	Done	Record Hausa source stack in kit	P4/P4-026.yaml
+P4-027	Blocked-External	Verify and purchase Hausa grammar and dictionary status	P4/P4-027.yaml
+P4-028	Done	Record Nigerian Pidgin source stack in kit	P4/P4-028.yaml
+P4-029	Blocked-External	Verify NSC licence and purchase Faraclas Pidgin grammar	P4/P4-029.yaml
+P4-030	Done	Record Swahili source stack in kit	P4/P4-030.yaml
+P4-031	Blocked-External	Verify BAKITA citation and purchase Ashton grammar	P4/P4-031.yaml
+P4-032	Done	Record isiZulu source stack in kit	P4/P4-032.yaml
+P4-033	Blocked-External	Verify Zulu dictionary licensor and purchase grammars	P4/P4-033.yaml
+P4-034	Done	Record isiXhosa source stack in kit	P4/P4-034.yaml
+P4-035	Blocked-External	Choose Xhosa reference grammar with linguist	P4/P4-035.yaml
+P4-036	Draft	Populate kits for yo, ig and ha	P4/P4-036.yaml
+P4-037	Done	Populate kits for pcm, sw, zu and xh	P4/P4-037.yaml
+P4-038	Blocked-External	Decide Igbo tone-marking convention once	P4/P4-038.yaml
+P4-039	Done	Build linter runner for CI and Studio	P4/P4-039.yaml
+P4-040	Done	Lint Unicode NFC, code points and look-alikes	P4/P4-040.yaml
+P4-041	Done	Lint Yoruba dot-below, tone and lexicon diacritics	P4/P4-041.yaml
+P4-042	Draft	Lint Igbo dotted vowels and lexicon tone	P4/P4-042.yaml
+P4-043	Done	Lint Hausa hooked letters, display versus teaching text	P4/P4-043.yaml
+P4-044	Done	Check Swahili noun-class concords	P4/P4-044.yaml
+P4-045	Done	Check Zulu and Xhosa concords and conjunctive writing	P4/P4-045.yaml
+P4-046	Done	Integrate ZulMorph parse for Zulu forms	P4/P4-046.yaml
+P4-047	Done	Lint Pidgin against NLA spelling table	P4/P4-047.yaml
+P4-048	Done	Detect anglicised Pidgin with LLM rating (anglicisation.py)	P4/P4-048.yaml
+P4-049	Done	Lint claims and banned generic grammar strings	P4/P4-049.yaml
+P4-050	Done	Lint placeholders, empty fields and broken JSON	P4/P4-050.yaml
+P4-051	Done	Detect near-identical dialogues and repeated lines	P4/P4-051.yaml
+P4-052	Draft	Check honorific register and respect-sensitive units	P4/P4-052.yaml
+P4-053	Done	Build lexicon store with frequency list	P4/P4-053.yaml
+P4-054	Done	Compute anchored and single-source lexeme status	P4/P4-054.yaml
+P4-055	Done	Generate grounded items with Gemini 3.1 Pro	P4/P4-055.yaml
+P4-056	Done	Reject out-of-lexicon words and uncited claims	P4/P4-056.yaml
+P4-057	Done	Run independent cross-check with a second model	P4/P4-057.yaml
+P4-058	Done	Check each citation entails its claim (entailment.py)	P4/P4-058.yaml
+P4-059	Done	Back-translate with Google Cloud Translation and MADLAD-400 (backtranslate.py)	P4/P4-059.yaml
+P4-060	Done	Run linters and morphological analysers as a stage	P4/P4-060.yaml
+P4-061	Done	Gate tone and diacritics by three-way agreement (tone_agreement.py)	P4/P4-061.yaml
+P4-062	Done	Run NaijaML restorer as tone check for Yoruba (restorer.py)	P4/P4-062.yaml
+P4-063	Done	Compute weighted confidence score	P4/P4-063.yaml
+P4-064	Done	Route items by threshold and regeneration cap (routing.py)	P4/P4-064.yaml
+P4-065	Done	Enforce high-risk tags as never AI-only (highrisk.py)	P4/P4-065.yaml
+P4-066	Done	Calibrate thresholds against pilot error rate (calibration.py)	P4/P4-066.yaml
+P4-067	Done	Publish reviewed items with a quality label	P4/P4-067.yaml
+P4-068	Done	Write what-catches-what matrix test plan (matrix/fixtures.yaml)	P4/P4-068.yaml
+P4-069	Done	Scaffold Curriculum Studio module in admin	P4/P4-069.yaml
+P4-070	Done	Build backend job service for pipeline runs	P4/P4-070.yaml
+P4-071	Done	Build source library and licence register UI	P4/P4-071.yaml
+P4-072	Done	Build lexicon editor with side-by-side sources	P4/P4-072.yaml
+P4-073	Done	Build generation jobs UI with versioned prompts	P4/P4-073.yaml
+P4-074	Done	Build per-item verification report	P4/P4-074.yaml
+P4-075	Done	Build keyboard-first review queues	P4/P4-075.yaml
+P4-076	Done	Build and sign semver content packs	P4/P4-076.yaml
+P4-077	Done	Add staged rollout and rollback for packs	P4/P4-077.yaml
+P4-078	Done	Build quality dashboard	P4/P4-078.yaml
+P4-079	Done	Export reviewer payments by items reviewed	P4/P4-079.yaml
+P4-080	Done	Verify Studio effort estimate	P4/P4-080.yaml
+P4-081	Done	Quarantine placeholder and duplicate legacy bundles	P4/P4-081.yaml
+P4-082	Done	Salvage real phrases from authentic curriculum JSON	P4/P4-082.yaml
+P4-083	Done	Delete generic grammar sentences from all lessons	P4/P4-083.yaml
+P4-084	Done	Re-derive legacy tonal notes from lexicon tone patterns	P4/P4-084.yaml
+P4-085	Done	Regenerate dialogues from can-do targets	P4/P4-085.yaml
+P4-086	Done	Rebuild units against CEFR map as signed packs	P4/P4-086.yaml
+P4-087	Done	Run UI strings and phrase packs through pipeline (ui_strings.py)	P4/P4-087.yaml
+P4-088	Done	Produce before/after legacy rebuild dashboard (report.py)	P4/P4-088.yaml
+P4-100	Done	Define shared provenance, label and audio-kind envelope	P4/P4-100.yaml
+P4-101	Done	Define lexeme schema with tone, audio and review fields	P4/P4-101.yaml
+P4-102	Done	Define pattern, dialogue and unit schemas (pattern/dialogue/unit JSON + tests)	P4/P4-102.yaml
+P4-103	Done	Exercise item v2 schema: answer_spec matching, IRT status, pack beta gate	P4/P4-103.yaml
+P4-104	Done	Define culture card schema with claims and review gate (culture_card.schema.json)	P4/P4-104.yaml
+P4-105	Done	Build signed semver content packs with hash filenames	P4/P4-105.yaml
+P4-106	Done	Content validator and CI linters (validate_content.py, content-validate.yml)	P4/P4-106.yaml
+P4-107	Done	Migrate four legacy bundles into v2 schema (migrate_legacy_bundles.py)	P4/P4-107.yaml
+P4-110	Done	Implement readiness levels L0-L3 with promotion gates (readiness.py)	P4/P4-110.yaml
+P4-111	Done	Wave 2-4 rosters and Arabic/Darija ADR (wave_roster_decision.json)	P4/P4-111.yaml
+P4-112	Done	Build language registry with waves, scripts and consent flags (language_registry.py)	P4/P4-112.yaml
+P4-113	Done	Encode Stage 1 vendor coverage and level targets (coverage_check.py)	P4/P4-113.yaml
+P4-114	Done	Build quarterly next-language scoring tool (blocked EXT-13)	P4/P4-114.yaml
+P4-115	Done	Stage 1 dialect policy ADR (dialect_policy_decision.json)	P4/P4-115.yaml
+P4-116	Done	Dialect fields on v2 schemas, dialect_resolver + marking tests (P4-116)	P4/P4-116.yaml
+P4-120	Done	Build language kit generator (week 0-1) (language_kit.py)	P4/P4-120.yaml
+P4-121	Done	Build AI bootstrap stage with grounding and flags (ai_bootstrap.py)	P4/P4-121.yaml
+P4-122	Done	Enforce two-native plus linguist validation stage (native_validation.py)	P4/P4-122.yaml
+P4-123	Done	Native recording ingest and forced alignment (audio_ingest.py, forced_align.py)	P4/P4-123.yaml
+P4-124	Done	Build speech enablement evaluation gates (speech_eval.py)	P4/P4-124.yaml
+P4-125	Done	Build pilot cohort and promotion gate runner (pilot_gate.py)	P4/P4-125.yaml
+P4-126	Done	Build squad capacity planner for throughput target (squad_capacity.py)	P4/P4-126.yaml
+P4-127	Blocked-External	Secure partner and university linguist agreements	P4/P4-127.yaml
+P4-128	Blocked-External	Secure contributor licence, consent and payment terms	P4/P4-128.yaml
+P4-130	Done	Per-language syllabus spec and corpora licence check (syllabus_spec.py)	P4/P4-130.yaml
+P4-131	Done	Enforce human drafting with grounded LLM variants only (drafting_policy.py)	P4/P4-131.yaml
+P4-132	Done	Two-reviewer assignment, κ per language, dialect-note resolution (review_assignment.py, review_agreement.py)	P4/P4-132.yaml
+P4-133	Done	Enforce voice-count gates and QA listen-through	P4/P4-133.yaml
+P4-134	Done	Compute pilot item statistics (item_stats.py)	P4/P4-134.yaml
+P4-135	Done	"This is wrong" control + offline queue; POST /api/v2/item-reports → flagged review queue	P4/P4-135.yaml
+P4-136	Done	Add pack diff download and per-item history	P4/P4-136.yaml
+P4-140	Done	TargetText + Tone Lens, gloss lookup, diacritic goldens (P4-140)	P4/P4-140.yaml
+P4-141	Done	Per-language diacritic keyboard bar (diacritic_keyboard_bar.dart, keyboard_layouts.json)	P4/P4-141.yaml
+P4-142	Done	Level-aware diacritic grading (answer_matcher.dart, learner level policy)	P4/P4-142.yaml
+P4-150	Done	Studio RBAC: ten roles, language-scoped leads, server 403, SELF_APPROVAL_FORBIDDEN	P4/P4-150.yaml
+P4-151	Done	Content review workflow state machine (content_workflow.service.ts, ReviewQueue.tsx)	P4/P4-151.yaml
+P4-152	Done	Append-only workflow audit events + admin AuditTrail viewer (audit.service.ts)	P4/P4-152.yaml
+P4-153	Done	Lesson drafts on server (draft.routes.ts, LessonBuilder autosave, native_verification REMOVAL_DECISION)	P4/P4-153.yaml
+P4-154	Done	ToneTextField + DiacriticPalette + ToneLensPreview, NFC, studio tone validation	P4/P4-154.yaml
+P4-155	Done	AlignmentView waveform seek + DialogueEditor turns/audio/tone (admin)	P4/P4-155.yaml
+P4-156	Done	Minimal-pair linker and can-do mapper (MinimalPairLinker.tsx, CanDoMapper.tsx)	P4/P4-156.yaml
+P4-157	Done	Studio item preview parity via preview_contract.json + ItemPreview.tsx	P4/P4-157.yaml
+P4-158	Done	Item/agreement/audio metrics dashboard (quality_metrics.service.ts, QualityDashboard.tsx)	P4/P4-158.yaml
+P4-159	Done	Problem queue, placeholder scan, ARB i18n coverage (ProblemQueue.tsx, i18n_coverage.service.ts)	P4/P4-159.yaml
+P4-160	Done	Moderation console queues, actions, appeals (moderation_actions.service.ts, ModerationConsole.tsx)	P4/P4-160.yaml
+P4-161	Done	Law-enforcement escalation workflow, CSAM trained-staff gate, encrypted evidence	P4/P4-161.yaml
+P4-162	Done	Admin persona console: dossiers, claims audit, evals, kill switch (persona_admin.service.ts)	P4/P4-162.yaml
+P4-163	Done	AI ops prompt registry: versioned prompts, diffs, eval runs, production pin	P4/P4-163.yaml
+P4-164	Done	AI ops cost report, versioned routing table, incident switches (ai_routing_admin.service.ts, AiOps.tsx)	P4/P4-164.yaml
+P4-165	Done	React 19.3.1/Vite 8.3.5; OpenAPI typed client + CI stale check (lingafriq-admin)	P4/P4-165.yaml
+P4-166	Done	Staff SSO, mandatory 2FA, httpOnly cookie sessions (`staff_auth.routes.ts`)	P4/P4-166.yaml
+P4-167	Done	Playwright e2e: staff 2FA, draft/workflow mocks, 33-page smoke, CI traces (lingafriq-admin)	P4/P4-167.yaml
+P5-001	Done	Reproduce legacy curriculum audit counts by script (legacy_curriculum_audit.py)	P5/P5-001.yaml
+P5-002	Done	Quarantine template curriculum behind placeholder linter (PH-001..004, legacy_quarantine.json)	P5/P5-002.yaml
+P5-003	Done	Block generic grammar templates; record per-language word order (grammar_template_blocker.py)	P5/P5-003.yaml
+P5-004	Done	Word Card rebuild + WC-001/002 lint (wordcard_rebuild.py)	P5/P5-004.yaml
+P5-005	Done	Rebuild audio manifest NFC-normalised, hash-keyed and deduplicated (audio_manifest_build.py)	P5/P5-005.yaml
+P5-006	Done	Complete Yoruba ARB with tone marks to 103 keys (app_yo.arb, arb_parity_test.dart)	P5/P5-006.yaml
+P5-007	Blocked-External	Send sample label errors to native review (EXT-13)	P5/P5-007.yaml
+P5-008	Done	CURRICULUM item schema v2: provenance, claims, label, audio kind	P5/P5-008.yaml
+P5-009	Done	Enforce label state machine with two-native rule (label_state.dart, label.service.ts)	P5/P5-009.yaml
+P5-010	Done	Show label badges, Beta copy and Synthetic voice tag (content_label_badge.dart)	P5/P5-010.yaml
+P5-011	Done	CI label exclusion rules (label_rules.py, content_ci.yml)	P5/P5-011.yaml
+P5-012	Done	Report a mistake sheet + POST /api/v2/content-flags (five categories)	P5/P5-012.yaml
+P5-013	Done	Auto-hide flagged items to Under review (flag.service.ts, under_review.dart)	P5/P5-013.yaml
+P5-014	Done	Map every unit to CEFR and ACTFL can-dos (cando_map.json, cando_linter.py)	P5/P5-014.yaml
+P5-015	Done	Mark units mastered by can-do evidence and fix unlock rule (can_do_mastery.dart)	P5/P5-015.yaml
+P5-016	Done	Select frequency-ranked A1 lexicon (`lexicon_select.py`, `assets/data/lexicon/a1/`)	P5/P5-016.yaml
+P5-017	Done	Restrict tonal Beta to lexicon-anchored tokens (tone_anchor_check.py)	P5/P5-017.yaml
+P5-018	Done	Plan spiral exposures: 6/unit spread, phase order, SpiralShortfall lint (spiral_planner.py)	P5/P5-018.yaml
+P5-019	Done	Canonical FSRS-6 in learning/scheduling; per-learner weights at 1k reviews; legacy SM-2 path removed	P5/P5-019.yaml
+P5-020	Done	Pattern Library schema (schemas/v2/pattern.schema.json), PL-001 linter, PatternMissing coverage	P5/P5-020.yaml
+P5-021	Done	Yoruba A1 aspect patterns ń/ti/máa in assets/data/patterns/yo.json (P5-021)	P5/P5-021.yaml
+P5-022	Done	Swahili A1 tense markers -na-/-li-/-ta-/-me- in assets/data/patterns/sw.json (P5-022)	P5/P5-022.yaml
+P5-023	Done	isiZulu A1 subject concords classes 1–15 (zu.json, pattern_zu_test.py)	P5/P5-023.yaml
+P5-024	Done	A1 pattern libraries ig/ha/pcm/xh + pattern_p5_024_test.py (P5-024)	P5/P5-024.yaml
+P5-025	Done	Grammar aha cards from patterns (grammar_aha_card.dart, PatternContrastMissing)	P5/P5-025.yaml
+P5-026	Done	Tone perception drills: minimal_pairs.json, tone_perception_drill.dart, sourced ọkọ́/ọkọ̀	P5/P5-026.yaml
+P5-027	Done	Per-language tone models (tone_models.dart, models.json)	P5/P5-027.yaml
+P5-028	Done	sound_drill.dart, clicks_vowels.json, WAXAL gate, AudioMissing	P5/P5-028.yaml
+P5-029	Done	tone_production_drill.dart: /api/voice/pronunciation/tone, actionable feedback, unsure retry, RandomScoreForbidden	P5/P5-029.yaml
+P5-030	Done	dialogue_linter.py DL-001/i+1/content-graph; assets/data/dialogues stage-1 A1 u1–u6 pilot	P5/P5-030.yaml
+P5-031	Done	Mix item types and hold 80-85% success (difficulty_controller.dart)	P5/P5-031.yaml
+P5-032	Done	content_graph_features.yaml, graph_map_check.py, graph_map_test.py	P5/P5-032.yaml
+P5-033	Done	Limit historical personas to cited cards	P5/P5-033.yaml
+P5-034	Done	Cited culture cards per lang, culture_linter CU-001..003, culture_test	P5/P5-034.yaml
+P5-035	Done	Publish proverbs only after linguist review (proverb_gate.py)	P5/P5-035.yaml
+P5-036	Done	Register/honorific practice units + register_gate.py (P5-036)	P5/P5-036.yaml
+P5-037	Done	Design autonomy, competence and relatedness without streak pressure (sdt_motivation_policy.dart)	P5/P5-037.yaml
+P5-038	Done	Design speaking-first flow with recasts, not text-heavy (speaking_first_flow_policy.dart)	P5/P5-038.yaml
+P5-039	Done	Add declared standard and per-item dialect tags (dialect_check.py)	P5/P5-039.yaml
+P5-040	Done	Add Pidgin corpus anchoring and anglicisation detector (pidgin_anglicisation.py)	P5/P5-040.yaml
+P5-041	Done	TargetText surface contract, visible no-audio state, EP-§6.7-02 lint test	P5/P5-041.yaml
+P5-042	Done	Per-language diacritic bar (layouts.json, kbd.hint, LayoutMissing)	P5/P5-042.yaml
+P5-043	Done	Level-aware lenient tone grading (`diacritic_grader.dart`, kDiacriticGradingBands)	P5/P5-043.yaml
+P5-044	Done	Route items to paid linguist review by risk (review_router.py)	P5/P5-044.yaml
+P5-045	Done	Run 300-item calibration sets and compute Cohen kappa (calibration_kappa.py)	P5/P5-045.yaml
+P5-046	Done	Weekly stratified blind sample (blind_sampler.py)	P5/P5-046.yaml
+P5-047	Done	Publish error rate per language and label (quality.routes.ts, quality_report_screen.dart)	P5/P5-047.yaml
+P5-048	Done	Compute IRT item statistics and flag abnormal items (irt_stats.py)	P5/P5-048.yaml
+P5-049	Done	Verify Tier A Beta error ≤3% for Swahili (tier_beta_verification.py)	P5/P5-049.yaml
+P5-050	Done	Verify Tier B Beta error ≤5% for zu, xh, ha, pcm (tier_b_beta_verification.py)	P5/P5-050.yaml
+P5-051	Done	Verify Tier C Beta error ≤5% for yo/ig anchored tokens (tier_c_beta_verification.py)	P5/P5-051.yaml
+P5-052	Done	Verify Tier A Expert error ≤1% for Swahili (tier_a_expert_verification.py)	P5/P5-052.yaml
+P5-053	Done	Verify Tier B Expert error ≤1.5% (tier_b_expert_verification.py)	P5/P5-053.yaml
+P5-054	Done	Verify Tier C Expert error ≤1.5% (tier_c_expert_verification.py)	P5/P5-054.yaml
+P5-055	Done	Enforce Waves 2-4 label rules and Expert L0 (wave_label_rules.py)	P5/P5-055.yaml
+P5-056	Done	Promote high-exposure A1 items to Expert-reviewed (promotion.service.ts)	P5/P5-056.yaml
+P5-057	Done	Route community fixes into the Verify queue (verify_queue.service.ts, suggest_fix_sheet.dart)	P5/P5-057.yaml
+P5-058	Done	Gate every item on audio and labelled synthetic voice (audio_coverage_gate.py)	P5/P5-058.yaml
+P5-059	Done	TTS gate runner: ASR round-trip + F0 tone proxy (gate_runner.py)	P5/P5-059.yaml
+P5-060	Done	Yoruba TTS tone gate + Intron→Spitch client (yo_tts.dart, yo_listen_check.py)	P5/P5-060.yaml
+P5-061	Done	Wire Igbo TTS with 200-sample linguist check (ig_tts.dart, ig_listen_check.py)	P5/P5-061.yaml
+P5-062	Done	Hausa TTS Intron→Spitch→ElevenLabs v3 client (ha_tts.dart)	P5/P5-062.yaml
+P5-063	Done	Register licensed human audio for yo, ig, ha (licensed_audio_register.py)	P5/P5-063.yaml
+P5-064	Done	Wire Nigerian Pidgin TTS with round-trip and listen gate	P5/P5-064.yaml
+P5-065	Done	Swahili TTS blind-test ADR (sw_tts_decision.json, sw_tts_decision.py)	P5/P5-065.yaml
+P5-066	Done	Wire Swahili TTS and Common Voice audio (sw_tts.dart)	P5/P5-066.yaml
+P5-067	Done	Wire isiZulu TTS with Azure zu-ZA Thando and Themba (zu_tts.dart)	P5/P5-067.yaml
+P5-068	Done	Option B custom voice + Option A interim (xh_voice_decision.json, D3)	P5/P5-068.yaml
+P5-069	Done	Ship isiXhosa interim audio from FLEURS and WAXAL (xh_interim_match.py)	P5/P5-069.yaml
+P5-070	Draft	Commission isiXhosa custom voice and confirm quote	P5/P5-070.yaml
+P5-071	Done	Intron TTS quote ledger pending; §3.5 vendor map cross-check (intron_tts_quote.py)	P5/P5-071.yaml
+P5-072	Done	Rank items by exposure to order native re-recording (exposure_rank.py)	P5/P5-072.yaml
+P5-073	Done	Export top 2,000 items per language as recording scripts (export_scripts.py)	P5/P5-073.yaml
+P5-074	Done	Bump item version and drop Synthetic tag on replacement (audio_replace.service.ts)	P5/P5-074.yaml
+P5-075	Done	Keep and label TTS for dynamic content (dynamic_tts_label.dart)	P5/P5-075.yaml
+P5-076	Done	Phase 0 exit checklist (phase0_foundations_exit.py; gate fails on EXT-03/04–07, yo/ig/ha kits)	P5/P5-076.yaml
+P5-077	Done	Phase 1 A1 Beta exit checklist (phase1_a1_beta_exit.py; lexicon anchor, TTS, blind ledger)	P5/P5-077.yaml
+P5-078	Done	Verify Phase 2 A2 and promotion exit (phase2_a2_promotion_exit.py)	P5/P5-078.yaml
+P5-079	Done	Verify Phase 3 B1 and Wave 2 L0 exit (phase3_b1_wave2_l0_exit.py)	P5/P5-079.yaml
+P5-080	Done	Phase 4 scale plan ADR months 9-24 (phase4_scale_plan_decision.json)	P5/P5-080.yaml
+P5-081	Done	A2 cumulative lexicon (~1500) via lexicon_select.py; ha shortfall gates at 940	P5/P5-081.yaml
+P5-082	Done	Select B1 lexicon to about 2,500-3,000 cumulative lexemes (lexicon_select.py, assets/data/lexicon/b1/)	P5/P5-082.yaml
+P5-083	Done	Script tracks catalog + Fidel lessons; N'Ko/Adlam/Tifinagh/Ajami coming-later (script_track.dart)	P5/P5-083.yaml
+P5-084	Done	Stroke-order view + on-device handwriting practice; Fidel glyphs unavailable until sourced fixtures	P5/P5-084.yaml
+P5-085	Done	Phase 1 machine pipeline throughput ledger (phase1_machine_pipeline_throughput.py; §9.3 2k–4k/wk)	P5/P5-085.yaml
+P5-086	Draft	Measure linguist review throughput (Blocked-External EXT-11)	P5/P5-086.yaml
+P5-087	Done	phase1_publishable_throughput.py; weekly + A1/A1–B1 milestone ledger	P5/P5-087.yaml
+P5-088	Done	Verify LLM generation cost against AI-stack pricing (llm_generation_cost_verify.py)	P5/P5-088.yaml
+P5-089	Draft	Verify linguist review cost	P5/P5-089.yaml
+P5-090	Draft	Verify calibration and sampling cost	P5/P5-090.yaml
+P5-091	Done	interim_tts_cost_verify.py; Azure $16/M + P5-071 Intron quote ledger (P5-091)	P5/P5-091.yaml
+P5-092	Done	data_licence_cost_verify.py; $15k–60k band vs EXT-04/05/06 quotes ledger (P5-092)	P5/P5-092.yaml
+P5-093	Done	reference_books_cost_verify.py; §9.4 $200–600/lang & 14–20 eng-wks; EXT-22 purchases pending (P5-093)	P5/P5-093.yaml
+P5-094	Done	stage1_all_in_cost_rollup.py; §9.4 $65k–195k all-in + $4k–15k later-lang bands (P5-094)	P5/P5-094.yaml
+P6-001	Done	ADR-007: TypeScript gateway in node-backend; Python GPU workers; HTTPS/SSE + LiveKit	P6/P6-001.yaml
+P6-002	Done	Gateway core: mode enum, authN/Z, client_prompt_forbidden (src/ai-gateway/)	P6/P6-002.yaml
+P6-003	Done	Server-owned versioned prompt registry (ai-gateway/prompts)	P6/P6-003.yaml
+P6-004	Done	JSON-schema structured output with retries (structured.ts, mode schemas)	P6/P6-004.yaml
+P6-005	Done	Tier daily budgets in ai-gateway/quota.ts; gateway reads tier from entitlement	P6/P6-005.yaml
+P6-006	Done	Per-mode monthly cost budgets with 80% alert and economy degrade (costBudget.ts, pricing.ts)	P6/P6-006.yaml
+P6-007	Done	Kill switches + per-mode flags (killSwitch.ts, flags.ts, admin-ai.route.ts)	P6/P6-007.yaml
+P6-008	Done	Ground prompts in curriculum KG and learner model (curriculumKg.ts, learnerModel.ts)	P6/P6-008.yaml
+P6-009	Done	Build persona source index retrieval (personaIndex.ts)	P6/P6-009.yaml
+P6-010	Done	lexiconConstraint.ts + outputValidator.ts: L0–L1 prompt constraint, out_of_level after 1 regen	P6/P6-010.yaml
+P6-011	Done	Route model per language, task and tier with fallbacks	P6/P6-011.yaml
+P6-012	Done	Enforce model licence allowlist in router (`licenceAllowlist.ts`, `licence_register.csv`)	P6/P6-012.yaml
+P6-013	Done	Cache deterministic outputs in gateway (`cache.ts`, tutor_explain/story)	P6/P6-013.yaml
+P6-014	Done	Input/output safety classifiers, age-tier policy, fail-closed (safety/classifiers.ts, agePolicy.ts)	P6/P6-014.yaml
+P6-015	Done	Scrub PII and log without PII (pii/scrub.ts, logging.ts)	P6/P6-015.yaml
+P6-016	Done	Emit traces, token cost, latency and eval samples (telemetry.ts, evalSampler.ts)	P6/P6-016.yaml
+P6-017	Done	Stream all chat with first token under 400 ms (stream.ts, chat.route.ts)	P6/P6-017.yaml
+P6-018	Done	Server two-pass persona cognition + mobile gateway client (P6-018)	P6/P6-018.yaml
+P6-019	Done	Migrate client to gateway and remove keys and mode logic (ai_gateway_client.dart, groq provider, polie_workspace)	P6/P6-019.yaml
+P6-020	Done	Gateway STT: /ai/stt/transcribe, Intron→Omnilingual, yo/ig/ha whisper block (P6-020)	P6/P6-020.yaml
+P6-021	Done	Self-host Omnilingual ASR worker + gateway primary flag (speech-service)	P6/P6-021.yaml
+P6-022	Done	Forced aligner POST /v1/align, phone/syllable schema, low_confidence gate (speech-service)	P6/P6-022.yaml
+P6-023	Done	Build Polie Conversation mode with level grounding (modes/conversation.ts, conversation.md)	P6/P6-023.yaml
+P6-024	Done	Scenario roleplay: roleplay.ts, scenarios/catalog, scenario_unapproved gate (P6-024)	P6/P6-024.yaml
+P6-025	Done	Tutor Explain mode: pattern-library RAG, L1 answer, pattern id citation (tutorExplain.ts)	P6/P6-025.yaml
+P6-026	Done	Build Tutor Correct-my-writing hybrid with uncertainty (tutorCorrect.ts, tutor_correct.md, diacritics patchModelOutput)	P6/P6-026.yaml
+P6-027	Done	Story mode: story.ts, story.md, lib/screens/story (lexicon, approval gate, AI label)	P6/P6-027.yaml
+P6-028	Done	Shadowing coach on gateway scorer + pitch overlay (shadowing.ts, tutor_pronunciation_mode_screen.dart)	P6/P6-028.yaml
+P6-029	Done	Translator-with-teaching: pair gate, translate.md, meaning_preservation eval (translate.ts)	P6/P6-029.yaml
+P6-030	Done	Live translate confidence mapping + voice/camera UI (liveTranslate.ts, screens/translate/)	P6/P6-030.yaml
+P6-031	Done	Stand up server-side scorer service (scorer/api.py, score.route.ts)	P6/P6-031.yaml
+P6-032	Done	Fine-tune Omnilingual CTC per language (finetune.py, licence_check.py; fixture train)	P6/P6-032.yaml
+P6-033	Done	Compute GOP segmental scores with learner advice (gop.py, advice_map.py, test_gop.py)	P6/P6-033.yaml
+P6-034	Done	Extract F0 and normalise per speaker in semitones (f0.py, normalise.py, test_f0.py)	P6/P6-034.yaml
+P6-035	Done	Compare per-syllable contour to native reference (syllable_contour.py, tone_classifier.py)	P6/P6-035.yaml
+P6-036	Done	Support Yoruba H/M/L with glides and Twi H/L (tones/yoruba.py, tones/twi.py)	P6/P6-036.yaml
+P6-037	Done	Support Igbo downstep, Hausa falling and Zulu depressors (igbo.py, hausa.py, zulu.py)	P6/P6-037.yaml
+P6-038	Done	Per-syllable tone correctness with confidence (tone_result.py, score.route.ts)	P6/P6-038.yaml
+P6-039	Done	Show learner contour overlaid on native contour (tone_overlay_view.dart, pitch_contour_painter.dart)	P6/P6-039.yaml
+P6-040	Done	Fluency rate, pauses, self-repairs (fluency.py)	P6/P6-040.yaml
+P6-041	Done	Collect native 1-5 rating data per language (rating/api.ts, rating.model.ts, tools/rating_console)	P6/P6-041.yaml
+P6-042	Done	Calibrate scorer to native ratings (calibration.py, scorer_real.yaml)	P6/P6-042.yaml
+P6-043	Done	Enforce honesty rules: quality.py clipping/SNR, honesty.py unsure/retry, fuzz gate	P6/P6-043.yaml
+P6-044	Done	Verify Omnilingual 300M offline (offline_omnilingual_verify.py, omnilingual_offline ledger, no-go raw ship)	P6/P6-044.yaml
+P6-045	Done	ADR-008: Stage-1 TTS vendors, licence exclusions, xh commissioned voice	P6/P6-045.yaml
+P6-046	Done	Gate each voice on native tone-accuracy threshold (voiceGate.ts, tone_accuracy.yaml)	P6/P6-046.yaml
+P6-047	Done	Route recorded audio first, gateway TTS for dynamic turns (policy.ts, tts.route.ts, enhanced_tts_service.dart)	P6/P6-047.yaml
+P6-048	Done	Build commissioned-voice fine-tune pipeline (tts/licence_manifest.py, tts/finetune/)	P6/P6-048.yaml
+P6-049	Done	Yoruba gateway TTS Intron→Spitch behind voiceGate (providers/yo.ts)	P6/P6-049.yaml
+P6-050	Done	Igbo gateway TTS Intron→Spitch behind voiceGate (providers/ig.ts)	P6/P6-050.yaml
+P6-051	Done	Hausa gateway TTS Intron→Spitch→ElevenLabs v3 behind voiceGate (providers/ha.ts)	P6/P6-051.yaml
+P6-052	Done	Ship Nigerian Pidgin TTS voice behind tone-accuracy gate (providers/pcm.ts, voiceGate)	P6/P6-052.yaml
+P6-053	Done	Ship Swahili TTS voice behind tone-accuracy gate (providers/sw.ts, voiceGate)	P6/P6-053.yaml
+P6-054	Done	Ship isiZulu TTS voice behind tone-accuracy gate (providers/zu.ts, voiceGate)	P6/P6-054.yaml
+P6-055	Draft	Ship isiXhosa TTS voice behind tone-accuracy gate	P6/P6-055.yaml
+P6-056	Done	Gateway eval harness: evals/harness/run.ts, thresholds.yaml, ai_eval.yml (P6-056)	P6/P6-056.yaml
+P6-057	Done	Define eval set schema requiring 300 items per language (evals/schema/item.schema.json, validate.ts)	P6/P6-057.yaml
+P6-058	Draft	Author Yoruba eval set of at least 300 items	P6/P6-058.yaml
+P6-059	Draft	Author Igbo eval set of at least 300 items	P6/P6-059.yaml
+P6-060	Draft	Author Hausa eval set of at least 300 items	P6/P6-060.yaml
+P6-061	Draft	Author Nigerian Pidgin eval set of at least 300 items	P6/P6-061.yaml
+P6-062	Draft	Author Swahili eval set of at least 300 items	P6/P6-062.yaml
+P6-063	Draft	Author isiZulu eval set of at least 300 items	P6/P6-063.yaml
+P6-064	Draft	Author isiXhosa eval set of at least 300 items	P6/P6-064.yaml
+P6-065	Done	Add diacritic completeness metric (evals/metrics/diacritics.ts)	P6/P6-065.yaml
+P6-066	Done	Add out-of-level vocabulary rate metric (evals/metrics/outOfLevel.ts)	P6/P6-066.yaml
+P6-067	Done	Culture factuality eval metric (cultureFactuality.ts, per-language accuracy)	P6/P6-067.yaml
+P6-068	Done	Add refusal correctness metric (evals/metrics/refusal.ts)	P6/P6-068.yaml
+P6-069	Done	Add persona fidelity metric (evals/metrics/personaFidelity.ts)	P6/P6-069.yaml
+P6-070	Done	Build native-rater scoring workflow for evals (evals/native/rater_queue.ts, tools/rating_console)	P6/P6-070.yaml
+P6-071	Done	L2 content gate: l2_language_gate.yaml, evals/gates/l2.ts, language_not_gated	P6/P6-071.yaml
+P6-072	Done	Per-language bakeoff table, Aya excluded, routes from generation_winners.json (evals/bakeoff/run.ts)	P6/P6-072.yaml
+P6-073	Done	Licensed open LLM finetune: manifest gate, diacritic promotion, route artefact (ml/finetune/llm)	P6/P6-073.yaml
+P6-074	Done	ASR eval: evals/asr/run.ts, 300-utt sets, stt_routing.json, asr_eval_report.md	P6/P6-074.yaml
+P6-075	Done	LiveKit cascaded turn agent + session mint (realtime/agent.ts, session.ts, realtime_voice_client.dart)	P6/P6-075.yaml
+P6-076	Done	Per-language VAD thresholds + tonal pitch-drop gate (vad.ts, endOfTurn.ts)	P6/P6-076.yaml
+P6-077	Done	Stream STT inside realtime pipeline (streamingStt.ts, partials + fallback)	P6/P6-077.yaml
+P6-078	Done	Stream LLM output into streaming TTS to client (llmTtsPipe.ts)	P6/P6-078.yaml
+P6-079	Done	Support barge-in during agent speech (bargeIn.ts, realtime_voice_client.dart)	P6/P6-079.yaml
+P6-080	Done	Gate realtime latency budgets in CI (latencyProbe.ts, ai_latency.yml)	P6/P6-080.yaml
+P6-081	Done	Drive avatar lip-sync from TTS alignments (alignments.ts, lip_sync_driver.dart)	P6/P6-081.yaml
+P6-082	Done	Allow speech-native realtime models only after blind tests (nativeModelGate.ts, realtime_native.yaml)	P6/P6-082.yaml
+P6-083	Done	Push-to-talk fallback: hold capture, VAD bypass, low-bandwidth auto-offer (ptt_button.dart)	P6/P6-083.yaml
+P6-084	Done	Opus 16–24 kbps + 2G/3G text fallback (codec.ts, realtime_voice_client.dart)	P6/P6-084.yaml
+P7-900	Done	ADR-009 Lens hub + Point & Say pipeline; route point-and-say retained	P7/P7-900.yaml
+P7-901	Done	ADR-013 two-layer living lexicon (Verified + My Words, link rules)	P7/P7-901.yaml
+P7-902	Done	Build Lens full-screen camera with breathing boxes (lens_screen.dart, route alias)	P7/P7-902.yaml
+P7-903	Done	Build on-device detection mapped to a curated African object set (on_device_detector.dart, object_set_mapper.dart)	P7/P7-903.yaml
+P7-904	Done	Server SigLIP recognize via POST /api/ai/lens/recognize; server_recognizer.dart (P7-904)	P7/P7-904.yaml
+P7-905	Done	Replace NLLB/MyMemory in Lens with verified lexicon resolver (lexicon_label_resolver.dart)	P7/P7-905.yaml
+P7-906	Done	Build Word Card content for Lens tags with native audio (word_card_builder.dart)	P7/P7-906.yaml
+P7-907	Done	Lens Word Card flip, tone contour line, 48dp mic (lens_word_card.dart)	P7/P7-907.yaml
+P7-908	Done	Build Lens hold-to-speak with GOP and tone scoring (lens_speak_controller.dart)	P7/P7-908.yaml
+P7-909	Done	Build Lens personal collection feeding FSRS review (lens_collection_service.dart)	P7/P7-909.yaml
+P7-910	Done	Weekly Home Safari quests (`home_safari_service.dart`, `home_safari_card.dart`)	P7/P7-910.yaml
+P7-911	Done	Lens Clip share: ML Kit face blur, minor gate, lens_share_sheet (P7-911)	P7/P7-911.yaml
+P7-912	Done	Lens signs/menus OCR: ML Kit + lexicon/Gemini restore, read-aloud (ocr_mode_service.dart)	P7/P7-912.yaml
+P7-913	Done	Offline Lens pack manifest + cached audio; PointAndSay queue sync states (P7-913)	P7/P7-913.yaml
+P7-914	Done	Enforce Lens photo privacy and minor consent (lens_privacy_policy.dart, retention.service.ts)	P7/P7-914.yaml
+P7-915	Done	Wire Lens entry points (app_top_bar, see_it_in_the_wild, object_lessons, flashcard_safari)	P7/P7-915.yaml
+P7-916	Done	Verified Lexicon v2 lexeme schema, `/api/v2/verified-lexicon`, `verified_lexeme.dart`	P7/P7-916.yaml
+P7-917	Done	Attach 2-3 native recordings per lexicon entry (lexiconAudio.service.ts, lexicon_audio_client.dart)	P7/P7-917.yaml
+P7-918	Done	Merge admin lexicon and user entries (lexiconMigration.service.ts, link table, migrate routes)	P7/P7-918.yaml
+P7-919	Done	My Words screen, verified link badges, offline banner (living_dictionary)	P7/P7-919.yaml
+P7-920	Done	Build suggest-and-verify loop with native approvals (lexiconSuggestion.service.ts, verify_queue_screen.dart)	P7/P7-920.yaml
+P7-921	Done	Route corrections from Native Corrections and the Square (lexiconCorrectionBridge)	P7/P7-921.yaml
+P7-922	Done	Word Card bottom sheet (word_card_sheet.dart, dialect_chips, tone_lens_contour)	P7/P7-922.yaml
+P7-923	Done	Build long-press Word Card on every text surface (lexicon_selectable_text.dart)	P7/P7-923.yaml
+P7-924	Done	Build full lexicon entry page (lexicon_entry_screen.dart)	P7/P7-924.yaml
+P7-925	Done	Global Search lexicon-first (lexicon_search_service.dart, global_search_screen.dart)	P7/P7-925.yaml
+P7-926	Done	Word of the day card + deterministic verified-lexicon story picker (P7-926)	P7/P7-926.yaml
+P7-927	Done	Pan-African same-idea view + relay concept links (same_idea_view.dart, multilingual_relay_lexicon.dart)	P7/P7-927.yaml
+P7-928	Done	Offline lexicon pack manifest + client verify/sync (lexiconPack.service.ts, lexicon_pack_service.dart)	P7/P7-928.yaml
+P7-929	Done	Wire lexicon entry points (words_tab, lens_results_lexicon_link, contribute_hub)	P7/P7-929.yaml
+P7-930	Done	Micro-lesson learn/see/try screen, 60–90s validator, resume + media retry (P7-930)	P7/P7-930.yaml
+P7-931	Done	30-second tutorial perception check (perception_check.dart, in-memory session)	P7/P7-931.yaml
+P7-932	Done	Speaking try step with gateway scorer, unsure/skip/error (speaking_try.dart)	P7/P7-932.yaml
+P7-933	Done	Sound tutorial catalogue, mouth player, coming-soon gate (no stand-in)	P7/P7-933.yaml
+P7-934	Done	Author Yoruba tone and subdot tutorials (p7_934.json, kp gated)	P7/P7-934.yaml
+P7-935	Done	Igbo vowel harmony tutorial (p7_935.json, lexicon/pattern cited)	P7/P7-935.yaml
+P7-936	Done	Hausa ɓ ɗ ƙ tutorial (p7_936.json, lexicon-cited, draft until native sign-off)	P7/P7-936.yaml
+P7-937	Done	Zulu/Xhosa click tutorials (p7_937.json, WAXAL drills, EXT-13 mouth gate)	P7/P7-937.yaml
+P7-938	Done	Amharic ejective/gemination tutorial (p7_938.json, game_content+manifest anchors)	P7/P7-938.yaml
+P7-939	Done	Swahili noun class wheel tutorial pack (p7_939.json, class_wheel m/wa ki/vi)	P7/P7-939.yaml
+P7-940	Done	Keyboard bar typing tutorial (keyboard_bar_tutorial.dart, lingafriq_keyboard_bar.dart)	P7/P7-940.yaml
+P7-941	Done	Minimal-pair tone demo (minimal_pair_demo.dart, assets/tutorials/minimal_pairs.json)	P7/P7-941.yaml
+P7-942	Done	Culture greeting/naming/taboo tutorial packs (culture_*.json, EXT-14 draft gate)	P7/P7-942.yaml
+P7-943	Done	JIT coaching on first pattern hit (jit_coaching_service.dart, coaching_tip.dart)	P7/P7-943.yaml
+P7-944	Done	ML Kit Latin OCR diacritic verify (ocr_diacritic_metrics, ledger, verify.py)	P7/P7-944.yaml
+P8-900	Done	GameKit due-first turn queue, manifest gate, fallback/retry (game_engine.dart)	P8/P8-900.yaml
+P8-901	Done	GameKit learner-graph writer + FSRS parity, offline dedupe (game_result.dart)	P8/P8-901.yaml
+P8-902	Done	GameKit 60–180s session clock, core verb manifest, nightly median flag (game_engine.dart)	P8/P8-902.yaml
+P8-903	Done	GameKit 160ms tap feedback, pending slot, streak celebration (game_feedback.dart)	P8/P8-903.yaml
+P8-904	Done	GameKit why-wrong panel, taxonomy copy, cached audio, learner graph (game_feedback.dart)	P8/P8-904.yaml
+P8-905	Done	GameKit adaptive difficulty 80–85% (game_difficulty.dart, resolveWithSession)	P8/P8-905.yaml
+P8-906	Done	GameKit level-band duel matchmaking (game_matchmaking.service.ts, socket)	P8/P8-906.yaml
+P8-907	Done	GameKit dark-pattern CI lint (lint_dark_patterns.py, GameKitRewardPolicy)	P8/P8-907.yaml
+P8-908	Done	GameKit bot labels, server isBot, leaderboard exclude (game_engine_service, progress_meter, game_matchmaking)	P8/P8-908.yaml
+P8-909	Done	GameKit server-verified rewards (game_rewards.service, claim-reward, gamification_provider)	P8/P8-909.yaml
+P8-910	Done	RealScorerSpeakingEngine, unsure/honest-practice, learner_scorer_traces (game_scoring.dart)	P8/P8-910.yaml
+P8-911	Done	GameKit practice-not-scored for speaking games until flag+adapter (universal_game_screen)	P8/P8-911.yaml
+P8-912	Done	GameKit lexicon word pools via verified-lexicon API, audio filter, GameContentFailure	P8/P8-912.yaml
+P8-913	Done	GameKit per-language tone inventories in tone games (tone_forge_models, tone_trainer)	P8/P8-913.yaml
+P8-914	Done	Featured Tone Forge on tone shelf; P8-913 pool + P8-901 graph; practice gate	P8/P8-914.yaml
+P8-915	Done	Revive game mastery results from learner-model snapshots (game_mastery_results_screen.dart, universal_game_screen.dart)	P8/P8-915.yaml
+P8-916	Done	ADR-036 flagship harvest pairs (six legacy→flagship, No-Cut)	P8/P8-916.yaml
+P8-917	Done	Play hub skill shelves: AllGamesRegistry coverage, GamesScreenEnhanced lazy shelves, arcade_shelf_coverage_test	P8/P8-917.yaml
+P8-918	Done	Play hub headliners row: kArcadeHeadlinerOrder, ArcadeHeadlinersSection, Coming soon gate	P8/P8-918.yaml
+P8-920	Done	Flagship Talking Drum (talking_drum/*, lexicon contours, real scorer overlay)	P8/P8-920.yaml
+P8-921	Done	Flagship Minimal Pair Duel: picture grid, async friend duel, league accuracy-first (minimal_pair_duel/*, game_matchmaking async)	P8/P8-921.yaml
+P8-922	Done	Market Haggle flagship: register rubric, gateway AI trader, scorer gate (market_haggle/*)	P8/P8-922.yaml
+P8-923	Done	Danfo/Matatu Rush listening game (danfo_rush/*, taxi_survival harvest; recordings pending EXT-13)	P8/P8-923.yaml
+P8-924	Done	Proverb Weaver flagship: fragment weave, situation match, B1 gate, legacy unlocker link	P8/P8-924.yaml
+P8-925	Done	Griot Story Chain flagship: turns, grammar gate, playback, story_chain.service (P8-925)	P8/P8-925.yaml
+P8-926	Done	Word Forge morphology sw/zu (word_forge/*, grammar_jam route)	P8/P8-926.yaml
+P8-927	Done	'Flagship: Fidel Flight / Script Sprint' (script_sprint/*)	P8/P8-927.yaml
+P8-928	Done	Flagship Greeting Gauntlet (scenario_matrix, greeting_gauntlet_*, ADR-036 harvest)	P8/P8-928.yaml
+P8-929	Done	Echo Karaoke flagship: pitch line, licence catalog, legacy karaoke harvest (echo_karaoke/*)	P8/P8-929.yaml
+P8-930	Done	Word Forge Yoruba serial verbs (yoruba_serial_verbs.dart, grammar records, goldens)	P8/P8-930.yaml
+P8-931	Done	Weekly Village Festival themes (`festival_theme_service.dart`, `festival.service.ts`)	P8/P8-931.yaml
+P8-932	Done	Mastery map from learner-model events (game_mastery_map_screen.dart, game_result archive)	P8/P8-932.yaml
+P8-933	Done	Circle co-op word goals (circle_goals.service.ts, circle_goal_screen.dart)	P8/P8-933.yaml
+P9-900	Done	ADR-038 self-hosted Socket.IO+Redis vs Ably/Pusher/Stream (ADR-038-realtime-stack.md)	P9/P9-900.yaml
+P9-901	Done	Redis Socket.IO adapter, Redis online registry, PM2 cluster, nginx sticky doc (P9-901.socketCluster.test.ts)	P9/P9-901.yaml
+P9-902	Done	Redis TTL presence (45s), heartbeat, scoped fan-out, minor lookup gate (P9-902.presenceRedis.test.ts)	P9/P9-902.yaml
+P9-903	Done	Socket handshake: production origin allowlist, TOKEN_TRANSPORT_INVALID, single init path (cors.ts)	P9/P9-903.yaml
+P9-904	Done	Authorise every room join and emit per room (roomAuthz.ts, subscriptions.ts)	P9/P9-904.yaml
+P9-905	Done	Versioned zod socket events (events.schema.ts, socket_event_schemas.dart, P9-905 tests)	P9/P9-905.yaml
+P9-906	Done	Per-socket token bucket RATE_LIMITED + outbound backpressure (rateLimit.ts)	P9/P9-906.yaml
+P9-907	Done	10k socket soak harness (socket_10k.js, loadtest_report.md, --self-test)	P9/P9-907.yaml
+P9-908	Done	Build durable message log with per-device cursors and idempotent ids (messageLog.ts, messageSync.service.ts, P9-908.messageSync.test.ts)	P9/P9-908.yaml
+P9-909	Done	Offline chat outbox + data-only FCM push (outbox_message_queue, data_push_handler, push.service)	P9/P9-909.yaml
+P9-910	Done	Signed chat media uploads, transcode, EXIF strip (mediaUpload/Transcode, P9-910.media.test.ts)	P9/P9-910.yaml
+P9-911	Done	Hard-delete expiring media; sealed moderation hold; migration count (mediaExpiry.job.ts)	P9/P9-911.yaml
+P9-912	Done	Assess age at sign-up and enforce age tiers (ageAssurance.service.ts, age_gate_screen.dart)	P9/P9-912.yaml
+P9-913	Done	Link guardian accounts and collect verifiable consent (guardianLink.service.ts, guardian screens)	P9/P9-913.yaml
+P9-914	Done	Guardian group join approvals (guardianApproval.service.ts, approvals_screen.dart, P9-914 tests)	P9/P9-914.yaml
+P9-915	Done	Guardian daily limits + child progress (guardianLimits.service.ts, limits_progress_screen.dart)	P9/P9-915.yaml
+P9-916	Done	School consent + teacher provisioning (schoolAccount.service.ts, school_provisioning_screen.dart)	P9/P9-916.yaml
+P9-917	Done	Minor privacy defaults: privacyDefaults.service.ts, minorPolicy.ts, locked privacy UI	P9/P9-917.yaml
+P9-918	Done	Child capability policy: capabilities.service.ts, capability_gate.dart, DM/snap/ads/purchase gates	P9/P9-918.yaml
+P9-919	Done	Apply stricter AI conversation policy and no memory for children (minorPolicy.ts, memory.ts, gateway stack)	P9/P9-919.yaml
+P9-920	Done	Minor moderated messaging policy + guardian E2EE explainer (messagingPolicy.service.ts, messaging_explainer_screen.dart)	P9/P9-920.yaml
+P9-921	Done	Moderation pipeline orchestrator (pipeline.ts, verdict.ts, moderationCase.model.ts)	P9/P9-921.yaml
+P9-922	Done	Hosted moderation adapter: category map, LANGUAGE_UNSUPPORTED, circuit breaker (hostedApi.adapter.ts)	P9/P9-922.yaml
+P9-923	Done	Multilingual moderation eval harness (evalSets.ts, eval_harness.py, severe recall gate)	P9/P9-923.yaml
+P9-924	Done	Match word-boundary-aware moderator lexicons per language (lexicon.engine.ts)	P9/P9-924.yaml
+P9-925	Done	Grooming heuristics: rule ledger, high-priority cases, evidence audit, precision stats (grooming.heuristics.ts)	P9/P9-925.yaml
+P9-926	Done	Classify images/video, perceptual hash + visibility gate (imageClassifier.ts, perceptualHash.ts)	P9/P9-926.yaml
+P9-927	Done	Integrate known-CSAM hash matching on unencrypted uploads (csamHash.adapter/provider)	P9/P9-927.yaml
+P9-928	Draft	Blocked-External EXT-25: law-enforcement escalation (hotline accounts)	P9/P9-928.yaml
+P9-929	Done	newAccountLimits.ts, first_dm_prompt_sheet.dart, NEW_ACCOUNT_LIMIT + first-DM intro/accept	P9/P9-929.yaml
+P9-930	Done	Block/mute/report in two taps; userSafety.service + safety_actions_sheet	P9/P9-930.yaml
+P9-931	Done	Moderator console severity queues, SLAs, evidence audit (sla.service.ts, moderation.routes.ts, queue.tsx)	P9/P9-931.yaml
+P9-932	Done	Learner appeals API + transparency job + appeal_screen (appeals.service.ts, transparencyReport.job.ts)	P9/P9-932.yaml
+P9-933	Done	Publish plain-language community guidelines in supported UI languages	P9/P9-933.yaml
+P9-934	Done	Verify safety lead, incident response and moderator training exist (INCIDENT_RESPONSE.md, MODERATOR_TRAINING.md, safety_ops_check.py)	P9/P9-934.yaml
+P9-935	Draft	Remediate pen-test findings on sockets, auth and minors' surfaces	P9/P9-935.yaml
+P9-936	Done	G9 gate packet NO-GO (EXT-17/EXT-25 open); g9_gate_check.py policy matrix	P9/P9-936.yaml
+P9-937	Done	ADR-039: MLS RFC 9420 (openmls 3.3.0, @wireapp/openmls-js 0.1.0); Signal/libsignal rejected	P9/P9-937.yaml
+P9-938	Done	MLS delivery: ciphertext/commits only, key packages, MLS_COMMIT_INVALID (deliveryService.ts, keyPackages.ts)	P9/P9-938.yaml
+P9-939	Done	MLS E2EE default adult DMs (mls_session_service.dart, private_chat_screen.dart)	P9/P9-939.yaml
+P9-940	Done	E2EE on-device gloss/Tone Lens + per-message server assist consent (on_device_overlay_service.dart, server_assist_consent_sheet.dart)	P9/P9-940.yaml
+P9-941	Done	Content-free E2EE wake pushes; minor/age-unknown gate; local notify after sync (push.service.ts, data_push_handler.dart)	P9/P9-941.yaml
+P9-942	Done	Group calls LiveKit member authz moderated minors (groupCall.service.ts, group_call_screen.dart)	P9/P9-942.yaml
+P9-943	Done	Circles engine: caps, tribe migration, guardian/teacher adult join, /api/v2/circles (circles.service.ts, circles_screen.dart)	P9/P9-943.yaml
+P9-944	Done	Chat engine: voice notes, reactions/reply sync, read-receipt policy, minor moderation banner, WA menu (private_chat_screen.dart, wa_private_chat_service.dart, voice_note_recorder.dart)	P9/P9-944.yaml
+P9-945	Done	Chat learning service + Tone Lens sheet + language status chips (chat_room_learning_service.dart)	P9/P9-945.yaml
+P9-946	Done	Opt-in voice-note transcription with gloss (voiceNoteTranscribe.service.ts, voice_note_transcript.dart)	P9/P9-946.yaml
+P9-947	Done	Practice Rooms host/topic/level, turn order, AI facilitator (practiceRoom.service.ts)	P9/P9-947.yaml
+P9-948	Done	Clips capture/post 15–60s, moderation + minor circle scope (clip_camera_screen.dart, clips.service.ts)	P9/P9-948.yaml
+P9-949	Done	Clip templates: verified phrase/proverb/twister + camera preset (clip_templates_screen.dart)	P9/P9-949.yaml
+P9-950	Done	Clip duets + native stitch (clipDuet.service.ts, clip_duet_screen.dart)	P9/P9-950.yaml
+P9-951	Done	Native corrections queue, reputation, QA routing (nativeCorrections.service.ts, community_corrections_screen.dart)	P9/P9-951.yaml
+P9-952	Done	Teacher dashboard + CSV roster import (classroom.service.ts, rosterImport.service.ts, dashboard.tsx, classroom_roster_screen.dart)	P9/P9-952.yaml
+P9-953	Done	Assign work, auto-grade speaking, teacher override, can-do progress	P9/P9-953.yaml
+P9-954	Done	LiveKit class sessions with recording consent (classSession.service.ts, recordingConsent.ts, classroom_session_screen.dart)	P9/P9-954.yaml
+P9-955	Done	Festival calendar + live/replay Practice Rooms (events.service.ts, events_screen.dart)	P9/P9-955.yaml
+P9-956	Done	Square feed + Tone Lens + moderation (square.service.ts, square_screen.dart)	P9/P9-956.yaml
+P9-957	Done	Circle stories 24h + member scope (stories.service.ts, circle_stories_screen.dart)	P9/P9-957.yaml
+P9-958	Done	Replace mock co-learners in Village flashcards with real or empty state	P9/P9-958.yaml
+P9-959	Done	Village practice audit EP-§9.2 (village_practice_audit.md, village_practice_audit_check.py)	P9/P9-959.yaml
+P2-058	Done	Estimate per-skill mastery on the device	P2/P2-058.yaml
+P2-059	Done	Raise lib/learning line coverage to the 70% gate	P2/P2-059.yaml
+P4-168	Done	Register MobileNetV4 and SigLIP weights and reject YOLO (check_register.py)	P4/P4-168.yaml
+P4-169	Done	Import course items only from the canonical curriculum packs (import_packs.py)	P4/P4-169.yaml
+P6-085	Done	Point-and-Say human audio before licensed TTS (point_say_audio.dart, tts_service.dart)	P6/P6-085.yaml
+P6-086	Done	Match a Point and Say frame with SigLIP behind the gateway (siglipMatch.service.ts)	P6/P6-086.yaml
+P7-945	Done	On-device MobileNetV4 TFLite classifier (on_device_object_classifier.dart, point_say_mobilenetv4.tflite)	P7/P7-945.yaml
+P7-946	Done	Map Point and Say labels to dictionary entries (point_say_dictionary.dart)	P7/P7-946.yaml
+P7-947	Done	Licensed fine-tune gates + held-out eval (tools/point_say/finetune.py; no corpus in repo)	P7/P7-947.yaml
+P7-949	Done	lesson_pacing.dart, lesson_session_screen.dart, pacing replay harness (P7-949)	P7/P7-949.yaml
+P7-950	Done	MobileNetV4 low-confidence → SigLIP gateway with image opt-in (point_say_fallback.dart)	P7/P7-950.yaml
+P7-951	Done	Draw the winding lesson path and its node states (path_node_state.dart, learning_path_widget.dart)	P7/P7-951.yaml
+P7-952	Done	Path banners, preview sheet, Drift-first lazy path (path_section_banner.dart, P7-952)	P7/P7-952.yaml
+P7-953	Done	Licensed path scenery lookup, parchment/dim, Polie still gate (path_scene_art.dart, P7-953)	P7/P7-953.yaml
+P7-960	Done	Build a structured lesson from Import Media	P7/P7-960.yaml
+P7-961	Done	Full Import Media lesson: glosses, single-word guided cloze, cited flashcards	P7/P7-961.yaml
+P7-962	Draft	Accept video, audio, text, and images, then transcribe and translate	P7/P7-962.yaml
+P8-934	Done	Word hunt on Point-and-Say classifier + dictionary gate (word_hunt_screen.dart)	P8/P8-934.yaml

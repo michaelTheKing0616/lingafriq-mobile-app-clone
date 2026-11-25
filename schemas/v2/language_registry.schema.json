@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.lingafriq.com/v2/language_registry.schema.json",
+  "title": "LingAfriq Language Registry",
+  "description": "Waves, scripts, per-entry readiness and community consent flags (ELEVATION §6.4).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["charter", "card_id", "planning_targets", "entries"],
+  "properties": {
+    "charter": { "type": "string", "const": "v2" },
+    "card_id": { "type": "string", "const": "P4-112" },
+    "sources": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "planning_targets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "wave_1", "wave_2_cumulative", "wave_3_cumulative", "wave_4_cumulative", "note"],
+      "properties": {
+        "kind": { "type": "string", "const": "planning_target" },
+        "wave_1": { "type": "integer", "const": 7 },
+        "wave_2_cumulative": { "type": "string" },
+        "wave_3_cumulative": { "type": "string" },
+        "wave_4_cumulative": { "type": "string" },
+        "note": { "type": "string", "minLength": 1 }
+      }
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/registry_entry" }
+    }
+  },
+  "$defs": {
+    "registry_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entry_id", "language_id", "name", "wave", "script", "readiness_level"],
+      "properties": {
+        "entry_id": { "type": "string", "minLength": 1 },
+        "language_id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "wave": { "type": "integer", "minimum": 1, "maximum": 4 },
+        "script": { "type": "string", "minLength": 1 },
+        "readiness_level": {
+          "type": ["string", "null"],
+          "enum": ["L0", "L1", "L2", "L3", null]
+        },
+        "community_consent_required": { "type": "boolean" },
+        "consent_recorded": { "type": "boolean" },
+        "benefit_sharing_terms": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

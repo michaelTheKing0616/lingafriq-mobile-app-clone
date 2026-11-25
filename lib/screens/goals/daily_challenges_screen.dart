@@ -1,314 +1,275 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lingafriq/providers/daily_goals_provider.dart';
-import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lingafriq/widgets/pan_african_components.dart';
+import 'package:lingafriq/design/components/ling_button.dart';
+import 'package:lingafriq/design/components/ling_state.dart';
+import 'package:lingafriq/design/states/empty_state.dart';
+import 'package:lingafriq/design/states/error_state.dart';
+import 'package:lingafriq/design/states/offline_state.dart';
+import 'package:lingafriq/design/tokens.g.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
+import 'package:lingafriq/models/daily_challenge_model.dart';
+import 'package:lingafriq/providers/daily_challenges_provider.dart';
 
-/// Daily Challenges Screen - Based on Figma Make Design
-class DailyChallengesScreen extends HookConsumerWidget {
+/// Daily challenge board.
+///
+/// With no loader, the page is empty. A failed load clears any rows that
+/// were on screen. This screen does not create a challenge list.
+class DailyChallengesScreen extends StatefulWidget {
+  const DailyChallengesScreen({super.key, this.load, this.onBack});
+
+  /// App route that reads challenges already saved on the phone.
+  const DailyChallengesScreen.saved({super.key, this.onBack})
+    : load = loadSavedDailyChallenges;
+
+  /// App route `/today/daily-challenges`. The map key drops the leading slash.
+  static const String routePath = '/today/daily-challenges';
+
+  static const String routeKey = 'today/daily-challenges';
+
+  static const Key emptyKey = ValueKey<String>('today-daily-challenges-empty');
+
+  static const Key errorKey = ValueKey<String>('today-daily-challenges-error');
+
+  static const Key offlineKey = ValueKey<String>(
+    'today-daily-challenges-offline',
+  );
+
+  static const Key listKey = ValueKey<String>('today-daily-challenges-list');
+
+  static const Key backKey = ValueKey<String>('today-daily-challenges-back');
+
+  static Key challengeKey(String id) => ValueKey<String>('today-challenge-$id');
+
+  /// Loads the board. Null means there is nothing saved to show.
+  final Future<DailyChallengeBoard> Function()? load;
+
   final VoidCallback? onBack;
 
-  const DailyChallengesScreen({super.key, this.onBack});
+  @override
+  State<DailyChallengesScreen> createState() => _DailyChallengesScreenState();
+}
+
+class _DailyChallengesScreenState extends State<DailyChallengesScreen> {
+  DailyChallengeBoardStatus _status = DailyChallengeBoardStatus.loading;
+  List<DailyChallenge> _rows = const <DailyChallenge>[];
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final dailyGoals = ref.read(dailyGoalsProvider.notifier);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+  void initState() {
+    super.initState();
+    if (widget.load == null) {
+      _status = DailyChallengeBoardStatus.empty;
+      _rows = const <DailyChallenge>[];
+      return;
+    }
+    _status = DailyChallengeBoardStatus.loading;
+    _rows = const <DailyChallenge>[];
+    _run();
+  }
 
-    // Calculate progress
-    final completedCount = dailyGoals.goals.where((g) => g.completed).length;
-    final totalCount = dailyGoals.goals.length;
-    final totalXP = dailyGoals.goals
-        .where((g) => g.completed)
-        .fold(0, (sum, goal) => sum + _getXpReward(goal.type));
+  @override
+  void didUpdateWidget(DailyChallengesScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!identical(oldWidget.load, widget.load)) {
+      _rows = const <DailyChallenge>[];
+      if (widget.load == null) {
+        _status = DailyChallengeBoardStatus.empty;
+        return;
+      }
+      _status = DailyChallengeBoardStatus.loading;
+      _run();
+    }
+  }
 
+  Future<void> _run() async {
+    final Future<DailyChallengeBoard> Function()? load = widget.load;
+    if (load == null) {
+      if (!mounted) return;
+      setState(() {
+        _status = DailyChallengeBoardStatus.empty;
+        _rows = const <DailyChallenge>[];
+      });
+      return;
+    }
+    try {
+      final DailyChallengeBoard board = await load();
+      if (!mounted) return;
+      setState(() => _apply(board));
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _status = DailyChallengeBoardStatus.error;
+        _rows = const <DailyChallenge>[];
+      });
+    }
+  }
+
+  void _apply(DailyChallengeBoard board) {
+    final List<DailyChallenge> rows = <DailyChallenge>[
+      for (final DailyChallenge row in board.challenges)
+        if (row.title.trim().isNotEmpty) row,
+    ];
+    if (board.status == DailyChallengeBoardStatus.ready && rows.isNotEmpty) {
+      _status = DailyChallengeBoardStatus.ready;
+      _rows = List<DailyChallenge>.unmodifiable(rows);
+      return;
+    }
+    _rows = const <DailyChallenge>[];
+    if (board.status == DailyChallengeBoardStatus.offline) {
+      _status = DailyChallengeBoardStatus.offline;
+    } else if (board.status == DailyChallengeBoardStatus.error ||
+        board.status == DailyChallengeBoardStatus.loading) {
+      _status = DailyChallengeBoardStatus.error;
+    } else {
+      _status = DailyChallengeBoardStatus.empty;
+    }
+  }
+
+  void _retry() {
+    setState(() {
+      _status = DailyChallengeBoardStatus.loading;
+      _rows = const <DailyChallenge>[];
+    });
+    _run();
+  }
+
+  void _back() {
+    final VoidCallback? onBack = widget.onBack;
+    if (onBack != null) {
+      onBack();
+      return;
+    }
+    final NavigatorState? navigator = Navigator.maybeOf(context);
+    if (navigator != null && navigator.canPop()) navigator.pop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations l10n = l10nOf(context);
+    final LingPalette palette = LingPalette.of(Theme.of(context).brightness);
     return Scaffold(
-      backgroundColor:
-          isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
-      body: Stack(
-        children: [
-          // Gradient Header
-          Container(
-            height: 25.h,
-            decoration: BoxDecoration(
-              gradient: PanAfricanGradients.forest,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(PanAfricanRadius.xxl),
-                bottomRight: Radius.circular(PanAfricanRadius.xxl),
-              ),
-              boxShadow: PanAfricanShadows.lg,
+      backgroundColor: palette.surface,
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(LingAfriqTokens.spacing16),
+          children: <Widget>[
+            Text(
+              l10n.hubTodayDailyChallenges,
+              style: lingBody(palette.onSurface),
+              softWrap: true,
+              overflow: TextOverflow.visible,
             ),
-            child: SafeArea(
-              child: Padding(
-                padding: EdgeInsets.all(PanAfricanSpacing.md),
-                child: Column(
-                  children: [
-                    if (onBack != null)
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.arrow_back,
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          ),
-                          onPressed: onBack,
-                          style: IconButton.styleFrom(
-                            backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
-                            shape: const CircleBorder(),
-                          ),
-                        ),
-                      ),
-                    SizedBox(height: 2.h),
-                    Icon(
-                      Icons.track_changes_rounded,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      size: 64,
-                    ),
-                    SizedBox(height: 1.h),
-                    Text(
-                      'Daily Challenges',
-                      style: PanAfricanTypography.headlineLarge(context).copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
-                    ),
-                    SizedBox(height: 0.5.h),
-                    Text(
-                      'Complete challenges to earn extra XP',
-                      style: PanAfricanTypography.bodyMedium(context).copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            const SizedBox(height: LingAfriqTokens.spacing16),
+            _body(l10n, palette),
+            const SizedBox(height: LingAfriqTokens.spacing16),
+            LingButton(
+              key: DailyChallengesScreen.backKey,
+              label: l10n.hubTodayBack,
+              unavailableLabel: l10n.commonStateUnavailable,
+              onPressed: _back,
             ),
-          ),
-          // Content
-          Positioned(
-            top: 22.h,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(PanAfricanSpacing.md),
-              child: Column(
-                children: [
-                  if (dailyGoals.goals.isEmpty)
-                    const PanAfricanEmptyState(
-                      icon: Icons.track_changes_rounded,
-                      title: 'No challenges yet',
-                      description: 'Check back later for your daily goals.',
-                    )
-                  else ...[
-                  // Progress Card
-                  Container(
-                    padding: EdgeInsets.all(PanAfricanSpacing.lg),
-                    decoration: BoxDecoration(
-                      color:
-                          isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-                      borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
-                      boxShadow: PanAfricanShadows.lg,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Today\'s Progress',
-                              style: PanAfricanTypography.titleMedium(context).copyWith(
-                                color: isDark
-                                    ? PanAfricanColors.textPrimaryDark
-                                    : PanAfricanColors.textPrimaryLight,
-                              ),
-                            ),
-                            SizedBox(height: 0.5.h),
-                            Text(
-                              '$totalXP XP earned',
-                              style: PanAfricanTypography.bodySmall(context).copyWith(
-                                color: isDark
-                                    ? PanAfricanColors.textSecondaryDark
-                                    : PanAfricanColors.textSecondaryLight,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: PanAfricanSpacing.md,
-                            vertical: PanAfricanSpacing.xs,
-                          ),
-                          decoration: BoxDecoration(
-                            color: PanAfricanColors.primary,
-                            borderRadius: BorderRadius.circular(PanAfricanRadius.round),
-                          ),
-                          child: Text(
-                            '$completedCount/$totalCount',
-                            style: PanAfricanTypography.labelLarge(context).copyWith(
-                              color: Theme.of(context).colorScheme.onPrimary,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 3.h),
-                  // Challenges List
-                  ...dailyGoals.goals.map((goal) {
-                    final progress = goal.target > 0 ? (goal.current / goal.target).clamp(0.0, 1.0) : 0.0;
-                    final isCompleted = goal.completed;
-
-                    return Container(
-                      margin: EdgeInsets.only(bottom: 2.h),
-                      padding: EdgeInsets.all(PanAfricanSpacing.lg),
-                      decoration: BoxDecoration(
-                        color:
-                            isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-                        borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
-                        boxShadow: PanAfricanShadows.md,
-                        border: Border.all(
-                          color: isCompleted
-                              ? PanAfricanColors.primary
-                              : Colors.transparent,
-                          width: 2,
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 10.w,
-                            height: 10.w,
-                            decoration: BoxDecoration(
-                              color: isCompleted
-                                  ? PanAfricanColors.primary
-                                  : (isDark
-                                      ? Colors.grey[800]
-                                      : Colors.grey[200]),
-                              borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-                            ),
-                            child: Icon(
-                              isCompleted ? Icons.check : Icons.track_changes_rounded,
-                              color: isCompleted
-                                  ? Theme.of(context).colorScheme.onPrimary
-                                  : (isDark ? Colors.grey[400] : Colors.grey[600]),
-                              size: 20,
-                            ),
-                          ),
-                          SizedBox(width: PanAfricanSpacing.md),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  _getGoalTitle(goal.type),
-                                  style: PanAfricanTypography.bodyLarge(context).copyWith(
-                                    fontWeight: FontWeight.w700,
-                                    color: isDark
-                                        ? PanAfricanColors.textPrimaryDark
-                                        : PanAfricanColors.textPrimaryLight,
-                                  ),
-                                ),
-                                SizedBox(height: 1.h),
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(PanAfricanRadius.xs),
-                                  child: LinearProgressIndicator(
-                                    value: progress.clamp(0.0, 1.0),
-                                    backgroundColor: isDark
-                                        ? Colors.grey[800]
-                                        : Colors.grey[200],
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                      isCompleted
-                                          ? PanAfricanColors.primary
-                                          : PanAfricanColors.secondary,
-                                    ),
-                                    minHeight: 8,
-                                  ),
-                                ),
-                                SizedBox(height: 0.5.h),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      '${goal.current}/${goal.target}',
-                                      style: PanAfricanTypography.labelSmall(context).copyWith(
-                                        color: isDark
-                                            ? PanAfricanColors.textSecondaryDark
-                                            : PanAfricanColors.textSecondaryLight,
-                                      ),
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.star_rounded,
-                                          color: Color(0xFFFCD116),
-                                          size: 16,
-                                        ),
-                                        SizedBox(width: 0.5.w),
-                                        Text(
-                                          '${_getXpReward(goal.type)} XP',
-                                          style: PanAfricanTypography.labelSmall(context).copyWith(
-                                            color: isDark
-                                                ? PanAfricanColors.textSecondaryDark
-                                                : PanAfricanColors.textSecondaryLight,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
-                  ],
-                ],
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  String _getGoalTitle(String type) {
-    switch (type) {
-      case 'lessons':
-        return 'Complete Lessons';
-      case 'quizzes':
-        return 'Take Quizzes';
-      case 'games':
-        return 'Play Games';
-      case 'chat_minutes':
-        return 'Chat with Native Speakers';
-      case 'words_learned':
-        return 'Learn New Words';
-      default:
-        return type.replaceAll('_', ' ').split(' ').map((word) => 
-          word.isEmpty ? '' : word[0].toUpperCase() + word.substring(1)
-        ).join(' ');
+  Widget _body(AppLocalizations l10n, LingPalette palette) {
+    switch (_status) {
+      case DailyChallengeBoardStatus.loading:
+        return Text(
+          l10n.loading,
+          style: lingBody(palette.onSurface),
+          softWrap: true,
+          overflow: TextOverflow.visible,
+        );
+      case DailyChallengeBoardStatus.empty:
+        return LingEmptyState(
+          key: DailyChallengesScreen.emptyKey,
+          title: l10n.hubTodayDailyChallenges,
+          whatHappened: l10n.revRvTodayChallengesEmptyWhat,
+          why: l10n.revRvTodayChallengesEmptyWhy,
+          whatToDo: l10n.revRvTodayChallengesEmptyNext,
+          actionLabel: l10n.hubTodayBack,
+          unavailableLabel: l10n.commonStateUnavailable,
+          onAction: _back,
+        );
+      case DailyChallengeBoardStatus.error:
+        return LingErrorState(
+          key: DailyChallengesScreen.errorKey,
+          whatHappened: l10n.revRvTodayChallengesErrorWhat,
+          why: l10n.revRvTodayChallengesErrorWhy,
+          whatToDo: l10n.revRvTodayChallengesErrorNext,
+          actionLabel: l10n.commonActionTryAgain,
+          unavailableLabel: l10n.commonStateUnavailable,
+          onAction: _retry,
+        );
+      case DailyChallengeBoardStatus.offline:
+        return LingOfflineState(
+          key: DailyChallengesScreen.offlineKey,
+          whatHappened: l10n.shellOfflineWhat,
+          why: l10n.revRvTodayChallengesOfflineWhy,
+          whatToDo: l10n.shellOfflineNext,
+          queuedActions: 0,
+          actionLabel: l10n.commonActionTryAgain,
+          unavailableLabel: l10n.commonStateUnavailable,
+          onAction: _retry,
+        );
+      case DailyChallengeBoardStatus.ready:
+        return Column(
+          key: DailyChallengesScreen.listKey,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            for (final DailyChallenge row in _rows) ...<Widget>[
+              _card(l10n, palette, row),
+              const SizedBox(height: LingAfriqTokens.spacing12),
+            ],
+          ],
+        );
     }
   }
 
-  int _getXpReward(String type) {
-    // Default XP rewards based on goal type
-    switch (type) {
-      case 'lessons':
-        return 50;
-      case 'quizzes':
-        return 30;
-      case 'games':
-        return 40;
-      case 'chat_minutes':
-        return 25;
-      case 'words_learned':
-        return 20;
-      default:
-        return 10;
-    }
+  Widget _card(AppLocalizations l10n, LingPalette palette, DailyChallenge row) {
+    final String description = row.description.trim();
+    return Semantics(
+      container: true,
+      label: row.title,
+      child: DecoratedBox(
+        key: DailyChallengesScreen.challengeKey(row.id),
+        decoration: BoxDecoration(
+          color: palette.surfaceContainer,
+          borderRadius: BorderRadius.circular(LingAfriqTokens.radiusmd),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(LingAfriqTokens.spacing16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                row.title,
+                style: lingBody(palette.onSurface),
+                softWrap: true,
+                overflow: TextOverflow.visible,
+              ),
+              if (description.isNotEmpty) ...<Widget>[
+                const SizedBox(height: LingAfriqTokens.spacing8),
+                Text(
+                  description,
+                  style: lingBody(palette.onSurfaceVariant),
+                  softWrap: true,
+                  overflow: TextOverflow.visible,
+                ),
+              ],
+              const SizedBox(height: LingAfriqTokens.spacing8),
+              Text(
+                l10n.revRvTodayChallengesProgress(row.progress, row.target),
+                style: lingBody(palette.onSurfaceVariant),
+                softWrap: true,
+                overflow: TextOverflow.visible,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

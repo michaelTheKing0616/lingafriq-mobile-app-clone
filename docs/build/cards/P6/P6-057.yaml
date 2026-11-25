@@ -1,0 +1,66 @@
+charter: v2
+id: P6-057
+kind: build
+title: Define eval set schema requiring 300 items per language
+phase: P6
+epic: E-P6-EVALS
+req_ids:
+- EP-§7.6-13
+- EP-§7.6-14
+depends_on:
+- P6-056
+size: S
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist:
+- evals/schema/item.schema.json
+- evals/schema/validate.ts
+context_anchors:
+- ELEVATION.md#§7.6:L1462-L1475
+acceptance_criteria:
+- id: AC1
+  text: Given a Stage-1 language eval set with 299 items, when validated in CI, then it fails with typed error eval_set_too_small
+- id: AC2
+  text: Given an item, when validated, then it carries language, mode, expected-behaviour tags and a native-scorer field
+- id: AC3
+  text: Given the seven Stage-1 languages, when the suite starts, then a missing set fails loudly
+test_plan:
+  unit:
+  - schema
+  - count rule
+  integration:
+  - CI validation
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/11-data-and-quantitative-work
+  - adaptive/07-research-and-fact-checking

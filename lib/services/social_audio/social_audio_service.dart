@@ -141,6 +141,11 @@ class SocialAudioService {
     DateTime? scheduledStartTime,
     int? durationMinutes,
     String? coverImageUrl,
+    String? practiceTopic,
+    String? cefrLevel,
+    bool dropIn = false,
+    String? circleId,
+    bool aiFacilitatorEnabled = false,
   }) async {
     try {
       final data = {
@@ -155,6 +160,11 @@ class SocialAudioService {
           'scheduled_start_time': scheduledStartTime.toIso8601String(),
         if (durationMinutes != null) 'duration_minutes': durationMinutes,
         if (coverImageUrl != null && coverImageUrl.isNotEmpty) 'cover_image_url': coverImageUrl,
+        if (practiceTopic != null && practiceTopic.isNotEmpty) 'practiceTopic': practiceTopic,
+        if (cefrLevel != null && cefrLevel.isNotEmpty) 'cefrLevel': cefrLevel,
+        'dropIn': dropIn,
+        if (circleId != null && circleId.isNotEmpty) 'circleId': circleId,
+        'aiFacilitatorEnabled': aiFacilitatorEnabled,
       };
 
       final response = await _dio.post(

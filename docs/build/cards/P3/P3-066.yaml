@@ -1,0 +1,118 @@
+charter: v2
+id: P3-066
+kind: build
+title: Consolidate four classroom variants into live classroom
+phase: P3
+epic: E-P3-REVIVE
+req_ids:
+- CON-02
+depends_on:
+- P3-037
+size: M
+difficulty:
+  score: 6
+  blast: 1
+  ambiguity: 2
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: ambiguity from merge choices, coupling across variants'
+token_budget: 60000
+file_allowlist:
+- lib/screens/classroom/live_classroom_screen.dart
+- lib/screens/classroom/classroom_session_screen.dart
+- lib/screens/classroom/classroom_lobby_screen.dart
+- lib/screens/classroom/live_classroom_mobile_screen.dart
+context_anchors:
+- ELEVATION.md#§17.5:L2333-L2338
+acceptance_criteria:
+- id: AC1
+  text: Given the variants, when compared, then each is audited and harvest_list items are moved into the surviving feature
+    or listed as dropped with a reason
+- id: AC2
+  text: Given the surviving feature, when tested, then it passes the golden and behaviour tests of the replaced variants
+- id: AC3
+  text: Given the old variant files, when consolidation ends, then they are deleted or moved under legacy/ and no route points
+    to them
+- id: AC4
+  text: Given any harvested item is missing at review, when checked, then the card fails (No-Cut rule)
+test_plan:
+  unit:
+  - parity tests
+  integration:
+  - route check
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+harvest_list:
+- classroom_session_screen.dart
+- classroom_lobby_screen.dart
+- live_classroom_mobile_screen.dart
+- classroom_v2_route_args.dart
+- roster, notes, assignments, privacy and speaker queue ideas from the variants
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+harvest_audit:
+  classroom_session_screen.dart:
+    moved:
+    - session list, active session, optional agenda, check-in, offline outbox queue, sync
+    - live phases, recording consent, recording banner, retention line, teacher start recording, leave
+    - shouldPersistClassAv, classSessionPhaseLabel, consent and recording copy
+    dropped:
+    - two em dashes in the queued check-in line and the recording indicator were replaced with periods. The card forbids an em dash. The meaning is unchanged.
+  classroom_lobby_screen.dart:
+    moved:
+    - practice-room catalog from tribes with includeClassrooms
+    - class code join
+    - filter chips All, Starting Soon, My Languages. They change selection only. The source does not filter the list.
+    - room card language, title, Community classroom, participant count, HOT when members_count is over 20
+    - Notes opens /classroom-notes
+    - Queue opens /speaker-queue
+    - host and room open the live classroom room
+    - empty and error copy
+    dropped:
+    - empty language_tag rendered an em dash. The chip is omitted when the tag is empty.
+    - host and room tap opened LiveClassroomScreenMaterial3. That screen is not one of the four variants. The action now opens LiveClassroomScreen.
+  live_classroom_mobile_screen.dart:
+    moved:
+    - mute toggle
+    - active lesson card
+    - listener online dots and listener count
+    - reactions with the party and clap marks
+    - host speaking label
+    dropped:
+    - more_vert has no onPressed and builds no menu
+  classroom_v2_route_args.dart:
+    moved:
+    - LiveClassroomScreen.fromRouteArguments uses ClassroomV2RouteArgs.parse for tribeId and tribeName
+    kept: the file stays. classroom-roster-v2, classroom-assignments-v2, classroom-privacy-v2, and classroom-student-requests-v2 still call it, and classroom_v2_route_args_test.dart imports it. Those routes are outside this consolidation.
+    dropped:
+    - missingTribeIdScaffold is not applied on the live classroom. A missing tribe id opens the practice-room catalog. The scaffold stays on the routes that require a tribe id.
+  ideas:
+    roster: not present in the variant
+    assignments: not present in the variant
+    privacy: not present in the variant
+    notes: classroom_lobby_screen.dart opens /classroom-notes with tribeId and roomName
+    speaker_queue: classroom_lobby_screen.dart opens /speaker-queue with tribeId and roomName
+risks:
+- harvest drift; keep list authoritative
+- classroom_v2_route_args.dart remains because other classroom v2 routes still parse with it
+gate: G3
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,122 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P9
+epic: E-P9-SAFETY
+hub: Village
+gate: G9
+status: Draft
+size: L
+token_budget: 200000
+user_facing: true
+p0_area: false
+tags:
+- under18_social
+external_blockers: []
+risks: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+id: F-125
+title: Elevate Live Classroom
+req_ids:
+- F-125
+- F-125.D
+- F-125.E
+- F-125.U
+- F-125.L
+- P0-3
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P9-SAFETY
+- P9-936
+- E-P1-CONTAINMENT
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: consolidate live classroom stack with AI notes'
+file_allowlist:
+- lib/screens/chat/live_classroom_screen_material3.dart
+- lib/screens/classroom/classroom_lobby_screen.dart
+- lib/screens/classroom/classroom_notes_screen.dart
+- lib/screens/classroom/speaker_queue_screen.dart
+- lib/screens/classroom/classroom_roster_screen.dart
+- lib/screens/classroom/classroom_assignments_screen.dart
+- lib/screens/classroom/classroom_privacy_screen.dart
+- lib/screens/chat/classroom_chat_livekit_screen.dart
+- lib/screens/classroom/classroom_session_screen.dart
+- lib/screens/classroom/live_classroom_screen.dart
+- lib/screens/classroom/live_classroom_mobile_screen.dart
+- lib/services/classroom/classroom_service.dart
+context_anchors:
+- ELEVATION.md#§18.6:L5268-L5286
+delta:
+  current_state: Multiple classroom routes work; four older screens unrouted.
+  defects_to_fix:
+  - Five parallel implementations; minor safeguarding not visible.
+  elevation_to_build:
+  - Scheduled level-based live classes with teacher, hand-raise queue, Tone Lens whiteboard.
+  - Auto-notes from transcript to key phrases; assignments land in Review; opt-in recordings.
+  ux_and_render:
+  - Classroom grid, hand-raise queue, and notes panel.
+  hub_placement: Village → School.
+  unlock_stage: per §17.4
+  harvest_list:
+  - Consolidate legacy live_classroom_screen.dart, live_classroom_mobile_screen.dart, classroom_session_screen.dart into live_classroom_screen_material3.dart.
+  - Route classroom_chat_livekit through the unified material3 entry.
+acceptance_criteria:
+- id: AC1
+  text: Given a scheduled class, when a learner joins, then only the unified material3 classroom surface is used.
+- id: AC2
+  text: Given a minor in class, when audio or chat is used, then P9-936 safeguarding rules gate participation.
+- id: AC3
+  text: Given live session ends, when notes are generated, then AI calls use the gateway only and assignments appear in Review.
+- id: AC4
+  text: Given opt-out of recording, when class runs, then no recording is stored and UI states that honestly.
+test_plan:
+  unit:
+  - domain helpers
+  integration:
+  - API and navigation
+  e2e:
+  - happy path
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content: []
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - live_classroom.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux
+  - adaptive/14-safety-and-high-stakes

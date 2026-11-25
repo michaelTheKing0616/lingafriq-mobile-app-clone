@@ -1,0 +1,62 @@
+charter: v2
+id: P6-077
+kind: build
+title: Stream STT inside realtime pipeline
+phase: P6
+epic: E-P6-REALTIME
+req_ids:
+- EP-§7.7-03
+depends_on:
+- P6-075
+size: S
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 2, depth 1'
+token_budget: 25000
+file_allowlist:
+- node-backend/src/ai-gateway/realtime/streamingStt.ts
+context_anchors:
+- ELEVATION.md#§7.7:L1477-L1482
+acceptance_criteria:
+- id: AC1
+  text: Given Intron or Omnilingual streaming, when audio arrives, then partial and final transcripts stream with tone diacritics
+    preserved
+- id: AC2
+  text: Given a provider failure mid-stream, when it occurs, then the fallback engages or typed error stt_unavailable ends
+    the turn
+test_plan:
+  unit:
+  - partials
+  integration:
+  - fallback
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

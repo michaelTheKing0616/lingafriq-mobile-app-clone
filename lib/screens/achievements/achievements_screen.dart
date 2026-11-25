@@ -1,5 +1,3 @@
-import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -197,7 +195,7 @@ class _RankCard extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 8.h),
-                GriotProgressBar(
+                const GriotProgressBar(
                   value: 0.72,
                   height: 8,
                   showGlowTip: true,
@@ -230,7 +228,6 @@ class _TotemGridSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -421,7 +418,6 @@ class _CertificatePreview extends StatelessWidget {
 class _PathContinuesBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 20.w),
       decoration: BoxDecoration(

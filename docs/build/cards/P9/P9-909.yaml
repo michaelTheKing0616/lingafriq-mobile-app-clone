@@ -1,0 +1,73 @@
+charter: v2
+id: P9-909
+kind: build
+title: Queue messages offline and send data-only pushes
+phase: P9
+epic: E-P9-REALTIME
+req_ids:
+- EP-§9.3-13
+- EP-§9.3-14
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+- P9-908
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 0
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 4: blast 1, ambiguity 0, coupling 2, depth 1'
+token_budget: 80000
+file_allowlist:
+- lib/services/chat/outbox_message_queue.dart
+- lib/services/push/data_push_handler.dart
+- node-backend/src/services/push.service.ts
+context_anchors:
+- ELEVATION.md#§9.3:L1636-L1637
+acceptance_criteria:
+- id: AC1
+  text: Given the device is offline, when the user sends a message, then it is stored in the local queue with state 'queued'
+    and sent in order once connectivity returns
+- id: AC2
+  text: Given a queued message that fails after the retry limit, when retries are exhausted, then it shows 'failed, tap to
+    retry' and is never silently dropped
+- id: AC3
+  text: Given a push for a new message, when it is sent through FCM or APNs, then the payload is data-only and the client
+    fetches content over an authenticated channel
+test_plan:
+  unit:
+  - queue ordering
+  integration:
+  - airplane-mode send
+  - push receipt
+  security:
+  - payload contents
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

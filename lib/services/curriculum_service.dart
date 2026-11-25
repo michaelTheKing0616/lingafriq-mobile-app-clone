@@ -31,8 +31,6 @@ class CurriculumService {
   Future<Map<String, dynamic>?> _loadAuthenticCurriculum() async {
     return _loadJsonAsset(const [
       'assets/data/lingafriq_authentic_curriculum_a1_c2.json',
-      'assets/data/lingafriq_authentic_curriculum_a1_c1.json',
-      'assets/data/lingafriq_authentic_curriculum_a1_a2_b1.json',
       'assets/data/lingafriq_authentic_curriculum_a1.json',
     ]);
   }
@@ -77,7 +75,7 @@ class CurriculumService {
     try {
       // Expanded per-language bundle is optional in current app package.
       // Fallback to compact curriculum when expanded assets are unavailable.
-      return loadCompactCurriculum(language, level);
+      return await loadCompactCurriculum(language, level);
     } catch (e) {
       debugPrint('Error loading expanded curriculum: $e');
       return null;

@@ -1,0 +1,14 @@
+prompt_paths:
+  - assets/data/polie_prompt_snippets.json
+  - lib/ai/pedagogy/prompt_templates.dart
+  - lib/ai/modes/mode_prompts.dart
+  - lib/content/polie_conversation_prompt_builder.dart
+  - lib/services/content/polie_prompt_service.dart
+  - tools/llm_authoring/prompts
+model_paths:
+  - tools/llm_authoring/_llm_clients.py
+  - docs/plan/LINGAFRIQ_AI_MODEL_STACK.md
+metrics:
+  diacritic_completeness: 0.95
+  refusal_correctness: 1.0
+  persona_fidelity: 0.95

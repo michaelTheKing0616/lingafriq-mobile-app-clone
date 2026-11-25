@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/features/global_chat/global_chat_policy.dart';
 import 'package:intl/intl.dart';
 
 import '../../config/api_contract.dart';
@@ -126,6 +127,7 @@ class _CallHistoryScreenState extends ConsumerState<CallHistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final chatVisible = ref.watch(globalChatEntryVisibleProvider);
     final cs = Theme.of(context).colorScheme;
     final body = _loading
         ? const Center(child: CircularProgressIndicator())
@@ -181,38 +183,44 @@ class _CallHistoryScreenState extends ConsumerState<CallHistoryScreen> {
                   ),
                   SizedBox(height: PanAfricanSpacing.lg),
                 ],
-                ..._rows.map((row) {
-                  final peer = _peerName(row);
-                  final dur = row['duration_seconds'] ?? row['durationSeconds'];
-                  final durStr = dur is num && dur > 0 ? '${dur.toInt()}s' : '';
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 10.h),
-                    child: GriotCard(
-                      surfaceLevel: 0,
-                      child: ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        leading: Icon(_iconFor(row), color: cs.primary),
-                        title: Text(
-                          _label(row),
-                          style: ModernGriotTypography.titleSmall(
-                            context: context,
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: _rows.length,
+                  itemBuilder: (context, index) {
+                    final row = _rows[index];
+                    final peer = _peerName(row);
+                    final dur = row['duration_seconds'] ?? row['durationSeconds'];
+                    final durStr = dur is num && dur > 0 ? '${dur.toInt()}s' : '';
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 10.h),
+                      child: GriotCard(
+                        surfaceLevel: 0,
+                        child: ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          leading: Icon(_iconFor(row), color: cs.primary),
+                          title: Text(
+                            _label(row),
+                            style: ModernGriotTypography.titleSmall(
+                              context: context,
+                            ),
                           ),
-                        ),
-                        subtitle: Text(
-                          [
-                            if (peer != null) peer,
-                            _when(row),
-                            if (durStr.isNotEmpty) durStr,
-                          ].where((s) => s.isNotEmpty).join(' · '),
-                          style: ModernGriotTypography.bodySmall(
-                            context: context,
-                            color: cs.onSurfaceVariant,
+                          subtitle: Text(
+                            [
+                              if (peer != null) peer,
+                              _when(row),
+                              if (durStr.isNotEmpty) durStr,
+                            ].where((s) => s.isNotEmpty).join(' · '),
+                            style: ModernGriotTypography.bodySmall(
+                              context: context,
+                              color: cs.onSurfaceVariant,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                }),
+                    );
+                  },
+                ),
                 SizedBox(height: PanAfricanSpacing.md),
                 FilledButton.icon(
                   onPressed: () {
@@ -220,7 +228,7 @@ class _CallHistoryScreenState extends ConsumerState<CallHistoryScreen> {
                     Navigator.push(
                       context,
                       SmoothPageRoute.platform(
-                        child: LiveClassroomScreenMaterial3(),
+                        child: const LiveClassroomScreenMaterial3(),
                       ),
                     );
                   },
@@ -228,7 +236,7 @@ class _CallHistoryScreenState extends ConsumerState<CallHistoryScreen> {
                   label: const Text('Open Live Classroom'),
                 ),
                 SizedBox(height: PanAfricanSpacing.sm),
-                OutlinedButton.icon(
+                if (chatVisible) OutlinedButton.icon(
                   onPressed: () {
                     HapticFeedback.mediumImpact();
                     Navigator.push(

@@ -1,0 +1,87 @@
+charter: v2
+id: P6-030
+kind: build
+title: Build Live Translate with visible confidence indicator
+phase: P6
+epic: E-P6-MODES
+req_ids:
+- EP-§7.3-08
+- EP-§7.3-26
+depends_on:
+- P6-003
+- P6-008
+- P6-011
+- P6-014
+- P6-056
+size: M
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 2
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 3, ambiguity 2, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/modes/liveTranslate.ts
+- lib/screens/translate/
+context_anchors:
+- ELEVATION.md#§7.3:L1426-L1428
+acceptance_criteria:
+- id: AC1
+  text: Given camera or voice input, when translated, then the target-language output is returned through the gateway
+- id: AC2
+  text: Given any result, when shown, then a visible confidence indicator is present
+- id: AC3
+  text: Given low confidence, when shown, then the indicator says so and no certainty is implied
+- id: AC9
+  text: Given the mode eval set in CI, when run on a prompt or model change, then the mode meets the thresholds in the eval
+    config or the deploy is blocked
+test_plan:
+  unit:
+  - confidence mapping
+  integration:
+  - camera input
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - confidence label
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - capturing
+  - result
+  - low_confidence
+  - error
+  copy_keys:
+  - live.confidence_low
+  tokens:
+  - color.confidence
+  motion_tier: product
+  a11y:
+  - confidence announced
+  goldens:
+  - live_low_confidence
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/ux-writing
+  - prime/localization-design

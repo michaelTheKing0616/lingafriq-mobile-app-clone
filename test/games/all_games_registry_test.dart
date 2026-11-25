@@ -16,8 +16,13 @@ void main() {
     });
 
     test('resolves legacy aliases to canonical definitions', () {
+      // P8-914: Tone Forge is its own featured game, not a tone_trainer alias.
       expect(
-        AllGamesRegistry.getGame('tone_forge')?.gameId,
+        AllGamesRegistry.getGame(AllGamesRegistry.toneForgeGameId)?.gameId,
+        equals(AllGamesRegistry.toneForgeGameId),
+      );
+      expect(
+        AllGamesRegistry.getGame(GameType.toneTrainer.name)?.gameId,
         equals(GameType.toneTrainer.name),
       );
       expect(

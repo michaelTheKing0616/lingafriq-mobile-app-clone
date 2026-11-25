@@ -1,0 +1,114 @@
+charter: v2
+id: P7-920
+kind: build
+title: Build suggest-and-verify loop with native approvals
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§17.7-07
+- EP-§17.7-09
+- EP-§17.7-20
+- EP-§17.7-21
+depends_on:
+- P7-916
+- P7-919
+- E-P4-CONTENT-ENGINE
+- E-P9-SAFETY
+size: L
+difficulty:
+  score: 9
+  blast: 3
+  ambiguity: 2
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 9: blast 3, coupling 2, depth 2'
+token_budget: 150000
+file_allowlist:
+- node-backend/src/services/lexiconSuggestion.service.ts
+- node-backend/src/models/lexiconSuggestion.model.ts
+- node-backend/src/routes/lexiconVerify.route.ts
+- lib/screens/village/verify_queue_screen.dart
+- lib/services/lexicon_suggest_client.dart
+- test/node-backend/lexiconSuggestion.test.ts
+context_anchors:
+- ELEVATION.md#§17.7:L2404-L2408
+- ELEVATION.md#§17.7:L2421-L2423
+acceptance_criteria:
+- id: AC1
+  text: Given a learner, when they suggest a word or meaning, then it enters the Verify queue with status pending and is not
+    visible in the Verified Lexicon
+- id: AC2
+  text: Given a pending suggestion, when 2 distinct native reviewers approve it, then it is promoted into the Verified Lexicon
+- id: AC3
+  text: Given a suggestion with only 1 approval or any rejection pending, when promotion is attempted, then it is refused
+    with a typed error
+- id: AC4
+  text: Given the same reviewer approves twice, when counted, then it counts once
+- id: AC5
+  text: Given a promoted entry, when displayed, then credit to the suggester is shown unless they opted out
+- id: AC6
+  text: Given a suggester under 18, when credit is displayed, then only the safety-epic-approved display form is used
+- id: AC7
+  text: Given a non-native user, when they open the queue, then they cannot approve
+test_plan:
+  unit:
+  - approval counting
+  - self-approval blocked
+  integration:
+  - promotion flow
+  security:
+  - role check on approve
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - empty
+  - queue
+  - detail
+  - approved
+  - rejected
+  - error
+  copy_keys:
+  - verify.pending
+  - verify.approve
+  - verify.reject
+  tokens:
+  - color.badge.pending
+  - space.list
+  motion_tier: product
+  a11y:
+  - screen-reader labels on every control
+  - touch targets >=48dp
+  - reduced-motion variant
+  goldens:
+  - default
+  - loading
+  - error
+  - offline
+tags:
+- uses_source
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- fixes the unverified-learner-words risk; sources stay licence-registered
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

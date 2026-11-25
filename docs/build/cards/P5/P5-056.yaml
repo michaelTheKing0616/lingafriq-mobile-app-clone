@@ -1,0 +1,64 @@
+charter: v2
+id: P5-056
+kind: build
+title: Promote high-exposure A1 items to Expert-reviewed
+phase: P5
+epic: E-P5-A2
+req_ids:
+- CP-§9.2-10
+depends_on:
+- P5-009
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/services/promotion.service.ts
+- test/content/promotion_test.ts
+context_anchors:
+- CURRICULUM.md#§9.2:L806-L808
+acceptance_criteria:
+- id: AC1
+  text: Given A1 items ranked by exposure, when a linguist approves, then the item is promoted and the version bumps
+- id: AC2
+  text: Given an item without approval, when promotion is requested, then it fails PromotionNotApproved
+- id: AC3
+  text: Given native validators onboard, when they verify A1, then items may reach Native-verified under the two-native rule
+test_plan:
+  unit:
+  - workflow
+  integration:
+  - audit
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G6
+external_blockers:
+- EXT-13
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

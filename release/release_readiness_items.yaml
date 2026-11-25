@@ -1,0 +1,46 @@
+# P12-022: release readiness items — status comes only from CI evidence JSON, never hand claims.
+card: P12-022
+version: 1
+
+evidence_items:
+  - id: P12-004
+    title: Per-ABI APK download size under budget
+    evidence_key: apk_size_gate
+  - id: P12-012
+    title: Cold-start median under 2s (device lab when available)
+    evidence_key: cold_start_trace
+  - id: P12-013
+    title: Frame cost p95 within budget
+    evidence_key: frame_cost
+  - id: P12-014
+    title: API read load p95 under 300ms
+    evidence_key: api_read_p95
+  - id: P12-015
+    title: Chat delivery p95 under 500ms
+    evidence_key: chat_delivery_p95
+  - id: P12-016
+    title: Staged rollout gate configuration
+    evidence_key: rollout_gate
+  - id: P12-017
+    title: Rollback drill at 10% gate failure
+    evidence_key: rollback_drill
+  - id: P12-018
+    title: Mongo PIT restore drill
+    evidence_key: mongo_pit_restore
+  - id: P12-019
+    title: Chaos / offline resilience AC1–AC4
+    evidence_key: chaos_offline
+  - id: P12-020
+    title: Local schema migration drill
+    evidence_key: local_migration_drill
+
+blocked_items:
+  - id: P12-021
+    title: Accessibility audit with disabled users (WCAG 2.2 AA)
+    external_blocker: EXT-27
+  - id: EXT-18
+    title: NDPC registration and DPIA counsel sign-off
+    external_blocker: EXT-18
+  - id: EXT-20
+    title: Efficacy study partner and blinded raters
+    external_blocker: EXT-20

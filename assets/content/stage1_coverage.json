@@ -1,0 +1,76 @@
+{
+  "charter": "v2",
+  "card_id": "P4-113",
+  "sources": [
+    "docs/plan/LINGAFRIQ_AI_MODEL_STACK.md",
+    "ELEVATION.md#§6.4:L1221-L1262",
+    "EXT-12"
+  ],
+  "level_targets": {
+    "program_start": "2026-01-01",
+    "l1_due_quarters": 1,
+    "l2_due_quarters": 2
+  },
+  "languages": [
+    {
+      "language_id": "yo",
+      "asr": { "vendor": "intron", "code_switching": true },
+      "dynamic_tts": { "vendor": "intron", "enabled": true },
+      "realtime_voice": { "mode": "gemini_live" },
+      "tone_scoring": { "vendor": "inhouse" },
+      "stage_evals": { "realtime_voice": "not_run", "persona": "not_run" }
+    },
+    {
+      "language_id": "ig",
+      "asr": { "vendor": "intron", "code_switching": true },
+      "dynamic_tts": { "vendor": "intron", "enabled": true },
+      "realtime_voice": { "mode": "cascade" },
+      "tone_scoring": { "vendor": "inhouse" },
+      "stage_evals": { "realtime_voice": "not_run", "persona": "not_run" }
+    },
+    {
+      "language_id": "ha",
+      "asr": { "vendor": "intron", "code_switching": true },
+      "dynamic_tts": { "vendor": "intron", "enabled": true },
+      "realtime_voice": { "mode": "gemini_live" },
+      "tone_scoring": { "vendor": "inhouse" },
+      "stage_evals": { "realtime_voice": "not_run", "persona": "not_run" }
+    },
+    {
+      "language_id": "pcm",
+      "asr": { "vendor": "intron", "code_switching": true },
+      "dynamic_tts": { "vendor": "intron", "enabled": true },
+      "realtime_voice": { "mode": "cascade" },
+      "tone_scoring": { "vendor": "inhouse" },
+      "stage_evals": { "realtime_voice": "not_run", "persona": "not_run" }
+    },
+    {
+      "language_id": "sw",
+      "asr": { "vendor": "intron", "code_switching": true },
+      "dynamic_tts": { "vendor": "intron", "enabled": true },
+      "realtime_voice": { "mode": "gemini_live" },
+      "tone_scoring": { "vendor": "inhouse" },
+      "stage_evals": { "realtime_voice": "not_run", "persona": "not_run" }
+    },
+    {
+      "language_id": "xh",
+      "asr": { "vendor": "intron", "code_switching": false },
+      "dynamic_tts": {
+        "vendor": "custom_voice_required",
+        "enabled": false,
+        "disabled_reason": "EXT-12: isiXhosa custom voice commission pending; no commercial dynamic TTS vendor"
+      },
+      "realtime_voice": { "mode": "cascade" },
+      "tone_scoring": { "vendor": "inhouse" },
+      "stage_evals": { "realtime_voice": "not_run", "persona": "not_run" }
+    },
+    {
+      "language_id": "zu",
+      "asr": { "vendor": "intron", "code_switching": true },
+      "dynamic_tts": { "vendor": "azure", "enabled": true },
+      "realtime_voice": { "mode": "gemini_live" },
+      "tone_scoring": { "vendor": "inhouse" },
+      "stage_evals": { "realtime_voice": "not_run", "persona": "not_run" }
+    }
+  ]
+}

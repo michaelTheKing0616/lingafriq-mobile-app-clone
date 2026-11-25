@@ -3,10 +3,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:lingafriq/services/voice/voice_recording_retention.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lingafriq/config/bundled_fonts.dart';
 import 'package:lingafriq/services/offline/local_database_service.dart';
+import 'package:lingafriq/services/local_schema_migrator.dart';
 
 import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -15,83 +18,331 @@ import 'my_app.dart';
 import 'providers/firebase_messaging_provider.dart';
 import 'providers/shared_preferences_provider.dart';
 // Offline Services
-import 'services/offline/offline_service.dart';
-import 'services/offline/background_sync_service.dart';
+import 'services/offline/persisted_outbox_service.dart';
 import 'services/offline/conflict_resolution.dart';
-import 'services/offline/selective_sync.dart';
 import 'services/offline/cache_compression.dart';
 import 'services/offline/cache_encryption.dart';
 import 'services/offline/offline_analytics.dart';
+import 'services/performance/low_bandwidth_mode.dart';
 // Auth Services
 import 'services/auth/credential_storage_service.dart';
 // Localization & Features
 import 'services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
 import 'services/advanced/smart_recommendations.dart';
+import 'services/monitoring/crash_reporter.dart';
 import 'services/monitoring/sentry_service.dart';
+import 'services/monitoring/startup_schedule.dart';
+import 'services/performance_monitor.dart';
 import 'services/deep_link_service.dart';
 import 'config/secrets_manager.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rive/rive.dart';
+import 'app_theme.dart';
+import 'avatars/runtime/rive_file_cache.dart';
+import 'screens/splash/splash_ready_gate.dart';
+import 'screens/splash/splash_screen_material3.dart';
 import 'utils/performance_utils.dart';
 import 'utils/structured_logger.dart';
 import 'utils/polie_design_tokens.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+/// P12-012: process start → first rasterized frame (splash) → first [MyApp] frame (meaningful).
+final ColdStartTelemetry coldStartTelemetry = ColdStartTelemetry();
 
-  FlutterError.onError = (details) {
-    logger.error(
-      'Flutter error',
-      error: details.exception,
-      stackTrace: details.stack,
-      context: {'library': details.library},
+class ColdStartTelemetry {
+  final Stopwatch process = Stopwatch();
+  int? firstFrameMs;
+  int? firstMeaningfulFrameMs;
+  StartupTrace? startupTrace;
+
+  void emitTraceLine() {
+    final trace = startupTrace;
+    if (trace == null) return;
+    // Logcat / CI harness parses `LingAfriqColdStart:` lines (AC2).
+    debugPrint(
+      'LingAfriqColdStart: trace=${trace.events.join(",")}',
     );
-  };
-
-  runZonedGuarded(() async {
-  // Initialize local database for offline mode
-  try {
-    await LocalDatabaseService().init();
-    logger.info('Local database initialized');
-  } catch (e) {
-    logger.warning('Failed to initialize local database: $e');
   }
 
-  // Load .env file if it exists (for development/local configuration)
-  // In production, use --dart-define or secure storage
+  Map<String, dynamic> toJson() => {
+        'first_frame_ms': firstFrameMs,
+        'first_meaningful_frame_ms': firstMeaningfulFrameMs,
+        'startup_trace': startupTrace?.events ?? const <String>[],
+      };
+}
+
+/// Marks the first laid-out frame of the root app widget (meaningful UI shell).
+class _ColdStartMeaningfulMarker extends StatefulWidget {
+  const _ColdStartMeaningfulMarker({required this.child});
+
+  final Widget child;
+
+  @override
+  State<_ColdStartMeaningfulMarker> createState() => _ColdStartMeaningfulMarkerState();
+}
+
+class _ColdStartMeaningfulMarkerState extends State<_ColdStartMeaningfulMarker> {
+  var _marked = false;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!_marked) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        _marked = true;
+        coldStartTelemetry.firstMeaningfulFrameMs =
+            coldStartTelemetry.process.elapsedMilliseconds;
+        debugPrint(
+          'LingAfriqColdStart: first_meaningful_frame_ms=${coldStartTelemetry.firstMeaningfulFrameMs}',
+        );
+        coldStartTelemetry.emitTraceLine();
+      });
+    }
+    return widget.child;
+  }
+}
+
+class PreparedLaunch {
+  const PreparedLaunch({required this.prefs, required this.recovery});
+
+  final SharedPreferences prefs;
+  final List<SchemaMigrationFailure> recovery;
+}
+
+void main() {
+  coldStartTelemetry.process.start();
+  final coldStart = Stopwatch()..start();
+  WidgetsFlutterBinding.ensureInitialized();
+  configureBundledFonts();
+  unawaited(VoiceRecordingRetention().sweep().catchError((_) => 0));
+
+  FlutterError.onError = (details) {
+    final report = CrashReporter.instance.report(
+      details.exception,
+      stackTrace: details.stack,
+      context: {'library': details.library ?? 'flutter'},
+    );
+    logger.error('uncaught error', context: Map<String, dynamic>.from(report));
+  };
+
+  runZonedGuarded(() {
+    final launch = _prepareLaunch(coldStart);
+    runApp(SplashLaunchHost(launch: launch));
+  }, (error, stack) {
+    logger.error('Unhandled error', error: error, stackTrace: stack);
+  });
+}
+
+/// Shows the splash immediately, then the app once startup has finished.
+class SplashLaunchHost extends StatefulWidget {
+  const SplashLaunchHost({super.key, required this.launch});
+
+  final Future<PreparedLaunch> launch;
+
+  @override
+  State<SplashLaunchHost> createState() => _SplashLaunchHostState();
+}
+
+class _SplashLaunchHostState extends State<SplashLaunchHost> {
+  PreparedLaunch? _launch;
+  late final Future<void> _splashReady;
+
+  @override
+  void initState() {
+    super.initState();
+    _splashReady = widget.launch.then<void>((_) {});
+    widget.launch.then((value) {
+      if (!mounted) return;
+      setState(() => _launch = value);
+    }, onError: (Object error, StackTrace stack) {
+      logger.error('Unhandled error', error: error, stackTrace: stack);
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (coldStartTelemetry.firstFrameMs != null) return;
+      coldStartTelemetry.firstFrameMs =
+          coldStartTelemetry.process.elapsedMilliseconds;
+      debugPrint(
+        'LingAfriqColdStart: first_frame_ms=${coldStartTelemetry.firstFrameMs}',
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final launch = _launch;
+    if (launch == null) {
+      return _BootstrapSplash(ready: _splashReady);
+    }
+    if (launch.recovery.isNotEmpty) {
+      return SchemaRecoveryApp(failure: launch.recovery.single);
+    }
+    return ProviderScope(
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(SharedPreferencesProvider(launch.prefs)),
+      ],
+      child: const _ColdStartMeaningfulMarker(child: MyApp()),
+    );
+  }
+}
+
+class _BootstrapSplash extends StatelessWidget {
+  const _BootstrapSplash({required this.ready});
+
+  final Future<void> ready;
+
+  @override
+  Widget build(BuildContext context) {
+    return ScreenUtilInit(
+      designSize: const Size(428, 926),
+      minTextAdapt: true,
+      builder: (context, _) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          builder: (context, child) {
+            ScreenUtil.init(context, designSize: const Size(428, 926));
+            return child ?? const SizedBox.shrink();
+          },
+          home: SplashReadyGate(
+            ready: ready,
+            builder: (context, showProgress) => SplashArtwork(showProgress: showProgress),
+          ),
+        );
+      },
+    );
+  }
+}
+
+Future<PreparedLaunch> _prepareLaunch(Stopwatch coldStart) async {
   try {
     await dotenv.load(fileName: ".env");
     logger.info('Loaded .env file successfully');
   } catch (e) {
-    // .env file not found - this is OK, we'll use --dart-define or secure storage
     logger.debug('Note: .env file not found. Using build-time variables or secure storage.');
   }
-  
-  // Configure image cache for optimal performance
-  ImageCacheManager.configureCache();
-  final prefs = await SharedPreferences.getInstance();
 
-  // Polie: apply serif language text preference from settings
-  final polieSerif = prefs.getBool('polie_serif_language_text') ?? false;
-  PolieTypography.setUseSerifForLanguageText(polieSerif);
-  
-  // Initialize Firebase
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+  final recovery = <SchemaMigrationFailure>[];
+  SharedPreferences? prefs;
+  final trace = StartupTrace();
+  coldStartTelemetry.startupTrace = trace;
+  await runStartup(
+    sentry: _startCrashReporter,
+    trace: trace,
+    parallel: {
+      'database': () => _openDatabase(recovery),
+      'preferences': () async {
+        prefs = await SharedPreferences.getInstance();
+      },
+      'firebase': () async {
+        final options = DefaultFirebaseOptions.currentPlatform;
+        if (options.apiKey.isEmpty) {
+          logger.warning('Firebase API key is missing; push setup is skipped');
+          return;
+        }
+        if (Firebase.apps.isEmpty) {
+          await Firebase.initializeApp(options: options);
+        }
+      },
+      'rive': RiveNative.init,
+    },
+    deferred: {
+      'offline': _startDeferredServices,
+      'recommendations': () => SmartRecommendationsService().initialize(),
+      'rive_cast': () => RiveFileCache.instance.load(RiveRuntimeAssets.cast),
+    },
+    onFirstFrame: (task) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        unawaited(task());
+      });
+    },
   );
 
+  final stored = prefs;
+  if (stored == null) {
+    throw StateError('preferences did not open');
+  }
+  ImageCacheManager.configureCache();
+  PolieTypography.setUseSerifForLanguageText(stored.getBool('polie_serif_language_text') ?? false);
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-
-  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-  await FirebaseMessagingProvider.init();
-
-  // Initialize Offline Services
+  if (Firebase.apps.isNotEmpty) {
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+    await FirebaseMessagingProvider.init();
+  }
   try {
-    await OfflineService().initialize();
-    await BackgroundSyncService().initialize();
+    await CredentialStorageService().initialize();
+    logger.info('Auth services initialized successfully');
+  } catch (e) {
+    logger.error('Error initializing auth services', error: e);
+  }
+  await _applyLanguage(stored);
+  try {
+    DeepLinkService().initialize();
+    logger.info('Deep link service initialized successfully');
+  } catch (e) {
+    logger.error('Error initializing deep link service', error: e);
+  }
+
+  startupPerformance.recordTiming('cold_start', coldStart.elapsed);
+  return PreparedLaunch(prefs: stored, recovery: recovery);
+}
+
+Future<void> _startCrashReporter() async {
+  try {
+    await SecretsManager().initialize();
+    final sentryDsn = SecretsManager().sentryDsn;
+    CrashReporter.instance.log = (message) => logger.error(message);
+    final started = await CrashReporter.instance.initialize(
+      device: Platform.operatingSystem,
+      start: () async {
+        if (sentryDsn != null && sentryDsn.isNotEmpty) {
+          await SentryService().initialize(
+            dsn: sentryDsn,
+            environment: kDebugMode ? 'development' : 'production',
+            enablePerformanceMonitoring: true,
+          );
+        }
+      },
+    );
+    if (!started) {
+      logger.error(CrashReporter.instance.diagnostic ?? 'crash reporter failed to start');
+      return;
+    }
+    final previousAnrs = await CrashReporter.instance.collectPreviousAnrs();
+    for (final anr in previousAnrs) {
+      logger.error('previous anr', context: Map<String, dynamic>.from(anr));
+    }
+    if (sentryDsn == null || sentryDsn.isEmpty) {
+      logger.debug('Sentry DSN not configured, skipping initialization');
+    } else {
+      logger.info('Sentry initialized successfully', context: {
+        'environment': kDebugMode ? 'development' : 'production',
+      });
+    }
+  } catch (e) {
+    logger.error('Error initializing monitoring services', error: e);
+  }
+}
+
+Future<void> _openDatabase(List<SchemaMigrationFailure> recovery) async {
+  try {
+    await LocalDatabaseService().init();
+    logger.info('Local database initialized');
+  } on SchemaMigrationFailure catch (failure) {
+    recovery.add(failure);
+    logger.warning('Local schema migration needs recovery', error: failure);
+  } catch (e) {
+    logger.warning('Failed to initialize local database: $e');
+  }
+}
+
+Future<void> _startDeferredServices() async {
+  try {
+    await PersistedOutboxService.instance.start();
+    await LowBandwidthMode.instance.refresh();
     await ConflictResolutionService().initialize();
-    await SelectiveSyncService().initialize();
     await CacheCompressionService().initialize();
     await CacheEncryptionService().initialize();
     await OfflineAnalyticsService().initialize();
@@ -99,23 +350,11 @@ void main() async {
   } catch (e) {
     logger.error('Error initializing offline services', error: e);
   }
+}
 
-  // Initialize Auth Services
-  try {
-    await CredentialStorageService().initialize();
-    // BiometricAuthService doesn't need initialization
-    logger.info('Auth services initialized successfully');
-  } catch (e) {
-    logger.error('Error initializing auth services', error: e);
-  }
-
-  // Initialize Localization & Features
+Future<void> _applyLanguage(SharedPreferences prefs) async {
   try {
     await DynamicLocalizationService.initialize();
-
-    // Priority: saved `app_language` (settings / prior session) → onboarding
-    // `proficiency_language` → first-launch device locale. Never clobber an
-    // explicit `app_language` with device locale.
     final savedAppLang = prefs.getString('app_language');
     if (savedAppLang == null || savedAppLang.isEmpty) {
       final profLang = prefs.getString('proficiency_language');
@@ -131,53 +370,10 @@ void main() async {
         }
       }
     }
-
-    await SmartRecommendationsService().initialize();
     logger.info('Localization and features initialized successfully');
   } catch (e) {
     logger.error('Error initializing localization services', error: e);
   }
-
-  // Initialize Secrets Manager and Sentry
-  try {
-    await SecretsManager().initialize();
-    
-    // Initialize Sentry for error tracking
-    final sentryDsn = SecretsManager().sentryDsn;
-    if (sentryDsn != null && sentryDsn.isNotEmpty) {
-      await SentryService().initialize(
-        dsn: sentryDsn,
-        environment: kDebugMode ? 'development' : 'production',
-        enablePerformanceMonitoring: true,
-      );
-      logger.info('Sentry initialized successfully', context: {
-        'environment': kDebugMode ? 'development' : 'production',
-      });
-    } else {
-      logger.debug('Sentry DSN not configured, skipping initialization');
-    }
-  } catch (e) {
-    logger.error('Error initializing monitoring services', error: e);
-    // Don't fail app startup if monitoring fails
-  }
-
-  // Initialize Deep Link Service
-  try {
-    DeepLinkService().initialize();
-    logger.info('Deep link service initialized successfully');
-  } catch (e) {
-    logger.error('Error initializing deep link service', error: e);
-  }
-
-    runApp(ProviderScope(
-      overrides: [
-        sharedPreferencesProvider.overrideWithValue(SharedPreferencesProvider(prefs)),
-      ],
-      child: const MyApp(),
-    ));
-  }, (error, stack) {
-    logger.error('Unhandled error', error: error, stackTrace: stack);
-  });
 }
 
 /// Detect AppLanguage from device locale

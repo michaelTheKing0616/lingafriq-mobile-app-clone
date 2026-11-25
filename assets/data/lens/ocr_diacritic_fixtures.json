@@ -1,0 +1,55 @@
+{
+  "card": "P7-944",
+  "version": 1,
+  "recognizer": "google_mlkit_text_recognition/latin",
+  "fixtures": [
+    {
+      "id": "yo.oko_hoe",
+      "language": "yo",
+      "gold_text": "ọkọ́",
+      "gloss_en": "hoe",
+      "source_id": "assets/data/tone/minimal_pairs.json#yo.tone.oko_hoe_vehicle",
+      "image_asset": "test/fixtures/lens/ocr_signs/yo_oko_hoe.png"
+    },
+    {
+      "id": "yo.oko_vehicle",
+      "language": "yo",
+      "gold_text": "ọkọ̀",
+      "gloss_en": "vehicle",
+      "source_id": "assets/data/tone/minimal_pairs.json#yo.tone.oko_hoe_vehicle",
+      "image_asset": "test/fixtures/lens/ocr_signs/yo_oko_vehicle.png"
+    },
+    {
+      "id": "yo.bawo",
+      "language": "yo",
+      "gold_text": "Báwo",
+      "gloss_en": "how",
+      "source_id": "assets/data/audio_manifest.json#manifest_key=yoruba|Báwo",
+      "image_asset": "test/fixtures/lens/ocr_signs/yo_bawo.png"
+    },
+    {
+      "id": "ig.ahia",
+      "language": "ig",
+      "gold_text": "Ahịa",
+      "gloss_en": "market",
+      "source_id": "assets/data/audio_manifest.json#manifest_key=igbo|Ahịa",
+      "image_asset": "test/fixtures/lens/ocr_signs/ig_ahia.png"
+    },
+    {
+      "id": "ig.adi_mma",
+      "language": "ig",
+      "gold_text": "Adị m mma",
+      "gloss_en": "I am fine",
+      "source_id": "assets/data/audio_manifest.json#manifest_key=igbo|Adị m mma",
+      "image_asset": "test/fixtures/lens/ocr_signs/ig_adi_m_mma.png"
+    },
+    {
+      "id": "ha.karshe",
+      "language": "ha",
+      "gold_text": "A ƙarshe",
+      "gloss_en": "finally",
+      "source_id": "assets/data/audio_manifest.json#manifest_key=hausa|A ƙarshe",
+      "image_asset": "test/fixtures/lens/ocr_signs/ha_a_karshe.png"
+    }
+  ]
+}

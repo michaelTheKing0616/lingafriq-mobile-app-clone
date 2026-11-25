@@ -1,0 +1,74 @@
+charter: v2
+id: P1-006
+kind: build
+title: Strip AI provider keys from client builds and add guard
+phase: P1
+epic: E-P1-SECRETS
+req_ids:
+- P0-3
+depends_on:
+- E-P0-INTAKE
+- P1-011
+- P1-012
+size: S
+difficulty:
+  score: 5
+  blast: 3
+  ambiguity: 0
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 5; blast 3
+token_budget: 25000
+file_allowlist:
+- .github/workflows/build.yml
+- lib/services/env_config.dart
+- lib/services/secrets_manager.dart
+- scripts/ci/check_no_client_keys.mjs
+context_anchors:
+- ELEVATION.md#§1:L114-L129
+acceptance_criteria:
+- id: AC1
+  text: Given build.yml after this card, when it is parsed, then no --dart-define references GROQ_API_KEY, HUGGINGFACE_TOKEN,
+    STABILITY_AI_KEY, REPLICATE_API_KEY or LEONARDO_API_KEY
+- id: AC2
+  text: Given the built release APK/IPA, when strings are scanned for the five key prefixes, then 0 matches are found
+- id: AC3
+  text: Given a PR re-adding a provider key symbol under lib/, when check_no_client_keys.mjs runs in CI, then it fails the
+    build
+- id: AC4
+  text: Given the five keys, when revocation is confirmed by the human owner, then the EXT-21 checklist records the date
+test_plan:
+  unit:
+  - guard script fixtures
+  integration:
+  - APK strings scan in CI
+  security:
+  - binary secret scan
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G1
+external_blockers:
+- EXT-21
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

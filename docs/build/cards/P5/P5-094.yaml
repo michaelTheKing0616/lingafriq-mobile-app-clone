@@ -1,0 +1,56 @@
+charter: v2
+id: P5-094
+kind: verification
+title: Verify all-in Stage 1 content cost rollup
+phase: P5
+epic: E-P5-A1
+req_ids:
+- CP-§9.4-15
+- CP-§9.4-16
+depends_on:
+- P5-088
+- P5-089
+- P5-090
+- P5-091
+- P5-092
+- P5-093
+- P5-070
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T0
+  tester: T0
+  reviewer: T1
+  justification: verification only; no code
+token_budget: 20000
+file_allowlist: []
+context_anchors:
+- CURRICULUM.md#§9.4:L846-L850
+acceptance_criteria:
+- id: AC1
+  text: Given verified costs, when summed, then Stage 1 to A1-B1 Expert-reviewed is compared with $65k-195k all-in [estimate]
+- id: AC2
+  text: Given a later language, when costed, then it is compared with $4k-15k to A1-B1 once licences exist
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

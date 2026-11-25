@@ -1,0 +1,74 @@
+charter: v2
+id: P0-INT-02
+kind: build
+title: Wire agent-file charter check into pre-commit and CI
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- RM-STOP-03
+depends_on:
+- E-P0-INTAKE
+- P0-INT-01
+size: S
+difficulty:
+  score: 2
+  blast: 1
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: script exists; only hook and workflow wiring remain
+token_budget: 25000
+file_allowlist:
+- .githooks/pre-commit
+- scripts/install_hooks.sh
+- .github/workflows/agent-files.yml
+- scripts/check_agent_files.py
+context_anchors:
+- docs/build/01_TOKEN_CHARTER.md#enforcement
+acceptance_criteria:
+- id: AC1
+  text: 'Given a staged agent-facing file without `charter: v2`, when `git commit` runs, then the pre-commit hook runs `python3
+    scripts/check_agent_files.py --staged`, exits 1 and lists the file'
+- id: AC2
+  text: Given a fresh clone, when `scripts/install_hooks.sh` runs, then `git config core.hooksPath` equals `.githooks` and
+    the script is idempotent on a second run
+- id: AC3
+  text: Given a pull request, when the CI job `agent-files` runs, then it checks out with full history and runs `python3 scripts/check_agent_files.py
+    --diff origin/main`
+- id: AC4
+  text: Given a PR that changes an agent-facing file without the marker, when CI runs, then the job fails and the log lists
+    each offending file
+- id: AC5
+  text: Given a PR with no agent-facing changes, when CI runs, then the job passes in under 60 seconds
+test_plan:
+  unit:
+  - 'temp git repo: staged file without marker → exit 1'
+  integration:
+  - workflow dry-run with act or a draft PR
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- hook test output
+- CI run link on a draft PR
+- ledger row
+risks:
+- no pre-commit framework in repo; dependency-free .githooks chosen
+gate: G0
+external_blockers: []
+status: Ready
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

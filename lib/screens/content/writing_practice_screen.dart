@@ -151,7 +151,7 @@ class _WritingPracticeScreenState extends ConsumerState<WritingPracticeScreen>
   Future<void> _evaluateAnswer() async {
     if (_userAnswer.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please write your answer')),
+        const SnackBar(content: Text('Please write your answer')),
       );
       return;
     }
@@ -172,7 +172,7 @@ class _WritingPracticeScreenState extends ConsumerState<WritingPracticeScreen>
     } catch (e) {
       debugPrint('Error evaluating: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error evaluating answer')),
+        const SnackBar(content: Text('Error evaluating answer')),
       );
     } finally {
       setState(() {
@@ -315,7 +315,7 @@ Return STRICT JSON ONLY with this exact shape:
     return Scaffold(
       backgroundColor: isDark ? PolieColors.obsidian : PolieColors.surfaceLight,
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -342,7 +342,7 @@ Return STRICT JSON ONLY with this exact shape:
         _buildTabBar(context),
         Expanded(
           child: _isLoading
-              ? Center(child: CircularProgressIndicator(color: PolieColors.electricTeal))
+              ? const Center(child: CircularProgressIndicator(color: PolieColors.electricTeal))
               : _buildExercisesList(context),
         ),
       ],
@@ -358,7 +358,7 @@ Return STRICT JSON ONLY with this exact shape:
             label: 'Go back',
             button: true,
             child: IconButton(
-              icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
+              icon: const Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
               onPressed: () {
                 HapticFeedback.lightImpact();
                 Navigator.of(context).pop();
@@ -392,7 +392,7 @@ Return STRICT JSON ONLY with this exact shape:
 
   Widget _buildTabBar(BuildContext context) {
     return Container(
-      color: PolieColors.surfaceContainerLight.withOpacity(0.1),
+      color: PolieColors.surfaceContainerLight.withValues(alpha: 0.1),
       child: TabBar(
         controller: _tabController,
         indicatorColor: PolieColors.electricTeal,
@@ -454,7 +454,7 @@ Return STRICT JSON ONLY with this exact shape:
   }
 
   Widget _buildExerciseView(BuildContext context) {
-    if (_currentExercise == null) return SizedBox.shrink();
+    if (_currentExercise == null) return const SizedBox.shrink();
 
     return Column(
       children: [
@@ -491,7 +491,7 @@ Return STRICT JSON ONLY with this exact shape:
             label: 'Go back to exercise list',
             button: true,
             child: IconButton(
-              icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
+              icon: const Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
               onPressed: () {
                 HapticFeedback.lightImpact();
                 setState(() {
@@ -520,7 +520,7 @@ Return STRICT JSON ONLY with this exact shape:
     return Container(
       padding: EdgeInsets.all(PolieSpacing.lg),
       decoration: BoxDecoration(
-        color: PolieColors.surfaceContainerLight.withOpacity(0.1),
+        color: PolieColors.surfaceContainerLight.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(PolieRadius.lg),
       ),
       child: Column(
@@ -537,7 +537,7 @@ Return STRICT JSON ONLY with this exact shape:
             Container(
               padding: EdgeInsets.all(PolieSpacing.md),
               decoration: BoxDecoration(
-                color: PolieColors.royalAmethyst.withOpacity(0.1),
+                color: PolieColors.royalAmethyst.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(PolieRadius.md),
               ),
               child: Text(
@@ -551,7 +551,7 @@ Return STRICT JSON ONLY with this exact shape:
             Container(
               padding: EdgeInsets.all(PolieSpacing.md),
               decoration: BoxDecoration(
-                color: PolieColors.electricTeal.withOpacity(0.1),
+                color: PolieColors.electricTeal.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(PolieRadius.md),
               ),
               child: Text(
@@ -576,7 +576,7 @@ Return STRICT JSON ONLY with this exact shape:
                     vertical: PolieSpacing.xs,
                   ),
                   decoration: BoxDecoration(
-                    color: PolieColors.electricTeal.withOpacity(0.2),
+                    color: PolieColors.electricTeal.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(PolieRadius.sm),
                   ),
                   child: Text(
@@ -624,7 +624,7 @@ Return STRICT JSON ONLY with this exact shape:
   }
 
   Widget _buildFeedback(BuildContext context) {
-    if (_feedback == null) return SizedBox.shrink();
+    if (_feedback == null) return const SizedBox.shrink();
 
     return Semantics(
       label: 'Feedback: Score ${_feedback!.score} out of 100. ${_feedback!.feedback}',
@@ -632,8 +632,8 @@ Return STRICT JSON ONLY with this exact shape:
       padding: EdgeInsets.all(PolieSpacing.lg),
       decoration: BoxDecoration(
         color: _feedback!.isCorrect
-            ? PolieColors.success.withOpacity(0.1)
-            : PolieColors.error.withOpacity(0.1),
+            ? PolieColors.success.withValues(alpha: 0.1)
+            : PolieColors.error.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(PolieRadius.lg),
         border: Border.all(
           color: _feedback!.isCorrect ? PolieColors.success : PolieColors.error,
@@ -745,7 +745,7 @@ Return STRICT JSON ONLY with this exact shape:
                     _feedback = null;
                   });
                 },
-                child: Text('Next Exercise'),
+                child: const Text('Next Exercise'),
               ),
             ),
           ),
@@ -831,7 +831,7 @@ class _ExerciseCard extends StatelessWidget {
         color: isDark ? PolieColors.surfaceContainer : PolieColors.surfaceContainerLight,
         borderRadius: BorderRadius.circular(PolieRadius.lg),
         border: Border.all(
-          color: isCompleted ? PolieColors.success.withOpacity(0.5) : PolieColors.royalAmethyst.withOpacity(0.3),
+          color: isCompleted ? PolieColors.success.withValues(alpha: 0.5) : PolieColors.royalAmethyst.withValues(alpha: 0.3),
           width: isCompleted ? 2 : 1,
         ),
       ),
@@ -853,7 +853,7 @@ class _ExerciseCard extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(PolieSpacing.md),
                   decoration: BoxDecoration(
-                    color: PolieColors.royalAmethyst.withOpacity(0.2),
+                    color: PolieColors.royalAmethyst.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(PolieRadius.md),
                   ),
                   child: Icon(

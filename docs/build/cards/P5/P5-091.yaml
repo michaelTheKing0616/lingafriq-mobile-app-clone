@@ -1,0 +1,49 @@
+charter: v2
+id: P5-091
+kind: verification
+title: Verify interim TTS cost
+phase: P5
+epic: E-P5-A1
+req_ids:
+- CP-§9.4-07
+depends_on:
+- P5-071
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T0
+  tester: T0
+  reviewer: T1
+  justification: verification only; no code
+token_budget: 20000
+file_allowlist: []
+context_anchors:
+- CURRICULUM.md#§9.4:L835-L835
+acceptance_criteria:
+- id: AC1
+  text: Given about 1-2M characters, when costed at Azure $16/M chars plus Intron quote, then the total is under $100 plus
+    quote or deltas recorded [estimate]
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G5
+external_blockers:
+- EXT-01
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

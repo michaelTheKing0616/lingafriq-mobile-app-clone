@@ -30,7 +30,7 @@ class GrammarHubScreen extends HookConsumerWidget {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -48,7 +48,7 @@ class GrammarHubScreen extends HookConsumerWidget {
               _buildLevelFilter(context, selectedLevel, isDark),
               Expanded(
                 child: isLoading.value
-                    ? Center(
+                    ? const Center(
                         child: CircularProgressIndicator(
                           color: PolieColors.goldEmber,
                         ),
@@ -71,7 +71,7 @@ class GrammarHubScreen extends HookConsumerWidget {
             label: 'Back to previous screen',
             button: true,
             child: IconButton(
-              icon: Icon(Icons.arrow_back, color: PolieColors.textPrimary),
+              icon: const Icon(Icons.arrow_back, color: PolieColors.textPrimary),
               onPressed: () {
                 HapticFeedback.lightImpact();
                 Navigator.of(context).pop();
@@ -130,11 +130,11 @@ class GrammarHubScreen extends HookConsumerWidget {
                 padding: EdgeInsets.symmetric(horizontal: PolieSpacing.md, vertical: PolieSpacing.sm),
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? PolieColors.goldEmber.withOpacity(0.3)
+                      ? PolieColors.goldEmber.withValues(alpha: 0.3)
                       : Colors.transparent,
                   borderRadius: BorderRadius.circular(PolieRadius.pill),
                   border: Border.all(
-                    color: isSelected ? PolieColors.goldEmber : PolieColors.textSecondary.withOpacity(0.3),
+                    color: isSelected ? PolieColors.goldEmber : PolieColors.textSecondary.withValues(alpha: 0.3),
                     width: isSelected ? 2 : 1,
                   ),
                 ),
@@ -237,7 +237,7 @@ class GrammarHubScreen extends HookConsumerWidget {
                   ],
                 ),
               ),
-              Icon(
+              const Icon(
                 Icons.arrow_forward_ios_rounded,
                 color: PolieColors.royalAmethyst,
                 size: 20,
@@ -263,8 +263,8 @@ class GrammarHubScreen extends HookConsumerWidget {
             child: CircularProgressIndicator(
               value: percentage / 100,
               strokeWidth: 6,
-              backgroundColor: PolieColors.textSecondary.withOpacity(0.2),
-              valueColor: AlwaysStoppedAnimation<Color>(PolieColors.goldEmber),
+              backgroundColor: PolieColors.textSecondary.withValues(alpha: 0.2),
+              valueColor: const AlwaysStoppedAnimation<Color>(PolieColors.goldEmber),
             ),
           ),
           Text(
@@ -299,9 +299,9 @@ class GrammarHubScreen extends HookConsumerWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: PolieSpacing.sm, vertical: 2),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.2),
+        color: color.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(PolieRadius.pill),
-        border: Border.all(color: color.withOpacity(0.5)),
+        border: Border.all(color: color.withValues(alpha: 0.5)),
       ),
       child: Text(
         difficulty.toUpperCase(),

@@ -1,0 +1,51 @@
+charter: v2
+id: P5-088
+kind: verification
+title: Verify LLM generation cost against AI-stack pricing
+phase: P5
+epic: E-P5-A1
+req_ids:
+- CP-§9.4-01
+- CP-§9.4-17
+- CP-§9.4-02
+depends_on:
+- P5-085
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T0
+  tester: T0
+  reviewer: T1
+  justification: verification only; no code
+token_budget: 20000
+file_allowlist: []
+context_anchors:
+- CURRICULUM.md#§9.4:L830-L832
+acceptance_criteria:
+- id: AC1
+  text: Given the AI stack pricing (EXT-01) and model names as written, when costed for about 10-12k items x about 4 passes,
+    then per-language $500-1,500 and Stage-1 $4k-10k are confirmed or deltas recorded [estimate]
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G5
+external_blockers:
+- EXT-01
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

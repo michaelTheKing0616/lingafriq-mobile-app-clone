@@ -1,0 +1,87 @@
+charter: v2
+id: P4-077
+kind: build
+title: Add staged rollout and rollback for packs
+phase: P4
+epic: E-P4-STUDIO
+req_ids:
+- CP-§9.1-07
+depends_on:
+- P4-076
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- lingafriq-admin/src/pages/CurriculumStudio/packRollout.tsx
+- node-backend/src/routes/packRollout.routes.ts
+- tools/content_engine/tests/studio_packRollout.test.ts
+context_anchors:
+- CURRICULUM.md#§9.1:L785-L786
+acceptance_criteria:
+- id: AC1
+  text: Given a signed pack, when released, then rollout proceeds in stages with a percentage set per stage in config
+- id: AC2
+  text: Given a bad stage, when rollback is pressed, then clients revert to the previous signed pack and the event is audit-logged
+- id: AC3
+  text: Given rollback fails, when requested, then a visible error shows and the rollout is paused
+test_plan:
+  unit:
+  - component states
+  integration:
+  - admin route contract
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - keyboard navigation
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - empty
+  - error
+  - ready
+  copy_keys:
+  - rollout.title
+  - rollout.rollback
+  - rollout.error
+  tokens:
+  - admin.surface
+  - admin.text
+  - admin.status
+  motion_tier: product
+  a11y:
+  - keyboard operable
+  - focus visible
+  - labelled controls
+  goldens:
+  - packRollout-ready
+  - packRollout-empty
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

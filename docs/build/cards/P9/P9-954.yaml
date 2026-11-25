@@ -1,0 +1,96 @@
+charter: v2
+id: P9-954
+kind: build
+title: Run live class sessions on LiveKit with recording consent
+phase: P9
+epic: E-P9-VILLAGE
+req_ids:
+- EP-§9.2-38
+- EP-§9.2-39
+depends_on:
+- E-P9-SAFETY
+- P9-952
+- P9-942
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 3, ambiguity 1, coupling 2, depth 0'
+token_budget: 80000
+file_allowlist:
+- lib/screens/classroom/classroom_session_screen.dart
+- node-backend/src/services/livekit/classSession.service.ts
+- node-backend/src/models/recordingConsent.ts
+context_anchors:
+- ELEVATION.md#§9.2:L1619-L1620
+acceptance_criteria:
+- id: AC1
+  text: Given a live session, when the teacher starts recording, then every participant sees a persistent recording indicator
+    and a recording starts only after consent from each adult and guardian consent for each minor
+- id: AC2
+  text: Given a participant who declines, when recording is active, then they are moved to an unrecorded state or may leave
+    and no audio or video from them is stored
+- id: AC3
+  text: Given a session token, when issued, then it is scoped to one classroom, one user and expires within 10 minutes
+- id: AC4
+  text: Given a recording, when stored, then it carries a retention date and is deleted at that date
+test_plan:
+  unit: []
+  integration:
+  - consent matrix
+  - token scope
+  security:
+  - recording without consent
+  e2e: []
+  perf: []
+  a11y:
+  - session controls
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - lobby
+  - live
+  - recording
+  - declined
+  - ended
+  copy_keys:
+  - session.recording.indicator
+  - session.consent.ask
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - session_default
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

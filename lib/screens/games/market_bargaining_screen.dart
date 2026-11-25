@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
-import '../../providers/game_provider.dart';
 import '../../providers/game_content_provider.dart';
 import '../../models/game/game_content_models.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
 import 'base_game_screen.dart';
+import '../../games/market_haggle/market_haggle_screen.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 class MarketBargainingGame extends BaseGameScreen {
   const MarketBargainingGame({
@@ -31,6 +31,15 @@ class MarketBargainingGame extends BaseGameScreen {
 
 class _MarketBargainingGameState
     extends BaseGameScreenState<MarketBargainingGame> {
+  /// Legacy shelf route → flagship Market Haggle (P8-922 / ADR-036).
+  @override
+  Widget build(BuildContext context) {
+    return MarketHaggleScreen(
+      language: widget.language,
+      onBack: widget.onBack ?? () => Navigator.of(context).pop(),
+    );
+  }
+
   List<GameScenario> _scenarios = [];
   int _currentIndex = 0;
   int _inventory = 0;
@@ -85,9 +94,9 @@ class _MarketBargainingGameState
     _budget = (_askingPrice * 0.6).round();
 
     _options = [
-      _BargainOption(text: 'Polite Greeting', icon: Icons.waving_hand_rounded, color: const Color(0xFF526124), isCorrect: true),
-      _BargainOption(text: 'Firm Counter', icon: Icons.gavel_rounded, color: const Color(0xFF9E3D00), isCorrect: false),
-      _BargainOption(text: 'Complement Quality', icon: Icons.thumb_up_rounded, color: const Color(0xFF7B5733), isCorrect: false),
+      const _BargainOption(text: 'Polite Greeting', icon: Icons.waving_hand_rounded, color: LingAfriqTokens.hexFF526124, isCorrect: true),
+      const _BargainOption(text: 'Firm Counter', icon: Icons.gavel_rounded, color: LingAfriqTokens.hexFF9E3D00, isCorrect: false),
+      const _BargainOption(text: 'Complement Quality', icon: Icons.thumb_up_rounded, color: LingAfriqTokens.hexFF7B5733, isCorrect: false),
     ]..shuffle(rng);
 
     setState(() {
@@ -201,7 +210,7 @@ class _MarketBargainingGameState
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFFFF7A35), Color(0xFFFDE8D0)],
+          colors: [LingAfriqTokens.hexFFFF7A35, LingAfriqTokens.hexFFFDE8D0],
         ),
         borderRadius: ModernGriotRadius.borderXl,
         boxShadow: ModernGriotShadows.md,
@@ -211,13 +220,13 @@ class _MarketBargainingGameState
           Positioned(
             right: 24.w, bottom: 20.h,
             child: Icon(Icons.storefront_rounded, size: 80.sp,
-                color: Colors.white.withOpacity(0.3)),
+                color: Colors.white.withValues(alpha: 0.3)),
           ),
           Positioned(
             left: 24.w, top: 24.h,
             child: CircleAvatar(
               radius: 36.r,
-              backgroundColor: Colors.white.withOpacity(0.3),
+              backgroundColor: Colors.white.withValues(alpha: 0.3),
               child: Icon(Icons.person_rounded, size: 36.sp, color: Colors.white),
             ),
           ),
@@ -266,9 +275,9 @@ class _MarketBargainingGameState
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
             decoration: BoxDecoration(
-              color: ModernGriotColors.error.withOpacity(0.1),
+              color: ModernGriotColors.error.withValues(alpha: 0.1),
               borderRadius: ModernGriotRadius.borderXl,
-              border: Border.all(color: ModernGriotColors.error.withOpacity(0.3)),
+              border: Border.all(color: ModernGriotColors.error.withValues(alpha: 0.3)),
             ),
             child: Column(
               children: [
@@ -285,9 +294,9 @@ class _MarketBargainingGameState
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
             decoration: BoxDecoration(
-              color: ModernGriotColors.secondary.withOpacity(0.1),
+              color: ModernGriotColors.secondary.withValues(alpha: 0.1),
               borderRadius: ModernGriotRadius.borderXl,
-              border: Border.all(color: ModernGriotColors.secondary.withOpacity(0.3)),
+              border: Border.all(color: ModernGriotColors.secondary.withValues(alpha: 0.3)),
             ),
             child: Column(
               children: [
@@ -311,11 +320,11 @@ class _MarketBargainingGameState
 
     Color bg;
     if (showCorrect) {
-      bg = ModernGriotColors.secondary.withOpacity(0.15);
+      bg = ModernGriotColors.secondary.withValues(alpha: 0.15);
     } else if (showWrong) {
-      bg = ModernGriotColors.error.withOpacity(0.15);
+      bg = ModernGriotColors.error.withValues(alpha: 0.15);
     } else {
-      bg = option.color.withOpacity(isSelected ? 0.12 : 0.06);
+      bg = option.color.withValues(alpha: isSelected ? 0.12 : 0.06);
     }
 
     return GestureDetector(
@@ -327,8 +336,8 @@ class _MarketBargainingGameState
           color: bg,
           borderRadius: ModernGriotRadius.borderPill,
           border: Border.all(
-            color: isSelected ? option.color.withOpacity(0.5)
-                : option.color.withOpacity(0.2), width: 1.5,
+            color: isSelected ? option.color.withValues(alpha: 0.5)
+                : option.color.withValues(alpha: 0.2), width: 1.5,
           ),
         ),
         child: Row(

@@ -1,0 +1,107 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P9
+epic: E-P9-SAFETY
+hub: Village
+gate: G9
+status: Draft
+size: M
+token_budget: 80000
+user_facing: true
+p0_area: false
+tags:
+- uses_source
+external_blockers: []
+risks: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+id: F-135
+title: Elevate Native Speaker Verification Queue
+req_ids:
+- F-135
+- F-135.D
+- F-135.E
+- F-135.U
+- F-135.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P4-CONTENT-ENGINE
+- P7-920
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: revive verify swipe queue'
+file_allowlist:
+- lib/screens/contribute/native_speaker_contribution_screen.dart
+- lib/screens/contribute/lesson_item_verification_screen.dart
+context_anchors:
+- ELEVATION.md#§18.6:L5409-L5421
+delta:
+  current_state: Native contribution and lesson verification screens exist but are unrouted.
+  defects_to_fix:
+  - Human validation loop for language factory is unreachable.
+  elevation_to_build:
+  - 'Verify queue: natives swipe AI-drafted items to correct, fix, or reject with audio.'
+  - Reputation earnings power fast-scaling content waves.
+  ux_and_render:
+  - Swipe cards with audio and inline fix editor.
+  hub_placement: Village → Contribute → Verify (verified natives).
+  unlock_stage: per §17.4
+  harvest_list:
+  - Route native_speaker_contribution and lesson_item_verification from Contribute hub.
+acceptance_criteria:
+- id: AC1
+  text: Given a verified native, when Verify is opened, then swipe queue loads AI-drafted lesson items.
+- id: AC2
+  text: Given a fix action, when saved, then inline edits and optional audio attach to the content engine item.
+- id: AC3
+  text: Given a reject action, when confirmed, then item leaves publish path and reputation reflects the decision.
+test_plan:
+  unit:
+  - domain helpers
+  integration:
+  - API and navigation
+  e2e:
+  - happy path
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content: []
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - verify_queue.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

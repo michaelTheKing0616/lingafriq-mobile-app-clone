@@ -1,0 +1,63 @@
+charter: v2
+id: P13-004
+kind: adr
+title: Decide moonshot start gate respecting new-breadth stop
+phase: P13
+epic: E-P13-SCALE
+req_ids:
+- RM-STOP-01
+- RM-MS-10
+depends_on:
+- E-P12-RELEASE
+size: S
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 2, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§16.5:L2154-L2155
+- ELEVATION.md#§16.4:L2113
+acceptance_criteria:
+- id: AC1
+  text: Given a moonshot card, when its status moves to Ready, then the ADR requires proof that the existing 151 features
+    are finished and connected, per the RM-STOP-01 owner record
+- id: AC2
+  text: Given that proof is absent, when the status change is attempted, then it is refused and the reason is logged
+- id: AC3
+  text: Given the ADR, when accepted, then it names the sign-off owner (Tope) and the evidence location
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks:
+- Moonshots are 9-24 month items; this ADR prevents early start, not design work
+gate: G13
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - prime/diagram-design

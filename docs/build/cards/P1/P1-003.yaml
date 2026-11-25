@@ -1,0 +1,74 @@
+charter: v2
+id: P1-003
+kind: build
+title: Add gitleaks config, pre-commit hook and blocking CI gate
+phase: P1
+epic: E-P1-SECRETS
+req_ids:
+- EP-§13.1-30
+- EP-§13.1-33
+depends_on:
+- E-P0-INTAKE
+- P1-002
+size: S
+difficulty:
+  score: 3
+  blast: 2
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: score 3; blast 2
+token_budget: 25000
+file_allowlist:
+- .gitleaks.toml
+- .pre-commit-config.yaml
+- .github/workflows/secrets-scan.yml
+- scripts/secrets-hygiene-check.mjs
+context_anchors:
+- ELEVATION.md#§13.1:L1871
+- ELEVATION.md#§13.1:L1872-L1873
+acceptance_criteria:
+- id: AC1
+  text: Given a commit containing a fake PEM private key, when pre-commit runs, then the commit is rejected by gitleaks
+- id: AC2
+  text: Given a PR containing a fake provider key, when secrets-scan.yml runs, then the job fails and is a required status
+    check
+- id: AC3
+  text: Given main after P1-002, when gitleaks detect --no-git runs on the tree, then it reports 0 findings
+- id: AC4
+  text: Given scripts/secrets-hygiene-check.mjs, when CI runs, then it executes as a blocking step and a seeded violation
+    fails the build
+test_plan:
+  unit:
+  - allowlist regression fixture
+  integration:
+  - CI dry run on seeded branch
+  security:
+  - seeded-secret negative test
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G1
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

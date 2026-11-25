@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../avatar_engine.dart';
-import '../emotion_system.dart';
+import '../director/avatar_director.dart';
 import '../polie/polie_avatar.dart';
 
 /// Gamification avatar overlay position
@@ -146,7 +145,7 @@ class _GamificationAvatarOverlayState extends ConsumerState<GamificationAvatarOv
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: PolieAvatarColors.electricTeal.withOpacity(0.3),
+              color: PolieAvatarColors.electricTeal.withValues(alpha: 0.3),
               blurRadius: 10,
               spreadRadius: 2,
             ),
@@ -177,7 +176,7 @@ class _GamificationAvatarOverlayState extends ConsumerState<GamificationAvatarOv
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withValues(alpha: 0.1),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),
@@ -201,11 +200,11 @@ class _GamificationAvatarOverlayState extends ConsumerState<GamificationAvatarOv
       margin: const EdgeInsets.only(top: 8),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface.withOpacity(0.95),
+        color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.95),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 8,
           ),
         ],
@@ -434,7 +433,7 @@ class _AchievementAvatarPresenterState extends State<AchievementAvatarPresenter>
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: widget.color.withOpacity(0.3),
+                  color: widget.color.withValues(alpha: 0.3),
                   blurRadius: 20,
                   spreadRadius: 5,
                 ),
@@ -446,7 +445,7 @@ class _AchievementAvatarPresenterState extends State<AchievementAvatarPresenter>
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: widget.color.withOpacity(0.1),
+                    color: widget.color.withValues(alpha: 0.1),
                   ),
                   child: Icon(
                     widget.icon,

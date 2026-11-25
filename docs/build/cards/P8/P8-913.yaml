@@ -1,0 +1,78 @@
+charter: v2
+id: P8-913
+kind: build
+title: 'GameKit: per-language tone inventories in tone games'
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.1-05
+- EP-§10.1-06
+- EP-§10.3-01c
+depends_on:
+- E-P8-PLAY
+- P8-912
+- E-P4-CONTENT-ENGINE
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 2, coupling 1'
+token_budget: 60000
+file_allowlist:
+- lib/screens/games/tone_trainer_game.dart
+- lib/services/offline/tone_trainer_queue_service.dart
+- lib/games/tone_forge/tone_forge_models.dart
+- lib/games/tone_forge/tone_forge_scoring.dart
+context_anchors:
+- ELEVATION.md#§10.1:L1664-L1665
+- ELEVATION.md#§10.3:L1689-L1691
+acceptance_criteria:
+- id: AC1
+  text: Given a word in a tonal language, when a tone game builds its answer, then the correct tone sequence comes from that
+    word's lexicon tone-marked form and not from one global H/M/L rule
+- id: AC2
+  text: Given a language, when the tone game loads, then the tone inventory (number and names of tones, contour tones where
+    they exist) comes from the language's inventory record
+- id: AC3
+  text: Given a word whose lexicon tone record is missing or flagged unverified, when the pool builds, then the word is excluded
+    and counted in a diagnostics line
+- id: AC4
+  text: Given the previous tone_trainer one-model logic, when this card completes, then it is deleted and a test fails if
+    a tone game hardcodes a tone set
+test_plan:
+  unit:
+  - inventory loading
+  - exclusion of unverified
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - per-language tone fixtures for 3 tonal languages
+user_facing: false
+ux_spec: null
+tags:
+- uses_source
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

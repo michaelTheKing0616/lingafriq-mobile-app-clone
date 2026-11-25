@@ -1,0 +1,460 @@
+repo	file	status	scores	reference_app	date
+mobile	lib/avatars/customisation/avatar_editor_screen.dart	todo			
+mobile	lib/detail_types/correction_screen.dart	todo			
+mobile	lib/detail_types/introduction_screen.dart	todo			
+mobile	lib/detail_types/quiz_answers_screen.dart	todo			
+mobile	lib/detail_types/quiz_screen.dart	todo			
+mobile	lib/detail_types/tutorial_detail_screen.dart	todo			
+mobile	lib/features/polie_workspace/polie_workspace_screen.dart	ready-for-review C3 fix: AiDisclosureBar wraps full text, no fixed height, 48dp tap target -> details sheet, icons scale; goldens ltr/rtl/200%/320 in test/compliance/goldens (prev: 8/8/8/7/8/8/7/9/7/7 avg 7.7)			2026-10-29
+mobile	lib/features/polie_workspace/polie_workspace_screen_body.dart	todo			
+mobile	lib/features/polie_workspace/polie_workspace_screen_widget.dart	todo			
+mobile	lib/games/circles/circle_goal_screen.dart	todo			
+mobile	lib/games/danfo_rush/danfo_rush_screen.dart	todo			
+mobile	lib/games/drum_rhythm/drum_rhythm_screen.dart	todo			
+mobile	lib/games/echo_karaoke/echo_karaoke_screen.dart	todo			
+mobile	lib/games/gamekit/game_screen_integration.dart	todo			
+mobile	lib/games/gamekit/universal_game_screen.dart	todo			
+mobile	lib/games/greeting_gauntlet/greeting_gauntlet_screen.dart	todo			
+mobile	lib/games/griot_story_chain/story_chain_screen.dart	todo			
+mobile	lib/games/market_haggle/market_haggle_screen.dart	todo			
+mobile	lib/games/minimal_pair_duel/minimal_pair_duel_screen.dart	todo			
+mobile	lib/games/proverb_unlocker/proverb_unlocker_screen.dart	todo			
+mobile	lib/games/proverb_weaver/proverb_weaver_screen.dart	todo			
+mobile	lib/games/script_sprint/script_sprint_screen.dart	todo			
+mobile	lib/games/talking_drum/talking_drum_screen.dart	todo			
+mobile	lib/games/tone_forge/tone_forge_screen.dart	todo			
+mobile	lib/games/word_forge/word_forge_screen.dart	todo			
+mobile	lib/games/word_hunt/word_hunt_screen.dart	todo			
+mobile	lib/history/screens/history_list_screen.dart	todo			
+mobile	lib/history_quiz/screens/history_quiz_sections_screen.dart	todo			
+mobile	lib/language_quiz/screens/language_quiz_sections_screen.dart	todo			
+mobile	lib/lessons/screens/lessons_list_screen.dart	todo			
+mobile	lib/mannerisms/screens/mannerism_list_screen.dart	todo			
+mobile	lib/models/loading_screen_content.dart	todo			
+mobile	lib/providers/loading_screen_provider.dart	todo			
+mobile	lib/screens/achievements/achievements_screen.dart	todo			
+mobile	lib/screens/ai_chat/ai_chat_language_setup_screen.dart	todo			
+mobile	lib/screens/ai_chat/ai_chat_select_screen.dart	todo			
+mobile	lib/screens/ai_chat/ai_language_selection_screen.dart	todo			
+mobile	lib/screens/ai_chat/ai_mode_selection_screen.dart	todo			
+mobile	lib/screens/ai_chat/conversation_analytics_screen.dart	todo			
+mobile	lib/screens/ai_chat/enhanced_translation_screen.dart	todo			
+mobile	lib/screens/ai_chat/polie_mode_selection_screen.dart	todo			
+mobile	lib/screens/ai_chat/polie_workspace_screen.dart	todo			
+mobile	lib/screens/ai_chat/review_dashboard_screen.dart	todo			
+mobile	lib/screens/ai_chat/roleplay_completion_summary_screen.dart	todo			
+mobile	lib/screens/ai_chat/roleplay_progress_dashboard_screen.dart	todo			
+mobile	lib/screens/ai_chat/roleplay_scenario_selection_screen.dart	todo			
+mobile	lib/screens/ai_chat/tutor_progress_dashboard_screen.dart	todo			
+mobile	lib/screens/ai_chat/vocabulary_dashboard_screen.dart	todo			
+mobile	lib/screens/ar/point_and_say_screen.dart	todo			
+mobile	lib/screens/auth/email_verification_screen.dart	todo			
+mobile	lib/screens/auth/forgot_password_screen.dart	todo			
+mobile	lib/screens/auth/login_screen.dart	todo			
+mobile	lib/screens/auth/save_progress_screen.dart	todo			
+mobile	lib/screens/auth/sign_up_screen.dart	todo			
+mobile	lib/screens/auth/world_class_login_screen.dart	todo			
+mobile	lib/screens/auth/world_class_signup_screen.dart	todo			
+mobile	lib/screens/chat/call_history_screen.dart	todo			
+mobile	lib/screens/chat/chat_search_screen.dart	todo			
+mobile	lib/screens/chat/classroom_chat_livekit_screen.dart	todo			
+mobile	lib/screens/chat/community_chat_screen.dart	todo			
+mobile	lib/screens/chat/community_chat_screen_material3.dart	todo			
+mobile	lib/screens/chat/contact_info_screen.dart	todo			
+mobile	lib/screens/chat/global_chat_screen_material3.dart	ready-for-review	self 9.2 R3	social-circles	2026-10-29
+mobile	lib/screens/chat/lingchat_ai_conversation_screen.dart	todo			
+mobile	lib/screens/chat/live_classroom_screen_material3.dart	todo			
+mobile	lib/screens/chat/moderation_tools_screen.dart	todo			
+mobile	lib/screens/chat/private_chat_list_screen.dart	todo			
+mobile	lib/screens/chat/private_chat_screen.dart	todo			
+mobile	lib/screens/chat/private_chat_screen_material3.dart	todo			
+mobile	lib/screens/chat/tribe_chat_screen.dart	todo			
+mobile	lib/screens/chat/tribe_chat_screen_material3.dart	todo			
+mobile	lib/screens/chat/user_search_global_id_screen.dart	todo			
+mobile	lib/screens/chat/welcome_screen.dart	todo			
+mobile	lib/screens/classroom/classroom_assignments_screen.dart	todo			
+mobile	lib/screens/classroom/classroom_lobby_screen.dart	todo			
+mobile	lib/screens/classroom/classroom_notes_screen.dart	todo			
+mobile	lib/screens/classroom/classroom_privacy_screen.dart	todo			
+mobile	lib/screens/classroom/classroom_roster_screen.dart	todo			
+mobile	lib/screens/classroom/classroom_session_screen.dart	todo			
+mobile	lib/screens/classroom/live_classroom_mobile_screen.dart	todo			
+mobile	lib/screens/classroom/live_classroom_screen.dart	todo			
+mobile	lib/screens/classroom/speaker_queue_screen.dart	todo			
+mobile	lib/screens/community/micro_mentor_hub_screen.dart	todo			
+mobile	lib/screens/community/micro_mentor_session_detail_screen.dart	todo			
+mobile	lib/screens/content/conversation_scenarios_screen.dart	todo			
+mobile	lib/screens/content/cultural_hub_screen.dart	todo			
+mobile	lib/screens/content/listening_practice_screen.dart	todo			
+mobile	lib/screens/content/native_content_review_screen.dart	todo			
+mobile	lib/screens/content/speak_mission_evaluate_screen.dart	todo			
+mobile	lib/screens/content/vocabulary_builder_screen.dart	todo			
+mobile	lib/screens/content/writing_practice_screen.dart	todo			
+mobile	lib/screens/contribute/lesson_item_verification_screen.dart	todo			
+mobile	lib/screens/contribute/native_speaker_contribution_screen.dart	todo			
+mobile	lib/screens/curriculum/authentic_curriculum_entry_screen.dart	todo			
+mobile	lib/screens/curriculum/curriculum_screen.dart	todo			
+mobile	lib/screens/curriculum/curriculum_screen_material3.dart	todo			
+mobile	lib/screens/curriculum/lesson_detail_screen.dart	todo			
+mobile	lib/screens/curriculum/level_certificate_screen.dart	todo			
+mobile	lib/screens/dashboard/dashboard_screen_material3.dart	todo			
+mobile	lib/screens/dashboard/modern_dashboard_screen.dart	todo			
+mobile	lib/screens/feed/community_profile_screen.dart	todo			
+mobile	lib/screens/feed/explore_community_screen.dart	todo			
+mobile	lib/screens/feed/feed_post_thread_screen.dart	todo			
+mobile	lib/screens/feed/post_detail_clean_screen.dart	todo			
+mobile	lib/screens/feed/post_detail_screen.dart	todo			
+mobile	lib/screens/feed/search_community_screen.dart	todo			
+mobile	lib/screens/feed/x_compose_screen.dart	todo			
+mobile	lib/screens/feed/x_explore_screen.dart	todo			
+mobile	lib/screens/feed/x_feed_home_screen.dart	todo			
+mobile	lib/screens/feed/x_lists_screen.dart	todo			
+mobile	lib/screens/feed/x_post_detail_screen.dart	todo			
+mobile	lib/screens/feed/x_profile_screen.dart	todo			
+mobile	lib/screens/games/base_game_screen.dart	todo			
+mobile	lib/screens/games/clan_lineage_story_builder_screen.dart	todo			
+mobile	lib/screens/games/conversation_relay_screen.dart	todo			
+mobile	lib/screens/games/elders_blessings_screen.dart	todo			
+mobile	lib/screens/games/emoji_translator_screen.dart	todo			
+mobile	lib/screens/games/folktale_reconstruction_screen.dart	todo			
+mobile	lib/screens/games/game_mastery_map_screen.dart	todo			
+mobile	lib/screens/games/game_mastery_results_screen.dart	todo			
+mobile	lib/screens/games/game_start_guide_screen.dart	todo			
+mobile	lib/screens/games/games_screen.dart	todo			
+mobile	lib/screens/games/games_screen_enhanced_with_all_games.dart	todo			
+mobile	lib/screens/games/games_screen_material3.dart	ready-for-review	self 9.1	games-duels/05	2026-10-29
+mobile	lib/screens/games/grammar_jam_screen.dart	todo			
+mobile	lib/screens/games/greeting_diplomacy_screen.dart	todo			
+mobile	lib/screens/games/language_games_screen.dart	todo			
+mobile	lib/screens/games/language_games_screen_components.dart	todo			
+mobile	lib/screens/games/market_bargaining_screen.dart	todo			
+mobile	lib/screens/games/memory_map_screen.dart	todo			
+mobile	lib/screens/games/picture_word_association_screen.dart	todo			
+mobile	lib/screens/games/pronunciation_karaoke_screen.dart	todo			
+mobile	lib/screens/games/quiz_chef_screen.dart	todo			
+mobile	lib/screens/games/taxi_survival_screen.dart	todo			
+mobile	lib/screens/games/traditional/ayo_mancala_screen.dart	todo			
+mobile	lib/screens/games/traditional/cultural_snakes_ladders_screen.dart	todo			
+mobile	lib/screens/games/traditional/language_ludo_screen.dart	todo			
+mobile	lib/screens/games/traditional/suwe_hopscotch_screen.dart	todo			
+mobile	lib/screens/games/traditional/whot_card_screen.dart	todo			
+mobile	lib/screens/games/universal_loading_screen.dart	todo			
+mobile	lib/screens/games/victory_results_screen.dart	todo			
+mobile	lib/screens/gamification/badge_collection_screen.dart	todo			
+mobile	lib/screens/gamification/badge_collection_screen_material3.dart	todo			
+mobile	lib/screens/gamification/classroom_dashboard_screen.dart	todo			
+mobile	lib/screens/gamification/leaderboard_screen.dart	ready-for-review	self 9x10 avg 9.0; weekly board: champion hero, medals, movement, pinned self, minors anonymised, all states, en/ar/fr, goldens+tablet	social-circles 08/09/13; profile-progress 04	2026-10-29
+mobile	lib/screens/gamification/magic_items_screen.dart	todo			
+mobile	lib/screens/gamification/quest_screen.dart	todo			
+mobile	lib/screens/gamification/seasonal_events_screen.dart	todo			
+mobile	lib/screens/gamification/tribe_selection_screen.dart	todo			
+mobile	lib/screens/global/global_progress_screen.dart	todo			
+mobile	lib/screens/goals/daily_challenges_screen.dart	todo			
+mobile	lib/screens/goals/daily_goals_screen.dart	ready-for-review	self 9.0	profile-progress/02	2026-10-29
+mobile	lib/screens/grammar/grammar_exercise_screen.dart	todo			
+mobile	lib/screens/grammar/grammar_hub_screen.dart	todo			
+mobile	lib/screens/grammar/grammar_lesson_screen.dart	todo			
+mobile	lib/screens/help/feature_preloader_screen.dart	todo			
+mobile	lib/screens/help/features_guide_screen.dart	todo			
+mobile	lib/screens/help/stitch_navigation_hub_screen.dart	todo			
+mobile	lib/screens/heritage/flb_heritage_archive_screen.dart	todo			
+mobile	lib/screens/heritage/flb_heritage_detail_screen.dart	todo			
+mobile	lib/screens/language/search_languages_page.dart	ready-for-review	self 9/9/9/9/9/9/9/9/9/9 avg 9.0; course search/picker per onboarding 04-05, all states, en/ar/fr, goldens	onboarding/04-05	2026-10-29
+mobile	lib/screens/learn/lesson_session_screen.dart	todo			
+mobile	lib/screens/learning/dialect_preference_screen.dart	todo			
+mobile	lib/screens/learning/heritage_milestones_screen.dart	todo			
+mobile	lib/screens/learning/learning_path_screen.dart	passed	9/9/9/9/9/9/9/9/9/9 avg9.0	Mimo+CandyCrush+Busuu+Finch+Duolingo-path	2026-10-28
+mobile	lib/screens/learning/lesson_recap_screen.dart	todo			
+mobile	lib/screens/learning/phrase_dna/phrase_dna_session_screen.dart	todo			
+mobile	lib/screens/learning/phrase_dna/phrase_dna_templates_screen.dart	todo			
+mobile	lib/screens/learning/speak_engine_lab_screen.dart	todo			
+mobile	lib/screens/learning/tone_rhythm/tone_rhythm_trainer_screen.dart	todo			
+mobile	lib/screens/lens/lens_collection_screen.dart	todo			
+mobile	lib/screens/lens/lens_screen.dart	todo			
+mobile	lib/screens/lesson/authentic_lesson_flow_screen.dart	todo			
+mobile	lib/screens/lesson/lesson_flow_screen.dart	pass	9/9/9/9/9/9/9/9/9/9 avg9.0 (R2 fixes: AA header gradient + contrast test, error header with close/back, avatar precache + glyph fallback, tutorial stage fills height + tablet max-width)	Duolingo (lesson-flow pack)	2026-10-29
+mobile	lib/screens/lessons/lessons_map_entry_screen.dart	todo			
+mobile	lib/screens/live_translate/live_translate_screen.dart	todo			
+mobile	lib/screens/loading/dynamic_loading_screen.dart	todo			
+mobile	lib/screens/magazine/culture_magazine_screen.dart	todo			
+mobile	lib/screens/magazine/culture_magazine_screen_enhanced.dart	todo			
+mobile	lib/screens/media/import_media_screen.dart	todo			
+mobile	lib/screens/media/import_media_screen_enhanced.dart	todo			
+mobile	lib/screens/media/media_clip_player_screen.dart	todo			
+mobile	lib/screens/offline/offline_content_screen.dart	todo			
+mobile	lib/screens/onboarding/age_gate_screen.dart	todo			
+mobile	lib/screens/onboarding/enhanced_onboarding_flow_screen.dart	todo			
+mobile	lib/screens/onboarding/kijiji_onboarding_screen.dart	todo			
+mobile	lib/screens/onboarding/modern_onboarding_screen.dart	todo			
+mobile	lib/screens/onboarding/onboarding_screen.dart	todo			
+mobile	lib/screens/onboarding/onboarding_screen_material3.dart	todo			
+mobile	lib/screens/onboarding/placement_quiz_screen.dart	todo			
+mobile	lib/screens/onboarding/unified_onboarding_screen.dart	pass	independent review 8 @d50017810: UI 9/9/9/9/9/9/9/9/9/9 avg 9.0 PASS. Viewed 20+ goldens (LTR/RTL/Arabic/200%/offline/loading/error): 18_signin_google_rtl, 18a, 16_rtl, 16a back top-right pointing right; 18_signin_google LTR top-left (R7 finding was a misread). RTL back test genuine (position>width/2, top<120, Directionality rtl, matchTextDirection). Onboarding tests 49 pass (test/auth path absent), analyze clean, no keys/hearts/paywall, birth year only. Nits (non-blocking): 200% sign-in Google button text wraps beside icon. Prev: independent review 7 @2f5387cd6: UI 9/9/9/9/9/9/8/8/9/9 avg 8.8 FAIL (sign-in 18_signin_google_rtl + 18a_signin_arabic_rtl: back arrow stays top-left pointing left, unlike every sibling RTL step where it is mirrored top-right). Verified fixed: sign-in bead row en/ar/RTL; 200% compact hero, title+first button on first screen. Sampled 18 goldens (03-05,07-11,13,14,18,19, offline, 200%, RTL): no other real defects. Tests 102/102 onboarding+auth pass, analyze clean. Prev: independent review 6 @8ea3a8d70: UI 9/9/9/9/9/9/9/8/9/9 avg 8.9 FAIL (only gap: sign-in top bar has back but no progress beads, unlike every sibling step; at 200% sign-in hero card fills first screen, title below fold). Verified fixed: sign-in/save-progress Arabic+RTL, 200% scroll fade+inset, profile footer, Saving your progress label, golden 01 settled, sign-in identity. Tests 22/22 onboarding pass, analyze clean. Prev: review-5 fixes self 9/9/9/9/9/9/8/9/9/9 avg 8.9 (independent review 6 owed). Sign-in + save progress fully Arabic and mirrored (incl. or-divider, field hints, error card isolates); sign-in shares the onboarding top bar (back + beads; back returns to save progress); scroll fade + 64dp end inset on every step and sign-in; last-button-reachable test on every step, sign-in, save progress; loading greys all choices with "Saving your progress…"; golden 01 pinned to settled Rive frame (asserted); identity: sign-in = woven strip + Polie greeting in chosen language, save progress = word basket. Prev: independent review 5: UI 9/9/9/8/9/9/7/8/8/8 avg 8.4 FAIL (sign-in RTL golden not mirrored + English in Arabic; sign-in lacks back/progress; 200% sign-in CTAs below fold no scroll cue; 15_profile_text200 helper text collides with footer; Rive golden 01 timing unverified)	Duolingo web 15-26 order + Finch/Speak welcome (pack 2026-10-28 second pass)	2026-10-29 | R6: sign-in top bar carries bead row (en/ar/RTL asserted); ≥150% text compact one-line hero, title+first button on first screen (asserted at 200%) | R7: RTL back verified top-right + matchTextDirection on sign-in & save-progress (walk_rtl + Arabic), goldens 18_rtl/18a/16_rtl/16a already mirrored, no regen needed
+mobile	lib/screens/passport/cando_badge_screen.dart	todo			
+mobile	lib/screens/passport/passport_credential_screen.dart	todo			
+mobile	lib/screens/passport/passport_proctored_session_screen.dart	todo			
+mobile	lib/screens/persona_missions/persona_mission_session_screen.dart	todo			
+mobile	lib/screens/persona_missions/persona_mission_setup_screen.dart	todo			
+mobile	lib/screens/persona_missions/persona_missions_hub_screen.dart	todo			
+mobile	lib/screens/personalities/personality_chat_screen.dart	todo			
+mobile	lib/screens/personalities/personality_selection_screen.dart	todo			
+mobile	lib/screens/practice/conversation_practice_screen.dart	todo			
+mobile	lib/screens/practice/pronunciation_practice_screen.dart	todo			
+mobile	lib/screens/practice/tone_drill_screen.dart	todo			
+mobile	lib/screens/profile/global_handle_edit_screen.dart	todo			
+mobile	lib/screens/profile/profile_screen_material3.dart	todo			
+mobile	lib/screens/profile/user_profile_screen.dart	todo			
+mobile	lib/screens/progress/progress_dashboard_screen.dart	ready-for-review	9/9/9/9/9/9 avg 9.2 (self, R2)	profile-progress pack 01,02,03,07	2026-10-29
+mobile	lib/screens/quality_report_screen.dart	todo			
+mobile	lib/screens/review/gamified_review_screen.dart	todo			
+mobile	lib/screens/search/global_search_screen.dart	todo			
+mobile	lib/screens/settings/change_password_screen.dart	todo			
+mobile	lib/screens/settings/data_export_screen.dart	todo			
+mobile	lib/screens/settings/downloads_screen.dart	todo			
+mobile	lib/screens/settings/edit_profile_screen.dart	todo			
+mobile	lib/screens/settings/privacy_policy_screen.dart	todo			
+mobile	lib/screens/settings/privacy_settings_screen.dart	ready-for-review C4 fix: VoiceRetentionTile stacked (title, description, label, full-width selector, 48dp delete) + confirm dialog; l10n en/ar/fr; RadioGroup + context.mounted fixes; goldens test/compliance/goldens/voice_retention_* (prev: 7/7/8/7/7/8/5/8/7/5 avg 6.9)			2026-10-29
+mobile	lib/screens/settings/reminder_settings_screen.dart	ready-for-review	self 9.1	onboarding/14	2026-10-29
+mobile	lib/screens/settings/settings_screen.dart	todo | fixed e8af60f59: runtime brand isolates, l10n fallback, fr golden; awaiting re-review
+mobile	lib/screens/settings/settings_screen_material3.dart	todo			
+mobile	lib/screens/settings/synthetic_voice_styles_screen.dart	todo			
+mobile	lib/screens/snap/snap_camera_screen.dart	todo			
+mobile	lib/screens/snap/snap_inbox_screen.dart	todo			
+mobile	lib/screens/snap/snap_story_feed_screen.dart	todo			
+mobile	lib/screens/snap/snap_streaks_screen.dart	todo			
+mobile	lib/screens/snap/snap_viewer_screen.dart	todo			
+mobile	lib/screens/social/ancestral_tree_screen.dart	todo			
+mobile	lib/screens/social/challenge_friend_screen.dart	todo			
+mobile	lib/screens/social/community_corrections_screen.dart	todo			
+mobile	lib/screens/social/create_friend_quest_screen.dart	todo			
+mobile	lib/screens/social/friend_profile_screen.dart	todo			
+mobile	lib/screens/social/friend_quests_screen.dart	todo			
+mobile	lib/screens/social/global_people_search_screen.dart	todo			
+mobile	lib/screens/social/language_villages_screen.dart	todo			
+mobile	lib/screens/social/share_progress_screen.dart	todo			
+mobile	lib/screens/social/social_gifting_screen.dart	todo			
+mobile	lib/screens/social/social_hub_screen.dart	todo			
+mobile	lib/screens/social/tribe_vs_tribe_screen.dart	todo			
+mobile	lib/screens/social/user_connections_screen.dart	todo			
+mobile	lib/screens/social_audio/create_room_screen.dart	todo			
+mobile	lib/screens/social_audio/following_screen.dart	todo			
+mobile	lib/screens/social_audio/moderation_screen.dart	todo			
+mobile	lib/screens/social_audio/room_detail_screen.dart	todo			
+mobile	lib/screens/social_audio/room_discovery_screen.dart	todo			
+mobile	lib/screens/social_audio/scheduled_sessions_screen.dart	todo			
+mobile	lib/screens/splash/splash_screen.dart	todo			
+mobile	lib/screens/splash/splash_screen_material3.dart	todo			
+mobile	lib/screens/staff/micro_mentor_reports_screen.dart	todo			
+mobile	lib/screens/story/story_mode_screen.dart	todo			
+mobile	lib/screens/subscription/family_dashboard_screen.dart	todo			
+mobile	lib/screens/subscription/subscription_screen.dart	ready-for-review	R2 self 9/9/9/9/9/9/9/9/9/9 avg 9.0: unified Plus naming incl. terms block, price placeholders while loading	paywall pack	2026-10-29
+mobile	lib/screens/tabs_view/home/home_tab.dart	todo			
+mobile	lib/screens/tabs_view/home/home_tab_material3.dart	pass	9/9/9/9/9/9/9/9/9/9 avg9.0 (re-review fix: per-language identity tiles: palette, code-drawn motif, native name + greeting)	Duolingo (home pack)	2026-10-29
+mobile	lib/screens/tabs_view/home/language_detail_screen.dart	todo			
+mobile	lib/screens/tabs_view/home/search_languages_page.dart	todo			
+mobile	lib/screens/tabs_view/home/take_quiz_screen.dart	todo			
+mobile	lib/screens/tabs_view/profile/about_us_screen.dart	todo			
+mobile	lib/screens/tabs_view/profile/app_policy_screen.dart	todo			
+mobile	lib/screens/tabs_view/profile/change_password_screen.dart	todo			
+mobile	lib/screens/tabs_view/profile/profile_edit_screen.dart	ready-for-review	self 9.0	profile-progress/09	2026-10-29
+mobile	lib/screens/tabs_view/profile/suggest_language_screen.dart	todo			
+mobile	lib/screens/translate/live_translate_screen.dart	todo			
+mobile	lib/screens/tutor/curriculum_viewer_screen.dart	todo			
+mobile	lib/screens/tutor/listening_quiz_screen.dart	todo			
+mobile	lib/screens/tutor/shadowing_exercise_screen.dart	todo			
+mobile	lib/screens/tutor/tutor_assess_mode_screen.dart	ready-for-review C3 fix: AiDisclosureBar wraps full text, no fixed height, 48dp tap target -> details sheet, icons scale; goldens ltr/rtl/200%/320 in test/compliance/goldens (prev: 8/8/8/7/8/8/7/9/7/7 avg 7.7)			2026-10-29
+mobile	lib/screens/tutor/tutor_dashboard_screen.dart	needs pack			
+mobile	lib/screens/tutor/tutor_dialogue_mode_screen.dart	ready-for-review C3 fix: AiDisclosureBar wraps full text, no fixed height, 48dp tap target -> details sheet, icons scale; goldens ltr/rtl/200%/320 in test/compliance/goldens (prev: 8/8/8/7/8/8/7/9/7/7 avg 7.7)			2026-10-29
+mobile	lib/screens/tutor/tutor_grammar_mode_screen.dart	ready-for-review C3 fix: AiDisclosureBar wraps full text, no fixed height, 48dp tap target -> details sheet, icons scale; goldens ltr/rtl/200%/320 in test/compliance/goldens (prev: 8/8/8/7/8/8/7/9/7/7 avg 7.7)			2026-10-29
+mobile	lib/screens/tutor/tutor_pronunciation_mode_screen.dart	ready-for-review C3 fix: AiDisclosureBar wraps full text, no fixed height, 48dp tap target -> details sheet, icons scale; goldens ltr/rtl/200%/320 in test/compliance/goldens (prev: 8/8/8/7/8/8/7/9/7/7 avg 7.7)			2026-10-29
+mobile	lib/screens/tutor/tutor_story_mode_screen.dart	ready-for-review C3 fix: AiDisclosureBar wraps full text, no fixed height, 48dp tap target -> details sheet, icons scale; goldens ltr/rtl/200%/320 in test/compliance/goldens (prev: 8/8/8/7/8/8/7/9/7/7 avg 7.7)			2026-10-29
+mobile	lib/screens/tutor/tutor_translation_mode_screen.dart	ready-for-review C3 fix: AiDisclosureBar wraps full text, no fixed height, 48dp tap target -> details sheet, icons scale; goldens ltr/rtl/200%/320 in test/compliance/goldens (prev: 8/8/8/7/8/8/7/9/7/7 avg 7.7)			2026-10-29
+mobile	lib/screens/tutorials/micro_lesson_screen.dart	todo			
+mobile	lib/screens/tutorials/sound_tutorials_screen.dart	todo			
+mobile	lib/screens/ugc/create_lesson_screen.dart	todo			
+mobile	lib/screens/ugc/create_lesson_screen_enhanced.dart	todo			
+mobile	lib/screens/ugc/create_quiz_screen.dart	todo			
+mobile	lib/screens/ugc/create_quiz_screen_enhanced.dart	todo			
+mobile	lib/screens/ugc/create_story_screen.dart	todo			
+mobile	lib/screens/ugc/create_story_screen_enhanced.dart	todo			
+mobile	lib/screens/ugc/ugc_hub_screen.dart	todo			
+mobile	lib/screens/ugc/ugc_validation_feedback_screen.dart	todo			
+mobile	lib/screens/village/challenge_mode_screen.dart	todo			
+mobile	lib/screens/village/circle_quest_screen.dart	todo			
+mobile	lib/screens/village/cowries_shop_screen.dart	todo			
+mobile	lib/screens/village/elder_hut_screen.dart	todo			
+mobile	lib/screens/village/flashcard_focus_screen.dart	todo			
+mobile	lib/screens/village/heritage_tree_screen.dart	todo			
+mobile	lib/screens/village/inter_tribe_leaderboard_screen.dart	todo			
+mobile	lib/screens/village/language_village_place_screen.dart	todo			
+mobile	lib/screens/village/leagues_screen.dart	todo			
+mobile	lib/screens/village/matching_pairs_screen.dart	todo			
+mobile	lib/screens/village/my_tribe_screen.dart	todo			
+mobile	lib/screens/village/practice_room_collaborative_screen.dart	todo			
+mobile	lib/screens/village/practice_room_setup_screen.dart	todo			
+mobile	lib/screens/village/practice_session_screen.dart	todo			
+mobile	lib/screens/village/preservation_fund_screen.dart	todo			
+mobile	lib/screens/village/session_summary_screen.dart	todo			
+mobile	lib/screens/village/swahili_village_map_screen.dart	todo			
+mobile	lib/screens/village/tonal_lesson_screen.dart	todo			
+mobile	lib/screens/village/tribal_duel_screen.dart	todo			
+mobile	lib/screens/village/tribe_discovery_screen.dart	todo			
+mobile	lib/screens/village/tribe_hub_screen.dart	todo			
+mobile	lib/screens/village/verify_queue_screen.dart	todo			
+mobile	lib/screens/village/village_cafe_screen.dart	todo			
+mobile	lib/screens/village/village_market_screen.dart	todo			
+mobile	lib/screens/village/villages_hub_screen.dart	todo			
+mobile	lib/screens/vocabulary/flashcard_review_screen.dart	todo			
+mobile	lib/screens/vocabulary/lexicon_entry_screen.dart	todo			
+mobile	lib/screens/vocabulary/living_dictionary_screen.dart	todo			
+mobile	lib/screens/vocabulary/my_words_screen.dart	todo			
+mobile	lib/screens/vocabulary/vocabulary_flashcard_screen.dart	todo			
+mobile	lib/screens/vocabulary/vocabulary_screen.dart	todo			
+mobile	lib/screens/voice_contribution/voice_contribution_screen.dart	todo			
+mobile	lib/screens/wa/wa_media_gallery_screen.dart	todo			
+mobile	lib/screens/wa/wa_starred_messages_screen.dart	todo			
+mobile	lib/screens/wa/wa_status_create_screen.dart	todo			
+mobile	lib/screens/wa/wa_status_list_screen.dart	todo			
+mobile	lib/screens/wa/wa_status_view_screen.dart	todo			
+mobile	lib/services/performance/screen_performance_tracker.dart	todo			
+mobile	lib/utils/screen_helpers.dart	todo			
+mobile	lib/utils/screen_integration_helper.dart	todo			
+mobile	lib/widgets/screen_wrapper.dart	todo			
+admin	src/pages/ActivityLogs.tsx	todo			
+admin	src/pages/AiOps.tsx	todo			
+admin	src/pages/Analytics.tsx	todo			
+admin	src/pages/AppContainer.tsx	todo			
+admin	src/pages/AuditTrail.tsx	todo			
+admin	src/pages/ContentStudio.tsx	todo			
+admin	src/pages/CultureMagazine.tsx	todo			
+admin	src/pages/CurriculumStudio/contentPacks.tsx	todo			
+admin	src/pages/CurriculumStudio/generationJobs.tsx	todo			
+admin	src/pages/CurriculumStudio/index.tsx	todo			
+admin	src/pages/CurriculumStudio/lexiconEditor.tsx	todo			
+admin	src/pages/CurriculumStudio/packRollout.tsx	todo			
+admin	src/pages/CurriculumStudio/paymentsExport.tsx	todo			
+admin	src/pages/CurriculumStudio/qualityDashboard.tsx	todo			
+admin	src/pages/CurriculumStudio/reviewQueues.tsx	todo			
+admin	src/pages/CurriculumStudio/routes.tsx	todo			
+admin	src/pages/CurriculumStudio/sourceLibrary.tsx	todo			
+admin	src/pages/CurriculumStudio/verificationReport.tsx	todo			
+admin	src/pages/Dashboard.tsx	todo			
+admin	src/pages/DeviceManagement.tsx	todo			
+admin	src/pages/DialogueEditor.tsx	todo			
+admin	src/pages/Escalation.tsx	todo			
+admin	src/pages/GamesHub.tsx	todo			
+admin	src/pages/GamificationManager.tsx	todo			
+admin	src/pages/LanguageManager.tsx	todo			
+admin	src/pages/Languages.tsx	todo			
+admin	src/pages/LessonBuilder.tsx	todo			
+admin	src/pages/LessonItemManagement.tsx	todo			
+admin	src/pages/LessonSections.tsx	todo			
+admin	src/pages/Lessons.tsx	todo			
+admin	src/pages/LexiconManager.tsx	todo			
+admin	src/pages/LiveClassroom.tsx	todo			
+admin	src/pages/LivingDictionaryAdmin.tsx	todo			
+admin	src/pages/Login.tsx	todo			
+admin	src/pages/ManageUsers.tsx	todo			
+admin	src/pages/MediaLibrary.tsx	todo			
+admin	src/pages/Messages.tsx	todo			
+admin	src/pages/ModerationConsole.tsx	todo			
+admin	src/pages/PersonaConsole.tsx	todo			
+admin	src/pages/PlaceholderDetector.tsx	todo			
+admin	src/pages/PlatformSettings.tsx	todo			
+admin	src/pages/PointAndSayOps.tsx	todo			
+admin	src/pages/ProblemQueue.tsx	todo			
+admin	src/pages/PromptRegistry.tsx	todo			
+admin	src/pages/QualityDashboard.tsx	todo			
+admin	src/pages/QuestionsPage.tsx	todo			
+admin	src/pages/QuizBuilder.tsx	todo			
+admin	src/pages/RandomQuizPage.tsx	todo			
+admin	src/pages/ReviewQueue.tsx	todo			
+admin	src/pages/SocialHub.tsx	todo			
+admin	src/pages/SubscriptionManagement.tsx	todo			
+admin	src/pages/SystemHealth.tsx	todo			
+admin	src/pages/Telemetry.tsx	todo			
+admin	src/pages/TribesVillages.tsx	todo			
+admin	src/pages/WordQuestionsPage.tsx	todo			
+mobile	lib/widgets/ai/ai_disclosure.dart	ready-for-review C3 fix: AiDisclosureBar wraps full text, no fixed height, 48dp tap target -> details sheet, icons scale; goldens ltr/rtl/200%/320 in test/compliance/goldens (prev: 8/8/8/7/8/8/7/9/7/7 avg 7.7)			2026-10-29
+mobile	lib/screens/safety/copyright_policy_screen.dart	ready-for-review C6 fix: CopyrightPolicyScreen restyled: intro callout, numbered steps, repeat-infringer callout, designated-agent card (dart-define COPYRIGHT_AGENT_*; pending placeholder), labelled fields with per-field validation, statements block with error, designed sending/error(retry)/success states; l10n en/ar/fr; goldens copyright_policy_* (prev: 7/8/9/7/7/7/7/7/6/8 avg 7.3)			2026-10-29
+mobile	lib/widgets/safety/safety_actions_sheet.dart	ready-for-review C6 fix: Report reasons: localised ReportReasonPicker (icons, human-readable labels, helper line under Copyright, chevron mirrors in RTL, 48dp rows, scrolls at 200%); provider+l10n integration test Report>Copyright opens prefilled notice form; goldens report_reasons_* (prev: 8/8/9/8/8/6/9/8/7/8 avg 7.9)			2026-10-29
+mobile	lib/widgets/ai/ai_disclosure.dart	PASS independent rescore: 9/9/9/9/9/9/9/9/9/9 avg 9.0; full wording wraps at 390/320/200%/RTL, details sheet ok			2026-10-29
+mobile	lib/widgets/privacy/voice_retention_tile.dart	PASS independent rescore: 9/9/9/9/9/9/9/9/9/9 avg 9.0; stacked layout, no letter-per-line at 200%, confirm dialog present			2026-10-29
+mobile	lib/screens/subscription/subscription_terms_disclosure.dart	FAIL independent rescore: 9/9/9/9/9/9/8/9/9/8 avg 8.8; paywall_terms_rtl_390: Arabic price row bidi breaks 'App Store.' (period leads '.Store' on new line) - wrap Latin brand in LTR isolate			2026-10-29 | fixed e8af60f59: runtime brand isolates, l10n fallback, fr golden; awaiting re-review
+mobile	lib/screens/safety/copyright_policy_screen.dart	PASS independent rescore: 9/9/9/9/9/9/9/9/9/9 avg 9.0; form/error/success designed, l10n ar ok (nit: fixture value 'c9' in goldens)			2026-10-29
+mobile	lib/widgets/safety/safety_actions_sheet.dart	PASS independent rescore: 9/9/9/9/9/9/9/9/9/9 avg 9.0; readable localised reasons, helper line, RTL chevron			2026-10-29
+mobile	lib/screens/settings/settings_screen.dart	FAIL independent rescore: 9/9/9/9/9/8/9/8/9/9 avg 8.8; settings_copyright_rtl_390: sibling About rows (Terms of Service, Privacy Policy, Features Guide, Help & Support, Log Out) stay English in Arabic; 'Game onboarding overlay' dev-style entry in About			2026-10-29 | fixed e8af60f59: runtime brand isolates, l10n fallback, fr golden; awaiting re-review
+mobile	lib/screens/subscription/subscription_terms_disclosure.dart	PASS independent rescore R2: 9/9/9/9/9/9/9/9/9/9 avg 9.0; RTL ".App Store"/Google Play bidi correct (LRI+NBSP), no orphan; nit: generated app_localizations_ar.dart has raw U+2066/2069 (2 analyzer warnings) - escape them		2026-10-29 | fixed e8af60f59: runtime brand isolates, l10n fallback, fr golden; awaiting re-review
+mobile	lib/screens/settings/settings_screen.dart	PASS independent rescore R2: 9/9/9/9/9/9/9/9/9/9 avg 9.0; ar/fr fully translated (50 keys), How games work; nits: icons/chevrons do not scale at 200%, no French golden committed		2026-10-29 | fixed e8af60f59: runtime brand isolates, l10n fallback, fr golden; awaiting re-review
+mobile	lib/screens/tabs_view/home/home_tab_material3.dart	FAIL independent rescore R2: 9/9/9/9/9/9/9/9/8/9 avg 8.9; review 2026-10-29 c1ff1f1a3 independent: states fixed; featured tiles are plain letter monograms on near-identical red/brown squares (template look)		
+mobile	lib/screens/lesson/lesson_flow_screen.dart	FAIL independent rescore R2: 9/9/8/9/8/9/9/9/9/8 avg 8.7; review 2026-10-29 5c8ebe7b1 independent: white "0 Points" on yellow header end fails AA; error state has no header/close (no exit); en exercise header shows "?" placeholder avatar vs persona elsewhere; tutorial leaves ~40% blank (tablet more)		
+mobile	lib/screens/tabs_view/home/home_tab_material3.dart	PASS independent rescore R3: 9/9/9/9/9/9/9/9/9/9 avg 9.0; review 2026-10-29 77734c713 independent: tiles distinct (teal/indigo/amber, motifs, native name+greeting), states ok; tests+analyze clean	Duolingo (home pack)	2026-10-29
+mobile	lib/screens/lesson/lesson_flow_screen.dart	PASS independent rescore R3: 9/9/9/9/9/9/9/9/9/9 avg 9.0; review 2026-10-29 d3dfe4594 independent: dark header AA ok; error has header+close; tutorial filled; exercise gap above pinned Check acceptable (Duolingo pattern); minor: ar exercise avatar renders faded	Duolingo (lesson pack)	2026-10-29
+mobile	lib/screens/lesson/widgets/lesson_complete_widget.dart	ready-for-review	PASS 9.0 (review) + tablet fix	lesson pack	2026-10-29
+mobile	lib/screens/tabs_view/profile/profile_tab.dart	ready-for-review	9/9/9/9/9/9 avg 9.2 (self, R3)	profile pack 01,05,06,10	2026-10-29
+mobile	lib/screens/lesson/widgets/lesson_complete_widget.dart	FAIL (review eb7d760ce)	9/9/9/9/9/9/8/9/9/8 avg8.9	lesson-flow pack: RTL Continue arrow points right (arrow_back_rounded auto-mirrors, double flip); arrow not scaled at 200%	2026-10-29
+mobile	lib/screens/tabs_view/profile/profile_tab.dart	FAIL (review c9c1d8897)	8/9/9/8/8/9/8/8/8/8 avg8.3	profile-progress pack: no badges/streak calendar/languages-levels/share; loading skeleton bare; error no header; ltr golden shows initial vs mask elsewhere; bidi handle line in ar 200%	2026-10-29
+mobile	lib/screens/progress/progress_dashboard_screen.dart	FAIL (review 3823f82e9)	9/9/9/9/8/9/9/9/8/9 avg8.8	profile-progress pack: originality low vs 02/07 (plain bars, no streak hero/illustration); error card floats on blank page, no back; loading skeleton generic	2026-10-29
+mobile	lib/screens/lesson/widgets/lesson_complete_widget.dart	PASS (review eaa8bb9eb)	9/9/9/9/9/9/9/9/9/9 avg9.0	lesson-flow 12/13/22: RTL arrow single-mirrored (points left), scales at 200 pct; minor: tablet 820 leaves lower ~40 pct blank	2026-10-29
+mobile	lib/screens/tabs_view/profile/profile_tab.dart	FAIL (review b66177eae)	9/9/9/9/8/9/9/8/9/8 avg8.7	profile-progress pack: loading header green vs navy elsewhere; teen golden byte-identical to child; no golden captures badges/share card (below fold); skeleton thin	2026-10-29
+mobile	lib/screens/tabs_view/profile/profile_tab.dart	PASS (review aab90ddf7)	9/9/9/9/9/9/9/9/9/9 avg9.0	profile-progress 01/05/07/10: teen differs from child (privacy card), navy skeleton, badges+share scrolled goldens	2026-10-29
+mobile	lib/screens/progress/progress_dashboard_screen.dart	PASS (review e2f84ca27)	9/9/9/9/9/9/9/9/9/9 avg9.0	profile-progress 02/07: streak hero w/ kente strip, full-page error, skeleton	2026-10-29
+mobile	lib/screens/lesson/widgets/lesson_complete_widget.dart	PASS (review 093e9dbee)	9/9/9/9/9/9/9/9/9/9 avg9.0	tablet_820 centred, footer constrained	2026-10-29
+mobile	lib/screens/subscription/subscription_screen.dart	FAIL (review f5df1b7ca)	9/9/9/9/9/8/9/9/9/9 avg8.9	paywall 02/03/05: plus-state terms say Premium while plans say Plus; loading state footnote shows trial price before prices load; no reduced-motion check needed	2026-10-29
+mobile	lib/screens/language/search_languages_page.dart	PASS (review f6ed82f0b)	9/9/9/9/9/9/9/9/9/9 avg9.0	onboarding 04/05: Coming soon rows onTap null, all states+child; minor: letter tiles fairly plain	2026-10-29
+mobile	lib/screens/subscription/subscription_screen.dart	PASS R2 independent review (6-screen batch, all goldens viewed)	9/9/9/9/9/9/9/9/9/9 avg 9.0; Plus naming unified incl. plus-state terms, loading shows placeholders no footnote, Restore/renewal wording intact, child grown-up gate	paywall 02/05	2026-10-29
+mobile	lib/screens/gamification/leaderboard_screen.dart	ready-for-review	9/9/9/9/9/8/9/9/9/9 avg 8.9; lbStreak not ICU-plural: ar 'سلسلة 2 يوم', fr 'Série de 1 jours'; nit: chip row clipped at 200% (scrolls); child names hidden OK, teen private OK	profile-progress/04,08	2026-10-29
+mobile	lib/screens/settings/reminder_settings_screen.dart	ready-for-review	9/9/9/9/9/9/9/9/9/9 avg 9.0; nits: off-state faded text near AA limit; reduced-motion handled	onboarding/14	2026-10-29
+mobile	lib/screens/games/games_screen_material3.dart	ready-for-review	9/9/9/9/9/8/8/9/9/9 avg 8.8; game names+descriptions English in ar/fr (whole tile content, incl. Today's pick) - major for ar users; chips/filters translated OK; no hearts/paywall	games-duels/05	2026-10-29
+mobile	lib/screens/tabs_view/profile/profile_edit_screen.dart	ready-for-review	9/9/9/9/9/9/9/9/9/9 avg 9.0; nits: country flag emoji renders as tofu in goldens (test font; verify on device), loading is plain skeleton; teen nickname tip OK	profile-progress/09	2026-10-29
+mobile	lib/screens/goals/daily_goals_screen.dart	ready-for-review	9/9/9/9/9/8/9/8/9/9 avg 8.8; fr dgRing '1 objectifs sur 4 atteints' + ar dgStreak 'سلسلة 5 يوم' (need ICU plurals); green hero/no back arrow inconsistent with navy sibling screens; empty state shows 0/0 ring	profile-progress/02	2026-10-29
+mobile	lib/screens/gamification/leaderboard_screen.dart	PASS	9/9/9/9/9/9/9/9/9/9 avg 9.0; R2 indep: chips wrap at 200%, ar/fr streak plurals correct, all states viewed	leaderboard	2026-10-29
+mobile	lib/screens/games/games_screen_material3.dart	PASS	9/9/9/9/9/9/9/9/9/9 avg 9.0; R2 indep: game names/descs translated ar/fr incl today's pick; RTL back arrow correct	games-hub	2026-10-29
+mobile	lib/screens/goals/daily_goals_screen.dart	ready-for-review	9/9/9/9/9/8/9/9/9/9 avg 8.9; R2 indep: navy header+back arrow+empty hero fixed; fr dgRing still '1 objectifs sur 4 atteints' (plural keyed on total, must key on done)	profile-progress/02	2026-10-29
+mobile	lib/screens/settings/reminder_settings_screen.dart	PASS-spotcheck	off-state contrast test >=4.5:1 passes; golden OK	-	2026-10-29
+mobile	lib/widgets/country_flag.dart	PASS-spotcheck	Nigeria flag renders as painted bands, no tofu	-	2026-10-29
+mobile	lib/screens/chat/global_chat_screen_material3.dart	ready-for-review	self 9.2 R3	social-circles	2026-10-29
+mobile	lib/screens/goals/daily_goals_screen.dart	PASS	R3 indep: fr dgRing now '1 objectif atteint sur 4' keyed on done; golden checked; prior 9s hold => 9/9/9/9/9/9/9/9/9/9 avg 9.0	profile-progress/02	2026-10-29
+mobile	lib/learning/reminders/reminder_policy.dart	PASS-with-nit	quiet window minute-precise, midnight-crossing correct, DST via calendar-day TZDateTime; nit: reminder in quiet window after its time (e.g. 23:00 set at 23:30) gets dayOffset 2 so first nudge skips a day (should be next 07:00)	-	2026-10-29
+mobile	lib/screens/chat/global_chat_screen_material3.dart	ready-for-review	self 9.2 R3	social-circles/02,03	2026-10-29
+mobile	lib/learning/reminders/reminder_policy.dart	PASS	R2 indep (d9720d5de): dayOffset now from adjusted minute vs now; 23:00 set 23:30 -> next 07:00; tests pass, analyze clean	-	2026-10-29
+mobile	lib/screens/chat/global_chat_screen_material3.dart	FAIL	R3 indep (8d9af6aa4 + backend c6e14fb; 22 goldens + 13 refs + REFERENCE/SOURCES viewed; 62/62 chat tests, P1-021d 37/37): UI PASS 9/9/9/9/9/9/9/9/9/9 avg 9.0, all R2 defects fixed (hero icon, tablet cap, empty hero+Say hello, distinct error, 320+200% locked CTA on screen, 403 age_restricted -> locked view). Row FAIL on child safety: POST /chat/messages/:id/forward has no age/DM-policy/block/access check -> adult can DM a teen (post text then forward) and anyone can forward any message id; star+GET starred reads any message by id; POST /status/:id/view lets minors view+appear to stranger everyone-statuses. Search type=all now drops group-room messages for members (feature loss; gate by membership instead). Nits: 320/200% locked body last line faded; composer live on error; user-search icon absent at 200%	social-circles	2026-10-30
+mobile	lib/screens/chat/global_chat_screen_material3.dart	FAIL	R4 indep (43fd838d9 + backend 768e85b; 80/80 chat tests; P1-021*/P9-904/P9-920/P10-903 120/120): UI PASS avg 9.0 (3 regen goldens + 320/200% RTL ok). R3 holes fixed (forward access/age/DM/blocks, star/react/report, status view, typing/presence cap, literal search, member rooms). Row FAIL on child safety: CRITICAL tribes.route.ts:332 POST /tribes/:id/join ignores is_classroom/classroom_code and GET /tribes?include_classrooms=true (no auth) lists classroom ids -> any adult joins a kids classroom (chat, LiveKit token, hand-raise); no age gate on tribe join. HIGH messagingPolicy.service.ts:50 isUserMinor treats unknown-age peer as adult -> adult may DM/forward to unknown-age users. MED villages.route.ts:294 unauthenticated village voice-messages list (userIds+audio urls, uncapped limit). Regression: P1-024_AC1_message_report_returns_reference 201->404 (new vs c6e14fb)	social-circles	2026-10-30
+mobile	lib/screens/guardian/child_messages_screen.dart	FAIL	P1-021g indep (aeb7f6cc2 + backend a1e3581; 101/101 guarded+guardian tests; backend P1-021*+P9-91x/920/952 153/153): avg 8.4, min 7 (title truncated at 320 and 200%; no empty/loading/error goldens; Stop is green primary on one card, outlined on the next); backend FAIL (edit bypass)	needs pack (Family Link/Screen Time)	2026-10-30
+mobile	lib/screens/classroom/class_code_join_sheet.dart	FAIL	P1-021g indep (aeb7f6cc2 + backend a1e3581; 101/101 guarded+guardian tests; backend P1-021*+P9-91x/920/952 153/153): link-required 7.6, waiting 8.0 (bare sheet with no handle or close, error has no Family hub action, large dead space)	needs pack	2026-10-30
+mobile	lib/screens/classroom/classroom_roster_screen.dart#student_requests	FAIL	P1-021g indep (aeb7f6cc2 + backend a1e3581; 101/101 guarded+guardian tests; backend P1-021*+P9-91x/920/952 153/153): avg 8.3, min 7 (title truncated at 320/200% and in AR; disabled row low contrast; no empty state)	needs pack (ClassDojo)	2026-10-30
+mobile	lib/screens/guardian/family_tools_section.dart	FAIL	P1-021g indep (aeb7f6cc2 + backend a1e3581; 101/101 guarded+guardian tests; backend P1-021*+P9-91x/920/952 153/153): unscoreable; guardian_link_screen_loaded.png renders placeholder glyphs and does not show Family tools	needs pack	2026-10-30
+mobile	guardian approvals / messaging guide / circles	FAIL	P1-021g indep (aeb7f6cc2 + backend a1e3581; 101/101 guarded+guardian tests; backend P1-021*+P9-91x/920/952 153/153): no new goldens committed for these screens, so they cannot be scored	needs pack	2026-10-30
+mobile	lib/screens/guardian/child_messages_screen.dart	ready-for-review	P1-021g fixes: titles wrap at 320+200%+RTL, l10n en/fr/ar, full-state goldens viewed; held-media pill; needs pack for visual pass	needs-pack	2026-10-30
+mobile	lib/screens/classroom/class_code_join_sheet.dart	ready-for-review	P1-021g fixes: titles wrap at 320+200%+RTL, l10n en/fr/ar, full-state goldens viewed; held-media pill; needs pack for visual pass	needs-pack	2026-10-30
+mobile	lib/screens/classroom/classroom_roster_screen.dart#student_requests	ready-for-review	P1-021g fixes: titles wrap at 320+200%+RTL, l10n en/fr/ar, full-state goldens viewed; held-media pill; needs pack for visual pass	needs-pack	2026-10-30
+mobile	lib/screens/guardian/family_tools_section.dart	ready-for-review	P1-021g fixes: titles wrap at 320+200%+RTL, l10n en/fr/ar, full-state goldens viewed; held-media pill; needs pack for visual pass	needs-pack	2026-10-30
+mobile	guardian approvals / messaging guide / circles	ready-for-review	P1-021g fixes: titles wrap at 320+200%+RTL, l10n en/fr/ar, full-state goldens viewed; held-media pill; needs pack for visual pass	needs-pack	2026-10-30
+mobile	lib/screens/guardian/child_messages_screen.dart	FAIL	P1-021g R2 indep (3acdfe453 + backend 8e6be0a; all 62 goldens viewed; guarded 85/85, backend P1-021g 26/26): avg 8.5 min 8 (loading = near-invisible spinner; icons do not scale at 200%; peers named only, no child switcher); backend FAIL: HIGH messagingPolicy.service.ts:133-147 adult->minor via shared group skips minor DM setting (chat_enabled off/under_13); HIGH socket.service.ts:706-712,822 replyToId loads any message (no room check) -> quote leak incl. minor DMs; HIGH group/room msgs with minors not minor-screened and media not held (socket minorDm only for private); MED circles.service.ts:96/groupCall.service.ts:133 unknown age = adult (call join w/o guardian approval); MED guardian_peer_revokes old unique index needs migration not a note	needs pack (Family Link/Screen Time)	2026-10-30
+mobile	lib/screens/classroom/class_code_join_sheet.dart	FAIL	P1-021g R2 indep (3acdfe453 + backend 8e6be0a; all 62 goldens viewed; guarded 85/85, backend P1-021g 26/26): avg 8.6 min 8 (no idle/joining/success goldens; guardian-link guidance styled as red field error; Join stays enabled)	needs pack	2026-10-30
+mobile	lib/screens/classroom/classroom_roster_screen.dart#student_requests	FAIL	P1-021g R2 indep (3acdfe453 + backend 8e6be0a; all 62 goldens viewed; guarded 85/85, backend P1-021g 26/26): avg 8.6 min 8 (no loading/error goldens; approval expiry/365d not shown; consent toggle has no confirm)	needs pack (ClassDojo)	2026-10-30
+mobile	lib/screens/guardian/family_tools_section.dart	FAIL	P1-021g R2 indep (3acdfe453 + backend 8e6be0a; all 62 goldens viewed; guarded 85/85, backend P1-021g 26/26): avg 8.2 min 7 (app bar 'Family hub' English in AR; learner shown as 'Learner #42'; disabled Link CTA dominant)	needs pack	2026-10-30
+mobile	guardian approvals	FAIL	P1-021g R2 indep (3acdfe453 + backend 8e6be0a; all 62 goldens viewed; guarded 85/85, backend P1-021g 26/26): avg 7.6 min 6 (not localised: English in AR golden, 'adults 2' order; no Deny action; no empty/loading/error goldens; 'Learner #42')	needs pack (Family Link approve/deny)	2026-10-30
+mobile	messaging guide	FAIL	P1-021g R2 indep (3acdfe453 + backend 8e6be0a; all 62 goldens viewed; guarded 85/85, backend P1-021g 26/26): avg 8.0 min 7 (online vs offline copy/title differ; omits held photos/voice, guardian stop, teacher path; plain text wall)	needs pack	2026-10-30
+mobile	circles	FAIL	P1-021g R2 indep (3acdfe453 + backend 8e6be0a; all 62 goldens viewed; guarded 85/85, backend P1-021g 26/26): avg 7.5 min 6 (empty state has no CTA; near-invisible loading; Lato vs Roboto elsewhere; bare list)	needs pack	2026-10-30
+mobile	who-messages (child messages)	FAIL	P1-021g R3 indep (15765a500 + backend b1288f7; 86 guarded + 6 guardian goldens viewed, 30 pack images; guarded/guardian 183/183; backend P1-021*/P9-9xx pass alone; backend SAFETY FAIL: group-room edits unscreened, DM edits skip link hold, feed profile leaks minor names): avg 8.5 min 8 (sparse empty state; 'Messages stopped' clipped; plain rows vs Qustodio contact rows)	contact-oversight	2026-10-30
+mobile	class-code sheet	FAIL	P1-021g R3 indep (15765a500 + backend b1288f7; 86 guarded + 6 guardian goldens viewed, 30 pack images; guarded/guardian 183/183; backend P1-021*/P9-9xx pass alone; backend SAFETY FAIL: group-room edits unscreened, DM edits skip link hold, feed profile leaks minor names): avg 8.4 min 8 (outlined label collides at 320/200% RTL; plain text field vs Kahoot/Classroom code entry; success lacks class name)	class-code-join	2026-10-30
+mobile	student requests	FAIL	P1-021g R3 indep (15765a500 + backend b1288f7; 86 guarded + 6 guardian goldens viewed, 30 pack images; guarded/guardian 183/183; backend P1-021*/P9-9xx pass alone; backend SAFETY FAIL: group-room edits unscreened, DM edits skip link hold, feed profile leaks minor names): avg 8.5 min 8 (info icon used for error; flat rows vs ClassDojo/Classroom)	teacher-requests	2026-10-30
+mobile	family tools/hub	FAIL	P1-021g R3 indep (15765a500 + backend b1288f7; 86 guarded + 6 guardian goldens viewed, 30 pack images; guarded/guardian 183/183; backend P1-021*/P9-9xx pass alone; backend SAFETY FAIL: group-room edits unscreened, DM edits skip link hold, feed profile leaks minor names): avg 7.6 min 5 (English in AR golden: guardian_link_screen.dart:74-77,282,369 hard-coded; no child header card vs Family Link hub)	family-hub	2026-10-30
+mobile	guardian approvals	FAIL	P1-021g R3 indep (15765a500 + backend b1288f7; 86 guarded + 6 guardian goldens viewed, 30 pack images; guarded/guardian 183/183; backend P1-021*/P9-9xx pass alone; backend SAFETY FAIL: group-room edits unscreened, DM edits skip link hold, feed profile leaks minor names): avg 8.7 min 8 (Deny present now; small app-bar title; pattern-based card)	guardian-approvals	2026-10-30
+mobile	messaging guide	FAIL	P1-021g R3 indep (15765a500 + backend b1288f7; 86 guarded + 6 guardian goldens viewed, 30 pack images; guarded/guardian 183/183; backend P1-021*/P9-9xx pass alone; backend SAFETY FAIL: group-room edits unscreened, DM edits skip link hold, feed profile leaks minor names): avg 8.6 min 8 (text-heavy cards; EN/AR fonts differ)	needs pack	2026-10-30
+mobile	circles	FAIL	P1-021g R3 indep (15765a500 + backend b1288f7; 86 guarded + 6 guardian goldens viewed, 30 pack images; guarded/guardian 183/183; backend P1-021*/P9-9xx pass alone; backend SAFETY FAIL: group-room edits unscreened, DM edits skip link hold, feed profile leaks minor names): avg 8.3 min 7 (no member avatars/activity vs WhatsApp/Classroom; error state lacks illustration)	circles	2026-10-30
+mobile	who-messages (child messages)	ready-for-review	R3 fixes 534705ec7: empty state CTA opens messaging guide; Stop/Allow + 'Messages stopped' pill in Wrap (no clip at 320/200%/RTL); all 57 changed goldens viewed	needs pack	2026-10-30
+mobile	class-code sheet	ready-for-review	R3 fixes 534705ec7: label above field (no collision); Kahoot-style centred LTR uppercase code field with live sanitising; success names the class (server class_name, backend a933091); all 57 changed goldens viewed	needs pack	2026-10-30
+mobile	student requests	ready-for-review	R3 fixes 534705ec7: error state badge icon (lock on 403, cloud_off otherwise) + outlined Retry; all 57 changed goldens viewed	needs pack	2026-10-30
+mobile	family tools/hub	ready-for-review	R3 fixes 534705ec7: guardian_link_screen hard-coded English moved to l10n en/ar/fr; all 57 changed goldens viewed	needs pack	2026-10-30
+mobile	guardian approvals	ready-for-review	R3 fixes 534705ec7: app-bar title moved into body display headline (no truncation at 320/200%/RTL); all 57 changed goldens viewed	needs pack	2026-10-30
+mobile	messaging guide	ready-for-review	R3 fixes 534705ec7: sections as expandable cards (first open), display titles, LingAfriq text body at 1.45; all 57 changed goldens viewed	needs pack	2026-10-30
+mobile	circles	ready-for-review	R3 fixes 534705ec7: member initials faces (viewer ringed, +N) and last-activity line (backend a933091, initials only for minors); error/offline illustration; all 57 changed goldens viewed	needs pack	2026-10-30
+mobile	who is messaging my child	FAIL	R4 independent review @2dc6fdb21 UI 8/8/8/7/9/8/8/8/7/8 avg 7.9; 320@200% RTL headline exceeds 160% cap; no navy primary per pack; no filter chips/undo per contact-oversight	contact-oversight pack	2026-10-30
+mobile	class-code sheet	FAIL	R4 independent review @2dc6fdb21 UI 8/7/8/7/8/8/7/8/7/7 avg 7.5; 320@200% RTL placeholder truncated ABC1..., Checking code + guardian hint clipped; 4-16 chars vs pack 6-8; no class preview before join	class-code-join pack	2026-10-30
+mobile	student requests	FAIL	R4 independent review @2dc6fdb21 UI 8/8/8/7/9/8/8/8/7/8 avg 7.9; no verified badge, no Allow-until/expires-in chip from pack; disabled toggle contrast low	teacher-requests pack	2026-10-30
+mobile	family tools/hub	FAIL	R4 independent review @2dc6fdb21 UI 7/8/8/7/7/7/8/8/6/7 avg 7.3; raw NDPA_2023 code shown to parents; ltr_390 golden starts mid-scroll; no member cards, Needs-you strip or 2-col grid from pack	family-hub pack	2026-10-30
+mobile	guardian approvals	FAIL	R4 independent review @2dc6fdb21 UI 8/8/8/7/8/8/7/8/7/7 avg 7.6; Approve label wraps Approv/e at 320; no approving-as footer, Not now, audit row, offline pending; Approve green not navy	guardian-approvals pack	2026-10-30
+mobile	messaging guide	FAIL	R4 independent review @2dc6fdb21 UI 8/8/8/7/9/8/8/8/7/8 avg 7.9; generic accordion look; 200% RTL headline unbounded	family-hub/contact-oversight packs	2026-10-30
+mobile	circles	FAIL	R4 independent review @2dc6fdb21 UI 8/8/8/7/8/8/8/8/8/8 avg 7.9; empty 320@200% RTL primary button clipped; no Joined/Suggested sections or Closed lock state	circles pack	2026-10-30

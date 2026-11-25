@@ -1,0 +1,71 @@
+charter: v2
+id: P5-030
+kind: build
+title: Author dialogues and scenes at i+1 with unique lines
+phase: P5
+epic: E-P5-A1
+req_ids:
+- EP-§6.2-01
+- EP-§6.2-02
+- EP-§6.1-10
+- CP-§4-26
+depends_on:
+- P5-008
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- tools/content/dialogue_linter.py
+- assets/data/dialogues/
+- test/content/dialogue_test.py
+context_anchors:
+- ELEVATION.md#§6.2:L1139-L1144
+- ELEVATION.md#§6.1:L1110-L1111
+- CURRICULUM.md#§4:L584-L586
+acceptance_criteria:
+- id: AC1
+  text: Given a unit, when authored, then it has an audio dialogue at i+1 level
+- id: AC2
+  text: Given the legacy 126 of 126 repeated dialogues, when linted, then repeated lines fail DL-001
+- id: AC3
+  text: Given a dialogue item, when mapped, then it feeds lessons, Scenario Theatre and Market Haggle / Greeting Gauntlet
+    scripts through the content graph
+test_plan:
+  unit:
+  - linter
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - no repeated lines per language
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

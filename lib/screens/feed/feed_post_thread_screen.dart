@@ -181,7 +181,13 @@ class _FeedPostThreadScreenState extends ConsumerState<FeedPostThreadScreen> {
                             color: cs.onSurfaceVariant,
                           ),
                         ),
-                      ..._replies.map((r) => _ReplyTile(post: r)),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: _replies.length,
+                        itemBuilder: (context, index) =>
+                            _ReplyTile(post: _replies[index]),
+                      ),
                     ],
                   ),
           ),
@@ -299,7 +305,6 @@ class _ReplyTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
     return Padding(
       padding: EdgeInsets.only(bottom: 10.h),
       child: GriotCard(

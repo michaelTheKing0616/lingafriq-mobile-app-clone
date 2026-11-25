@@ -1,0 +1,129 @@
+{
+  "language": "yo",
+  "patterns": [
+    {
+      "id": "yo.pat.progressive",
+      "description_l1": "Preverbal ń marks an action in progress (progressive aspect)",
+      "form": "Subject + ń + verb phrase",
+      "examples": [
+        "Mo ń kọ́ èdè Yorùbá",
+        "Mo ń ṣe dáadáa",
+        "Mo ń lọ"
+      ],
+      "contrasts": [
+        "Mo ti kọ́ èdè Yorùbá (completed)",
+        "Mo máa kọ́ èdè Yorùbá (future)"
+      ],
+      "common_errors": [
+        "Dropping ń and using only the bare verb for ongoing actions",
+        "Placing ń after the verb instead of immediately before it"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T20:30:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "FSI Yoruba Basic Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:fsi-yoruba; CURRICULUM.md#§4:L563-L564",
+            "retrieved_at": "2026-10-26T20:30:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:fsi-yoruba"
+        }
+      ],
+      "confidence": 0.92,
+      "risk_tags": ["grammar_explanation"],
+      "audio": []
+    },
+    {
+      "id": "yo.pat.perfect",
+      "description_l1": "Preverbal ti marks a completed action (perfect aspect)",
+      "form": "Subject + ti + verb phrase",
+      "examples": [
+        "Mo ti jẹun",
+        "O ti dé"
+      ],
+      "contrasts": [
+        "Mo ń jẹun (in progress)",
+        "Mo máa jẹun (future)"
+      ],
+      "common_errors": [
+        "Confusing ti with English infinitive to",
+        "Using ti for habitual or future events instead of completed ones"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T20:30:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "FSI Yoruba Basic Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:fsi-yoruba; CURRICULUM.md#§4:L563-L564",
+            "retrieved_at": "2026-10-26T20:30:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:fsi-yoruba"
+        }
+      ],
+      "confidence": 0.92,
+      "risk_tags": ["grammar_explanation"],
+      "audio": []
+    },
+    {
+      "id": "yo.pat.future",
+      "description_l1": "Preverbal máa marks a future or intended action",
+      "form": "Subject + máa + verb phrase",
+      "examples": [
+        "Mo máa lọ",
+        "Mo máa ní ọkọ̀"
+      ],
+      "contrasts": [
+        "Mo ń lọ (in progress)",
+        "Mo ti lọ (already gone)"
+      ],
+      "common_errors": [
+        "Omitting máa and relying on time adverbs alone for future meaning",
+        "Using máa for completed events already marked with ti"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T20:30:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "FSI Yoruba Basic Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:fsi-yoruba; CURRICULUM.md#§4:L563-L564",
+            "retrieved_at": "2026-10-26T20:30:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:fsi-yoruba"
+        }
+      ],
+      "confidence": 0.92,
+      "risk_tags": ["grammar_explanation"],
+      "audio": []
+    }
+  ]
+}

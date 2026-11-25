@@ -30,10 +30,13 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
   ProgressMetrics get metrics => _metrics;
   List<ProgressMetrics> get history => List.unmodifiable(_history);
 
+  /// Completes once the on-device metrics and history have been read.
+  Future<void> get loaded => _loaded;
+  Future<void> _loaded = Future.value();
+
   @override
   BaseProviderState build() {
-    _loadMetrics();
-    _loadHistory();
+    _loaded = Future.wait([_loadMetrics(), _loadHistory()]);
     _syncWithBackend();
     ref.onDispose(() {
       _outboxMergeTimer?.cancel();

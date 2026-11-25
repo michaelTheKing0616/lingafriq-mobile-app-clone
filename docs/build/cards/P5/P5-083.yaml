@@ -1,0 +1,84 @@
+charter: v2
+id: P5-083
+kind: build
+title: Build script learning tracks for Fidel, N'Ko, Adlam, Tifinagh, Ajami
+phase: P5
+epic: E-P5-B1
+req_ids:
+- EP-§6.7-10
+depends_on:
+- P5-041
+size: L
+difficulty:
+  score: 8
+  blast: 2
+  ambiguity: 2
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T1
+  reviewer: T3
+  justification: 'score 8: blast 2, ambiguity 2, coupling 2, depth 2'
+token_budget: 150000
+file_allowlist:
+- lib/lessons/script_track.dart
+- assets/data/scripts/
+- test/lessons/script_track_test.dart
+context_anchors:
+- ELEVATION.md#§6.7:L1345-L1345
+acceptance_criteria:
+- id: AC1
+  text: Given Amharic and Tigrinya, when a learner opens the track, then Ge'ez/Fidel lessons exist
+- id: AC2
+  text: Given N'Ko, Adlam, Tifinagh and Ajami, when opened, then each has a track or a visible coming-later state
+- id: AC3
+  text: Given a script without reviewed content, when opened, then no unreviewed content is shown as verified
+test_plan:
+  unit:
+  - track loader
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - screen reader
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - list
+  - lesson
+  - coming-later
+  copy_keys:
+  - script.title
+  tokens:
+  - color.label.native
+  - color.label.expert
+  - color.label.beta
+  - type.body
+  - space.4
+  motion_tier: product
+  a11y:
+  - screen-reader announces label name and meaning
+  - touch targets >=48dp
+  - contrast >=4.5:1 on label chips
+  goldens:
+  - script_track
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G7
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

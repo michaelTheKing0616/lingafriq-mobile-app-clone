@@ -147,7 +147,7 @@ class _AiChatLanguageSetupScreenState
                         : PolieColors.surfaceContainerLight,
                     borderRadius: BorderRadius.circular(PolieRadius.lg),
                     border: Border.all(
-                      color: Theme.of(context).colorScheme.outline.withOpacity(0.12),
+                      color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.12),
                     ),
                     boxShadow: PolieElevation.level1(context),
                   ),
@@ -207,7 +207,7 @@ class _AiChatLanguageSetupScreenState
                           borderRadius:
                               BorderRadius.circular(PolieRadius.xl),
                           border: Border.all(
-                            color: accent.withOpacity(0.2),
+                            color: accent.withValues(alpha: 0.2),
                             width: 1.2,
                           ),
                           boxShadow: PolieElevation.level1(context),

@@ -3,10 +3,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../models/roleplay_progress_model.dart';
 import '../providers/user_provider.dart';
-import '../providers/backend_sync_provider.dart';
-final roleplayProgressServiceProvider = Provider<RoleplayProgressService>((ref) {
+
+import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
+
+final roleplayProgressServiceProvider = Provider<RoleplayProgressService>((
+  ref,
+) {
   return RoleplayProgressService(ref);
 });
 
@@ -16,6 +21,19 @@ class RoleplayProgressService {
 
   RoleplayProgressService(this._ref);
 
+  /// Saved roleplay progress. Null means nothing is stored.
+  ///
+  /// Throws when storage cannot be read so the screen can show an error
+  /// and drop the scenario list.
+  Future<RoleplayProgress?> readStored() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? raw = prefs.getString('roleplay_progress');
+    if (raw == null || raw.trim().isEmpty) return null;
+    final RoleplayProgress parsed = RoleplayProgress.fromJsonString(raw);
+    _cachedProgress = parsed;
+    return parsed;
+  }
+
   /// Load roleplay progress from local storage
   Future<RoleplayProgress> loadProgress() async {
     if (_cachedProgress != null) return _cachedProgress!;
@@ -23,7 +41,7 @@ class RoleplayProgressService {
     try {
       final prefs = await SharedPreferences.getInstance();
       final progressJson = prefs.getString('roleplay_progress');
-      
+
       if (progressJson != null && progressJson.isNotEmpty) {
         _cachedProgress = RoleplayProgress.fromJsonString(progressJson);
         return _cachedProgress!;
@@ -42,7 +60,7 @@ class RoleplayProgressService {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('roleplay_progress', progress.toJsonString());
       _cachedProgress = progress;
-      
+
       // Sync to backend
       await _syncToBackend(progress);
     } catch (e) {
@@ -53,9 +71,10 @@ class RoleplayProgressService {
   /// Record a completed roleplay session
   Future<void> recordSession(RoleplaySessionResult result) async {
     final progress = await loadProgress();
-    
+
     // Get or create scenario progress
-    final scenarioProgress = progress.scenarios[result.scenarioId] ??
+    final scenarioProgress =
+        progress.scenarios[result.scenarioId] ??
         ScenarioProgress(
           scenarioId: result.scenarioId,
           scenarioName: result.metadata['scenario_name'] ?? result.scenarioId,
@@ -66,46 +85,50 @@ class RoleplayProgressService {
 
     // Update scenario progress
     final timesCompleted = scenarioProgress.timesCompleted + 1;
-    final newAccuracy = (scenarioProgress.averageAccuracy * scenarioProgress.timesCompleted +
+    final newAccuracy =
+        (scenarioProgress.averageAccuracy * scenarioProgress.timesCompleted +
             result.accuracy) /
         timesCompleted;
-    final newFluency = (scenarioProgress.averageFluency * scenarioProgress.timesCompleted +
+    final newFluency =
+        (scenarioProgress.averageFluency * scenarioProgress.timesCompleted +
             result.fluency) /
         timesCompleted;
     final newBestScore = result.score > scenarioProgress.bestScore
         ? result.score
         : scenarioProgress.bestScore;
-    
+
     // Update branches explored
     final newBranches = <dynamic>{
       ...scenarioProgress.branchesExplored,
       ...result.branchesTaken,
     }.toList().cast<String>();
-    
+
     // Update vocabulary
-    final newVocabulary = Map<String, int>.from(scenarioProgress.vocabularyUsed);
+    final newVocabulary = Map<String, int>.from(
+      scenarioProgress.vocabularyUsed,
+    );
     for (final word in result.vocabularyLearned) {
       newVocabulary[word] = (newVocabulary[word] ?? 0) + 1;
     }
-    
+
     // Update grammar points
     final newGrammar = Map<String, int>.from(scenarioProgress.grammarPoints);
     for (final point in result.grammarPoints) {
       newGrammar[point] = (newGrammar[point] ?? 0) + 1;
     }
-    
+
     // Check if mastered (accuracy > 0.9, completed 3+ times)
     final isMastered = newAccuracy > 0.9 && timesCompleted >= 3;
-    
+
     // Update streak
     final now = DateTime.now();
     final lastCompleted = scenarioProgress.lastCompleted;
-    final newStreak = lastCompleted != null &&
-            now.difference(lastCompleted).inDays == 1
+    final newStreak =
+        lastCompleted != null && now.difference(lastCompleted).inDays == 1
         ? scenarioProgress.streak + 1
         : (lastCompleted != null && now.difference(lastCompleted).inDays == 0
-            ? scenarioProgress.streak
-            : 1);
+              ? scenarioProgress.streak
+              : 1);
 
     final updatedScenario = scenarioProgress.copyWith(
       timesCompleted: timesCompleted,
@@ -123,21 +146,25 @@ class RoleplayProgressService {
     );
 
     // Update overall progress
-    final updatedScenarios = Map<String, ScenarioProgress>.from(progress.scenarios);
+    final updatedScenarios = Map<String, ScenarioProgress>.from(
+      progress.scenarios,
+    );
     updatedScenarios[result.scenarioId] = updatedScenario;
 
     // Recalculate overall stats
     final allScenarios = updatedScenarios.values.toList();
     final totalCompleted = allScenarios.fold<int>(
-        0, (sum, s) => sum + s.timesCompleted);
+      0,
+      (sum, s) => sum + s.timesCompleted,
+    );
     final avgAccuracy = allScenarios.isEmpty
         ? 0.0
         : allScenarios.fold<double>(0.0, (sum, s) => sum + s.averageAccuracy) /
-            allScenarios.length;
+              allScenarios.length;
     final avgFluency = allScenarios.isEmpty
         ? 0.0
         : allScenarios.fold<double>(0.0, (sum, s) => sum + s.averageFluency) /
-            allScenarios.length;
+              allScenarios.length;
     final mastered = allScenarios
         .where((s) => s.isMastered)
         .map((s) => s.scenarioId)
@@ -149,7 +176,9 @@ class RoleplayProgressService {
     categoryProgress[category] = (categoryProgress[category] ?? 0) + 1;
 
     // Update difficulty progress
-    final difficultyProgress = Map<String, int>.from(progress.difficultyProgress);
+    final difficultyProgress = Map<String, int>.from(
+      progress.difficultyProgress,
+    );
     final difficulty = updatedScenario.difficulty;
     difficultyProgress[difficulty] = (difficultyProgress[difficulty] ?? 0) + 1;
 
@@ -165,19 +194,20 @@ class RoleplayProgressService {
       final highestMastered = masteredDifficulties
           .map((d) => difficultyOrder.indexOf(d))
           .reduce((a, b) => a > b ? a : b);
-      if (highestMastered >= 0 && highestMastered < difficultyOrder.length - 1) {
+      if (highestMastered >= 0 &&
+          highestMastered < difficultyOrder.length - 1) {
         currentDifficulty = difficultyOrder[highestMastered + 1];
       }
     }
 
     // Calculate current streak (consecutive days with roleplay activity)
     final lastActivity = progress.lastActivity;
-    final currentStreak = lastActivity != null &&
-            now.difference(lastActivity).inDays == 1
+    final currentStreak =
+        lastActivity != null && now.difference(lastActivity).inDays == 1
         ? progress.currentStreak + 1
         : (lastActivity != null && now.difference(lastActivity).inDays == 0
-            ? progress.currentStreak
-            : 1);
+              ? progress.currentStreak
+              : 1);
 
     final updatedProgress = progress.copyWith(
       scenarios: updatedScenarios,
@@ -203,17 +233,17 @@ class RoleplayProgressService {
     int limit = 5,
   }) async {
     final progress = await loadProgress();
-    
+
     // Get scenarios for language
     final languageScenarios = progress.scenarios.values
         .where((s) => s.language == language)
         .toList();
-    
+
     // Filter by category if specified
     final filtered = category != null
         ? languageScenarios.where((s) => s.category == category).toList()
         : languageScenarios;
-    
+
     // Sort by: not completed > low accuracy > not mastered
     filtered.sort((a, b) {
       if (a.timesCompleted == 0 && b.timesCompleted > 0) return -1;
@@ -225,7 +255,7 @@ class RoleplayProgressService {
       if (a.isMastered && !b.isMastered) return 1;
       return 0;
     });
-    
+
     return filtered.take(limit).map((s) => s.scenarioId).toList();
   }
 
@@ -243,18 +273,20 @@ class RoleplayProgressService {
   Future<bool> shouldAdvanceDifficulty(String language) async {
     final progress = await loadProgress();
     final currentDiff = progress.currentDifficulty;
-    
+
     // Get all scenarios at current difficulty
     final currentDiffScenarios = progress.scenarios.values
         .where((s) => s.language == language && s.difficulty == currentDiff)
         .toList();
-    
+
     if (currentDiffScenarios.isEmpty) return true;
-    
+
     // Check if 80% are mastered
-    final masteredCount = currentDiffScenarios.where((s) => s.isMastered).length;
+    final masteredCount = currentDiffScenarios
+        .where((s) => s.isMastered)
+        .length;
     final masteryRate = masteredCount / currentDiffScenarios.length;
-    
+
     return masteryRate >= 0.8;
   }
 
@@ -264,16 +296,15 @@ class RoleplayProgressService {
       final user = _ref.read(userProvider);
       if (user == null) return;
 
-      final syncProvider = _ref.read(backendSyncProvider.notifier);
-      await syncProvider.queueSync(SyncTask(
-        type: SyncType.progress, // SyncType.progress exists in backend_sync_provider
+      await PersistedOutboxService.instance.enqueue(
+        type: 'progress_sync',
         data: {
           'user_id': user.id.toString(),
           'type': 'roleplay',
           'progress': progress.toJson(),
           'timestamp': DateTime.now().toIso8601String(),
         },
-      ));
+      );
     } catch (e) {
       debugPrint('Error syncing roleplay progress: $e');
     }
@@ -284,4 +315,3 @@ class RoleplayProgressService {
     _cachedProgress = null;
   }
 }
-

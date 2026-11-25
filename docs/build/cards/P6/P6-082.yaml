@@ -1,0 +1,64 @@
+charter: v2
+id: P6-082
+kind: build
+title: Allow speech-native realtime models only after blind tests
+phase: P6
+epic: E-P6-REALTIME
+req_ids:
+- EP-§7.7-09
+depends_on:
+- P6-078
+- P6-046
+size: S
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 2, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist:
+- node-backend/src/ai-gateway/realtime/nativeModelGate.ts
+- release-gates/realtime_native.yaml
+context_anchors:
+- ELEVATION.md#§7.7:L1477-L1482
+acceptance_criteria:
+- id: AC1
+  text: Given a speech-native realtime model, when enabled for a language without passing blind native tests, then typed error
+    native_model_not_gated is returned
+- id: AC2
+  text: Given a language that passes, when enabled, then the gate record names test run and date
+test_plan:
+  unit:
+  - gate lookup
+  integration:
+  - blocked enable
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers:
+- EXT-13
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

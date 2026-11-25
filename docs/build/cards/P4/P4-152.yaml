@@ -1,0 +1,85 @@
+charter: v2
+id: P4-152
+kind: build
+title: Add audit trail for every state change with viewer
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§14.2-21
+- EP-§14.1-05
+depends_on:
+- P4-150
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- node-backend/src/models/audit_event.model.ts
+- node-backend/src/services/audit.service.ts
+- lingafriq-admin/src/pages/AuditTrail.tsx
+- test/backend/audit.test.ts
+context_anchors:
+- ELEVATION.md#§14.2:L1970-L1989
+- ELEVATION.md#§14.1:L1965-L1968
+acceptance_criteria:
+- id: AC1
+  text: Given any state change, when it occurs, then an append-only event records actor, role, object id, from/to state, reason
+    and timestamp
+- id: AC2
+  text: Given the audit store, when an update or delete is attempted through the API, then it is refused
+- id: AC3
+  text: Given the audit viewer, when filtered by actor, object or date, then matching events are listed and exportable as
+    CSV
+test_plan:
+  unit:
+  - audit.test
+  integration: []
+  security:
+  - append-only
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - empty
+  - list
+  - error
+  copy_keys:
+  - audit.title
+  - audit.empty
+  tokens:
+  - admin.table
+  motion_tier: product
+  a11y:
+  - table semantics
+  goldens: []
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/error-handling-ux
+  - prime/feedback-patterns
+  - prime/state-machine

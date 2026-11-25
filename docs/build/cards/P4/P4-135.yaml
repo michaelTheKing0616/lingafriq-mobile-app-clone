@@ -1,0 +1,91 @@
+charter: v2
+id: P4-135
+kind: build
+title: Add "this is wrong" button routed to reviewers
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.6-21
+depends_on:
+- P4-103
+- P4-159
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- lib/widgets/report_item_button.dart
+- lib/services/content/item_report_service.dart
+- node-backend/src/routes/item_report.routes.ts
+- test/widgets/report_item_button_test.dart
+context_anchors:
+- ELEVATION.md#§6.6:L1321-L1337
+acceptance_criteria:
+- id: AC1
+  text: Given any exercise item, when displayed, then a "this is wrong" control is present and reachable with ≥48 dp touch
+    target
+- id: AC2
+  text: Given the user submits a report, when sent, then item id, pack version and reason are stored and it appears in the
+    reviewer queue
+- id: AC3
+  text: Given the network fails, when submitting, then the report is queued offline and the user sees a visible pending state,
+    never fake success
+test_plan:
+  unit:
+  - report_item_button_test
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - semantic label and 48dp
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - idle
+  - submitting
+  - sent
+  - queued_offline
+  - error
+  copy_keys:
+  - item.report.cta
+  - item.report.reason
+  - item.report.sent
+  - item.report.queued
+  tokens:
+  - color.danger.subtle
+  - space.3
+  motion_tier: product
+  a11y:
+  - label
+  - 48dp target
+  goldens:
+  - report_sheet_default
+  - report_sheet_error
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/navigation-patterns
+  - prime/mobile-app-ui-design

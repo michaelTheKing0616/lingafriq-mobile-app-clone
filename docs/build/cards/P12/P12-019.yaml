@@ -1,0 +1,73 @@
+charter: v2
+id: P12-019
+kind: build
+title: Add chaos and offline resilience test suite
+phase: P12
+epic: E-P12-RELEASE
+req_ids:
+- EP-§13.5-07
+- P0-22
+depends_on:
+- E-P10-ME
+size: L
+difficulty:
+  score: 8
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T1
+  reviewer: T3
+  justification: 'score 8: blast 2, ambiguity 1, coupling 2, depth 2'
+token_budget: 150000
+file_allowlist:
+- integration_test/chaos_offline_test.dart
+- test/chaos/network_fault_injector.dart
+- lib/services/offline
+context_anchors:
+- ELEVATION.md#§13.5:L1918-L1919
+- ELEVATION.md#§1:L333-L342
+acceptance_criteria:
+- id: AC1
+  text: Given airplane mode, when the learner uses Downloads, Point & Say queue and offline review, then each works and queued
+    writes are persisted
+- id: AC2
+  text: Given a network flap every 5 s during a 60 s session, when actions are queued, then 0 actions are lost or duplicated
+    after reconnect
+- id: AC3
+  text: Given the app is killed mid-sync, when relaunched, then the outbox resumes and the sync completes exactly once
+- id: AC4
+  text: Given the backend returns 5xx or times out, when the client retries, then it backs off and shows a visible degraded
+    state, never a fake success
+test_plan:
+  unit: []
+  integration:
+  - 'fault injection: drop, flap, 5xx, kill mid-sync'
+  security: []
+  e2e:
+  - airplane-mode journey
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Outbox implementation owned by earlier phases
+gate: G12
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

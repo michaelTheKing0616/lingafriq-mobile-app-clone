@@ -1,0 +1,169 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+EP-§7.1-01,ELEVATION,§7.1:L1349,informational,direct client calls to Groq/OpenAI/Hugging Face with compiled keys (P0-3),P1,agent,,Open
+EP-§7.1-02,ELEVATION,§7.1:L1350,informational,a backend completion proxy that accepts the client's system prompt (P0-9),P1,agent,,Open
+EP-§7.1-03,ELEVATION,§7.1:L1350,informational,and backend persona chat,P1,agent,,Open
+EP-§7.1-04,ELEVATION,§7.1:L1351-L1353,informational,Mode logic is spread across ai_chat_provider_groq.dart,P1,agent,,Open
+EP-§7.1-05,ELEVATION,§7.1:L1351,metric,"ai_chat_provider_groq.dart (2,516 lines)",P1,agent,,Open
+EP-§7.1-06,ELEVATION,§7.1:L1352,metric,"polie_workspace_screen.dart (6,485 lines)",P1,agent,,Open
+EP-§7.1-07,ELEVATION,§7.1:L1352-L1353,informational,"ai/persona_cognition/* (a two-pass ""self-critique"" orchestrator run on the phone)",P1,agent,,Open
+EP-§7.1-08,ELEVATION,§7.1:L1354-L1355,informational,No streaming on the backend fallback (ai_chat_provider_groq.dart:1302),P1,agent,,Open
+EP-§7.1-09,ELEVATION,§7.1:L1356-L1357,informational,DiacriticsEnforcer.enforceWithMetadata patches model output,P1,agent,,Open
+EP-§7.1-10,ELEVATION,§7.1:L1357-L1358,risk,a regex pass can introduce errors as easily as it fixes them,P1,agent,,Open
+EP-§7.1-11,ELEVATION,§7.1:L1359,informational,STT through Groq Whisper and a Hugging Face serverless call,P1,agent,,Open
+EP-§7.1-12,ELEVATION,§7.1:L1359-L1360,informational,with no authentication on that service,P1,agent,,Open
+EP-§7.1-13,ELEVATION,§7.1:L1360-L1361,informational,TTS through device flutter_tts (most Android/iOS devices have no Yoruba/Igbo/Hausa/Twi voice),P1,agent,,Open
+EP-§7.1-14,ELEVATION,§7.1:L1361-L1362,risk,"MMS-TTS and XTTS-v2 (licensing, P0-24)",P1,agent,,Open
+EP-§7.1-15,ELEVATION,§7.1:L1362-L1363,informational,"The Intron proxy (routes/intron.route.ts, utils/intronLanguageMap.ts) is well built and never called by",P1,agent,,Open
+EP-§7.1-16,ELEVATION,§7.1:L1364-L1365,risk,Whisper-family models normalise or drop tone diacritics,P1,agent,,Open
+EP-§7.1-17,ELEVATION,§7.1:L1365-L1366,informational,"""toneScore"" computed from them (tutor_pronunciation_mode_screen.dart:115) does not measure tone",P1,agent,,Open
+EP-§7.2-01,ELEVATION,§7.2:L1367,external,companion: LINGAFRIQ_AI_MODEL_STACK.md (model choices),P1,external,,Open
+EP-§7.2-02,ELEVATION,§7.2:L1369,requirement,Realtime voice session (WebRTC via LiveKit; you already ship livekit_client),P1,agent,,Open
+EP-§7.2-03,ELEVATION,§7.2:L1370,requirement,"HTTPS (text modes, grading, content)",P1,agent,,Open
+EP-§7.2-04,ELEVATION,§7.2:L1372,decision,"AI Gateway (backend service, TypeScript or Python)",P1,Tope,,Open
+EP-§7.2-05,ELEVATION,§7.2:L1373,requirement,AuthN/Z,P1,agent,,Open
+EP-§7.2-06,ELEVATION,§7.2:L1373,requirement,per-user quotas,P1,agent,,Open
+EP-§7.2-07,ELEVATION,§7.2:L1373,requirement,cost budgets,P1,agent,,Open
+EP-§7.2-08,ELEVATION,§7.2:L1373,requirement,kill switches,P1,agent,,Open
+EP-§7.2-09,ELEVATION,§7.2:L1373,requirement,feature flags,P1,agent,,Open
+EP-§7.2-10,ELEVATION,§7.2:L1374,requirement,Prompt registry (versioned templates per mode,P1,agent,,Open
+EP-§7.2-11,ELEVATION,§7.2:L1374,constraint,no client prompts,P1,agent,,Open
+EP-§7.2-12,ELEVATION,§7.2:L1375,requirement,Grounding: curriculum KG,P1,agent,,Open
+EP-§7.2-13,ELEVATION,§7.2:L1375,requirement,learner model,P1,agent,,Open
+EP-§7.2-14,ELEVATION,§7.2:L1375,requirement,persona source index (RAG),P1,agent,,Open
+EP-§7.2-15,ELEVATION,§7.2:L1376,requirement,Model router (per language × task × tier),P1,agent,,Open
+EP-§7.2-16,ELEVATION,§7.2:L1376,requirement,fallbacks,P1,agent,,Open
+EP-§7.2-17,ELEVATION,§7.2:L1376,requirement,caching,P1,agent,,Open
+EP-§7.2-18,ELEVATION,§7.2:L1377,requirement,Safety: input/output classifiers,P1,agent,,Open
+EP-§7.2-19,ELEVATION,§7.2:L1377,requirement,age-tier policies,P1,agent,,Open
+EP-§7.2-20,ELEVATION,§7.2:L1377,requirement,PII scrubbing,P1,agent,,Open
+EP-§7.2-21,ELEVATION,§7.2:L1378,requirement,"Structured output (JSON schema validation, retries)",P1,agent,,Open
+EP-§7.2-22,ELEVATION,§7.2:L1379,requirement,Telemetry: traces,P1,agent,,Open
+EP-§7.2-23,ELEVATION,§7.2:L1379,requirement,token cost,P1,agent,,Open
+EP-§7.2-24,ELEVATION,§7.2:L1379,requirement,latency,P1,agent,,Open
+EP-§7.2-25,ELEVATION,§7.2:L1379,requirement,eval sampling,P1,agent,,Open
+EP-§7.2-26,ELEVATION,§7.2:L1381,requirement,Speech stack (self-hosted GPU + vendors),P1,agent,,Open
+EP-§7.2-27,ELEVATION,§7.2:L1382,requirement,"STT: Intron (African-accent STT, already integrated)",P1,agent,,Open
+EP-§7.2-28,ELEVATION,§7.2:L1382-L1383,requirement,"Omnilingual ASR (Apache-2.0, 1,600+ langs) fine-tuned",P1,agent,,Open
+EP-§7.2-29,ELEVATION,§7.2:L1382,metric,"1,600+ langs",P1,agent,,Open
+EP-§7.2-30,ELEVATION,§7.2:L1383,requirement,vendor fallbacks,P1,agent,,Open
+EP-§7.2-31,ELEVATION,§7.2:L1384,requirement,TTS: licensed/commissioned voices per language (see 7.5),P1,agent,,Open
+EP-§7.2-32,ELEVATION,§7.2:L1386,requirement,Pronunciation & tone scorer (see 7.4),P1,agent,,Open
+EP-§7.2-33,ELEVATION,§7.2:L1387,requirement,Forced aligner (lip-sync + highlighting),P1,agent,,Open
+EP-§7.3-01,ELEVATION,§7.3:L1390-L1392,requirement,Polie Conversation Free conversation at the learner's level,P1,agent,,Open
+EP-§7.3-09,ELEVATION,§7.3:L1391-L1392,requirement,"with recasts, a hint ladder, and ""say it better"" suggestions",P1,agent,,Open
+EP-§7.3-10,ELEVATION,§7.3:L1393-L1394,requirement,"Learner model (known words, target words due), CEFR-controlled vocabulary",P1,agent,,Open
+EP-§7.3-11,ELEVATION,§7.3:L1394,requirement,output validator flags out-of-level words,P1,agent,,Open
+EP-§7.3-12,ELEVATION,§7.3:L1395,requirement,every turn tagged with the skills practised,P1,agent,,Open
+EP-§7.3-02,ELEVATION,§7.3:L1396-L1397,requirement,"Scenario Roleplay Market bargaining, taxi, family visit, clinic",P1,agent,,Open
+EP-§7.3-13,ELEVATION,§7.3:L1398-L1399,requirement,Scenario scripts with goals and success criteria authored by humans,P1,external,,Open
+EP-§7.3-14,ELEVATION,§7.3:L1399,constraint,the model improvises inside them,P1,agent,,Open
+EP-§7.3-03,ELEVATION,§7.3:L1400-L1401,requirement,Tutor: Explain Grammar and usage questions answered in the learner's L1,P1,agent,,Open
+EP-§7.3-15,ELEVATION,§7.3:L1402-L1403,constraint,RAG over the approved pattern library only,P1,agent,,Open
+EP-§7.3-16,ELEVATION,§7.3:L1403,requirement,must cite the pattern card,P1,agent,,Open
+EP-§7.3-17,ELEVATION,§7.3:L1403,constraint,refuses to invent rules,P1,agent,,Open
+EP-§7.3-04,ELEVATION,§7.3:L1404-L1407,requirement,"Tutor: Correct my writing Diacritic and tone restoration, grammar, register",P1,agent,,Open
+EP-§7.3-18,ELEVATION,§7.3:L1408,requirement,"Hybrid: rule and lexicon checks first, model second",P1,agent,,Open
+EP-§7.3-19,ELEVATION,§7.3:L1408-L1410,requirement,"uncertainty shown (""tone uncertain here, listen to native audio"")",P1,agent,,Open
+EP-§7.3-05,ELEVATION,§7.3:L1411-L1412,requirement,"Story Mode Graded micro-stories with audio, tap-to-gloss, comprehension questions",P1,agent,,Open
+EP-§7.3-20,ELEVATION,§7.3:L1413,constraint,Generated from the approved lexicon,P1,agent,,Open
+EP-§7.3-21,ELEVATION,§7.3:L1413-L1414,requirement,human-approved before publishing to the shared library,P1,external,,Open
+EP-§7.3-22,ELEVATION,§7.3:L1414-L1415,requirement,personal stories are labelled as AI-generated,P1,agent,,Open
+EP-§7.3-06,ELEVATION,§7.3:L1416-L1420,requirement,"Shadowing / Pronunciation coach Listen, repeat, see the pitch contour",P1,agent,,Open
+EP-§7.3-23,ELEVATION,§7.3:L1421,requirement,Real scorer (7.4),P1,agent,,Open
+EP-§7.3-07,ELEVATION,§7.3:L1422-L1424,requirement,Translator with teaching Translate and explain why,P1,agent,,Open
+EP-§7.3-24,ELEVATION,§7.3:L1424,constraint,Only behind a quality gate per language pair,P1,agent,,Open
+EP-§7.3-25,ELEVATION,§7.3:L1424-L1425,constraint,never the unofficial Google scraper,P1,agent,,Open
+EP-§7.3-08,ELEVATION,§7.3:L1426-L1428,requirement,Live Translate / Point-and-say Camera or voice to target language,P1,agent,,Open
+EP-§7.3-26,ELEVATION,§7.3:L1428,requirement,Same; plus a visible confidence indicator,P1,agent,,Open
+EP-§7.4-01,ELEVATION,§7.4:L1430-L1434,requirement,Segmental scoring: goodness-of-pronunciation (GOP) using a multilingual CTC acoustic model,P1,agent,,Open
+EP-§7.4-06,ELEVATION,§7.4:L1431,requirement,"Omnilingual wav2vec2/CTC, Apache-2.0, fine-tuned per language on native recordings",P1,agent,,Open
+EP-§7.4-07,ELEVATION,§7.4:L1431-L1432,constraint,"not MMS weights, which are CC-BY-NC",P1,agent,,Open
+EP-§7.4-08,ELEVATION,§7.4:L1432,requirement,forced-aligned to the expected phone sequence. Per-phone scores,P1,agent,,Open
+EP-§7.4-09,ELEVATION,§7.4:L1433-L1434,requirement,"substitutions mapped to learner-friendly advice (""your gb sounded like b",P1,agent,,Open
+EP-§7.4-02,ELEVATION,§7.4:L1435-L1440,requirement,"Tone scoring: extract F0 (pYIN or CREPE), normalise per speaker",P1,agent,,Open
+EP-§7.4-10,ELEVATION,§7.4:L1435-L1436,requirement,"normalise per speaker (semitones relative to the speaker's median, z-scored)",P1,agent,,Open
+EP-§7.4-11,ELEVATION,§7.4:L1436,requirement,segment by aligned syllables,P1,agent,,Open
+EP-§7.4-12,ELEVATION,§7.4:L1436-L1437,requirement,compare the contour to the expected pattern with a small classifier trained,P1,agent,,Open
+EP-§7.4-13,ELEVATION,§7.4:L1437,requirement,Handle Yoruba H/M/L + glides,P1,agent,,Open
+EP-§7.4-14,ELEVATION,§7.4:L1437-L1438,requirement,Igbo H/L/downstep,P1,agent,,Open
+EP-§7.4-15,ELEVATION,§7.4:L1438,requirement,Hausa H/L/falling,P1,agent,,Open
+EP-§7.4-16,ELEVATION,§7.4:L1438,requirement,Twi H/L,P1,agent,,Open
+EP-§7.4-17,ELEVATION,§7.4:L1438,requirement,Zulu depressor effects,P1,agent,,Open
+EP-§7.4-18,ELEVATION,§7.4:L1438-L1439,requirement,Output per-syllable tone correctness with a confidence value,P1,agent,,Open
+EP-§7.4-19,ELEVATION,§7.4:L1439-L1440,requirement,a visual of the learner's contour overlaid on the native one (Tone,P1,agent,,Open
+EP-§7.4-03,ELEVATION,§7.4:L1441,requirement,"Fluency: speech rate, pause distribution, self-repairs",P1,agent,,Open
+EP-§7.4-20,ELEVATION,§7.4:L1441,requirement,speech rate,P1,agent,,Open
+EP-§7.4-21,ELEVATION,§7.4:L1441,requirement,pause distribution,P1,agent,,Open
+EP-§7.4-22,ELEVATION,§7.4:L1441,requirement,self-repairs,P1,agent,,Open
+EP-§7.4-04,ELEVATION,§7.4:L1442-L1444,requirement,"Calibration: collect human ratings (native raters, 1–5)",P1,agent,,Open
+EP-§7.4-23,ELEVATION,§7.4:L1442,metric,"native raters, 1–5",P1,agent,,Open
+EP-§7.4-24,ELEVATION,§7.4:L1442-L1443,metric,a few thousand attempts per language,P1,external,,Open
+EP-§7.4-25,ELEVATION,§7.4:L1443,metric,"target Pearson r ≥ 0.7 with raters, inter-rater as the ceiling",P1,agent,,Open
+EP-§7.4-26,ELEVATION,§7.4:L1443-L1444,requirement,Publish the methodology,P1,agent,,Open
+EP-§7.4-05,ELEVATION,§7.4:L1445-L1447,requirement,"Honesty rules: when confidence is low (noise, clipping), say so",P1,agent,,Open
+EP-§7.4-27,ELEVATION,§7.4:L1445-L1446,requirement,ask for a retry,P1,agent,,Open
+EP-§7.4-28,ELEVATION,§7.4:L1446,constraint,never fabricate a number,P1,agent,,Open
+EP-§7.4-29,ELEVATION,§7.4:L1446,requirement,Run on the server at first,P1,agent,,Open
+EP-§7.4-30,ELEVATION,§7.4:L1446-L1447,requirement,distil a small on-device model for offline tone practice later,P1,agent,,Open
+EP-§7.4-31,ELEVATION,§7.4:L1447,metric,the 300M Omnilingual variant is a candidate for offline use,P1,agent,,Open
+EP-§7.5-01,ELEVATION,§7.5:L1449-L1450,requirement,Commission native voice talent per Stage-1 language,P1,external,,Open
+EP-§7.5-02,ELEVATION,§7.5:L1449,metric,( ≥ 2 voices;,P1,agent,,Open
+EP-§7.5-03,ELEVATION,§7.5:L1449-L1450,constraint,"mandatory for isiXhosa, which has no commercial vendor voice",P1,external,,Open
+EP-§7.5-15,ELEVATION,§7.5:L1449-L1450,decision,"mandatory for isiXhosa, which has no commercial vendor voice",P1,external,,Open
+EP-§7.5-04,ELEVATION,§7.5:L1450,constraint,under a commercial licence,P1,external,,Open
+EP-§7.5-05,ELEVATION,§7.5:L1450-L1452,requirement,then fine-tune a commercially licensed TTS architecture on them,P1,agent,,Open
+EP-§7.5-06,ELEVATION,§7.5:L1452,requirement,Prefer recorded human audio for all curriculum items,P1,agent,,Open
+EP-§7.5-07,ELEVATION,§7.5:L1452-L1453,requirement,use TTS for dynamic AI turns,P1,agent,,Open
+EP-§7.5-08,ELEVATION,§7.5:L1454,external,"verify licences, quality and tone accuracy per language before committing",P1,external,,Open
+EP-§7.5-09,ELEVATION,§7.5:L1455,decision,"Intron (TTS for yo/ig/ha/pcm/sw; STT for all seven), Spitch (yo/ig/ha/pcm)",P1,Tope,,Open
+EP-§7.5-10,ELEVATION,§7.5:L1455,decision,"Intron (TTS for yo/ig/ha/pcm/sw; STT for all seven), Spitch (yo/ig/ha/pcm)",P1,Tope,,Open
+EP-§7.5-11,ELEVATION,§7.5:L1455-L1456,decision,ElevenLabs also ha,P1,Tope,,Open
+EP-§7.5-12,ELEVATION,§7.5:L1455,decision,"Intron (TTS for yo/ig/ha/pcm/sw; STT for all seven), Spitch (yo/ig/ha/pcm)",P1,Tope,,Open
+EP-§7.5-13,ELEVATION,§7.5:L1455-L1456,decision,Google/ElevenLabs/Gemini TTS (sw,P1,Tope,,Open
+EP-§7.5-14,ELEVATION,§7.5:L1455,decision,"Azure (zu, sw)",P1,Tope,,Open
+EP-§7.5-16,ELEVATION,§7.5:L1455,requirement,STT for all seven,P1,agent,,Open
+EP-§7.5-17,ELEVATION,§7.5:L1456,constraint,YarnGPT is CC-BY-NC-SA and so not usable commercially,P1,agent,,Open
+EP-§7.5-18,ELEVATION,§7.5:L1457,external,companion: LINGAFRIQ_AI_MODEL_STACK.md §3.5,P1,external,,Open
+EP-§7.5-19,ELEVATION,§7.5:L1457-L1458,requirement,Run blind native MOS tests with a tone-accuracy rubric,P1,external,,Open
+EP-§7.5-20,ELEVATION,§7.5:L1459-L1460,constraint,Never ship a voice that gets tones wrong,P1,agent,,Open
+EP-§7.5-21,ELEVATION,§7.5:L1460,requirement,Gate each voice per language on a tone-accuracy threshold judged by natives,P1,external,,Open
+EP-§7.6-01,ELEVATION,§7.6:L1462-L1463,informational,"Frontier models handle Swahili, Amharic, Hausa and Yoruba unevenly",P1,agent,,Open
+EP-§7.6-02,ELEVATION,§7.6:L1463,requirement,Use a router: frontier model for reasoning and English explanations,P1,agent,,Open
+EP-§7.6-03,ELEVATION,§7.6:L1463-L1464,requirement,a model that tests best on each target language for generation,P1,agent,,Open
+EP-§7.6-04,ELEVATION,§7.6:L1464,requirement,"evaluate Gemini, GPT and Claude",P1,agent,,Open
+EP-§7.6-05,ELEVATION,§7.6:L1464-L1466,requirement,commercially licensed open models such as Gemma 3/AfriqueGemma and Qwen3,P1,agent,,Open
+EP-§7.6-06,ELEVATION,§7.6:L1465-L1466,requirement,fine-tuned with licensed data,P1,agent,,Open
+EP-§7.6-07,ELEVATION,§7.6:L1466,constraint,Aya models are CC-BY-NC,P1,agent,,Open
+EP-§7.6-08,ELEVATION,§7.6:L1466,constraint,"N-ATLaS is capped at 1,000 users without a licence",P1,agent,,Open
+EP-§7.6-09,ELEVATION,§7.6:L1466,metric,"capped at 1,000 users",P1,agent,,Open
+EP-§7.6-10,ELEVATION,§7.6:L1466-L1467,external,companion: LINGAFRIQ_AI_MODEL_STACK.md §2.4,P1,external,,Open
+EP-§7.6-11,ELEVATION,§7.6:L1467-L1468,constraint,always constrain generation to the approved lexicon at lower levels,P1,agent,,Open
+EP-§7.6-12,ELEVATION,§7.6:L1469,requirement,Evals before launch and on every prompt or model change,P1,agent,,Open
+EP-§7.6-13,ELEVATION,§7.6:L1469-L1470,requirement,a per-language test set ( ≥ 300 items per Stage-1 language,P1,agent,,Open
+EP-§7.6-14,ELEVATION,§7.6:L1469-L1470,metric,≥ 300 items per Stage-1 language,P1,agent,,Open
+EP-§7.6-15,ELEVATION,§7.6:L1470,requirement,and per language before it reaches L2,P1,agent,,Open
+EP-§7.6-16,ELEVATION,§7.6:L1470,requirement,scored by natives,P1,external,,Open
+EP-§7.6-17,ELEVATION,§7.6:L1471,requirement,diacritic completeness,P1,agent,,Open
+EP-§7.6-18,ELEVATION,§7.6:L1471,requirement,out-of-level vocabulary rate,P1,agent,,Open
+EP-§7.6-19,ELEVATION,§7.6:L1471,requirement,factuality for culture,P1,agent,,Open
+EP-§7.6-20,ELEVATION,§7.6:L1471,requirement,refusal correctness,P1,agent,,Open
+EP-§7.6-21,ELEVATION,§7.6:L1471-L1472,requirement,persona fidelity,P1,agent,,Open
+EP-§7.6-22,ELEVATION,§7.6:L1472,requirement,Block deploys on regression,P1,agent,,Open
+EP-§7.6-23,ELEVATION,§7.6:L1473,requirement,"cache deterministic outputs (explanations, story drafts)",P1,agent,,Open
+EP-§7.6-24,ELEVATION,§7.6:L1474,requirement,use small models for classification and grading,P1,agent,,Open
+EP-§7.6-25,ELEVATION,§7.6:L1474,requirement,stream all chat,P1,agent,,Open
+EP-§7.6-26,ELEVATION,§7.6:L1474-L1475,metric,time-to-first-audio target of under 800 ms for voice turns,P1,agent,,Open
+EP-§7.6-27,ELEVATION,§7.6:L1475,metric,under 400 ms for first text token,P1,agent,,Open
+EP-§7.6-28,ELEVATION,§7.6:L1475,requirement,set per-user daily budgets by tier,P1,agent,,Open
+EP-§7.7-01,ELEVATION,§7.7:L1477-L1478,requirement,LiveKit Agents (or similar) running a cascaded pipeline per turn,P1,agent,,Open
+EP-§7.7-02,ELEVATION,§7.7:L1477,requirement,VAD,P1,agent,,Open
+EP-§7.7-03,ELEVATION,§7.7:L1477-L1478,requirement,streaming STT (Intron/Omnilingual),P1,agent,,Open
+EP-§7.7-04,ELEVATION,§7.7:L1478,requirement,LLM (streaming),P1,agent,,Open
+EP-§7.7-05,ELEVATION,§7.7:L1478,requirement,TTS (streaming) → client,P1,agent,,Open
+EP-§7.7-06,ELEVATION,§7.7:L1478,requirement,barge-in,P1,agent,,Open
+EP-§7.7-07,ELEVATION,§7.7:L1478-L1479,requirement,end-of-turn detection tuned for each language's prosody,P1,agent,,Open
+EP-§7.7-08,ELEVATION,§7.7:L1479,requirement,avatar lip-sync from TTS alignments (§4.3),P1,agent,,Open
+EP-§7.7-09,ELEVATION,§7.7:L1479-L1480,constraint,"Use speech-native ""realtime"" models only for the languages where blind native tests",P1,agent,,Open
+EP-§7.7-10,ELEVATION,§7.7:L1480-L1481,requirement,"""push-to-talk"" fallback for noisy environments and low bandwidth",P1,agent,,Open
+EP-§7.7-11,ELEVATION,§7.7:L1481,metric,Opus at 16–24 kbps,P1,agent,,Open
+EP-§7.7-12,ELEVATION,§7.7:L1481-L1482,requirement,text fallback on 2G/3G,P1,agent,,Open

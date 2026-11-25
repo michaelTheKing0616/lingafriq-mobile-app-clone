@@ -1,0 +1,76 @@
+charter: v2
+id: P4-107
+kind: build
+title: Migrate four legacy bundles into v2 schema
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.5-01
+depends_on:
+- P4-105
+- P4-106
+size: L
+difficulty:
+  score: 8
+  blast: 2
+  ambiguity: 2
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 2, ambiguity 2, coupling 2'
+token_budget: 150000
+file_allowlist:
+- tools/content_pipeline/migrate_legacy_bundles.py
+- tools/export_backend_content_packs.py
+- curriculum_bundle
+- curriculum_expanded_bundle
+- lingafriq_FINAL_curriculum
+- lingafriq_full_curriculum_bundle
+- test/content/test_migration.py
+context_anchors:
+- ELEVATION.md#§6.5:L1293-L1320
+acceptance_criteria:
+- id: AC1
+  text: Given the four bundle directories, when migration runs, then every object is mapped to a v2 object or written to a
+    rejects report with reason, with zero silent drops
+- id: AC2
+  text: Given migrated objects, when labelled, then each gets label beta and ai_assisted per source evidence, never expert_reviewed
+    or native_verified by migration
+- id: AC3
+  text: Given migrated output, when validate_content runs, then the report lists failing objects by rule and counts and does
+    not auto-fix them
+- id: AC4
+  text: Given migration is complete, when the app and backend read content, then they read only v2 packs and the four bundle
+    paths are no longer referenced in code
+test_plan:
+  unit:
+  - test_migration
+  integration:
+  - app loads v2 pack
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- legacy bundles contain placeholders; rejects expected
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

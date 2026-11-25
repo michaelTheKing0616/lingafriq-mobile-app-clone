@@ -1,0 +1,77 @@
+charter: v2
+id: P0-INT-09
+kind: build
+title: Archive root status Markdown files with manifest
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- RM-STOP-03
+- EP-§0-02
+- EP-§0-03
+depends_on:
+- E-P0-INTAKE
+- P0-INT-02
+size: S
+difficulty:
+  score: 2
+  blast: 1
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 1
+tiers:
+  worker: T0
+  tester: T0
+  reviewer: T1
+  justification: git mv by script; manifest hashes prove no content loss
+token_budget: 25000
+file_allowlist:
+- scripts/plan/archive_status_md.py
+- docs/archive/status/MANIFEST.csv
+- .githooks/pre-commit
+context_anchors:
+- ELEVATION.md#§0:L22
+acceptance_criteria:
+- id: AC1
+  text: Given the repo root, when `python3 scripts/plan/archive_status_md.py --apply` runs, then every root *.md except AGENTS.md
+    and README.md is moved with git mv to docs/archive/status/
+- id: AC2
+  text: Given the move, when docs/archive/status/MANIFEST.csv is read, then it lists name, sha256 before and after for each
+    file and the hashes are equal in every row
+- id: AC3
+  text: Given the source states 319 files and the root holds a different count, when the script runs, then the actual count
+    and the delta are written to the manifest header
+- id: AC4
+  text: Given the apply was run, when `--check` runs, then it exits 1 and names any new root *.md outside the allowlist
+- id: AC5
+  text: Given a destination name collision, when the script runs, then it exits non-zero before moving anything
+- id: AC6
+  text: Given the backend repo is separate from this tree, when `--root <backend path>` is passed, then the same move runs
+    there to docs/archive/status/; the handoff is recorded in the card report until that repo is available
+test_plan:
+  unit:
+  - 'temp tree: move, collision, allowlist'
+  integration:
+  - --check on real root after apply
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- MANIFEST.csv with equal hashes
+- git status shows renames only
+- ledger row
+risks:
+- inbound links from other docs to moved files; manifest enables a link rewrite later
+gate: G0
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

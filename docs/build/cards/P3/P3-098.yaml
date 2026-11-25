@@ -1,0 +1,80 @@
+charter: v2
+id: P3-098
+kind: build
+title: Deliver explanations in the learner's L1
+phase: P3
+epic: E-P3-A11Y-I18N
+req_ids:
+- EP-§13.8-07
+depends_on:
+- P3-097
+size: M
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 4: blast 0, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/services/explanation_locale_service.dart
+- lib/models/learner_profile.dart
+context_anchors:
+- ELEVATION.md#§13.8:L1946-L1947
+acceptance_criteria:
+- id: AC1
+  text: Given a learner L1 such as French learning Wolof, when an explanation shows, then it renders in the L1 locale
+- id: AC2
+  text: Given no L1 text exists for an explanation, when shown, then it falls back to English with a visible label
+- id: AC3
+  text: Given L1 changes in Settings, when saved, then explanations switch without restart
+test_plan:
+  unit:
+  - fallback
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - l1
+  - fallback
+  copy_keys:
+  - explain.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

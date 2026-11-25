@@ -1,0 +1,68 @@
+charter: v2
+id: P12-008
+kind: build
+title: Delete superseded duplicate screens after consolidation
+phase: P12
+epic: E-P12-RELEASE
+req_ids:
+- EP-§13.6-06
+depends_on:
+- P12-004
+- P12-007
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 60000
+file_allowlist:
+- lib/screens
+- scripts/ci/dead_screen_report.py
+- test/navigation
+context_anchors:
+- ELEVATION.md#§13.6:L1927-L1928
+acceptance_criteria:
+- id: AC1
+  text: Given a consolidated screen with a replacement shipped, when its older duplicate has no inbound route or import, then
+    the duplicate is deleted in the same change
+- id: AC2
+  text: Given a duplicate still has an inbound route, when the dead-screen report runs, then it lists the route and the build
+    is not allowed to delete it silently
+- id: AC3
+  text: Given the deletions, when the size gate runs, then the APK size is recorded in the ledger before and after
+test_plan:
+  unit:
+  - dead_screen_report graph
+  integration:
+  - router smoke test
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Depends on screen consolidation owned by feature phases; run per consolidation
+gate: G12
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

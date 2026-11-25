@@ -1,0 +1,115 @@
+charter: v2
+id: P8-931
+kind: build
+title: Weekly Village Festival themes rotating game content
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.4-01
+- EP-§10.4-02
+depends_on:
+- E-P8-PLAY
+- P8-900
+- P8-912
+- E-P4-CONTENT-ENGINE
+- E-P3-DESIGN-SYSTEM
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T1
+  justification: 'score 5: blast 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/games/gamekit/game_meta_layer.dart
+- lib/games/festival/festival_theme_service.dart
+- lib/games/festival/festival_banner.dart
+- node-backend/src/services/festival.service.ts
+- lib/games/gamekit/game_factory_helper.dart
+context_anchors:
+- ELEVATION.md#§10.4:L1775-L1777
+acceptance_criteria:
+- id: AC1
+  text: Given the weekly schedule, when a new week starts, then the active theme (food, family or travel) switches for every
+    user at the same server time
+- id: AC2
+  text: Given an active theme, when any game builds its pool, then theme-tagged lexicon items are weighted in without removing
+    due items
+- id: AC3
+  text: Given a game with no content for the theme, when it builds, then it shows its normal pool and a 'no festival content'
+    note
+- id: AC4
+  text: Given the festival hub, when it loads, then it shows the theme, days left and games that support it
+test_plan:
+  unit:
+  - theme weighting
+  - week rollover
+  integration:
+  - pool with theme
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - ready
+  - playing
+  - correct
+  - wrong
+  - why_wrong
+  - results
+  - error
+  - offline
+  - practice_mode
+  - no_festival_content
+  copy_keys:
+  - games.village_festival.title
+  - games.village_festival.instructions
+  - games.village_festival.why_wrong
+  - games.village_festival.practice_label
+  - games.village_festival.error
+  tokens:
+  - color.surface.game
+  - color.feedback.correct
+  - color.feedback.wrong
+  - space.4
+  - radius.card
+  - type.title
+  motion_tier: product
+  a11y:
+  - screen-reader labels on every answer control
+  - reduced-motion variant
+  - correctness shown by icon and text not colour alone
+  - touch targets ≥48dp
+  goldens:
+  - village_festival_playing
+  - village_festival_why_wrong
+  - village_festival_results
+tags:
+- uses_source
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/token-compliance
+  - prime/theme-audit
+  - prime/typography-scale

@@ -1,0 +1,103 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P10
+epic: E-P10-ME
+hub: Me
+size: S
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T1
+  tester: T2
+  reviewer: T2
+  justification: Single launch screen; Rive art external
+token_budget: 30000
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f_149.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers:
+- EXT-16
+status: Draft
+test_plan:
+  unit:
+  - greeting cache read
+  integration:
+  - splash to next route
+  e2e:
+  - cold start splash
+  a11y:
+  - greeting text semantics
+  content: []
+tags:
+- enables_persona
+id: F-149
+title: Elevate Splash
+req_ids:
+- F-149
+- F-149.D
+- F-149.E
+- F-149.U
+- F-149.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P11-PERSONAS-AVATARS
+file_allowlist:
+- screens/splash/splash_screen.dart
+context_anchors:
+- ELEVATION.md#§18.7:L5604-L5613
+delta:
+  current_state: Splash works as plain wait screen.
+  defects_to_fix:
+  - Plain wait with unverified branded content
+  elevation_to_build:
+  - One-second target-language greeting with waving avatar
+  - Cache greeting for offline launch
+  ux_and_render:
+  - Brand mark plus greeting
+  hub_placement: Launch
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given cold start online, when splash shows, then target-language greeting plays or displays within about one second.
+- id: AC2
+  text: Given offline cached greeting, when splash runs, then greeting still shows without network.
+- id: AC3
+  text: Given EXT-16 art missing, when splash runs, then fallback honest state shows brand mark without fake Rive.
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

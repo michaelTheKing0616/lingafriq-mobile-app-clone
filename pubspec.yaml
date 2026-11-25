@@ -15,10 +15,10 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString and build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.6.2+331
+version: 1.6.2+332
 
 environment:
-  sdk: ">=3.8.0 <4.0.0"
+  sdk: ">=3.12.0 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies, consider running
@@ -67,8 +67,11 @@ dependencies:
   shimmer: ^3.0.0
   file_picker: ^8.1.2
   image_picker: ^1.0.7
+  camera: ^0.11.1
   # ML Kit for OCR/Text Recognition
   google_mlkit_text_recognition: ^0.15.1
+  google_mlkit_face_detection: ^0.13.1
+  image: ^4.2.0
   # Offline & Background Services
   # livekit_client >=2.3.x requires connectivity_plus ^6.x
   connectivity_plus: ^6.1.5
@@ -92,7 +95,8 @@ dependencies:
   # (same WebRTC-SDK version), avoiding CocoaPods WebRTC-SDK conflicts on main.
   livekit_client: ^2.3.6
   # Game Engine & Animation
-  rive: ^0.12.4
+  rive: ^0.14.11
+  rive_native: ^0.1.11
   flame: ^1.18.0
   # Audio Analysis
   # pitch_detector: ^0.1.0  # Package not available on pub.dev - removed
@@ -118,6 +122,15 @@ dependencies:
   http: any
   collection: any
   google_mlkit_object_detection: ^0.15.1
+  tflite_flutter: ^0.11.0
+  passkeys: ^2.23.1
+  google_sign_in: ^7.2.0
+  sign_in_with_apple: ^8.2.0
+  drift: ^2.35.2
+  sqlite3_flutter_libs: ^0.6.0+eol
+  path: ^1.9.1
+  http_parser: any
+  sqlite3: ^3.7.1
 dependency_overrides:
   # Fix record_linux compatibility issue - update to latest compatible version
   record_platform_interface: ^1.4.0
@@ -163,33 +176,90 @@ flutter:
   uses-material-design: true
 
   assets:
+    - docs/privacy/PRIVACY_POLICY.md
+    - docs/safety/community_guidelines.md
+    - lib/l10n/guidelines/community_guidelines_am.arb
+    - lib/l10n/guidelines/community_guidelines_ar.arb
+    - lib/l10n/guidelines/community_guidelines_en.arb
+    - lib/l10n/guidelines/community_guidelines_es.arb
+    - lib/l10n/guidelines/community_guidelines_fr.arb
+    - lib/l10n/guidelines/community_guidelines_ha.arb
+    - lib/l10n/guidelines/community_guidelines_ig.arb
+    - lib/l10n/guidelines/community_guidelines_ln.arb
+    - lib/l10n/guidelines/community_guidelines_mg.arb
+    - lib/l10n/guidelines/community_guidelines_pcm.arb
+    - lib/l10n/guidelines/community_guidelines_pt.arb
+    - lib/l10n/guidelines/community_guidelines_rw.arb
+    - lib/l10n/guidelines/community_guidelines_sn.arb
+    - lib/l10n/guidelines/community_guidelines_st.arb
+    - lib/l10n/guidelines/community_guidelines_sw.arb
+    - lib/l10n/guidelines/community_guidelines_ti.arb
+    - lib/l10n/guidelines/community_guidelines_tn.arb
+    - lib/l10n/guidelines/community_guidelines_tw.arb
+    - lib/l10n/guidelines/community_guidelines_yo.arb
+    - lib/l10n/guidelines/community_guidelines_zu.arb
     - assets/images/
     - assets/alphabets/
     - assets/fonts/
-    - assets/data/
+    - assets/fonts/lingafriq/licenses/
+    - assets/google_fonts/
+    - assets/data/audio_manifest.json
+    - assets/data/sound/clicks_vowels.json
+    - assets/data/tone/minimal_pairs.json
+    - assets/audio/
+    - assets/data/cms_manifests/pack_catalog.json
+    - assets/data/cms_manifests/1/
+    - assets/data/game_content.json
+    - assets/data/lingafriq_authentic_curriculum_a1.json
+    - assets/data/lingafriq_authentic_curriculum_a1_c2.json
+    - assets/data/magazine_articles_seed.json
+    - assets/data/persona_missions.json
+    - assets/data/polie_prompt_snippets.json
+    - assets/data/review_checklist.json
+    - assets/data/word_repo_game_seed.json
+    - assets/lipsync/maps/
     - assets/rive/
+    - assets/models/point_say_mobilenetv4.tflite
+    - assets/lens/african_object_set.json
+    - assets/data/lens/ocr_diacritic_fixtures.json
+    - assets/data/lens/ml_kit_latin_ocr_ledger.json
     - schemas/v2/
-    - curriculum_bundle/
-    - lingafriq_FINAL_curriculum/
-    - lingafriq_full_curriculum_bundle/
 
 
 
   fonts:
+    - family: Andika
+      fonts:
+        - {asset: assets/google_fonts/Andika-Regular.ttf, weight: 400}
+        - {asset: assets/google_fonts/Andika-Bold.ttf, weight: 700}
+        - {asset: assets/google_fonts/Andika-Italic.ttf, weight: 400, style: italic}
+        - {asset: assets/google_fonts/Andika-BoldItalic.ttf, weight: 700, style: italic}
+    - family: LingAfriqDisplay
+      fonts:
+        - {asset: assets/fonts/lingafriq/Nunito-Bold-LatinAfrica.ttf, weight: 700}
+        - {asset: assets/fonts/lingafriq/Nunito-ExtraBold-LatinAfrica.ttf, weight: 800}
+        - {asset: assets/fonts/lingafriq/Nunito-Black-LatinAfrica.ttf, weight: 900}
+    - family: LingAfriqText
+      fonts:
+        - {asset: assets/fonts/lingafriq/NotoSans-Regular-LatinAfrica.ttf, weight: 400}
+        - {asset: assets/fonts/lingafriq/NotoSans-Medium-LatinAfrica.ttf, weight: 500}
+        - {asset: assets/fonts/lingafriq/NotoSans-SemiBold-LatinAfrica.ttf, weight: 600}
+        - {asset: assets/fonts/lingafriq/NotoSans-Bold-LatinAfrica.ttf, weight: 700}
+    - family: LingAfriqArabic
+      fonts:
+        - {asset: assets/fonts/lingafriq/NotoSansArabic-Regular.ttf, weight: 400}
+        - {asset: assets/fonts/lingafriq/NotoSansArabic-Bold.ttf, weight: 700}
+    - {family: NotoSansEthiopic, fonts: [{asset: assets/fonts/lingafriq/NotoSansEthiopic-Regular.ttf}]}
+    - {family: NotoSansTifinagh, fonts: [{asset: assets/fonts/lingafriq/NotoSansTifinagh-Regular.ttf}]}
+    - {family: NotoSansNKo, fonts: [{asset: assets/fonts/lingafriq/NotoSansNKo-Regular.ttf}]}
+    - {family: NotoSansVai, fonts: [{asset: assets/fonts/lingafriq/NotoSansVai-Regular.ttf}]}
+    - {family: NotoSansAdlam, fonts: [{asset: assets/fonts/lingafriq/NotoSansAdlam-Regular.ttf}]}
+    - {family: NotoSansOsmanya, fonts: [{asset: assets/fonts/lingafriq/NotoSansOsmanya-Regular.ttf}]}
+    - {family: NotoSansBamum, fonts: [{asset: assets/fonts/lingafriq/NotoSansBamum-Regular.ttf}]}
     - family: dosis
       fonts:
-        - asset: assets/fonts/Dosis-ExtraLight.ttf
-          weight: 100
-        - asset: assets/fonts/Dosis-Light.ttf
-          weight: 300
         - asset: assets/fonts/Dosis-Regular.ttf
           weight: 400
-        - asset: assets/fonts/Dosis-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/Dosis-Semibold.ttf
-          weight: 600
         - asset: assets/fonts/Dosis-Bold.ttf
           weight: 700
-        - asset: assets/fonts/Dosis-ExtraBold.ttf
-          weight: 800
 

@@ -1,0 +1,79 @@
+charter: v2
+id: P10-901
+kind: build
+title: Compute XP from evidence with diminishing returns
+phase: P10
+epic: E-P10-GAMIFICATION
+req_ids:
+- EP-§12.2-03
+- EP-§12.2-04
+- EP-§12.2-05
+- EP-§12.2-06
+depends_on:
+- E-P5-CONTENT-REAL
+- E-P6-SCORER
+- P10-900
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 2
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 5; blast 1
+token_budget: 60000
+file_allowlist:
+- node-backend/src/services/xp.rules.ts
+- node-backend/src/services/xp.service.ts
+- lib/services/gamification/competence_gamification.dart
+context_anchors:
+- ELEVATION.md#§12.2:L1818-L1819
+acceptance_criteria:
+- id: AC1
+  text: Given an item recalled at its scheduled spaced interval, when XP is computed, then XP is awarded and an item recalled
+    early awards less than one recalled on schedule.
+- id: AC2
+  text: Given a speaking task marked passed by the scorer, when XP is computed, then XP is awarded with the scorer attempt
+    id as evidence.
+- id: AC3
+  text: Given a can-do is demonstrated for the first time, when XP is computed, then a can-do XP award is written once per
+    can-do per learner.
+- id: AC4
+  text: Given the same easy item is answered repeatedly in one day, when XP is computed, then each repeat yields strictly
+    less XP than the previous, reaching zero at a configured cap.
+- id: AC5
+  text: Given a tap with no learning evidence, when XP is computed, then XP is zero.
+test_plan:
+  unit:
+  - rule table
+  - diminishing curve
+  - zero for taps
+  integration:
+  - scorer pass awards XP
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

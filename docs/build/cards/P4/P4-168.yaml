@@ -1,0 +1,71 @@
+charter: v2
+id: P4-168
+kind: build
+title: Register MobileNetV4 and SigLIP weights and reject YOLO
+phase: P4
+epic: E-P4-LICENCES
+req_ids:
+- TR-R1-02
+- TR-R1-09
+depends_on:
+- P4-001
+size: S
+difficulty:
+  score: 3
+  blast: 2
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 3; blast 2; licence gate
+token_budget: 20000
+file_allowlist:
+- curriculum/sources/licence_register.md
+- curriculum/sources/licence_register.json
+- tools/content_engine/licences/check_register.py
+- tools/content_engine/tests/test_point_say_model_licence.py
+context_anchors:
+- CURRICULUM.md#§2.1:L117-L118
+acceptance_criteria:
+- id: AC1
+  text: Given the Point and Say weights, when the register is checked, then the MobileNetV4 row names model.safetensors revision 331fb803779522b685cf942e15f914fb6741c1eb and the SigLIP row names model.safetensors revision 7fd15f0689c79d79e38b1c2e2e2370a7bf2761ed, both Apache-2.0, with source URLs
+- id: AC2
+  text: Given a model row whose licence is non-commercial, AGPL, or missing, when the checker runs, then it fails with a typed error and the file is not bundled
+- id: AC3
+  text: Given an image set used to fine-tune the classifier, when any image has no commercial or newly collected licence row, then the checker fails and training is refused
+- id: AC4
+  text: Given an Ultralytics YOLO weight, when the checker runs, then it fails and that file is not bundled
+test_plan:
+  unit:
+  - apache row passes
+  - non-commercial row fails
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - register row for the bundled checkpoint
+user_facing: false
+ux_spec: null
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "Counsel sign-off of the register remains EXT-03. This card still refuses an unregistered or non-commercial file."
+gate: G4
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

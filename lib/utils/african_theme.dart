@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Pan-African Theme Colors and Design Elements
 /// Inspired by African cultures, landscapes, and traditions
 
+@Deprecated('Use LingAfriqTokens. This file is a retired design system.')
 class AfricanTheme {
   // Pan-African Color Palette
   static const Color primaryGreen = PanAfricanColors.primary; // Legacy alias
-  static const Color accentGold = PanAfricanColors.secondary;
+  static const Color accentGold = LingAfriqTokens.hexFF735C00;
   static const Color earthBrown = PanAfricanColors.neutralDark;
-  static const Color sunsetOrange = PanAfricanColors.tertiary;
+  static const Color sunsetOrange = LingAfriqTokens.hexFF9E3D00;
   static const Color skyBlue = PanAfricanColors.kenteBlue;
   static const Color deepRed = PanAfricanColors.kenteRed;
   static const Color vibrantPurple = PanAfricanColors.ankaraPurple;
@@ -41,8 +43,8 @@ class AfricanTheme {
         end: Alignment.bottomRight,
         colors: [
           baseColor,
-          baseColor.withOpacity(0.8),
-          baseColor.withOpacity(0.6),
+          baseColor.withValues(alpha: 0.8),
+          baseColor.withValues(alpha: 0.6),
         ],
         stops: const [0.0, 0.5, 1.0],
       ),
@@ -70,7 +72,7 @@ class AfricanTheme {
   static Color textSecondary(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final base = isDark ? textLight : textDark;
-    return base.withOpacity(0.8);
+    return base.withValues(alpha: 0.8);
   }
 
   static TextStyle headingStyle(BuildContext context) {
@@ -115,7 +117,7 @@ class AfricanPatternDecoration extends StatelessWidget {
         Positioned.fill(
           child: CustomPaint(
             painter: _AfricanPatternPainter(
-              color: (patternColor ?? AfricanTheme.primaryGreen).withOpacity(opacity),
+              color: (patternColor ?? AfricanTheme.primaryGreen).withValues(alpha: opacity),
             ),
           ),
         ),

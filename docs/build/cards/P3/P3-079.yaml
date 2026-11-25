@@ -1,0 +1,87 @@
+charter: v2
+id: P3-079
+kind: build
+title: 'Build onboarding step 4: goal and daily time'
+phase: P3
+epic: E-P3-ONBOARDING
+req_ids:
+- OB-step4
+- OB-step4-b
+- OB-step4-c
+- EP-§5.1-06
+depends_on:
+- P3-078
+size: M
+difficulty:
+  score: 3
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 3: blast 0, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- lib/screens/onboarding/steps/goal_step.dart
+- lib/models/onboarding_state.dart
+context_anchors:
+- ELEVATION.md#§5.2:L1051-L1053
+- ELEVATION.md#§5.1:L1033-L1035
+acceptance_criteria:
+- id: AC1
+  text: Given one screen, when shown, then it asks why (heritage or family, travel, partner, work and others from the source)
+    and time per day with options 5, 10, 15, 20 minutes
+- id: AC2
+  text: Given a learning-styles question exists in the old flow, when the flow is built, then it is removed
+- id: AC3
+  text: Given heritage is chosen, when the first unit is built, then family vocabulary comes first
+- id: AC4
+  text: Given the answers, when saved, then they feed the plan provider as typed fields
+test_plan:
+  unit:
+  - theme mapping
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - default
+  - selected
+  copy_keys:
+  - onboarding.goal.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/onboarding-ux
+  - prime/form-design

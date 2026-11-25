@@ -1,6 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../models/placement_question.dart';
 import 'curriculum_service.dart';
+import 'placement/cat_engine.dart';
 import '../utils/text_sanitizer.dart';
 
 /// Static placement test content and evaluation logic.
@@ -173,46 +174,54 @@ class PlacementTestService {
     return _sanitizeQuestions(qs);
   }
 
-  /// Evaluate answers and map to a CEFR-ish level using simple bands.
+  /// Score a placement from calibrated items only.
+  ///
+  /// The static question banks have no calibrated parameters, so [evaluate]
+  /// asks the engine to ignore them and returns unsure.
   static PlacementResult evaluate({
     required String languageCode,
     required List<PlacementQuestion> questions,
     required List<int?> selectedIndices,
   }) {
-    int correct = 0;
+    var correct = 0;
     for (var i = 0; i < questions.length; i++) {
       final sel = (i < selectedIndices.length) ? selectedIndices[i] : null;
       if (sel != null && sel == questions[i].correctIndex) {
         correct++;
       }
     }
-
-    final total = questions.length;
-    final pct = total == 0 ? 0.0 : (correct / total * 100.0);
-    final level = _mapScoreToCEFR(pct);
-
+    final placement = const CatEngine().run(
+      bank: [
+        for (final question in questions)
+          CatItem(id: question.id, a: 1, b: 0, calibrated: false),
+      ],
+      respond: (_) => throw StateError('uncalibrated placement items are not scored'),
+    );
     return PlacementResult(
       languageCode: languageCode,
-      level: level,
-      score: double.parse(pct.toStringAsFixed(1)),
-      totalQuestions: total,
+      level: placement.label,
+      score: 0,
+      totalQuestions: questions.length,
       correct: correct,
+      provisional: placement.provisional,
+      ability: placement.ability,
+      intervalLow: placement.intervalLow,
+      intervalHigh: placement.intervalHigh,
     );
   }
 
-  static String _mapScoreToCEFR(double pct) {
-    if (pct < 20) return 'A1';
-    if (pct < 40) return 'A2';
-    if (pct < 55) return 'B1';
-    if (pct < 70) return 'B2';
-    if (pct < 85) return 'C1';
-    return 'C2';
+  /// Run placement on items that already carry calibrated 2PL parameters.
+  static CatPlacement place({
+    required List<CatItem> items,
+    required bool Function(CatItem item) respond,
+  }) {
+    return const CatEngine().run(bank: items, respond: respond);
   }
 
   // --- Question banks (trimmed but meaningful, easy to extend) ---
 
   static final List<PlacementQuestion> _yorubaQuestions = [
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'yo_a1_greeting',
       languageCode: 'yoruba',
       level: 'A1',
@@ -226,7 +235,7 @@ class PlacementTestService {
       ],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'yo_a1_thanks',
       languageCode: 'yoruba',
       level: 'A1',
@@ -240,7 +249,7 @@ class PlacementTestService {
       ],
       correctIndex: 2,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'yo_a1_good_morning',
       languageCode: 'yoruba',
       level: 'A1',
@@ -254,7 +263,7 @@ class PlacementTestService {
       ],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'yo_a1_please',
       languageCode: 'yoruba',
       level: 'A1',
@@ -268,7 +277,7 @@ class PlacementTestService {
       ],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'yo_a2_tone',
       languageCode: 'yoruba',
       level: 'A2',
@@ -282,7 +291,7 @@ class PlacementTestService {
       ],
       correctIndex: 1,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'yo_a2_negation',
       languageCode: 'yoruba',
       level: 'A2',
@@ -296,7 +305,7 @@ class PlacementTestService {
       ],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'yo_a2_i_am',
       languageCode: 'yoruba',
       level: 'A2',
@@ -310,7 +319,7 @@ class PlacementTestService {
       ],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'yo_b1_question_word',
       languageCode: 'yoruba',
       level: 'B1',
@@ -324,7 +333,7 @@ class PlacementTestService {
       ],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'yo_b1_time_phrase',
       languageCode: 'yoruba',
       level: 'B1',
@@ -341,7 +350,7 @@ class PlacementTestService {
   ];
 
   static final List<PlacementQuestion> _swahiliQuestions = [
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'sw_a1_greeting',
       languageCode: 'swahili',
       level: 'A1',
@@ -355,7 +364,7 @@ class PlacementTestService {
       ],
       correctIndex: 1,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'sw_a1_reply',
       languageCode: 'swahili',
       level: 'A1',
@@ -369,7 +378,7 @@ class PlacementTestService {
       ],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'sw_a2_verb',
       languageCode: 'swahili',
       level: 'A2',
@@ -386,7 +395,7 @@ class PlacementTestService {
   ];
 
   static final List<PlacementQuestion> _hausaQuestions = [
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'ha_a1_greeting',
       languageCode: 'hausa',
       level: 'A1',
@@ -400,7 +409,7 @@ class PlacementTestService {
       ],
       correctIndex: 2,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'ha_a1_thanks',
       languageCode: 'hausa',
       level: 'A1',
@@ -417,7 +426,7 @@ class PlacementTestService {
   ];
 
   static final List<PlacementQuestion> _igboQuestions = [
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'ig_a1_greeting',
       languageCode: 'igbo',
       level: 'A1',
@@ -431,7 +440,7 @@ class PlacementTestService {
       ],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'ig_a1_thanks',
       languageCode: 'igbo',
       level: 'A1',
@@ -448,7 +457,7 @@ class PlacementTestService {
   ];
 
   static final List<PlacementQuestion> _zuluQuestions = [
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'zu_a1_greeting',
       languageCode: 'zulu',
       level: 'A1',
@@ -462,7 +471,7 @@ class PlacementTestService {
       ],
       correctIndex: 1,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'zu_a1_thanks',
       languageCode: 'zulu',
       level: 'A1',
@@ -476,7 +485,7 @@ class PlacementTestService {
       ],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'zu_a1_please',
       languageCode: 'zulu',
       level: 'A1',
@@ -490,7 +499,7 @@ class PlacementTestService {
       ],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'zu_a2_yesno',
       languageCode: 'zulu',
       level: 'A2',
@@ -507,7 +516,7 @@ class PlacementTestService {
   ];
 
   static final List<PlacementQuestion> _afrikaansQuestions = [
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'af_a1_greeting',
       languageCode: 'afrikaans',
       level: 'A1',
@@ -521,7 +530,7 @@ class PlacementTestService {
       ],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'af_a1_thanks',
       languageCode: 'afrikaans',
       level: 'A1',
@@ -535,7 +544,7 @@ class PlacementTestService {
       ],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'af_a1_please',
       languageCode: 'afrikaans',
       level: 'A1',
@@ -549,7 +558,7 @@ class PlacementTestService {
       ],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'af_a2_order',
       languageCode: 'afrikaans',
       level: 'A2',
@@ -566,7 +575,7 @@ class PlacementTestService {
   ];
 
   static final List<PlacementQuestion> _pidginQuestions = [
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'pcm_a1_greeting',
       languageCode: 'pidgin',
       level: 'A1',
@@ -580,7 +589,7 @@ class PlacementTestService {
       ],
       correctIndex: 1,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'pcm_a1_thanks',
       languageCode: 'pidgin',
       level: 'A1',
@@ -594,7 +603,7 @@ class PlacementTestService {
       ],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'pcm_a1_please',
       languageCode: 'pidgin',
       level: 'A1',
@@ -608,7 +617,7 @@ class PlacementTestService {
       ],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'pcm_a2_meaning',
       languageCode: 'pidgin',
       level: 'A2',
@@ -626,7 +635,7 @@ class PlacementTestService {
 
   // Additional supported languages (to avoid falling back to Swahili for users).
   static final List<PlacementQuestion> _xhosaQuestions = [
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'xh_a1_greeting',
       languageCode: 'xhosa',
       level: 'A1',
@@ -635,7 +644,7 @@ class PlacementTestService {
       options: ['Hello', 'Goodbye', 'Thank you', 'Please'],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'xh_a1_thanks',
       languageCode: 'xhosa',
       level: 'A1',
@@ -644,7 +653,7 @@ class PlacementTestService {
       options: ['Enkosi', 'Ewe', 'Hayi', 'Molo'],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'xh_a1_yes',
       languageCode: 'xhosa',
       level: 'A1',
@@ -653,7 +662,7 @@ class PlacementTestService {
       options: ['Ewe', 'Hayi', 'Enkosi', 'Ndicela'],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'xh_a2_no',
       languageCode: 'xhosa',
       level: 'A2',
@@ -665,7 +674,7 @@ class PlacementTestService {
   ];
 
   static final List<PlacementQuestion> _amharicQuestions = [
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'am_a1_greeting',
       languageCode: 'amharic',
       level: 'A1',
@@ -674,7 +683,7 @@ class PlacementTestService {
       options: ['ሰላም (Selam)', 'አመሰግናለሁ (Amesegenallo)', 'እሺ (Ishi)', 'ቻው (Chao)'],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'am_a1_thanks',
       languageCode: 'amharic',
       level: 'A1',
@@ -683,7 +692,7 @@ class PlacementTestService {
       options: ['አመሰግናለሁ (Amesegenallo)', 'ሰላም (Selam)', 'እሺ (Ishi)', 'በጣም (Betam)'],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'am_a1_yes',
       languageCode: 'amharic',
       level: 'A1',
@@ -692,7 +701,7 @@ class PlacementTestService {
       options: ['እሺ (Ishi)', 'ሰላም (Selam)', 'አመሰግናለሁ (Amesegenallo)', 'አይ (Ay)'],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'am_a2_no',
       languageCode: 'amharic',
       level: 'A2',
@@ -704,7 +713,7 @@ class PlacementTestService {
   ];
 
   static final List<PlacementQuestion> _twiQuestions = [
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'tw_a1_greeting',
       languageCode: 'twi',
       level: 'A1',
@@ -713,7 +722,7 @@ class PlacementTestService {
       options: ['How are you?', 'Good morning', 'Thank you', 'Goodbye'],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'tw_a1_thanks',
       languageCode: 'twi',
       level: 'A1',
@@ -722,7 +731,7 @@ class PlacementTestService {
       options: ['Medaase', 'Aane', 'Dabi', 'Maakye'],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'tw_a1_yesno',
       languageCode: 'twi',
       level: 'A1',
@@ -731,7 +740,7 @@ class PlacementTestService {
       options: ['Aane / Dabi', 'Dabi / Aane', 'Medaase / Maakye', 'Maakye / Medaase'],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'tw_a2_goodmorning',
       languageCode: 'twi',
       level: 'A2',
@@ -743,7 +752,7 @@ class PlacementTestService {
   ];
 
   static final List<PlacementQuestion> _wolofQuestions = [
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'wo_a1_greeting',
       languageCode: 'wolof',
       level: 'A1',
@@ -752,7 +761,7 @@ class PlacementTestService {
       options: ['Salaam aleekum', 'Jërëjëf', 'Ba beneen yoon', 'Waaw'],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'wo_a1_thanks',
       languageCode: 'wolof',
       level: 'A1',
@@ -761,7 +770,7 @@ class PlacementTestService {
       options: ['Jërëjëf', 'Waaw', 'Déedéet', 'Salaam'],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'wo_a1_yesno',
       languageCode: 'wolof',
       level: 'A1',
@@ -770,7 +779,7 @@ class PlacementTestService {
       options: ['Waaw', 'Déedéet', 'Jërëjëf', 'Ba beneen yoon'],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'wo_a2_no',
       languageCode: 'wolof',
       level: 'A2',
@@ -782,7 +791,7 @@ class PlacementTestService {
   ];
 
   static final List<PlacementQuestion> _somaliQuestions = [
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'so_a1_greeting',
       languageCode: 'somali',
       level: 'A1',
@@ -791,7 +800,7 @@ class PlacementTestService {
       options: ['Hello', 'Goodbye', 'Thank you', 'Please'],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'so_a1_thanks',
       languageCode: 'somali',
       level: 'A1',
@@ -800,7 +809,7 @@ class PlacementTestService {
       options: ['Mahadsanid', 'Salaan', 'Haye', 'Maya'],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'so_a1_yesno',
       languageCode: 'somali',
       level: 'A1',
@@ -809,7 +818,7 @@ class PlacementTestService {
       options: ['Haye', 'Maya', 'Mahadsanid', 'Salaan'],
       correctIndex: 0,
     ),
-    PlacementQuestion(
+    const PlacementQuestion(
       id: 'so_a2_no',
       languageCode: 'somali',
       level: 'A2',

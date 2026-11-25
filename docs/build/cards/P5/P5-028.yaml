@@ -1,0 +1,85 @@
+charter: v2
+id: P5-028
+kind: build
+title: Add click and vowel/stress drills for xh, zu, sw
+phase: P5
+epic: E-P5-A1
+req_ids:
+- CP-§4-17
+depends_on:
+- P5-026
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/lessons/sound_drill.dart
+- assets/data/sound/clicks_vowels.json
+- test/lessons/sound_drill_test.dart
+context_anchors:
+- CURRICULUM.md#§4:L567-L567
+acceptance_criteria:
+- id: AC1
+  text: Given isiXhosa and isiZulu, when drills build, then click contrasts are perception drills with native or licensed
+    audio (WAXAL subset licence checked)
+- id: AC2
+  text: Given Swahili, when drills build, then vowel purity and stress drills exist
+- id: AC3
+  text: Given a drill without audio, when built, then it fails with AudioMissing
+test_plan:
+  unit:
+  - drill builder
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - audio present for every drill
+user_facing: true
+ux_spec:
+  states:
+  - listen
+  - choose
+  - result
+  copy_keys:
+  - sound.listen
+  tokens:
+  - color.label.native
+  - color.label.expert
+  - color.label.beta
+  - type.body
+  - space.4
+  motion_tier: product
+  a11y:
+  - screen-reader announces label name and meaning
+  - touch targets >=48dp
+  - contrast >=4.5:1 on label chips
+  goldens:
+  - click_drill
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

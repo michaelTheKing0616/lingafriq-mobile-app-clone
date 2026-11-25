@@ -1,0 +1,70 @@
+charter: v2
+id: P9-941
+kind: build
+title: Send content-free pushes for E2EE chats
+phase: P9
+epic: E-P9-E2EE
+req_ids:
+- EP-§9.3-15
+depends_on:
+- E-P9-SAFETY
+- P9-909
+- P9-939
+size: S
+difficulty:
+  score: 3
+  blast: 2
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T3
+  reviewer: T2
+  justification: 'score 3: blast 2, ambiguity 0, coupling 1, depth 0'
+token_budget: 30000
+file_allowlist:
+- node-backend/src/services/push.service.ts
+- lib/services/push/data_push_handler.dart
+context_anchors:
+- ELEVATION.md#§9.3:L1637
+acceptance_criteria:
+- id: AC1
+  text: Given a message in an E2EE chat, when a push is sent, then the payload contains no message text, sender display name
+    or media preview
+- id: AC2
+  text: Given the push arrives, when the client wakes, then it fetches and decrypts locally before showing a local notification
+    or shows a generic one if decryption fails
+- id: AC3
+  text: Given the account is under 18 or age-unknown, when this surface is opened, then it is hidden or guardian-gated until
+    E-P9-SAFETY is Done, and the restriction is enforced server-side.
+test_plan:
+  unit: []
+  integration:
+  - push to local notification
+  security:
+  - payload inspection
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

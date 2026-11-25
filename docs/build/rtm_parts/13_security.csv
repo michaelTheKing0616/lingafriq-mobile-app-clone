@@ -1,0 +1,170 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+EP-§13.1-01,ELEVATION,§13.1:L1849,requirement,short-lived access tokens (10–15 min),P1,agent,,Open
+EP-§13.1-02,ELEVATION,§13.1:L1849,metric,access tokens (10–15 min),P1,agent,,Open
+EP-§13.1-03,ELEVATION,§13.1:L1849-L1850,requirement,"rotating refresh tokens stored server-side (revocable, reuse-detected)",P1,agent,,Open
+EP-§13.1-04,ELEVATION,§13.1:L1850,requirement,move from HS256 shared secrets to asymmetric keys (EdDSA/RS256),P1,agent,,Open
+EP-§13.1-05,ELEVATION,§13.1:L1850-L1851,requirement,with kid rotation,P1,agent,,Open
+EP-§13.1-06,ELEVATION,§13.1:L1851,requirement,"passkeys first, then Google/Apple sign-in, then email magic link",P1,agent,,Open
+EP-§13.1-07,ELEVATION,§13.1:L1851-L1852,requirement,drop the legacy Django password hash on next login (rehash with Argon2id),P1,agent,,Open
+EP-§13.1-08,ELEVATION,§13.1:L1852-L1853,requirement,enforce at least 8 characters with a breached-password check,P1,agent,,Open
+EP-§13.1-09,ELEVATION,§13.1:L1852,metric,at least 8 characters,P1,agent,,Open
+EP-§13.1-10,ELEVATION,§13.1:L1853,informational,"login accepts anything of 6+ characters, auth.controller.ts:107",P1,agent,,Open
+EP-§13.1-11,ELEVATION,§13.1:L1853-L1854,informational,the sign-up rule is unverified,P1,agent,,Open
+EP-§13.1-12,ELEVATION,§13.1:L1854,informational,The controller trims JWT_SECRET (auth.controller.ts:23),P1,agent,,Open
+EP-§13.1-13,ELEVATION,§13.1:L1854-L1855,requirement,middleware and socket do not (middleware/auth.middleware.ts:20-27),P1,agent,,Open
+EP-§13.1-14,ELEVATION,§13.1:L1855-L1856,risk,a trailing newline in the env var would make every token fail,P1,agent,,Open
+EP-§13.1-15,ELEVATION,§13.1:L1857,requirement,zod/Joi validation on every route (some exist),P1,agent,,Open
+EP-§13.1-16,ELEVATION,§13.1:L1857-L1858,requirement,object-level authorisation tests for every /:id route (IDOR suite),P1,agent,,Open
+EP-§13.1-17,ELEVATION,§13.1:L1858,requirement,remove client-supplied identity fields everywhere,P1,agent,,Open
+EP-§13.1-18,ELEVATION,§13.1:L1858,requirement,request size limits per route,P1,agent,,Open
+EP-§13.1-19,ELEVATION,§13.1:L1859,informational,"the global 10 MB JSON limit, app.ts:162, is too generous",P1,agent,,Open
+EP-§13.1-20,ELEVATION,§13.1:L1860-L1861,requirement,stop logging the first 40 characters of the Authorization header (middleware/requestLogger.middleware.ts:26),P1,agent,,Open
+EP-§13.1-21,ELEVATION,§13.1:L1861-L1862,requirement,the password length at login (auth.controller.ts:108-113),P1,agent,,Open
+EP-§13.1-22,ELEVATION,§13.1:L1863-L1865,informational,certificate pinning is passed as a dart-define but the Android network config,P1,agent,,Open
+EP-§13.1-23,ELEVATION,§13.1:L1864-L1865,informational,YOUR_CERTIFICATE_PIN_HERE placeholders (android/app/src/main/res/xml/network_security_config.xml:17-26),P1,agent,,Open
+EP-§13.1-24,ELEVATION,§13.1:L1865-L1866,decision,decide and implement consistently,P1,Tope,,Open
+EP-§13.1-25,ELEVATION,§13.1:L1866,requirement,Use authenticated encryption (AES-GCM) for cached data,P1,agent,,Open
+EP-§13.1-26,ELEVATION,§13.1:L1867-L1868,informational,"lib/services/offline/cache_encryption.dart:28 uses Encrypter(AES(key)), the encrypt package's default SIC/CTR mode, with no MAC",P1,agent,,Open
+EP-§13.1-27,ELEVATION,§13.1:L1868-L1869,requirement,Play Integrity / App Attest on the AI gateway and reward endpoints,P1,agent,,Open
+EP-§13.1-28,ELEVATION,§13.1:L1869-L1870,requirement,Obfuscate release builds (--obfuscate --split-debug-info,P1,agent,,Open
+EP-§13.1-29,ELEVATION,§13.1:L1870,informational,"the release workflow has split-debug-info, add obfuscate",P1,agent,,Open
+EP-§13.1-30,ELEVATION,§13.1:L1871,requirement,gitleaks in pre-commit and CI,P1,agent,,Open
+EP-§13.1-31,ELEVATION,§13.1:L1871-L1872,decision,"a secrets manager (Doppler, 1Password, GCP Secret Manager)",P1,Tope,,Open
+EP-§13.1-32,ELEVATION,§13.1:L1872,requirement,a quarterly rotation calendar,P1,agent,,Open
+EP-§13.1-33,ELEVATION,§13.1:L1872-L1873,requirement,scripts/secrets-hygiene-check.mjs exists; wire it into CI as a blocking step,P1,agent,,Open
+EP-§13.1-34,ELEVATION,§13.1:L1874,requirement,Dependabot/Renovate,P1,agent,,Open
+EP-§13.1-35,ELEVATION,§13.1:L1874,requirement,npm audit --omit=dev blocking on high,P1,agent,,Open
+EP-§13.1-36,ELEVATION,§13.1:L1874-L1875,requirement,flutter pub outdated monthly,P1,agent,,Open
+EP-§13.1-37,ELEVATION,§13.1:L1875,requirement,SBOM generation,P1,agent,,Open
+EP-§13.1-38,ELEVATION,§13.1:L1875,requirement,pinned GitHub Actions by SHA,P1,agent,,Open
+EP-§13.1-39,ELEVATION,§13.1:L1875-L1876,requirement,The admin panel runs React 18 + Vite 4 (2023-era); upgrade.,P1,agent,,Open
+EP-§13.1-40,ELEVATION,§13.1:L1877,external,Pen test by a third party before any school or child-focused launch,P1,external,,Open
+EP-§13.2-01,ELEVATION,§13.2:L1879,constraint,NDPA 2023 (it superseded the NDPR as the primary law),P1,external,,Open
+EP-§13.2-02,ELEVATION,§13.2:L1879-L1880,constraint,the NDPC's implementation directive,P1,external,,Open
+EP-§13.2-03,ELEVATION,§13.2:L1880-L1881,external,register with the NDPC as a data controller of major importance if,P1,external,,Open
+EP-§13.2-04,ELEVATION,§13.2:L1881,requirement,DPIA for voice data and minors,P1,agent,,Open
+EP-§13.2-05,ELEVATION,§13.2:L1881,constraint,Kenya Data Protection Act 2019,P1,external,,Open
+EP-§13.2-06,ELEVATION,§13.2:L1882,constraint,South Africa POPIA,P1,external,,Open
+EP-§13.2-07,ELEVATION,§13.2:L1882,constraint,Ghana Data Protection Act 2012,P1,external,,Open
+EP-§13.2-08,ELEVATION,§13.2:L1882,constraint,EU/UK GDPR (diaspora users),P1,external,,Open
+EP-§13.2-09,ELEVATION,§13.2:L1882-L1883,constraint,US COPPA if any US children use it,P1,external,,Open
+EP-§13.2-10,ELEVATION,§13.2:L1883,constraint,the UK Age Appropriate Design Code if marketing there,P1,external,,Open
+EP-§13.2-11,ELEVATION,§13.2:L1884,constraint,Voice data is biometric-adjacent,P1,agent,,Open
+EP-§13.2-12,ELEVATION,§13.2:L1884,requirement,explicit opt-in to store recordings,P1,agent,,Open
+EP-§13.2-13,ELEVATION,§13.2:L1884,requirement,default deletion after scoring,P1,agent,,Open
+EP-§13.2-14,ELEVATION,§13.2:L1885,requirement,separate consent for contributing recordings to model training,P1,agent,,Open
+EP-§13.2-15,ELEVATION,§13.2:L1885-L1886,decision,payment or benefit-sharing for contributors,P1,Tope,,Open
+EP-§13.2-16,ELEVATION,§13.2:L1886-L1887,requirement,data-subject export and deletion (the backend has userExport.ts and deleteUserAccount; expose both,P1,agent,,Open
+EP-§13.2-17,ELEVATION,§13.2:L1888,requirement,label AI-generated content and personas,P1,agent,,Open
+EP-§13.2-18,ELEVATION,§13.2:L1888,constraint,EU AI Act Art. 50,P1,external,,Open
+EP-§13.2-19,ELEVATION,§13.2:L1889,requirement,Data map and retention schedule per collection,P1,agent,,Open
+EP-§13.2-20,ELEVATION,§13.2:L1889,informational,107 Mongo models today,P1,agent,,Open
+EP-§13.2-21,ELEVATION,§13.2:L1889,requirement,"purge jobs, logged",P1,agent,,Open
+EP-§13.3-01,ELEVATION,§13.3:L1892,requirement,Age assurance at sign-up,P1,agent,,Open
+EP-§13.3-02,ELEVATION,§13.3:L1892,requirement,guardian account that links children,P1,agent,,Open
+EP-§13.3-03,ELEVATION,§13.3:L1892-L1893,requirement,approves circles and classrooms,P1,agent,,Open
+EP-§13.3-04,ELEVATION,§13.3:L1893,requirement,sets time limits and sees progress,P1,agent,,Open
+EP-§13.3-05,ELEVATION,§13.3:L1893,requirement,school accounts provisioned by teachers with school consent,P1,agent,,Open
+EP-§13.3-06,ELEVATION,§13.3:L1894,constraint,Child experience: no public profile,P1,agent,,Open
+EP-§13.3-07,ELEVATION,§13.3:L1894,constraint,no DMs outside approved circles,P1,agent,,Open
+EP-§13.3-08,ELEVATION,§13.3:L1894,constraint,no snaps or public feed,P1,agent,,Open
+EP-§13.3-09,ELEVATION,§13.3:L1894,constraint,no ads,P1,agent,,Open
+EP-§13.3-10,ELEVATION,§13.3:L1895,constraint,no purchases,P1,agent,,Open
+EP-§13.3-11,ELEVATION,§13.3:L1895,constraint,AI conversations with a stricter policy,P1,agent,,Open
+EP-§13.3-12,ELEVATION,§13.3:L1895,constraint,no persistent memory of personal details,P1,agent,,Open
+EP-§13.3-13,ELEVATION,§13.3:L1896,requirement,A named safety lead,P1,Tope,,Open
+EP-§13.3-14,ELEVATION,§13.3:L1896,requirement,documented incident response,P1,Tope,,Open
+EP-§13.3-15,ELEVATION,§13.3:L1896,requirement,moderator training on grooming patterns,P1,Tope,,Open
+EP-§13.4-01,ELEVATION,§13.4:L1898,requirement,"Fail loud, not silent.",P1,agent,,Open
+EP-§13.4-02,ELEVATION,§13.4:L1898,requirement,pronunciation zeros with HTTP 200,P1,agent,,Open
+EP-§13.4-03,ELEVATION,§13.4:L1899,requirement,"the persona ""I hear you""",P1,agent,,Open
+EP-§13.4-04,ELEVATION,§13.4:L1899,requirement,the offline queue stub,P1,agent,,Open
+EP-§13.4-05,ELEVATION,§13.4:L1899,requirement,Replace with typed errors and visible states.,P1,agent,,Open
+EP-§13.4-06,ELEVATION,§13.4:L1900,requirement,parallelise init,P1,agent,,Open
+EP-§13.4-07,ELEVATION,§13.4:L1900,requirement,defer non-critical services until after the first frame,P1,agent,,Open
+EP-§13.4-08,ELEVATION,§13.4:L1900,requirement,start Sentry first,P1,agent,,Open
+EP-§13.4-09,ELEVATION,§13.4:L1900-L1901,metric,target <2 s cold start to first meaningful frame on a mid-range,P1,agent,,Open
+EP-§13.4-10,ELEVATION,§13.4:L1901,requirement,Stop the 1.2 s artificial delay.,P1,agent,,Open
+EP-§13.4-11,ELEVATION,§13.4:L1902-L1903,requirement,one deployable API + separate worker service on a job queue (BullMQ,P1,agent,,Open
+EP-§13.4-12,ELEVATION,§13.4:L1903,requirement,using leader election for cron,P1,agent,,Open
+EP-§13.4-13,ELEVATION,§13.4:L1903,requirement,health and readiness probes,P1,agent,,Open
+EP-§13.4-14,ELEVATION,§13.4:L1903-L1904,requirement,graceful shutdown,P1,agent,,Open
+EP-§13.4-15,ELEVATION,§13.4:L1904,metric,at least two API instances behind the load balancer,P1,agent,,Open
+EP-§13.4-16,ELEVATION,§13.4:L1904-L1905,requirement,MongoDB Atlas with backups and point-in-time restore tested quarterly,P1,agent,,Open
+EP-§13.4-17,ELEVATION,§13.4:L1906,requirement,OpenTelemetry traces across app → API → AI gateway → speech services,P1,agent,,Open
+EP-§13.4-18,ELEVATION,§13.4:L1906-L1907,requirement,RED metrics per route,P1,agent,,Open
+EP-§13.4-19,ELEVATION,§13.4:L1907,metric,API p95 <300 ms for reads,P1,agent,,Open
+EP-§13.4-20,ELEVATION,§13.4:L1907,metric,chat delivery p95 <500 ms,P1,agent,,Open
+EP-§13.4-21,ELEVATION,§13.4:L1907,metric,AI first token <400 ms,P1,agent,,Open
+EP-§13.4-22,ELEVATION,§13.4:L1907-L1908,requirement,cost dashboards per AI feature,P1,agent,,Open
+EP-§13.4-23,ELEVATION,§13.4:L1908,requirement,"an alert on the ""fallback path rate""",P1,agent,,Open
+EP-§13.4-24,ELEVATION,§13.4:L1909,requirement,"one versioned OpenAPI spec generated from code, with a generated Dart client",P1,agent,,Open
+EP-§13.4-25,ELEVATION,§13.4:L1910-L1911,requirement,delete the client's multi-path guessing,P1,agent,,Open
+EP-§13.4-26,ELEVATION,§13.4:L1911-L1912,requirement,legacyBackendUrlPrefixes of raw http:// IPs (lib/services/env_config.dart:35-38),P1,agent,,Open
+EP-§13.5-01,ELEVATION,§13.5:L1914,decision,One local database (Drift/SQLite or Isar),P1,Tope,,Open
+EP-§13.5-02,ELEVATION,§13.5:L1914,requirement,one durable outbox with idempotency keys,P1,agent,,Open
+EP-§13.5-03,ELEVATION,§13.5:L1915,requirement,exponential backoff,P1,agent,,Open
+EP-§13.5-04,ELEVATION,§13.5:L1915,requirement,a visible sync state,P1,agent,,Open
+EP-§13.5-05,ELEVATION,§13.5:L1915-L1917,requirement,Consolidate the five parallel sync implementations,P1,agent,,Open
+EP-§13.5-06,ELEVATION,§13.5:L1915-L1917,informational,"offline_handler.dart, background_sync_service.dart, sync_v2_service.dart, persisted_outbox_service.dart, backend_sync_provider.dart",P1,agent,,Open
+EP-§13.5-07,ELEVATION,§13.5:L1918-L1919,constraint,"every offline feature (Downloads, Point & Say queue, offline review) keeps working",P1,agent,,Open
+EP-§13.5-08,ELEVATION,§13.5:L1920,requirement,Downloadable units (content pack + audio,P1,agent,,Open
+EP-§13.5-09,ELEVATION,§13.5:L1920,metric,typically 10–30 MB per unit with Opus audio,P1,agent,,Open
+EP-§13.5-10,ELEVATION,§13.5:L1921,requirement,storage management,P1,agent,,Open
+EP-§13.5-11,ELEVATION,§13.5:L1921,requirement,Wi-Fi-only by default,P1,agent,,Open
+EP-§13.5-12,ELEVATION,§13.5:L1921-L1922,requirement,Offline speaking practice with on-device tone feedback (distilled model) as a later,P1,agent,,Open
+EP-§13.5-13,ELEVATION,§13.5:L1923,requirement,"Low-bandwidth mode: text-first AI, compressed audio, image-light UI",P1,agent,,Open
+EP-§13.5-14,ELEVATION,§13.5:L1923,requirement,respect Android Data Saver,P1,agent,,Open
+EP-§13.6-01,ELEVATION,§13.6:L1925,requirement,remove the duplicated curriculum JSONs,P1,agent,,Open
+EP-§13.6-02,ELEVATION,§13.6:L1925,metric,about 34 MB of identical files,P1,agent,,Open
+EP-§13.6-03,ELEVATION,§13.6:L1925-L1926,requirement,"duplicated bundles, Python and Dart files shipped as assets",P1,agent,,Open
+EP-§13.6-04,ELEVATION,§13.6:L1926,requirement,the unused fonts,P1,agent,,Open
+EP-§13.6-05,ELEVATION,§13.6:L1926-L1927,requirement,the 3 developer example files (move to dev/),P1,agent,,Open
+EP-§13.6-06,ELEVATION,§13.6:L1927-L1928,requirement,older duplicate screens shrink the build as they are consolidated into their,P1,agent,,Open
+EP-§13.6-07,ELEVATION,§13.6:L1928,requirement,Ship large content as downloadable language packs.,P1,agent,,Open
+EP-§13.6-08,ELEVATION,§13.6:L1928-L1929,metric,Target under 40 MB download.,P1,agent,,Open
+EP-§13.6-09,ELEVATION,§13.6:L1930,requirement,"Split the god files (polie_workspace_screen.dart 6,485 lines",P1,agent,,Open
+EP-§13.6-10,ELEVATION,§13.6:L1930,requirement,"ai_chat_provider_groq.dart 2,516",P1,agent,,Open
+EP-§13.6-11,ELEVATION,§13.6:L1931,requirement,"api_provider.dart 2,468",P1,agent,,Open
+EP-§13.6-12,ELEVATION,§13.6:L1931,requirement,"game_provider.dart 2,139) into feature modules with clear boundaries.",P1,agent,,Open
+EP-§13.6-13,ELEVATION,§13.6:L1932,requirement,Image and Rive budgets,P1,agent,,Open
+EP-§13.6-14,ELEVATION,§13.6:L1932,requirement,const widgets,P1,agent,,Open
+EP-§13.6-15,ELEVATION,§13.6:L1932,requirement,list virtualisation,P1,agent,,Open
+EP-§13.6-16,ELEVATION,§13.6:L1932-L1933,requirement,avoid rebuild storms from large Riverpod providers,P1,agent,,Open
+EP-§13.7-01,ELEVATION,§13.7:L1936-L1937,requirement,Screen-reader labels on every interactive element,P1,agent,,Open
+EP-§13.7-02,ELEVATION,§13.7:L1936,informational,471 Semantics( already exist,P1,agent,,Open
+EP-§13.7-03,ELEVATION,§13.7:L1937,requirement,large-text support up to 200% without clipping,P1,agent,,Open
+EP-§13.7-04,ELEVATION,§13.7:L1937,metric,up to 200% without clipping,P1,agent,,Open
+EP-§13.7-05,ELEVATION,§13.7:L1937,constraint,WCAG 2.2 AA contrast,P1,agent,,Open
+EP-§13.7-06,ELEVATION,§13.7:L1937-L1938,requirement,captions and transcripts for all audio and video,P1,agent,,Open
+EP-§13.7-07,ELEVATION,§13.7:L1938,requirement,haptic and visual alternatives to sound-only cues,P1,agent,,Open
+EP-§13.7-08,ELEVATION,§13.7:L1939,requirement,Tone Lens not colour-only,P1,agent,,Open
+EP-§13.7-09,ELEVATION,§13.7:L1939,requirement,switch/keyboard navigation on tablets and web,P1,agent,,Open
+EP-§13.7-10,ELEVATION,§13.7:L1939,requirement,reduced motion,P1,agent,,Open
+EP-§13.7-11,ELEVATION,§13.7:L1939-L1940,requirement,friendly option (Andika is a good base),P1,agent,,Open
+EP-§13.7-12,ELEVATION,§13.7:L1940-L1941,requirement,hearing-impaired paths (visual pitch feedback is a gift here),P1,agent,,Open
+EP-§13.8-01,ELEVATION,§13.8:L1943,requirement,"Move all 1,104 hard-coded UI strings to ARB",P1,agent,,Open
+EP-§13.8-02,ELEVATION,§13.8:L1943,metric,"1,104 hard-coded UI strings",P1,agent,,Open
+EP-§13.8-03,ELEVATION,§13.8:L1943-L1944,requirement,"professional translation of the UI into French, Portuguese, Arabic, Swahili, Amharic, Hausa,",P1,external,,Open
+EP-§13.8-04,ELEVATION,§13.8:L1944-L1945,requirement,with full diacritics reviewed by natives,P1,external,,Open
+EP-§13.8-05,ELEVATION,§13.8:L1945,requirement,pseudo-localisation in CI to catch overflow,P1,agent,,Open
+EP-§13.8-06,ELEVATION,§13.8:L1945,requirement,RTL layouts for Arabic/Ajami,P1,agent,,Open
+EP-§13.8-07,ELEVATION,§13.8:L1946-L1947,requirement,"Explanations are delivered in the learner's L1 (French speakers learning Wolof, for",P1,agent,,Open
+EP-§13.9-01,ELEVATION,§13.9:L1949,requirement,flutter analyze fatal on warnings for new code,P1,agent,,Open
+EP-§13.9-02,ELEVATION,§13.9:L1949-L1950,requirement,"unit tests for the learner model, FSRS, graders and validators",P1,agent,,Open
+EP-§13.9-03,ELEVATION,§13.9:L1950,requirement,golden tests for the design system and Rive chips,P1,agent,,Open
+EP-§13.9-04,ELEVATION,§13.9:L1950-L1951,requirement,integration tests for onboarding → first lesson → sync,P1,agent,,Open
+EP-§13.9-05,ELEVATION,§13.9:L1951,requirement,backend contract tests from the OpenAPI spec,P1,agent,,Open
+EP-§13.9-06,ELEVATION,§13.9:L1951-L1952,requirement,an authorisation test suite,P1,agent,,Open
+EP-§13.9-07,ELEVATION,§13.9:L1952,requirement,content validator (§6.5) as a blocking job,P1,agent,,Open
+EP-§13.9-08,ELEVATION,§13.9:L1952-L1953,requirement,"AI eval suite (§7.6, §8) blocking for prompt and model changes",P1,agent,,Open
+EP-§13.9-09,ELEVATION,§13.9:L1954,metric,Coverage target: 70% on domain logic,P1,agent,,Open
+EP-§13.9-10,ELEVATION,§13.9:L1954-L1955,informational,Today there are 64 Flutter test files for 306k lines and 52,P1,agent,,Open
+EP-§13.9-11,ELEVATION,§13.9:L1956,requirement,trunk-based with feature flags (a featureFlag.model.ts already exists),P1,agent,,Open
+EP-§13.9-12,ELEVATION,§13.9:L1956-L1957,metric,staged rollouts (1% → 10% → 50% → 100%),P1,agent,,Open
+EP-§13.9-13,ELEVATION,§13.9:L1957,requirement,crash-free and ANR gates,P1,agent,,Open
+EP-§13.9-14,ELEVATION,§13.9:L1957-L1958,decision,Shorebird or similar for Dart patching if policy allows,P1,Tope,,Open
+EP-§13.9-15,ELEVATION,§13.9:L1958-L1959,requirement,remove the auto-increment commit-and-push step in build-and-release.yml:59-66,P1,agent,,Open
+EP-§13.9-16,ELEVATION,§13.9:L1960-L1961,requirement,move the roughly 470 status Markdown files into /docs/archive,P1,agent,,Open
+EP-§13.9-17,ELEVATION,§13.9:L1961,requirement,"write one honest README, one ARCHITECTURE.md",P1,agent,,Open
+EP-§13.9-18,ELEVATION,§13.9:L1961-L1962,requirement,one STATUS.md that is generated from tests and feature flags rather than,P1,agent,,Open

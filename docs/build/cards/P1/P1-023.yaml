@@ -1,0 +1,84 @@
+charter: v2
+id: P1-023
+kind: build
+title: Replace toxicity filter with hosted moderation API
+phase: P1
+epic: E-P1-MINORS
+req_ids:
+- P0-11
+- RM-P0-06
+depends_on:
+- E-P0-INTAKE
+size: M
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 2
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T4
+  justification: 'score 8; blast 3; security/crypto tester; gate-critical (security / child safety / legal / design direction):
+    Fable reviews'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/services/toxicityFilter.ts
+- node-backend/src/services/moderation/moderationClient.ts
+- node-backend/src/services/moderation/policy.ts
+- node-backend/src/services/moderation/baseline.json
+- node-backend/src/controllers/chat.controller.ts
+- node-backend/src/services/socket.service.ts
+- node-backend/src/routes/gamification/userLessons.route.ts
+- node-backend/src/__test__/P1-023.moderation.test.ts
+context_anchors:
+- ELEVATION.md#§1:L208-L219
+- ELEVATION.md#§16.1:L2036-L2038
+acceptance_criteria:
+- id: AC1
+  text: Given a chat message, when it is sent, then it is classified by the hosted moderation API before delivery and the
+    substring toxicityFilter.ts is deleted
+- id: AC2
+  text: Given a message flagged above the policy threshold, when sent, then it is blocked with a typed moderation error and
+    logged for review
+- id: AC3
+  text: Given the moderation API outage, when a message is sent, then the message is held or rejected per policy and never
+    delivered unclassified
+- id: AC4
+  text: Given a held-out fixture of 200 benign and harmful messages, when classified, then the recorded precision and recall
+    are stored as the baseline for E-P9-SAFETY
+test_plan:
+  unit:
+  - policy mapping
+  integration:
+  - API mock outage test
+  security:
+  - fail-closed test
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - 200-message fixture
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "No provider is signed. The client posts to MODERATION_API_URL and reads category_scores. A missing URL or a failed call rejects the message. Threshold 0.8 is the code default."
+- "The 200-row baseline measures that threshold on fixture scores. It is not a vendor-model precision score. Lexicons, hash matching, and the human queue stay with E-P9-SAFETY."
+- "socket.service.ts and userLessons.route.ts were added to the allowlist because they called the deleted substring filter. A replay of an already stored message is not classified again. Lesson options, explanations, and vocabulary are not in the text sent to the gate (OW-034)."
+gate: G1
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

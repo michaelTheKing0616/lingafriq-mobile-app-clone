@@ -1,0 +1,115 @@
+charter: v2
+id: F-002
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Daily Goals
+phase: P7
+epic: E-P7-HUBS
+hub: Today
+req_ids:
+- F-002
+- F-002.D
+- F-002.E
+- F-002.U
+- F-002.L
+- P0-3
+- P0-8
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P1-CONTAINMENT
+- E-P1-ECONOMY
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: gateway-backed suggestions and server-verified intent metrics; P0 economy touch
+token_budget: 80000
+file_allowlist:
+- screens/goals/daily_goals_screen.dart
+context_anchors:
+- ELEVATION.md#§18.2:L3518-L3531
+delta:
+  current_state: Routed daily goals screen works but calls Groq from the client.
+  defects_to_fix:
+  - XP-based goals tie to self-mintable XP
+  - AI suggestions use client Groq key
+  elevation_to_build:
+  - Intent-based daily goals such as speak minutes, word count, one conversation
+  - Weekly goal flex modes for travel and exam
+  - AI suggestions via gateway with plain-language rationale
+  ux_and_render:
+  - Goal ring on Today with edit sheet
+  - Three presets plus custom option without guilt copy
+  hub_placement: Today goal ring; Me Settings Goals
+  unlock_stage: per §17.4
+  harvest_list: []
+acceptance_criteria:
+- id: AC1
+  text: Given Today is open, when goals load, then the ring reflects server-verified intent progress not client XP.
+- id: AC2
+  text: Given user requests an AI suggestion, when the gateway responds, then no client AI key is used and rationale text
+    is shown.
+- id: AC3
+  text: Given user picks a preset or custom intent, when saved, then Today ring and Settings Goals stay in sync.
+- id: AC4
+  text: Given travel or exam mode, when active, then weekly target adjusts without resetting streak or shaming copy.
+test_plan:
+  unit:
+  - intent progress mapping
+  - preset persistence
+  integration:
+  - gateway suggestion call
+  - server goal sync
+  e2e:
+  - edit sheet from Today ring
+  - Settings Goals parity
+  a11y:
+  - ring semantics
+  - sheet fields at 200% text
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - goals.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+tags: []
+p0_area: true
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/hooked-ux
+  - prime/feedback-patterns

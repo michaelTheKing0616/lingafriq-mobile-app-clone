@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,7 +26,9 @@ import '../../widgets/pan_african_components.dart';
 import '../../widgets/rive_global_guide.dart';
 import '../../widgets/error_state_widget.dart';
 import '../../widgets/skeleton_loader.dart';
+import '../../games/gamekit/harvested_frame.dart';
 import 'templates/game_template_shell.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Base class for all game screens - handles common functionality
 abstract class BaseGameScreen extends ConsumerStatefulWidget {
@@ -83,6 +86,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
   /// user can one-tap switch to the fully-supported language.
   bool _emptyLanguageFallbackUsed = false;
   late final ComboTracker _comboTracker;
+  late final String _loadingFact;
 
   /// Lowercase set of languages for which `_generateFallbackCards` in
   /// `game_provider.dart` ships a guaranteed curated deck. Keep in sync with
@@ -153,6 +157,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
   void initState() {
     super.initState();
     _comboTracker = ComboTracker();
+    _loadingFact = gameKitLoadingFact(random: Random(widget.language.hashCode));
     _initializeGame();
   }
   
@@ -329,7 +334,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
             Container(
               padding: EdgeInsets.all(PanAfricanSpacing.xs),
               decoration: BoxDecoration(
-                color: PanAfricanColors.kenteRed.withOpacity(0.1),
+                color: PanAfricanColors.kenteRed.withValues(alpha: 0.1),
                 borderRadius: PanAfricanRadius.roundBR,
               ),
               child: Icon(
@@ -498,7 +503,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
             alignment: Alignment.center,
             children: [
               // Confetti-style decorative elements for perfect scores
-              if (isPerfect) _ConfettiLayer(duration: 300),
+              if (isPerfect) const _ConfettiLayer(duration: 300),
               // Main content card
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.lg),
@@ -609,11 +614,11 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
                     SkeletonLoader(
                       child: Column(
                         children: [
-                          SkeletonStatCard(),
+                          const SkeletonStatCard(),
                           SizedBox(height: PanAfricanSpacing.lg),
-                          SkeletonStatCard(),
+                          const SkeletonStatCard(),
                           SizedBox(height: PanAfricanSpacing.lg),
-                          SkeletonListCard(),
+                          const SkeletonListCard(),
                         ],
                       ),
                     ),
@@ -621,6 +626,15 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
                     Text(
                       'Loading game...',
                       style: PanAfricanTypography.bodyMedium(context),
+                    ),
+                    SizedBox(height: PanAfricanSpacing.sm),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
+                      child: Text(
+                        _loadingFact,
+                        textAlign: TextAlign.center,
+                        style: PanAfricanTypography.bodyMedium(context),
+                      ),
                     ),
                   ],
                 ),
@@ -722,7 +736,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
                 level: gamification.level,
                 xp: gamification.xp,
                 streak: gamification.dailyStreak,
-                showHearts: heartsState.challengeModeEnabled,
+                showHearts: heartsState.showHeartsUi,
               ),
             ),
             Positioned(
@@ -801,7 +815,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
   Widget _buildLanguageFallbackBanner(BuildContext context) {
     final substituted = _fallbackLanguageForUnsupported(widget.language);
     return Material(
-      color: PanAfricanColors.accent.withOpacity(0.10),
+      color: PanAfricanColors.accent.withValues(alpha: 0.10),
       child: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: PanAfricanSpacing.md,
@@ -877,13 +891,13 @@ class _GameHud extends StatelessWidget {
             SizedBox(width: PanAfricanSpacing.sm),
             Semantics(label: '${_formatCompactNumber(xp)} experience points', child: PanAfricanBadge(
               label: '${_formatCompactNumber(xp)} XP',
-              color: PanAfricanColors.secondary,
+              color: context.panSecondary,
               icon: Icons.star_rounded,
             )),
             SizedBox(width: PanAfricanSpacing.sm),
             Semantics(label: '$streak day streak', child: PanAfricanBadge(
               label: '$streak',
-              color: PanAfricanColors.tertiary,
+              color: context.panTertiary,
               icon: Icons.local_fire_department_rounded,
             )),
             if (showHearts) ...[
@@ -910,10 +924,10 @@ class _ConfettiLayer extends StatelessWidget {
 
   const _ConfettiLayer({required this.duration});
 
-  static const List<Color> _confettiColors = [
+  static List<Color> _confettiColors = [
     PanAfricanColors.primary,
-    PanAfricanColors.secondary,
-    PanAfricanColors.tertiary,
+    LingAfriqTokens.hexFF735C00,
+    LingAfriqTokens.hexFF9E3D00,
     PanAfricanColors.kenteRed,
     PanAfricanColors.kenteBlue,
     PanAfricanColors.ankaraPurple,
@@ -947,7 +961,7 @@ class _ConfettiLayer extends StatelessWidget {
                   .fadeIn(duration: 250.ms)
                   .scale(begin: const Offset(0.3, 0.3), end: const Offset(1, 1), duration: 250.ms)
                   .then()
-                  .shimmer(duration: 600.ms, color: color.withOpacity(0.5)),
+                  .shimmer(duration: 600.ms, color: color.withValues(alpha: 0.5)),
             );
           }),
         ),
@@ -982,13 +996,13 @@ class _CompletionOverlayContent extends StatelessWidget {
       padding: EdgeInsets.all(PanAfricanSpacing.xs),
       decoration: BoxDecoration(
         color: isPerfect
-            ? PanAfricanColors.secondary.withOpacity(0.2)
-            : PanAfricanColors.primary.withOpacity(0.1),
+            ? context.panSecondary.withValues(alpha: 0.2)
+            : PanAfricanColors.primary.withValues(alpha: 0.1),
         borderRadius: PanAfricanRadius.roundBR,
       ),
       child: Icon(
         isPerfect ? Icons.star_rounded : Icons.check_circle_rounded,
-        color: isPerfect ? PanAfricanColors.secondary : PanAfricanColors.primary,
+        color: isPerfect ? context.panSecondary : PanAfricanColors.primary,
         size: 24.sp,
       ),
     );
@@ -1000,7 +1014,7 @@ class _CompletionOverlayContent extends StatelessWidget {
                 .animate()
                 .scale(begin: const Offset(0.8, 0.8), end: const Offset(1, 1), duration: 400.ms)
                 .then()
-                .shimmer(duration: 1200.ms, color: PanAfricanColors.secondary.withOpacity(0.4))
+                .shimmer(duration: 1200.ms, color: context.panSecondary.withValues(alpha: 0.4))
             : titleIcon,
         SizedBox(width: PanAfricanSpacing.sm),
         Expanded(

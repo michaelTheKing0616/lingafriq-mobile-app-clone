@@ -1,183 +1,192 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:lingafriq/theme/lingafriq_fonts.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// LingAfriq Pan-African Design System
-/// 
+///
 /// A comprehensive design system inspired by African cultures, art, and landscapes.
 /// Built for Material Design 3 compliance with unique African aesthetic touches.
-/// 
+///
 /// Color Philosophy:
 /// - Greens: African forests, growth, prosperity
 /// - Golds: African sunsets, wealth, success
 /// - Earth tones: African soil, heritage, roots
 /// - Vibrant accents: African textiles (Kente, Ankara, Kitenge)
 
+@Deprecated('Use LingAfriqTokens. This file is a retired design system.')
 class PanAfricanColors {
   PanAfricanColors._();
 
   // ═══════════════════════════════════════════════════════════════════════════
   // PRIMARY PALETTE - African Forest
   // ═══════════════════════════════════════════════════════════════════════════
-  
+
   /// Primary green - Representing African forests and growth
-  static const Color primary = Color(0xFF1B7340);
+  static const Color primary = LingAfriqTokens.hexFF1B7340;
   // Backward-compatible alias (older UI code expects this name).
   static const Color primaryGreen = primary;
-  static const Color primaryLight = Color(0xFF2BEE6C);
-  static const Color primaryDark = Color(0xFF0D4D29);
-  static const Color primaryContainer = Color(0xFFB7F5CD);
-  static const Color onPrimaryContainer = Color(0xFF002109);
-  
+  static const Color primaryLight = LingAfriqTokens.hexFF2BEE6C;
+  static const Color primaryDark = LingAfriqTokens.hexFF0D4D29;
+  static const Color primaryContainer = LingAfriqTokens.hexFFB7F5CD;
+  static const Color onPrimaryContainer = LingAfriqTokens.hexFF002109;
+
   // ═══════════════════════════════════════════════════════════════════════════
   // SECONDARY PALETTE - African Gold/Sunset
   // ═══════════════════════════════════════════════════════════════════════════
-  
+
   /// Gold - Representing African wealth, sunsets, and success
-  static const Color secondary = Color(0xFFF7CB46);
-  static const Color secondaryLight = Color(0xFFFFF3CD);
-  static const Color secondaryDark = Color(0xFFE8A817);
-  static const Color secondaryContainer = Color(0xFFFFF3CD);
-  static const Color onSecondaryContainer = Color(0xFF5C4A00);
-  
+  static const Color secondary = LingAfriqTokens.hexFFF7CB46;
+  static const Color secondaryLight = LingAfriqTokens.hexFFFFF3CD;
+  static const Color secondaryDark = LingAfriqTokens.hexFFE8A817;
+  static const Color secondaryContainer = LingAfriqTokens.hexFFFFF3CD;
+  static const Color onSecondaryContainer = LingAfriqTokens.hexFF5C4A00;
+
   // ═══════════════════════════════════════════════════════════════════════════
   // TERTIARY PALETTE - African Sunset/Fire
   // ═══════════════════════════════════════════════════════════════════════════
-  
+
   /// Orange/Red - Representing African sunsets and energy
-  static const Color tertiary = Color(0xFFEB8937);
-  static const Color tertiaryDark = Color(0xFFD45B0A);
-  static const Color tertiaryContainer = Color(0xFFFFE4D9);
-  static const Color onTertiaryContainer = Color(0xFF5C2100);
-  
+  static const Color tertiary = LingAfriqTokens.hexFFEB8937;
+  static const Color tertiaryDark = LingAfriqTokens.hexFFD45B0A;
+  static const Color tertiaryContainer = LingAfriqTokens.hexFFFFE4D9;
+  static const Color onTertiaryContainer = LingAfriqTokens.hexFF5C2100;
+
   // ═══════════════════════════════════════════════════════════════════════════
   // ACCENT COLORS - African Textiles Inspired
   // ═══════════════════════════════════════════════════════════════════════════
-  
+
   /// Accent color - Using secondary gold for vibrant accents
   static const Color accent = secondary;
-  
+
   /// Kente Red
-  static const Color kenteRed = Color(0xFFC4413A);
+  static const Color kenteRed = LingAfriqTokens.hexFFC4413A;
 
   /// Kente-inspired gold accent (alias of [gold] for game/traditional UI).
   static const Color kenteGold = gold;
+
   /// Kente Blue
-  static const Color kenteBlue = Color(0xFF1CB0F6);
+  static const Color kenteBlue = LingAfriqTokens.hexFF1CB0F6;
+
   /// Ankara Purple
-  static const Color ankaraPurple = Color(0xFF9B59B6);
+  static const Color ankaraPurple = LingAfriqTokens.hexFF9B59B6;
+
   /// Kitenge Teal
-  static const Color kitengeTeal = Color(0xFF16A085);
+  static const Color kitengeTeal = LingAfriqTokens.hexFF16A085;
   // Backward-compatible alias for earlier usage.
   static const Color kenteTeal = kitengeTeal;
+
   /// Maasai Red
-  static const Color maasaiRed = Color(0xFFE74C3C);
-  
+  static const Color maasaiRed = LingAfriqTokens.hexFFE74C3C;
+
   // ═══════════════════════════════════════════════════════════════════════════
   // NEUTRAL PALETTE - African Earth
   // ═══════════════════════════════════════════════════════════════════════════
-  
-  static const Color neutralDarkest = Color(0xFF0D1B12);
-  static const Color neutralDark = Color(0xFF1A2E21);
-  static const Color neutralMedium = Color(0xFF4A5D52);
-  static const Color neutralLight = Color(0xFFB8C4BD);
-  static const Color neutralLightest = Color(0xFFF4F6F5);
-  
+
+  static const Color neutralDarkest = LingAfriqTokens.hexFF0D1B12;
+  static const Color neutralDark = LingAfriqTokens.hexFF1A2E21;
+  static const Color neutralMedium = LingAfriqTokens.hexFF4A5D52;
+  static const Color neutralLight = LingAfriqTokens.hexFFB8C4BD;
+  static const Color neutralLightest = LingAfriqTokens.hexFFF4F6F5;
+
   // ═══════════════════════════════════════════════════════════════════════════
   // SEMANTIC COLORS
   // ═══════════════════════════════════════════════════════════════════════════
-  
-  static const Color success = Color(0xFF2ECC71);
-  static const Color error = Color(0xFFE74C3C);
-  static const Color warning = Color(0xFFF39C12);
-  static const Color info = Color(0xFF3498DB);
-  
+
+  static const Color success = LingAfriqTokens.hexFF2ECC71;
+  static const Color error = LingAfriqTokens.hexFFE74C3C;
+  static const Color warning = LingAfriqTokens.hexFFF39C12;
+  static const Color info = LingAfriqTokens.hexFF3498DB;
+
   // ═══════════════════════════════════════════════════════════════════════════
   // SURFACE COLORS
   // ═══════════════════════════════════════════════════════════════════════════
-  
+
   // Light Mode
-  static const Color surface = Color(0xFFFAFAFA);
-  static const Color surfaceLight = Color(0xFFFAFAFA);
-  static const Color surfaceContainerLowestLight = Color(0xFFFFFFFF);
-  static const Color surfaceContainerLowLight = Color(0xFFF5F7F5);
-  static const Color surfaceContainerLight = Color(0xFFF0F2F0);
-  static const Color surfaceContainerHighLight = Color(0xFFE8EBE8);
-  static const Color surfaceContainerHighestLight = Color(0xFFE0E4E0);
-  static const Color cardLight = Color(0xFFFFFFFF);
-  static const Color borderLight = Color(0xFFE0E4E0);
-  static const Color outline = Color(0xFFE0E4E0);
-  
+  static const Color surface = LingAfriqTokens.hexFFFAFAFA;
+  static const Color surfaceLight = LingAfriqTokens.hexFFFAFAFA;
+  static const Color surfaceContainerLowestLight = LingAfriqTokens.hexFFFFFFFF;
+  static const Color surfaceContainerLowLight = LingAfriqTokens.hexFFF5F7F5;
+  static const Color surfaceContainerLight = LingAfriqTokens.hexFFF0F2F0;
+  static const Color surfaceContainerHighLight = LingAfriqTokens.hexFFE8EBE8;
+  static const Color surfaceContainerHighestLight = LingAfriqTokens.hexFFE0E4E0;
+  static const Color cardLight = LingAfriqTokens.hexFFFFFFFF;
+  static const Color borderLight = LingAfriqTokens.hexFFE0E4E0;
+  static const Color outline = LingAfriqTokens.hexFFE0E4E0;
+
   // Dark Mode
-  static const Color surfaceDark = Color(0xFF0D1810);
-  static const Color surfaceContainerLowestDark = Color(0xFF0D1810);
-  static const Color surfaceContainerLowDark = Color(0xFF152419);
-  static const Color surfaceContainerDark = Color(0xFF1A2E21);
-  static const Color surfaceContainerHighDark = Color(0xFF253D2D);
-  static const Color surfaceContainerHighestDark = Color(0xFF2A4A35);
-  static const Color cardDark = Color(0xFF1F3527);
-  static const Color borderDark = Color(0xFF2A4A35);
-  
+  static const Color surfaceDark = LingAfriqTokens.hexFF0D1810;
+  static const Color surfaceContainerLowestDark = LingAfriqTokens.hexFF0D1810;
+  static const Color surfaceContainerLowDark = LingAfriqTokens.hexFF152419;
+  static const Color surfaceContainerDark = LingAfriqTokens.hexFF1A2E21;
+  static const Color surfaceContainerHighDark = LingAfriqTokens.hexFF253D2D;
+  static const Color surfaceContainerHighestDark = LingAfriqTokens.hexFF2A4A35;
+  static const Color cardDark = LingAfriqTokens.hexFF1F3527;
+  static const Color borderDark = LingAfriqTokens.hexFF2A4A35;
+
   // ═══════════════════════════════════════════════════════════════════════════
   // TEXT COLORS
   // ═══════════════════════════════════════════════════════════════════════════
-  
-  static const Color textPrimary = Color(0xFF0D1B12);
-  static const Color textSecondary = Color(0xFF4A5D52);
-  static const Color textDark = Color(0xFF0D1B12);
-  static const Color textPrimaryLight = Color(0xFF0D1B12);
-  static const Color textSecondaryLight = Color(0xFF4A5D52);
-  static const Color textDisabledLight = Color(0xFF9CA8A0);
-  
-  static const Color textPrimaryDark = Color(0xFFF4F6F5);
-  static const Color textSecondaryDark = Color(0xFFB8C4BD);
-  static const Color textTertiaryDark = Color(0xFF8A9B91);
-  static const Color textDisabledDark = Color(0xFF6B7D72);
-  
-  static const Color textTertiaryLight = Color(0xFF7A8C82);
-  
+
+  static const Color textPrimary = LingAfriqTokens.hexFF0D1B12;
+  static const Color textSecondary = LingAfriqTokens.hexFF4A5D52;
+  static const Color textDark = LingAfriqTokens.hexFF0D1B12;
+  static const Color textPrimaryLight = LingAfriqTokens.hexFF0D1B12;
+  static const Color textSecondaryLight = LingAfriqTokens.hexFF4A5D52;
+  /// Same ink as secondary text so disabled copy still meets 4.5:1.
+  static const Color textDisabledLight = LingAfriqTokens.hexFF4A5D52;
+
+  static const Color textPrimaryDark = LingAfriqTokens.hexFFF4F6F5;
+  static const Color textSecondaryDark = LingAfriqTokens.hexFFB8C4BD;
+  /// Light enough for 4.5:1 on every dark container, including the highest.
+  static const Color textTertiaryDark = LingAfriqTokens.hexFFB8C4BD;
+  static const Color textDisabledDark = LingAfriqTokens.hexFFB8C4BD;
+
+  /// Dark enough for 4.5:1 on the lightest and the highest light containers.
+  static const Color textTertiaryLight = LingAfriqTokens.hexFF4A5D52;
+
   // ═══════════════════════════════════════════════════════════════════════════
   // BACKWARD-COMPATIBLE ALIASES
   // ═══════════════════════════════════════════════════════════════════════════
-  
+
   /// Background aliases for dark/light themes
   static const Color backgroundDark = surfaceDark;
   static const Color backgroundLight = surfaceLight;
-  
+
   /// Gold accent - African wealth and success
-  static const Color gold = Color(0xFFF7CB46);
+  static const Color gold = LingAfriqTokens.hexFFF7CB46;
 }
 
 /// Pan-African Gradients (subtle, flat variants - no bold gradients)
 class PanAfricanGradients {
   PanAfricanGradients._();
 
-  static const Color _primary = Color(0xFF1B7340);
+  static const Color _primary = LingAfriqTokens.hexFF1B7340;
   // ignore: unused_field
-  static const Color _primaryDark = Color(0xFF0D4D29);
-  static const Color _primaryContainer = Color(0xFFB7F5CD);
-  static const Color _surface = Color(0xFFFAFAFA);
-  static const Color _neutralLightest = Color(0xFFF4F6F5);
+  static const Color _primaryDark = LingAfriqTokens.hexFF0D4D29;
+  static const Color _primaryContainer = LingAfriqTokens.hexFFB7F5CD;
+  static const Color _surface = LingAfriqTokens.hexFFFAFAFA;
+  static const Color _neutralLightest = LingAfriqTokens.hexFFF4F6F5;
 
   /// African Sunset - Barely visible warm tint
   static const LinearGradient sunset = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFFFFF8F0), Color(0xFFFFFBF5)],
+    colors: [LingAfriqTokens.hexFFFFF8F0, LingAfriqTokens.hexFFFFFBF5],
   );
 
   /// African Forest - Restored contrast so white text remains readable.
   static const LinearGradient forest = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFF2A7A4C), Color(0xFF1B7340)],
+    colors: [LingAfriqTokens.hexFF2A7A4C, LingAfriqTokens.hexFF1B7340],
   );
 
   /// Savanna Gold - Barely there warm tint
   static const LinearGradient savannaGold = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFFFFF8E7), Color(0xFFFFFDF5)],
+    colors: [LingAfriqTokens.hexFFFFF8E7, LingAfriqTokens.hexFFFFFDF5],
   );
 
   /// Primary Header - Subtle green
@@ -191,7 +200,7 @@ class PanAfricanGradients {
   static const LinearGradient kente = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFFF7CB46), Color(0xFFEB8937)],
+    colors: [LingAfriqTokens.hexFFF7CB46, LingAfriqTokens.hexFFEB8937],
   );
 
   /// Kente Vibrant - Flat (primaryContainer)
@@ -205,21 +214,21 @@ class PanAfricanGradients {
   static const LinearGradient darkSurface = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [Color(0xFF1A2E21), Color(0xFF0D1810)],
+    colors: [LingAfriqTokens.hexFF1A2E21, LingAfriqTokens.hexFF0D1810],
   );
 
   /// App Bar Gradient (Dark) - Subtle
   static const LinearGradient appBarDark = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFF1F3527), Color(0xFF0D1810)],
+    colors: [LingAfriqTokens.hexFF1F3527, LingAfriqTokens.hexFF0D1810],
   );
 
   /// Achievement/Celebration - Subtle green
   static const LinearGradient celebration = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [_primaryContainer, Color(0xFFE8F5E9)],
+    colors: [_primaryContainer, LingAfriqTokens.hexFFE8F5E9],
   );
 
   /// African Earth - Flat neutral
@@ -233,7 +242,7 @@ class PanAfricanGradients {
 /// Pan-African Spacing System (8pt grid)
 class PanAfricanSpacing {
   PanAfricanSpacing._();
-  
+
   static double get xxxs => 2.w;
   static double get xxs => 4.w;
   static double get xs => 8.w;
@@ -309,7 +318,9 @@ class AdaptiveLayout {
 
   /// Between large sections: 24dp or 32dp.
   static double sectionSpacing(BuildContext context) {
-    return widthCategory(context) == ScreenWidthCategory.tablet ? _grid32 : _grid24;
+    return widthCategory(context) == ScreenWidthCategory.tablet
+        ? _grid32
+        : _grid24;
   }
 
   /// Card/list content padding: 16dp standard, 12dp for dense.
@@ -324,7 +335,7 @@ class AdaptiveLayout {
 /// Pan-African Border Radius
 class PanAfricanRadius {
   PanAfricanRadius._();
-  
+
   static double get xs => 4.r;
   static double get sm => 8.r;
   static double get md => 12.r;
@@ -333,7 +344,7 @@ class PanAfricanRadius {
   static double get xxl => 32.r;
   static double get round => 100.r;
   static double get pill => round;
-  
+
   static BorderRadius get xsBR => BorderRadius.circular(xs);
   static BorderRadius get smBR => BorderRadius.circular(sm);
   static BorderRadius get mdBR => BorderRadius.circular(md);
@@ -346,41 +357,41 @@ class PanAfricanRadius {
 /// Pan-African Shadows
 class PanAfricanShadows {
   PanAfricanShadows._();
-  
+
   static List<BoxShadow> get none => [];
-  
+
   static List<BoxShadow> get sm => [
     BoxShadow(
-      color: PanAfricanColors.neutralDarkest.withOpacity(0.04),
+      color: PanAfricanColors.neutralDarkest.withValues(alpha: 0.04),
       blurRadius: 4,
       offset: const Offset(0, 2),
     ),
   ];
-  
+
   static List<BoxShadow> get md => [
     BoxShadow(
-      color: PanAfricanColors.neutralDarkest.withOpacity(0.06),
+      color: PanAfricanColors.neutralDarkest.withValues(alpha: 0.06),
       blurRadius: 8,
       offset: const Offset(0, 2),
     ),
   ];
-  
+
   static List<BoxShadow> get lg => [
     BoxShadow(
-      color: PanAfricanColors.neutralDarkest.withOpacity(0.08),
+      color: PanAfricanColors.neutralDarkest.withValues(alpha: 0.08),
       blurRadius: 16,
       offset: const Offset(0, 4),
     ),
   ];
-  
+
   static List<BoxShadow> get xl => [
     BoxShadow(
-      color: PanAfricanColors.neutralDarkest.withOpacity(0.12),
+      color: PanAfricanColors.neutralDarkest.withValues(alpha: 0.12),
       blurRadius: 24,
       offset: const Offset(0, 12),
     ),
   ];
-  
+
   /// Elevated glow effect (neutered - no glows)
   static List<BoxShadow> glowGold(double opacity) => const [];
   static List<BoxShadow> glowGreen(double opacity) => const [];
@@ -392,170 +403,190 @@ class PanAfricanShadows {
 /// Pan-African Typography
 class PanAfricanTypography {
   PanAfricanTypography._();
-  
+
   // Use Google Fonts for a modern look
   // Josefin Sans - Clean, modern, African-inspired
   // Lato - Clean body text
-  static const List<String> _fontFallback = <String>[
-    'Noto Sans',
-    'NotoSans',
-    'Roboto',
-    'Segoe UI',
-    'Arial Unicode MS',
-    'Apple Color Emoji',
-    'Segoe UI Emoji',
-    'Segoe UI Symbol',
-    'Noto Color Emoji',
-  ];
+  static const List<String> _fontFallback = LingAfriqFonts.fallback;
 
   static TextStyle _withFallback(TextStyle style) =>
       style.copyWith(fontFamilyFallback: _fontFallback);
-  
-  static String get displayFont => 'Lato';
-  static String get bodyFont => 'Lato';
+
+  static String get displayFont => LingAfriqFonts.display;
+  static String get bodyFont => LingAfriqFonts.text;
 
   // Display Styles (Lato, lighter weights)
   static TextStyle displayLarge(BuildContext context, {Color? color}) {
-    return _withFallback(GoogleFonts.lato(
-      fontSize: 57.sp,
-      fontWeight: FontWeight.w600,
-      letterSpacing: -0.25,
-      color: color ?? _textColor(context),
-    ));
+    return _withFallback(
+      LingAfriqFonts.displayStyle(
+        fontSize: 57.sp,
+        fontWeight: FontWeight.w600,
+        letterSpacing: -0.25,
+        color: color ?? _textColor(context),
+      ),
+    );
   }
 
   static TextStyle displayMedium(BuildContext context, {Color? color}) {
-    return _withFallback(GoogleFonts.lato(
-      fontSize: 45.sp,
-      fontWeight: FontWeight.w600,
-      color: color ?? _textColor(context),
-    ));
+    return _withFallback(
+      LingAfriqFonts.displayStyle(
+        fontSize: 45.sp,
+        fontWeight: FontWeight.w600,
+        color: color ?? _textColor(context),
+      ),
+    );
   }
 
   static TextStyle displaySmall(BuildContext context, {Color? color}) {
-    return _withFallback(GoogleFonts.lato(
-      fontSize: 36.sp,
-      fontWeight: FontWeight.w600,
-      color: color ?? _textColor(context),
-    ));
+    return _withFallback(
+      LingAfriqFonts.displayStyle(
+        fontSize: 36.sp,
+        fontWeight: FontWeight.w600,
+        color: color ?? _textColor(context),
+      ),
+    );
   }
 
   // Headline Styles (Lato, lighter weights)
   static TextStyle headlineLarge(BuildContext context, {Color? color}) {
-    return _withFallback(GoogleFonts.lato(
-      fontSize: 32.sp,
-      fontWeight: FontWeight.w600,
-      color: color ?? _textColor(context),
-    ));
+    return _withFallback(
+      LingAfriqFonts.displayStyle(
+        fontSize: 32.sp,
+        fontWeight: FontWeight.w600,
+        color: color ?? _textColor(context),
+      ),
+    );
   }
 
   static TextStyle headlineMedium(BuildContext context, {Color? color}) {
-    return _withFallback(GoogleFonts.lato(
-      fontSize: 28.sp,
-      fontWeight: FontWeight.w500,
-      color: color ?? _textColor(context),
-    ));
+    return _withFallback(
+      LingAfriqFonts.displayStyle(
+        fontSize: 28.sp,
+        fontWeight: FontWeight.w500,
+        color: color ?? _textColor(context),
+      ),
+    );
   }
 
   static TextStyle headlineSmall(BuildContext context, {Color? color}) {
-    return _withFallback(GoogleFonts.lato(
-      fontSize: 24.sp,
-      fontWeight: FontWeight.w500,
-      color: color ?? _textColor(context),
-    ));
+    return _withFallback(
+      LingAfriqFonts.displayStyle(
+        fontSize: 24.sp,
+        fontWeight: FontWeight.w500,
+        color: color ?? _textColor(context),
+      ),
+    );
   }
-  
+
   // Title Styles
   static TextStyle titleLarge(BuildContext context, {Color? color}) {
-    return _withFallback(GoogleFonts.lato(
-      fontSize: 22.sp,
-      fontWeight: FontWeight.w700,
-      color: color ?? _textColor(context),
-    ));
+    return _withFallback(
+      LingAfriqFonts.displayStyle(
+        fontSize: 22.sp,
+        fontWeight: FontWeight.w700,
+        color: color ?? _textColor(context),
+      ),
+    );
   }
-  
+
   static TextStyle titleMedium(BuildContext context, {Color? color}) {
-    return _withFallback(GoogleFonts.lato(
-      fontSize: 16.sp,
-      fontWeight: FontWeight.w600,
-      letterSpacing: 0.15,
-      color: color ?? _textColor(context),
-    ));
+    return _withFallback(
+      LingAfriqFonts.displayStyle(
+        fontSize: 16.sp,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.15,
+        color: color ?? _textColor(context),
+      ),
+    );
   }
-  
+
   static TextStyle titleSmall(BuildContext context, {Color? color}) {
-    return _withFallback(GoogleFonts.lato(
-      fontSize: 14.sp,
-      fontWeight: FontWeight.w600,
-      letterSpacing: 0.1,
-      color: color ?? _textColor(context),
-    ));
+    return _withFallback(
+      LingAfriqFonts.displayStyle(
+        fontSize: 14.sp,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.1,
+        color: color ?? _textColor(context),
+      ),
+    );
   }
-  
+
   // Body Styles
   static TextStyle bodyLarge(BuildContext context, {Color? color}) {
-    return _withFallback(GoogleFonts.lato(
-      fontSize: 16.sp,
-      fontWeight: FontWeight.w400,
-      letterSpacing: 0.5,
-      height: 1.5,
-      color: color ?? _textColor(context),
-    ));
+    return _withFallback(
+      LingAfriqFonts.textStyle(
+        fontSize: 16.sp,
+        fontWeight: FontWeight.w400,
+        letterSpacing: 0.5,
+        height: 1.5,
+        color: color ?? _textColor(context),
+      ),
+    );
   }
-  
+
   static TextStyle bodyMedium(BuildContext context, {Color? color}) {
-    return _withFallback(GoogleFonts.lato(
-      fontSize: 14.sp,
-      fontWeight: FontWeight.w400,
-      letterSpacing: 0.25,
-      height: 1.4,
-      color: color ?? _textColor(context),
-    ));
+    return _withFallback(
+      LingAfriqFonts.textStyle(
+        fontSize: 14.sp,
+        fontWeight: FontWeight.w400,
+        letterSpacing: 0.25,
+        height: 1.45,
+        color: color ?? _textColor(context),
+      ),
+    );
   }
-  
+
   static TextStyle bodySmall(BuildContext context, {Color? color}) {
-    return _withFallback(GoogleFonts.lato(
-      fontSize: 12.sp,
-      fontWeight: FontWeight.w400,
-      letterSpacing: 0.4,
-      color: color ?? _textSecondaryColor(context),
-    ));
+    return _withFallback(
+      LingAfriqFonts.textStyle(
+        fontSize: 12.sp,
+        fontWeight: FontWeight.w400,
+        letterSpacing: 0.4,
+        color: color ?? _textSecondaryColor(context),
+      ),
+    );
   }
-  
+
   // Label Styles
   static TextStyle labelLarge(BuildContext context, {Color? color}) {
-    return _withFallback(GoogleFonts.lato(
-      fontSize: 14.sp,
-      fontWeight: FontWeight.w600,
-      letterSpacing: 0.1,
-      color: color ?? _textColor(context),
-    ));
+    return _withFallback(
+      LingAfriqFonts.displayStyle(
+        fontSize: 14.sp,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.1,
+        color: color ?? _textColor(context),
+      ),
+    );
   }
-  
+
   static TextStyle labelMedium(BuildContext context, {Color? color}) {
-    return _withFallback(GoogleFonts.lato(
-      fontSize: 12.sp,
-      fontWeight: FontWeight.w600,
-      letterSpacing: 0.5,
-      color: color ?? _textColor(context),
-    ));
+    return _withFallback(
+      LingAfriqFonts.textStyle(
+        fontSize: 12.sp,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.5,
+        color: color ?? _textColor(context),
+      ),
+    );
   }
-  
+
   static TextStyle labelSmall(BuildContext context, {Color? color}) {
-    return _withFallback(GoogleFonts.lato(
-      fontSize: 11.sp,
-      fontWeight: FontWeight.w500,
-      letterSpacing: 0.5,
-      color: color ?? _textSecondaryColor(context),
-    ));
+    return _withFallback(
+      LingAfriqFonts.textStyle(
+        fontSize: 11.sp,
+        fontWeight: FontWeight.w500,
+        letterSpacing: 0.5,
+        color: color ?? _textSecondaryColor(context),
+      ),
+    );
   }
-  
+
   static Color _textColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
         ? PanAfricanColors.textPrimaryDark
         : PanAfricanColors.textPrimaryLight;
   }
-  
+
   static Color _textSecondaryColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
         ? PanAfricanColors.textSecondaryDark
@@ -566,25 +597,27 @@ class PanAfricanTypography {
 /// Material 3 Color Scheme for Pan-African Theme
 class PanAfricanColorScheme {
   PanAfricanColorScheme._();
-  
+
   static ColorScheme get light => const ColorScheme(
     brightness: Brightness.light,
     primary: PanAfricanColors.primary,
-    onPrimary: Colors.white,
+    onPrimary: LingAfriqTokens.hexFFFFFFFF,
     primaryContainer: PanAfricanColors.primaryContainer,
     onPrimaryContainer: PanAfricanColors.onPrimaryContainer,
-    secondary: PanAfricanColors.secondary,
-    onSecondary: PanAfricanColors.neutralDarkest,
+    // Gold on a light surface is 1.55:1. Ochre meets 4.5:1 as text and as a fill.
+    secondary: LingAfriqTokens.hexFF735C00,
+    onSecondary: LingAfriqTokens.hexFFFFFFFF,
     secondaryContainer: PanAfricanColors.secondaryContainer,
     onSecondaryContainer: PanAfricanColors.onSecondaryContainer,
-    tertiary: PanAfricanColors.tertiary,
-    onTertiary: Colors.white,
+    // Sunset orange on white is 2.57:1. Terracotta meets 4.5:1 with white text.
+    tertiary: LingAfriqTokens.hexFF9E3D00,
+    onTertiary: LingAfriqTokens.hexFFFFFFFF,
     tertiaryContainer: PanAfricanColors.tertiaryContainer,
     onTertiaryContainer: PanAfricanColors.onTertiaryContainer,
-    error: PanAfricanColors.error,
-    onError: Colors.white,
-    errorContainer: Color(0xFFFFDAD6),
-    onErrorContainer: Color(0xFF410002),
+    error: LingAfriqTokens.hexFFC4413A,
+    onError: LingAfriqTokens.hexFFFFFFFF,
+    errorContainer: LingAfriqTokens.hexFFFFDAD6,
+    onErrorContainer: LingAfriqTokens.hexFF410002,
     surface: PanAfricanColors.surfaceLight,
     onSurface: PanAfricanColors.textPrimaryLight,
     surfaceContainerHighest: PanAfricanColors.surfaceContainerHighestLight,
@@ -602,7 +635,7 @@ class PanAfricanColorScheme {
     inversePrimary: PanAfricanColors.primaryLight,
     surfaceTint: PanAfricanColors.primary,
   );
-  
+
   static ColorScheme get dark => const ColorScheme(
     brightness: Brightness.dark,
     primary: PanAfricanColors.primaryLight,
@@ -611,16 +644,16 @@ class PanAfricanColorScheme {
     onPrimaryContainer: PanAfricanColors.primaryContainer,
     secondary: PanAfricanColors.secondary,
     onSecondary: PanAfricanColors.neutralDarkest,
-    secondaryContainer: PanAfricanColors.secondaryDark,
-    onSecondaryContainer: PanAfricanColors.secondaryContainer,
-    tertiary: PanAfricanColors.tertiary,
-    onTertiary: PanAfricanColors.tertiaryDark,
-    tertiaryContainer: PanAfricanColors.tertiaryDark,
-    onTertiaryContainer: PanAfricanColors.tertiaryContainer,
-    error: Color(0xFFFFB4AB),
-    onError: Color(0xFF690005),
-    errorContainer: Color(0xFF93000A),
-    onErrorContainer: Color(0xFFFFDAD6),
+    secondaryContainer: LingAfriqTokens.hexFF735C00,
+    onSecondaryContainer: LingAfriqTokens.hexFFFFFFFF,
+    tertiary: LingAfriqTokens.roleDarkWarning,
+    onTertiary: LingAfriqTokens.roleDarkOnWarning,
+    tertiaryContainer: LingAfriqTokens.hexFF9E3D00,
+    onTertiaryContainer: LingAfriqTokens.hexFFFFFFFF,
+    error: LingAfriqTokens.hexFFFFB4AB,
+    onError: LingAfriqTokens.hexFF690005,
+    errorContainer: LingAfriqTokens.hexFF93000A,
+    onErrorContainer: LingAfriqTokens.hexFFFFDAD6,
     surface: PanAfricanColors.surfaceDark,
     onSurface: PanAfricanColors.textPrimaryDark,
     surfaceContainerHighest: PanAfricanColors.surfaceContainerHighestDark,
@@ -643,19 +676,44 @@ class PanAfricanColorScheme {
 /// Extension for easy access to Pan-African design tokens
 extension PanAfricanContext on BuildContext {
   bool get isDark => Theme.of(this).brightness == Brightness.dark;
-  
-  Color get panPrimary => isDark ? PanAfricanColors.primaryLight : PanAfricanColors.primary;
-  Color get panSecondary => PanAfricanColors.secondary;
-  Color get panTertiary => PanAfricanColors.tertiary;
-  
-  Color get panSurface => isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight;
-  Color get panCard => isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight;
-  Color get panBorder => isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight;
-  
-  Color get panTextPrimary => isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight;
-  Color get panTextSecondary => isDark ? PanAfricanColors.textSecondaryDark : PanAfricanColors.textSecondaryLight;
-  
-  LinearGradient get panHeaderGradient => isDark ? PanAfricanGradients.appBarDark : PanAfricanGradients.forest;
+
+  Color get panPrimary =>
+      isDark ? PanAfricanColors.primaryLight : PanAfricanColors.primary;
+  Color get panSecondary => isDark
+      ? PanAfricanColors.secondary
+      : LingAfriqTokens.hexFF735C00;
+  Color get panTertiary => isDark
+      ? LingAfriqTokens.roleDarkWarning
+      : LingAfriqTokens.hexFF9E3D00;
+  Color get panSuccess => isDark
+      ? LingAfriqTokens.roleDarkSuccess
+      : LingAfriqTokens.hexFF1B7340;
+  Color get panWarning => isDark
+      ? LingAfriqTokens.roleDarkWarning
+      : LingAfriqTokens.hexFF735C00;
+  Color get panError => isDark
+      ? LingAfriqTokens.roleDarkDanger
+      : LingAfriqTokens.hexFFBA1A1A;
+  Color get panInfo => isDark
+      ? LingAfriqTokens.roleDarkInfo
+      : LingAfriqTokens.roleLightInfo;
+
+  Color get panSurface =>
+      isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight;
+  Color get panCard =>
+      isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight;
+  Color get panBorder =>
+      isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight;
+
+  Color get panTextPrimary => isDark
+      ? PanAfricanColors.textPrimaryDark
+      : PanAfricanColors.textPrimaryLight;
+  Color get panTextSecondary => isDark
+      ? PanAfricanColors.textSecondaryDark
+      : PanAfricanColors.textSecondaryLight;
+
+  LinearGradient get panHeaderGradient =>
+      isDark ? PanAfricanGradients.appBarDark : PanAfricanGradients.forest;
 }
 
 /// Unified icon set for bottom nav and key screens (outlined / rounded pairs).
@@ -692,4 +750,3 @@ class PanAfricanIcons {
   static const IconData trophy = Icons.emoji_events;
   static const IconData settings = Icons.settings;
 }
-

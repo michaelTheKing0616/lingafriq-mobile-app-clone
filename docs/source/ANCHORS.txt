@@ -1,0 +1,314 @@
+ELEVATION.md	20	0. The verdict in one page
+ELEVATION.md	33	2. Pronunciation and tone feedback, the main reason to choose an African-language app over a
+ELEVATION.md	39	3. Private conversations are not private. Any signed-in user can join any socket room (node-
+ELEVATION.md	58	6. The economy and leaderboards can be cheated with one HTTP call. POST
+ELEVATION.md	82	1. P0: fix now (security, safety, integrity, data loss)
+ELEVATION.md	411	2. Feature inventory and verified status
+ELEVATION.md	416	1 Startup / splash main.dart,
+ELEVATION.md	425	2 Onboarding OnboardingScreenMateri
+ELEVATION.md	435	3 Placement test placement_test_screen.
+ELEVATION.md	443	4 Auth world_class_login_scre
+ELEVATION.md	454	5 Home / dashboard tabs_view_material3.da
+ELEVATION.md	461	6 Courses /
+ELEVATION.md	475	7 Lesson flow 'lesson-flow',
+ELEVATION.md	479	8 Grammar hub grammar-hub,
+ELEVATION.md	483	9 Vocabulary /
+ELEVATION.md	495	10 Listening / writing
+ELEVATION.md	500	11 Tutorials / features
+ELEVATION.md	506	12 Quizzes (language,
+ELEVATION.md	515	13 Games ( ≈ 45
+ELEVATION.md	526	14 Pronunciation /
+ELEVATION.md	541	15 Polie AI chat polie_workspace_screen
+ELEVATION.md	548	16 AI tutor modes
+ELEVATION.md	556	17 Roleplay scenarios roleplay_scenario_sele
+ELEVATION.md	561	18 Historical Personas
+ELEVATION.md	579	19 Live translate live_translate_screen.
+ELEVATION.md	584	20 Point-and-say (OCR
+ELEVATION.md	588	21 Culture magazine /
+ELEVATION.md	599	22 Tribes tribe-selection, my-
+ELEVATION.md	612	23 Villages villages-hub, language-
+ELEVATION.md	617	24 Classrooms (live,
+ELEVATION.md	626	25 Global chat chat.route.ts:69, socket
+ELEVATION.md	632	26 Private chat
+ELEVATION.md	641	27 Snaps / stories
+ELEVATION.md	647	28 X-style feed x-*, feed.route.ts Partial Public by default (feed.route.ts:23); no
+ELEVATION.md	649	29 Social audio rooms social_audio/*,
+ELEVATION.md	653	30 Friends,
+ELEVATION.md	660	31 Micro-mentors micro-mentor-hub, staff
+ELEVATION.md	664	32 UGC / voice
+ELEVATION.md	672	33 Gamification (XP, 3
+ELEVATION.md	684	34 Passport /
+ELEVATION.md	691	35 Avatars (Rive) lib/avatars/* (2,594 lines
+ELEVATION.md	703	36 Profile / settings settings_screen_materi
+ELEVATION.md	706	37 Notifications FCM,
+ELEVATION.md	711	38 Subscriptions revenuecat_service.dar
+ELEVATION.md	715	39 Offline / sync 7 competing systems:
+ELEVATION.md	728	40 Localization (UI) l10n/*.arb (20 locales) Partial Only 103 keys exist; 1,104 hard-coded
+ELEVATION.md	733	41 Accessibility — Partial 471 Semantics( uses (good start); no audit of
+ELEVATION.md	736	42 Admin panel lingafriq-admin (React
+ELEVATION.md	742	43 Voice services lingafriq-voice-
+ELEVATION.md	753	44 Platform: CI/CD,
+ELEVATION.md	758	64 Flutter test files for 306k lines; 52 backend
+ELEVATION.md	766	3. Product thesis, information architecture and design system
+ELEVATION.md	767	3.1 Design read (Playbook law 1)
+ELEVATION.md	773	3.2 What is wrong today
+ELEVATION.md	790	3.3 Target IA (five tabs + Me; every feature kept)
+ELEVATION.md	824	3.4 Design system: one source of truth
+ELEVATION.md	852	4. Avatar system: design and production brief (avatars not yet built)
+ELEVATION.md	860	4.1 What to keep from the pasted plan
+ELEVATION.md	865	4.2 What to change before building (decide now; it is cheap before artwork exists and
+ELEVATION.md	895	6. No nested artboards / components. Hair, headwear and garments should be nested artboards
+ELEVATION.md	910	9. Add a runtime, performance and accessibility contract. The plan needs: file-size budget per
+ELEVATION.md	917	4.3 Production contract (View Models) to build against
+ELEVATION.md	960	4.4 Cast, customisation and economy
+ELEVATION.md	975	4.5 Flutter integration
+ELEVATION.md	987	4.6 Build order, deliverables and acceptance criteria (for Tope / Cursor)
+ELEVATION.md	989	1. Character bible 1 page per character: personality, voice, region, palette,
+ELEVATION.md	994	2. Rig spike (one
+ELEVATION.md	1002	3. States Idle, listening, thinking, speaking, correct, incorrect,
+ELEVATION.md	1008	4. Lip-sync Viseme enum incl. KP/GB, click C/Q/X, nasal; sidecar
+ELEVATION.md	1012	5. Customisation Hair/headwear/garments as nested artboards (start with
+ELEVATION.md	1017	6. Integration rive ^0.14.11 + rive_native, AvatarDirector,
+ELEVATION.md	1022	7. Cast expansion Village archetypes, then per-language hosts Each passes steps 3–6
+ELEVATION.md	1025	5. Onboarding and first-session magic
+ELEVATION.md	1026	5.1 Current state
+ELEVATION.md	1038	5.2 Target flow: "speak in 60 seconds, account later"
+ELEVATION.md	1061	5.3 Details that make it feel premium
+ELEVATION.md	1070	6. Pedagogy and curriculum
+ELEVATION.md	1071	6.1 Curriculum audit (measured, not sampled)
+ELEVATION.md	1137	6.2 Learning science the app should be built on
+ELEVATION.md	1211	6.3 Learner model (one, not four)
+ELEVATION.md	1221	6.4 Languages: Stage 1, then as many as possible, as fast as possible
+ELEVATION.md	1263	6.4.1 The fast-scaling content and QA pipeline ("language factory")
+ELEVATION.md	1293	6.5 Content schema (replace all four bundles)
+ELEVATION.md	1320	6.6 Authoring and review pipeline
+ELEVATION.md	1339	6.7 How content is displayed across features
+ELEVATION.md	1347	7. AI modes and voice: best-in-class architecture
+ELEVATION.md	1348	7.1 Current state
+ELEVATION.md	1367	7.2 Target architecture (model choices: see LINGAFRIQ_AI_MODEL_STACK.md)
+ELEVATION.md	1388	7.3 Modes that should exist (and how each is grounded)
+ELEVATION.md	1429	7.4 Pronunciation and tone scoring (the signature capability)
+ELEVATION.md	1430	1. Segmental scoring: goodness-of-pronunciation (GOP) using a multilingual CTC acoustic model
+ELEVATION.md	1441	3. Fluency: speech rate, pause distribution, self-repairs.
+ELEVATION.md	1448	7.5 TTS strategy
+ELEVATION.md	1461	7.6 LLM choices for low-resource languages
+ELEVATION.md	1476	7.7 Realtime voice conversation
+ELEVATION.md	1483	8. Historical Personas: from chatbot to revelation
+ELEVATION.md	1484	8.1 Current state
+ELEVATION.md	1502	8.2 Vision: "Sit with history"
+ELEVATION.md	1516	8.3 Grounding and integrity
+ELEVATION.md	1533	8.4 Craft
+ELEVATION.md	1548	9. Community: tribes, villages, classrooms, chat
+ELEVATION.md	1549	9.1 Current state
+ELEVATION.md	1571	9.2 Target: one "Village" social layer built for learning
+ELEVATION.md	1628	9.3 Private messaging done properly
+ELEVATION.md	1641	9.4 Moderation and child safety stack
+ELEVATION.md	1648	3. Response: block, mute, report on every message and profile in at most two taps; a moderator
+ELEVATION.md	1654	9.5 Realtime infrastructure
+ELEVATION.md	1660	10. Games: fun, educational, and honest
+ELEVATION.md	1661	10.1 Current state
+ELEVATION.md	1669	10.2 Design rules for every game
+ELEVATION.md	1677	10.3 Ten flagship games (headliners; every existing game stays in the Arcade)
+ELEVATION.md	1774	10.4 Meta-game
+ELEVATION.md	1778	11. Tutorials and quizzes
+ELEVATION.md	1779	11.1 Current state
+ELEVATION.md	1787	11.2 Tutorials that teach (micro-lessons with a "learn it, see it, try it" shape)
+ELEVATION.md	1798	11.3 Quizzes that measure
+ELEVATION.md	1810	12. Gamification and retention without dark patterns
+ELEVATION.md	1811	12.1 Current state
+ELEVATION.md	1816	12.2 Principles
+ELEVATION.md	1836	12.3 Ethical guardrails
+ELEVATION.md	1841	12.4 Credentials (Passport)
+ELEVATION.md	1846	13. Security, privacy, reliability, performance, offline, accessibility,
+ELEVATION.md	1848	13.1 Security hardening (beyond the P0 list)
+ELEVATION.md	1878	13.2 Privacy and compliance
+ELEVATION.md	1891	13.3 Minors and families
+ELEVATION.md	1897	13.4 Reliability and observability
+ELEVATION.md	1913	13.5 Offline-first, for real
+ELEVATION.md	1924	13.6 Performance
+ELEVATION.md	1935	13.7 Accessibility
+ELEVATION.md	1942	13.8 Internationalisation
+ELEVATION.md	1948	13.9 Testing and CI/CD
+ELEVATION.md	1963	14. Admin and content operations
+ELEVATION.md	1964	14.1 Current state
+ELEVATION.md	1969	14.2 Target: a content studio built around review
+ELEVATION.md	1990	15. Analytics, experimentation and copy
+ELEVATION.md	2009	16. Prioritized roadmap
+ELEVATION.md	2014	16.1 P0, week 1–2 ("stop the bleeding")
+ELEVATION.md	2016	1 Revoke and rotate the Firebase service-account key (firebase-adminsdk-us33e, plus the ...
+ELEVATION.md	2022	2 Stand up a server-side AI gateway (auth, quotas, server-owned prompts, cost caps) and move
+ELEVATION.md	2026	3 Socket lockdown: identity only from the verified JWT, server-authorised join_room, room-
+ELEVATION.md	2030	4 Make reward endpoints server-only; compute XP from verified events; reconcile balances and
+ELEVATION.md	2042	8 Remove fake scoring (random scores, zero-on-failure HTTP 200s) and keep those games visible
+ELEVATION.md	2054	11 Swap out non-commercial models (MMS-TTS, XTTS-v2, NLLB) and the unofficial Translate
+ELEVATION.md	2058	13 RevenueCat webhooks and server-side entitlement checks. P0-27 S–M
+ELEVATION.md	2059	16.2 P1, months 1–3 ("make it true")
+ELEVATION.md	2096	16.3 P2, months 4–9 ("make it loved")
+ELEVATION.md	2113	16.4 Moonshots (9–24 months)
+ELEVATION.md	2153	16.5 What to stop doing
+ELEVATION.md	2162	17. Information architecture: every feature has a home
+ELEVATION.md	2168	17.1 Navigation map
+ELEVATION.md	2232	17.2 Sitemap
+ELEVATION.md	2293	17.3 Contextual surfacing: features find the learner
+ELEVATION.md	2308	17.4 Progressive unlocking
+ELEVATION.md	2321	17.5 Re-audit of unreachable code: revive, consolidate, never cut
+ELEVATION.md	2343	17.6 Exemplar deep-dive: Point & Say
+ELEVATION.md	2364	4. There's no native audio for the word, so the learner imitates nothing.
+ELEVATION.md	2365	5. The scoring path depends on a placeholder tone endpoint (§1 P0-18/19).
+ELEVATION.md	2380	6. Signs and menus. OCR mode translates signs, menus and labels and offers "read it aloud". A
+ELEVATION.md	2392	17.7 Exemplar deep-dive: Living Dictionary
+ELEVATION.md	2407	1. The name promises a living, shared lexicon; the product is a private notes list.
+ELEVATION.md	2409	3. There are no audio, tone, dialect or example fields in the learner flow.
+ELEVATION.md	2410	4. It is not linked from lessons, chat or games, so words have to be retyped.
+ELEVATION.md	2411	5. The admin lexicon and user entries are separate stores with no promotion path.
+ELEVATION.md	2429	6. Offline. A per-language lexicon pack (top 5k entries plus audio) syncs the personal layer.
+ELEVATION.md	2436	18. Feature catalogue and deep-dives (every feature kept)
+ELEVATION.md	2448	18.1 Catalogue summary
+ELEVATION.md	2450	1 Home / Today
+ELEVATION.md	2457	2 Daily Goals Today Works
+ELEVATION.md	2464	3 Daily Challenges Today Unrouted →
+ELEVATION.md	2470	4 Quests Today Works
+ELEVATION.md	2478	5 Seasonal Events /
+ELEVATION.md	2486	6 Streaks & reminders Today Works Ethical streaks (§12): a weekly-streak option,
+ELEVATION.md	2490	7 Lessons map /
+ELEVATION.md	2497	8 Authentic Path (A1–
+ELEVATION.md	2505	9 Lesson Flow Learn Works An adaptive lesson player: input → noticing
+ELEVATION.md	2511	10 Lesson detail & Level
+ELEVATION.md	2518	11 Learning Path
+ELEVATION.md	2526	12 Placement test Learn Works An adaptive 3-minute CAT placement with
+ELEVATION.md	2533	13 Grammar Hub Learn Works A Pattern Library: each pattern card has a
+ELEVATION.md	2538	14 Vocabulary Builder Learn Works Themed word packs (market, family, body,
+ELEVATION.md	2544	15 My Words & Review
+ELEVATION.md	2553	16 Review Rush
+ELEVATION.md	2563	17 Listening Practice Learn Works Ear training: graded listening at native speed
+ELEVATION.md	2569	18 Writing Practice Learn Works
+ELEVATION.md	2577	19 Phrase DNA Learn Works Turn it into sentence frames you can speak: "I
+ELEVATION.md	2583	20 Tone & Rhythm
+ELEVATION.md	2591	21 Tonal Lesson (Village) Learn Works Becomes the story-led tone lesson (an elder
+ELEVATION.md	2598	22 Language Quiz Learn Works Merge into the item bank: unit checkpoints
+ELEVATION.md	2605	23 History & History
+ELEVATION.md	2613	24 Mannerisms &
+ELEVATION.md	2620	25 Cultural Hub Learn Works Becomes the Culture landing inside Learn,
+ELEVATION.md	2625	26 Culture Magazine Learn Works
+ELEVATION.md	2636	27 Heritage Milestones Learn Works Family milestones for heritage learners:
+ELEVATION.md	2642	28 FLB Heritage Archive Learn Works The Living Archive (Wave 4 languages):
+ELEVATION.md	2648	29 Dialect Preference Learn Works Real dialect lanes: audio variants per item
+ELEVATION.md	2655	30 Living Dictionary Learn Works See exemplar deep-dive Global: search bar +
+ELEVATION.md	2658	31 Offline Downloads Learn Unrouted →
+ELEVATION.md	2668	32 Language detail &
+ELEVATION.md	2675	33 Passport (proctored
+ELEVATION.md	2683	34 Lesson Recap Learn Unrouted →
+ELEVATION.md	2692	35 Polie AI Tutor
+ELEVATION.md	2702	36 Tutor: Dialogue mode Speak Works
+ELEVATION.md	2710	37 Tutor: Grammar
+ELEVATION.md	2719	38 Tutor: Story mode Speak Works
+ELEVATION.md	2726	39 Tutor: Translation
+ELEVATION.md	2735	40 Tutor: Pronunciation
+ELEVATION.md	2744	41 Tutor: Assess mode Speak Works
+ELEVATION.md	2753	42 Tutor dashboard Speak Works Coach view: Polie recommends the next
+ELEVATION.md	2759	43 Shadowing Speak Unrouted →
+ELEVATION.md	2768	44 Conversation
+ELEVATION.md	2775	45 Conversation
+ELEVATION.md	2786	46 Speak Engine Lab
+ELEVATION.md	2792	47 Speak Missions Speak Works
+ELEVATION.md	2800	48 Historical Personas Speak Works See exemplar deep-dive Speak → Personas.
+ELEVATION.md	2801	49 Persona Missions Speak Works
+ELEVATION.md	2809	50 LingChat AI
+ELEVATION.md	2817	51 Synthetic Voice Styles Speak Works Voice picker with commercial voices per
+ELEVATION.md	2823	52 Point & Say Speak Works See exemplar deep-dive Global Lens button;
+ELEVATION.md	2826	53 Live Translate Speak Works Conversation Bridge: two people, two
+ELEVATION.md	2831	54 Import Media (OCR &
+ELEVATION.md	2841	55 Games Arcade (hub &
+ELEVATION.md	2848	56 Game shell, guides &
+ELEVATION.md	2853	57 Word Match Play Partial (thin
+ELEVATION.md	2861	58 Word Match (audio) Play Partial (thin
+ELEVATION.md	2865	59 Fill in the Blank Play Partial (thin
+ELEVATION.md	2870	60 Picture–Word
+ELEVATION.md	2878	61 Memory Map Play Partial (thin
+ELEVATION.md	2884	62 Speed Challenge Play Partial (thin
+ELEVATION.md	2890	63 Speed Round Play Partial (thin
+ELEVATION.md	2896	64 Story Builder Play Partial (thin
+ELEVATION.md	2902	65 Grammar Detective Play Partial (thin
+ELEVATION.md	2907	66 Grammar Jam Play Partial (thin
+ELEVATION.md	2913	67 Greeting Diplomacy Play Partial (thin
+ELEVATION.md	2919	68 Market Bargaining Play Partial (thin
+ELEVATION.md	2925	69 Quiz Chef Play Partial (thin
+ELEVATION.md	2931	70 Roleplay Adventure Play Partial (thin
+ELEVATION.md	2937	71 Taxi Survival Play Partial (thin
+ELEVATION.md	2944	72 Tone Trainer Play Partial (thin
+ELEVATION.md	2951	73 Pronunciation Duel Play Faked → fix Real recording and scoring; async duels with
+ELEVATION.md	2955	74 Pronunciation Game Play Partial (thin
+ELEVATION.md	2960	75 Pronunciation
+ELEVATION.md	2965	76 Emoji Translator Play Partial (thin
+ELEVATION.md	2973	77 Elders' Blessings Play Partial (thin
+ELEVATION.md	2979	78 Folktale
+ELEVATION.md	2986	79 Clan Lineage Story
+ELEVATION.md	2994	80 Conversation Relay Play Partial (thin
+ELEVATION.md	3000	81 Board Word Games Play Partial (thin
+ELEVATION.md	3005	82 Cultural Games
+ELEVATION.md	3012	83 Accent Puzzle Play Partial (thin
+ELEVATION.md	3019	84 Call & Response Play Partial (thin
+ELEVATION.md	3024	85 Cultural Etiquette Play Partial (thin
+ELEVATION.md	3030	86 Drum Word Play Partial (thin
+ELEVATION.md	3036	87 Flashcard Safari Play Partial (thin
+ELEVATION.md	3041	88 Food Quest Play Partial (thin
+ELEVATION.md	3046	89 Liar Liar Play Partial (thin
+ELEVATION.md	3051	90 Multilingual Relay Play Partial (thin
+ELEVATION.md	3057	91 Phrase Sniper Play Partial (thin
+ELEVATION.md	3063	92 Proverb Unlocker Play Partial (thin
+ELEVATION.md	3066	93 Rhythm Typing Play Partial (thin
+ELEVATION.md	3071	94 Tongue Twister Race Play Partial (thin
+ELEVATION.md	3077	95 Village Quest Play Partial (thin
+ELEVATION.md	3083	96 Ayo (mancala) Play Partial (thin
+ELEVATION.md	3092	97 Snakes & Ladders
+ELEVATION.md	3101	98 Language Ludo Play Partial (thin
+ELEVATION.md	3107	99 Suwe (hopscotch) Play Partial (thin
+ELEVATION.md	3496	18.2 Today hub (6 features)
+ELEVATION.md	3592	18.3 Learn hub (28 features)
+ELEVATION.md	3787	20 Text( widgets vs 0 l10n lookups; not reachable from main.dart: tone_drill_screen.dart.
+ELEVATION.md	3978	18.4 Speak hub (20 features)
+ELEVATION.md	4280	18.5 Play hub (48 features)
+ELEVATION.md	4629	3 Text( widgets vs 0 l10n lookups.
+ELEVATION.md	4752	7 Text( widgets vs 0 l10n lookups.
+ELEVATION.md	4821	1 Text( widgets vs 0 l10n lookups.
+ELEVATION.md	4878	5 Text( widgets vs 0 l10n lookups.
+ELEVATION.md	4971	18.6 Village hub (34 features)
+ELEVATION.md	5182	42 Text( widgets vs 0 l10n lookups; not reachable from main.dart:
+ELEVATION.md	5433	18.7 Me hub (15 features)
+CURRICULUM.md	14	0. The plan on one page
+CURRICULUM.md	15	1. Ground every item in a source, never in the model's memory. Lexemes, tone patterns, grammar
+CURRICULUM.md	19	2. Verify with machines that disagree with each other. A second model family cross-checks,
+CURRICULUM.md	26	4. Label honestly. Items show Beta, Expert-reviewed or Native-verified; synthetic audio says
+CURRICULUM.md	58	1. What is wrong with today's curriculum (from the audit)
+CURRICULUM.md	103	2. Source-grounded authoring: the source library
+CURRICULUM.md	104	2.1 Rules of use
+CURRICULUM.md	120	2.2 General sources (all languages)
+CURRICULUM.md	215	2.3 Excluded or "needs a licence"
+CURRICULUM.md	273	2.4 Per-language source stack (Stage 1)
+CURRICULUM.md	467	3. Multi-model verification pipeline
+CURRICULUM.md	468	3.1 Stages
+CURRICULUM.md	491	6. Deterministic linters (§3.3) and analysers (ZulMorph for Zulu; rule-based concord checkers
+CURRICULUM.md	497	8. Confidence scoring and routing (§3.4).
+CURRICULUM.md	498	9. Human review where routed (§5), then publishing with a label.
+CURRICULUM.md	499	3.2 What each stage catches
+CURRICULUM.md	519	3.3 Linters (deterministic, in CI and in the studio)
+CURRICULUM.md	541	3.4 Confidence score and routing
+CURRICULUM.md	555	4. Pedagogical design
+CURRICULUM.md	590	5. Interim human quality without native authors
+CURRICULUM.md	632	6. Realistic accuracy per tier, and where AI-only is too risky
+CURRICULUM.md	702	7. Audio without native recordings yet
+CURRICULUM.md	753	8. Rebuilding the existing curriculum data
+CURRICULUM.md	772	7. UI strings and phrase packs. Run app_*.arb and offline phrase packs through the same
+CURRICULUM.md	777	9. Timeline, throughput, tooling and costs
+CURRICULUM.md	778	9.1 Curriculum Studio (in lingafriq-admin )
+CURRICULUM.md	790	9.2 Phases
+CURRICULUM.md	792	0. Foundations Weeks 0–
+CURRICULUM.md	797	1. Stage-1 A1
+CURRICULUM.md	803	2. Stage-1 A2 +
+CURRICULUM.md	809	3. Stage-1 B1 +
+CURRICULUM.md	815	4. Scale Months
+CURRICULUM.md	818	9.3 Throughput (per language, after setup) [planning estimates, to measure in Phase
+CURRICULUM.md	826	9.4 Costs [rough estimates; get quotes]
+CURRICULUM.md	851	10. Decisions for Tope
+CURRICULUM.md	859	3. Commission the isiXhosa custom voice now, or ship Xhosa with matched corpus audio plus text
+CURRICULUM.md	863	5. Approve the Curriculum Studio build in lingafriq-admin.

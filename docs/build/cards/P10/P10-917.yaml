@@ -1,0 +1,103 @@
+charter: v2
+id: P10-917
+kind: build
+title: Issue signed Verifiable Credentials in Open Badges 3.0
+phase: P10
+epic: E-P10-CREDENTIALS
+req_ids:
+- EP-§12.4-05
+- EP-§12.4-06
+depends_on:
+- E-P5-CONTENT-REAL
+- E-P6-SCORER
+- P10-914
+- P10-915
+- P10-916
+size: L
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T4
+  justification: 'score 8; blast 3; p0 area; crypto; gate-critical (security / child safety / legal / design direction): Fable
+    reviews'
+token_budget: 150000
+file_allowlist:
+- node-backend/src/services/credential-issuer.service.ts
+- node-backend/src/services/credential-keys.service.ts
+- node-backend/src/routes/credentials.routes.ts
+- lib/screens/passport/passport_credential_screen.dart
+context_anchors:
+- ELEVATION.md#§12.4:L1843-L1845
+acceptance_criteria:
+- id: AC1
+  text: Given an earned level, when a credential is issued, then it is a W3C Verifiable Credential in Open Badges 3.0 form
+    signed with the issuer key.
+- id: AC2
+  text: Given any credential, when a third party verifies it, then the signature, issuer and methodology link check out without
+    a LingAfriq login.
+- id: AC3
+  text: Given a credential payload is altered, when it is verified, then verification fails with a typed error.
+- id: AC4
+  text: Given the issuer key, when the service runs, then the key is held in a secrets store and never logged or shipped in
+    the app.
+- id: AC5
+  text: Given a learner has no verified evidence, when issue is requested, then CREDENTIAL_NOT_EARNED returns and nothing
+    is signed.
+- id: AC6
+  text: Given the credential screen, when it renders, then it shows level, date, evidence summary and a share action.
+test_plan:
+  unit:
+  - signature verify
+  - tamper fail
+  integration:
+  - third-party verification
+  security:
+  - key handling
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - issued
+  - not-earned
+  - verify-error
+  copy_keys:
+  - credential_share
+  tokens:
+  - color.semantic
+  - type.scale
+  - space.scale
+  motion_tier: product
+  a11y:
+  - screen reader labels
+  - 48dp touch targets
+  - reduced motion honoured
+  goldens:
+  - credential_share_golden
+tags:
+- issues_credential
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Key rotation plan needed before launch
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

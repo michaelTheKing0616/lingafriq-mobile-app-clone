@@ -1,0 +1,71 @@
+charter: v2
+id: P5-003
+kind: build
+title: Block generic grammar templates; record per-language word order
+phase: P5
+epic: E-P5-A1
+req_ids:
+- EP-§6.1-11
+- EP-§6.1-12
+- EP-§6.1-13
+- EP-§6.1-14
+depends_on:
+- P5-002
+size: S
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 4: blast 2, ambiguity 1, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist:
+- tools/content/grammar_template_blocker.py
+- test/content/grammar_template_blocker_test.py
+- assets/data/language_typology.json
+context_anchors:
+- ELEVATION.md#§6.1:L1112-L1117
+acceptance_criteria:
+- id: AC1
+  text: Given the two generic sentences pasted into legacy grammar lessons, when the blocker runs, then all occurrences across
+    1,546 lessons are rejected with rule GR-001
+- id: AC2
+  text: Given Somali and Amharic, when typology is read, then each declares SOV order and Amharic/Somali tense-aspect via
+    particles or verb morphology as recorded in the language kit, never an English SVO template
+- id: AC3
+  text: Given a grammar item for a language lacking a Pattern Library entry, when published, then the publish step fails loud
+    with PatternMissingError (no generic fallback)
+test_plan:
+  unit:
+  - blocker rules
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - no generic grammar sentence present in published set
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Teaching the generic English-order grammar is actively harmful; failures are visible, never silent
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

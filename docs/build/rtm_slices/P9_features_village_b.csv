@@ -1,0 +1,86 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+F-120,ELEVATION,§18.6:L5205-L5216,requirement,Share Progress,P1,agent,,Open
+F-120.D,ELEVATION,§18.6:L5210,requirement,[6] Generic share cards.,P1,agent,,Open
+F-120.E,ELEVATION,§18.6:L5211,requirement,[6] Beautiful share cards: the learner's avatar saying a phrase they learned,P1,agent,,Open
+F-120.U,ELEVATION,§18.6:L5214,requirement,[6] Story-format cards (9:16) with the brand system. Rendered on the single,P1,agent,,Open
+F-120.L,ELEVATION,§18.6:L5216,requirement,[6] Me → Progress → Share; after milestones.,P1,agent,,Open
+F-121,ELEVATION,§18.6:L5217-L5229,requirement,Social Gifting,P1,agent,,Open
+F-121.D,ELEVATION,§18.6:L5224,requirement,[6] Cheatable economy.,P1,agent,,Open
+F-121.E,ELEVATION,§18.6:L5225,requirement,[6] Gift a lesson / streak freeze / cosmetic using server-validated currency;,P1,agent,,Open
+F-121.U,ELEVATION,§18.6:L5227,requirement,[6] Gift-wrap animation; message composer. Rendered on the single unified design,P1,agent,,Open
+F-121.L,ELEVATION,§18.6:L5229,requirement,[6] Village → People → Gift.,P1,agent,,Open
+F-122,ELEVATION,§18.6:L5230-L5241,requirement,Community Corrections,P1,agent,,Open
+F-122.D,ELEVATION,§18.6:L5235,requirement,[6] No reputation or quality control for correctors.,P1,agent,,Open
+F-122.E,ELEVATION,§18.6:L5236,requirement,[6] Native Corrections: learners post short writing or audio; verified natives correct,P1,agent,,Open
+F-122.U,ELEVATION,§18.6:L5239,requirement,[6] Diff-style inline edits; audio replies. Rendered on the single unified design,P1,agent,,Open
+F-122.L,ELEVATION,§18.6:L5241,requirement,[6] Village → Corrections.,P1,agent,,Open
+F-123,ELEVATION,§18.6:L5242-L5253,requirement,Ancestral Tree,P1,agent,,Open
+F-123.D,ELEVATION,§18.6:L5247,requirement,[6] Not connected to learning.,P1,agent,,Open
+F-123.E,ELEVATION,§18.6:L5248,requirement,[6] Family Tree in your language: heritage learners build their family tree,P1,agent,,Open
+F-123.U,ELEVATION,§18.6:L5251,requirement,[6] Tree with avatar nodes; kinship terms on edges. Rendered on the,P1,agent,,Open
+F-123.L,ELEVATION,§18.6:L5253,requirement,[6] Me → Heritage; Learn → Culture.,P1,agent,,Open
+F-124,ELEVATION,§18.6:L5254-L5267,requirement,Micro-Mentors,P1,agent,,Open
+F-124.D,ELEVATION,§18.6:L5260,requirement,"[6] No verification, safeguarding or payment flow visible [verify].",P1,agent,,Open
+F-124.E,ELEVATION,§18.6:L5261,requirement,"[6] Book a native for 10–20 minute focused sessions (pronunciation clinic, heritage",P1,agent,,Open
+F-124.U,ELEVATION,§18.6:L5264,requirement,[6] Mentor profiles with sample audio; booking sheet. Rendered on the single,P1,agent,,Open
+F-124.L,ELEVATION,§18.6:L5267,requirement,[6] Village → Elder Hut → Mentors.,P1,agent,,Open
+F-125,ELEVATION,§18.6:L5268-L5286,requirement,Live Classroom,P1,agent,,Open
+F-125.D,ELEVATION,§18.6:L5280,requirement,[6] Five parallel implementations; safeguarding for minors not visible.,P1,agent,,Open
+F-125.E,ELEVATION,§18.6:L5281,requirement,[6] School in the Village: scheduled live classes by level with a,P1,agent,,Open
+F-125.U,ELEVATION,§18.6:L5284,requirement,[6] Classroom grid; hand-raise queue; notes panel. Rendered on the single unified,P1,agent,,Open
+F-125.L,ELEVATION,§18.6:L5286,requirement,[6] Village → School.,P1,agent,,Open
+F-126,ELEVATION,§18.6:L5287-L5298,requirement,Teacher Classroom Dashboard (revived),P1,agent,,Open
+F-126.D,ELEVATION,§18.6:L5292,requirement,[6] Teachers have no management surface.,P1,agent,,Open
+F-126.E,ELEVATION,§18.6:L5293,requirement,"[6] Revive as LingAfriq for Schools: class roster, assign units, see weak",P1,agent,,Open
+F-126.U,ELEVATION,§18.6:L5296,requirement,[6] Desktop/tablet-friendly layout; class heatmap. Rendered on the single unified design,P1,agent,,Open
+F-126.L,ELEVATION,§18.6:L5298,requirement,[6] Me → Teaching (role-gated); web.,P1,agent,,Open
+F-127,ELEVATION,§18.6:L5299-L5316,requirement,Social Audio Rooms (revived),P1,agent,,Open
+F-127.D,ELEVATION,§18.6:L5309,requirement,"[6] No scheduling or following, so rooms are empty; moderation for minors.",P1,agent,,Open
+F-127.E,ELEVATION,§18.6:L5310,requirement,"[6] Village Radio: scheduled audio shows hosted by natives (folktale night, Pidgin",P1,agent,,Open
+F-127.U,ELEVATION,§18.6:L5314,requirement,[6] Schedule cards; speaker stage; captions bar. Rendered on the single unified,P1,agent,,Open
+F-127.L,ELEVATION,§18.6:L5316,requirement,[6] Village → Radio.,P1,agent,,Open
+F-128,ELEVATION,§18.6:L5317-L5328,requirement,Status (WhatsApp-style),P1,agent,,Open
+F-128.D,ELEVATION,§18.6:L5322,requirement,[6] Status events broadcast globally (P0-6).,P1,agent,,Open
+F-128.E,ELEVATION,§18.6:L5323,requirement,"[6] Language Status: post a daily status in the target language (text,",P1,agent,,Open
+F-128.U,ELEVATION,§18.6:L5326,requirement,[6] Familiar ring UI; stickers with the learner's avatar. Rendered on the,P1,agent,,Open
+F-128.L,ELEVATION,§18.6:L5328,requirement,[6] Village → Status.,P1,agent,,Open
+F-129,ELEVATION,§18.6:L5329-L5339,requirement,Starred Messages & Media Gallery,P1,agent,,Open
+F-129.D,ELEVATION,§18.6:L5334,requirement,[6] Starred items aren't reusable for learning.,P1,agent,,Open
+F-129.E,ELEVATION,§18.6:L5335,requirement,[6] Starred = Saved phrases: starring a message adds it to My,P1,agent,,Open
+F-129.U,ELEVATION,§18.6:L5337,requirement,[6] Grid with phrase overlays. Rendered on the single unified design system,P1,agent,,Open
+F-129.L,ELEVATION,§18.6:L5339,requirement,[6] Village → Chats → Saved.,P1,agent,,Open
+F-130,ELEVATION,§18.6:L5340-L5352,requirement,Snaps & Streaks (Snapchat-style),P1,agent,,Open
+F-130.D,ELEVATION,§18.6:L5346,requirement,[6] Privacy promise broken; content risks for minors.,P1,agent,,Open
+F-130.E,ELEVATION,§18.6:L5347,requirement,[6] Clips: send a photo or 10-second video with a phrase overlay,P1,agent,,Open
+F-130.U,ELEVATION,§18.6:L5350,requirement,[6] Camera with phrase chips; AR text in correct diacritics. Rendered on,P1,agent,,Open
+F-130.L,ELEVATION,§18.6:L5352,requirement,[6] Village → Clips; Lens camera.,P1,agent,,Open
+F-131,ELEVATION,§18.6:L5353-L5368,requirement,Community Feed (X-style),P1,agent,,Open
+F-131.D,ELEVATION,§18.6:L5362,requirement,[6] Moderation cosmetic (P0-11); generic feed with no learning hook.,P1,agent,,Open
+F-131.E,ELEVATION,§18.6:L5363,requirement,[6] The Square feed: posts in the target language with Tone Lens,P1,agent,,Open
+F-131.U,ELEVATION,§18.6:L5366,requirement,[6] Feed cards with language tag; translate toggle. Rendered on the single,P1,agent,,Open
+F-131.L,ELEVATION,§18.6:L5368,requirement,[6] Village → Square.,P1,agent,,Open
+F-132,ELEVATION,§18.6:L5369-L5380,requirement,"Explore, Search & Community Profile",P1,agent,,Open
+F-132.D,ELEVATION,§18.6:L5375,requirement,[6] Overlaps with the X explore screen.,P1,agent,,Open
+F-132.E,ELEVATION,§18.6:L5376,requirement,"[6] Explore becomes the Square's discover page (trending phrases, events, top correctors);",P1,agent,,Open
+F-132.U,ELEVATION,§18.6:L5378,requirement,"[6] Discover grid. Rendered on the single unified design system (§3.4), with",P1,agent,,Open
+F-132.L,ELEVATION,§18.6:L5380,requirement,[6] Village → Square → Discover; global Search.,P1,agent,,Open
+F-133,ELEVATION,§18.6:L5381-L5396,requirement,Create Content (UGC),P1,agent,,Open
+F-133.D,ELEVATION,§18.6:L5390,requirement,[6] No editorial pipeline; content quality unknown.,P1,agent,,Open
+F-133.E,ELEVATION,§18.6:L5391,requirement,"[6] Creator Studio: templates for mini-lessons, quizzes and stories; AI checks for",P1,agent,,Open
+F-133.U,ELEVATION,§18.6:L5394,requirement,[6] Editor with live preview; review status chips. Rendered on the single,P1,agent,,Open
+F-133.L,ELEVATION,§18.6:L5396,requirement,[6] Village → Create (unlocks at B1).,P1,agent,,Open
+F-134,ELEVATION,§18.6:L5397-L5408,requirement,Voice Contribution,P1,agent,,Open
+F-134.D,ELEVATION,§18.6:L5402,requirement,[6] Consent and licensing of recordings unclear [verify].,P1,agent,,Open
+F-134.E,ELEVATION,§18.6:L5403,requirement,[6] Lend your voice: natives record prompted sentences with explicit consent and,P1,agent,,Open
+F-134.U,ELEVATION,§18.6:L5406,requirement,"[6] Prompt card, quality meter, consent sheet. Rendered on the single unified",P1,agent,,Open
+F-134.L,ELEVATION,§18.6:L5408,requirement,[6] Village → Contribute.,P1,agent,,Open
+F-135,ELEVATION,§18.6:L5409-L5421,requirement,Native Speaker Contribution & Lesson Item Verification (revived),P1,agent,,Open
+F-135.D,ELEVATION,§18.6:L5416,requirement,[6] The human-validation loop the language factory needs (§6.4.1) is unreachable.,P1,agent,,Open
+F-135.E,ELEVATION,§18.6:L5417,requirement,[6] Revive as the Verify queue: native speakers swipe through AI-drafted lesson,P1,agent,,Open
+F-135.U,ELEVATION,§18.6:L5419,requirement,[6] Swipe cards with audio; fix-inline editor. Rendered on the single unified,P1,agent,,Open
+F-135.L,ELEVATION,§18.6:L5421,requirement,[6] Village → Contribute → Verify (verified natives).,P1,agent,,Open
+F-136,ELEVATION,§18.6:L5422-L5433,requirement,Native Content Review,P1,agent,,Open
+F-136.D,ELEVATION,§18.6:L5427,requirement,[6] Overlaps with the revived verification screens.,P1,agent,,Open
+F-136.E,ELEVATION,§18.6:L5428,requirement,"[6] Becomes the reviewer dashboard above the Verify queue: stats, disagreements and",P1,agent,,Open
+F-136.U,ELEVATION,§18.6:L5430,requirement,[6] Dashboard with queue counts. Rendered on the single unified design system,P1,agent,,Open
+F-136.L,ELEVATION,§18.6:L5432,requirement,[6] Village → Contribute → Review.,P1,agent,,Open

@@ -1,0 +1,259 @@
+[
+ {
+  "id": "leipzig",
+  "source": "Leipzig Corpora Collection (yor/ibo/hau/pcm/swa/zul/xho corpora)",
+  "url": "https://wortschatz.uni-leipzig.de/en/download",
+  "licence": "CC BY (downloadable corpora; site itself CC BY-NC)",
+  "use": "ship",
+  "checked": "2026-10-21",
+  "attribution": "Leipzig Corpora Collection, Universität Leipzig. D. Goldhahn, T. Eckart & U. Quasthoff (2012): Building Large Monolingual Dictionaries at the Leipzig Corpora Collection. LREC 2012. CC BY.",
+  "notes": "Licence page bot-walled (403); verified via Terms of Usage text in search index. Sentences from *.wikipedia.org (CC BY-SA) and Bible/JW domains excluded from shipped examples; frequencies use all."
+ },
+ {
+  "id": "asp",
+  "source": "African Storybook / Global-ASP asp-source",
+  "url": "https://github.com/global-asp/asp-source",
+  "licence": "Per story: CC BY 4.0 (shipped) / CC BY-NC (excluded)",
+  "use": "ship (CC BY stories only)",
+  "checked": "2026-10-21",
+  "attribution": "Story credits (author, illustrator, translator) as listed per story; African Storybook Initiative, www.africanstorybook.org, CC BY 4.0."
+ },
+ {
+  "id": "sadilar_morph",
+  "source": "SADiLaR NCHLT morphologically annotated corpora isiZulu/isiXhosa (SADII-Ext 2023)",
+  "url": "https://repo.sadilar.org",
+  "licence": "CC BY 4.0",
+  "use": "ship",
+  "checked": "2026-10-21",
+  "attribution": "SADiLaR / NCHLT Morphologically annotated corpora (isiZulu, isiXhosa), 2023, CC BY 4.0."
+ },
+ {
+  "id": "sadilar_xhmono",
+  "source": "SADiLaR English-isiXhosa Drop monolingual isiXhosa corpus 1.0.0",
+  "url": "https://repo.sadilar.org",
+  "licence": "CC BY 4.0",
+  "use": "ship",
+  "checked": "2026-10-21",
+  "attribution": "SADiLaR, English–isiXhosaDrop Monolingual Corpus 1.0.0 (2019), CC BY 4.0."
+ },
+ {
+  "id": "fsi",
+  "source": "FSI Basic Courses (Yoruba, Hausa, Swahili, Igbo) student texts",
+  "url": "https://www.fsi-language-courses.org/",
+  "licence": "Public domain (US Government work)",
+  "use": "ship (grammar evidence/locators)",
+  "checked": "2026-10-21",
+  "attribution": "Foreign Service Institute, US Department of State. Public domain.",
+  "notes": "Scanned images; OCR with English model, target-language diacritics unreliable -> used for grammar-topic locators only."
+ },
+ {
+  "id": "cv_sentences",
+  "source": "Mozilla Common Voice sentence-collector text (yo, ig, ha, zu, xh; repo server/data/<lang>/sentence-collector.txt)",
+  "url": "https://github.com/common-voice/common-voice/tree/main/server/data",
+  "licence": "CC0 / public domain (Sentence Collector accepts only public-domain sentences; Common Voice dataset CC0)",
+  "use": "ship",
+  "checked": "2026-10-21",
+  "attribution": "Mozilla Common Voice contributors (CC0; attribution not required, given as courtesy).",
+  "notes": "No pcm file exists in the repo; the 987 pcm sentences are only in the dataset download (MDC account). wiki.ig.txt / wiki.sw.txt (Wikipedia-extracted) not used. PD status is contributor-asserted."
+ },
+ {
+  "id": "synth-v2",
+  "source": "LingAfriq original synthesized B2–C2 items (AI-drafted, unattested forms allowed)",
+  "url": "synth/v2/*.tsv",
+  "licence": "original (LingAfriq)",
+  "use": "ship after review only (all needs-review)",
+  "checked": "2026-10-21",
+  "attribution": "LingAfriq"
+ },
+ {
+  "id": "kaikki",
+  "source": "Kaikki.org Wiktionary extracts",
+  "url": "https://kaikki.org/dictionary/",
+  "licence": "CC BY-SA 4.0 + GFDL",
+  "use": "cross-check only",
+  "checked": "2026-10-21",
+  "attribution": "n/a (not shipped)",
+  "notes": "No Igbo or Nigerian Pidgin files."
+ },
+ {
+  "id": "fleurs",
+  "source": "Google FLEURS",
+  "url": "https://huggingface.co/datasets/google/fleurs",
+  "licence": "Card CC BY 4.0; transcripts from FLoRes-101 (CC BY-SA 4.0)",
+  "use": "cross-check only",
+  "checked": "2026-10-21",
+  "attribution": "n/a"
+ },
+ {
+  "id": "masakhaner2",
+  "source": "MasakhaNER 2.0",
+  "url": "https://github.com/masakhane-io/masakhane-ner",
+  "licence": "CC BY-NC 4.0",
+  "use": "excluded",
+  "checked": "2026-10-21"
+ },
+ {
+  "id": "masakhapos",
+  "source": "MasakhaPOS",
+  "url": "https://github.com/masakhane-io/masakhane-pos",
+  "licence": "README: CC BY-4.0-NC (HF card afl-3.0 conflicts)",
+  "use": "excluded",
+  "checked": "2026-10-21"
+ },
+ {
+  "id": "nla_orthography",
+  "source": "Naija Langwej Akademi orthography / Naijá spelling guidance",
+  "url": "(no licensed text located)",
+  "licence": "Not stated",
+  "use": "excluded as text; spelling conventions may be cited as facts by a reviewer only",
+  "checked": "2026-10-21"
+ },
+ {
+  "id": "cv_pcm",
+  "source": "Mozilla Common Voice Nigerian Pidgin v27.0 (2026-09-11)",
+  "url": "https://datacollective.mozillafoundation.org",
+  "licence": "CC0",
+  "use": "qualifies; NOT downloaded (needs MDC account); link-only, no re-hosting",
+  "checked": "2026-10-21",
+  "notes": "8,964 clips, 12.5 h validated, 60 speakers, 987 sentences."
+ },
+ {
+  "id": "cv27_pcm",
+  "source": "Mozilla Common Voice 27.0 Nigerian Pidgin: validated_sentences.tsv (987 sentences) + validated.tsv (clip refs)",
+  "url": "https://datacollective.mozillafoundation.org",
+  "licence": "CC0",
+  "use": "ship sentences; audio link-only (no re-hosting per MDC terms)",
+  "checked": "2026-10-21",
+  "attribution": "Mozilla Common Voice contributors (CC0)",
+  "notes": "Downloaded by user to ~/Downloads 2026-10-21; only sentence TSVs extracted."
+ },
+ {
+  "id": "cv27_xh",
+  "source": "Mozilla Common Voice 27.0 isiXhosa: validated_sentences.tsv + validated.tsv",
+  "url": "https://datacollective.mozillafoundation.org",
+  "licence": "CC0",
+  "use": "ship sentences; clip refs link-only",
+  "checked": "2026-10-21",
+  "attribution": "Mozilla Common Voice contributors (CC0)"
+ },
+ {
+  "id": "cv_xh",
+  "source": "Mozilla Common Voice isiXhosa v27.0",
+  "url": "https://datacollective.mozillafoundation.org",
+  "licence": "CC0",
+  "use": "qualifies but negligible (35 clips, 0.02 h validated); not downloaded",
+  "checked": "2026-10-21"
+ },
+ {
+  "id": "naija_tts",
+  "source": "Naija-TTS-Dataset (MDC)",
+  "url": "https://datacollective.mozillafoundation.org",
+  "licence": "NOODL-1.0 (research only, no redistribution, no voice cloning)",
+  "use": "excluded",
+  "checked": "2026-10-21"
+ },
+ {
+  "id": "hf_pcm_asr",
+  "source": "asr-nigerian-pidgin/nigerian-pidgin-1.0 (Hugging Face)",
+  "url": "https://huggingface.co/datasets/asr-nigerian-pidgin/nigerian-pidgin-1.0",
+  "licence": "cc-by-4.0 (card); transcripts crawled text of undocumented origin",
+  "use": "conditional: audio only after provenance confirmed; text cross-check only; not used",
+  "checked": "2026-10-21"
+ },
+ {
+  "id": "slr32",
+  "source": "OpenSLR SLR32 (isiXhosa etc. TTS)",
+  "url": "https://openslr.org/32/",
+  "licence": "CC BY-SA 4.0",
+  "use": "cross-check / ASR-eval only (shipping audio or derived models would impose share-alike)",
+  "checked": "2026-10-21"
+ },
+ {
+  "id": "vixsd",
+  "source": "Vukuzenzele ViXSD isiXhosa speech (Esethu)",
+  "url": "https://huggingface.co/datasets/Esethu/ViXSD",
+  "licence": "Open release CC BY-NC-SA 4.0; commercial needs signed agreement (fee waiver for African entities)",
+  "use": "not usable until agreement signed",
+  "checked": "2026-10-21"
+ },
+ {
+  "id": "african_voices",
+  "source": "African Voices (Data Science Nigeria)",
+  "url": "https://africanvoices.ai",
+  "licence": "ToS licence; CC BY 4.0 by default, commercial + derivatives with attribution",
+  "use": "qualifies (ha/ig/pcm/yo); NOT downloaded (needs registration)",
+  "checked": "2026-10-21"
+ },
+ {
+  "id": "tonative",
+  "source": "Tonative datasets (XNLI adaptation, MRL-Benchmark incl. Pidgin)",
+  "url": "https://tonative.org",
+  "licence": "Not stated",
+  "use": "excluded (unclear)",
+  "checked": "2026-10-21"
+ },
+ {
+  "id": "peace_corps",
+  "source": "Peace Corps language manuals",
+  "url": "various",
+  "licence": "Public-domain status unclear",
+  "use": "excluded (unclear)",
+  "checked": "2026-10-21"
+ },
+ {
+  "id": "mobilenetv4_conv_small",
+  "source": "timm/mobilenetv4_conv_small.e2400_r224_in1k model.safetensors",
+  "url": "https://huggingface.co/timm/mobilenetv4_conv_small.e2400_r224_in1k/blob/331fb803779522b685cf942e15f914fb6741c1eb/model.safetensors",
+  "licence": "Apache-2.0",
+  "use": "ship on device only after conversion from this file",
+  "checked": "2026-10-22",
+  "attribution": "Ross Wightman. MobileNetV4-Conv-Small, ImageNet-1k. Hugging Face card license apache-2.0. Revision 331fb803779522b685cf942e15f914fb6741c1eb.",
+  "notes": "Checked the model card and the Hugging Face license tag on this revision, not a third-party TFLite conversion. Official TensorFlow MobileNetV4 checkpoints were unreleased (tensorflow/models#11205). 3799112 parameters. ImageNet-1k images are not Apache-2.0. This row is the weight file only. Counsel sign-off remains EXT-03."
+ },
+ {
+  "id": "siglip_base_patch16_224",
+  "source": "google/siglip-base-patch16-224 model.safetensors",
+  "url": "https://huggingface.co/google/siglip-base-patch16-224/blob/7fd15f0689c79d79e38b1c2e2e2370a7bf2761ed/model.safetensors",
+  "licence": "Apache-2.0",
+  "use": "server only, behind the AI gateway, and only when the learner opts in to sending the image",
+  "checked": "2026-10-22",
+  "attribution": "Google SigLIP base (Zhai et al.). Hugging Face card license apache-2.0. Revision 7fd15f0689c79d79e38b1c2e2e2370a7bf2761ed. Code release google-research/big_vision is Apache-2.0.",
+  "notes": "Checked the license tag on this revision and the big_vision LICENSE. The weight file is model.safetensors, not pytorch_model.bin. 203155970 parameters. This revision has no official quantized TFLite file, so it is not a phone model. WebLI images are not Apache-2.0. This row is the weight file only. Counsel sign-off remains EXT-03."
+ },
+ {
+  "id": "ultralytics_yolo",
+  "source": "Ultralytics YOLO weights",
+  "url": "https://github.com/ultralytics/ultralytics",
+  "licence": "AGPL-3.0",
+  "use": "excluded",
+  "checked": "2026-10-22",
+  "notes": "Tope 2026-10-22. Do not bundle and do not use as a Point and Say model."
+ },
+ {
+  "id": "path_scenery_v3",
+  "source": "LingAfriq lesson-path scenery (path_scenery.riv v3, design/path_rive/path/v3/)",
+  "url": "design/path_rive/path/v3/path_scenery.riv",
+  "licence": "original (LingAfriq)",
+  "use": "ship",
+  "checked": "2026-10-27",
+  "attribution": "LingAfriq original illustration. Nunito Black on banners: SIL OFL 1.1 (path_nunito_black row)."
+ },
+ {
+  "id": "polie_path_v3",
+  "source": "LingAfriq Polie path mascot (polie_path.riv v3)",
+  "url": "design/path_rive/path/v3/polie_path.riv",
+  "licence": "original (LingAfriq)",
+  "use": "ship",
+  "checked": "2026-10-27",
+  "attribution": "LingAfriq original character art."
+ },
+ {
+  "id": "path_nunito_black",
+  "source": "Nunito Black (path banner and node numerals)",
+  "url": "https://fonts.google.com/specimen/Nunito",
+  "licence": "SIL Open Font License 1.1",
+  "use": "ship (UI type on path banners)",
+  "checked": "2026-10-27",
+  "attribution": "Nunito Copyright 2014 The Nunito Project Authors (SIL OFL 1.1)."
+ }
+]

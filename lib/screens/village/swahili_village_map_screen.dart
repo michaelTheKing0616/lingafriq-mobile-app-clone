@@ -1,5 +1,3 @@
-import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/navigation/village_navigation.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 class SwahiliVillageMapScreen extends HookConsumerWidget {
   const SwahiliVillageMapScreen({super.key});
@@ -22,9 +21,9 @@ class SwahiliVillageMapScreen extends HookConsumerWidget {
   ];
 
   static const _avatars = [
-    _Avatar('AS', Offset(0.38, 0.25), Color(0xFF9E3D00)),
-    _Avatar('MW', Offset(0.55, 0.45), Color(0xFF526124)),
-    _Avatar('JK', Offset(0.28, 0.55), Color(0xFF7B5733)),
+    _Avatar('AS', Offset(0.38, 0.25), LingAfriqTokens.hexFF9E3D00),
+    _Avatar('MW', Offset(0.55, 0.45), LingAfriqTokens.hexFF526124),
+    _Avatar('JK', Offset(0.28, 0.55), LingAfriqTokens.hexFF7B5733),
   ];
 
   @override
@@ -39,8 +38,8 @@ class SwahiliVillageMapScreen extends HookConsumerWidget {
                 radius: 1.4,
                 colors: [
                   Color(0xFFFFF3D6),
-                  Color(0xFFFEF6E7),
-                  Color(0xFFF8F0E0),
+                  LingAfriqTokens.hexFFFEF6E7,
+                  LingAfriqTokens.hexFFF8F0E0,
                 ],
               ),
             ),
@@ -80,7 +79,7 @@ class SwahiliVillageMapScreen extends HookConsumerWidget {
                       style: ModernGriotTypography.titleSmall(),
                     ),
                     SizedBox(width: 6.w),
-                    Text('•',
+                    const Text('•',
                         style: TextStyle(
                             color: ModernGriotColors.onSurfaceVariant)),
                     SizedBox(width: 6.w),

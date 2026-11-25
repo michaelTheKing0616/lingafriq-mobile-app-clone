@@ -1,0 +1,106 @@
+charter: v2
+id: ADR-002
+kind: adr
+title: 'ADR: Lexicon-anchored tone Beta rule and verification principles'
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- D2
+- D4
+- D5
+- CP-§0-01
+- CP-§0-07
+- CP-§0-02
+- CP-§0-08
+- CP-§0-09
+- CP-§0-10
+- CP-§0-11
+- CP-§0-12
+- CP-§0-13
+- CP-§0-14
+- CP-§0-15
+- CP-§0-03
+- CP-§0-16
+- CP-§0-18
+- CP-§0-19
+- CP-§0-20
+- CP-§0-21
+- CP-§0-22
+- CP-§0-17
+- CP-§pre-06
+- CP-§pre-07
+- CP-§pre-08
+- EP-§0-53
+- EP-§0-54
+- EP-§0-55
+- EP-§0-56
+depends_on:
+- E-P0-INTAKE
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T4
+  tester: T0
+  reviewer: T4
+  justification: ADR authored by the Orchestrator tier; conflict resolution already signed
+token_budget: 25000
+file_allowlist:
+- docs/build/adr/ADR-002.md
+- docs/build/DECISIONS.md
+- docs/build/CONFLICTS.md
+context_anchors:
+- CURRICULUM.md#§10:L852-L863
+- docs/build/CONFLICTS.md#C2
+- CURRICULUM.md#§0:L15-L24
+- CURRICULUM.md#§pre:L10
+acceptance_criteria:
+- id: AC1
+  text: Given conflict C2, when ADR-002 is written, then it records that a tone mark with three-way agreement (lexicon, generator,
+    restorer) may publish as Beta, citing D6
+- id: AC2
+  text: Given a tone mark with no lexicon anchor, when the rule is read, then it is a hard failure and the token goes 100%
+    to a linguist; tone teaching notes are Expert-reviewed at minimum, never Beta
+- id: AC3
+  text: Given generation principles, when listed, then every item cites a source claim by claim, a second model family cross-checks,
+    MT back-translation and deterministic linters run, and each item carries a confidence score
+- id: AC4
+  text: Given confidence routing, when stated, then high scores publish as Beta, mid scores go to the human queue and low
+    scores are rejected and regenerated
+- id: AC5
+  text: Given expert spot-checks, when stated, then 100% of high-risk items are reviewed (tone marks without lexicon match,
+    idioms, culture and history, honorifics, grammar explanations) plus a statistical sample of the rest, with the 2 linguists
+    per Stage-1 language of D4 as the owners (EXT-11)
+- id: AC6
+  text: Given D2 and D5, when recorded, then Oxford, IgboAPI and Zulu dictionary purchases and the Curriculum Studio build
+    are listed as the lexicon and tooling prerequisites with their EXT cards
+- id: AC7
+  text: Given the legal reading in the source, when recorded, then licences are marked a product manager reading pending counsel
+    sign-off of the licence register (EXT-03)
+user_facing: false
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- docs/build/adr/ADR-002.md
+- DECISIONS.md line
+- CONFLICTS.md row closed
+risks: []
+gate: G0
+external_blockers:
+- EXT-11
+- EXT-03
+- EXT-04
+- EXT-05
+- EXT-06
+status: Ready
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - prime/diagram-design

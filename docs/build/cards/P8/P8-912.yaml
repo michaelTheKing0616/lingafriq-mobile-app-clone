@@ -1,0 +1,80 @@
+charter: v2
+id: P8-912
+kind: build
+title: 'GameKit: draw game word pools from the lexicon with audio'
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.1-03
+- EP-§10.1-04
+depends_on:
+- E-P8-PLAY
+- E-P4-CONTENT-ENGINE
+size: L
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 2, coupling 2'
+token_budget: 150000
+file_allowlist:
+- lib/games/gamekit/game_factory_helper.dart
+- lib/games/gamekit/batch_game_factory.dart
+- lib/models/game/game_content_models.dart
+- lib/models/game/game_content_failure.dart
+- lib/games/learning_game_adapter.dart
+context_anchors:
+- ELEVATION.md#§10.1:L1663-L1664
+acceptance_criteria:
+- id: AC1
+  text: Given any GameKit game, when it builds its pool, then items come from the lexicon query API and no game reads assets/data/game_content.json
+    or a hardcoded 85–118-word list
+- id: AC2
+  text: Given a pool item without audio, when the game needs audio, then the item is excluded from audio-dependent games and
+    logged, never served silent
+- id: AC3
+  text: Given a lexicon query returns fewer items than a session needs, when the game starts, then a typed GameContentFailure
+    shows a visible message
+- id: AC4
+  text: Given a pool is built, when it is served, then each item carries id, language, tone-marked form, audio ref and licence
+    tag
+- id: AC5
+  text: Given the old seed files, when this card completes, then no code path references them and a CI grep fails if one reappears
+test_plan:
+  unit:
+  - pool builder
+  - audio filter
+  integration:
+  - lexicon API fake
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - pool size reported per language
+user_facing: false
+ux_spec: null
+tags:
+- uses_source
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- pool depth depends on E-P4-CONTENT-ENGINE output
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

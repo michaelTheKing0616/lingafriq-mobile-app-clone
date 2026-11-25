@@ -1,0 +1,104 @@
+charter: v2
+id: F-008
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Authentic Path (A1–C1)
+phase: P7
+epic: E-P7-HUBS
+hub: Learn
+req_ids:
+- F-008
+- F-008.D
+- F-008.E
+- F-008.U
+- F-008.L
+- P0-16
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P5-CONTENT-REAL
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: hub feature delta spec'
+token_budget: 80000
+file_allowlist:
+- lib/screens/curriculum/authentic_curriculum_entry_screen.dart
+- lib/screens/lesson/authentic_lesson_flow_screen.dart
+context_anchors:
+- ELEVATION.md#§18.3:L3614-L3628
+delta:
+  current_state: Authentic path route works but content is template-repetitive.
+  defects_to_fix:
+  - Content quality fails P0-16; track name overpromises authenticity.
+  elevation_to_build:
+  - Real-world track with licensed authentic media and scaffolding, unlocked from A2 beside core Path.
+  ux_and_render:
+  - Media-first cards with transcript toggle, Tone Lens, and tap-to-gloss.
+  hub_placement: Learn → Path → "Real-world" lane (A2+).
+  unlock_stage: A2+ for Real-world lane
+acceptance_criteria:
+- id: AC1
+  text: Given learner below A2, when opening Real-world lane, then access is gated with an honest unlock message.
+- id: AC2
+  text: Given licensed media items, when a lesson opens, then transcript, Tone Lens, and gloss work without client AI keys.
+- id: AC3
+  text: Given P0-16 content removed, when browsing the track, then no template-repeat lesson bodies appear.
+test_plan:
+  unit:
+  - domain rules for feature delta
+  integration:
+  - navigation and data wiring from hub placement
+  e2e:
+  - primary happy path from Lives in entry
+  a11y:
+  - goldens at 100%/200% text
+  - semantics order
+  content:
+  - honest labels on shown curriculum or media
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - learn.f_008.*
+tags: []
+p0_area: true
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

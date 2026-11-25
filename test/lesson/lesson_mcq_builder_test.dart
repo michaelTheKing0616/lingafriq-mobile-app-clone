@@ -11,7 +11,7 @@ void main() {
       exercises: const [],
     );
     final unitQuiz = [
-      CurriculumMcqItem(
+      const CurriculumMcqItem(
         id: 'q1',
         question: 'Pick greeting',
         options: ['A', 'B', 'Mo ń kọ́'],

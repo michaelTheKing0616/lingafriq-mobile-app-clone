@@ -14,7 +14,10 @@ import '../services/rive_gamification_service.dart';
 import '../models/daily_challenge_model.dart';
 
 /// Gamification Integration Helper
-/// 
+///
+/// XP and Cowries balances are server-ledger authoritative (P10-900); helpers
+/// call [GamificationProvider.awardXP] which never posts client amounts.
+///
 /// Provides easy-to-use methods for integrating gamification across all screens.
 /// 
 /// Usage:
@@ -461,7 +464,7 @@ class _GamificationHelper {
     _ref.read(riveGamificationServiceProvider).reactToMistake();
     
     // If challenge mode is off or unlimited, always continue
-    if (!heartsState.challengeModeEnabled || heartsState.isUnlimited) {
+    if (!heartsState.heartsApply) {
       return true;
     }
     
@@ -478,7 +481,7 @@ class _GamificationHelper {
   /// Call to check if user has hearts to continue (synchronous check)
   bool get canContinue {
     final heartsState = _ref.read(heartsProvider);
-    return !heartsState.challengeModeEnabled || heartsState.isUnlimited || heartsState.currentHearts > 0;
+    return heartsState.hasHearts;
   }
 
   /// Refill hearts using cowries

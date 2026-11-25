@@ -1,0 +1,78 @@
+charter: v2
+id: P1-002
+kind: build
+title: Remove committed credentials and load Firebase key from secret store
+phase: P1
+epic: E-P1-SECRETS
+req_ids:
+- P0-1
+- P0-2
+depends_on:
+- E-P0-INTAKE
+- P1-001
+size: S
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T4
+  justification: 'score 4; blast 2; gate-critical (security / child safety / legal / design direction): Fable reviews'
+token_budget: 25000
+file_allowlist:
+- node-backend/sample.json
+- node-backend/src/services/messagingService.ts
+- .gitignore
+- node-backend/.gitignore
+- AuthKey_QWGCD23R6B.p8
+context_anchors:
+- ELEVATION.md#§1:L84-L102
+- ELEVATION.md#§1:L104-L112
+acceptance_criteria:
+- id: AC1
+  text: Given the working tree after this card, when git ls-files is matched against purge_paths.txt patterns, then 0 tracked
+    files match
+- id: AC2
+  text: Given neither a secret-store credential nor application-default credentials are present, when the backend boots, then
+    messagingService throws a typed MissingCredentialError and the process exits non-zero
+- id: AC3
+  text: Given a staging environment with Workload Identity or secret-store credentials, when a test push is sent, then it
+    is delivered with no JSON key file on disk
+- id: AC4
+  text: Given .gitignore, when a file named *.p8, *firebase-adminsdk*.json or sample.json is added, then git status reports
+    it ignored
+test_plan:
+  unit:
+  - MissingCredentialError boot test
+  integration:
+  - staging push with ADC
+  security:
+  - git ls-files pattern check in CI
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G1
+external_blockers:
+- EXT-21
+status: Blocked-External
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

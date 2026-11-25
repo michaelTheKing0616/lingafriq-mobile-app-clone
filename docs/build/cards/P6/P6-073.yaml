@@ -1,0 +1,67 @@
+charter: v2
+id: P6-073
+kind: build
+title: Fine-tune licensed open model on licensed data
+phase: P6
+epic: E-P6-EVALS
+req_ids:
+- EP-§7.6-06
+depends_on:
+- P6-072
+- P6-012
+size: L
+difficulty:
+  score: 8
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 2, ambiguity 2, coupling 1, depth 2'
+token_budget: 160000
+file_allowlist:
+- ml/finetune/llm/train.py
+- ml/finetune/llm/data_manifest.py
+context_anchors:
+- ELEVATION.md#§7.6:L1465-L1466
+acceptance_criteria:
+- id: AC1
+  text: Given licensed training data only, when fine-tuning starts, then every data source has a licence row or the run fails
+    with unlicensed_data
+- id: AC2
+  text: Given the tuned model, when compared with its base on the language eval set, then it beats the base on diacritic completeness
+    or is not promoted
+- id: AC3
+  text: Given promotion, when approved, then the route is added with its licence recorded
+test_plan:
+  unit:
+  - manifest check
+  integration:
+  - tiny run
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

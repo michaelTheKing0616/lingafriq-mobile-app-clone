@@ -93,7 +93,7 @@ class _FlbHeritageArchiveScreenState
             : PanAfricanColors.textPrimaryLight,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(PanAfricanIcons.back),
+          icon: const Icon(PanAfricanIcons.back),
           onPressed: () {
             HapticFeedback.lightImpact();
             Navigator.of(context).pop();

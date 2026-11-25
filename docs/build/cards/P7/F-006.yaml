@@ -1,0 +1,116 @@
+charter: v2
+id: F-006
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Streaks & reminders
+phase: P7
+epic: E-P7-HUBS
+hub: Today
+req_ids:
+- F-006
+- F-006.D
+- F-006.E
+- F-006.U
+- F-006.L
+- P0-23
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P1-ECONOMY
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: ethical streak policy and deduped reminders; server streak truth; P0 push spam
+token_budget: 80000
+file_allowlist:
+- screens/snap/snap_streaks_screen.dart
+context_anchors:
+- ELEVATION.md#§18.2:L3578-L3592
+delta:
+  current_state: Streak UI works but reminders spam every two hours and counts are client-supplied.
+  defects_to_fix:
+  - Loss-aversion copy at night
+  - Duplicate push notifications
+  - Streak counts can be faked client-side
+  elevation_to_build:
+  - Ethical streaks with weekly option earned freezes and repair windows
+  - One reminder in learner-chosen window from favourite character voice
+  - Milestone celebrations without alarmist tone
+  ux_and_render:
+  - Calabash fill metaphor replaces flame; tap opens history; no red alarms
+  hub_placement: Today header; Me Progress
+  unlock_stage: per §17.4
+  harvest_list: []
+acceptance_criteria:
+- id: AC1
+  text: Given streak display on Today, when count renders, then value comes from server verified activity not client socket
+    payloads.
+- id: AC2
+  text: Given reminder window is set, when push fires, then at most one deduped notification arrives with character-written
+    target-language copy.
+- id: AC3
+  text: Given user enables weekly streak, when a day is missed, then freeze or repair rules apply without loss-aversion night
+    copy.
+- id: AC4
+  text: Given user taps calabash, when history opens, then past days show honest server record without alarm styling.
+test_plan:
+  unit:
+  - streak freeze rules
+  - reminder dedupe schedule
+  integration:
+  - server streak sync
+  - push payload copy keys
+  e2e:
+  - Today header calabash to history
+  - single reminder in window
+  a11y:
+  - calabash semantics
+  - no color-only streak state
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - streaks.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+tags: []
+p0_area: true
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks:
+- push dedupe depends on backend P0-23 fix
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/hooked-ux
+  - prime/feedback-patterns

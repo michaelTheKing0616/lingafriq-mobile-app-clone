@@ -1,0 +1,102 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P10
+epic: E-P10-ME
+hub: Me
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: Me hub screen revive or consolidation; no real-time audio
+token_budget: 80000
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f_146.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+test_plan:
+  unit:
+  - content sections present
+  integration:
+  - about route from Me
+  e2e:
+  - open About and Policy
+  a11y:
+  - editorial heading order
+  content:
+  - contributor consent metadata
+tags: []
+id: F-146
+title: Elevate About & Policy
+req_ids:
+- F-146
+- F-146.D
+- F-146.E
+- F-146.U
+- F-146.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+file_allowlist:
+- screens/tabs_view/profile/about_us_screen.dart
+- screens/tabs_view/profile/app_policy_screen.dart
+context_anchors:
+- ELEVATION.md#§18.7:L5557-L5568
+delta:
+  current_state: About unrouted; policy route works.
+  defects_to_fix:
+  - No in-app mission story
+  elevation_to_build:
+  - Our Story with mission and native-speaker community
+  - Language-credit roll and AI transparency on models and data use
+  ux_and_render:
+  - Editorial page with consented contributor photos
+  hub_placement: Me → About
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given Me → About, when Our Story opens, then mission content is routable from previously unrouted about screen.
+- id: AC2
+  text: Given contributor media, when page renders, then only consented photos appear with credit labels.
+- id: AC3
+  text: Given AI transparency section, when user reads it, then models and data use are stated without marketing fluff.
+skills:
+  worker:
+  - prime/form-design
+  - prime/mobile-app-ui-design
+  - prime/ux-writing

@@ -1,0 +1,47 @@
+charter: v2
+id: EXT-01
+kind: external
+title: 'Obtain: Companion doc `LINGAFRIQ_AI_MODEL_STACK.md` (model/vendor choices, licences, pricing) — not in repo or Downloads'
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- EP-§4.3-33
+- EP-§6.4-07
+- EP-§7.2-01
+- EP-§7.5-18
+- EP-§7.6-10
+- CP-§3.1-25
+- CP-§7-09
+- CP-§9.4-17
+depends_on: []
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T2
+  justification: agent prepares the artefact; a human completes the item
+token_budget: 20000
+file_allowlist: []
+context_anchors: []
+acceptance_criteria:
+- id: AC1
+  text: 'Artefact prepared and stored under docs/build/external/EXT-01/: list of the exact sections needed: §1.1 commercial
+    replacements, §2, §2.4, §3.1, §3.5, §3.7, §3.8, §3.9, §4, §7, pricing'
+- id: AC2
+  text: Owner (Tope) has the artefact and a one-line status in EXTERNAL.md; due gate G0 (or per card)
+owner: Tope
+due_gate: G0
+external_blockers:
+- EXT-01
+gate: G0
+status: Blocked-External
+skills:
+  worker:
+  - adaptive/09-writing-and-communication

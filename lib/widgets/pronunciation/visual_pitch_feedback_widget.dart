@@ -129,7 +129,7 @@ class VisualPitchFeedbackWidget extends StatelessWidget {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
               decoration: BoxDecoration(
-                color: _getScoreColor(toneAccuracy!, isDark).withOpacity(0.2),
+                color: _getScoreColor(toneAccuracy!, isDark).withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(8.r),
               ),
               child: Text(
@@ -174,10 +174,10 @@ class VisualPitchFeedbackWidget extends StatelessWidget {
       padding: EdgeInsets.all(12.w),
       margin: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: isDark ? Colors.blue[900]!.withOpacity(0.3) : Colors.blue[50],
+        color: isDark ? Colors.blue[900]!.withValues(alpha: 0.3) : Colors.blue[50],
         borderRadius: BorderRadius.circular(8.r),
         border: Border.all(
-          color: Colors.blue.withOpacity(0.3),
+          color: Colors.blue.withValues(alpha: 0.3),
           width: 1,
         ),
       ),
@@ -279,7 +279,7 @@ class PitchContourPainter extends CustomPainter {
       final endX = (error.endTime / maxTime) * size.width;
       
       final errorPaint = Paint()
-        ..color = Colors.red.withOpacity(0.2)
+        ..color = Colors.red.withValues(alpha: 0.2)
         ..style = PaintingStyle.fill;
       
       canvas.drawRect(

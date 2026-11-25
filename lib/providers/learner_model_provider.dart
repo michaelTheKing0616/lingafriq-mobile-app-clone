@@ -1,5 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'package:lingafriq/games/gamekit/game_result.dart';
 import 'package:lingafriq/learning/learner_model/learner_model_service.dart';
 import 'package:lingafriq/learning/learner_model/learner_skill_state.dart';
 import 'package:lingafriq/learning/skill_graph/skill_registry.dart';
@@ -174,3 +175,21 @@ final learnerModelProvider =
     NotifierProvider<LearnerModelNotifier, LearnerModelState>(
   LearnerModelNotifier.new,
 );
+
+/// Mastery map rows for a learner (P8-932).
+final masteryMapSkillRowsProvider =
+    FutureProvider.family<List<MasteryMapSkillRow>, String>((ref, learnerId) async {
+  final service = ref.watch(learnerModelServiceProvider);
+  final records = await loadMasteryMapSessionRecords(learnerId);
+  return buildMasteryMapSkillRows(
+    learnerId: learnerId,
+    records: records,
+    learnerModel: service,
+  );
+});
+
+/// Archived sessions for drill-down when a game tile is tapped (P8-932).
+final masteryMapSessionRecordsProvider =
+    FutureProvider.family<List<GameMasterySessionRecord>, String>((ref, learnerId) {
+  return loadMasteryMapSessionRecords(learnerId);
+});

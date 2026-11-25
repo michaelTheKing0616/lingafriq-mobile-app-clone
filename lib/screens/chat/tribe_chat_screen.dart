@@ -34,11 +34,13 @@ int? _numericSenderIdFromTribeMessage(Map<String, dynamic> message) {
 class TribeChatScreen extends HookConsumerWidget {
   final String tribeId;
   final String tribeName;
+  final bool circleMode;
 
   const TribeChatScreen({
     super.key,
     required this.tribeId,
     required this.tribeName,
+    this.circleMode = false,
   });
 
   @override
@@ -54,7 +56,7 @@ class TribeChatScreen extends HookConsumerWidget {
     final currentUser = ref.watch(userProvider);
     final socketNotifier = ref.read(chatSocketProvider.notifier);
     final socketState = ref.watch(chatSocketProvider);
-    final tribeRoom = 'tribe_$tribeId';
+    final tribeRoom = circleMode ? 'circle:$tribeId' : 'tribe_$tribeId';
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -238,7 +240,7 @@ class TribeChatScreen extends HookConsumerWidget {
               label: showMembers.value ? 'Hide tribe members' : 'Show tribe members',
               button: true,
               child: IconButton(
-                icon: Icon(Icons.people),
+                icon: const Icon(Icons.people),
                 onPressed: () {
                   HapticFeedback.selectionClick();
                   showMembers.value = !showMembers.value;
@@ -262,7 +264,7 @@ class TribeChatScreen extends HookConsumerWidget {
               decoration: BoxDecoration(
                 gradient: isDark
                     ? PanAfricanGradients.darkSurface
-                    : LinearGradient(
+                    : const LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
@@ -280,14 +282,14 @@ class TribeChatScreen extends HookConsumerWidget {
                             child: PanAfricanCard(
                               padding: EdgeInsets.all(PanAfricanSpacing.lg),
                               hasGlow: true,
-                              glowColor: PanAfricanColors.secondary,
+                              glowColor: context.panSecondary,
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Icon(
                                     Icons.forum_outlined,
                                     size: 56.sp,
-                                    color: PanAfricanColors.secondary,
+                                    color: context.panSecondary,
                                   ),
                                   SizedBox(height: PanAfricanSpacing.md),
                                   Text(
@@ -306,7 +308,7 @@ class TribeChatScreen extends HookConsumerWidget {
                                   PanAfricanButton(
                                     label: 'Introduce yourself',
                                     icon: Icons.waving_hand_rounded,
-                                    backgroundColor: PanAfricanColors.secondary,
+                                    backgroundColor: context.panSecondary,
                                     foregroundColor: PanAfricanColors.neutralDarkest,
                                     onPressed: () {
                                       messageController.text =
@@ -392,7 +394,7 @@ class TribeChatScreen extends HookConsumerWidget {
                                     HapticFeedback.lightImpact();
                                     sendMessage();
                                   },
-                            backgroundColor: PanAfricanColors.secondary,
+                            backgroundColor: context.panSecondary,
                             foregroundColor: PanAfricanColors.neutralDarkest,
                           ),
                         ),
@@ -528,7 +530,7 @@ class _TribeMessageBubble extends StatelessWidget {
                               child: Text(
                                 senderName,
                                 style: PanAfricanTypography.labelMedium(context)
-                                    .copyWith(color: PanAfricanColors.secondary),
+                                    .copyWith(color: context.panSecondary),
                               ),
                             ),
                             if (globalId != null) ...[

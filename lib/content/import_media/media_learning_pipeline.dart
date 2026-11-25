@@ -113,6 +113,78 @@ class MediaLearningPipeline {
     );
   }
 
+  /// Builds one lesson from a learner's media. The model line is quoted from
+  /// that media. Generated checks are tagged unreviewed and are not a CI lint.
+  ImportedMediaLesson buildLesson({
+    required String text,
+    required String sourceLanguage,
+    required String mediaId,
+    required String span,
+    String? title,
+  }) {
+    final source = text.trim();
+    final id = mediaId.trim();
+    final cite = span.trim();
+    if (source.isEmpty) {
+      throw ArgumentError('Import Media lesson needs text from the media');
+    }
+    if (id.isEmpty || cite.isEmpty) {
+      throw ArgumentError('Import Media lesson needs a media id and a timestamp or span');
+    }
+
+    final sentences = _splitSentences(source);
+    final model = sentences.isNotEmpty ? sentences.first : source;
+    final words = _tokenize(model);
+    final vocabulary = _extractVocabulary(words, sourceLanguage);
+    final focus = vocabulary.isNotEmpty
+        ? _surfaceFormInText(model, vocabulary.first.word)
+        : (words.isNotEmpty ? words.first : model);
+    final cards = <ReviewItemFromMedia>[];
+    final seenAnswers = <String>{};
+    for (final item in vocabulary) {
+      if (cards.length >= 10) break;
+      final answer = _surfaceFormInText(source, item.word);
+      final key = answer.toLowerCase();
+      if (seenAnswers.contains(key)) continue;
+      if (!source.toLowerCase().contains(key)) continue;
+      seenAnswers.add(key);
+      cards.add(ReviewItemFromMedia(
+        skillId: item.skillId,
+        type: MediaReviewType.cloze,
+        prompt: _singleWordCloze(model, answer),
+        answer: answer,
+        context: model,
+        mediaId: id,
+        span: cite,
+      ));
+    }
+
+    final glosses = _buildUncitedGlosses(
+      words: _tokenize(model),
+      sourceLanguage: sourceLanguage,
+    );
+
+    return ImportedMediaLesson(
+      title: title ?? 'From your media',
+      mediaId: id,
+      span: cite,
+      sourceLanguage: sourceLanguage,
+      provenance: 'from your media',
+      objective: 'Notice and reuse one line from your media',
+      modelText: model,
+      focus: focus,
+      guidedPrompt: _singleWordCloze(model, focus),
+      guidedAnswer: focus,
+      glosses: glosses,
+      checkQuestion: 'Which line is from your media?',
+      checkAnswer: model,
+      checkProvenance: 'AI-generated, unreviewed',
+      toneStep: 'Listen to the tone in this line from your media: $model. No tone pattern is claimed.',
+      shadowingText: model,
+      flashcards: cards,
+    );
+  }
+
   // ─── Extraction logic ──────────────────────────────────────────────
 
   List<ExtractedVocabulary> _extractVocabulary(
@@ -279,6 +351,47 @@ class MediaLearningPipeline {
       '____',
     );
   }
+
+  /// Hides exactly one token in [sentence] for guided practice.
+  String _surfaceFormInText(String text, String normalized) {
+    for (final token in _tokenize(text)) {
+      if (token.toLowerCase() == normalized.toLowerCase()) {
+        return token;
+      }
+    }
+    return normalized;
+  }
+
+  String _singleWordCloze(String sentence, String word) {
+    final escaped = RegExp.escape(word);
+    final pattern = RegExp('\\b$escaped\\b', caseSensitive: false);
+    if (!pattern.hasMatch(sentence)) {
+      return sentence.replaceFirst(word, '____');
+    }
+    return sentence.replaceFirst(pattern, '____');
+  }
+
+  /// Glosses without a lexicon citation stay unreviewed (no invented meanings).
+  List<MediaWordGloss> _buildUncitedGlosses({
+    required List<String> words,
+    required String sourceLanguage,
+  }) {
+    final glosses = <MediaWordGloss>[];
+    final seen = <String>{};
+    for (final raw in words) {
+      final token = raw.trim();
+      if (token.length < 2) continue;
+      final key = token.toLowerCase();
+      if (seen.contains(key)) continue;
+      seen.add(key);
+      glosses.add(MediaWordGloss(
+        word: token,
+        gloss: 'Confirm meaning in context ($sourceLanguage)',
+        provenance: 'AI-generated, unreviewed',
+      ));
+    }
+    return glosses;
+  }
 }
 
 // ─── Data classes ──────────────────────────────────────────────────
@@ -348,6 +461,8 @@ class ReviewItemFromMedia {
   final String prompt;
   final String answer;
   final String? context;
+  final String? mediaId;
+  final String? span;
 
   const ReviewItemFromMedia({
     required this.skillId,
@@ -355,6 +470,20 @@ class ReviewItemFromMedia {
     required this.prompt,
     required this.answer,
     this.context,
+    this.mediaId,
+    this.span,
+  });
+}
+
+class MediaWordGloss {
+  final String word;
+  final String gloss;
+  final String provenance;
+
+  const MediaWordGloss({
+    required this.word,
+    required this.gloss,
+    required this.provenance,
   });
 }
 
@@ -386,3 +515,44 @@ class ComprehensionQuestion {
 
 enum MediaReviewType { vocabularyRecall, cloze, phraseTranslation }
 enum ComprehensionType { trueFalse, vocabularyMeaning, inference }
+
+/// A personal lesson built from one Import Media item.
+class ImportedMediaLesson {
+  final String title;
+  final String mediaId;
+  final String span;
+  final String sourceLanguage;
+  final String provenance;
+  final String objective;
+  final String modelText;
+  final String focus;
+  final String guidedPrompt;
+  final String guidedAnswer;
+  final String checkQuestion;
+  final String checkAnswer;
+  final String checkProvenance;
+  final String toneStep;
+  final String shadowingText;
+  final List<ReviewItemFromMedia> flashcards;
+  final List<MediaWordGloss> glosses;
+
+  const ImportedMediaLesson({
+    required this.title,
+    required this.mediaId,
+    required this.span,
+    required this.sourceLanguage,
+    required this.provenance,
+    required this.objective,
+    required this.modelText,
+    required this.focus,
+    required this.guidedPrompt,
+    required this.guidedAnswer,
+    required this.checkQuestion,
+    required this.checkAnswer,
+    required this.checkProvenance,
+    required this.toneStep,
+    required this.shadowingText,
+    required this.flashcards,
+    required this.glosses,
+  });
+}

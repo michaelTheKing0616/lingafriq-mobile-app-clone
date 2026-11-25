@@ -1,0 +1,111 @@
+charter: v2
+id: F-118
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Social Hub and Connections
+phase: P9
+epic: E-P9-SAFETY
+hub: Village
+req_ids:
+- F-118
+- F-118.D
+- F-118.E
+- F-118.U
+- F-118.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P9-SAFETY
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: social/village feature complexity and coupling'
+token_budget: 80000
+file_allowlist:
+- lib/screens/social/social_hub_screen.dart
+- lib/screens/social/user_connections_screen.dart
+- lib/screens/social/friend_profile_screen.dart
+- lib/screens/chat/user_search_global_id_screen.dart
+- lib/screens/social/global_people_search_screen.dart
+context_anchors:
+- ELEVATION.md#§18.6:L5177-L5192
+delta:
+  current_state: Hub and profiles work; global people search unrouted.
+  defects_to_fix:
+  - Find-anyone search lacks age and privacy controls
+  elevation_to_build:
+  - Tandem language-partner suggestions by speak/learn pairing
+  - Friend profiles show languages, level, shared goals
+  - Under-18 never appears in adult discovery
+  ux_and_render:
+  - Partner cards with speaks/learns pills
+  hub_placement: Village → People
+  unlock_stage: per §17.4
+  harvest_list:
+  - Consolidate global people search into the gated partner discovery flow
+acceptance_criteria:
+- id: AC1
+  text: Given an adult learner, when browsing People, then suggestions match tandem speak/learn languages
+- id: AC2
+  text: Given an under-18 account, when adult discovery runs, then minor profiles are excluded
+- id: AC3
+  text: Given global search, when used, then age and privacy controls gate results before connect
+test_plan:
+  unit:
+  - delta defects covered
+  - routing and state transitions
+  integration:
+  - hub navigation and backend contracts
+  e2e:
+  - primary user journey on device
+  a11y:
+  - semantics
+  - 200% text scale goldens
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f-118.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+tags:
+- under18_social
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux
+  - adaptive/14-safety-and-high-stakes

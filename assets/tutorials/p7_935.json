@@ -1,0 +1,82 @@
+{
+  "card": "P7-935",
+  "built": "2026-10-27",
+  "language_code": "ig",
+  "pack_citation": "register:fsi-igbo; CURRICULUM.md#§3.3:L525; ELEVATION.md#§11.2:L1789; assets/data/keyboard/layouts.json; assets/data/patterns/ig.json",
+  "publish_status": "draft",
+  "native_reviewer_sign_offs": [],
+  "tutorials": [
+    {
+      "id": "ig-sound-vowel-harmony",
+      "title": "Vowel harmony and dotted vowels",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 22,
+          "body_en": "Standard Igbo spelling uses dotted vowels ị, ọ, and ụ plus ṅ (assets/data/keyboard/layouts.json, ig; CURRICULUM.md#§3.3:L525). Igbo also has vowel harmony: affix vowels match the harmonic class of nearby stem vowels (ELEVATION.md#§11.2:L1789; register:fsi-igbo). Pedagogical tone marks stay kit-defined — this tutorial does not teach tone labels.",
+          "source_ids": [
+            "assets/data/keyboard/layouts.json#ig",
+            "CURRICULUM.md#§3.3:L525",
+            "ELEVATION.md#§11.2:L1789",
+            "register:fsi-igbo"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 26,
+          "body_en": "Notice dotted vowels in cited A1 lemmas ahịa (market) and ụlọ (house), then listen for the harmonizing perfect suffix in O gụrụ akwụkwọ (completed reading) from the progressive pattern contrasts (assets/data/patterns/ig.json#ig.pat.progressive-na). Native mouth video fills in after EXT-13 capture (P7-933).",
+          "source_ids": [
+            "assets/data/lexicon/a1/ig.json#ig.lex.bd8344a4df9d",
+            "assets/data/lexicon/a1/ig.json#ig.lex.c2e4bd8ed398",
+            "assets/data/lexicon/a1/ig.json#ig.lex.0107433fee4c",
+            "assets/data/patterns/ig.json#ig.pat.progressive-na",
+            "assets/data/lens/ocr_diacritic_fixtures.json#ig.ahia"
+          ],
+          "mouth_video_uri": null,
+          "audio_uri": null,
+          "dotted_vowel_examples": [
+            {
+              "lemma": "ahịa",
+              "gloss_en": "market",
+              "lexicon_id": "ig.lex.bd8344a4df9d",
+              "display_form": "Ahịa",
+              "frequency_source_id": "leipzig",
+              "licence_id": "leipzig",
+              "media_gate": "EXT-13_native_capture"
+            },
+            {
+              "lemma": "ụlọ",
+              "gloss_en": "house",
+              "lexicon_id": "ig.lex.c2e4bd8ed398",
+              "display_form": "ụlọ",
+              "frequency_source_id": "leipzig",
+              "licence_id": "leipzig",
+              "media_gate": "EXT-13_native_capture"
+            }
+          ],
+          "harmony_example": {
+            "pattern_id": "ig.pat.progressive-na",
+            "form": "O gụrụ akwụkwọ (completed)",
+            "gloss_en": "He/she read (completed)",
+            "stem_lexicon_id": "ig.lex.0107433fee4c",
+            "note_en": "Perfect suffix vowel harmonizes with the verb stem (register:fsi-igbo; CURRICULUM pack evidence on -le/-la)."
+          }
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 24,
+          "body_en": "Which market spelling matches the A1 lexicon: Ahịa or Ahia?",
+          "source_ids": [
+            "assets/data/lexicon/a1/ig.json#ig.lex.bd8344a4df9d",
+            "assets/data/lens/ocr_diacritic_fixtures.json#ig.ahia"
+          ],
+          "choices": [
+            {"form": "Ahịa", "lexicon_ref": "ig.lex.bd8344a4df9d"},
+            {"form": "Ahia", "lexicon_ref": null}
+          ],
+          "correct_lexicon_ref": "ig.lex.bd8344a4df9d"
+        }
+      ]
+    }
+  ]
+}

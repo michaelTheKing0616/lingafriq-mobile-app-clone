@@ -1,0 +1,55 @@
+charter: v2
+id: P5-087
+kind: verification
+title: Measure publishable items per week and A1 and A1-B1 timelines
+phase: P5
+epic: E-P5-A1
+req_ids:
+- CP-§9.3-06
+- CP-§9.3-07
+- CP-§9.3-08
+- CP-§9.3-09
+depends_on:
+- P5-077
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T0
+  tester: T0
+  reviewer: T1
+  justification: verification only; no code
+token_budget: 20000
+file_allowlist: []
+context_anchors:
+- CURRICULUM.md#§9.3:L823-L826
+acceptance_criteria:
+- id: AC1
+  text: Given a language, when measured, then publishable items per week are recorded against 800-1,500 [estimate]
+- id: AC2
+  text: Given A1 (about 3,000-4,000 items), when closed, then elapsed time is compared with 3-4 weeks; A1-B1 (about 10,000-12,000
+    items) with 10-14 weeks
+- id: AC3
+  text: Given 7 languages, when run, then they run in parallel and the schedule is recorded
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

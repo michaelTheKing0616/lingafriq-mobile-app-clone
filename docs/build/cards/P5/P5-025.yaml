@@ -1,0 +1,86 @@
+charter: v2
+id: P5-025
+kind: build
+title: Render grammar aha cards with contrastive examples
+phase: P5
+epic: E-P5-A1
+req_ids:
+- EP-§6.2-13
+- EP-§6.2-14
+depends_on:
+- P5-020
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/lessons/grammar_aha_card.dart
+- test/lessons/grammar_aha_card_test.dart
+context_anchors:
+- ELEVATION.md#§6.2:L1167-L1171
+acceptance_criteria:
+- id: AC1
+  text: Given a Pattern entry, when shown, then a short aha card presents contrastive examples followed by practice
+- id: AC2
+  text: Given a pattern with no contrast pair, when requested, then the card is not generated and the gap is logged as PatternContrastMissing
+- id: AC3
+  text: Given the legacy generic sentences, when any appear in a card, then CI fails
+test_plan:
+  unit:
+  - card builder
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - screen reader reads contrast pairs
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - ready
+  - practice
+  - missing-pattern
+  copy_keys:
+  - aha.title
+  - aha.practice
+  tokens:
+  - color.label.native
+  - color.label.expert
+  - color.label.beta
+  - type.body
+  - space.4
+  motion_tier: product
+  a11y:
+  - screen-reader announces label name and meaning
+  - touch targets >=48dp
+  - contrast >=4.5:1 on label chips
+  goldens:
+  - aha_card
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

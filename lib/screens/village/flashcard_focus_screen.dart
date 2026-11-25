@@ -1,15 +1,126 @@
 import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/modern_griot_design_system.dart';
+import '../../utils/api_service.dart';
+import '../../services/capability_gate.dart';
 import '../../widgets/griot/griot_widgets.dart';
-import '../../widgets/game/game_widgets.dart';
+
+/// copy_keys: flashcard.colearners.empty (P9-958).
+const String kFlashcardCoLearnersEmpty =
+    'No one else is studying with you right now. Keep going on your own or invite friends from your circle.';
+
+/// copy_keys: flashcard.group_study.minor_blocked (P9-958).
+const String kFlashcardGroupStudyMinorBlocked =
+    'Group flashcard study is for verified adult learners. You can still review cards on your own.';
+
+typedef FlashcardRosterLoader = Future<Map<String, dynamic>> Function({
+  String? sessionId,
+});
+
+Future<Map<String, dynamic>> defaultFlashcardRosterLoader({
+  String? sessionId,
+}) async {
+  await ApiService.initialize();
+  final path = sessionId == null || sessionId.isEmpty
+      ? '/api/v2/village/flashcards/roster'
+      : '/api/v2/village/flashcards/roster?session_id=${Uri.encodeComponent(sessionId)}';
+  final response = await ApiService.get(path);
+  final json = response.data;
+  if (json is Map<String, dynamic>) return json;
+  return <String, dynamic>{'ok': false};
+}
+
+@visibleForTesting
+FlashcardGroupStudyRoster flashcardRosterFromApi(Map<String, dynamic> json) {
+  if (json['ok'] != true) {
+    return const FlashcardGroupStudyRoster.solo();
+  }
+  final roster = json['roster'];
+  if (roster is! Map<String, dynamic>) {
+    return const FlashcardGroupStudyRoster.solo();
+  }
+  final mode = roster['mode'] as String? ?? 'solo';
+  final rawPeers = roster['peers'];
+  if (mode == 'practice_bot') {
+    return const FlashcardGroupStudyRoster.practiceBot();
+  }
+  if (mode != 'matched_peers' || rawPeers is! List) {
+    return const FlashcardGroupStudyRoster.solo();
+  }
+  final peers = <FlashcardCoLearner>[];
+  for (final item in rawPeers) {
+    if (item is! Map) continue;
+    final map = Map<String, dynamic>.from(item);
+    if (map['is_practice_bot'] == true) {
+      peers.add(const FlashcardCoLearner.practiceBot());
+      continue;
+    }
+    final name = (map['display_name'] as String?)?.trim();
+    if (name == null || name.isEmpty) continue;
+    peers.add(FlashcardCoLearner.matched(
+      displayName: name,
+      hasMic: map['has_mic'] == true,
+    ));
+  }
+  if (peers.isEmpty) {
+    return const FlashcardGroupStudyRoster.solo();
+  }
+  return FlashcardGroupStudyRoster.matched(peers);
+}
+
+/// Group-study roster for Village flashcards (P10-911).
+enum FlashcardStudyMode { solo, matchedPeers, practiceBot }
+
+class FlashcardCoLearner {
+  const FlashcardCoLearner.matched({
+    required this.displayName,
+    this.hasMic = false,
+  }) : isPracticeBot = false;
+
+  const FlashcardCoLearner.practiceBot()
+      : displayName = null,
+        hasMic = false,
+        isPracticeBot = true;
+
+  final String? displayName;
+  final bool hasMic;
+  final bool isPracticeBot;
+}
+
+class FlashcardGroupStudyRoster {
+  const FlashcardGroupStudyRoster.solo() : mode = FlashcardStudyMode.solo, peers = const [];
+
+  FlashcardGroupStudyRoster.matched(this.peers)
+      : mode = FlashcardStudyMode.matchedPeers;
+
+  const FlashcardGroupStudyRoster.practiceBot()
+      : mode = FlashcardStudyMode.practiceBot,
+        peers = const [FlashcardCoLearner.practiceBot()];
+
+  final FlashcardStudyMode mode;
+  final List<FlashcardCoLearner> peers;
+}
 
 class FlashcardFocusScreen extends ConsumerStatefulWidget {
-  const FlashcardFocusScreen({super.key});
+  const FlashcardFocusScreen({
+    super.key,
+    this.sessionId,
+    this.rosterOverride,
+    this.rosterLoader = defaultFlashcardRosterLoader,
+    this.capabilityGate,
+  });
+
+  final String? sessionId;
+  /// Test / preview injection — skips network roster fetch.
+  final FlashcardGroupStudyRoster? rosterOverride;
+  final FlashcardRosterLoader rosterLoader;
+  final CapabilityGate? capabilityGate;
+
+  /// When omitted, roster loads from GET `/api/v2/village/flashcards/roster`.
+  static const practiceBotLabel = 'Practice bot';
 
   @override
   ConsumerState<FlashcardFocusScreen> createState() =>
@@ -22,14 +133,9 @@ class _FlashcardFocusScreenState extends ConsumerState<FlashcardFocusScreen>
   int _currentIndex = 0;
   late final AnimationController _flipController;
   late final Animation<double> _flipAnimation;
-
-  static const _mockParticipants = [
-    _Participant('Amina', true),
-    _Participant('Kwame', false),
-    _Participant('Zuri', true),
-    _Participant('Tunde', false),
-    _Participant('Nia', false),
-  ];
+  FlashcardGroupStudyRoster _roster = const FlashcardGroupStudyRoster.solo();
+  bool _rosterLoading = true;
+  bool _groupStudyMinorBlocked = false;
 
   static const _mockCards = [
     _FlashcardData(
@@ -62,6 +168,38 @@ class _FlashcardFocusScreenState extends ConsumerState<FlashcardFocusScreen>
     _flipAnimation = Tween<double>(begin: 0, end: pi).animate(
       CurvedAnimation(parent: _flipController, curve: Curves.easeInOutCubic),
     );
+    _loadRoster();
+  }
+
+  Future<void> _loadRoster() async {
+    if (widget.rosterOverride != null) {
+      setState(() {
+        _roster = widget.rosterOverride!;
+        _rosterLoading = false;
+      });
+      return;
+    }
+    final gate = widget.capabilityGate ?? CapabilityGate();
+    try {
+      final caps = await gate.load(forceRefresh: true);
+      final blocked = caps.isMinor || caps.tier == null;
+      final json = await widget.rosterLoader(sessionId: widget.sessionId);
+      if (!mounted) return;
+      setState(() {
+        _groupStudyMinorBlocked = blocked || json['group_study_allowed'] == false;
+        _roster = flashcardRosterFromApi(json);
+        if (_groupStudyMinorBlocked) {
+          _roster = const FlashcardGroupStudyRoster.solo();
+        }
+        _rosterLoading = false;
+      });
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _roster = const FlashcardGroupStudyRoster.solo();
+        _rosterLoading = false;
+      });
+    }
   }
 
   @override
@@ -101,7 +239,30 @@ class _FlashcardFocusScreenState extends ConsumerState<FlashcardFocusScreen>
         child: Column(
           children: [
             SizedBox(height: 8.h),
-            _buildAvatarStrip(cs),
+            if (_groupStudyMinorBlocked)
+              Padding(
+                padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 8.h),
+                child: Semantics(
+                  label: kFlashcardGroupStudyMinorBlocked,
+                  child: Text(
+                    kFlashcardGroupStudyMinorBlocked,
+                    style: ModernGriotTypography.bodySmall(
+                      context: context,
+                      color: cs.onSurfaceVariant,
+                    ),
+                  ),
+                ),
+              ),
+            if (_rosterLoading)
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+                child: LinearProgressIndicator(
+                  minHeight: 2.h,
+                  borderRadius: ModernGriotRadius.borderFull,
+                ),
+              )
+            else
+              FlashcardCoLearnerStrip(roster: _roster),
             SizedBox(height: 12.h),
             Expanded(child: _buildFlashcard(cs, card)),
             SizedBox(height: 12.h),
@@ -113,37 +274,6 @@ class _FlashcardFocusScreenState extends ConsumerState<FlashcardFocusScreen>
             SizedBox(height: 16.h),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildAvatarStrip(ColorScheme cs) {
-    return SizedBox(
-      height: 52.h,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
-        itemCount: _mockParticipants.length,
-        separatorBuilder: (_, __) => SizedBox(width: 10.w),
-        itemBuilder: (_, i) {
-          final p = _mockParticipants[i];
-          return GriotAvatar(
-            size: 42,
-            status: GriotAvatarStatus.online,
-            badge: p.hasMic
-                ? Container(
-                    width: 16.r,
-                    height: 16.r,
-                    decoration: BoxDecoration(
-                      color: cs.primaryContainer,
-                      shape: BoxShape.circle,
-                    ),
-                    child:
-                        Icon(Icons.mic, size: 10.sp, color: cs.onPrimary),
-                  )
-                : null,
-          );
-        },
       ),
     );
   }
@@ -182,7 +312,7 @@ class _FlashcardFocusScreenState extends ConsumerState<FlashcardFocusScreen>
             top: 40.h,
             child: Transform.rotate(
               angle: pi / 12,
-              child: GriotBadgePill(
+              child: const GriotBadgePill(
                 label: 'LEVEL UP!',
                 icon: Icons.trending_up_rounded,
                 color: ModernGriotColors.secondaryContainer,
@@ -408,6 +538,112 @@ class _FlashcardFocusScreenState extends ConsumerState<FlashcardFocusScreen>
   }
 }
 
+/// Co-learner strip for group study (P10-911); tested in isolation to avoid full-screen layout.
+@visibleForTesting
+class FlashcardCoLearnerStrip extends StatelessWidget {
+  const FlashcardCoLearnerStrip({super.key, required this.roster});
+
+  final FlashcardGroupStudyRoster roster;
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    if (roster.mode == FlashcardStudyMode.solo) {
+      return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        child: Semantics(
+          label: kFlashcardCoLearnersEmpty,
+          child: Container(
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+            decoration: BoxDecoration(
+              color: cs.surfaceContainerHighest,
+              borderRadius: ModernGriotRadius.borderLg,
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.person_outline_rounded,
+                    size: 20.sp, color: cs.onSurfaceVariant),
+                SizedBox(width: 8.w),
+                Expanded(
+                  child: Text(
+                    kFlashcardCoLearnersEmpty,
+                    style: ModernGriotTypography.bodySmall(
+                      context: context,
+                      color: cs.onSurfaceVariant,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    return SizedBox(
+      height: 96.h,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        itemCount: roster.peers.length,
+        separatorBuilder: (_, __) => SizedBox(width: 12.w),
+        itemBuilder: (_, i) {
+          final peer = roster.peers[i];
+          final label = peer.isPracticeBot
+              ? FlashcardFocusScreen.practiceBotLabel
+              : (peer.displayName ?? '');
+          return Semantics(
+            label: peer.isPracticeBot
+                ? FlashcardFocusScreen.practiceBotLabel
+                : 'Co-learner $label',
+            child: SizedBox(
+              width: 56.w,
+              height: 88.h,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  GriotAvatar(
+                    size: 32,
+                    status: peer.isPracticeBot
+                        ? GriotAvatarStatus.busy
+                        : GriotAvatarStatus.online,
+                    badge: peer.hasMic
+                        ? Container(
+                            width: 16.r,
+                            height: 16.r,
+                            decoration: BoxDecoration(
+                              color: cs.primaryContainer,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(Icons.mic,
+                                size: 10.sp, color: cs.onPrimary),
+                          )
+                        : null,
+                  ),
+                  SizedBox(height: 2.h),
+                  Text(
+                    label,
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: ModernGriotTypography.labelSmall(
+                      context: context,
+                      color: peer.isPracticeBot
+                          ? cs.secondary
+                          : cs.onSurface,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
 class _BlobPainter extends CustomPainter {
   _BlobPainter(this.color);
   final Color color;
@@ -425,12 +661,6 @@ class _BlobPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _BlobPainter old) => color != old.color;
-}
-
-class _Participant {
-  const _Participant(this.name, this.hasMic);
-  final String name;
-  final bool hasMic;
 }
 
 class _FlashcardData {

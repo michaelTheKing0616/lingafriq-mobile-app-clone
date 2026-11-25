@@ -1,0 +1,64 @@
+charter: v2
+id: P0-INT-06
+kind: build
+title: Build RTM from segmented extraction parts
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- RM-STOP-07
+depends_on:
+- E-P0-INTAKE
+- P0-INT-05
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T0
+  tester: T0
+  reviewer: T1
+  justification: segment and merge scripts already run
+token_budget: 25000
+file_allowlist:
+- scripts/plan/segment_rtm.py
+- scripts/plan/merge_rtm.py
+- docs/build/RTM.csv
+context_anchors:
+- docs/build/00_README_PLAN.md#rtm
+acceptance_criteria:
+- id: AC1
+  text: Given docs/build/rtm_parts/*.csv, when `python3 scripts/plan/merge_rtm.py` runs, then docs/build/RTM.csv is written
+    with unique req_id values
+- id: AC2
+  text: Given a duplicate req_id across parts, when the merge runs, then it exits non-zero naming both parts and never overwrites
+    silently
+- id: AC3
+  text: Given RTM.csv, when `python3 scripts/plan/check_rtm_coverage.py` runs, then every row has an owner or a card id
+test_plan:
+  unit:
+  - merge duplicate detection
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- scripts/plan/segment_rtm.py
+- scripts/plan/merge_rtm.py
+risks: []
+gate: G0
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,40 @@
+orthography:
+  standard: Kiswahili Sanifu
+  authority: BAKITA, Tanzania
+  citation_status: unverified
+  kenyan_notes: unverified
+
+lexicon:
+  - source_id: oxford-languages
+    role: licensed
+    held: false
+    api: Swahili
+  - source_id: wiktionary-kaikki
+    role: cross-check
+  - source_id: kamusi
+    optional: true
+    status: excluded
+    request_sent: false
+
+grammar:
+  - source_id: fsi-swahili
+    course: Basic
+    licence: public-domain
+    units: 150
+  - source_id: peace-corps-kiswahili
+    pd_status: unconfirmed
+  - author: Ashton
+    title: Swahili Grammar
+    purchased: false
+
+corpora_audio:
+  - source_id: leipzig-corpora
+  - source_id: common-voice-sw
+    recorded_hours: 1065
+  - source_id: fleurs
+  - source_id: african-storybook
+
+tools:
+  noun-class-concord-checker:
+    card: P4-044
+    enabled: false

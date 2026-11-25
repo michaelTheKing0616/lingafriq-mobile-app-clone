@@ -1,0 +1,65 @@
+charter: v2
+id: P3-012
+kind: build
+title: Define type scale with 18 sp floor and 1.5 leading
+phase: P3
+epic: E-P3-TOKENS
+req_ids:
+- EP-§3.4-16
+- EP-§3.4-17
+depends_on:
+- P3-011
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 1: blast 0, ambiguity 1, coupling 0'
+token_budget: 25000
+file_allowlist:
+- design/tokens/tokens.json
+- lib/design/typography.dart
+- test/design/type_scale_test.dart
+context_anchors:
+- ELEVATION.md#§3.4:L834-L835
+acceptance_criteria:
+- id: AC1
+  text: Given the type scale, when generated, then target-language styles are >=18 sp and leading >=1.5 and a lower value
+    fails the generator
+- id: AC2
+  text: Given text at 200% scale, when rendered in a golden, then tone marks do not collide with the line above
+- id: AC3
+  text: Given UI text on Noto, when listed, then each style names its role and has a token id
+test_plan:
+  unit:
+  - floor and leading
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - 200% golden
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

@@ -117,7 +117,7 @@ class ChallengeFriendScreen extends HookConsumerWidget {
           selectedChallengeType.value == null ||
           selectedDuration.value == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Please complete all fields'),
             backgroundColor: PolieColors.error,
           ),
@@ -206,7 +206,7 @@ class ChallengeFriendScreen extends HookConsumerWidget {
     if (showSuccess.value) {
       return Scaffold(
         body: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -264,7 +264,7 @@ class ChallengeFriendScreen extends HookConsumerWidget {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -353,7 +353,7 @@ class ChallengeFriendScreen extends HookConsumerWidget {
                               ? SizedBox(
                                   height: 20.h,
                                   width: 20.w,
-                                  child: CircularProgressIndicator(
+                                  child: const CircularProgressIndicator(
                                     strokeWidth: 2,
                                     valueColor: AlwaysStoppedAnimation<Color>(PolieColors.obsidian),
                                   ),
@@ -385,7 +385,7 @@ class ChallengeFriendScreen extends HookConsumerWidget {
       child: Row(
         children: [
           IconButton(
-            icon: Icon(Icons.arrow_back, color: PolieColors.textPrimary),
+            icon: const Icon(Icons.arrow_back, color: PolieColors.textPrimary),
             onPressed: () {
               HapticFeedback.lightImpact();
               Navigator.of(context).pop();
@@ -444,7 +444,7 @@ class ChallengeFriendScreen extends HookConsumerWidget {
               children: [
                 CircleAvatar(
                   radius: 24.r,
-                  backgroundColor: PolieColors.royalAmethyst.withOpacity(0.2),
+                  backgroundColor: PolieColors.royalAmethyst.withValues(alpha: 0.2),
                   child: Text(
                     (selectedFriend.value!['username']?.toString() ?? 'U')[0].toUpperCase(),
                     style: PolieTypography.body(context).copyWith(
@@ -463,7 +463,7 @@ class ChallengeFriendScreen extends HookConsumerWidget {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.close, color: PolieColors.textSecondary),
+                  icon: const Icon(Icons.close, color: PolieColors.textSecondary),
                   onPressed: () {
                     selectedFriend.value = null;
                   },
@@ -476,9 +476,9 @@ class ChallengeFriendScreen extends HookConsumerWidget {
             onChanged: (value) => searchQuery.value = value,
             decoration: InputDecoration(
               hintText: 'Search friends...',
-              prefixIcon: Icon(Icons.search, color: PolieColors.textSecondary),
+              prefixIcon: const Icon(Icons.search, color: PolieColors.textSecondary),
               filled: true,
-              fillColor: PolieColors.surfaceContainer.withOpacity(0.5),
+              fillColor: PolieColors.surfaceContainer.withValues(alpha: 0.5),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(PolieRadius.md),
                 borderSide: BorderSide.none,
@@ -488,7 +488,7 @@ class ChallengeFriendScreen extends HookConsumerWidget {
           if (isLoading)
             Padding(
               padding: EdgeInsets.all(PolieSpacing.lg),
-              child: Center(
+              child: const Center(
                 child: CircularProgressIndicator(color: PolieColors.goldEmber),
               ),
             )
@@ -514,7 +514,7 @@ class ChallengeFriendScreen extends HookConsumerWidget {
                   final friend = filteredFriends[index];
                   return ListTile(
                     leading: CircleAvatar(
-                      backgroundColor: PolieColors.royalAmethyst.withOpacity(0.2),
+                      backgroundColor: PolieColors.royalAmethyst.withValues(alpha: 0.2),
                       child: Text(
                         (friend['username']?.toString() ?? 'U')[0].toUpperCase(),
                         style: PolieTypography.body(context).copyWith(
@@ -571,7 +571,7 @@ class ChallengeFriendScreen extends HookConsumerWidget {
               },
               child: Container(
                 decoration: BoxDecoration(
-                  color: isSelected ? PolieColors.royalAmethyst.withOpacity(0.2) : null,
+                  color: isSelected ? PolieColors.royalAmethyst.withValues(alpha: 0.2) : null,
                   border: Border.all(
                     color: isSelected ? PolieColors.royalAmethyst : Colors.transparent,
                     width: 2,
@@ -604,7 +604,7 @@ class ChallengeFriendScreen extends HookConsumerWidget {
                       ),
                     ),
                     if (isSelected)
-                      Icon(Icons.check_circle, color: PolieColors.royalAmethyst),
+                      const Icon(Icons.check_circle, color: PolieColors.royalAmethyst),
                   ],
                 ),
                 ),
@@ -651,7 +651,7 @@ class ChallengeFriendScreen extends HookConsumerWidget {
                 decoration: BoxDecoration(
                   color: isSelected
                       ? PolieColors.goldEmber
-                      : PolieColors.surfaceContainer.withOpacity(0.5),
+                      : PolieColors.surfaceContainer.withValues(alpha: 0.5),
                   borderRadius: BorderRadius.circular(PolieRadius.md),
                   border: Border.all(
                     color: isSelected ? PolieColors.goldEmber : Colors.transparent,
@@ -716,7 +716,7 @@ class ChallengeFriendScreen extends HookConsumerWidget {
                 decoration: BoxDecoration(
                   color: isSelected
                       ? PolieColors.goldEmber
-                      : PolieColors.surfaceContainer.withOpacity(0.5),
+                      : PolieColors.surfaceContainer.withValues(alpha: 0.5),
                   borderRadius: BorderRadius.circular(PolieRadius.md),
                   border: Border.all(
                     color: isSelected ? PolieColors.goldEmber : Colors.transparent,

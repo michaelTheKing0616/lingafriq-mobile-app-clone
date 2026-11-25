@@ -1,0 +1,123 @@
+charter: v2
+id: F-111
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Tribes as Circles
+phase: P9
+epic: E-P9-SAFETY
+hub: Village
+req_ids:
+- F-111
+- F-111.D
+- F-111.E
+- F-111.U
+- F-111.L
+- P0-4
+- P0-5
+- P0-6
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P9-SAFETY
+- P9-936
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: social/village feature complexity and coupling'
+token_budget: 80000
+file_allowlist:
+- lib/screens/gamification/tribe_selection_screen.dart
+- lib/screens/village/tribe_hub_screen.dart
+- lib/screens/village/tribe_discovery_screen.dart
+- lib/screens/village/my_tribe_screen.dart
+- lib/screens/chat/tribe_chat_screen.dart
+- lib/screens/chat/tribe_chat_screen_material3.dart
+context_anchors:
+- ELEVATION.md#§18.6:L5074-L5091
+delta:
+  current_state: Tribe routes work with duplicate paths and fragile chat stack.
+  defects_to_fix:
+  - Tribe naming risks ethnic grouping connotations
+  - Duplicate routes for same screens
+  - Circle chat inherits socket flaws (P0-4/5/6)
+  elevation_to_build:
+  - Rename product surface to Circles (5–30 study teams) with optional themes
+  - Weekly team goals, streak, moderated circle chat, leader tools
+  - User-chosen playful tribe nicknames optional
+  ux_and_render:
+  - Circle crest builder with reviewed cultural patterns
+  - Team progress ring
+  hub_placement: Village → Circles
+  unlock_stage: per §17.4
+  harvest_list:
+  - Consolidate duplicate tribe route variants into one Circles navigation graph
+  - Retire parallel tribe chat screen where Material3 variant duplicates behavior
+acceptance_criteria:
+- id: AC1
+  text: Given Village, when opening Circles, then UI copy uses Circles not Tribe as the primary product term
+- id: AC2
+  text: Given circle chat, when messaging, then socket identity and metadata handling meet P0-4/5/6 fixes
+- id: AC3
+  text: Given duplicate legacy routes, when navigated, then they resolve to the single consolidated Circles screens
+- id: AC4
+  text: Given the account is under 18 or age-unknown, when this surface is opened, then it is hidden or guardian-gated until
+    E-P9-SAFETY is Done, and the restriction is enforced server-side.
+test_plan:
+  unit:
+  - delta defects covered
+  - routing and state transitions
+  integration:
+  - hub navigation and backend contracts
+  e2e:
+  - primary user journey on device
+  a11y:
+  - semantics
+  - 200% text scale goldens
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f-111.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+tags:
+- under18_social
+p0_area: true
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux
+  - adaptive/14-safety-and-high-stakes

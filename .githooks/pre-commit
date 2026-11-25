@@ -1,0 +1,5 @@
+#!/bin/sh
+set -e
+ROOT="$(git rev-parse --show-toplevel)"
+python3 "$ROOT/scripts/check_agent_files.py" --staged
+python3 "$ROOT/scripts/plan/archive_status_md.py" --check

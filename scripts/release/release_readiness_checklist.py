@@ -1,0 +1,270 @@
+#!/usr/bin/env python3
+"""P12-022: generate release-readiness checklist from CI evidence only."""
+
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from dataclasses import dataclass
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Literal
+
+import yaml
+
+ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_ITEMS = ROOT / "release" / "release_readiness_items.yaml"
+DEFAULT_EVIDENCE = ROOT / "release" / "fixtures" / "release_readiness_evidence.sample.json"
+DEFAULT_OUT_JSON = ROOT / "release" / "RELEASE_READINESS.json"
+DEFAULT_LEDGER = ROOT / "release" / "release_readiness_ledger.json"
+
+ItemStatus = Literal["pass", "fail", "blocked", "missing"]
+
+
+@dataclass(frozen=True)
+class ChecklistItem:
+    id: str
+    title: str
+    status: ItemStatus
+    detail: str
+    evidence_path: str | None = None
+
+
+def load_items_config(path: Path) -> dict[str, Any]:
+    raw = yaml.safe_load(path.read_text(encoding="utf-8"))
+    if not isinstance(raw, dict):
+        raise SystemExit(f"{path}: root must be a mapping")
+    return raw
+
+
+def evidence_passed(blob: Any) -> tuple[bool, str]:
+    if blob is None:
+        return False, "evidence missing"
+    if not isinstance(blob, dict):
+        return False, "evidence must be a JSON object"
+    if "passed" in blob:
+        val = blob["passed"]
+        if val is True:
+            return True, "passed=true"
+        if val is False:
+            return False, "passed=false"
+        return False, "passed is not boolean"
+    if blob.get("status") == "pass":
+        return True, "status=pass"
+    if blob.get("status") in ("fail", "failed"):
+        return False, f"status={blob.get('status')}"
+    return False, "no passed flag or pass status"
+
+
+def evaluate_evidence_items(
+    config: dict[str, Any],
+    evidence: dict[str, Any],
+) -> list[ChecklistItem]:
+    rows: list[ChecklistItem] = []
+    for entry in config.get("evidence_items") or []:
+        if not isinstance(entry, dict):
+            continue
+        item_id = str(entry.get("id", "")).strip()
+        title = str(entry.get("title", item_id)).strip()
+        key = str(entry.get("evidence_key", "")).strip()
+        blob = evidence.get(key) if key else None
+        if key and key not in evidence:
+            rows.append(
+                ChecklistItem(
+                    id=item_id,
+                    title=title,
+                    status="missing",
+                    detail=f"evidence key `{key}` absent",
+                )
+            )
+            continue
+        ok, detail = evidence_passed(blob)
+        rows.append(
+            ChecklistItem(
+                id=item_id,
+                title=title,
+                status="pass" if ok else "fail",
+                detail=detail,
+                evidence_path=key or None,
+            )
+        )
+    return rows
+
+
+def evaluate_blocked_items(config: dict[str, Any]) -> list[ChecklistItem]:
+    rows: list[ChecklistItem] = []
+    for entry in config.get("blocked_items") or []:
+        if not isinstance(entry, dict):
+            continue
+        item_id = str(entry.get("id", "")).strip()
+        title = str(entry.get("title", item_id)).strip()
+        blocker = str(entry.get("external_blocker", "external")).strip()
+        rows.append(
+            ChecklistItem(
+                id=item_id,
+                title=title,
+                status="blocked",
+                detail=f"Blocked-External {blocker}",
+            )
+        )
+    return rows
+
+
+def overall_status(items: list[ChecklistItem]) -> Literal["READY", "NOT_READY"]:
+    for item in items:
+        if item.status != "pass":
+            return "NOT_READY"
+    return "READY"
+
+
+def build_report(
+    items: list[ChecklistItem],
+    evidence_path: Path,
+    release_tag: str | None,
+    tope_signed: bool,
+) -> dict[str, Any]:
+    blockers = [
+        {"id": i.id, "status": i.status, "detail": i.detail}
+        for i in items
+        if i.status != "pass"
+    ]
+    overall = overall_status(items)
+    if overall == "READY" and not tope_signed:
+        overall = "NOT_READY"
+        blockers.append(
+            {
+                "id": "TOPE_SIGNOFF",
+                "status": "missing",
+                "detail": "Tope sign-off not recorded",
+            }
+        )
+    return {
+        "card": "P12-022",
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "evidence_source": str(evidence_path),
+        "release_tag": release_tag,
+        "tope_signed": tope_signed,
+        "overall": overall,
+        "items": [
+            {
+                "id": i.id,
+                "title": i.title,
+                "status": i.status,
+                "detail": i.detail,
+                "evidence_key": i.evidence_path,
+            }
+            for i in items
+        ],
+        "blockers": blockers,
+    }
+
+
+def render_markdown(report: dict[str, Any]) -> str:
+    lines = [
+        "# Release readiness",
+        "",
+        f"Generated by `scripts/release/release_readiness_checklist.py`. "
+        f"Overall: **{report.get('overall')}**.",
+        "",
+        f"Evidence: `{report.get('evidence_source')}`",
+        "",
+        "| ID | Status | Detail |",
+        "|---|---|---|",
+    ]
+    for row in report.get("items") or []:
+        if not isinstance(row, dict):
+            continue
+        lines.append(
+            f"| {row.get('id')} | {row.get('status')} | {row.get('detail')} |"
+        )
+    if report.get("blockers"):
+        lines.extend(["", "## Blockers", ""])
+        for b in report["blockers"]:
+            if isinstance(b, dict):
+                lines.append(f"- **{b.get('id')}** ({b.get('status')}): {b.get('detail')}")
+    lines.append("")
+    return "\n".join(lines)
+
+
+def cmd_generate(args: argparse.Namespace) -> int:
+    config = load_items_config(args.items)
+    if not args.evidence.is_file():
+        print(json.dumps({"error": f"missing evidence file {args.evidence}"}))
+        return 1
+    evidence = json.loads(args.evidence.read_text(encoding="utf-8"))
+    if not isinstance(evidence, dict):
+        print(json.dumps({"error": "evidence root must be object"}))
+        return 1
+
+    items = evaluate_evidence_items(config, evidence) + evaluate_blocked_items(config)
+    report = build_report(
+        items,
+        args.evidence,
+        args.release_tag,
+        bool(args.tope_signed),
+    )
+    args.out_json.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    if args.out_md:
+        args.out_md.write_text(render_markdown(report), encoding="utf-8")
+    print(json.dumps({"overall": report["overall"], "blocker_count": len(report["blockers"])}))
+    return 0 if report["overall"] == "READY" else 1
+
+
+def cmd_signoff(args: argparse.Namespace) -> int:
+    if not args.report.is_file():
+        print(json.dumps({"error": "run generate first"}))
+        return 1
+    report = json.loads(args.report.read_text(encoding="utf-8"))
+    if report.get("overall") != "READY":
+        print(json.dumps({"error": "cannot sign off while NOT_READY"}))
+        return 1
+    rows: list[dict[str, Any]] = []
+    if args.ledger.exists():
+        rows = json.loads(args.ledger.read_text(encoding="utf-8"))
+    rows.append(
+        {
+            "at": datetime.now(timezone.utc).isoformat(),
+            "release_tag": args.release_tag,
+            "report_path": str(args.report),
+            "tope_signed": True,
+        }
+    )
+    args.ledger.write_text(json.dumps(rows, indent=2) + "\n", encoding="utf-8")
+    print(json.dumps({"stored": True, "release_tag": args.release_tag}))
+    return 0
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description=__doc__)
+    sub = parser.add_subparsers(dest="command", required=True)
+
+    gen = sub.add_parser("generate", help="Build checklist JSON (and optional markdown)")
+    gen.add_argument("--items", type=Path, default=DEFAULT_ITEMS)
+    gen.add_argument("--evidence", type=Path, default=DEFAULT_EVIDENCE)
+    gen.add_argument("--out-json", type=Path, default=DEFAULT_OUT_JSON)
+    gen.add_argument("--out-md", type=Path, default=None)
+    gen.add_argument("--release-tag", type=str, default=None)
+    gen.add_argument(
+        "--tope-signed",
+        action="store_true",
+        help="Record Tope sign-off in report (AC3); default false",
+    )
+    gen.set_defaults(func=cmd_generate)
+
+    sign = sub.add_parser("signoff", help="Append ledger row after READY + Tope approval")
+    sign.add_argument("--report", type=Path, default=DEFAULT_OUT_JSON)
+    sign.add_argument("--ledger", type=Path, default=DEFAULT_LEDGER)
+    sign.add_argument("--release-tag", type=str, required=True)
+    sign.set_defaults(func=cmd_signoff)
+    return parser
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = build_parser()
+    args = parser.parse_args(argv)
+    return int(args.func(args))
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

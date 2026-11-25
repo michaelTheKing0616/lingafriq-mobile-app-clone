@@ -95,7 +95,7 @@ class _SyntheticVoiceStylesScreenState extends State<SyntheticVoiceStylesScreen>
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.5),
+                          color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.5),
                           borderRadius: BorderRadius.circular(14),
                         ),
                         child: Text(_disclaimer!, style: PanAfricanTypography.bodyMedium(context)),
@@ -113,23 +113,31 @@ class _SyntheticVoiceStylesScreenState extends State<SyntheticVoiceStylesScreen>
                     const SizedBox(height: 12),
                     Text('Style', style: PanAfricanTypography.titleMedium(context)),
                     const SizedBox(height: 8),
-                    for (final s in _styles) ...[
-                      _StyleTile(
-                        id: (s['id'] ?? '').toString(),
-                        label: (s['label'] ?? '').toString(),
-                        description: (s['description'] ?? '').toString(),
-                        selected: _styleId == (s['id'] ?? '').toString(),
-                        disabled: !_enabled,
-                        onTap: () {
-                          if (!_enabled) return;
-                          final id = (s['id'] ?? '').toString();
-                          if (id.isEmpty) return;
-                          HapticFeedback.lightImpact();
-                          _save(styleId: id);
-                        },
-                      ),
-                      const SizedBox(height: 10),
-                    ],
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: _styles.length,
+                      itemBuilder: (context, index) {
+                        final s = _styles[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: _StyleTile(
+                            id: (s['id'] ?? '').toString(),
+                            label: (s['label'] ?? '').toString(),
+                            description: (s['description'] ?? '').toString(),
+                            selected: _styleId == (s['id'] ?? '').toString(),
+                            disabled: !_enabled,
+                            onTap: () {
+                              if (!_enabled) return;
+                              final id = (s['id'] ?? '').toString();
+                              if (id.isEmpty) return;
+                              HapticFeedback.lightImpact();
+                              _save(styleId: id);
+                            },
+                          ),
+                        );
+                      },
+                    ),
                   ],
                 ),
     );
@@ -166,13 +174,13 @@ class _StyleTile extends StatelessWidget {
           decoration: BoxDecoration(
             color: cs.surface,
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: selected ? cs.primary : cs.outline.withOpacity(0.25), width: selected ? 2 : 1),
+            border: Border.all(color: selected ? cs.primary : cs.outline.withValues(alpha: 0.25), width: selected ? 2 : 1),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Icon(selected ? Icons.check_circle_rounded : Icons.circle_outlined,
-                  color: selected ? cs.primary : cs.onSurface.withOpacity(0.5)),
+                  color: selected ? cs.primary : cs.onSurface.withValues(alpha: 0.5)),
               const SizedBox(width: 10),
               Expanded(
                 child: Column(

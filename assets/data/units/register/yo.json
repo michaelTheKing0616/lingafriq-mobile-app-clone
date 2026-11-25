@@ -1,0 +1,215 @@
+{
+  "card": "P5-036",
+  "language": "yo",
+  "units": [
+    {
+      "id": "yo.register.greetings_elder",
+      "title": "Morning greeting to an elder",
+      "cefr": "A1",
+      "respect_sensitive": true,
+      "addressee_context": "elder",
+      "required_register": "formal",
+      "themes": ["greetings", "time_of_day", "social_status"],
+      "register_markers": {
+        "formal_contains_any": ["Ẹ kú"],
+        "informal_forbidden_in_responses": ["Báwo ni"]
+      },
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T22:30:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "FSI Yoruba Basic Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:fsi-yoruba; assets/data/lingafriq_authentic_curriculum_a1_c2.json#Yoruba-A1-u1-l2",
+            "retrieved_at": "2026-10-26T22:30:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "cultural",
+          "source_ref": "register:fsi-yoruba",
+          "text": "Ẹ kú àárọ̀ is the time-based greeting for elders or groups.",
+          "confidence": 0.9,
+          "confidence_floor": 0.85
+        }
+      ],
+      "confidence": 0.9,
+      "risk_tags": ["honorific_register"],
+      "review": {
+        "reviewers": [
+          {
+            "role": "linguist",
+            "reviewer_id": "yo-linguist-1",
+            "approved": true
+          }
+        ]
+      },
+      "practice_items": [
+        {
+          "id": "g1",
+          "kind": "choose_register",
+          "prompt_en": "You meet your aunt in the morning. What do you say first?",
+          "options": [
+            {
+              "text": "Ẹ kú àárọ̀",
+              "register": "formal",
+              "translation_en": "Good morning (to elders/group)"
+            },
+            {
+              "text": "Báwo ni",
+              "register": "informal",
+              "translation_en": "How are you? (informal, peers)"
+            }
+          ],
+          "correct_index": 0
+        },
+        {
+          "id": "g2",
+          "kind": "speak_line",
+          "prompt_en": "Greet an elder in the morning.",
+          "text": "Ẹ kú àárọ̀",
+          "register": "formal",
+          "role": "learner_response"
+        }
+      ]
+    },
+    {
+      "id": "yo.register.honorific_address",
+      "title": "Honorific ẹ vs informal address",
+      "cefr": "A1",
+      "respect_sensitive": true,
+      "addressee_context": "elder",
+      "required_register": "formal",
+      "themes": ["honorifics", "politeness"],
+      "register_markers": {
+        "formal_contains_any": ["Ẹ "],
+        "informal_forbidden_in_responses": ["Jọ̀wọ́ fún mi"]
+      },
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T22:30:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "FSI Yoruba Basic Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:fsi-yoruba; assets/data/lingafriq_authentic_curriculum_a1_c2.json#Yoruba-A1-u1-l3",
+            "retrieved_at": "2026-10-26T22:30:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:fsi-yoruba",
+          "text": "Ẹ jọ̀wọ́ softens requests to elders; peer forms omit the honorific ẹ prefix.",
+          "confidence": 0.88,
+          "confidence_floor": 0.85
+        }
+      ],
+      "confidence": 0.88,
+      "risk_tags": ["honorific_register"],
+      "review": {
+        "reviewers": [
+          {
+            "role": "linguist",
+            "reviewer_id": "yo-linguist-1",
+            "approved": true
+          }
+        ]
+      },
+      "practice_items": [
+        {
+          "id": "h1",
+          "kind": "choose_register",
+          "prompt_en": "You ask an elder for help politely.",
+          "options": [
+            {
+              "text": "Ẹ jọ̀wọ́",
+              "register": "formal",
+              "translation_en": "Please (honorific)"
+            },
+            {
+              "text": "Jọ̀wọ́ fún mi",
+              "register": "informal",
+              "translation_en": "Please (to a peer)"
+            }
+          ],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "id": "yo.register.kinship_respect",
+      "title": "Kinship terms in respectful address",
+      "cefr": "A1",
+      "respect_sensitive": true,
+      "addressee_context": "elder",
+      "required_register": "formal",
+      "themes": ["kinship", "family"],
+      "register_markers": {
+        "formal_contains_any": ["Bàbá", "Ìyá"],
+        "informal_forbidden_in_responses": []
+      },
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T22:30:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "FSI Yoruba Basic Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:fsi-yoruba; assets/data/lingafriq_authentic_curriculum_a1_c2.json#Yoruba-A1-u2-l1",
+            "retrieved_at": "2026-10-26T22:30:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "cultural",
+          "source_ref": "register:fsi-yoruba",
+          "text": "Close kinship terms Bàbá and Ìyá anchor respectful introductions.",
+          "confidence": 0.9,
+          "confidence_floor": 0.85
+        }
+      ],
+      "confidence": 0.9,
+      "risk_tags": ["honorific_register"],
+      "review": {
+        "reviewers": [
+          {
+            "role": "linguist",
+            "reviewer_id": "yo-linguist-1",
+            "approved": true
+          }
+        ]
+      },
+      "practice_items": [
+        {
+          "id": "k1",
+          "kind": "match_kinship",
+          "prompt_en": "Select the term for father when speaking respectfully.",
+          "options": [
+            {"text": "Bàbá", "register": "formal", "kinship": "father"},
+            {"text": "Ẹ̀bí", "register": "formal", "kinship": "family"}
+          ],
+          "correct_index": 0
+        },
+        {
+          "id": "k2",
+          "kind": "speak_line",
+          "prompt_en": "Name your mother respectfully.",
+          "text": "Ìyá",
+          "register": "formal",
+          "role": "learner_response"
+        }
+      ]
+    }
+  ]
+}

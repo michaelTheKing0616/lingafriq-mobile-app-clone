@@ -1,0 +1,77 @@
+charter: v2
+id: P10-935
+kind: build
+title: Add feature-flag experiments with pre-registration
+phase: P10
+epic: E-P10-ANALYTICS
+req_ids:
+- EP-§15-15
+- EP-§15-16
+- EP-§15-17
+depends_on:
+- ADR-021
+- P10-930
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 5; blast 2; p0 area
+token_budget: 60000
+file_allowlist:
+- node-backend/src/services/experiments.service.ts
+- node-backend/src/models/Experiment.ts
+- docs/analytics/EXPERIMENT_RULES.md
+context_anchors:
+- ELEVATION.md#§15:L1998-L1999
+acceptance_criteria:
+- id: AC1
+  text: Given a new experiment, when it is created, then it requires a written hypothesis, primary metric and minimum detectable
+    effect before it can start.
+- id: AC2
+  text: Given an experiment targets a setting, when the setting is a minor's safety setting, then creation fails with a typed
+    error.
+- id: AC3
+  text: Given a variant is assigned, when the learner returns, then the same variant is served and assignment is recorded.
+- id: AC4
+  text: Given an experiment ends, when results are read, then they show the pre-registered metric and MDE and no other metric
+    is promoted as the result.
+- id: AC5
+  text: Given a guardrail breach, when it is detected, then the experiment stops automatically.
+test_plan:
+  unit:
+  - pre-registration required
+  - minor safety block
+  integration:
+  - sticky assignment
+  security:
+  - minor safety settings excluded
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

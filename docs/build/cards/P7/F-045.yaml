@@ -1,0 +1,103 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P7
+epic: E-P7-HUBS
+hub: Speak
+gate: HUB
+status: Draft
+user_facing: true
+p0_area: false
+external_blockers: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+tags: []
+token_budget: 80000
+size: M
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 4: revive analytics charts from collected data'
+id: F-045
+title: Elevate Conversation Analytics
+req_ids:
+- F-045
+- F-045.D
+- F-045.E
+- F-045.U
+- F-045.L
+depends_on:
+- E-P2-PLATFORM
+- E-P3-DESIGN-SYSTEM
+file_allowlist:
+- lib/screens/ai_chat/conversation_analytics_screen.dart
+context_anchors:
+- ELEVATION.md#§18.4:L4143-L4154
+delta:
+  current_state: Unrouted analytics screen wired to conversationAnalyticsServiceProvider.
+  defects_to_fix:
+  - Insight data collected but never shown to learners.
+  elevation_to_build:
+  - 'How I speak: words used vs avoided, utterance length, code-switch rate, tone accuracy trend, frequent corrections.'
+  - One actionable suggestion per week.
+  ux_and_render:
+  - Simple charts each with an explanation line beyond shared bar.
+  hub_placement: Speak → Coach → Insights; Me → Progress.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given stored conversation analytics, when Speak → Coach → Insights opens, then charts render from the service without
+    empty placeholder panels.
+- id: AC2
+  text: Given a weekly refresh, when insights load, then exactly one actionable suggestion displays with honest empty states
+    when data is insufficient.
+- id: AC3
+  text: Given Me → Progress, when the learner views speaking insights, then the same metrics match Speak coach insights.
+test_plan:
+  unit:
+  - analytics aggregation
+  integration:
+  - conversationAnalyticsServiceProvider
+  e2e:
+  - Speak → Insights
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content: []
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - f-045.*
+skills:
+  worker:
+  - prime/conversational-ux
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux

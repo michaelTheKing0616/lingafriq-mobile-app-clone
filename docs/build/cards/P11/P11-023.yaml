@@ -1,0 +1,73 @@
+charter: v2
+id: P11-023
+kind: build
+title: Create era-accurate persona bust artboards
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§8.4-05
+- EP-§8.4-06
+- EP-§4.3-02
+depends_on:
+- E-P1-CONTAINMENT
+- P11-037
+- P11-034
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 2
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 2, coupling 1, depth 0'
+token_budget: 70000
+file_allowlist:
+- assets/rive/avatars/lingafriq_cast.riv
+- docs/build/personas/bust_reference_sheets.md
+context_anchors:
+- ELEVATION.md#§8.4:L1536
+- ELEVATION.md#§4.3:L919-L920
+acceptance_criteria:
+- id: AC1
+  text: Given each v1 persona, when the Bust artboard renders, then dress and hair match a reference sheet citing dossier
+    sources.
+- id: AC2
+  text: Given a bust, when released, then a reviewer approval is recorded; unreviewed busts cannot ship.
+- id: AC3
+  text: Given chat and persona surfaces, when a bust shows, then the AI recreation badge is present.
+test_plan:
+  unit:
+  - artboard exists in contract
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - reviewer approval
+user_facing: false
+ux_spec: null
+tags:
+- enables_persona
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers:
+- EXT-16
+- EXT-15
+status: Draft
+skills:
+  worker:
+  - prime/conversational-ux
+  - adaptive/08-coding-and-debugging

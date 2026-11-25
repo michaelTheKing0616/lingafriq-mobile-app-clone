@@ -1,0 +1,71 @@
+charter: v2
+id: P4-167
+kind: build
+title: Add Playwright tests for critical studio flows
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§14.2-57
+- EP-§14.1-01
+- EP-§14.1-06
+depends_on:
+- P4-151
+- P4-166
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- lingafriq-admin/playwright.config.ts
+- lingafriq-admin/e2e/review_flow.spec.ts
+- lingafriq-admin/e2e/login_2fa.spec.ts
+- .github/workflows/admin-e2e.yml
+context_anchors:
+- ELEVATION.md#§14.2:L1970-L1989
+- ELEVATION.md#§14.1:L1965-L1968
+acceptance_criteria:
+- id: AC1
+  text: Given CI, when the admin e2e job runs, then login with 2FA, draft, two-native review, linguist approve and publish
+    flows pass
+- id: AC2
+  text: Given the 33 existing pages, when the suite runs, then each page loads without console errors in a smoke test
+- id: AC3
+  text: Given a failing flow, when CI finishes, then the job fails and uploads trace artifacts
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e:
+  - review_flow
+  - login_2fa
+  - page smoke
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

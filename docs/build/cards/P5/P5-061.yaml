@@ -1,0 +1,69 @@
+charter: v2
+id: P5-061
+kind: build
+title: Wire Igbo TTS with 200-sample linguist check
+phase: P5
+epic: E-P5-AUDIO
+req_ids:
+- CP-§7-ig-01
+- CP-§7-ig-03
+- CP-§7-ig-04
+depends_on:
+- P5-059
+- E-P6-SCORER
+size: M
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 2
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T1
+  reviewer: T3
+  justification: 'score 8: blast 3, ambiguity 2, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/services/tts/ig_tts.dart
+- tools/audio/ig_listen_check.py
+- test/audio/ig_tts_test.dart
+context_anchors:
+- CURRICULUM.md#§7:L720-L722
+acceptance_criteria:
+- id: AC1
+  text: Given Igbo text, when synthesised, then Intron is used with Spitch fallback
+- id: AC2
+  text: Given the same gates as Yoruba, when run, then ASR round-trip and F0 check apply and the weaker Igbo tone proxy is
+    documented
+- id: AC3
+  text: Given a batch, when approved, then the linguist sample is 200
+test_plan:
+  unit:
+  - fallback
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- tts_tonal
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers:
+- EXT-01
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

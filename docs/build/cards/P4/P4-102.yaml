@@ -1,0 +1,77 @@
+charter: v2
+id: P4-102
+kind: build
+title: Define pattern, dialogue and unit schemas
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.5-15
+- EP-§6.5-16
+- EP-§6.5-20
+depends_on:
+- P4-100
+- P4-101
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- schemas/v2/content/pattern.schema.json
+- schemas/v2/content/dialogue.schema.json
+- schemas/v2/content/unit.schema.json
+- test/content/test_pattern_dialogue_unit.py
+context_anchors:
+- ELEVATION.md#§6.5:L1293-L1320
+acceptance_criteria:
+- id: AC1
+  text: Given a grammar pattern, when validated, then id, description_l1, form, examples[], contrasts[], common_errors[] and
+    cefr are present and grammar patterns reject label beta (C1)
+- id: AC2
+  text: Given a dialogue, when validated, then id, scene, roles, can_do_ids[] and comprehension_items[] exist and every turn
+    has speaker, text, gloss, audio and tone_pattern
+- id: AC3
+  text: Given a unit, when validated, then it holds can_do_ids[], input, patterns[], lexemes[], items[], speaking tasks[],
+    a culture card and a checkpoint, and every referenced id resolves
+- id: AC4
+  text: Given a dialogue turn whose audio reference is missing or mismatched to its text hash, when validated, then AUDIO_MISMATCH
+    is raised
+- id: AC5
+  text: Given a unit referencing an unreviewed object, when validated, then the unit is rejected UNREVIEWED_REFERENCE
+test_plan:
+  unit:
+  - test_pattern_dialogue_unit
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - fixtures
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/conversational-ux
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,1051 @@
+{
+"lang": "yo",
+"level": "C2",
+"built": "2026-10-21",
+"source_type": "synthesized",
+"items": [
+{
+"id": "yo.syn.7752da68a572",
+"lang": "yo",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C2",
+"can_do": [
+"C2.PROD: Produce argumentative text"
+],
+"text": "Lóòótọ́ ni pé ìjọba ti gbìyànjú, ṣùgbọ́n iṣẹ́ ṣì pọ̀ láti ṣe.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It is true that the government has tried, but much work remains to be done.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Concessive Lóòótọ́ ni pé … ṣùgbọ́n.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Lóòótọ́",
+"count": 22,
+"locator": "leipzig:yor_community_2017#s6167"
+},
+{
+"token": "ni",
+"count": 13853,
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"token": "pé",
+"count": 2260,
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"token": "ìjọba",
+"count": 620,
+"locator": "leipzig:yor_community_2017#s1552"
+},
+{
+"token": "ti",
+"count": 9833,
+"locator": "leipzig:yor_community_2017#s1"
+},
+{
+"token": "gbìyànjú",
+"count": 41,
+"locator": "leipzig:yor_community_2017#s1862"
+},
+{
+"token": "ṣùgbọ́n",
+"count": 233,
+"locator": "leipzig:yor_community_2017#s70"
+},
+{
+"token": "iṣẹ́",
+"count": 651,
+"locator": "leipzig:yor_community_2017#s482"
+},
+{
+"token": "ṣì",
+"count": 38,
+"locator": "leipzig:yor_wikipedia_2021_10K#s286"
+},
+{
+"token": "pọ̀",
+"count": 219,
+"locator": "leipzig:yor_community_2017#s269"
+},
+{
+"token": "láti",
+"count": 2434,
+"locator": "leipzig:yor_community_2017#s63"
+},
+{
+"token": "ṣe",
+"count": 2300,
+"locator": "leipzig:yor_community_2017#s152"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:yor_community_2017#s6167",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Lóòótọ́' attested 22x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s6167"
+},
+{
+"text": "token 'ni' attested 13853x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"text": "token 'pé' attested 2260x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"text": "token 'ìjọba' attested 620x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s1552"
+},
+{
+"text": "token 'ti' attested 9833x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s1"
+},
+{
+"text": "token 'gbìyànjú' attested 41x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s1862"
+},
+{
+"text": "token 'ṣùgbọ́n' attested 233x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s70"
+},
+{
+"text": "token 'iṣẹ́' attested 651x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s482"
+},
+{
+"text": "token 'ṣì' attested 38x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_wikipedia_2021_10K#s286"
+},
+{
+"text": "token 'pọ̀' attested 219x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s269"
+},
+{
+"text": "token 'láti' attested 2434x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s63"
+},
+{
+"text": "token 'ṣe' attested 2300x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s152"
+}
+],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"tone_pattern_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C2.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": true,
+"level": "C2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.0567c3f4a3d6",
+"lang": "yo",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C2",
+"can_do": [
+"C2.CULT: Understand a cultural practice"
+],
+"text": "Àṣà Yorùbá kọ́ wa láti máa bọ̀wọ̀ fún àgbà.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Yoruba culture teaches us to respect elders.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Respect for elders (ìbọ̀wọ̀ fún àgbà): prostration/kneeling in greeting.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Àṣà",
+"count": 96,
+"locator": "leipzig:yor_community_2017#s2122"
+},
+{
+"token": "Yorùbá",
+"count": 883,
+"locator": "leipzig:yor_community_2017#s163"
+},
+{
+"token": "kọ́",
+"count": 151,
+"locator": "leipzig:yor_community_2017#s523"
+},
+{
+"token": "wa",
+"count": 1939,
+"locator": "leipzig:yor_community_2017#s29"
+},
+{
+"token": "láti",
+"count": 2434,
+"locator": "leipzig:yor_community_2017#s63"
+},
+{
+"token": "máa",
+"count": 1554,
+"locator": "leipzig:yor_community_2017#s69"
+},
+{
+"token": "bọ̀wọ̀",
+"count": 5,
+"locator": "leipzig:yor_wikipedia_2021_10K#s5507"
+},
+{
+"token": "fún",
+"count": 2883,
+"locator": "leipzig:yor_community_2017#s46"
+},
+{
+"token": "àgbà",
+"count": 223,
+"locator": "leipzig:yor_community_2017#s100"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:yor_community_2017#s2122",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Àṣà' attested 96x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s2122"
+},
+{
+"text": "token 'Yorùbá' attested 883x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s163"
+},
+{
+"text": "token 'kọ́' attested 151x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s523"
+},
+{
+"text": "token 'wa' attested 1939x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s29"
+},
+{
+"text": "token 'láti' attested 2434x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s63"
+},
+{
+"text": "token 'máa' attested 1554x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s69"
+},
+{
+"text": "token 'bọ̀wọ̀' attested 5x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_wikipedia_2021_10K#s5507"
+},
+{
+"text": "token 'fún' attested 2883x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s46"
+},
+{
+"text": "token 'àgbà' attested 223x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s100"
+}
+],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"tone_pattern_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C2.culture_note"
+],
+"games": [],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": true,
+"level": "C2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.a9550a600a64",
+"lang": "yo",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C2",
+"can_do": [
+"C2.ARGUMENTATIVE"
+],
+"text": "Kò ṣe é já ní koro pé ọjọ́ iwájú orílẹ̀-èdè dá lórí ẹ̀kọ́ tí a ń fún àwọn ọmọ lónìí.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It is undeniable that the nation's future depends on the education given to children today.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C2.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.191838707927",
+"lang": "yo",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C2",
+"can_do": [
+"C2.ARGUMENTATIVE"
+],
+"text": "Àwọn tí ń gbè lẹ́yìn èrò yìí kò ka pé ohun àlùmọ́ọ́nì kò pọ̀ tó.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Those supporting this view ignore that resources are limited.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C2.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 4,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.db0b32f53f71",
+"lang": "yo",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C2",
+"can_do": [
+"C2.ARGUMENTATIVE"
+],
+"text": "Ẹ̀tọ́ láti sọ̀rọ̀ kò ní ìtumọ̀ tí àwọn aráàlú bá ń bẹ̀rù láti sọ̀rọ̀.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Freedom of speech means nothing if citizens fear to speak.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C2.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.4fd05e94a540",
+"lang": "yo",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C2",
+"can_do": [
+"C2.ARGUMENTATIVE"
+],
+"text": "Bí a kò bá kẹ́kọ̀ọ́ látinú ìtàn, a ó tún àṣìṣe kan náà ṣe.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "If we do not learn from history, we will repeat the same mistakes.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C2.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.faec8e5a8fc5",
+"lang": "yo",
+"type": "sentence",
+"category": "literary",
+"cefr": "C2",
+"can_do": [
+"C2.LITERARY"
+],
+"text": "Akéwì náà lo àwòrán odò láti ṣàpèjúwe ayé tí kò dúró sójú kan.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The poet used the image of a river to depict an ever-changing world.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C2.literary"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.ac80d036f360",
+"lang": "yo",
+"type": "sentence",
+"category": "literary",
+"cefr": "C2",
+"can_do": [
+"C2.LITERARY"
+],
+"text": "Ìjàkadì láàárín àṣà àti ìgbàlódé ni kókó ìtàn náà.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The struggle between tradition and modernity is the core of the story.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C2.literary"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.124025e18e70",
+"lang": "yo",
+"type": "sentence",
+"category": "literary",
+"cefr": "C2",
+"can_do": [
+"C2.LITERARY"
+],
+"text": "Fágúnwà lo ìtàn àròsọ láti kọ́ni ní ìwà ọmọlúàbí.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Fagunwa used fiction to teach good character.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C2.literary"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.4e8a53ca9297",
+"lang": "yo",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C2",
+"can_do": [
+"C2.CULTURE_NOTE"
+],
+"text": "Ọmọlúàbí ni ẹni tí ó ní ìwà rere, ọ̀wọ̀ àti òtítọ́.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "An ọmọlúàbí is a person of good character, respect and integrity.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C2.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.d7354b0691dc",
+"lang": "yo",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C2",
+"can_do": [
+"C2.CULTURE_NOTE"
+],
+"text": "Ẹsẹ Ifá ní ìmọ̀ ìjìnlẹ̀ nípa ayé àti ìwà ènìyàn.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Ifá verses hold deep knowledge about the world and human conduct.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C2.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.prv.9cde26e70194",
+"lang": "yo",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C2",
+"can_do": [
+"C2.PROVERB"
+],
+"text": "Ìwà lẹ̀sìn.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Character is religion.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C2.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.prv.f3ef265c2690",
+"lang": "yo",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C2",
+"can_do": [
+"C2.PROVERB"
+],
+"text": "Àgbájọ ọwọ́ la fi ń sọ̀yà.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It is with joined hands that one beats the chest.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C2.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.prv.9ef908103958",
+"lang": "yo",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C2",
+"can_do": [
+"C2.PROVERB"
+],
+"text": "Bí a bá ń gun ẹṣin, ká máa rántí pé ilẹ̀ ń bẹ.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "When riding a horse, remember the ground is there.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C2.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+}
+]
+}

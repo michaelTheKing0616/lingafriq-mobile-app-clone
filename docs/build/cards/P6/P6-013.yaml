@@ -1,0 +1,66 @@
+charter: v2
+id: P6-013
+kind: build
+title: Cache deterministic outputs in gateway
+phase: P6
+epic: E-P6-GATEWAY
+req_ids:
+- EP-§7.2-17
+- EP-§7.6-23
+depends_on:
+- P6-011
+size: S
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist:
+- node-backend/src/ai-gateway/cache.ts
+context_anchors:
+- ELEVATION.md#§7.2:L1367-L1387
+- ELEVATION.md#§7.6:L1462-L1475
+acceptance_criteria:
+- id: AC1
+  text: Given explanation and story-draft requests with identical prompt version, language and inputs, when repeated, then
+    the second is served from cache with no model call
+- id: AC2
+  text: Given a prompt version bump, when a cached key is read, then it misses
+- id: AC3
+  text: Given personal learner data in inputs, when a request is built, then it is never cached
+test_plan:
+  unit:
+  - key derivation
+  integration:
+  - hit and miss
+  security:
+  - no cross-user cache leak
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

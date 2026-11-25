@@ -1,0 +1,95 @@
+charter: v2
+id: P10-915
+kind: build
+title: Build an evidence portfolio of passed can-do tasks
+phase: P10
+epic: E-P10-CREDENTIALS
+req_ids:
+- EP-§12.4-01
+- EP-§12.4-02
+depends_on:
+- E-P5-CONTENT-REAL
+- E-P6-SCORER
+size: L
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: score 7; blast 2; p0 area
+token_budget: 150000
+file_allowlist:
+- node-backend/src/services/passport-portfolio.service.ts
+- node-backend/src/models/PassportEvidence.ts
+- lib/services/passport/passport_service.dart
+- lib/screens/passport/passport_credential_screen.dart
+context_anchors:
+- ELEVATION.md#§12.4:L1842-L1843
+acceptance_criteria:
+- id: AC1
+  text: Given content and scoring are not yet real, when a Passport is requested, then the server returns typed error PASSPORT_PREREQ_NOT_MET
+    and no credential is shown.
+- id: AC2
+  text: Given a learner passes a can-do task, when the server verifies it, then one portfolio entry is stored with task id,
+    time, scorer attempt id and level.
+- id: AC3
+  text: Given a portfolio entry is tied to scorer output, when it is saved, then it stores the scorer confidence and an unsure
+    state is never counted as a pass.
+- id: AC4
+  text: Given the portfolio is viewed, when it renders, then each entry lists the can-do and its evidence and nothing the
+    learner did not pass.
+- id: AC5
+  text: Given a client submits portfolio data, when the server receives it, then it is rejected and only server evidence counts.
+test_plan:
+  unit:
+  - unsure not a pass
+  integration:
+  - prereq gate
+  security:
+  - forged evidence rejected
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - empty
+  - populated
+  - prereq-blocked
+  copy_keys:
+  - passport_portfolio
+  tokens:
+  - color.semantic
+  - type.scale
+  - space.scale
+  motion_tier: product
+  a11y:
+  - screen reader labels
+  - 48dp touch targets
+  - reduced motion honoured
+  goldens:
+  - passport_portfolio_golden
+tags:
+- issues_credential
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

@@ -1,0 +1,82 @@
+charter: v2
+id: P9-901
+kind: build
+title: Scale sockets horizontally with Redis adapter and sticky sessions
+phase: P9
+epic: E-P9-REALTIME
+req_ids:
+- EP-§9.5-01
+- EP-§9.5-03
+- EP-§9.1-14
+- EP-§9.1-15
+- EP-§9.1-16
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+- P9-900
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, ambiguity 1, coupling 2, depth 1'
+token_budget: 80000
+file_allowlist:
+- node-backend/src/services/socket.service.ts
+- node-backend/src/config/redis.ts
+- node-backend/ecosystem.config.js
+- docs/build/external/nginx_sticky.md
+context_anchors:
+- ELEVATION.md#§9.1:L1563-L1565
+- ELEVATION.md#§9.5:L1655-L1656
+acceptance_criteria:
+- id: AC1
+  text: Given two server nodes behind sticky sessions, when a client on node A emits to a room that has a member on node B,
+    then node B delivers it within 500 ms via the Redis adapter
+- id: AC2
+  text: Given PM2 configured in cluster mode with N workers, when one worker is killed, then clients reconnect to another
+    worker within 5 s and resume from their cursor without duplicate delivery
+- id: AC3
+  text: Given Redis becomes unreachable, when a socket event is emitted, then the server returns a typed REDIS_UNAVAILABLE
+    error to the sender and never reports delivery success
+- id: AC4
+  text: Given the onlineUsers in-process map, when the card is complete, then no presence or room state is held only in process
+    memory
+test_plan:
+  unit:
+  - adapter wiring
+  integration:
+  - two-node emit/receive
+  - worker kill and reconnect
+  security:
+  - redis auth/TLS config
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Redis single point of failure; document failover
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

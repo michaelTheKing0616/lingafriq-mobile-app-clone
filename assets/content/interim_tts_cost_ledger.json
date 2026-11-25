@@ -1,0 +1,24 @@
+{
+  "charter": "v2",
+  "card_id": "P5-091",
+  "gate": "G5",
+  "depends_on": ["P5-071", "EXT-01"],
+  "sources": [
+    "docs/source/CURRICULUM.md#§9.4:L835",
+    "docs/plan/LINGAFRIQ_AI_MODEL_STACK.md#§3.5:L98",
+    "assets/data/audio/intron_tts_quote.json",
+    "CP-§9.4-07"
+  ],
+  "planning_band": {
+    "characters_min": 1000000,
+    "characters_max": 2000000,
+    "azure_usd_per_million_chars": 16,
+    "azure_usd_ceiling": 100,
+    "source": "docs/source/CURRICULUM.md#§9.4:L835",
+    "estimate": true
+  },
+  "azure_rate_usd_per_million": 16,
+  "azure_rate_source_anchor": "docs/plan/LINGAFRIQ_AI_MODEL_STACK.md#§3.5:L98",
+  "intron_quote_ref": "assets/data/audio/intron_tts_quote.json",
+  "interim_tts_cost_verifications": []
+}

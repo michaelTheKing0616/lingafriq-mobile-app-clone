@@ -1,0 +1,107 @@
+charter: v2
+id: P1-024
+kind: build
+title: Add report and block endpoints and UX
+phase: P1
+epic: E-P1-MINORS
+req_ids:
+- P0-11
+- RM-P0-06
+depends_on:
+- E-P0-INTAKE
+- P1-023
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 5; blast 2
+token_budget: 70000
+file_allowlist:
+- node-backend/src/routes/safety.route.ts
+- node-backend/src/controllers/safety.controller.ts
+- node-backend/src/models/report.model.ts
+- node-backend/src/services/blockFilter.ts
+- node-backend/src/routes/index.route.ts
+- node-backend/src/controllers/chat.controller.ts
+- node-backend/src/controllers/snap.controller.ts
+- node-backend/src/services/socket.service.ts
+- node-backend/src/__test__/P1-024.reportBlock.test.ts
+- node-backend/src/__test__/P1-024.globalBlock.test.ts
+- node-backend/src/__test__/socket/helpers.ts
+- lib/screens/chat/report_block_sheet.dart
+- lib/screens/chat/global_chat_screen_material3.dart
+- lib/providers/chat_socket_provider.dart
+- test/screens/chat/report_block_sheet_test.dart
+context_anchors:
+- ELEVATION.md#§1:L208-L219
+- ELEVATION.md#§16.1:L2036-L2038
+acceptance_criteria:
+- id: AC1
+  text: Given a message or user, when the user reports it with a reason, then a report record is stored and acknowledged with
+    a reference id
+- id: AC2
+  text: Given a user who blocks another, when the blocked user sends a message or snap, then it is not delivered and the blocker
+    sees nothing
+- id: AC3
+  text: Given a user opening a blocked-user list, when they unblock, then delivery resumes for new messages only
+- id: AC4
+  text: Given report and block actions, when invoked by a client-supplied reporter id, then the server ignores it and uses
+    the JWT subject
+test_plan:
+  unit:
+  - block filter
+  integration:
+  - report and block API
+  - delivery suppression
+  security:
+  - reporter id tamper
+  e2e: []
+  perf: []
+  a11y:
+  - sheet screen-reader labels
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - sheet-open
+  - submitting
+  - submitted
+  - error
+  copy_keys:
+  - report.title
+  - report.reasons
+  - block.confirm
+  tokens:
+  - design-system sheet tokens
+  motion_tier: product
+  a11y:
+  - sheet focus trap
+  - reasons radio group
+  goldens:
+  - report_sheet
+  - block_confirm
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "Call sites and the socket harness were added to the allowlist because the drafted safety files did not exist. A block lookup that throws is treated as not blocked, so delivery fail-opens (OW-038). REST global history and the snap inbox also hide blocked senders."
+gate: G1
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

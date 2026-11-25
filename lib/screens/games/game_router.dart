@@ -19,6 +19,8 @@ import 'picture_word_association_screen.dart';
 import 'memory_map_screen.dart';
 import 'pronunciation_karaoke_screen.dart';
 import 'cultural_games.dart';
+import '../../games/proverb_unlocker/proverb_unlocker_screen.dart';
+import 'flashcard_safari.dart';
 import 'market_bargaining_screen.dart';
 import 'taxi_survival_screen.dart';
 import 'greeting_diplomacy_screen.dart';
@@ -106,7 +108,11 @@ Widget buildGameScreen({
     case GameType.quizChef:
       return QuizChefGame(language: language, level: userLevel, onBack: onBack);
     case GameType.proverbUnlocker:
-      return ProverbUnlockerGame(language: language, level: userLevel, onBack: onBack);
+      return ProverbUnlockerScreen(
+        language: language,
+        level: userLevel,
+        onBack: onBack,
+      );
     case GameType.drumRhythmShadowing:
       return DrumRhythmScreen(language: language, level: userLevel, onBack: onBack);
     case GameType.clanLineageStoryBuilder:
@@ -132,7 +138,7 @@ Widget buildGameScreen({
     case GameType.accentDecodingPuzzle:
       return AccentPuzzleGame(language: language, level: userLevel, onBack: onBack);
     case GameType.flashcardSafari:
-      return FlashcardSafariGame(language: language, level: userLevel, onBack: onBack);
+      return FlashcardSafari(language: language, level: userLevel, onBack: onBack);
     case GameType.rapidTongueTwisterRace:
       return TongueTwisterGame(language: language, level: userLevel, onBack: onBack);
     case GameType.emojiTranslator:

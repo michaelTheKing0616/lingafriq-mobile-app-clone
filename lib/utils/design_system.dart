@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Modern Design System for LingAfriq
 /// Based on Material Design 3 principles and modern UI best practices
 
+@Deprecated('Use LingAfriqTokens. This file is a retired design system.')
 class DesignSystem {
   // Spacing
   static const double spacingXS = 4.0;
@@ -24,7 +26,7 @@ class DesignSystem {
   // Elevation/Shadows
   static List<BoxShadow> get shadowSmall => [
         BoxShadow(
-          color: Colors.black.withOpacity(0.05),
+          color: Colors.black.withValues(alpha: 0.05),
           blurRadius: 4,
           offset: const Offset(0, 2),
         ),
@@ -32,7 +34,7 @@ class DesignSystem {
 
   static List<BoxShadow> get shadowMedium => [
         BoxShadow(
-          color: Colors.black.withOpacity(0.08),
+          color: Colors.black.withValues(alpha: 0.08),
           blurRadius: 8,
           offset: const Offset(0, 4),
         ),
@@ -40,7 +42,7 @@ class DesignSystem {
 
   static List<BoxShadow> get shadowLarge => [
         BoxShadow(
-          color: Colors.black.withOpacity(0.12),
+          color: Colors.black.withValues(alpha: 0.12),
           blurRadius: 16,
           offset: const Offset(0, 8),
         ),
@@ -50,26 +52,26 @@ class DesignSystem {
   static const LinearGradient primaryGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0XFFC4413A), Color(0XFFF7CB46)],
+    colors: [LingAfriqTokens.hexFFC4413A, LingAfriqTokens.hexFFF7CB46],
   );
 
   static const LinearGradient accentGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [PanAfricanColors.primary, PanAfricanColors.secondary],
+    colors: [PanAfricanColors.primary, LingAfriqTokens.hexFF735C00],
   );
 
   // Pan-African Design Gradients
   static const LinearGradient stitchPrimaryGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [PanAfricanColors.primary, Color(0xFF22C55E)],
+    colors: [PanAfricanColors.primary, LingAfriqTokens.hexFF22C55E],
   );
 
   static const LinearGradient successGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [PanAfricanColors.success, Color(0xFF66BB6A)],
+    colors: [LingAfriqTokens.hexFF1B7340, LingAfriqTokens.hexFF66BB6A],
   );
 
   // Card Styles
@@ -90,7 +92,7 @@ class DesignSystem {
       gradient: isOutlined ? null : LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
-        colors: [color, color.withOpacity(0.8)],
+        colors: [color, color.withValues(alpha: 0.8)],
       ),
       color: isOutlined ? Colors.transparent : null,
       borderRadius: BorderRadius.circular(radiusRound),
@@ -138,10 +140,10 @@ class ModernCardV2 extends StatelessWidget {
 
     final card = Container(
       margin: margin ?? EdgeInsets.zero,
-      padding: padding ?? EdgeInsets.all(DesignSystem.spacingM),
+      padding: padding ?? const EdgeInsets.all(DesignSystem.spacingM),
       decoration: BoxDecoration(
         color: isSelected 
-            ? PanAfricanColors.primary.withOpacity(0.2)
+            ? PanAfricanColors.primary.withValues(alpha: 0.2)
             : cardColor,
         borderRadius: BorderRadius.circular(borderRadius),
         border: border,
@@ -186,14 +188,14 @@ class ModernLanguageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = context.isDarkMode;
     final cardColor = isSelected
-        ? PanAfricanColors.primary.withOpacity(0.2)
+        ? PanAfricanColors.primary.withValues(alpha: 0.2)
         : (isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight);
     final borderColor = isSelected
         ? PanAfricanColors.primary
         : (isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight);
 
     return Container(
-      margin: EdgeInsets.only(bottom: DesignSystem.spacingM),
+      margin: const EdgeInsets.only(bottom: DesignSystem.spacingM),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(DesignSystem.radiusM),
         boxShadow: DesignSystem.shadowSmall,
@@ -204,7 +206,7 @@ class ModernLanguageCard extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(DesignSystem.radiusM),
           child: Container(
-            padding: EdgeInsets.all(DesignSystem.spacingM),
+            padding: const EdgeInsets.all(DesignSystem.spacingM),
             decoration: BoxDecoration(
               color: cardColor,
               borderRadius: BorderRadius.circular(DesignSystem.radiusM),
@@ -226,18 +228,18 @@ class ModernLanguageCard extends StatelessWidget {
                           )
                         : null,
                     color: imageUrl == null || imageUrl!.isEmpty
-                        ? AppColors.stitchPrimary.withOpacity(0.3)
+                        ? AppColors.stitchPrimary.withValues(alpha: 0.3)
                         : null,
                   ),
                   child: imageUrl == null || imageUrl!.isEmpty
-                      ? Icon(
+                      ? const Icon(
                           Icons.language,
                           color: AppColors.stitchPrimary,
                           size: 24,
                         )
                       : null,
                 ),
-                SizedBox(width: DesignSystem.spacingM),
+                const SizedBox(width: DesignSystem.spacingM),
                 // Language Info
                 Expanded(
                   child: Column(
@@ -257,7 +259,7 @@ class ModernLanguageCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 14,
                             color: (isDark ? PanAfricanColors.textPrimaryLight : PanAfricanColors.textPrimaryDark)
-                                .withOpacity(0.8),
+                                .withValues(alpha: 0.8),
                           ),
                         ),
                     ],
@@ -268,7 +270,7 @@ class ModernLanguageCard extends StatelessWidget {
                   Container(
                     width: 28,
                     height: 28,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: AppColors.stitchPrimary,
                       shape: BoxShape.circle,
                     ),
@@ -303,7 +305,7 @@ class ModernSectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: DesignSystem.spacingM,
         vertical: DesignSystem.spacingL,
       ),
@@ -325,7 +327,7 @@ class ModernSectionHeader extends StatelessWidget {
                   ),
                 ),
                 if (subtitle != null) ...[
-                  SizedBox(height: DesignSystem.spacingXS),
+                  const SizedBox(height: DesignSystem.spacingXS),
                   Text(
                     subtitle!,
                     style: TextStyle(

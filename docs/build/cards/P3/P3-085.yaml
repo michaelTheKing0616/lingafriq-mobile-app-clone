@@ -1,0 +1,83 @@
+charter: v2
+id: P3-085
+kind: build
+title: Unlock optional avatar creation after lesson 2
+phase: P3
+epic: E-P3-ONBOARDING
+req_ids:
+- OB-step8
+depends_on:
+- P3-083
+- P3-051
+size: S
+difficulty:
+  score: 2
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 0, ambiguity 1, coupling 1'
+token_budget: 25000
+file_allowlist:
+- lib/screens/onboarding/steps/avatar_step.dart
+- lib/navigation/unlock_stages.dart
+context_anchors:
+- ELEVATION.md#§5.2:L1060
+acceptance_criteria:
+- id: AC1
+  text: Given lesson 2 is not done, when Me opens, then avatar creation shows locked with unlocks at text
+- id: AC2
+  text: Given lesson 2 is done, when the prompt shows, then avatar creation is optional and Skip leaves a default avatar
+- id: AC3
+  text: Given avatar creation fails, when saving, then an error state shows and the default stays
+test_plan:
+  unit:
+  - unlock rule
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - locked
+  - optional
+  - failed
+  copy_keys:
+  - onboarding.avatar.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/motion-system
+  - prime/rive
+  - prime/animation-principles

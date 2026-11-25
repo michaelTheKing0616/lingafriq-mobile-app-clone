@@ -1,0 +1,79 @@
+charter: v2
+id: P11-055
+kind: build
+title: Generate stickers, reactions and speaking share cards
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§4.4-14
+- EP-§4.4-15
+depends_on:
+- P11-049
+- P11-043
+size: M
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 3: blast 1, ambiguity 1, coupling 1, depth 0'
+token_budget: 70000
+file_allowlist:
+- lib/avatars/share/sticker_generator.dart
+- lib/avatars/share/speaking_card.dart
+context_anchors:
+- ELEVATION.md#§4.4:L972-L974
+acceptance_criteria:
+- id: AC1
+  text: Given the rig, when a sticker is requested, then it is generated from a state without new artwork.
+- id: AC2
+  text: Given an "I can now say..." card, when shared, then it renders the avatar speaking the phrase.
+- id: AC3
+  text: Given a minor, when sharing, then no personal data appears on the card.
+test_plan:
+  unit:
+  - no PII on card
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - sticker
+  - card_rendering
+  - card_ready
+  - render_error
+  copy_keys:
+  - avatar.share.phrase
+  tokens:
+  - card.surface
+  motion_tier: product
+  a11y:
+  - card has alt text
+  goldens:
+  - share_card
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

@@ -3,16 +3,11 @@
 // Plays authentic African-accented audio for every supported language by
 // resolving the best available source in order:
 //
-//   Gold   — Pre-recorded native speaker MP3 hosted on CDN (assets/data/
-//            audio_manifest.json contains the SHA256 + CDN URL).
-//   Silver — Meta MMS-TTS via backend proxy /api/tts. Free, self-hosted,
-//            supports 40+ African languages.
-//   Bronze — Coqui XTTS-v2 via /api/voice/tts/synthesize (premium voice
-//            cloning where available; preserves authentic prosody for
-//            English variants and high-resource African langs).
-//   Fallback — On-device flutter_tts ONLY when network is unavailable. We
-//            return early so no English ljspeech voice ever speaks an
-//            African phrase by accident.
+//   Gold   — Pre-recorded native speaker audio. Always tried first.
+//   Router — /api/voice/tts/synthesize. Server picks Intron, Azure, or
+//            Spitch. isiXhosa returns voice_coming until the custom voice
+//            exists. A 503 does not fall through to the device voice.
+//   Fallback — On-device flutter_tts ONLY when the network itself is dead.
 //
 // All successful syntheses are sha256-keyed and cached on disk via
 // TtsAudioCache so subsequent plays are zero-latency and offline-safe.
@@ -20,7 +15,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -49,6 +43,13 @@ class TtsResolution {
   });
 }
 
+class TtsUnavailable implements Exception {
+  final String code;
+  const TtsUnavailable(this.code);
+  @override
+  String toString() => code;
+}
+
 class AfricanTtsService {
   AfricanTtsService._();
   static final AfricanTtsService _i = AfricanTtsService._();
@@ -73,7 +74,7 @@ class AfricanTtsService {
 
   /// Stats counters used by [telemetrySnapshot]; instrumentation only.
   int _goldHits = 0;
-  int _silverHits = 0;
+  final int _silverHits = 0;
   int _bronzeHits = 0;
   int _deviceFallbackHits = 0;
   int _failures = 0;
@@ -176,22 +177,15 @@ class AfricanTtsService {
       return gold;
     }
 
-    // -------- SILVER: MMS-TTS via backend proxy --------
-    try {
-      final silver = await _resolveSilverMms(
-        language: lang,
-        text: body,
-        speed: speed,
-      );
-      if (silver != null) {
-        _silverHits++;
-        return silver;
-      }
-    } catch (e) {
-      debugPrint('[AfricanTts] silver(mms) failed: $e');
-    }
+    // Gold missed. Try the cached or server silver clip before synthesis.
+    final silver = await _resolveSilverMms(
+      language: lang,
+      text: body,
+      speed: speed,
+    );
+    if (silver != null) return silver;
 
-    // -------- BRONZE: XTTS-v2 voice synthesis --------
+    // -------- Dynamic TTS via the server router --------
     try {
       final bronze = await _resolveBronzeXtts(
         language: lang,
@@ -203,8 +197,15 @@ class AfricanTtsService {
         _bronzeHits++;
         return bronze;
       }
+    } on TtsUnavailable catch (e) {
+      _failures++;
+      return TtsResolution(
+        tier: TtsEngineTier.unavailable,
+        engineLabel: e.code,
+        errorReason: e.code,
+      );
     } catch (e) {
-      debugPrint('[AfricanTts] bronze(xtts) failed: $e');
+      debugPrint('[AfricanTts] router synth failed: $e');
     }
 
     // -------- DEVICE FALLBACK: only when network is dead --------
@@ -371,28 +372,58 @@ class AfricanTtsService {
         prefs.getString('auth_token') ?? prefs.getString('access_token');
     final base = EnvConfig.backendBaseUrl.replaceFirst(RegExp(r'/+$'), '');
     final clipped = text.length > 500 ? text.substring(0, 500) : text;
-    final headers = <String, String>{
-      'Content-Type': 'application/json',
+    final auth = <String, String>{
       if (token != null && token.isNotEmpty) 'Authorization': 'Bearer $token',
     };
+    final fields = <String, String>{
+      'text': clipped,
+      'language': language,
+      if (voice != null && voice.trim().isNotEmpty) 'voice': voice.trim(),
+      'speed': '$speed',
+    };
     try {
-      final synth = await http
-          .post(
-            Uri.parse('$base/api/voice/tts/synthesize'),
-            headers: headers,
-            body: jsonEncode({
-              'text': clipped,
-              'language': language,
-              if (voice != null && voice.trim().isNotEmpty) 'voice': voice.trim(),
-              'speed': speed,
-            }),
-          )
-          .timeout(const Duration(seconds: 45));
-      if (synth.statusCode == 200 && synth.bodyBytes.isNotEmpty) {
-        return synth.bodyBytes;
+      // The voice service reads form fields. The app backend also accepts JSON.
+      for (final asJson in <bool>[false, true]) {
+        final synth = await http
+            .post(
+              Uri.parse('$base/api/voice/tts/synthesize'),
+              headers: {
+                ...auth,
+                'Content-Type': asJson
+                    ? 'application/json'
+                    : 'application/x-www-form-urlencoded',
+              },
+              body: asJson ? jsonEncode(fields) : fields,
+            )
+            .timeout(const Duration(seconds: 45));
+        if (synth.statusCode == 200 &&
+            synth.bodyBytes.isNotEmpty &&
+            !synth.headers['content-type'].toString().contains('json')) {
+          return synth.bodyBytes;
+        }
+        if (synth.statusCode == 503) {
+          final code = _unavailableCode(synth.body);
+          if (code != null) {
+            throw TtsUnavailable(code);
+          }
+        }
       }
+    } on TtsUnavailable {
+      rethrow;
     } catch (e) {
       debugPrint('[AfricanTts] bronze synth failed: $e');
+    }
+    return null;
+  }
+
+  String? _unavailableCode(String body) {
+    try {
+      final decoded = jsonDecode(body);
+      if (decoded is Map && decoded['code'] is String) {
+        return decoded['code'] as String;
+      }
+    } catch (_) {
+      return null;
     }
     return null;
   }
@@ -494,6 +525,3 @@ class AfricanTtsService {
 
 /// Convenience accessor for places that previously held a [FlutterTts] field.
 final africanTtsService = AfricanTtsService();
-
-// Unused import guard (audio bytes typed for clarity).
-typedef _UnusedUint8List = Uint8List;

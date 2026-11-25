@@ -1,0 +1,78 @@
+charter: v2
+id: P5-005
+kind: build
+title: Rebuild audio manifest NFC-normalised, hash-keyed and deduplicated
+phase: P5
+epic: E-P5-A1
+req_ids:
+- EP-§6.1-16
+- EP-§6.1-17
+- EP-§6.1-18
+- EP-§6.1-19
+- EP-§6.1-20
+- EP-§6.1-21
+- EP-§6.1-22
+depends_on:
+- E-P4-CONTENT-ENGINE
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- tools/content/audio_manifest_build.py
+- pubspec.yaml
+- assets/data/audio_manifest.json
+- test/content/audio_manifest_test.py
+context_anchors:
+- ELEVATION.md#§6.1:L1118-L1124
+acceptance_criteria:
+- id: AC1
+  text: Given the three identical 11.3 MB copies, when deduplicated, then one copy remains and release asset size drops by
+    about 34 MB (measured, reported)
+- id: AC2
+  text: Given manifest entries (legacy 1,363), when rebuilt, then each is keyed by content hash plus NFC-normalised text and
+    a kọ́ vs kọ file is never collapsed or mismatched across NFC/NFD
+- id: AC3
+  text: 'Given a curriculum item, when audio.kind is read, then it references a manifest key; items with no audio reference
+    fail lint AU-001 (legacy: zero references)'
+- id: AC4
+  text: Given assets/audio, when the app is built, then it is declared in pubspec.yaml assets and a missing declaration fails
+    the build with AssetUndeclaredError
+test_plan:
+  unit:
+  - NFC/NFD keying
+  integration:
+  - apk asset size delta
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - manifest vs files bijection
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

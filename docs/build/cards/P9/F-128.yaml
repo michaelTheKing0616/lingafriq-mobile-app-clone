@@ -1,0 +1,109 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P9
+epic: E-P9-SAFETY
+hub: Village
+gate: G9
+status: Draft
+size: M
+token_budget: 80000
+user_facing: true
+p0_area: true
+tags:
+- under18_social
+external_blockers: []
+risks: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+id: F-128
+title: Elevate Status (WhatsApp-style)
+req_ids:
+- F-128
+- F-128.D
+- F-128.E
+- F-128.U
+- F-128.L
+- P0-6
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P9-SAFETY
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: scoped status replacing global broadcast'
+file_allowlist:
+- lib/screens/wa/wa_status_list_screen.dart
+- lib/screens/wa/wa_status_create_screen.dart
+- lib/screens/wa/wa_status_view_screen.dart
+context_anchors:
+- ELEVATION.md#§18.6:L5317-L5328
+delta:
+  current_state: Status routes work but events broadcast globally.
+  defects_to_fix:
+  - Status metadata leaks via global broadcast (P0-6).
+  elevation_to_build:
+  - Daily target-language status with word-of-the-day sticker and friend-only audience.
+  - Friends react with corrections or I learned this prompts.
+  ux_and_render:
+  - Ring UI familiar pattern with avatar stickers.
+  hub_placement: Village → Status.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given a new status, when published, then delivery is scoped to friends only and never global broadcast.
+- id: AC2
+  text: Given the create flow, when posting, then text, photo, or voice in target language is supported with WOTD sticker.
+- id: AC3
+  text: Given a friend view, when they react, then correction or learned reactions are recorded without metadata leak.
+- id: AC4
+  text: Given the account is under 18 or age-unknown, when this surface is opened, then it is hidden or guardian-gated until
+    E-P9-SAFETY is Done, and the restriction is enforced server-side.
+test_plan:
+  unit:
+  - domain helpers
+  integration:
+  - API and navigation
+  e2e:
+  - happy path
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content: []
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - wa_status.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux
+  - adaptive/14-safety-and-high-stakes

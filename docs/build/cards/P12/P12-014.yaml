@@ -1,0 +1,68 @@
+charter: v2
+id: P12-014
+kind: build
+title: Add API read load test with p95 under 300 ms
+phase: P12
+epic: E-P12-RELEASE
+req_ids:
+- EP-§13.4-19
+depends_on:
+- E-P10-ME
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 60000
+file_allowlist:
+- scripts/loadtest/api_read_p95.js
+- scripts/loadtest/profiles/reads.json
+- .github/workflows/loadtest.yml
+context_anchors:
+- ELEVATION.md#§13.4:L1907
+acceptance_criteria:
+- id: AC1
+  text: Given the staging API with at least two instances, when the read load profile runs, then API p95 latency for read
+    routes is under 300 ms
+- id: AC2
+  text: Given the run, when it finishes, then results are written per route with p50, p95 and error rate
+- id: AC3
+  text: Given any route has p95 of 300 ms or more, when the test evaluates, then it fails and lists the route
+- id: AC4
+  text: Given the target host is production, when the script starts, then it refuses to run
+test_plan:
+  unit: []
+  integration: []
+  security:
+  - prod-host refusal
+  e2e: []
+  perf:
+  - read profile on staging
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Socket capacity (10k per node) is tested in P9, not here
+gate: G12
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,71 @@
+charter: v2
+id: P9-907
+kind: build
+title: Load-test 10k concurrent sockets per node
+phase: P9
+epic: E-P9-REALTIME
+req_ids:
+- EP-§9.5-08
+- EP-§9.5-09
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+- P9-901
+- P9-902
+- P9-906
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1, depth 1'
+token_budget: 80000
+file_allowlist:
+- scripts/loadtest/socket_10k.js
+- docs/build/external/loadtest_report.md
+context_anchors:
+- ELEVATION.md#§9.5:L1659
+acceptance_criteria:
+- id: AC1
+  text: Given one production-sized node, when 10,000 authenticated sockets are held for 30 minutes with realistic message
+    traffic, then message delivery p95 stays under 500 ms and the error rate stays under 0.5%
+- id: AC2
+  text: Given the same run, when CPU and memory are sampled, then the report records peak values and the node never exceeds
+    80% of either
+- id: AC3
+  text: Given a failed threshold, when the run ends, then the report states FAIL with the failing metric and no pass is recorded
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf:
+  - 10k connection soak
+  - connect storm
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- load generator may need several machines
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

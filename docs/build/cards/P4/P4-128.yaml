@@ -1,0 +1,49 @@
+charter: v2
+id: P4-128
+kind: external
+title: Secure contributor licence, consent and payment terms
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.6-17
+- EP-§6.6-18
+depends_on: []
+size: S
+difficulty:
+  score: 2
+  blast: 0
+  ambiguity: 2
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 0, ambiguity 2, coupling 0'
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§6.6:L1321-L1337
+acceptance_criteria:
+- id: AC1
+  text: Signed licence and consent forms and a revenue-share or fair-payment term exist for every voice contributor and reviewer
+    before their data enters a pack
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-13
+status: Blocked-External
+skills:
+  worker:
+  - adaptive/09-writing-and-communication

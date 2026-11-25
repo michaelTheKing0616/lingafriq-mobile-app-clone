@@ -1,0 +1,590 @@
+{
+  "card": "P7-942",
+  "built": "2026-10-27",
+  "pack": "culture_greetings",
+  "pack_citation": "ELEVATION.md#\u00a711.2:L1795-L1796; assets/data/culture/*.json; assets/data/units/register/*.json",
+  "publish_status": "draft",
+  "external_blockers": [
+    "EXT-14"
+  ],
+  "cultural_consultant_sign_offs": [],
+  "native_reviewer_sign_offs": [],
+  "sign_off_requirements": [
+    {
+      "language_code": "yo",
+      "tutorial_id": "yo-culture-greetings",
+      "roles": [
+        "cultural_consultant",
+        "native"
+      ]
+    },
+    {
+      "language_code": "ig",
+      "tutorial_id": "ig-culture-greetings",
+      "roles": [
+        "cultural_consultant",
+        "native"
+      ]
+    },
+    {
+      "language_code": "ha",
+      "tutorial_id": "ha-culture-greetings",
+      "roles": [
+        "cultural_consultant",
+        "native"
+      ]
+    },
+    {
+      "language_code": "pcm",
+      "tutorial_id": "pcm-culture-greetings",
+      "roles": [
+        "cultural_consultant",
+        "native"
+      ]
+    },
+    {
+      "language_code": "sw",
+      "tutorial_id": "sw-culture-greetings",
+      "roles": [
+        "cultural_consultant",
+        "native"
+      ]
+    },
+    {
+      "language_code": "zu",
+      "tutorial_id": "zu-culture-greetings",
+      "roles": [
+        "cultural_consultant",
+        "native"
+      ]
+    },
+    {
+      "language_code": "xh",
+      "tutorial_id": "xh-culture-greetings",
+      "roles": [
+        "cultural_consultant",
+        "native"
+      ]
+    }
+  ],
+  "tutorials": [
+    {
+      "id": "yo-culture-greetings",
+      "language_code": "yo",
+      "title": "Greeting choreography",
+      "culture_card_id": "yo.culture.greetings",
+      "register_unit_id": "yo.register.greetings_elder",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 20,
+          "body_en": "Greeting exchanges appear before requests in introductory dialogues. (assets/data/culture/yo.json#yo.culture.greetings). Culture tutorials also cover greeting choreography such as who greets first; physical gestures are consultant-authored (ELEVATION.md#\u00a711.2:L1795; EXT-14).",
+          "source_ids": [
+            "assets/data/culture/yo.json#yo.culture.greetings",
+            "ELEVATION.md#\u00a711.2:L1795"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 28,
+          "presentation": "greeting_choreography",
+          "body_en": "Follow the cited register greeting before other business. \u1eb8 k\u00fa \u00e0\u00e1r\u1ecd\u0300 is the time-based greeting for elders or groups. (assets/data/units/register/yo.json#yo.register.greetings_elder).",
+          "source_ids": [
+            "assets/data/units/register/yo.json#yo.register.greetings_elder",
+            "assets/data/culture/yo.json#yo.culture.greetings"
+          ],
+          "greeting_choreography": {
+            "who_greets_first": "learner",
+            "who_greets_first_rationale_en": "You meet your aunt in the morning. What do you say first?",
+            "who_greets_first_source": "assets/data/units/register/yo.json#yo.register.greetings_elder#practice_g1",
+            "sequence": [
+              {
+                "order": 1,
+                "actor": "learner",
+                "action_en": "Offer the formal greeting first when meeting an elder.",
+                "cited_form": "\u1eb8 k\u00fa \u00e0\u00e1r\u1ecd\u0300",
+                "register": "formal"
+              },
+              {
+                "order": 2,
+                "actor": "elder",
+                "action_en": "Elder may respond; wait for their reply before other requests.",
+                "source_ref": "assets/data/culture/yo.json#yo.culture.greetings"
+              }
+            ],
+            "physical_gestures": [],
+            "physical_gestures_gate": "EXT-14_cultural_consultant",
+            "handshake_styles_gate": "EXT-14_cultural_consultant"
+          },
+          "culture_image_uri": "images/yo/culture_greetings.jpg"
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 22,
+          "body_en": "You meet your aunt in the morning. What do you say first?",
+          "source_ids": [
+            "assets/data/units/register/yo.json#yo.register.greetings_elder#practice_g1"
+          ],
+          "drill_kind": "choose_register",
+          "correct_option_index": 0,
+          "options": [
+            {
+              "text": "\u1eb8 k\u00fa \u00e0\u00e1r\u1ecd\u0300",
+              "register": "formal",
+              "translation_en": "Good morning (to elders/group)"
+            },
+            {
+              "text": "B\u00e1wo ni",
+              "register": "informal",
+              "translation_en": "How are you? (informal, peers)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ig-culture-greetings",
+      "language_code": "ig",
+      "title": "Greeting choreography",
+      "culture_card_id": "ig.culture.greetings",
+      "register_unit_id": "ig.register.greetings_elder",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 20,
+          "body_en": "Greeting exchanges appear before requests in introductory dialogues. (assets/data/culture/ig.json#ig.culture.greetings). Culture tutorials also cover greeting choreography such as who greets first; physical gestures are consultant-authored (ELEVATION.md#\u00a711.2:L1795; EXT-14).",
+          "source_ids": [
+            "assets/data/culture/ig.json#ig.culture.greetings",
+            "ELEVATION.md#\u00a711.2:L1795"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 28,
+          "presentation": "greeting_choreography",
+          "body_en": "Follow the cited register greeting before other business. Formal greeting uses Ndewo. (assets/data/units/register/ig.json#ig.register.greetings_elder).",
+          "source_ids": [
+            "assets/data/units/register/ig.json#ig.register.greetings_elder",
+            "assets/data/culture/ig.json#ig.culture.greetings"
+          ],
+          "greeting_choreography": {
+            "who_greets_first": "learner",
+            "who_greets_first_rationale_en": "Greet an elder respectfully.",
+            "who_greets_first_source": "assets/data/units/register/ig.json#ig.register.greetings_elder#practice_g1",
+            "sequence": [
+              {
+                "order": 1,
+                "actor": "learner",
+                "action_en": "Offer the formal greeting first when meeting an elder.",
+                "cited_form": "Ndewo",
+                "register": "formal"
+              },
+              {
+                "order": 2,
+                "actor": "elder",
+                "action_en": "Elder may respond; wait for their reply before other requests.",
+                "source_ref": "assets/data/culture/ig.json#ig.culture.greetings"
+              }
+            ],
+            "physical_gestures": [],
+            "physical_gestures_gate": "EXT-14_cultural_consultant",
+            "handshake_styles_gate": "EXT-14_cultural_consultant"
+          },
+          "culture_image_uri": "images/ig/culture_greetings.jpg"
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 22,
+          "body_en": "Greet an elder respectfully.",
+          "source_ids": [
+            "assets/data/units/register/ig.json#ig.register.greetings_elder#practice_g1"
+          ],
+          "drill_kind": "choose_register",
+          "correct_option_index": 0,
+          "options": [
+            {
+              "text": "Ndewo",
+              "register": "formal",
+              "translation_en": "Formal greeting"
+            },
+            {
+              "text": "Kedu",
+              "register": "informal",
+              "translation_en": "Informal greeting"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ha-culture-greetings",
+      "language_code": "ha",
+      "title": "Greeting choreography",
+      "culture_card_id": "ha.culture.greetings",
+      "register_unit_id": "ha.register.greetings_elder",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 20,
+          "body_en": "Greeting exchanges appear before requests in introductory dialogues. (assets/data/culture/ha.json#ha.culture.greetings). Culture tutorials also cover greeting choreography such as who greets first; physical gestures are consultant-authored (ELEVATION.md#\u00a711.2:L1795; EXT-14).",
+          "source_ids": [
+            "assets/data/culture/ha.json#ha.culture.greetings",
+            "ELEVATION.md#\u00a711.2:L1795"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 28,
+          "presentation": "greeting_choreography",
+          "body_en": "Follow the cited register greeting before other business. Formal greeting uses Sannu da safe. (assets/data/units/register/ha.json#ha.register.greetings_elder).",
+          "source_ids": [
+            "assets/data/units/register/ha.json#ha.register.greetings_elder",
+            "assets/data/culture/ha.json#ha.culture.greetings"
+          ],
+          "greeting_choreography": {
+            "who_greets_first": "learner",
+            "who_greets_first_rationale_en": "Greet an elder respectfully.",
+            "who_greets_first_source": "assets/data/units/register/ha.json#ha.register.greetings_elder#practice_g1",
+            "sequence": [
+              {
+                "order": 1,
+                "actor": "learner",
+                "action_en": "Offer the formal greeting first when meeting an elder.",
+                "cited_form": "Sannu da safe",
+                "register": "formal"
+              },
+              {
+                "order": 2,
+                "actor": "elder",
+                "action_en": "Elder may respond; wait for their reply before other requests.",
+                "source_ref": "assets/data/culture/ha.json#ha.culture.greetings"
+              }
+            ],
+            "physical_gestures": [],
+            "physical_gestures_gate": "EXT-14_cultural_consultant",
+            "handshake_styles_gate": "EXT-14_cultural_consultant"
+          },
+          "culture_image_uri": "images/ha/culture_greetings.jpg"
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 22,
+          "body_en": "Greet an elder respectfully.",
+          "source_ids": [
+            "assets/data/units/register/ha.json#ha.register.greetings_elder#practice_g1"
+          ],
+          "drill_kind": "choose_register",
+          "correct_option_index": 0,
+          "options": [
+            {
+              "text": "Sannu da safe",
+              "register": "formal",
+              "translation_en": "Formal greeting"
+            },
+            {
+              "text": "Ina kwana?",
+              "register": "informal",
+              "translation_en": "Informal greeting"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pcm-culture-greetings",
+      "language_code": "pcm",
+      "title": "Greeting choreography",
+      "culture_card_id": "pcm.culture.greetings",
+      "register_unit_id": "pcm.register.greetings_elder",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 20,
+          "body_en": "Greeting exchanges appear before requests in introductory dialogues. (assets/data/culture/pcm.json#pcm.culture.greetings). Culture tutorials also cover greeting choreography such as who greets first; physical gestures are consultant-authored (ELEVATION.md#\u00a711.2:L1795; EXT-14).",
+          "source_ids": [
+            "assets/data/culture/pcm.json#pcm.culture.greetings",
+            "ELEVATION.md#\u00a711.2:L1795"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 28,
+          "presentation": "greeting_choreography",
+          "body_en": "Follow the cited register greeting before other business. Formal greeting uses Oga, how you dey?. (assets/data/units/register/pcm.json#pcm.register.greetings_elder).",
+          "source_ids": [
+            "assets/data/units/register/pcm.json#pcm.register.greetings_elder",
+            "assets/data/culture/pcm.json#pcm.culture.greetings"
+          ],
+          "greeting_choreography": {
+            "who_greets_first": "learner",
+            "who_greets_first_rationale_en": "Greet an elder respectfully.",
+            "who_greets_first_source": "assets/data/units/register/pcm.json#pcm.register.greetings_elder#practice_g1",
+            "sequence": [
+              {
+                "order": 1,
+                "actor": "learner",
+                "action_en": "Offer the formal greeting first when meeting an elder.",
+                "cited_form": "Oga, how you dey?",
+                "register": "formal"
+              },
+              {
+                "order": 2,
+                "actor": "elder",
+                "action_en": "Elder may respond; wait for their reply before other requests.",
+                "source_ref": "assets/data/culture/pcm.json#pcm.culture.greetings"
+              }
+            ],
+            "physical_gestures": [],
+            "physical_gestures_gate": "EXT-14_cultural_consultant",
+            "handshake_styles_gate": "EXT-14_cultural_consultant"
+          },
+          "culture_image_uri": "images/pcm/culture_greetings.jpg"
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 22,
+          "body_en": "Greet an elder respectfully.",
+          "source_ids": [
+            "assets/data/units/register/pcm.json#pcm.register.greetings_elder#practice_g1"
+          ],
+          "drill_kind": "choose_register",
+          "correct_option_index": 0,
+          "options": [
+            {
+              "text": "Oga, how you dey?",
+              "register": "formal",
+              "translation_en": "Formal greeting"
+            },
+            {
+              "text": "How far?",
+              "register": "informal",
+              "translation_en": "Informal greeting"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sw-culture-greetings",
+      "language_code": "sw",
+      "title": "Greeting choreography",
+      "culture_card_id": "sw.culture.greetings",
+      "register_unit_id": "sw.register.greetings_elder",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 20,
+          "body_en": "Greeting exchanges appear before requests in introductory dialogues. (assets/data/culture/sw.json#sw.culture.greetings). Culture tutorials also cover greeting choreography such as who greets first; physical gestures are consultant-authored (ELEVATION.md#\u00a711.2:L1795; EXT-14).",
+          "source_ids": [
+            "assets/data/culture/sw.json#sw.culture.greetings",
+            "ELEVATION.md#\u00a711.2:L1795"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 28,
+          "presentation": "greeting_choreography",
+          "body_en": "Follow the cited register greeting before other business. Formal greeting uses Habari za asubuhi. (assets/data/units/register/sw.json#sw.register.greetings_elder).",
+          "source_ids": [
+            "assets/data/units/register/sw.json#sw.register.greetings_elder",
+            "assets/data/culture/sw.json#sw.culture.greetings"
+          ],
+          "greeting_choreography": {
+            "who_greets_first": "learner",
+            "who_greets_first_rationale_en": "Greet an elder respectfully.",
+            "who_greets_first_source": "assets/data/units/register/sw.json#sw.register.greetings_elder#practice_g1",
+            "sequence": [
+              {
+                "order": 1,
+                "actor": "learner",
+                "action_en": "Offer the formal greeting first when meeting an elder.",
+                "cited_form": "Habari za asubuhi",
+                "register": "formal"
+              },
+              {
+                "order": 2,
+                "actor": "elder",
+                "action_en": "Elder may respond; wait for their reply before other requests.",
+                "source_ref": "assets/data/culture/sw.json#sw.culture.greetings"
+              }
+            ],
+            "physical_gestures": [],
+            "physical_gestures_gate": "EXT-14_cultural_consultant",
+            "handshake_styles_gate": "EXT-14_cultural_consultant"
+          },
+          "culture_image_uri": "images/sw/culture_greetings.jpg"
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 22,
+          "body_en": "Greet an elder respectfully.",
+          "source_ids": [
+            "assets/data/units/register/sw.json#sw.register.greetings_elder#practice_g1"
+          ],
+          "drill_kind": "choose_register",
+          "correct_option_index": 0,
+          "options": [
+            {
+              "text": "Habari za asubuhi",
+              "register": "formal",
+              "translation_en": "Formal greeting"
+            },
+            {
+              "text": "Hujambo",
+              "register": "informal",
+              "translation_en": "Informal greeting"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zu-culture-greetings",
+      "language_code": "zu",
+      "title": "Greeting choreography",
+      "culture_card_id": "zu.culture.greetings",
+      "register_unit_id": "zu.register.greetings_elder",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 20,
+          "body_en": "Greeting exchanges appear before requests in introductory dialogues. (assets/data/culture/zu.json#zu.culture.greetings). Culture tutorials also cover greeting choreography such as who greets first; physical gestures are consultant-authored (ELEVATION.md#\u00a711.2:L1795; EXT-14).",
+          "source_ids": [
+            "assets/data/culture/zu.json#zu.culture.greetings",
+            "ELEVATION.md#\u00a711.2:L1795"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 28,
+          "presentation": "greeting_choreography",
+          "body_en": "Follow the cited register greeting before other business. Formal greeting uses Sawubona baba. (assets/data/units/register/zu.json#zu.register.greetings_elder).",
+          "source_ids": [
+            "assets/data/units/register/zu.json#zu.register.greetings_elder",
+            "assets/data/culture/zu.json#zu.culture.greetings"
+          ],
+          "greeting_choreography": {
+            "who_greets_first": "learner",
+            "who_greets_first_rationale_en": "Greet an elder respectfully.",
+            "who_greets_first_source": "assets/data/units/register/zu.json#zu.register.greetings_elder#practice_g1",
+            "sequence": [
+              {
+                "order": 1,
+                "actor": "learner",
+                "action_en": "Offer the formal greeting first when meeting an elder.",
+                "cited_form": "Sawubona baba",
+                "register": "formal"
+              },
+              {
+                "order": 2,
+                "actor": "elder",
+                "action_en": "Elder may respond; wait for their reply before other requests.",
+                "source_ref": "assets/data/culture/zu.json#zu.culture.greetings"
+              }
+            ],
+            "physical_gestures": [],
+            "physical_gestures_gate": "EXT-14_cultural_consultant",
+            "handshake_styles_gate": "EXT-14_cultural_consultant"
+          },
+          "culture_image_uri": "images/zu/culture_greetings.jpg"
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 22,
+          "body_en": "Greet an elder respectfully.",
+          "source_ids": [
+            "assets/data/units/register/zu.json#zu.register.greetings_elder#practice_g1"
+          ],
+          "drill_kind": "choose_register",
+          "correct_option_index": 0,
+          "options": [
+            {
+              "text": "Sawubona baba",
+              "register": "formal",
+              "translation_en": "Formal greeting"
+            },
+            {
+              "text": "Unjani?",
+              "register": "informal",
+              "translation_en": "Informal greeting"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "xh-culture-greetings",
+      "language_code": "xh",
+      "title": "Greeting choreography",
+      "culture_card_id": "xh.culture.greetings",
+      "register_unit_id": "xh.register.greetings_elder",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 20,
+          "body_en": "Greeting exchanges appear before requests in introductory dialogues. (assets/data/culture/xh.json#xh.culture.greetings). Culture tutorials also cover greeting choreography such as who greets first; physical gestures are consultant-authored (ELEVATION.md#\u00a711.2:L1795; EXT-14).",
+          "source_ids": [
+            "assets/data/culture/xh.json#xh.culture.greetings",
+            "ELEVATION.md#\u00a711.2:L1795"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 28,
+          "presentation": "greeting_choreography",
+          "body_en": "Follow the cited register greeting before other business. Formal greeting uses Molo tata. (assets/data/units/register/xh.json#xh.register.greetings_elder).",
+          "source_ids": [
+            "assets/data/units/register/xh.json#xh.register.greetings_elder",
+            "assets/data/culture/xh.json#xh.culture.greetings"
+          ],
+          "greeting_choreography": {
+            "who_greets_first": "learner",
+            "who_greets_first_rationale_en": "Greet an elder respectfully.",
+            "who_greets_first_source": "assets/data/units/register/xh.json#xh.register.greetings_elder#practice_g1",
+            "sequence": [
+              {
+                "order": 1,
+                "actor": "learner",
+                "action_en": "Offer the formal greeting first when meeting an elder.",
+                "cited_form": "Molo tata",
+                "register": "formal"
+              },
+              {
+                "order": 2,
+                "actor": "elder",
+                "action_en": "Elder may respond; wait for their reply before other requests.",
+                "source_ref": "assets/data/culture/xh.json#xh.culture.greetings"
+              }
+            ],
+            "physical_gestures": [],
+            "physical_gestures_gate": "EXT-14_cultural_consultant",
+            "handshake_styles_gate": "EXT-14_cultural_consultant"
+          },
+          "culture_image_uri": "images/xh/culture_greetings.jpg"
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 22,
+          "body_en": "Greet an elder respectfully.",
+          "source_ids": [
+            "assets/data/units/register/xh.json#xh.register.greetings_elder#practice_g1"
+          ],
+          "drill_kind": "choose_register",
+          "correct_option_index": 0,
+          "options": [
+            {
+              "text": "Molo tata",
+              "register": "formal",
+              "translation_en": "Formal greeting"
+            },
+            {
+              "text": "Unjani?",
+              "register": "informal",
+              "translation_en": "Informal greeting"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

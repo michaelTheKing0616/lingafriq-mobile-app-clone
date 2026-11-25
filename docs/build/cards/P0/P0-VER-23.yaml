@@ -1,0 +1,67 @@
+charter: v2
+id: P0-VER-23
+kind: verification
+title: Obtain data licence cost quotes
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- UNV-C10
+depends_on:
+- E-P0-INTAKE
+- EXT-04
+- EXT-05
+- EXT-06
+- EXT-07
+- EXT-08
+- EXT-09
+- EXT-10
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: verification only; result recorded, never inferred
+token_budget: 20000
+file_allowlist:
+- docs/build/verification/P0-VER-23.md
+- docs/build/UNVERIFIED.md
+context_anchors:
+- CURRICULUM.md#§9.4:L844
+acceptance_criteria:
+- id: AC1
+  text: Given RFQs from EXT-04 to EXT-10, when replies arrive, then each quote is stored with one-off and annual price, scope
+    and display rights
+- id: AC2
+  text: Given a missing reply 14 days after sending, when checked, then the item is listed as unanswered and the estimate
+    stays marked [quotes]
+user_facing: false
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- docs/build/verification/P0-VER-23.md
+- UNVERIFIED.md row updated
+risks: []
+gate: G4
+external_blockers:
+- EXT-04
+- EXT-05
+- EXT-06
+- EXT-07
+- EXT-08
+- EXT-09
+- EXT-10
+owner: external
+status: Blocked-External
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

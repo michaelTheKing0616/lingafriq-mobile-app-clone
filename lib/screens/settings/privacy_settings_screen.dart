@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/widgets/privacy/voice_retention_tile.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -8,6 +9,13 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/services/lens/lens_privacy_policy.dart';
+import 'package:lingafriq/screens/settings/data_export_screen.dart';
+import 'package:lingafriq/screens/settings/privacy_policy_screen.dart';
+
+const String voiceStorageConsentApiPath = '/api/v2/voice-storage';
+const String trainingContributionConsentApiPath = '/api/v2/training-contribution';
 
 /// Privacy Settings Screen - Pan-African Design System
 class PrivacySettingsScreen extends HookConsumerWidget {
@@ -19,6 +27,9 @@ class PrivacySettingsScreen extends HookConsumerWidget {
   static const String _prefLocationTracking = 'privacy_location_tracking_enabled';
   static const String _prefProfileVisibility = 'privacy_profile_visibility';
   static const String _prefActivityStatus = 'privacy_activity_status_enabled';
+  static const String _prefAgeCategory = 'age_category';
+  static const String _prefGuardianVoiceStorage =
+      'guardian_voice_storage_consent_recorded';
 
   Future<void> _savePreference(String key, bool value) async {
     final prefs = await SharedPreferences.getInstance();
@@ -42,7 +53,18 @@ class PrivacySettingsScreen extends HookConsumerWidget {
     final locationTrackingEnabled = useState<bool?>(null);
     final profileVisibility = useState<String>('public');
     final activityStatusEnabled = useState<bool?>(null);
+    final voiceStorageEnabled = useState<bool>(false);
+    final voiceConsentVersion = useState<String?>(null);
+    final voiceConsentCopy = useState<String?>(null);
+    final voiceWithdrawing = useState(false);
+    final trainingContributionEnabled = useState<bool>(false);
+    final trainingConsentVersion = useState<String?>(null);
+    final trainingConsentCopy = useState<String?>(null);
+    final trainingOffered = useState<bool>(true);
+    final trainingWithdrawing = useState(false);
     final isLoading = useState(true);
+    final minorPrivacyLocked = useState(false);
+    final minorPrivacyReason = useState<String?>(null);
 
     Future<void> loadSettings(ApiProvider api) async {
       // Load from backend first; fall back to local
@@ -60,6 +82,16 @@ class PrivacySettingsScreen extends HookConsumerWidget {
         locationTrackingEnabled.value = l;
         profileVisibility.value = v;
         activityStatusEnabled.value = s;
+        minorPrivacyLocked.value = remote['minor_privacy_locked'] == true;
+        minorPrivacyReason.value =
+            remote['minor_privacy_reason'] as String? ??
+                (minorPrivacyLocked.value
+                    ? 'Your profile stays private while you learn.'
+                    : null);
+        if (minorPrivacyLocked.value) {
+          profileVisibility.value = 'private';
+          locationTrackingEnabled.value = false;
+        }
         await _savePreference(_prefAnalytics, a);
         await _savePreference(_prefDataSharing, d);
         await _savePreference(_prefPersonalizedAds, p);
@@ -80,7 +112,260 @@ class PrivacySettingsScreen extends HookConsumerWidget {
         profileVisibility.value =
             prefs.getString(_prefProfileVisibility) ?? 'public';
       }
+      try {
+        final voiceRes = await ApiService.get('$voiceStorageConsentApiPath/status');
+        final voiceData = voiceRes.data;
+        if (voiceData is Map) {
+          final consent = voiceData['consent'];
+          if (consent is Map) {
+            voiceStorageEnabled.value = consent['store_enabled'] == true;
+          }
+          voiceConsentVersion.value =
+              voiceData['consent_text_version'] as String?;
+          voiceConsentCopy.value = voiceData['consent_copy'] as String?;
+        }
+      } catch (_) {
+        // Offline — default remains off (delete-after-scoring).
+      }
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        final ageCategory = prefs.getString(_prefAgeCategory) ??
+            prefs.getString('onboarding_age_category');
+        final privacyCtx = lensPrivacyContextFromPrefs(ageCategory: ageCategory);
+        final trainingRes = await ApiService.get(
+          '$trainingContributionConsentApiPath/status',
+        );
+        final trainingData = trainingRes.data;
+        if (trainingData is Map) {
+          final consent = trainingData['consent'];
+          if (consent is Map) {
+            trainingContributionEnabled.value =
+                consent['contribute_enabled'] == true;
+          }
+          trainingConsentVersion.value =
+              trainingData['consent_text_version'] as String?;
+          trainingConsentCopy.value = trainingData['consent_copy'] as String?;
+          final offered = trainingData['offered_to_learner'];
+          trainingOffered.value =
+              offered != false && !privacyCtx.isMinor;
+        }
+      } catch (_) {
+        trainingOffered.value = false;
+      }
       isLoading.value = false;
+    }
+
+    Future<bool> guardianVoiceStorageApproved(BuildContext context) async {
+      final approved = await showDialog<bool>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Guardian approval needed'),
+          content: const Text(
+            'Learners under 18 need a parent or guardian to approve storing practice recordings. '
+            'Only turn this on if your guardian has agreed in the Family hub.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: const Text('Not yet'),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.pop(ctx, true),
+              child: const Text('Guardian approved'),
+            ),
+          ],
+        ),
+      );
+      if (approved == true) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setBool(_prefGuardianVoiceStorage, true);
+      }
+      return approved == true;
+    }
+
+    Future<void> updateTrainingContribution(bool value, BuildContext context) async {
+      HapticFeedback.selectionClick();
+      if (!trainingOffered.value) return;
+      if (!voiceStorageEnabled.value && value) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Turn on practice recording storage first, then you can choose to help train our speech models.',
+              ),
+            ),
+          );
+        }
+        return;
+      }
+      if (!value) {
+        trainingWithdrawing.value = true;
+        try {
+          await ApiService.post('$trainingContributionConsentApiPath/withdraw');
+          trainingContributionEnabled.value = false;
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  'We removed your clips from future training runs and queued any saved ones for removal.',
+                ),
+              ),
+            );
+          }
+        } catch (_) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  'We could not update training contribution right now. Try again when you are online.',
+                ),
+              ),
+            );
+          }
+        } finally {
+          trainingWithdrawing.value = false;
+        }
+        return;
+      }
+
+      final version = trainingConsentVersion.value;
+      if (version == null || version.isEmpty) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Training contribution settings need a connection. Try again when you are online.',
+              ),
+            ),
+          );
+        }
+        return;
+      }
+
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Help improve speech models?'),
+          content: Text(
+            trainingConsentCopy.value ??
+                'Your stored practice recordings may be used to train speech models. You can turn this off anytime.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: const Text('Not now'),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.pop(ctx, true),
+              child: const Text('I agree'),
+            ),
+          ],
+        ),
+      );
+      if (confirmed != true) return;
+
+      try {
+        await ApiService.post(
+          '$trainingContributionConsentApiPath/opt-in',
+          data: {'consent_text_version': version},
+        );
+        trainingContributionEnabled.value = true;
+      } catch (_) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'We could not save your choice. Check your connection and try again.',
+              ),
+            ),
+          );
+        }
+      }
+    }
+
+    Future<void> updateVoiceStorage(bool value, BuildContext context) async {
+      HapticFeedback.selectionClick();
+      if (!value) {
+        voiceWithdrawing.value = true;
+        try {
+          await ApiService.post('$voiceStorageConsentApiPath/withdraw');
+          voiceStorageEnabled.value = false;
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  'We turned off recording storage. Any saved clips will be removed within 30 days.',
+                ),
+              ),
+            );
+          }
+        } catch (_) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  'We could not update voice storage right now. Try again when you are online.',
+                ),
+              ),
+            );
+          }
+        } finally {
+          voiceWithdrawing.value = false;
+        }
+        if (trainingContributionEnabled.value && context.mounted) {
+          await updateTrainingContribution(false, context);
+        }
+        return;
+      }
+
+      final prefs = await SharedPreferences.getInstance();
+      final ageCategory = prefs.getString(_prefAgeCategory) ??
+          prefs.getString('onboarding_age_category');
+      final privacyCtx = lensPrivacyContextFromPrefs(
+        ageCategory: ageCategory,
+        guardianPhotoConsentRecorded:
+            prefs.getBool(_prefGuardianVoiceStorage) ?? false,
+      );
+      if (privacyCtx.isMinor) {
+        if (!context.mounted) return;
+        final ok = await guardianVoiceStorageApproved(context);
+        if (!ok) return;
+      }
+
+      final version = voiceConsentVersion.value;
+      if (version == null || version.isEmpty) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Voice storage settings are not available offline yet. Connect and try again.',
+              ),
+            ),
+          );
+        }
+        return;
+      }
+
+      try {
+        await ApiService.post(
+          '$voiceStorageConsentApiPath/opt-in',
+          data: {
+            'consent_text_version': version,
+            'guardian_consent_recorded': privacyCtx.isMinor,
+          },
+        );
+        voiceStorageEnabled.value = true;
+      } catch (_) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'We could not save your choice. Check your connection and try again.',
+              ),
+            ),
+          );
+        }
+      }
     }
 
     useEffect(() {
@@ -122,6 +407,20 @@ class PrivacySettingsScreen extends HookConsumerWidget {
     }
 
     Future<void> updateLocationTracking(bool value) async {
+      if (minorPrivacyLocked.value && value) {
+        HapticFeedback.heavyImpact();
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                minorPrivacyReason.value ??
+                    'Location stays off for young learner accounts.',
+              ),
+            ),
+          );
+        }
+        return;
+      }
       HapticFeedback.selectionClick();
       locationTrackingEnabled.value = value;
       await _savePreference(_prefLocationTracking, value);
@@ -136,6 +435,20 @@ class PrivacySettingsScreen extends HookConsumerWidget {
     }
 
     Future<void> updateProfileVisibility(String value) async {
+      if (minorPrivacyLocked.value && value != 'private') {
+        HapticFeedback.heavyImpact();
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                minorPrivacyReason.value ??
+                    'Young learner accounts stay private for your safety.',
+              ),
+            ),
+          );
+        }
+        return;
+      }
       HapticFeedback.selectionClick();
       profileVisibility.value = value;
       final prefs = await SharedPreferences.getInstance();
@@ -167,7 +480,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
           ),
           backgroundColor: PanAfricanColors.primary,
         ),
-        body: Center(
+        body: const Center(
           child: CircularProgressIndicator(
             color: PanAfricanColors.primary,
           ),
@@ -207,7 +520,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    PanAfricanColors.primary.withOpacity(0.05),
+                    PanAfricanColors.primary.withValues(alpha: 0.05),
                     PanAfricanColors.surfaceLight,
                   ],
                 ),
@@ -219,6 +532,13 @@ class PrivacySettingsScreen extends HookConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: PanAfricanSpacing.sm),
+                ListTile(
+                  title: const Text('Passkeys'),
+                  subtitle: const Text('Add or remove a passkey for this account'),
+                  onTap: () {
+                    Navigator.of(context).pushNamed('/passkey-manage');
+                  },
+                ),
 
                 // Analytics & Data Collection
                 _PrivacySection(
@@ -271,12 +591,18 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                   isDark: isDark,
                   index: 2,
                   children: [
+                    if (minorPrivacyLocked.value)
+                      _MinorPrivacyLockBanner(
+                        message: minorPrivacyReason.value ??
+                            'Location stays off for young learner accounts.',
+                        isDark: isDark,
+                      ),
                     _PrivacySwitchTile(
                       icon: Icons.location_on_outlined,
                       title: 'Location Tracking',
                       subtitle: 'Allow app to access your location',
                       value: locationTrackingEnabled.value ?? false,
-                      onChanged: updateLocationTracking,
+                      onChanged: minorPrivacyLocked.value ? null : updateLocationTracking,
                       isDark: isDark,
                     ),
                   ],
@@ -289,13 +615,21 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                   isDark: isDark,
                   index: 3,
                   children: [
+                    if (minorPrivacyLocked.value)
+                      _MinorPrivacyLockBanner(
+                        message: minorPrivacyReason.value ??
+                            'Your profile stays private while you learn.',
+                        isDark: isDark,
+                      ),
                     _PrivacyRadioTile(
                       icon: Icons.public_rounded,
                       title: 'Public',
                       subtitle: 'Anyone can see your profile',
                       value: 'public',
                       groupValue: profileVisibility.value,
-                      onChanged: updateProfileVisibility,
+                      onChanged: minorPrivacyLocked.value
+                          ? (_) => updateProfileVisibility('public')
+                          : updateProfileVisibility,
                       isDark: isDark,
                     ),
                     _PrivacyDivider(isDark: isDark),
@@ -305,7 +639,9 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                       subtitle: 'Only your friends can see your profile',
                       value: 'friends',
                       groupValue: profileVisibility.value,
-                      onChanged: updateProfileVisibility,
+                      onChanged: minorPrivacyLocked.value
+                          ? (_) => updateProfileVisibility('friends')
+                          : updateProfileVisibility,
                       isDark: isDark,
                     ),
                     _PrivacyDivider(isDark: isDark),
@@ -340,11 +676,137 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                 ),
                 SizedBox(height: PanAfricanSpacing.lg),
 
+                _PrivacySection(
+                  title: 'Practice recordings',
+                  isDark: isDark,
+                  index: 5,
+                  children: [
+                    _PrivacySwitchTile(
+                      icon: Icons.mic_none_rounded,
+                      title: 'Save my practice recordings',
+                      subtitle: voiceConsentCopy.value ??
+                          'Off by default. We delete audio after scoring unless you turn this on. '
+                          'Stored clips are kept up to one year, or removed within 30 days after you turn this off.',
+                      value: voiceStorageEnabled.value,
+                      onChanged: voiceWithdrawing.value
+                          ? (_) {}
+                          : (v) => updateVoiceStorage(v, context),
+                      isDark: isDark,
+                      semanticsLabel:
+                          'Save my practice recordings. ${voiceStorageEnabled.value ? 'On' : 'Off'}.',
+                    ),
+                    const VoiceRetentionTile(),
+                  ],
+                ),
+                if (trainingOffered.value && voiceStorageEnabled.value) ...[
+                  SizedBox(height: PanAfricanSpacing.lg),
+                  _PrivacySection(
+                    title: 'Model training',
+                    isDark: isDark,
+                    index: 6,
+                    children: [
+                      _PrivacySwitchTile(
+                        icon: Icons.model_training_outlined,
+                        title: 'Contribute recordings to model training',
+                        subtitle: trainingConsentCopy.value ??
+                            'Separate from saving recordings. Off by default. Withdraw anytime.',
+                        value: trainingContributionEnabled.value,
+                        onChanged: trainingWithdrawing.value
+                            ? (_) {}
+                            : (v) => updateTrainingContribution(v, context),
+                        isDark: isDark,
+                        semanticsLabel:
+                            'Contribute recordings to model training. '
+                            '${trainingContributionEnabled.value ? 'On' : 'Off'}.',
+                      ),
+                    ],
+                  ),
+                ],
+                SizedBox(height: PanAfricanSpacing.lg),
+
+                _PrivacySection(
+                  title: 'Your data',
+                  isDark: isDark,
+                  index: 7,
+                  children: [
+                    Semantics(
+                      label: 'Export my data and delete account',
+                      button: true,
+                      child: ListTile(
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: PanAfricanSpacing.sm,
+                          vertical: PanAfricanSpacing.xs,
+                        ),
+                        leading: const Icon(
+                          Icons.folder_zip_outlined,
+                          color: PanAfricanColors.primary,
+                        ),
+                        title: Text(
+                          'Export my data',
+                          style: PanAfricanTypography.bodyLarge(context),
+                        ),
+                        subtitle: Text(
+                          'Download your learning data or delete your account',
+                          style: PanAfricanTypography.bodySmall(context),
+                        ),
+                        trailing: Icon(
+                          Icons.chevron_right_rounded,
+                          color: isDark
+                              ? PanAfricanColors.textSecondaryDark
+                              : PanAfricanColors.textSecondaryLight,
+                        ),
+                        onTap: () {
+                          HapticFeedback.selectionClick();
+                          Navigator.of(context).push(
+                            MaterialPageRoute<void>(
+                              builder: (_) => const DataExportScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    _PrivacyDivider(isDark: isDark),
+                    Semantics(
+                      label: 'Read privacy policy',
+                      button: true,
+                      child: ListTile(
+                        minVerticalPadding: 12,
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: PanAfricanSpacing.md,
+                        ),
+                        leading: const Icon(
+                          Icons.description_outlined,
+                          color: PanAfricanColors.primary,
+                        ),
+                        title: Text(
+                          'Privacy policy',
+                          style: PanAfricanTypography.bodyLarge(context),
+                        ),
+                        subtitle: Text(
+                          'Plain words on what we collect and why',
+                          style: PanAfricanTypography.bodySmall(context),
+                        ),
+                        trailing: Icon(
+                          Icons.chevron_right_rounded,
+                          color: isDark
+                              ? PanAfricanColors.textSecondaryDark
+                              : PanAfricanColors.textSecondaryLight,
+                        ),
+                        onTap: () {
+                          HapticFeedback.selectionClick();
+                          PrivacyPolicyScreen.open(context);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: PanAfricanSpacing.lg),
+
                 // Info Card
                 Container(
                   padding: EdgeInsets.all(PanAfricanSpacing.md),
                   decoration: BoxDecoration(
-                    color: PanAfricanColors.primary.withOpacity(0.1),
+                    color: PanAfricanColors.primary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
                   ),
                   child: Row(
@@ -353,7 +815,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                       Container(
                         padding: EdgeInsets.all(PanAfricanSpacing.sm),
                         decoration: BoxDecoration(
-                          color: PanAfricanColors.primary.withOpacity(0.1),
+                          color: PanAfricanColors.primary.withValues(alpha: 0.1),
                           borderRadius:
                               BorderRadius.circular(PanAfricanRadius.md),
                         ),
@@ -429,8 +891,11 @@ class _PrivacySection extends StatelessWidget {
             borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
             boxShadow: PanAfricanShadows.sm,
           ),
-          child: Column(
-            children: children,
+          child: Material(
+            color: Colors.transparent,
+            child: Column(
+              children: children,
+            ),
           ),
         ),
       ],
@@ -441,13 +906,64 @@ class _PrivacySection extends StatelessWidget {
   }
 }
 
+class _MinorPrivacyLockBanner extends StatelessWidget {
+  const _MinorPrivacyLockBanner({
+    required this.message,
+    required this.isDark,
+  });
+
+  final String message;
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      label: 'Privacy locked for young learners',
+      child: Container(
+        width: double.infinity,
+        margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
+        padding: EdgeInsets.all(PanAfricanSpacing.md),
+        decoration: BoxDecoration(
+          color: PanAfricanColors.primary.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+          border: Border.all(
+            color: PanAfricanColors.primary.withValues(alpha: 0.35),
+          ),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              Icons.lock_rounded,
+              color: PanAfricanColors.primary,
+              size: 22.sp,
+            ),
+            SizedBox(width: PanAfricanSpacing.sm),
+            Expanded(
+              child: Text(
+                message,
+                style: PanAfricanTypography.bodyMedium(context).copyWith(
+                  color: isDark
+                      ? PanAfricanColors.textSecondaryDark
+                      : PanAfricanColors.textSecondaryLight,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _PrivacySwitchTile extends StatelessWidget {
   final IconData icon;
   final String title;
   final String subtitle;
   final bool value;
-  final ValueChanged<bool> onChanged;
+  final ValueChanged<bool>? onChanged;
   final bool isDark;
+  final String? semanticsLabel;
 
   const _PrivacySwitchTile({
     required this.icon,
@@ -456,6 +972,7 @@ class _PrivacySwitchTile extends StatelessWidget {
     required this.value,
     required this.onChanged,
     required this.isDark,
+    this.semanticsLabel,
   });
 
   @override
@@ -470,7 +987,7 @@ class _PrivacySwitchTile extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(PanAfricanSpacing.sm),
             decoration: BoxDecoration(
-              color: PanAfricanColors.primary.withOpacity(0.1),
+              color: PanAfricanColors.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(PanAfricanRadius.md),
             ),
             child: Icon(
@@ -496,12 +1013,12 @@ class _PrivacySwitchTile extends StatelessWidget {
             ),
           ),
           Semantics(
-            label: '$title. ${value ? 'On' : 'Off'}.',
+            label: semanticsLabel ?? '$title. ${value ? 'On' : 'Off'}.',
             toggled: value,
             child: Switch.adaptive(
               value: value,
               onChanged: onChanged,
-              activeColor: PanAfricanColors.primary,
+              activeThumbColor: PanAfricanColors.primary,
             ),
           ),
         ],
@@ -550,8 +1067,8 @@ class _PrivacyRadioTile extends StatelessWidget {
               padding: EdgeInsets.all(PanAfricanSpacing.sm),
               decoration: BoxDecoration(
                 color: isSelected
-                    ? PanAfricanColors.primary.withOpacity(0.2)
-                    : PanAfricanColors.primary.withOpacity(0.1),
+                    ? PanAfricanColors.primary.withValues(alpha: 0.2)
+                    : PanAfricanColors.primary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(PanAfricanRadius.md),
               ),
               child: Icon(
@@ -576,11 +1093,13 @@ class _PrivacyRadioTile extends StatelessWidget {
                 ],
               ),
             ),
-            Radio<String>(
-              value: value,
+            RadioGroup<String>(
               groupValue: groupValue,
               onChanged: (v) => onChanged(v!),
-              activeColor: PanAfricanColors.primary,
+              child: Radio<String>(
+                value: value,
+                activeColor: PanAfricanColors.primary,
+              ),
             ),
           ],
         ),

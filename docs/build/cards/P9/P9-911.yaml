@@ -1,0 +1,73 @@
+charter: v2
+id: P9-911
+kind: build
+title: Hard-delete expiring media and make disappearing content real
+phase: P9
+epic: E-P9-REALTIME
+req_ids:
+- EP-§9.3-23
+- EP-§9.1-22
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+- P9-910
+size: M
+difficulty:
+  score: 3
+  blast: 2
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 3: blast 2, ambiguity 0, coupling 1, depth 0'
+token_budget: 80000
+file_allowlist:
+- node-backend/src/jobs/mediaExpiry.job.ts
+- node-backend/src/services/mediaUpload.service.ts
+context_anchors:
+- ELEVATION.md#§9.3:L1640
+- ELEVATION.md#§9.1:L1566-L1567
+acceptance_criteria:
+- id: AC1
+  text: Given a story or disappearing message past expiry, when the expiry job runs, then the object is hard-deleted from
+    storage, thumbnails and caches and a storage read returns 404
+- id: AC2
+  text: Given content under an open moderation report, when it expires, then it is retained in a sealed evidence store with
+    access logging and not served to users
+- id: AC3
+  text: Given the previous soft-delete behaviour, when the migration runs, then every already-expired soft-deleted record
+    is hard-deleted and a count is logged
+test_plan:
+  unit:
+  - expiry selection
+  integration:
+  - delete verification
+  - evidence hold
+  security:
+  - post-expiry URL access
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

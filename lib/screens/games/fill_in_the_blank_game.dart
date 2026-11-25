@@ -208,7 +208,7 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
               gradient: LinearGradient(
                 colors: [
                   PanAfricanColors.primary,
-                  PanAfricanColors.secondary,
+                  context.panSecondary,
                 ],
               ),
             ),
@@ -229,8 +229,8 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      PanAfricanColors.primary.withOpacity(0.1),
-                      PanAfricanColors.secondary.withOpacity(0.1),
+                      PanAfricanColors.primary.withValues(alpha: 0.1),
+                      context.panSecondary.withValues(alpha: 0.1),
                     ],
                   ),
           ),
@@ -247,7 +247,7 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                       child: Icon(
                         _score >= 70 ? Icons.celebration : Icons.check_circle,
                         size: 80.sp,
-                        color: _score >= 70 ? PanAfricanColors.secondary : PanAfricanColors.primary,
+                        color: _score >= 70 ? context.panSecondary : PanAfricanColors.primary,
                       ),
                     ),
                     SizedBox(height: 16.h),
@@ -293,7 +293,7 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                       button: true,
                       child: TextButton(
                         onPressed: () => Navigator.pop(context),
-                        child: Text(
+                        child: const Text(
                           'Back to Games',
                           style: TextStyle(color: PanAfricanColors.primary),
                         ),
@@ -331,7 +331,7 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
             gradient: LinearGradient(
               colors: [
                 PanAfricanColors.primary,
-                PanAfricanColors.secondary,
+                context.panSecondary,
               ],
             ),
           ),
@@ -352,8 +352,8 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    PanAfricanColors.primary.withOpacity(0.1),
-                    PanAfricanColors.secondary.withOpacity(0.1),
+                    PanAfricanColors.primary.withValues(alpha: 0.1),
+                    context.panSecondary.withValues(alpha: 0.1),
                   ],
                 ),
         ),
@@ -398,7 +398,7 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                   child: LinearProgressIndicator(
                     value: (_currentIndex + 1) / _questions.length,
                     backgroundColor: Colors.grey[300],
-                    valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
+                    valueColor: const AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
                   ),
                 ),
                 SizedBox(height: 32.h),
@@ -439,8 +439,8 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                             padding: EdgeInsets.all(12.sp),
                             decoration: BoxDecoration(
                               color: isCorrect
-                                  ? PanAfricanColors.primary.withOpacity(0.1)
-                                  : Colors.red.withOpacity(0.1),
+                                  ? PanAfricanColors.primary.withValues(alpha: 0.1)
+                                  : Colors.red.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Row(

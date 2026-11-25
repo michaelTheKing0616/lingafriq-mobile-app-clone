@@ -1,82 +1,296 @@
-import 'dart:async';
-
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:lingafriq/widgets/bidi_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 import 'package:lingafriq/models/language_response.dart';
+import 'package:lingafriq/models/profile_model.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/daily_goals_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/models/daily_goal_model.dart';
+import 'package:lingafriq/services/age_tier_service.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/widgets/adaptive_progress_indicator.dart';
-import 'package:lingafriq/widgets/error_widet.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/pan_african_app_bar.dart';
 import 'package:lingafriq/screens/tabs_view/home/language_detail_screen.dart';
 import 'package:lingafriq/screens/language/search_languages_page.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
+import 'package:lingafriq/screens/tabs_view/home/home_parts.dart';
 
-final languagesProvider = FutureProvider.autoDispose((ref) {
-  return ref.read(apiProvider.notifier).getLanguages();
-});
+/// No silent auto-retry: a failed fetch shows the offline/error state at
+/// once, with a Try Again button, instead of a skeleton that never ends.
+final languagesProvider = FutureProvider.autoDispose(
+  (ref) => ref.read(apiProvider.notifier).getLanguages(),
+  retry: (_, __) => null,
+);
 
-final _timerProvider = Provider((ref) {
-  final welcomeTexts = [
-    'Sannu da zuwa', // Hausa
-    'Wehcome o', // Pidgin
-    'Karibu', // Swahili
-    'Ẹ Káàbọ', // Yoruba
-    'Wamukelekile', // Zulu
-    'Nnọọ', // Igbo
-    'Welcome', // English
-  ];
-
-  // CRITICAL FIX: Store timer reference for cleanup to prevent memory leak
-  Timer? timer;
-  
-  timer = Timer.periodic(2.seconds, (tick) {
-    final index = tick.tick % welcomeTexts.length;
-    final greeting = welcomeTexts[index];
-    ref.read(_titleProvider.notifier).setTitle(greeting);
-  });
-
-  // CRITICAL FIX: Clean up timer when provider is disposed to prevent memory leak
-  ref.onDispose(() {
-    timer?.cancel();
-  });
-});
-
-class TitleNotifier extends Notifier<String> {
-  @override
-  String build() => "Welcome";
-
-  void setTitle(String value) {
-    state = value;
+/// Read-only check against the existing server-owned age-tier status (see
+/// [AgeTierService]) so a minor account that is still waiting on guardian
+/// approval sees an honest banner here, instead of Home silently pretending
+/// that gate doesn't exist. This is deliberately a thin, local read of the
+/// same status the age gate / guardian flows already use. It does not
+/// introduce a new consent model. Fails open (no banner) on error so this
+/// secondary, non-critical check never blocks the primary Home experience.
+final ageTierStatusProvider = FutureProvider.autoDispose<AgeTierStatus?>((
+  ref,
+) async {
+  try {
+    return await AgeTierService().fetchStatus();
+  } catch (_) {
+    return null;
   }
+});
+
+/// True when the backend has placed this account in the same
+/// "pending_guardian" state surfaced by the age gate
+/// (see `AgeGateScreen.ageGatePendingGuardianTitle`): a minor whose
+/// guardian has not yet consented.
+bool _isPendingGuardianMinor(AgeTierStatus? status) {
+  return status?.status == 'pending_guardian';
 }
 
-final _titleProvider =
-    NotifierProvider.autoDispose<TitleNotifier, String>(() {
-  return TitleNotifier();
+/// A connectivity-flavoured failure (vs. a generic server error), using the
+/// same substring heuristic already relied on elsewhere in the app (see
+/// `StreamErrorWidget`) so Home can show a distinct, actionable offline
+/// state instead of folding it into the generic error panel.
+bool _looksOffline(Object error) {
+  final message = error.toString().toLowerCase();
+  return message.contains('socketexception') ||
+      message.contains(l10nEn().shellNoInternet) ||
+      message.contains(l10nEn().shellNetworkIsUnreachable) ||
+      message.contains(l10nEn().shellFailedHostLookup) ||
+      message.contains(l10nEn().shellConnectionRefused) ||
+      message.contains(l10nEn().shellConnectionTimedOut);
+}
+
+/// A small set of Pan-African welcome words. One is shown per calendar day
+/// (not on a repeating timer) so the greeting still feels alive across
+/// visits without forcing screen readers to re-announce the app bar title
+/// mid-session or causing needless rebuilds/jank on low-end phones. Each
+/// carries its language so the hero can teach the word, not just show it.
+typedef WelcomeWord = ({
+  String word,
+  String Function(AppLocalizations)? language,
 });
 
-/// Beautiful Material 3 Home Tab with Pan-African Design
+final List<WelcomeWord> kWelcomeWords = <WelcomeWord>[
+  (word: l10nEn().shellSannuDaZuwa, language: (l) => l.homeLangHausa),
+  (word: l10nEn().shellWelcomeO, language: (l) => l.homeLangPidgin),
+  (word: 'Karibu', language: (l) => l.homeLangSwahili),
+  (word: l10nEn().shellKBf733, language: (l) => l.homeLangYoruba),
+  (word: 'Wamukelekile', language: (l) => l.homeLangZulu),
+  (word: 'Nnọọ', language: (l) => l.homeLangIgbo),
+  (word: 'Welcome', language: null),
+];
+
+/// Today's welcome word. [now] is injectable so tests and goldens are stable.
+WelcomeWord welcomeWordFor(DateTime now) =>
+    kWelcomeWords[now.day % kWelcomeWords.length];
+
+/// Clock seam for the daily word; tests override it for stable goldens.
+final homeClockProvider = Provider<DateTime Function()>((ref) => DateTime.now);
+
+/// Prefers the learner's username, falls back to their full name, and
+/// finally to a friendly default so the hero card never reads "Welcome
+/// back, " with a blank name.
+String _displayName(ProfileModel? user, AppLocalizations l) {
+  if (user == null) return l.homeLearner;
+  final username = user.username.trim();
+  if (username.isNotEmpty) return username;
+  final full = user.fullName.trim();
+  if (full.isNotEmpty) return full;
+  return l.homeLearner;
+}
+
+double _languageProgress(Language language) => language.total_score > 0
+    ? (language.total_score / 100).clamp(0.0, 1.0)
+    : 0.0;
+
+/// The one language to resume: published, started, not finished, furthest
+/// along. Null when there is nothing in progress (no fake "continue").
+Language? pickContinueLanguage(List<Language> languages) {
+  Language? best;
+  for (final lang in languages) {
+    final p = _languageProgress(lang);
+    if (!lang.is_published || p <= 0 || p >= 1) continue;
+    if (best == null || p > _languageProgress(best)) best = lang;
+  }
+  return best;
+}
+
+void _openLanguage(BuildContext context, Language language) {
+  HapticFeedback.lightImpact();
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => LanguageDetailScreen(language: language),
+    ),
+  );
+}
+
+void _openSearch(BuildContext context) {
+  HapticFeedback.lightImpact();
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => const SearchLanguagesPage()),
+  );
+}
+
+/// Home: a summary-first "today" screen (reference pack home-dashboard:
+/// greeting + hero number, one continue card, then the list), in one scroll
+/// so nothing is squeezed on a 320 px phone at 200% text.
 class HomeTabMaterial3 extends HookConsumerWidget {
   const HomeTabMaterial3({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = l10nOf(context);
     final languagesAsync = ref.watch(languagesProvider);
-    ref.watch(_timerProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final user = ref.watch(userProvider);
     ref.watch(dailyGoalsProvider);
     final dailyGoals = ref.read(dailyGoalsProvider.notifier).goals;
-    final title = ref.watch(_titleProvider);
+    final word = welcomeWordFor(ref.watch(homeClockProvider)());
+    final displayName = _displayName(user, l);
+    final reduceMotion = MediaQuery.disableAnimationsOf(context);
+    final ageTierStatusAsync = ref.watch(ageTierStatusProvider);
+    final isPendingGuardianMinor = ageTierStatusAsync.maybeWhen(
+      data: _isPendingGuardianMinor,
+      orElse: () => false,
+    );
+    final isKidsMode =
+        !isPendingGuardianMinor &&
+        ageTierStatusAsync.maybeWhen(
+          data: (s) => s?.tier?.toLowerCase() == 'child',
+          orElse: () => false,
+        );
+    final side = PanAfricanSpacing.md;
+
+    Widget pad(Widget child, {double top = 0}) => SliverPadding(
+      padding: EdgeInsetsDirectional.fromSTEB(side, top, side, 0),
+      sliver: SliverToBoxAdapter(child: child),
+    );
+
+    final listSlivers = languagesAsync.when<List<Widget>>(
+      data: (languages) {
+        if (languages.results.isEmpty) {
+          return [
+            SliverToBoxAdapter(
+              child: HomeStatePanel(
+                key: const Key('home-state-empty'),
+                icon: Icons.travel_explore_rounded,
+                tint: PanAfricanColors.primary,
+                title: l.homeNoLanguagesTitle,
+                body: l.homeNoLanguagesBody,
+                actionLabel: l.homeSearchLanguagesAction,
+                actionIcon: Icons.search_rounded,
+                onAction: () => _openSearch(context),
+              ),
+            ),
+          ];
+        }
+        final resume = pickContinueLanguage(languages.results);
+        return [
+          if (resume != null)
+            pad(
+              _ContinueCard(
+                language: resume,
+                isDark: isDark,
+                onTap: () => _openLanguage(context, resume),
+              ),
+              top: PanAfricanSpacing.md,
+            ),
+          pad(
+            Semantics(
+              header: true,
+              child: Text(
+                l.homeFeaturedLanguages,
+                style: PanAfricanTypography.headlineMedium(context),
+              ),
+            ),
+            top: PanAfricanSpacing.lg,
+          ),
+          SliverPadding(
+            padding: EdgeInsetsDirectional.fromSTEB(
+              side,
+              PanAfricanSpacing.sm,
+              side,
+              PanAfricanSpacing.lg,
+            ),
+            sliver: SliverList.builder(
+              itemCount: languages.results.length,
+              itemBuilder: (context, index) {
+                final language = languages.results[index];
+                Widget card = _LanguageCard(
+                  language: language,
+                  isDark: isDark,
+                  onTap: () {
+                    if (!language.is_published) {
+                      HapticFeedback.selectionClick();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(l.homeComingSoonSnack(language.name)),
+                        ),
+                      );
+                      return;
+                    }
+                    _openLanguage(context, language);
+                  },
+                );
+                if (!reduceMotion) {
+                  card = card
+                      .animate(delay: (index * 40).ms)
+                      .fadeIn(duration: 300.ms)
+                      .slideY(begin: 0.08, duration: 300.ms);
+                }
+                return card;
+              },
+            ),
+          ),
+        ];
+      },
+      error: (e, s) {
+        if (_looksOffline(e)) {
+          // A distinct, actionable state instead of folding connectivity
+          // failures into the generic server-error panel below.
+          return [
+            SliverToBoxAdapter(
+              child: HomeStatePanel(
+                key: const Key('home-state-offline'),
+                icon: Icons.wifi_off_rounded,
+                tint: PanAfricanColors.onTertiaryContainer,
+                title: l.homeOfflineTitle,
+                body: l.homeOfflineBody,
+                actionLabel: l.homeTryAgain,
+                onAction: () => ref.invalidate(languagesProvider),
+              ),
+            ),
+          ];
+        }
+        return [
+          SliverToBoxAdapter(
+            child: HomeStatePanel(
+              key: const Key('home-state-error'),
+              icon: Icons.cloud_off_rounded,
+              tint: PanAfricanColors.kenteRed,
+              title: l.homeErrorTitle,
+              body: l.homeErrorBody,
+              actionLabel: l.homeTryAgain,
+              onAction: () => ref.invalidate(languagesProvider),
+            ),
+          ),
+        ];
+      },
+      loading: () => [
+        SliverToBoxAdapter(
+          child: HomeSkeleton(caption: l.homeLoadingLanguages),
+        ),
+      ],
+    );
 
     return Scaffold(
       body: Container(
@@ -88,46 +302,44 @@ class HomeTabMaterial3 extends HookConsumerWidget {
         child: SafeArea(
           child: Column(
             children: [
-              // Header with Pan-African App Bar
+              // No subtitle here: the hero card right below already greets
+              // the learner by name.
               PanAfricanAppBar(
-                title: '$title, ${user?.username ?? "Learner"}',
+                title: word.word,
                 showBackButton: false,
                 actions: [
                   Semantics(
-                    label: 'Search languages',
+                    label: l.homeSearchLanguagesLabel,
                     button: true,
+                    // Avoids a double announcement with the tooltip node.
+                    excludeSemantics: true,
                     child: IconButton(
                       icon: const Icon(Icons.search_rounded),
-                      onPressed: () {
-                        HapticFeedback.lightImpact();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SearchLanguagesPage(),
-                          ),
-                        );
-                      },
-                      tooltip: 'Search Languages',
+                      onPressed: () => _openSearch(context),
+                      tooltip: l.homeSearchLanguagesAction,
                     ),
                   ),
                   Semantics(
-                    label: 'Open menu',
+                    label: l.homeOpenMenu,
                     button: true,
+                    excludeSemantics: true,
                     child: IconButton(
                       icon: const Icon(Icons.menu_rounded),
                       onPressed: () {
                         HapticFeedback.lightImpact();
-                        ref.read(scaffoldKeyProvider).currentState?.openDrawer();
+                        ref
+                            .read(scaffoldKeyProvider)
+                            .currentState
+                            ?.openDrawer();
                       },
-                      tooltip: 'Menu',
+                      tooltip: l.homeMenu,
                     ),
                   ),
                 ],
               ),
-
-              // Content
               Expanded(
                 child: Container(
+                  clipBehavior: Clip.antiAlias,
                   decoration: BoxDecoration(
                     color: isDark
                         ? PanAfricanColors.surfaceDark
@@ -136,110 +348,135 @@ class HomeTabMaterial3 extends HookConsumerWidget {
                       top: Radius.circular(PanAfricanRadius.xl),
                     ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(
-                          PanAfricanSpacing.md,
-                          PanAfricanSpacing.lg,
-                          PanAfricanSpacing.md,
-                          PanAfricanSpacing.sm,
-                        ),
-                        child: _buildHeroCard(
-                          context,
-                          isDark,
-                          userName: user?.username ?? 'Learner',
-                          dailyGoals: dailyGoals,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(
-                          PanAfricanSpacing.md,
-                          PanAfricanSpacing.lg,
-                          PanAfricanSpacing.md,
-                          PanAfricanSpacing.sm,
-                        ),
-                        child: Semantics(
-                          header: true,
-                          child: Text(
-                          'Featured Languages',
-                          style: PanAfricanTypography.headlineMedium(context),
-                        ),
-                        ),
-                      ),
-                      Expanded(
-                        child: languagesAsync.when(
-                          data: (languages) {
-                            if (languages.results.isEmpty) {
-                              return Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.language_outlined,
-                                      size: 64.sp,
-                                      color: PanAfricanColors.neutralMedium,
-                                    ),
-                                    SizedBox(height: PanAfricanSpacing.md),
-                                    Text(
-                                      'No languages available',
-                                      style: PanAfricanTypography.bodyLarge(context),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }
-
-                            return ListView.builder(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: PanAfricanSpacing.md,
-                              ),
-                              itemCount: languages.results.length,
-                              itemBuilder: (context, index) {
-                                final language = languages.results[index];
-                                return _LanguageCard(
-                                  language: language,
-                                  isDark: isDark,
-                                  onTap: () {
-                                    HapticFeedback.lightImpact();
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => LanguageDetailScreen(
-                                          language: language,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                )
-                                    .animate(delay: (index * 50).ms)
-                                    .fadeIn(duration: 300.ms)
-                                    .slideX(begin: 0.1, duration: 300.ms);
-                              },
-                            );
-                          },
-                          error: (e, s) {
-                            return Center(
-                              child: StreamErrorWidget(
-                                error: e,
-                                onTryAgain: () {
-                                  ref.invalidate(languagesProvider);
-                                },
-                              ),
-                            );
-                          },
-                          loading: () => const AdaptiveProgressIndicator(
-                            message: "Loading Languages...",
+                  child: CustomScrollView(
+                    slivers: [
+                      if (isPendingGuardianMinor)
+                        pad(
+                          _NoticeBanner(
+                            key: const Key('home-guardian-banner'),
+                            icon: Icons.family_restroom_rounded,
+                            title: l.homeGuardianTitle,
+                            body: l.homeGuardianBody,
+                            label: l.homeGuardianLabel,
+                            reduceMotion: reduceMotion,
                           ),
+                          top: PanAfricanSpacing.lg,
+                        )
+                      else if (isKidsMode)
+                        pad(
+                          _NoticeBanner(
+                            key: const Key('home-kids-banner'),
+                            icon: Icons.child_care_rounded,
+                            title: l.homeKidsTitle,
+                            body: l.homeKidsBody,
+                            label: l.homeKidsLabel,
+                            reduceMotion: reduceMotion,
+                          ),
+                          top: PanAfricanSpacing.lg,
                         ),
+                      pad(
+                        _HeroCard(
+                          userName: displayName,
+                          dailyGoals: dailyGoals,
+                          isDark: isDark,
+                          streak: user?.streak ?? 0,
+                          reduceMotion: reduceMotion,
+                          word: word,
+                        ),
+                        top: PanAfricanSpacing.lg,
                       ),
+                      ...listSlivers,
                     ],
                   ),
                 ),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// The single main action on Home (pack: Busuu/Calm continue card): the
+/// language you were last furthest into, its progress, one Continue button.
+class _ContinueCard extends StatelessWidget {
+  const _ContinueCard({
+    required this.language,
+    required this.isDark,
+    required this.onTap,
+  });
+
+  final Language language;
+  final bool isDark;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = l10nOf(context);
+    final percent = (_languageProgress(language) * 100).toInt();
+    final muted = isDark
+        ? PanAfricanColors.textSecondaryDark
+        : PanAfricanColors.textSecondaryLight;
+    return Semantics(
+      container: true,
+      label: l.homeContinueLabel(language.name, percent),
+      child: Container(
+        key: const Key('home-continue-card'),
+        padding: EdgeInsets.all(PanAfricanSpacing.md),
+        decoration: BoxDecoration(
+          color: isDark
+              ? PanAfricanColors.cardDark
+              : PanAfricanColors.cardLight,
+          borderRadius: PanAfricanRadius.lgBR,
+          boxShadow: PanAfricanShadows.sm,
+          border: const BorderDirectional(
+            start: BorderSide(color: PanAfricanColors.secondaryDark, width: 4),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ExcludeSemantics(
+              child: Text(
+                l.homeContinueTitle(language.name),
+                style: PanAfricanTypography.titleMedium(context),
+              ),
+            ),
+            SizedBox(height: PanAfricanSpacing.xs),
+            ExcludeSemantics(
+              child: LinearProgressIndicator(
+                value: _languageProgress(language),
+                minHeight: 8,
+                backgroundColor: PanAfricanColors.neutralLight,
+                valueColor: const AlwaysStoppedAnimation<Color>(
+                  PanAfricanColors.primary,
+                ),
+                borderRadius: BorderRadius.circular(PanAfricanRadius.xs),
+              ),
+            ),
+            SizedBox(height: PanAfricanSpacing.xxs),
+            ExcludeSemantics(
+              child: Text(
+                l.homePercentComplete(percent),
+                style: PanAfricanTypography.labelSmall(
+                  context,
+                ).copyWith(color: muted),
+              ),
+            ),
+            SizedBox(height: PanAfricanSpacing.sm),
+            FilledButton.icon(
+              key: const Key('home-continue-button'),
+              style: FilledButton.styleFrom(
+                minimumSize: const Size.fromHeight(48),
+                backgroundColor: PanAfricanColors.primary,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+              ),
+              onPressed: onTap,
+              icon: const Icon(Icons.play_arrow_rounded),
+              label: Text(l.continueButton),
+            ),
+          ],
         ),
       ),
     );
@@ -259,9 +496,25 @@ class _LanguageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final progress = language.total_score > 0
-        ? (language.total_score / 100).clamp(0.0, 1.0)
-        : 0.0;
+    final l = l10nOf(context);
+    final progress = _languageProgress(language);
+    final percent = (progress * 100).toInt();
+    // Defends against a backend ever including an unpublished/not-yet-ready
+    // language in the list, so the card stays truthful instead of opening a
+    // broken lesson flow.
+    final isLocked = !language.is_published;
+
+    final semanticsLabel = isLocked
+        ? l.homeCardLocked(language.name)
+        : progress > 0
+        ? l.homeCardProgress(language.name, percent)
+        : l.homeCardStart(language.name);
+
+    // Dark/light-aware secondary colour for every quiet label and the
+    // trailing icon, verified >=4.5:1 against both card backgrounds.
+    final mutedIconTextColor = isDark
+        ? PanAfricanColors.textSecondaryDark
+        : PanAfricanColors.textSecondaryLight;
 
     return Container(
       margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
@@ -273,211 +526,413 @@ class _LanguageCard extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: Semantics(
-          label: '${language.name} language card${progress > 0 ? ', ${(progress * 100).toInt()}% complete' : ', start learning'}',
+          label: semanticsLabel,
           button: true,
+          // Without this, the card's own text nodes merge into the label.
+          excludeSemantics: true,
           child: InkWell(
             onTap: onTap,
             borderRadius: PanAfricanRadius.lgBR,
-            child: Padding(
-              padding: EdgeInsets.all(PanAfricanSpacing.md),
-            child: Row(
-            children: [
-              // Language Flag/Image
-              Semantics(
-                label: '${language.name} flag',
-                excludeSemantics: true,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                  child: CachedNetworkImage(
-                    imageUrl: language.background ?? '',
-                    width: 60.w,
-                    height: 60.w,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => Container(
-                      width: 60.w,
-                      height: 60.w,
-                      color: PanAfricanColors.neutralLight,
-                      child: Icon(
-                        Icons.language,
-                        color: PanAfricanColors.neutralMedium,
-                      ),
-                    ),
-                    errorWidget: (context, url, error) => Container(
-                      width: 60.w,
-                      height: 60.w,
-                      color: PanAfricanColors.neutralLight,
-                      child: Icon(
-                        Icons.language,
-                        color: PanAfricanColors.neutralMedium,
-                      ),
-                    ),
-                  ),
-                ),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(
+                minHeight: AdaptiveLayout.minTouchTarget,
               ),
-              SizedBox(width: PanAfricanSpacing.md),
-              // Language Info
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              child: Padding(
+                padding: EdgeInsets.all(PanAfricanSpacing.md),
+                child: Row(
                   children: [
-                    Text(
-                      language.name,
-                      style: PanAfricanTypography.titleMedium(context),
+                    // Only this decorative image (not any text) is dimmed
+                    // for the locked state, so text keeps AA contrast.
+                    Semantics(
+                      label: l.homeFlag(language.name),
+                      excludeSemantics: true,
+                      child: Opacity(
+                        opacity: isLocked ? 0.5 : 1.0,
+                        child: LanguageArt(
+                          name: language.name,
+                          imageUrl: language.background,
+                        ),
+                      ),
                     ),
-                    SizedBox(height: PanAfricanSpacing.xs),
-                    if (progress > 0) ...[
-                      Semantics(
-                        label: 'Progress: ${(progress * 100).toInt()}%',
-                        child: LinearProgressIndicator(
-                          value: progress,
-                          backgroundColor: PanAfricanColors.neutralLight,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            PanAfricanColors.primary,
+                    SizedBox(width: PanAfricanSpacing.md),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            language.name,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: PanAfricanTypography.titleMedium(context),
                           ),
-                          minHeight: 6.h,
-                          borderRadius: BorderRadius.circular(3),
-                        ),
+                          if (_nativeLine(language.name) case final line?)
+                            Padding(
+                              padding: const EdgeInsetsDirectional.only(top: 2),
+                              child: Text(
+                                line,
+                                key: const ValueKey('lang-native'),
+                                // In-language text keeps its own direction
+                                // inside an Arabic UI.
+                                textDirection: contentDirectionOf(
+                                  line,
+                                  Directionality.of(context),
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: PanAfricanTypography.bodySmall(context)
+                                    .copyWith(
+                                      color: mutedIconTextColor,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                              ),
+                            ),
+                          SizedBox(height: PanAfricanSpacing.xs),
+                          if (isLocked)
+                            Text(
+                              l.homeComingSoon,
+                              style: PanAfricanTypography.bodySmall(context)
+                                  .copyWith(
+                                    color: mutedIconTextColor,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                            )
+                          else if (progress > 0) ...[
+                            LinearProgressIndicator(
+                              value: progress,
+                              backgroundColor: PanAfricanColors.neutralLight,
+                              valueColor: const AlwaysStoppedAnimation<Color>(
+                                PanAfricanColors.primary,
+                              ),
+                              minHeight: 6.h,
+                              borderRadius: BorderRadius.circular(
+                                PanAfricanRadius.xs,
+                              ),
+                            ),
+                            SizedBox(height: PanAfricanSpacing.xs),
+                            Text(
+                              l.homePercentComplete(percent),
+                              style: PanAfricanTypography.labelSmall(
+                                context,
+                              ).copyWith(color: mutedIconTextColor),
+                            ),
+                          ] else
+                            Text(
+                              l.homeStartLearning,
+                              style: PanAfricanTypography.bodySmall(
+                                context,
+                              ).copyWith(color: mutedIconTextColor),
+                            ),
+                        ],
                       ),
-                      SizedBox(height: PanAfricanSpacing.xs),
-                      Text(
-                        '${(progress * 100).toInt()}% Complete',
-                        style: PanAfricanTypography.labelSmall(context).copyWith(
-                          color: PanAfricanColors.neutralMedium,
-                        ),
+                    ),
+                    // chevron_right does not auto-mirror, so flip it for RTL.
+                    Transform.flip(
+                      flipX: Directionality.of(context) == TextDirection.rtl,
+                      child: Icon(
+                        isLocked
+                            ? Icons.lock_outline_rounded
+                            : Icons.chevron_right_rounded,
+                        color: mutedIconTextColor,
                       ),
-                    ] else
-                      Text(
-                        'Start Learning',
-                        style: PanAfricanTypography.bodySmall(context).copyWith(
-                          color: PanAfricanColors.neutralMedium,
-                        ),
-                      ),
+                    ),
                   ],
                 ),
               ),
-              Semantics(
-                excludeSemantics: true,
-                child: Icon(
-                  Icons.chevron_right_rounded,
-                  color: PanAfricanColors.neutralMedium,
-                ),
-              ),
-            ],
+            ),
           ),
         ),
-        ),
       ),
-    ),
     );
   }
 }
 
-class _HeroCard extends StatelessWidget {
-  final String userName;
-  final List<DailyGoal> dailyGoals;
-  final bool isDark;
-
-  const _HeroCard({
-    required this.userName,
-    required this.dailyGoals,
-    required this.isDark,
+/// A small, honest status banner for a minor account still waiting on
+/// guardian consent (see [AgeTierService]). Home stays fully usable for
+/// lessons; this explains why social/chat/purchase features are paused.
+class _NoticeBanner extends StatelessWidget {
+  const _NoticeBanner({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.body,
+    required this.label,
+    required this.reduceMotion,
   });
 
-  double _progress() {
-    final todayGoals = dailyGoals.where((goal) => goal.isToday).toList();
-    if (todayGoals.isEmpty) return 0;
-    final total = todayGoals.fold<double>(0, (sum, goal) => sum + goal.progress);
-    return (total / todayGoals.length).clamp(0.0, 1.0);
-  }
+  final IconData icon;
+  final String title;
+  final String body;
+  final String label;
+  final bool reduceMotion;
 
   @override
   Widget build(BuildContext context) {
-    final progress = _progress();
-    return Container(
-      decoration: BoxDecoration(
-        gradient: PanAfricanGradients.savannaGold,
-        borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
-        boxShadow: PanAfricanShadows.lg,
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(PanAfricanSpacing.lg),
+    final banner = Semantics(
+      container: true,
+      liveRegion: true,
+      label: label,
+      excludeSemantics: true,
+      child: Container(
+        padding: EdgeInsets.all(PanAfricanSpacing.md),
+        decoration: BoxDecoration(
+          color: PanAfricanColors.secondaryContainer,
+          borderRadius: PanAfricanRadius.lgBR,
+        ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Icon(icon, color: PanAfricanColors.onSecondaryContainer),
+            SizedBox(width: PanAfricanSpacing.sm),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Welcome back, $userName',
-                    style: PanAfricanTypography.titleLarge(context).copyWith(
-                      color: PanAfricanColors.neutralDarkest,
-                    ),
+                    title,
+                    style: PanAfricanTypography.titleSmall(
+                      context,
+                    ).copyWith(color: PanAfricanColors.onSecondaryContainer),
                   ),
                   SizedBox(height: PanAfricanSpacing.xxs),
                   Text(
-                    'Pick a language and keep your streak alive.',
-                    style: PanAfricanTypography.bodyMedium(context).copyWith(
-                      color: PanAfricanColors.neutralDark,
-                    ),
-                  ),
-                  SizedBox(height: PanAfricanSpacing.md),
-                  Row(
-                    children: [
-                      Semantics(
-                        label: 'Daily goals',
-                        child: PanAfricanBadge(
-                          label: 'Daily goals',
-                          color: PanAfricanColors.tertiary,
-                          icon: Icons.flag_rounded,
-                        ),
-                      ),
-                      SizedBox(width: PanAfricanSpacing.sm),
-                      Semantics(
-                        label: '${(progress * 100).toInt()}% complete',
-                        child: PanAfricanBadge(
-                          label: '${(progress * 100).toInt()}% complete',
-                          color: PanAfricanColors.primary,
-                          icon: Icons.check_circle_rounded,
-                        ),
-                      ),
-                    ],
+                    body,
+                    style: PanAfricanTypography.bodySmall(
+                      context,
+                    ).copyWith(color: PanAfricanColors.onSecondaryContainer),
                   ),
                 ],
-              ),
-            ),
-            SizedBox(width: PanAfricanSpacing.md),
-            Container(
-              width: 56.w,
-              height: 56.w,
-              decoration: BoxDecoration(
-                color: isDark
-                    ? PanAfricanColors.surfaceContainerDark
-                    : PanAfricanColors.surfaceContainerLight,
-                borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-              ),
-              child: Center(
-                child: Text(
-                  '${(progress * 100).toInt()}%',
-                  style: PanAfricanTypography.titleSmall(context),
-                ),
               ),
             ),
           ],
         ),
       ),
-    ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.1);
+    );
+
+    if (reduceMotion) return banner;
+    return banner.animate().fadeIn(duration: 300.ms).slideY(begin: -0.1);
   }
 }
 
-Widget _buildHeroCard(
-  BuildContext context,
-  bool isDark, {
-  required String userName,
-  required List<DailyGoal> dailyGoals,
-}) {
-  return _HeroCard(
-    userName: userName,
-    dailyGoals: dailyGoals,
-    isDark: isDark,
-  );
+/// Summary-first hero (pack: Monzo/Revolut hero number + Headspace greeting):
+/// the day's welcome word with its meaning, the learner's streak, and a
+/// progress ring for today's goals that fills once on open.
+class _HeroCard extends StatelessWidget {
+  final String userName;
+  final List<DailyGoal> dailyGoals;
+  final bool isDark;
+  final int streak;
+  final bool reduceMotion;
+  final WelcomeWord word;
+
+  const _HeroCard({
+    required this.userName,
+    required this.dailyGoals,
+    required this.isDark,
+    required this.streak,
+    required this.reduceMotion,
+    required this.word,
+  });
+
+  double _progress() {
+    final todayGoals = dailyGoals.where((goal) => goal.isToday).toList();
+    if (todayGoals.isEmpty) return 0;
+    final total = todayGoals.fold<double>(0, (sum, g) => sum + g.progress);
+    return (total / todayGoals.length).clamp(0.0, 1.0);
+  }
+
+  String _subtitleCopy(AppLocalizations l) {
+    if (streak <= 0) return l.homeStreakNone;
+    if (streak == 1) return l.homeStreakOne;
+    return l.homeStreakMany(streak);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = l10nOf(context);
+    final progress = _progress();
+    final percent = (progress * 100).toInt();
+    final language = word.language?.call(l);
+
+    final card = Container(
+      decoration: BoxDecoration(
+        gradient: PanAfricanGradients.savannaGold,
+        borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
+        boxShadow: PanAfricanShadows.lg,
+      ),
+      padding: EdgeInsets.all(PanAfricanSpacing.lg),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (language != null) ...[
+            Text(
+              l.homeWordOfDay(word.word, language),
+              key: const Key('home-word-of-day'),
+              style: PanAfricanTypography.labelLarge(context).copyWith(
+                color: PanAfricanColors.neutralDarkest,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            SizedBox(height: PanAfricanSpacing.sm),
+          ],
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l.homeWelcomeBack(userName),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      style: PanAfricanTypography.titleLarge(
+                        context,
+                      ).copyWith(color: PanAfricanColors.neutralDarkest),
+                    ),
+                    SizedBox(height: PanAfricanSpacing.xxs),
+                    Text(
+                      _subtitleCopy(l),
+                      style: PanAfricanTypography.bodyMedium(
+                        context,
+                      ).copyWith(color: PanAfricanColors.neutralDark),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: PanAfricanSpacing.md),
+              _GoalRing(
+                progress: progress,
+                percent: percent,
+                reduceMotion: reduceMotion,
+                caption: l.homeGoalCaption,
+                label: l.homeGoalRing(percent),
+              ),
+            ],
+          ),
+          SizedBox(height: PanAfricanSpacing.md),
+          Wrap(
+            spacing: PanAfricanSpacing.sm,
+            runSpacing: PanAfricanSpacing.xxs,
+            children: [
+              // onXContainer tokens: pre-mixed high-contrast text colours,
+              // measured 8.5:1 / 6.2:1 on the badge's tinted fill.
+              if (streak > 0)
+                Semantics(
+                  label: l.homeStreakSemantics(streak),
+                  excludeSemantics: true,
+                  child: PanAfricanBadge(
+                    label: l.homeStreakBadge(streak),
+                    color: PanAfricanColors.onTertiaryContainer,
+                    icon: Icons.local_fire_department_rounded,
+                  ),
+                ),
+              Semantics(
+                label: l.homeDailyGoals,
+                excludeSemantics: true,
+                child: PanAfricanBadge(
+                  label: l.homeDailyGoals,
+                  color: PanAfricanColors.onPrimaryContainer,
+                  icon: Icons.flag_rounded,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+
+    if (reduceMotion) return card;
+    return card.animate().fadeIn(duration: 300.ms).slideY(begin: 0.1);
+  }
+}
+
+/// Today's goal as a ring (the pack's "hero number"). Fills over 600 ms on
+/// open; instant with Reduce Motion. Sized from the text so 200% still fits.
+class _GoalRing extends StatelessWidget {
+  const _GoalRing({
+    required this.progress,
+    required this.percent,
+    required this.reduceMotion,
+    required this.caption,
+    required this.label,
+  });
+
+  final double progress;
+  final int percent;
+  final bool reduceMotion;
+  final String caption;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.textScalerOf(context).scale(64).clamp(64.0, 96.0);
+    return Semantics(
+      label: label,
+      excludeSemantics: true,
+      child: SizedBox(
+        key: const Key('home-goal-ring'),
+        width: size,
+        height: size,
+        child: TweenAnimationBuilder<double>(
+          tween: Tween(begin: 0, end: progress),
+          duration: reduceMotion
+              ? Duration.zero
+              : const Duration(milliseconds: 600),
+          curve: Curves.easeOutCubic,
+          builder: (context, value, _) => Stack(
+            fit: StackFit.expand,
+            children: [
+              CircularProgressIndicator(
+                value: value,
+                strokeWidth: 6,
+                strokeCap: StrokeCap.round,
+                backgroundColor: PanAfricanColors.neutralDarkest.withValues(
+                  alpha: 0.15,
+                ),
+                valueColor: const AlwaysStoppedAnimation<Color>(
+                  PanAfricanColors.neutralDarkest,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: FittedBox(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        l10nOf(context).shellPercent(percent.toString()),
+                        style: PanAfricanTypography.titleSmall(context)
+                            .copyWith(
+                              color: PanAfricanColors.neutralDarkest,
+                              fontWeight: FontWeight.w800,
+                            ),
+                      ),
+                      Text(
+                        caption,
+                        style: PanAfricanTypography.labelSmall(
+                          context,
+                        ).copyWith(color: PanAfricanColors.neutralDarkest),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// "Kiswahili · Habari": the language's own name and a greeting in it.
+/// Omitted when it would only repeat the English name.
+String? _nativeLine(String name) {
+  final id = languageIdentity(name);
+  final parts = [
+    if (id.native != null && id.native!.toLowerCase() != name.toLowerCase())
+      id.native!,
+    if (id.greeting != null) '“${id.greeting}”',
+  ];
+  return parts.isEmpty ? null : parts.join(' · ');
 }

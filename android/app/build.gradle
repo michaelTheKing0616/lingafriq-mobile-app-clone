@@ -55,9 +55,26 @@ android {
         
         // Support 16KB page size (required for Android 15+)
         // Configure NDK ABI filters - this is safe even if NDK isn't installed
-        // Flutter plugins will handle native library inclusion if needed
-        ndk {
-            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+        // Flutter plugins will handle native library inclusion if needed.
+        // Override for a phone-only sideload APK:
+        //   ORG_GRADLE_PROJECT_lingafriqAbiFilters=arm64-v8a
+        //
+        // `flutter build apk --split-per-abi` passes -Psplit-per-abi=true and
+        // enables splits.abi. AGP rejects any ndk.abiFilters in that case,
+        // even when the ABI lists match, which skips the per-ABI size gate.
+        // Leave the filters unset then. AAB builds do not set the property, so
+        // they keep armeabi-v7a, arm64-v8a, and x86_64 (no 32-bit x86).
+        def splitPerAbiRaw = project.findProperty('split-per-abi')
+        def splitPerAbi = splitPerAbiRaw != null && splitPerAbiRaw.toString().toBoolean()
+        if (!splitPerAbi) {
+            // Replace, do not append. The Flutter plugin may already have
+            // filled abiFilters, and NdkOptions.abiFilters(String...) only adds.
+            def abiProp = project.findProperty('lingafriqAbiFilters') ?: 'armeabi-v7a,arm64-v8a,x86_64'
+            def abis = abiProp.split(',').collect { it.trim() }.findAll { it }
+            ndk {
+                abiFilters.clear()
+                abiFilters.addAll(abis)
+            }
         }
     }
     
@@ -65,6 +82,16 @@ android {
     packagingOptions {
         jniLibs {
             useLegacyPackaging = false
+            // When building a phone sideload APK, drop unused ABI .so files from plugin AARs.
+            def abiProp = project.findProperty('lingafriqAbiFilters')
+            if (abiProp) {
+                def keep = abiProp.split(',').collect { it.trim() } as Set
+                ['armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'].each { abi ->
+                    if (!keep.contains(abi)) {
+                        excludes += ["lib/${abi}/**"]
+                    }
+                }
+            }
         }
     }
 
@@ -129,9 +156,15 @@ android {
 
     buildTypes {
         release {
-            // Enable minification to generate mapping.txt for crash analysis
-            minifyEnabled true
-            shrinkResources true
+            // Play / CI default: minify on. Sideload tester builds can disable via:
+            //   ORG_GRADLE_PROJECT_lingafriqSideloadNoMinify=true
+            // to avoid R8 stripping crashes that are hard to diagnose in external QA.
+            def sideloadNoMinify = project.findProperty('lingafriqSideloadNoMinify') == 'true'
+            minifyEnabled !sideloadNoMinify
+            shrinkResources !sideloadNoMinify
+            if (sideloadNoMinify) {
+                println("⚠️ Sideload mode: minify/shrink disabled for tester stability")
+            }
 
             // Use signing config if it's properly configured
             if (keystorePropertiesFile.exists() && signingConfigs.release.storeFile != null) {
@@ -150,9 +183,36 @@ android {
     }
 }
 
+// Fail configuration if the ABI split / abiFilters conflict returns, and if an
+// AAB build (splits off, no sideload override) drops one of the release ABIs.
+// afterEvaluate runs after this script's ndk block and after the Flutter
+// plugin's apply-time ABI setup.
+afterEvaluate {
+    def filters = android.defaultConfig.ndk.abiFilters ?: []
+    def splitsEnabled = android.splits.abi.enable
+    if (splitsEnabled && !filters.isEmpty()) {
+        throw new GradleException(
+            "ndk.abiFilters (${filters}) conflict with enabled ABI splits. " +
+            "Leave abiFilters unset when -Psplit-per-abi=true."
+        )
+    }
+    def customAbi = project.findProperty('lingafriqAbiFilters')
+    if (!splitsEnabled && customAbi == null) {
+        def expected = ['armeabi-v7a', 'arm64-v8a', 'x86_64'] as Set
+        def actual = filters.collect { it.toString() } as Set
+        if (actual != expected) {
+            throw new GradleException(
+                "Release ndk.abiFilters must stay ${expected} when ABI splits are off, but were ${actual}"
+            )
+        }
+    }
+}
+
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
+    // P1-010: Play Integrity token requests (server verifies via Google API + Doppler creds).
+    implementation 'com.google.android.play:integrity:1.4.0'
     
     // Note: Play Core is NOT included - it's incompatible with SDK 34+
     // Flutter references it for deferred components, but we don't use that feature

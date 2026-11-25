@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
@@ -11,13 +12,20 @@ import 'package:lingafriq/widgets/error_state_widget.dart';
 import 'package:lingafriq/widgets/skeleton_loader.dart';
 import 'package:lingafriq/providers/curriculum_provider.dart';
 import 'package:lingafriq/models/curriculum_model.dart';
-import 'package:lingafriq/screens/curriculum/lesson_detail_screen.dart';
 import 'package:lingafriq/screens/lesson/authentic_lesson_flow_screen.dart';
 import 'package:lingafriq/screens/curriculum/level_certificate_screen.dart';
 import 'package:lingafriq/screens/persona_missions/persona_missions_hub_screen.dart';
 import 'package:lingafriq/services/curriculum_service.dart';
 import 'package:lingafriq/utils/curriculum_languages.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+
+/// Copy key `content.coming_soon` (ARB: `content_coming_soon`); also keys the empty-state widget.
+const _comingSoonCopyKey = 'content.coming_soon';
+
+/// Languages whose bundled curriculum has native-speaker sign-off. Empty while
+/// docs/build/MARKETING_CLAIMS_FREEZE.md lists every bundled language as unverified;
+/// the verification pipeline that populates this belongs to E-P4/E-P5.
+const Set<String> _verifiedContentLanguages = <String>{};
 
 class CurriculumScreenMaterial3 extends HookConsumerWidget {
   const CurriculumScreenMaterial3({
@@ -40,6 +48,7 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
     final selectedLanguage = useState(defaultLang);
     final selectedLevel = useState(initialLevel ?? 'A1');
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
     final isLoading = useState(true);
     final error = useState<String?>(null);
 
@@ -53,12 +62,18 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
     String resolveLangKey(String pickerValue) =>
         CurriculumService.normalizeLanguageKey(pickerValue);
 
+    bool languageHasVerifiedContent(String langKey) =>
+        _verifiedContentLanguages.contains(resolveLangKey(langKey));
+
     bool languageHasContent(String langKey) {
+      if (!languageHasVerifiedContent(langKey)) return false;
       if (curriculum == null) return true;
       final normalized = resolveLangKey(langKey);
       return curriculum.languages.containsKey(normalized) ||
           curriculum.languages.containsKey(langKey);
     }
+
+    final hasVerifiedContent = languageHasVerifiedContent(selectedLanguage.value);
 
     bool levelHasContent(String level) {
       if (curriculum == null) return true;
@@ -110,7 +125,7 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
 
     // Extract units for selected language + level
     List<CurriculumUnit> units = [];
-    if (curriculum != null) {
+    if (curriculum != null && hasVerifiedContent) {
       final langKey = resolveLangKey(selectedLanguage.value);
       final languageData =
           curriculum.languages[langKey] ?? curriculum.languages[selectedLanguage.value];
@@ -173,7 +188,7 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : LinearGradient(
+              : const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -199,7 +214,7 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
                     child: Semantics(
                       label: 'Select language',
                       child: DropdownButtonFormField<String>(
-                        value: selectedLanguage.value,
+                        initialValue: selectedLanguage.value,
                         decoration: InputDecoration(
                           labelText: 'Language',
                           border: OutlineInputBorder(
@@ -220,10 +235,10 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
                                 if (!hasContent) ...[
                                   const SizedBox(width: 6),
                                   Text(
-                                    'Soon',
+                                    l10n.content_coming_soon_badge,
                                     style: TextStyle(
                                       fontSize: 10.sp,
-                                      color: Colors.orange.shade700,
+                                      color: context.panWarning,
                                     ),
                                   ),
                                 ],
@@ -242,7 +257,7 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
                     child: Semantics(
                       label: 'Select level',
                       child: DropdownButtonFormField<String>(
-                        value: effectiveLevel,
+                        initialValue: effectiveLevel,
                         decoration: InputDecoration(
                           labelText: 'Level',
                           border: OutlineInputBorder(
@@ -262,16 +277,16 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
                               children: [
                                 Text(level),
                                 if (!hasContent) ...[
-                                  SizedBox(width: 6),
+                                  const SizedBox(width: 6),
                                   Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
                                     decoration: BoxDecoration(
-                                      color: Colors.orange.withOpacity(0.15),
+                                      color: context.panWarning.withValues(alpha: 0.15),
                                       borderRadius: BorderRadius.circular(4),
                                     ),
                                     child: Text(
-                                      'Soon',
-                                      style: TextStyle(fontSize: 9.sp, color: Colors.orange.shade700),
+                                      l10n.content_coming_soon_badge,
+                                      style: TextStyle(fontSize: 9.sp, color: context.panWarning),
                                     ),
                                   ),
                                 ],
@@ -353,7 +368,7 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
                                   ),
                                 ],
                               )
-                            : units.isEmpty
+                            : !hasVerifiedContent || units.isEmpty
                                 ? ListView(
                                     physics:
                                         const AlwaysScrollableScrollPhysics(),
@@ -362,11 +377,16 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
                                           height:
                                               MediaQuery.of(context).size.height *
                                                   0.15),
-                                      AppEmptyState(
-                                        icon: Icons.upcoming_rounded,
-                                        title: 'Coming Soon',
-                                        subtitle:
-                                            'Content for $effectiveLevel is coming soon!\nTry A1 or B1 to get started.',
+                                      Semantics(
+                                        key: const ValueKey(_comingSoonCopyKey),
+                                        container: true,
+                                        liveRegion: true,
+                                        child: AppEmptyState(
+                                          icon: Icons.upcoming_rounded,
+                                          title: l10n.content_coming_soon,
+                                          subtitle:
+                                              l10n.content_not_available_yet,
+                                        ),
                                       ),
                                     ],
                                   )
@@ -440,7 +460,7 @@ class _UnitCard extends StatelessWidget {
                   width: 36.sp,
                   height: 36.sp,
                   decoration: BoxDecoration(
-                    color: PanAfricanColors.primary.withOpacity(0.15),
+                    color: PanAfricanColors.primary.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                   ),
                   alignment: Alignment.center,
@@ -458,7 +478,7 @@ class _UnitCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(unit.title, style: PanAfricanTypography.titleMedium(context)),
-                      SizedBox(height: 2),
+                      const SizedBox(height: 2),
                       Text(
                         '$completedCount / ${unit.lessons.length} lessons',
                         style: PanAfricanTypography.bodySmall(context).copyWith(
@@ -476,7 +496,7 @@ class _UnitCard extends StatelessWidget {
                 child: LinearProgressIndicator(
                   value: progress,
                 backgroundColor: isDark ? Colors.grey[800] : Colors.grey[300],
-                  valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
+                  valueColor: const AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
                 minHeight: 6.h,
               ),
             ),
@@ -543,7 +563,7 @@ class _LessonTile extends StatelessWidget {
             children: [
               Icon(
                 isCompleted ? Icons.check_circle_rounded : Icons.circle_outlined,
-                color: isCompleted ? PanAfricanColors.success : (isDark ? Colors.grey[500] : Colors.grey[400]),
+                color: isCompleted ? context.panSuccess : (isDark ? Colors.grey[500] : Colors.grey[400]),
                 size: 22.sp,
               ),
               SizedBox(width: PanAfricanSpacing.sm),

@@ -1,0 +1,53 @@
+charter: v2
+id: P0-VER-03
+kind: verification
+title: Verify Yoruba diacritics render in fallback fonts
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- UNV-E03
+depends_on:
+- E-P0-INTAKE
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: verification only; result recorded, never inferred
+token_budget: 20000
+file_allowlist:
+- docs/build/verification/P0-VER-03.md
+- docs/build/UNVERIFIED.md
+context_anchors:
+- ELEVATION.md#§3.2:L786
+acceptance_criteria:
+- id: AC1
+  text: Given a reference Android device, when a golden screen with samples ọ̀ and ẹ́ renders with the bundled font off and
+    then on, then both screenshots are stored and compared
+- id: AC2
+  text: Given the comparison, when mis-rendering appears with the font off, then it is recorded as a defect feeding the D10
+    font card; otherwise recorded as not reproduced
+user_facing: false
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- docs/build/verification/P0-VER-03.md
+- UNVERIFIED.md row updated
+risks: []
+gate: G3
+external_blockers: []
+owner: agent
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

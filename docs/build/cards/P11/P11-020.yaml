@@ -1,0 +1,75 @@
+charter: v2
+id: P11-020
+kind: build
+title: Author branch beats; keep model improvisation on rails
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§8.4-07
+- EP-§8.4-08
+- EP-§8.4-09
+- EP-§8.1-02
+depends_on:
+- E-P1-CONTAINMENT
+- P11-016
+- P11-003
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/ai/personas/quests/beats_schema.dart
+- node-backend/src/services/persona/beatRunner.ts
+context_anchors:
+- ELEVATION.md#§8.4:L1537-L1538
+- ELEVATION.md#§8.1:L1487
+acceptance_criteria:
+- id: AC1
+  text: Given scenario templates with empty branches, when this card is done, then every v1 template has authored beats with
+    at least one branch each.
+- id: AC2
+  text: Given a learner turn between beats, when the model improvises, then output passes the answer contract and carries
+    a next_beat from the authored set.
+- id: AC3
+  text: Given improvisation that would leave the story, when detected, then the reply steers back to the current beat and
+    logs an off_rails event.
+test_plan:
+  unit:
+  - beat schema
+  - off_rails detection
+  integration:
+  - improv within contract
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- enables_persona
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

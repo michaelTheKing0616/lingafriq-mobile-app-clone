@@ -6,8 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
-import '../../providers/game_content_provider.dart';
-import '../../models/game/game_content_models.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
@@ -244,7 +242,7 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
           children: [
             Center(
               child: Icon(Icons.image_rounded,
-                  size: 40.sp, color: Colors.white.withOpacity(0.2)),
+                  size: 40.sp, color: Colors.white.withValues(alpha: 0.2)),
             ),
             Positioned(
               bottom: 0,
@@ -253,8 +251,8 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.4),
-                  borderRadius: BorderRadius.only(
+                  color: Colors.black.withValues(alpha: 0.4),
+                  borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(ModernGriotRadius.lg),
                     bottomRight: Radius.circular(ModernGriotRadius.lg),
                   ),
@@ -299,7 +297,7 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
 
           Color leftBorderColor;
           if (_showResult && isCompleted) {
-            leftBorderColor = slot!.id == i
+            leftBorderColor = slot.id == i
                 ? ModernGriotColors.secondary
                 : ModernGriotColors.error;
           } else if (isCompleted) {
@@ -316,7 +314,7 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
                 builder: (context, candidateData, rejectedData) {
                   final isHovering = candidateData.isNotEmpty;
                   return GestureDetector(
-                    onTap: isCompleted ? () => _returnToPool(slot!) : null,
+                    onTap: isCompleted ? () => _returnToPool(slot) : null,
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
                       width: double.infinity,
@@ -324,17 +322,17 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
                       decoration: BoxDecoration(
                         color: isHovering
                             ? ModernGriotColors.primaryContainer
-                                .withOpacity(0.15)
+                                .withValues(alpha: 0.15)
                             : isCompleted
                                 ? cs.surfaceContainerLow
                                 : cs.surfaceContainerHighest
-                                    .withOpacity(0.4),
+                                    .withValues(alpha: 0.4),
                         borderRadius: ModernGriotRadius.borderXl,
                         border: isTarget
                             ? Border.all(
                                 color: isHovering
                                     ? ModernGriotColors.primary
-                                    : cs.outlineVariant.withOpacity(0.3),
+                                    : cs.outlineVariant.withValues(alpha: 0.3),
                                 width: 1.5,
                                 strokeAlign: BorderSide.strokeAlignInside,
                               )
@@ -352,7 +350,7 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
                                   width: 28.r,
                                   height: 28.r,
                                   decoration: BoxDecoration(
-                                    color: leftBorderColor.withOpacity(0.15),
+                                    color: leftBorderColor.withValues(alpha: 0.15),
                                     shape: BoxShape.circle,
                                   ),
                                   child: Center(
@@ -373,7 +371,7 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        slot!.text,
+                                        slot.text,
                                         style:
                                             ModernGriotTypography.bodyMedium(
                                                 context: context),
@@ -398,7 +396,7 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
                                 style: ModernGriotTypography.bodySmall(
                                   context: context,
                                   color: ModernGriotColors.onSurfaceVariant
-                                      .withOpacity(0.5),
+                                      .withValues(alpha: 0.5),
                                 ),
                               ),
                             ),
@@ -411,7 +409,7 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
                   height: 20.h,
                   child: CustomPaint(
                     painter: _DashedLinePainter(
-                      color: cs.outlineVariant.withOpacity(0.3),
+                      color: cs.outlineVariant.withValues(alpha: 0.3),
                     ),
                     size: Size(2.w, 20.h),
                   ),

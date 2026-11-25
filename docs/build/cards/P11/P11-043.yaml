@@ -1,0 +1,70 @@
+charter: v2
+id: P11-043
+kind: build
+title: Schedule visemes on audio clock with RMS jaw fallback
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§4.3-19
+- EP-§4.3-29
+- EP-§4.3-30
+- EP-§4.3-31
+- EP-§4.2-21
+- EP-§4.2-23
+depends_on:
+- P11-042
+- P11-037
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 2
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 1, depth 2'
+token_budget: 70000
+file_allowlist:
+- lib/avatars/lipsync/viseme_scheduler.dart
+- lib/avatars/lipsync/rms_jaw.dart
+context_anchors:
+- ELEVATION.md#§4.3:L953-L958
+acceptance_criteria:
+- id: AC1
+  text: Given a clip with sidecar timings, when played, then viseme changes fire against the audio clock within ±40 ms.
+- id: AC2
+  text: Given audio RMS, when streamed, then jawOpen is smoothed in 0..1 and added to the viseme pose.
+- id: AC3
+  text: Given unaligned audio, when played, then only RMS-driven jaw runs and a visible unaligned flag is logged.
+test_plan:
+  unit:
+  - scheduler timing
+  - smoothing
+  integration: []
+  security: []
+  e2e: []
+  perf:
+  - frame cost
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

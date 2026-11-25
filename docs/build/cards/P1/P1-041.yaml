@@ -1,0 +1,63 @@
+charter: v2
+id: P1-041
+kind: adr
+title: Choose commercial TTS and MT replacements named in source
+phase: P1
+epic: E-P1-LICENCES
+req_ids:
+- P0-24
+- RM-P0-11
+depends_on:
+- E-P0-INTAKE
+size: S
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 2
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: score 4; blast 2
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§1:L359-L375
+- ELEVATION.md#§16.1:L2054-L2056
+acceptance_criteria:
+- id: AC1
+  text: Given the replacement list in the source, when the ADR is accepted, then it names provider per need from Intron, Spitch,
+    Azure TTS, custom isiXhosa voice, Google or Azure MT and MADLAD-400, with commercial licence terms cited from the companion
+    doc
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Companion doc LINGAFRIQ_AI_MODEL_STACK.md is absent (EXT-01)
+gate: G1
+external_blockers:
+- EXT-01
+- EXT-03
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - prime/diagram-design

@@ -1,0 +1,119 @@
+charter: v2
+id: F-084
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Call & Response
+phase: P8
+epic: E-P8-PLAY
+hub: Play
+req_ids:
+- F-084
+- F-084.D
+- F-084.E
+- F-084.U
+- F-084.L
+depends_on:
+- P8-900
+- E-P8-PLAY
+- P8-912
+- E-P6-SCORER
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: score 7 game elevation on GameKit
+token_budget: 80000
+file_allowlist:
+- lib/screens/games/cultural/call_response_game.dart
+context_anchors:
+- ELEVATION.md#§18.5:L4708-L4721
+delta:
+  current_state: Playable from Arcade via game_router using shared 85–118-word pool without audio (§10.1); Random drives shuffle
+    and effects
+  defects_to_fix:
+  - Thin shared word-pool content without rich media
+  - No learner-model writes after sessions
+  - Results screen inconsistent with GameKit standard
+  - Hard-coded UI strings bypass ARB l10n
+  elevation_to_build:
+  - Musical call-and-response with licensed singer stems
+  - Rhythm and tone scoring via Scorer; no client-side fake scores
+  ux_and_render:
+  - []
+  hub_placement: Play → Speaking shelf
+  unlock_stage: per §17.4
+  harvest_list: []
+acceptance_criteria:
+- id: AC1
+  text: Given a completed session, when results render, then layout matches P8-900 GameKit results and posts learner-model
+    events
+- id: AC2
+  text: Given target-language prompts, when displayed, then each item plays bundled audio and uses ARB strings only
+- id: AC3
+  text: Given Scorer unavailable, when a scored round ends, then UI shows honest unavailable state without Random or client
+    fake scores
+test_plan:
+  unit:
+  - turn queue respects due items
+  - l10n keys resolve
+  integration:
+  - GameKit session end writes learner model
+  - audio playback
+  e2e:
+  - launch from Play shelf
+  - complete round
+  - results navigation
+  a11y:
+  - goldens at 100%/200% text
+  - semantics order
+  - reduced motion
+  content:
+  - word pool items carry content labels
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - play.084.title
+  - play.084.results
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+tags:
+- shows_score
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers:
+- EXT-13
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

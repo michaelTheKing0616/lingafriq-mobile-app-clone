@@ -1,0 +1,42 @@
+{
+  "charter": "v2",
+  "card_id": "P13-005",
+  "goal_languages": 95,
+  "goal_is_claim": false,
+  "admission_template": "content/templates/later_wave_language.yaml",
+  "admission_validator": "scripts/content/later_wave_admission.py",
+  "lexicon_gate": "scripts/content/lexicon_gate.py",
+  "wave_4_start_rule": "assets/content/wave_roster_decision.json#wave_4_start_rule",
+  "no_native_reviewers_max_readiness": "L0",
+  "learner_label_keys": [
+    "content_label_l0_community",
+    "content_label_no_native_panel"
+  ],
+  "proposed_build_cards": [
+    {
+      "id": "P13-005a",
+      "title": "Living Archive admission CLI + admin queue for Wave 4 YAML files",
+      "size": "M"
+    },
+    {
+      "id": "P13-005b",
+      "title": "Archive content schema (folktale / oríkì / song / proverb) + linter",
+      "size": "M"
+    },
+    {
+      "id": "P13-005c",
+      "title": "Learner Living Archive hub (browse L0 only, credit strip, licence badge)",
+      "size": "L"
+    },
+    {
+      "id": "P13-005d",
+      "title": "Contributor upload + consent capture for archive media",
+      "size": "L"
+    },
+    {
+      "id": "P13-005e",
+      "title": "Scale metrics dashboard (languages at L0, goal progress, no 95+ claim)",
+      "size": "S"
+    }
+  ]
+}

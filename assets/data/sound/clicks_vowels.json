@@ -1,0 +1,166 @@
+{
+  "card": "P5-028",
+  "built": "2026-10-26",
+  "languages": {
+    "xh": {
+      "waxal_licence": {
+        "register_id": "waxal-other",
+        "licence": "CC BY-SA 4.0",
+        "uri_or_citation": "register:waxal-other; CURRICULUM.md#§2.2:L181-L187; tools/content_engine/licences/register.csv"
+      },
+      "drills": [
+        {
+          "id": "xh.click.wcwecwe_vs_molo",
+          "kind": "click_contrast",
+          "prompt_gloss_en": "Which word matches the audio (click vs no click)?",
+          "correct_option_id": "xh.opt.wcwecwe",
+          "pair_source_id": "curriculum_vocab; CURRICULUM.md#§4:L567",
+          "audio_uri": "assets/audio/xhosa/native/b70fac9d316dde60.mp3",
+          "options": [
+            {
+              "id": "xh.opt.wcwecwe",
+              "form": "wcwecwe",
+              "gloss_en": "Practice click word (curriculum phrase)",
+              "source_id": "curriculum_vocab; CURRICULUM.md#§8:L758-L760"
+            },
+            {
+              "id": "xh.opt.molo",
+              "form": "Molo",
+              "gloss_en": "Hello",
+              "source_id": "curriculum_vocab; CURRICULUM.md#§4:L567"
+            }
+          ]
+        },
+        {
+          "id": "xh.click.nceda_vs_molo",
+          "kind": "click_contrast",
+          "prompt_gloss_en": "Which word contains the dental click you heard?",
+          "correct_option_id": "xh.opt.nceda",
+          "pair_source_id": "register:sadilar-xhosa-annotated; CURRICULUM.md#§4:L567",
+          "audio_uri": "assets/audio/xhosa/native/e75bbf5268c060e0.mp3",
+          "options": [
+            {
+              "id": "xh.opt.nceda",
+              "form": "Nceda",
+              "gloss_en": "Please",
+              "source_id": "register:sadilar-xhosa-annotated; assets/data/lexicon/a1/xh.json"
+            },
+            {
+              "id": "xh.opt.molo",
+              "form": "Molo",
+              "gloss_en": "Hello",
+              "source_id": "curriculum_vocab; CURRICULUM.md#§4:L567"
+            }
+          ]
+        }
+      ]
+    },
+    "zu": {
+      "waxal_licence": {
+        "register_id": "waxal-other",
+        "licence": "CC BY-SA 4.0",
+        "uri_or_citation": "register:waxal-other; CURRICULUM.md#§2.2:L181-L187; tools/content_engine/licences/register.csv"
+      },
+      "drills": [
+        {
+          "id": "zu.click.qaphela_vs_amanzi",
+          "kind": "click_contrast",
+          "prompt_gloss_en": "Which word matches the audio (contains a click)?",
+          "correct_option_id": "zu.opt.qaphela",
+          "pair_source_id": "register:peace-corps-zulu; CURRICULUM.md#§4:L567",
+          "audio_uri": "assets/audio/zulu/native/d96b6ee752d117f3.mp3",
+          "options": [
+            {
+              "id": "zu.opt.qaphela",
+              "form": "Ngizobaqaphele",
+              "gloss_en": "I will notice them",
+              "source_id": "register:peace-corps-zulu; CURRICULUM.md#§4:L565"
+            },
+            {
+              "id": "zu.opt.amanzi",
+              "form": "Amanzi",
+              "gloss_en": "Water",
+              "source_id": "curriculum_vocab; CURRICULUM.md#§4:L567"
+            }
+          ]
+        },
+        {
+          "id": "zu.click.qonda_vs_sicela",
+          "kind": "click_contrast",
+          "prompt_gloss_en": "Which word contains the alveolar click you heard?",
+          "correct_option_id": "zu.opt.qonda",
+          "pair_source_id": "register:peace-corps-zulu; CURRICULUM.md#§4:L567",
+          "audio_uri": "assets/audio/zulu/native/c3bd83c70f1763d2.mp3",
+          "options": [
+            {
+              "id": "zu.opt.qonda",
+              "form": "Ngiyakuqonda",
+              "gloss_en": "I understand",
+              "source_id": "register:peace-corps-zulu; CURRICULUM.md#§4:L565"
+            },
+            {
+              "id": "zu.opt.sicela",
+              "form": "Sicela",
+              "gloss_en": "Please",
+              "source_id": "register:peace-corps-zulu; CURRICULUM.md#§4:L565"
+            }
+          ]
+        }
+      ]
+    },
+    "sw": {
+      "fsi_reference": {
+        "name": "FSI Swahili Basic Course",
+        "licence": "public-domain",
+        "uri_or_citation": "register:fsi-swahili; CURRICULUM.md#§4:L565",
+        "use": "reference_only"
+      },
+      "drills": [
+        {
+          "id": "sw.stress.chakula_penultimate",
+          "kind": "stress",
+          "prompt_gloss_en": "Where is the stress in the word you heard?",
+          "correct_option_id": "sw.stress.chaKUla",
+          "pair_source_id": "register:fsi-swahili; CURRICULUM.md#§4:L567",
+          "audio_uri": "assets/audio/swahili/native/ac485ac3c4d5885e.mp3",
+          "options": [
+            {
+              "id": "sw.stress.chaKUla",
+              "form": "cha-KU-la",
+              "gloss_en": "Penultimate stress (Chakula)",
+              "source_id": "register:fsi-swahili; CURRICULUM.md#§4:L567"
+            },
+            {
+              "id": "sw.stress.CHAkula",
+              "form": "CHA-ku-la",
+              "gloss_en": "Initial-syllable stress (incorrect for Swahili)",
+              "source_id": "register:fsi-swahili; CURRICULUM.md#§4:L567"
+            }
+          ]
+        },
+        {
+          "id": "sw.vowel.baba_vs_mama",
+          "kind": "vowel_purity",
+          "prompt_gloss_en": "Which word matches the vowels you heard?",
+          "correct_option_id": "sw.opt.baba",
+          "pair_source_id": "register:fsi-swahili; CURRICULUM.md#§4:L567",
+          "audio_uri": "assets/audio/swahili/native/2d884cb47b573f7e.mp3",
+          "options": [
+            {
+              "id": "sw.opt.baba",
+              "form": "Baba",
+              "gloss_en": "Father",
+              "source_id": "register:fsi-swahili; curriculum_vocab"
+            },
+            {
+              "id": "sw.opt.mama",
+              "form": "Mama",
+              "gloss_en": "Mother",
+              "source_id": "register:fsi-swahili; curriculum_vocab"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

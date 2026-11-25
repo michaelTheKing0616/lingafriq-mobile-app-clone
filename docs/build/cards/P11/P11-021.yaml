@@ -1,0 +1,75 @@
+charter: v2
+id: P11-021
+kind: build
+title: Add teacher persona-chapter assignment and debrief sheet
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§8.4-10
+- EP-§8.4-11
+- EP-§8.4-12
+depends_on:
+- E-P1-CONTAINMENT
+- P11-016
+- E-P7-HUBS
+- E-P9-SAFETY
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 3, ambiguity 1, coupling 2, depth 0'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/services/persona/assignment.service.ts
+- lib/ai/personas/teacher_assignment.dart
+context_anchors:
+- ELEVATION.md#§8.4:L1539-L1540
+acceptance_criteria:
+- id: AC1
+  text: Given a teacher in a verified class, when assigning a persona chapter, then only enrolled students receive it.
+- id: AC2
+  text: Given a student's turns, when graded, then each turn maps to a named can-do statement with evidence.
+- id: AC3
+  text: Given a completed assignment, when the teacher opens it, then a generated debrief sheet shows can-do results and flagged
+    turns.
+- id: AC4
+  text: Given a student under 13, when a persona turn occurs, then the under-13 policy tier applies.
+test_plan:
+  unit:
+  - can-do mapping
+  integration:
+  - class enrolment authz
+  security:
+  - cross-class access denied
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- enables_persona
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- classroom surfaces owned by E-P7-HUBS
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

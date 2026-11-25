@@ -1,0 +1,90 @@
+charter: v2
+id: P5-041
+kind: build
+title: Build the unified target-language text renderer
+phase: P5
+epic: E-P5-A1
+req_ids:
+- EP-§6.7-01
+- EP-§6.7-02
+depends_on:
+- P5-010
+size: L
+difficulty:
+  score: 8
+  blast: 2
+  ambiguity: 2
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T1
+  reviewer: T3
+  justification: 'score 8: blast 2, ambiguity 2, coupling 2, depth 2'
+token_budget: 150000
+file_allowlist:
+- lib/widgets/target_text.dart
+- lib/widgets/tone_lens.dart
+- test/widgets/target_text_test.dart
+context_anchors:
+- ELEVATION.md#§6.7:L1340-L1341
+acceptance_criteria:
+- id: AC1
+  text: Given target-language text, when rendered, then one renderer provides Tone Lens, tap-to-hear and long-press gloss,
+    IPA and minimal pairs
+- id: AC2
+  text: Given lessons, chat, Polie, personas, games, magazine and dictionary, when reviewed, then none renders target text
+    outside this renderer
+- id: AC3
+  text: Given an item without audio, when tapped, then it shows a visible no-audio state
+test_plan:
+  unit:
+  - renderer
+  integration:
+  - all surfaces use it
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - screen reader
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - plain
+  - tone-lens
+  - gloss
+  - no-audio
+  copy_keys:
+  - text.gloss
+  - text.ipa
+  tokens:
+  - color.label.native
+  - color.label.expert
+  - color.label.beta
+  - type.body
+  - space.4
+  motion_tier: product
+  a11y:
+  - screen-reader announces label name and meaning
+  - touch targets >=48dp
+  - contrast >=4.5:1 on label chips
+  goldens:
+  - target_text
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

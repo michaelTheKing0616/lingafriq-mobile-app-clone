@@ -1,0 +1,112 @@
+charter: v2
+id: P7-908
+kind: build
+title: Build Lens hold-to-speak with GOP and tone scoring
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§17.6-13
+- EP-§17.6-19
+- EP-§17.6-37
+- EP-§17.6-38
+depends_on:
+- P7-907
+- E-P6-SCORER
+- E-P3-DESIGN-SYSTEM
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, coupling 2, depth 1'
+token_budget: 60000
+file_allowlist:
+- lib/screens/lens/lens_speak_controller.dart
+- lib/services/lens/lens_scoring_client.dart
+- lib/services/offline/point_and_say_queue_service.dart
+- test/services/lens/lens_scoring_client_test.dart
+context_anchors:
+- ELEVATION.md#§17.6:L2365
+- ELEVATION.md#§17.6:L2375
+- ELEVATION.md#§17.6:L2388-L2389
+acceptance_criteria:
+- id: AC1
+  text: Given the mic is held, when the learner speaks, then audio is scored by the real GOP and tone scorer and not by the
+    placeholder tone endpoint
+- id: AC2
+  text: Given a result, when it is shown, then the native contour is overlaid on the learner's contour
+- id: AC3
+  text: Given scorer confidence is low, when the result is shown, then an honest Unsure state is shown and no numeric score
+    is fabricated
+- id: AC4
+  text: Given a successful pronunciation, when scoring completes, then a haptic fires and the avatar appears in the corner
+    to celebrate
+- id: AC5
+  text: Given reduced motion, when the avatar celebrates, then a static celebration is shown
+- id: AC6
+  text: Given the scorer is unreachable, when the learner speaks, then a typed visible error is shown and the attempt is queued,
+    not silently dropped
+test_plan:
+  unit:
+  - scoring client
+  - unsure gate
+  integration:
+  - scorer unreachable
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - result announced to screen reader
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - idle
+  - recording
+  - scoring
+  - result
+  - unsure
+  - error
+  copy_keys:
+  - lens.say.hold
+  - lens.say.unsure
+  - lens.say.error
+  tokens:
+  - color.contour.native
+  - color.contour.learner
+  - motion.celebrate
+  motion_tier: product
+  a11y:
+  - hold gesture has a tap-toggle alternative
+  - result announced
+  - reduced-motion variant
+  goldens:
+  - default
+  - loading
+  - error
+  - offline
+tags:
+- shows_score
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- fixes the placeholder tone endpoint dependency (P0-18/19)
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

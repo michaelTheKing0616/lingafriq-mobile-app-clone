@@ -1,0 +1,123 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P7
+epic: E-P7-HUBS
+hub: Speak
+gate: HUB
+status: Draft
+user_facing: true
+p0_area: true
+external_blockers: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+tags: []
+token_budget: 200000
+size: L
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: voice-first Polie via gateway with streaming and consolidation'
+id: F-035
+title: Elevate Polie AI Tutor workspace
+req_ids:
+- F-035
+- F-035.D
+- F-035.E
+- F-035.U
+- F-035.L
+- P0-3
+depends_on:
+- E-P2-PLATFORM
+- E-P3-DESIGN-SYSTEM
+- E-P1-CONTAINMENT
+file_allowlist:
+- lib/screens/ai_chat/polie_workspace_screen.dart
+- lib/screens/ai_chat/ai_chat_select_screen.dart
+- lib/screens/ai_chat/ai_mode_selection_screen.dart
+- lib/screens/ai_chat/polie_mode_selection_screen.dart
+- lib/screens/ai_chat/ai_chat_language_setup_screen.dart
+- lib/screens/ai_chat/ai_chat_screen.dart
+- lib/screens/ai_chat/ai_chat_screen_with_tracking.dart
+- lib/screens/ai_chat/conversation_enhanced_screen.dart
+- lib/providers/ai_chat_provider_groq.dart
+context_anchors:
+- ELEVATION.md#§18.4:L3979-L4003
+delta:
+  current_state: Routed Polie workspace with client-side Groq calls and five unrouted chat variants.
+  defects_to_fix:
+  - Monolithic workspace screen with client API keys and no backend streaming.
+  - Silent AI fallbacks and swallowed errors.
+  elevation_to_build:
+  - Voice-first hold-to-talk with live transcript, Tone Lens, recasts, hint ladder, and save phrase.
+  - Mode chips and learner-model-aware replies through the AI gateway with streaming and lip-sync avatar.
+  ux_and_render:
+  - Large target-language chat with tap gloss and avatar bust showing listen/think/speak states.
+  - Explicit AI-unavailable state; no silent fake replies.
+  hub_placement: Speak tab root → Polie.
+  unlock_stage: per §17.4
+  harvest_list:
+  - Tracking and enhanced conversation flows from unrouted ai_chat_screen variants.
+acceptance_criteria:
+- id: AC1
+  text: Given release build without client keys, when the learner opens Polie and holds to talk, then audio transcribes via
+    the gateway with streaming replies and no Groq client calls.
+- id: AC2
+  text: Given Polie replies in the target language, when the learner taps a line, then Tone Lens and gloss appear and save-phrase
+    persists to the outbox offline.
+- id: AC3
+  text: Given AI gateway failure, when the learner sends a message, then ai_unavailable state shows what failed and next steps
+    without placeholder success copy.
+- id: AC4
+  text: Given unrouted legacy chat screens, when navigation is audited, then only the consolidated Polie workspace route remains
+    wired from Speak.
+test_plan:
+  unit:
+  - gateway mode enum mapping
+  - hint ladder state machine
+  integration:
+  - Polie hold-to-talk streaming
+  - offline outbox sync
+  e2e:
+  - Speak → Polie voice session
+  a11y:
+  - goldens at 100%/200% text
+  - semantics on mic and chips
+  content: []
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - f-035.*
+skills:
+  worker:
+  - prime/conversational-ux
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux

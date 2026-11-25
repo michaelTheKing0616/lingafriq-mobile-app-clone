@@ -128,7 +128,7 @@ class _GlobalPeopleSearchScreenState
                   hintStyle: PanAfricanTypography.bodyMedium(context).copyWith(
                     color: PanAfricanColors.textSecondary,
                   ),
-                  prefixIcon: Icon(Icons.alternate_email_rounded, color: PanAfricanColors.primary),
+                  prefixIcon: const Icon(Icons.alternate_email_rounded, color: PanAfricanColors.primary),
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.symmetric(
                     horizontal: PanAfricanSpacing.md,
@@ -153,10 +153,10 @@ class _GlobalPeopleSearchScreenState
                           vertical: PanAfricanSpacing.sm,
                         ),
                         itemCount: 5,
-                        itemBuilder: (_, __) => SkeletonListCard(),
+                        itemBuilder: (_, __) => const SkeletonListCard(),
                       )
                     : _results.isEmpty
-                        ? AppEmptyState(
+                        ? const AppEmptyState(
                             icon: Icons.people_outline_rounded,
                             title: 'No contacts found',
                             subtitle:
@@ -223,7 +223,7 @@ class _GlobalPeopleSearchScreenState
             color: PanAfricanColors.textSecondary,
           ),
         ),
-        trailing: Icon(
+        trailing: const Icon(
           Icons.chat_bubble_outline_rounded,
           color: PanAfricanColors.primary,
         ),

@@ -1,0 +1,96 @@
+charter: v2
+id: P10-925
+kind: build
+title: Expose in-app data export and account deletion
+phase: P10
+epic: E-P10-PRIVACY
+req_ids:
+- EP-§13.2-16
+depends_on:
+- P10-920
+size: L
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: score 7; blast 2; p0 area
+token_budget: 150000
+file_allowlist:
+- node-backend/src/services/userExport.ts
+- node-backend/src/services/deleteUserAccount.ts
+- lib/screens/settings/privacy_settings_screen.dart
+- lib/screens/settings/data_export_screen.dart
+context_anchors:
+- ELEVATION.md#§13.2:L1886-L1887
+acceptance_criteria:
+- id: AC1
+  text: Given a signed-in learner, when they tap Export my data, then they get a machine-readable archive of their data within
+    7 days with status shown in the app.
+- id: AC2
+  text: Given a learner confirms deletion with re-authentication, when the job runs, then personal data is deleted across
+    all mapped collections and a completion record is kept without personal data.
+- id: AC3
+  text: Given a deletion step fails, when the job runs, then the failure is logged, retried and shown to the learner as pending,
+    never as done.
+- id: AC4
+  text: Given an export or deletion request, when it is made by another user id, then it is rejected with 403.
+- id: AC5
+  text: Given deletion completes, when the learner tries to sign in, then the account is gone and credentials are revoked.
+test_plan:
+  unit:
+  - scope per collection
+  integration:
+  - export archive
+  - delete all collections
+  security:
+  - cannot act for another user
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - idle
+  - requested
+  - ready
+  - deleting
+  - failed
+  copy_keys:
+  - export_my_data
+  - delete_account
+  tokens:
+  - color.semantic
+  - type.scale
+  - space.scale
+  motion_tier: product
+  a11y:
+  - screen reader labels
+  - 48dp touch targets
+  - reduced motion honoured
+  goldens:
+  - export_my_data_golden
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Deletion must cover every collection in the data map
+gate: G12
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

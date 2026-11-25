@@ -1,0 +1,85 @@
+charter: v2
+id: P10-900
+kind: build
+title: Verify every reward on the server
+phase: P10
+epic: E-P10-GAMIFICATION
+req_ids:
+- EP-§12.1-03
+- EP-§12.1-04
+- EP-§12.2-01
+- EP-§12.2-02
+depends_on:
+- E-P5-CONTENT-REAL
+- E-P6-SCORER
+size: L
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: score 7; blast 2; p0 area
+token_budget: 150000
+file_allowlist:
+- node-backend/src/services/rewards.service.ts
+- node-backend/src/routes/rewards.routes.ts
+- node-backend/src/models/RewardLedger.ts
+- lib/providers/gamification_provider.dart
+- lib/models/user_gamification_model.dart
+- lib/utils/gamification_integration.dart
+context_anchors:
+- ELEVATION.md#§12.1:L1814-L1814
+- ELEVATION.md#§12.2:L1817-L1818
+acceptance_criteria:
+- id: AC1
+  text: Given a client posts a reward or balance value, when the server receives it, then it ignores the value and responds
+    with typed error CLIENT_REWARD_REJECTED (HTTP 422).
+- id: AC2
+  text: Given a learning event with server-held evidence, when the server computes XP, then one append-only ledger row is
+    written with evidence id, rule id and amount.
+- id: AC3
+  text: Given the same evidence id is submitted twice, when the server processes it, then exactly one ledger row exists and
+    the second call returns the first result.
+- id: AC4
+  text: Given no ledger row exists for an amount shown in the app, when the client renders balances, then it reads only server
+    ledger totals and shows an error state if the fetch fails.
+- id: AC5
+  text: Given the legacy self-minting write paths, when the migration runs, then each path is removed and a test proves a
+    forged balance request changes nothing.
+test_plan:
+  unit:
+  - ledger idempotency
+  - rule evaluation
+  integration:
+  - forged reward request rejected
+  security:
+  - client cannot mint currency or XP
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Existing balances need a one-time audit before migration
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

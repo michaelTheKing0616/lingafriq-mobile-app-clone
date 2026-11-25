@@ -1,10 +1,10 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:lingafriq/config/api_contract.dart';
+import 'package:dio/dio.dart';
+import 'package:lingafriq/screens/pronunciation/tone_overlay_view.dart';
+import 'package:lingafriq/services/lens/lens_scoring_client.dart';
+import 'package:lingafriq/services/offline/local_database_service.dart';
 import 'package:lingafriq/services/voice/voice_api_service.dart';
-import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:uuid/uuid.dart';
 
@@ -13,24 +13,39 @@ import 'package:uuid/uuid.dart';
 /// Why this exists (instead of the persisted outbox):
 /// - evaluations require uploading audio files (multipart),
 /// - persisted outbox currently pushes JSON-only operations.
+/// Visible sync state for queued Lens / Point & Say scores (P7-913).
+enum PointAndSaySyncState {
+  pending,
+  syncing,
+  failed,
+}
+
+PointAndSaySyncState pointAndSaySyncStateFromRecord(Map<String, dynamic> rec) {
+  final raw = rec['syncState']?.toString();
+  switch (raw) {
+    case 'syncing':
+      return PointAndSaySyncState.syncing;
+    case 'failed':
+      return PointAndSaySyncState.failed;
+    default:
+      return PointAndSaySyncState.pending;
+  }
+}
+
 class PointAndSayQueueService {
   PointAndSayQueueService._();
   static final PointAndSayQueueService instance = PointAndSayQueueService._();
 
-  static const _boxName = 'lingafriq_point_and_say_queue_v1';
   static const _uuid = Uuid();
 
-  Box<String>? _box;
+  /// Ids successfully uploaded in this process; prevents duplicate flush after crash.
+  final Set<String> _syncedThisSession = {};
 
   Future<void> ensureOpen() async {
-    if (_box != null && _box!.isOpen) return;
-    _box = await Hive.openBox<String>(_boxName);
+    await LocalDatabaseService().init();
   }
 
-  int get pendingCount {
-    if (_box == null || !_box!.isOpen) return 0;
-    return _box!.length;
-  }
+  int get pendingCount => LocalDatabaseService().pointAndSayCount;
 
   Future<String> enqueue({
     required String language,
@@ -51,31 +66,35 @@ class PointAndSayQueueService {
       'createdAt': DateTime.now().toUtc().toIso8601String(),
       'attempts': 0,
       'lastError': null,
+      'syncState': 'pending',
     };
-    await _box!.put(id, jsonEncode(rec));
+    await LocalDatabaseService().savePointAndSay(rec);
     return id;
   }
 
+  List<Map<String, dynamic>> pendingWithState() {
+    return _pendingRecords()
+        .map((rec) => {
+              ...rec,
+              'syncState': pointAndSaySyncStateFromRecord(rec).name,
+            })
+        .toList();
+  }
+
   List<Map<String, dynamic>> _pendingRecords() {
-    if (_box == null || !_box!.isOpen) return [];
-    final out = <Map<String, dynamic>>[];
-    for (final key in _box!.keys) {
-      final raw = _box!.get(key);
-      if (raw == null) continue;
-      try {
-        out.add(jsonDecode(raw) as Map<String, dynamic>);
-      } catch (_) {}
-    }
-    out.sort((a, b) => (a['createdAt']?.toString() ?? '').compareTo(b['createdAt']?.toString() ?? ''));
-    return out;
+    if (!LocalDatabaseService().isInitialized) return [];
+    return LocalDatabaseService().pointAndSayRecords();
   }
 
   /// Attempts to flush up to [batchSize] queued evaluations.
   /// Returns number of removed (successful) records.
   Future<int> flushPending({
     required VoiceApiService voiceApi,
+    Dio? scoringDio,
+    LensScoringClient? scoringClient,
     int batchSize = 10,
   }) async {
+    final scorer = scoringClient ?? const LensScoringClient();
     await ensureOpen();
     final pending = _pendingRecords();
     if (pending.isEmpty) return 0;
@@ -84,6 +103,11 @@ class PointAndSayQueueService {
     for (final rec in pending.take(batchSize)) {
       final id = rec['id']?.toString();
       if (id == null || id.isEmpty) continue;
+      if (_syncedThisSession.contains(id)) {
+        await LocalDatabaseService().deletePointAndSay(id);
+        removed++;
+        continue;
+      }
 
       final audioPath = rec['audioPath']?.toString() ?? '';
       final expectedText = rec['expectedText']?.toString() ?? '';
@@ -91,48 +115,50 @@ class PointAndSayQueueService {
       final evaluateTone = rec['evaluateTone'] == true;
 
       if (audioPath.isEmpty || expectedText.isEmpty || language.isEmpty) {
-        await _box!.delete(id);
+        await LocalDatabaseService().deletePointAndSay(id);
         removed++;
         continue;
       }
       if (!await File(audioPath).exists()) {
-        // Cannot ever upload; drop.
-        await _box!.delete(id);
+        await LocalDatabaseService().deletePointAndSay(id);
         removed++;
         continue;
       }
 
-      try {
-        // Quick pronunciation check
-        final quick = await voiceApi.quickPronunciationCheck(
-          audioPath: audioPath,
-          expectedText: expectedText,
-          language: language,
-        );
-        if (quick == null) {
-          throw Exception('quick_check_failed');
-        }
+      rec['syncState'] = 'syncing';
+      rec['lastError'] = null;
+      await LocalDatabaseService().savePointAndSay(rec);
 
-        // Optional tone evaluation (uses learning v2 endpoint)
-        Map<String, dynamic>? tone;
+      try {
         if (evaluateTone) {
-          await ApiService.initialize();
-          final res = await ApiService.uploadFile(
-            ApiContract.learningV2.toneTrainer,
-            audioPath,
-            fileFieldName: 'audio',
-            additionalData: {
-              'expectedText': expectedText,
-              'language': language,
-            },
+          if (scoringDio == null) {
+            throw Exception('scorer_dio_missing');
+          }
+          final outcome = await scorer.scoreUtterance(
+            post: (path, data) => scoringDio.post(path, data: data),
+            audioPath: audioPath,
+            expectedText: expectedText,
+            language: language,
           );
-          if (res.statusCode == 200 && res.data is Map) {
-            tone = (res.data as Map).cast<String, dynamic>();
+          if (outcome.retryable && outcome.phase == ToneOverlayStatus.error) {
+            throw Exception('scorer_unavailable');
+          }
+          if (outcome.phase == ToneOverlayStatus.error) {
+            throw Exception('scorer_failed');
+          }
+        } else {
+          final quick = await voiceApi.quickPronunciationCheck(
+            audioPath: audioPath,
+            expectedText: expectedText,
+            language: language,
+          );
+          if (quick == null) {
+            throw Exception('quick_check_failed');
           }
         }
 
-        // Success: remove record. (Results are shown live in-screen when user initiates sync.)
-        await _box!.delete(id);
+        _syncedThisSession.add(id);
+        await LocalDatabaseService().deletePointAndSay(id);
         removed++;
       } catch (e, st) {
         logger.error('PointAndSay flush item failed', error: e, stackTrace: st, context: {
@@ -142,12 +168,26 @@ class PointAndSayQueueService {
         final attempts = (rec['attempts'] is num) ? (rec['attempts'] as num).toInt() : 0;
         rec['attempts'] = attempts + 1;
         rec['lastError'] = e.toString();
-        await _box!.put(id, jsonEncode(rec));
+        rec['syncState'] = 'failed';
+        await LocalDatabaseService().savePointAndSay(rec);
         // Stop early on first failure to avoid thrashing when connectivity is flaky.
         break;
       }
     }
     return removed;
+  }
+
+  /// Clears failed state so [flushPending] retries visible queue items.
+  Future<void> markFailedAsPending() async {
+    await ensureOpen();
+    for (final rec in _pendingRecords()) {
+      if (pointAndSaySyncStateFromRecord(rec) != PointAndSaySyncState.failed) {
+        continue;
+      }
+      rec['syncState'] = 'pending';
+      rec['lastError'] = null;
+      await LocalDatabaseService().savePointAndSay(rec);
+    }
   }
 }
 

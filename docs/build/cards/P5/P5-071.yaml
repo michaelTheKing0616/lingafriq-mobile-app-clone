@@ -1,0 +1,51 @@
+charter: v2
+id: P5-071
+kind: verification
+title: Obtain Intron TTS quote and AI-stack interim TTS section
+phase: P5
+epic: E-P5-AUDIO
+req_ids:
+- CP-§7-yo-08
+- CP-§7-09
+depends_on:
+- P5-058
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T0
+  tester: T0
+  reviewer: T1
+  justification: verification only; no code
+token_budget: 20000
+file_allowlist: []
+context_anchors:
+- CURRICULUM.md#§7:L706-L709
+acceptance_criteria:
+- id: AC1
+  text: Given Intron, when quoted, then price per character and terms are recorded
+- id: AC2
+  text: Given the AI stack doc §3.5, when received, then the vendor map is cross-checked
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G5
+external_blockers:
+- EXT-01
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

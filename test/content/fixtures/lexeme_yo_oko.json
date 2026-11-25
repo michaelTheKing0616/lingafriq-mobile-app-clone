@@ -1,0 +1,71 @@
+{
+  "id": "yo.lex.ọkọ.vehicle",
+  "lemma": "ọkọ̀",
+  "orthography": {
+    "standard": "ọkọ̀",
+    "ascii_fallback": "oko",
+    "script": "Latn"
+  },
+  "ipa": "/ɔ̄kɔ̀/",
+  "tone_pattern": ["M", "L"],
+  "syllables": ["ọ", "kọ̀"],
+  "senses": [
+    {
+      "gloss_en": "vehicle",
+      "gloss_fr": "véhicule",
+      "domain": "transport",
+      "register": "neutral"
+    }
+  ],
+  "minimal_pairs": ["yo.lex.ọkọ.husband", "yo.lex.ọkọ.hoe"],
+  "audio": [
+    {
+      "kind": "human",
+      "voice_id": "yo_f_lagos_01",
+      "speed": "natural",
+      "uri": "audio/yo/9f2c1a4b5e6d7c8a.ogg",
+      "aligned_phones": ["ɔ̄", "k", "ɔ̀"]
+    },
+    {
+      "kind": "human",
+      "voice_id": "yo_m_ibadan_02",
+      "speed": "slow",
+      "uri": "audio/yo/a1b2c3d4e5f67890.ogg",
+      "aligned_phones": ["ɔ̄", "k", "ɔ̀"]
+    }
+  ],
+  "image": {
+    "uri": "images/yo/7c4e2f9a1b3d5e6f.png",
+    "alt_text": "A car on a Lagos street",
+    "cultural_review": "approved"
+  },
+  "cefr": "A1",
+  "frequency_rank": 812,
+  "label": "expert_reviewed",
+  "provenance": {
+    "author": "content-studio",
+    "created_at": "2026-10-21T12:00:00Z",
+    "ai_assisted": false,
+    "sources": [
+      {
+        "name": "Yoruba lexicon draft",
+        "licence": "CC BY 4.0",
+        "uri_or_citation": "curriculum/lexicon/yo/vehicle-draft",
+        "retrieved_at": "2026-10-21T12:00:00Z"
+      }
+    ]
+  },
+  "claims": [{ "kind": "linguistic", "source_ref": "lexicon:yo:vehicle" }],
+  "confidence": 0.92,
+  "risk_tags": [],
+  "review": {
+    "status": "approved",
+    "tone_checked": true,
+    "audio_checked": true,
+    "version": 3,
+    "reviewers": [
+      { "role": "native", "reviewer_id": "yo_native_1", "approved": true },
+      { "role": "linguist", "reviewer_id": "yo_ling_1", "approved": true }
+    ]
+  }
+}

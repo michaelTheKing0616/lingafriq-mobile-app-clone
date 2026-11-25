@@ -1,0 +1,69 @@
+charter: v2
+id: P12-012
+kind: build
+title: Gate cold start under 2 s on Tecno/Infinix-class device
+phase: P12
+epic: E-P12-RELEASE
+req_ids:
+- EP-§13.4-09
+depends_on:
+- P12-004
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 60000
+file_allowlist:
+- lib/main.dart
+- integration_test/cold_start_test.dart
+- scripts/perf/cold_start_trace.sh
+context_anchors:
+- ELEVATION.md#§13.4:L1900-L1901
+acceptance_criteria:
+- id: AC1
+  text: Given the reference Tecno/Infinix-class Android device, when the release build cold-starts 10 times, then the median
+    time to first meaningful frame is under 2,000 ms
+- id: AC2
+  text: Given the cold-start trace, when the harness runs, then it records time to first frame and to first meaningful frame
+    separately and stores the trace as a CI artifact
+- id: AC3
+  text: Given the median is 2,000 ms or more, when the gate runs, then the workflow fails and prints the top 3 startup spans
+- id: AC4
+  text: Given the reference device is not attached, when the gate runs, then it fails loud as Blocked, not passed
+test_plan:
+  unit: []
+  integration:
+  - trace artefact produced
+  security: []
+  e2e: []
+  perf:
+  - cold-start median of 10 on reference device
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Needs a physical reference device; model and OS recorded in the ledger
+gate: G12
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

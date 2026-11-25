@@ -1,0 +1,70 @@
+charter: v2
+id: P6-047
+kind: build
+title: Route recorded audio first, TTS for dynamic turns only
+phase: P6
+epic: E-P6-TTS
+req_ids:
+- EP-§7.5-06
+- EP-§7.5-07
+- EP-§7.1-13
+depends_on:
+- P6-046
+- P6-002
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/services/enhanced_tts_service.dart
+- node-backend/src/ai-gateway/tts/policy.ts
+- node-backend/src/ai-gateway/routes/tts.route.ts
+context_anchors:
+- ELEVATION.md#§7.5:L1449-L1460
+- ELEVATION.md#§7.1:L1349-L1366
+acceptance_criteria:
+- id: AC1
+  text: Given a curriculum item with recorded human audio, when audio is needed, then the recording plays and TTS is not called
+- id: AC2
+  text: Given a dynamic AI turn, when audio is needed, then the gateway TTS route serves a gated voice
+- id: AC3
+  text: Given Yoruba, Igbo, Hausa or Twi, when no gated voice exists, then device flutter_tts is not used and the UI shows
+    text only with a visible no-voice state
+test_plan:
+  unit:
+  - policy
+  integration:
+  - no-voice state
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

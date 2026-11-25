@@ -1,0 +1,103 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P9
+epic: E-P9-SAFETY
+hub: Me
+gate: G9
+status: Draft
+size: M
+token_budget: 80000
+user_facing: true
+p0_area: false
+tags:
+- under18_social
+external_blockers: []
+risks: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+id: F-120
+title: Elevate Share Progress
+req_ids:
+- F-120
+- F-120.D
+- F-120.E
+- F-120.U
+- F-120.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P9-SAFETY
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: milestone share with minor privacy rules'
+file_allowlist:
+- lib/screens/social/share_progress_screen.dart
+context_anchors:
+- ELEVATION.md#§18.6:L5205-L5216
+delta:
+  current_state: Share-progress route works with generic cards.
+  defects_to_fix:
+  - Share cards are generic and not milestone-branded.
+  elevation_to_build:
+  - Story cards with avatar clip, passport stamps, and streak milestones in target language.
+  - Privacy checks block exact location; minors cannot share publicly.
+  ux_and_render:
+  - 9:16 story-format cards using brand system.
+  hub_placement: Me → Progress → Share; after milestones.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given a milestone, when the learner opens Share, then the card shows avatar phrase clip and stamps without exact location.
+- id: AC2
+  text: Given an under-18 account, when Share is attempted publicly, then sharing is blocked with an honest explanation.
+- id: AC3
+  text: Given light and dark themes, when the story card renders, then goldens match design tokens at 100% and 200% text.
+test_plan:
+  unit:
+  - domain helpers
+  integration:
+  - API and navigation
+  e2e:
+  - happy path
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content: []
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - share_progress.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux
+  - adaptive/14-safety-and-high-stakes

@@ -1,0 +1,79 @@
+charter: v2
+id: P3-014
+kind: build
+title: Retire six design systems behind token shims
+phase: P3
+epic: E-P3-TOKENS
+req_ids:
+- EP-§3.2-07
+- EP-§3.2-08
+- EP-§3.2-09
+depends_on:
+- P3-013
+- P3-008
+size: L
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 2'
+token_budget: 150000
+file_allowlist:
+- lib/utils/african_theme.dart
+- lib/utils/app_colors.dart
+- lib/utils/design_system.dart
+- lib/utils/modern_griot_design_system.dart
+- lib/utils/pan_african_design_system.dart
+- lib/utils/polie_design_tokens.dart
+- lib/utils/stitch_theme_extensions.dart
+- lib/theme/app_theme.dart
+context_anchors:
+- ELEVATION.md#§3.2:L779-L784
+acceptance_criteria:
+- id: AC1
+  text: Given the seven legacy files, when migrated, then only lib/design/ is the source and the six others hold deprecated
+    shims that read token values
+- id: AC2
+  text: Given a legacy name, when read through its shim, then it returns a token value and logs a deprecation count
+- id: AC3
+  text: Given new code, when it imports a deprecated design file, then the analyzer fails
+- id: AC4
+  text: Given the shims, when goldens run on the shell, then no screen crashes and any colour change is listed in a diff report
+- id: AC5
+  text: Given the 740 literals, when the shim phase ends, then the baseline shows the count and a per-folder burn-down table
+    is committed
+test_plan:
+  unit:
+  - shim values
+  integration:
+  - golden sweep
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks:
+- colour shifts on legacy screens until each is rebuilt
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

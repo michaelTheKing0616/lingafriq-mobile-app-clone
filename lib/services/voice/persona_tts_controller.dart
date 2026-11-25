@@ -47,7 +47,7 @@ class PersonaTtsController {
 
     _isInterrupted = false;
     final profile = _activeProfile;
-    final config = profile?.toTTSConfig() ?? TTSConfig(speed: 1.0, pitch: 1.0);
+    final config = profile?.toTTSConfig() ?? const TTSConfig(speed: 1.0, pitch: 1.0);
     try {
       await _enhancedTts.speak(trimmed, config);
     } catch (e) {
@@ -65,7 +65,7 @@ class PersonaTtsController {
     _speechQueue.clear();
     final chunker = PhraseChunker();
     final profile = _activeProfile;
-    final baseConfig = profile?.toTTSConfig() ?? TTSConfig(speed: 1.0, pitch: 1.0);
+    final baseConfig = profile?.toTTSConfig() ?? const TTSConfig(speed: 1.0, pitch: 1.0);
     final pauseAfterSentenceMs = profile?.pauseAfterSentenceMs ?? 400;
 
     await _streamSub?.cancel();

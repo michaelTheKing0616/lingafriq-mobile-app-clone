@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,7 +11,17 @@ import 'package:socket_io_client/socket_io_client.dart' as io;
 import '../../models/profile_model.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/onboarding_provider.dart';
+import '../../services/chat/chat_room_learning_service.dart';
+import '../../services/chat/mls_session_service.dart';
 import '../../services/chat/wa_private_chat_service.dart';
+import '../../services/socket/socket_event_schemas.dart';
+import '../../utils/api.dart';
+import '../../utils/api_service.dart';
+import '../../widgets/chat/language_status_chip.dart';
+import '../../widgets/chat/tone_lens_sheet.dart';
+import '../../widgets/chat/voice_note_recorder.dart';
+import '../../widgets/chat/voice_note_transcript.dart';
+import 'package:just_audio/just_audio.dart';
 import '../../services/polie_mention_handler.dart';
 import '../../services/polie_rate_limiter.dart';
 import '../../services/chat/polie_dm_local_store.dart';
@@ -23,6 +32,9 @@ import '../../utils/transport_error_policy.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import 'package:dio/dio.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
+import 'contact_info_screen.dart';
+import 'first_dm_prompt_sheet.dart';
+import 'report_block_sheet.dart';
 
 /// Private DM thread — loads history from `GET /chat/private/:otherUserId` and
 /// sends via `POST /api/wa/messages`.
@@ -65,6 +77,22 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
   bool _socketConnecting = false;
   String? _myMongoId;
   bool _typingListenerAttached = false;
+  bool _inboundRequestSheetShown = false;
+  String _firstDmKind = 'accepted';
+  bool _requiresModeration = false;
+  MlsSessionSnapshot? _mlsSnapshot;
+  final MlsSessionService _mlsSession = MlsSessionService();
+  _ChatMessage? _replyTarget;
+  final GlobalKey<VoiceNoteRecorderState> _voiceNoteKey =
+      GlobalKey<VoiceNoteRecorderState>();
+  final AudioPlayer _voicePlayer = AudioPlayer();
+  String? _playingVoiceId;
+  ChatRoomLearningService? _learningService;
+  ChatLearningSurfacePolicy _learningPolicy =
+      ChatLearningSurfacePolicy.hiddenForMinorOrUnknownAge;
+  List<ChatLanguageStatusEntry> _peerLanguageStatuses = const [];
+  final Map<String, VoiceNoteTranscriptController> _transcriptControllers = {};
+  bool _messageCheckRunning = false;
 
   static String _socketOriginFromBaseUrl(String baseUrl) {
     final raw = baseUrl.trim();
@@ -132,9 +160,22 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
     return false;
   }
 
+  bool get _isMutualContact {
+    if (_firstDmKind == 'accepted') return true;
+    final c = widget.contact;
+    if (c is Map && c['isMutualContact'] == true) return true;
+    return false;
+  }
+
+  bool get _showReadReceipts => WaReadReceiptPolicy.showReadReceipts(
+        isDirectMessage: true,
+        isMutualContact: _isMutualContact,
+      );
+
   @override
   void initState() {
     super.initState();
+    WaPrivateChatService.ensureDmRealtimeInfrastructure();
     _typingController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1200),
@@ -198,6 +239,13 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
         });
         _scrollToBottom();
         _ensureTypingPresence();
+        unawaited(_refreshFirstDmState(showInboundSheet: true));
+        unawaited(_refreshMessagingPolicy());
+        unawaited(_refreshLearningSurfaces());
+        final room = _dmRoomId;
+        if (room != null) {
+          unawaited(WaPrivateChatService.markRoomRead(roomId: room));
+        }
       }
     } catch (e) {
       if (!mounted) return;
@@ -231,13 +279,184 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
 
     final read = m['read'] == true;
     final sortMs = dt?.millisecondsSinceEpoch ?? 0;
+    final id = m['_id']?.toString() ?? m['id']?.toString() ?? '';
+    final type = WaPrivateChatService.messageTypeFromMap(m);
+    final audioUrl = type == 'audio'
+        ? WaPrivateChatService.mediaUrlFromMessageMap(m)
+        : null;
+    final reactionsRaw = m['reactions'];
+    final reactions = <String, int>{};
+    if (reactionsRaw is List) {
+      for (final r in reactionsRaw) {
+        if (r is! Map) continue;
+        final emoji = r['emoji']?.toString();
+        if (emoji == null || emoji.isEmpty) continue;
+        reactions[emoji] = (reactions[emoji] ?? 0) + 1;
+      }
+    }
+    final replySnippet = m['reply_to'] is Map
+        ? (m['reply_to'] as Map)['message']?.toString()
+        : null;
     return _ChatMessage(
+      id: id,
       text: text,
       isMe: isMe,
       time: timeStr,
       isRead: read,
       sortMs: sortMs,
+      messageType: type,
+      audioUrl: audioUrl,
+      reactions: reactions,
+      replySnippet: replySnippet,
     );
+  }
+
+  Future<void> _refreshMessagingPolicy() async {
+    final peer = _peerNumericId;
+    final me = ref.read(userProvider);
+    if (peer == null || me == null || !mounted) return;
+    try {
+      final snapshot = await _mlsSession.bootstrapDirectMessage(
+        peerUserId: peer,
+        myNumericUserId: me.id,
+      );
+      if (mounted) {
+        setState(() {
+          _mlsSnapshot = snapshot;
+          _requiresModeration = snapshot.requiresModeration;
+        });
+      }
+    } catch (_) {}
+  }
+
+  Future<void> _sendDmText({
+    required int peer,
+    required String message,
+    String? replyToId,
+    bool firstDmIntro = false,
+  }) async {
+    var snapshot = _mlsSnapshot;
+    if (snapshot == null) {
+      await _refreshMessagingPolicy();
+      snapshot = _mlsSnapshot;
+    }
+    if (snapshot != null && snapshot.e2eeActive) {
+      await _mlsSession.sendDirectMessage(
+        snapshot: snapshot,
+        recipientId: peer.toString(),
+        message: message,
+        replyToId: replyToId,
+        firstDmIntro: firstDmIntro,
+      );
+      return;
+    }
+    await WaPrivateChatService.sendTextMessage(
+      recipientId: peer.toString(),
+      message: message,
+      firstDmIntro: firstDmIntro,
+      replyToId: replyToId,
+    );
+  }
+
+  Future<void> _acknowledgeKeyChange() async {
+    final key = _mlsSnapshot?.threadKey;
+    if (key == null) return;
+    final updated = await _mlsSession.acknowledgeKeyChange(key);
+    if (!mounted) return;
+    setState(() => _mlsSnapshot = updated);
+    await _loadMessages();
+  }
+
+  List<Widget> _buildE2eeStatusStrip(ColorScheme cs) {
+    final snapshot = _mlsSnapshot;
+    if (snapshot == null) return const [];
+
+    switch (snapshot.uiState) {
+      case MlsEncryptionUiState.encrypted:
+        return [
+          Semantics(
+            label: snapshot.accessibilityLabel(snapshot.uiState),
+            child: Material(
+              color: cs.primaryContainer.withValues(alpha: 0.35),
+              child: SizedBox(
+                height: 48,
+                child: Row(
+                  children: [
+                    SizedBox(width: PanAfricanSpacing.md),
+                    Icon(Icons.lock_rounded, color: cs.primary, size: 20),
+                    SizedBox(width: PanAfricanSpacing.xs),
+                    Expanded(
+                      child: Text(
+                        kE2eeOnLabel,
+                        style: ModernGriotTypography.labelSmall(
+                          color: cs.onPrimaryContainer,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ];
+      case MlsEncryptionUiState.keyChanged:
+        return [
+          Material(
+            color: cs.errorContainer,
+            child: Padding(
+              padding: EdgeInsets.all(PanAfricanSpacing.sm),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    kE2eeKeyChangeTitle,
+                    style: ModernGriotTypography.titleSmall(
+                      color: cs.onErrorContainer,
+                    ),
+                  ),
+                  SizedBox(height: PanAfricanSpacing.xs),
+                  Text(
+                    kE2eeKeyChangeBody,
+                    style: ModernGriotTypography.bodySmall(
+                      color: cs.onErrorContainer,
+                    ),
+                  ),
+                  SizedBox(height: PanAfricanSpacing.sm),
+                  Semantics(
+                    button: true,
+                    label: 'Continue after encryption key change',
+                    child: SizedBox(
+                      height: 48,
+                      child: FilledButton(
+                        onPressed: _acknowledgeKeyChange,
+                        child: const Text('Continue'),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ];
+      case MlsEncryptionUiState.recoveryFailed:
+        return [
+          Material(
+            color: cs.errorContainer,
+            child: ListTile(
+              minVerticalPadding: 12,
+              leading: Icon(Icons.key_off_rounded, color: cs.onErrorContainer),
+              title: Text(
+                kE2eeRecoveryLost,
+                style: ModernGriotTypography.labelSmall(
+                  color: cs.onErrorContainer,
+                ),
+              ),
+            ),
+          ),
+        ];
+      case MlsEncryptionUiState.notEncryptedMinor:
+        return const [];
+    }
   }
 
   void _ensureTypingPresence() {
@@ -264,6 +483,11 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
   void _stopTypingPolling() {
     _typingPollTimer?.cancel();
     _typingPollTimer = null;
+  }
+
+  void _emitSocketPayload(String event, Map<String, dynamic> body) {
+    final wrapped = wrapOutboundSocketPayload(body);
+    _socket?.emit(event, wrapped);
   }
 
   Future<void> _ensureSocket() async {
@@ -305,8 +529,11 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
       // Always re-join on reconnect (Socket.IO can reconnect silently).
       final currentRoom = _dmRoomId;
       if (currentRoom != null) {
-        socket.emit('join_room', {'room': currentRoom});
+        _emitSocketPayload('join_room', {'room': currentRoom});
       }
+      unawaited(
+        WaPrivateChatService.flushTextOutbox(isOnline: () => _socketReady),
+      );
       // On connect, do a quick sync so UI feels immediate.
       unawaited(_syncPeerTyping());
     });
@@ -325,8 +552,8 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
 
     socket.on('chat:typing_indicator', (dynamic payload) {
       if (!mounted) return;
-      if (payload is! Map) return;
-      final p = Map<String, dynamic>.from(payload as Map);
+      final p = validateInboundSocketEvent('chat:typing_indicator', payload);
+      if (p == null) return;
       final pRoom = p['roomId']?.toString();
       if (pRoom == null || pRoom != roomId) return;
       final from = p['userId']?.toString();
@@ -336,6 +563,52 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
       final isTyping = p['isTyping'] == true;
       if (isTyping == _peerTyping) return;
       setState(() => _peerTyping = isTyping);
+    });
+
+    socket.on('wa:new_message', (dynamic payload) {
+      if (!mounted) return;
+      final p = validateInboundSocketEvent('wa:new_message', payload);
+      if (p == null) return;
+      if (p['roomId']?.toString() != roomId) return;
+      final me = ref.read(userProvider);
+      setState(() {
+        _messages.add(_messageFromApi(p, me));
+        _messages.sort((a, b) => a.sortMs.compareTo(b.sortMs));
+      });
+      _scrollToBottom();
+    });
+
+    socket.on('wa:reaction_changed', (dynamic payload) {
+      if (!mounted) return;
+      final p = validateInboundSocketEvent('wa:reaction_changed', payload);
+      if (p == null) return;
+      if (p['roomId']?.toString() != roomId) return;
+      final messageId = p['messageId']?.toString();
+      final emoji = p['emoji']?.toString();
+      if (messageId == null || emoji == null) return;
+      setState(() {
+        for (var i = 0; i < _messages.length; i++) {
+          if (_messages[i].id != messageId) continue;
+          final next = Map<String, int>.from(_messages[i].reactions);
+          next[emoji] = (next[emoji] ?? 0) + 1;
+          _messages[i] = _messages[i].copyWith(reactions: next);
+          break;
+        }
+      });
+    });
+
+    socket.on('wa:messages_read', (dynamic payload) {
+      if (!mounted || !_showReadReceipts) return;
+      final p = validateInboundSocketEvent('wa:messages_read', payload);
+      if (p == null) return;
+      if (p['roomId']?.toString() != roomId) return;
+      setState(() {
+        for (var i = 0; i < _messages.length; i++) {
+          if (_messages[i].isMe) {
+            _messages[i] = _messages[i].copyWith(isRead: true);
+          }
+        }
+      });
     });
 
     _socket = socket;
@@ -358,17 +631,17 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
     if (text.trim().isEmpty) {
       _typingIdleTimer?.cancel();
       unawaited(WaPrivateChatService.setTyping(roomId: room, isTyping: false));
-      _socket?.emit('chat:typing', {'roomId': room, 'isTyping': false});
+      _socket?.emit('chat:typing', wrapOutboundSocketPayload({'roomId': room, 'isTyping': false}));
       return;
     }
     _typingDebounce = Timer(const Duration(milliseconds: 350), () {
       unawaited(WaPrivateChatService.setTyping(roomId: room, isTyping: true));
-      _socket?.emit('chat:typing', {'roomId': room, 'isTyping': true});
+      _socket?.emit('chat:typing', wrapOutboundSocketPayload({'roomId': room, 'isTyping': true}));
     });
     _typingIdleTimer?.cancel();
     _typingIdleTimer = Timer(const Duration(seconds: 4), () {
       unawaited(WaPrivateChatService.setTyping(roomId: room, isTyping: false));
-      _socket?.emit('chat:typing', {'roomId': room, 'isTyping': false});
+      _socket?.emit('chat:typing', wrapOutboundSocketPayload({'roomId': room, 'isTyping': false}));
     });
   }
 
@@ -381,7 +654,7 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
       unawaited(
         WaPrivateChatService.setTyping(roomId: _dmRoomId!, isTyping: false),
       );
-      _socket?.emit('chat:typing', {'roomId': _dmRoomId!, 'isTyping': false});
+      _emitSocketPayload('chat:typing', {'roomId': _dmRoomId!, 'isTyping': false});
       _socket?.emit('leave_room', {'room': _dmRoomId!});
     }
     if (_typingListenerAttached) {
@@ -396,39 +669,371 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
     try {
       _socket?.dispose();
     } catch (_) {}
+    unawaited(_voicePlayer.dispose());
+    for (final c in _transcriptControllers.values) {
+      c.dispose();
+    }
+    _transcriptControllers.clear();
     super.dispose();
+  }
+
+  String _learningLanguageCode(ProfileModel? me) {
+    final fromProfile = me?.learningLanguage?.trim();
+    if (fromProfile != null && fromProfile.isNotEmpty) return fromProfile;
+    return 'yo';
+  }
+
+  bool get _learningUiEnabled =>
+      _learningPolicy == ChatLearningSurfacePolicy.available &&
+      _learningService != null;
+
+  Future<void> _refreshLearningSurfaces() async {
+    final me = ref.read(userProvider);
+    final peer = _peerNumericId;
+    if (me == null || peer == null || !mounted) return;
+    final service = ChatRoomLearningService(
+      languageCode: _learningLanguageCode(me),
+      learnerUserId: me.id.toString(),
+    );
+    final policy = await service.resolveSurfacePolicy();
+    var statuses = const <ChatLanguageStatusEntry>[];
+    if (policy == ChatLearningSurfacePolicy.available) {
+      statuses = await service.fetchPeerLanguageStatus(peer);
+    }
+    if (!mounted) return;
+    setState(() {
+      _learningService = service;
+      _learningPolicy = policy;
+      _peerLanguageStatuses = statuses;
+    });
+  }
+
+  bool _messageE2eeActive(_ChatMessage msg) {
+    final snapshot = _mlsSnapshot;
+    if (snapshot == null || !snapshot.e2eeActive) return false;
+    return _mlsSession.messageReadableOnDevice(
+      snapshot: snapshot,
+      messageSortMs: msg.sortMs,
+    );
+  }
+
+  VoiceNoteTranscriptController _transcriptControllerFor(_ChatMessage msg) {
+    final existing = _transcriptControllers[msg.id];
+    if (existing != null) return existing;
+    final me = ref.read(userProvider);
+    final controller = VoiceNoteTranscriptController(
+      messageId: msg.id,
+      languageCode: _learningLanguageCode(me),
+      e2ee: _messageE2eeActive(msg),
+    );
+    _transcriptControllers[msg.id] = controller;
+    return controller;
+  }
+
+  Future<void> _openToneLensForMessage(_ChatMessage msg) async {
+    final service = _learningService;
+    if (service == null || !_learningUiEnabled || msg.isVoice) return;
+    final word = msg.text.trim().split(RegExp(r'\s+')).firstWhere(
+          (w) => w.isNotEmpty,
+          orElse: () => '',
+        );
+    if (word.isEmpty) return;
+    await showToneLensSheet(
+      context: context,
+      service: service,
+      messageId: msg.id,
+      word: word,
+      e2ee: _messageE2eeActive(msg),
+    );
+  }
+
+  Future<void> _tapWordGloss(_ChatMessage msg, String word) async {
+    final service = _learningService;
+    if (service == null || !_learningUiEnabled || word.trim().isEmpty) return;
+    await showToneLensSheet(
+      context: context,
+      service: service,
+      messageId: msg.id,
+      word: word.trim(),
+      e2ee: _messageE2eeActive(msg),
+    );
+  }
+
+  Future<void> _runMessageCheckBeforeSend() async {
+    final service = _learningService;
+    if (service == null || !_learningUiEnabled || _messageCheckRunning) return;
+    final draft = _messageController.text.trim();
+    if (draft.isEmpty) return;
+    setState(() => _messageCheckRunning = true);
+    try {
+      final result = await service.checkMessageBeforeSend(draft);
+      if (!mounted) return;
+      await showDialog<void>(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            title: const Text('Check message'),
+            content: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(result.explanation),
+                  if (result.hasSuggestion) ...[
+                    const SizedBox(height: 12),
+                    Text(
+                      result.suggestedText,
+                      style: Theme.of(ctx).textTheme.titleMedium,
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: const Text('Keep mine'),
+              ),
+              if (result.hasSuggestion)
+                FilledButton(
+                  onPressed: () {
+                    _messageController.text = result.suggestedText;
+                    _messageController.selection = TextSelection.collapsed(
+                      offset: result.suggestedText.length,
+                    );
+                    Navigator.pop(ctx);
+                    setState(() {});
+                  },
+                  child: const Text('Use suggestion'),
+                ),
+            ],
+          );
+        },
+      );
+    } finally {
+      if (mounted) setState(() => _messageCheckRunning = false);
+    }
+  }
+
+  Future<void> _showPeerReportBlockSheet() async {
+    final peer = _peerNumericId;
+    if (peer == null || !mounted) return;
+    final peerId = peer.toString();
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (ctx) => ReportBlockSheet(
+        onReport: (reason) async {
+          final response = await ApiService.post(
+            'chat/users/$peerId/report',
+            data: {'reason': reason},
+          );
+          final body = response.data;
+          final referenceId =
+              body is Map ? body['referenceId']?.toString() ?? '' : '';
+          if (referenceId.isEmpty) {
+            throw StateError('missing reference');
+          }
+          return referenceId;
+        },
+        onBlock: () async {
+          await ApiService.post(
+            Api.connectionBlock(),
+            data: {'targetUserId': peerId},
+          );
+        },
+      ),
+    );
+  }
+
+  void _openContactInfo() {
+    final peer = _peerNumericId;
+    if (peer == null) return;
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => ContactInfoScreen(
+          contactName: _contactName,
+          contactId: peer.toString(),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _refreshFirstDmState({bool showInboundSheet = false}) async {
+    final peer = _peerNumericId;
+    if (peer == null || !mounted) return;
+    try {
+      final state = await WaPrivateChatService.fetchFirstDmState(peer);
+      final kind = state['kind']?.toString() ?? 'none';
+      setState(() => _firstDmKind = kind);
+      if (kind == 'pending_inbound' && showInboundSheet && !_inboundRequestSheetShown) {
+        _inboundRequestSheetShown = true;
+        await _showInboundFirstDmSheet(
+          intro: state['intro_message']?.toString(),
+          initiatorId: peer,
+        );
+      }
+    } catch (_) {
+      // Offline: keep last known state.
+    }
+  }
+
+  Future<void> _showInboundFirstDmSheet({
+    required int initiatorId,
+    String? intro,
+  }) async {
+    if (!mounted) return;
+    await showFirstDmPromptSheet<void>(
+      context: context,
+      sheet: FirstDmPromptSheet(
+        mode: FirstDmSheetMode.inboundRequest,
+        peerDisplayName: _contactName,
+        inboundIntro: intro,
+        onAccept: () async {
+          await WaPrivateChatService.respondFirstDmRequest(
+            initiatorUserId: initiatorId,
+            decision: 'accept',
+          );
+          if (mounted) Navigator.of(context).pop();
+          await _refreshFirstDmState();
+        },
+        onDecline: () async {
+          await WaPrivateChatService.respondFirstDmRequest(
+            initiatorUserId: initiatorId,
+            decision: 'decline',
+          );
+          if (mounted) Navigator.of(context).pop();
+          if (mounted) Navigator.of(context).pop();
+        },
+        onReport: () async {
+          if (!mounted) return;
+          await showModalBottomSheet<void>(
+            context: context,
+            builder: (ctx) => ReportBlockSheet(
+              onReport: (_) async => 'first-dm-report',
+              onBlock: () async {},
+            ),
+          );
+        },
+        onBlock: () async {
+          if (!mounted) return;
+          await showModalBottomSheet<void>(
+            context: context,
+            builder: (ctx) => ReportBlockSheet(
+              onReport: (_) async => 'first-dm-report',
+              onBlock: () async {},
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Future<bool> _promptOutboundIntroIfNeeded() async {
+    if (_firstDmKind != 'none') return true;
+    if (!mounted) return false;
+    final peer = _peerNumericId;
+    if (peer == null) return false;
+    final text = _messageController.text.trim();
+    if (text.isEmpty) return false;
+
+    var sent = false;
+    await showFirstDmPromptSheet<void>(
+      context: context,
+      sheet: FirstDmPromptSheet(
+        mode: FirstDmSheetMode.outboundIntro,
+        peerDisplayName: _contactName,
+        onSendIntro: (msg) async {
+          await _sendDmText(
+            peer: peer,
+            message: msg,
+            firstDmIntro: true,
+          );
+          sent = true;
+          _messageController.clear();
+          if (mounted) Navigator.of(context).pop();
+          await _loadMessages();
+          await _refreshFirstDmState();
+        },
+      ),
+    );
+    return sent;
   }
 
   Future<void> _sendMessage() async {
     final text = _messageController.text.trim();
     final peer = _peerNumericId;
     if (text.isEmpty || _sending || peer == null) return;
+
+    if (_firstDmKind == 'none') {
+      setState(() => _sending = true);
+      try {
+        final sent = await _promptOutboundIntroIfNeeded();
+        if (!sent) return;
+      } finally {
+        if (mounted) setState(() => _sending = false);
+      }
+      return;
+    }
+    if (_firstDmKind == 'pending_outbound' || _firstDmKind == 'pending_inbound') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Wait for the message request to be accepted.'),
+        ),
+      );
+      return;
+    }
+
     HapticFeedback.lightImpact();
     setState(() => _sending = true);
     final room = _dmRoomId;
     if (room != null) {
       unawaited(WaPrivateChatService.setTyping(roomId: room, isTyping: false));
-      _socket?.emit('chat:typing', {'roomId': room, 'isTyping': false});
+      _socket?.emit('chat:typing', wrapOutboundSocketPayload({'roomId': room, 'isTyping': false}));
     }
     _messageController.clear();
     try {
-      await WaPrivateChatService.sendTextMessage(
-        recipientId: peer.toString(),
+      await _sendDmText(
+        peer: peer,
         message: text,
+        replyToId: _replyTarget?.id,
       );
+      if (_replyTarget != null) setState(() => _replyTarget = null);
       await _loadMessages();
       await _appendPolieIfMentioned(text);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              e is DioException
-                  ? TransportErrorPolicy.toUserMessage(e)
-                  : 'Message could not be sent.',
+        final code = e is DioException
+            ? (e.response?.data is Map
+                ? (e.response!.data as Map)['code']?.toString()
+                : null)
+            : null;
+        if (code == 'NEW_ACCOUNT_LIMIT') {
+          final reset = e is DioException && e.response?.data is Map
+              ? (e.response!.data as Map)['reset_at']?.toString()
+              : null;
+          showFirstDmPromptSheet<void>(
+            context: context,
+            sheet: FirstDmPromptSheet(
+              mode: FirstDmSheetMode.limited,
+              peerDisplayName: _contactName,
+              limitedResetLabel: reset != null
+                  ? 'Try again after $reset.'
+                  : null,
             ),
-          ),
-        );
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                e is DioException
+                    ? TransportErrorPolicy.toUserMessage(e)
+                    : 'Message could not be sent.',
+              ),
+            ),
+          );
+        }
       }
     } finally {
       if (mounted) setState(() => _sending = false);
@@ -513,7 +1118,7 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
     return Scaffold(
       backgroundColor: ModernGriotColors.surface,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight),
+        preferredSize: const Size.fromHeight(kToolbarHeight),
         child: _buildChatAppBar(cs),
       ),
       body: GriotSvgPatternBackground(
@@ -532,6 +1137,27 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
               )
             : Column(
                 children: [
+                  if (_requiresModeration)
+                    Material(
+                      color: cs.secondaryContainer,
+                      child: ListTile(
+                        dense: true,
+                        minVerticalPadding: 12,
+                        minLeadingWidth: 48,
+                        leading: Icon(
+                          Icons.shield_outlined,
+                          color: cs.onSecondaryContainer,
+                        ),
+                        title: Text(
+                          kE2eeMinorNotice,
+                          style: ModernGriotTypography.labelSmall(
+                            color: cs.onSecondaryContainer,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ..._buildE2eeStatusStrip(cs),
+                  if (_replyTarget != null) _buildReplyComposerStrip(cs),
                   if (_loadError != null)
                     Material(
                       color: cs.errorContainer,
@@ -567,7 +1193,7 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
                               if (index >= _messages.length) {
                                 return _buildTypingIndicator(cs);
                               }
-                              return _buildMessageBubble(_messages[index], cs);
+                              return _buildMessageBubble(_messages[index], cs, index);
                             },
                           ),
                   ),
@@ -622,6 +1248,11 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
+                if (_learningUiEnabled && _peerLanguageStatuses.isNotEmpty)
+                  Padding(
+                    padding: EdgeInsets.only(top: 2.h),
+                    child: LanguageStatusChipRow(entries: _peerLanguageStatuses),
+                  ),
                 Row(
                   children: [
                     Container(
@@ -635,14 +1266,24 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
                       ),
                     ),
                     SizedBox(width: 4.w),
-                    Text(
-                      _contactOnline ? 'Online' : 'Offline',
-                      style: ModernGriotTypography.labelSmall(
-                        color: _contactOnline
-                            ? ModernGriotColors.secondary
-                            : cs.onSurfaceVariant,
+                    if (_mlsSnapshot?.showEncryptionIndicator == true) ...[
+                      Icon(Icons.lock_rounded, size: 14.sp, color: cs.primary),
+                      SizedBox(width: 4.w),
+                      Text(
+                        kE2eeOnLabel,
+                        style: ModernGriotTypography.labelSmall(
+                          color: cs.primary,
+                        ),
                       ),
-                    ),
+                    ] else
+                      Text(
+                        _contactOnline ? 'Online' : 'Offline',
+                        style: ModernGriotTypography.labelSmall(
+                          color: _contactOnline
+                              ? ModernGriotColors.secondary
+                              : cs.onSurfaceVariant,
+                        ),
+                      ),
                   ],
                 ),
               ],
@@ -679,15 +1320,176 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
             );
           },
         ),
-        IconButton(
+        PopupMenuButton<String>(
           icon: Icon(Icons.more_vert_rounded, color: cs.onSurface),
-          onPressed: () => HapticFeedback.selectionClick(),
+          onSelected: (value) {
+            HapticFeedback.selectionClick();
+            switch (value) {
+              case 'contact':
+                _openContactInfo();
+              case 'report':
+                unawaited(_showPeerReportBlockSheet());
+              case 'status':
+                Navigator.pushNamed(context, 'wa-status');
+              case 'starred':
+                Navigator.pushNamed(context, 'wa-starred');
+              case 'media':
+                Navigator.pushNamed(context, 'wa-media-gallery');
+            }
+          },
+          itemBuilder: (ctx) => const [
+            PopupMenuItem(value: 'contact', child: Text('Contact info')),
+            PopupMenuItem(value: 'report', child: Text('Report or block')),
+            PopupMenuItem(value: 'status', child: Text('Status updates')),
+            PopupMenuItem(value: 'starred', child: Text('Starred messages')),
+            PopupMenuItem(value: 'media', child: Text('Media gallery')),
+          ],
         ),
       ],
     );
   }
 
-  Widget _buildMessageBubble(_ChatMessage msg, ColorScheme cs) {
+  Future<void> _sendVoiceNote(String path, int durationMs) async {
+    final peer = _peerNumericId;
+    if (peer == null || _sending) return;
+    setState(() => _sending = true);
+    try {
+      await WaPrivateChatService.sendVoiceNote(
+        recipientId: peer.toString(),
+        localFilePath: path,
+        durationMs: durationMs,
+        replyToId: _replyTarget?.id,
+      );
+      if (_replyTarget != null) setState(() => _replyTarget = null);
+      await _loadMessages();
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Voice note could not be sent. Try again.')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _sending = false);
+    }
+  }
+
+  Future<void> _playVoiceNote(_ChatMessage msg) async {
+    final url = msg.audioUrl;
+    if (url == null || url.isEmpty) return;
+    if (_playingVoiceId == msg.id) {
+      await _voicePlayer.stop();
+      setState(() => _playingVoiceId = null);
+      return;
+    }
+    setState(() => _playingVoiceId = msg.id);
+    try {
+      await _voicePlayer.setUrl(url);
+      await _voicePlayer.play();
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Could not play this voice note.')),
+        );
+      }
+    }
+  }
+
+  Future<void> _showMessageActions(_ChatMessage msg) async {
+    if (msg.id.isEmpty) return;
+    final emoji = await showModalBottomSheet<String>(
+      context: context,
+      builder: (ctx) => SafeArea(
+        child: Wrap(
+          alignment: WrapAlignment.center,
+          spacing: PanAfricanSpacing.md,
+          children: ['👍', '❤️', '😂', '🙏', '🔥'].map((e) {
+            return IconButton(
+              tooltip: 'React with $e',
+              icon: Text(e, style: TextStyle(fontSize: 28.sp)),
+              onPressed: () => Navigator.pop(ctx, e),
+            );
+          }).toList(),
+        ),
+      ),
+    );
+    if (emoji != null) {
+      await WaPrivateChatService.toggleReaction(messageId: msg.id, emoji: emoji);
+      _socket?.emit('wa:reaction', {
+        'roomId': _dmRoomId,
+        'messageId': msg.id,
+        'emoji': emoji,
+      });
+      await _loadMessages();
+    }
+  }
+
+  Widget _buildPeerLearningText({
+    required _ChatMessage msg,
+    required String displayText,
+    required Color textColor,
+  }) {
+    final words = displayText.split(RegExp(r'(\s+)'));
+    return Wrap(
+      spacing: 0,
+      runSpacing: 2,
+      children: [
+        for (final token in words)
+          if (token.trim().isEmpty)
+            Text(token, style: ModernGriotTypography.bodyMedium(color: textColor))
+          else
+            Semantics(
+              button: true,
+              label: 'Show gloss for $token',
+              child: InkWell(
+                onTap: () => _tapWordGloss(msg, token),
+                borderRadius: BorderRadius.circular(4),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 2),
+                  child: Text(
+                    token,
+                    style: ModernGriotTypography.bodyMedium(
+                      color: textColor,
+                    ).copyWith(
+                      decoration: TextDecoration.underline,
+                      decorationColor: textColor.withValues(alpha: 0.35),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+      ],
+    );
+  }
+
+  Widget _buildReplyComposerStrip(ColorScheme cs) {
+    final target = _replyTarget!;
+    return Material(
+      color: cs.surfaceContainerHighest,
+      child: ListTile(
+        dense: true,
+        leading: const Icon(Icons.reply_rounded),
+        title: Text(
+          target.text,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        trailing: IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () => setState(() => _replyTarget = null),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMessageBubble(_ChatMessage msg, ColorScheme cs, int index) {
+    final snapshot = _mlsSnapshot;
+    final readable = snapshot == null ||
+        _mlsSession.messageReadableOnDevice(
+          snapshot: snapshot,
+          messageSortMs: msg.sortMs,
+        );
+    final displayText =
+        readable ? msg.text : 'Earlier message — not readable on this device';
     final bubbleColor = msg.isFromPolie
         ? ModernGriotColors.primaryContainer.withAlpha(140)
         : msg.isMe
@@ -715,7 +1517,14 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
             children: [
               if (!msg.isMe) SizedBox(width: PanAfricanSpacing.xxl),
               Flexible(
-                child: Container(
+                child: GestureDetector(
+                  onLongPress: () => _showMessageActions(msg),
+                  onHorizontalDragEnd: (d) {
+                    if (d.primaryVelocity != null && d.primaryVelocity! > 200) {
+                      setState(() => _replyTarget = msg);
+                    }
+                  },
+                  child: Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: PanAfricanSpacing.md,
                     vertical: PanAfricanSpacing.sm,
@@ -732,8 +1541,8 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
                         : null,
                     color: bubbleColor,
                     borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(ModernGriotRadius.lg),
-                      topRight: Radius.circular(ModernGriotRadius.lg),
+                      topLeft: const Radius.circular(ModernGriotRadius.lg),
+                      topRight: const Radius.circular(ModernGriotRadius.lg),
                       bottomLeft: Radius.circular(
                         msg.isMe ? ModernGriotRadius.lg : ModernGriotRadius.xs,
                       ),
@@ -758,12 +1567,88 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
                             ),
                           ),
                         ),
-                      Text(
-                        msg.text,
-                        style: ModernGriotTypography.bodyMedium(
-                          color: textColor,
+                      if (msg.replySnippet != null &&
+                          msg.replySnippet!.trim().isNotEmpty)
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 6.h),
+                          child: Text(
+                            msg.replySnippet!,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: ModernGriotTypography.labelSmall(
+                              color: textColor.withValues(alpha: 0.75),
+                            ),
+                          ),
                         ),
-                      ),
+                      if (msg.isVoice)
+                        InkWell(
+                          onTap: () => _playVoiceNote(msg),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                _playingVoiceId == msg.id
+                                    ? Icons.stop_circle_outlined
+                                    : Icons.play_circle_fill,
+                                color: textColor,
+                              ),
+                              SizedBox(width: 8.w),
+                              Text(
+                                displayText,
+                                style: ModernGriotTypography.bodyMedium(
+                                  color: textColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      else if (_learningUiEnabled &&
+                          !msg.isMe &&
+                          readable &&
+                          !msg.isFromPolie)
+                        _buildPeerLearningText(
+                          msg: msg,
+                          displayText: displayText,
+                          textColor: textColor,
+                        )
+                      else
+                        Text(
+                          displayText,
+                          style: ModernGriotTypography.bodyMedium(
+                            color: textColor,
+                          ),
+                        ),
+                      if (msg.isVoice &&
+                          _learningUiEnabled &&
+                          msg.id.isNotEmpty &&
+                          readable)
+                        Padding(
+                          padding: EdgeInsets.only(top: 6.h),
+                          child: VoiceNoteTranscriptPanel(
+                            controller: _transcriptControllerFor(msg),
+                          ),
+                        ),
+                      if (_learningUiEnabled &&
+                          !msg.isMe &&
+                          !msg.isVoice &&
+                          readable &&
+                          displayText.trim().isNotEmpty)
+                        Padding(
+                          padding: EdgeInsets.only(top: 4.h),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: TextButton.icon(
+                              onPressed: () => _openToneLensForMessage(msg),
+                              icon: Icon(Icons.graphic_eq, size: 16.sp),
+                              label: const Text('Tone Lens'),
+                              style: TextButton.styleFrom(
+                                foregroundColor: textColor,
+                                padding: EdgeInsets.zero,
+                                minimumSize: const Size(48, 48),
+                              ),
+                            ),
+                          ),
+                        ),
                       SizedBox(height: 4.h),
                       Row(
                         mainAxisSize: MainAxisSize.min,
@@ -772,16 +1657,19 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
                             msg.time,
                             style: TextStyle(fontSize: 10.sp, color: timeColor),
                           ),
-                          if (msg.isMe) ...[
+                          if (msg.isMe && _showReadReceipts) ...[
                             SizedBox(width: 4.w),
-                            Icon(
-                              msg.isRead
-                                  ? Icons.done_all_rounded
-                                  : Icons.done_rounded,
-                              size: 14.sp,
-                              color: msg.isRead
-                                  ? ModernGriotColors.onSecondary
-                                  : timeColor,
+                            Semantics(
+                              label: msg.isRead ? 'Read' : 'Sent',
+                              child: Icon(
+                                msg.isRead
+                                    ? Icons.done_all_rounded
+                                    : Icons.done_rounded,
+                                size: 14.sp,
+                                color: msg.isRead
+                                    ? ModernGriotColors.onSecondary
+                                    : timeColor,
+                              ),
                             ),
                           ],
                         ],
@@ -789,10 +1677,25 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
                     ],
                   ),
                 ),
+                ),
               ),
               if (msg.isMe) SizedBox(width: PanAfricanSpacing.xxl),
             ],
           ),
+          if (msg.reactions.isNotEmpty)
+            Padding(
+              padding: EdgeInsets.only(
+                top: 2.h,
+                left: msg.isMe ? 0 : PanAfricanSpacing.xxl,
+                right: msg.isMe ? PanAfricanSpacing.xxl : 0,
+              ),
+              child: Wrap(
+                spacing: 4,
+                children: msg.reactions.entries
+                    .map((e) => Text('${e.key}${e.value > 1 ? e.value : ''}'))
+                    .toList(),
+              ),
+            ),
           if (msg.translation != null) _buildTranslationBlock(msg, cs),
           if (msg.vocabWord != null) _buildVocabCard(msg, cs),
         ],
@@ -872,7 +1775,7 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
                 child: Container(
                   width: 32.r,
                   height: 32.r,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     gradient: ModernGriotGradients.signatureGradient,
                     shape: BoxShape.circle,
                   ),
@@ -975,6 +1878,7 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
   }
 
   Widget _buildInputBar(ColorScheme cs) {
+    final hasText = _messageController.text.trim().isNotEmpty;
     return Container(
       padding: EdgeInsets.only(
         left: PanAfricanSpacing.sm,
@@ -1003,6 +1907,23 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
             icon: Icon(Icons.camera_alt_outlined, color: cs.onSurfaceVariant),
             onPressed: () => HapticFeedback.selectionClick(),
           ),
+          if (_learningUiEnabled)
+            IconButton(
+              tooltip: 'Check message',
+              icon: _messageCheckRunning
+                  ? SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2, color: cs.primary),
+                    )
+                  : Icon(Icons.spellcheck_outlined, color: cs.primary),
+              onPressed: _messageCheckRunning
+                  ? null
+                  : () {
+                      HapticFeedback.selectionClick();
+                      unawaited(_runMessageCheckBeforeSend());
+                    },
+            ),
           Expanded(
             child: Container(
               constraints: BoxConstraints(maxHeight: 120.h),
@@ -1030,39 +1951,49 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
                   ),
                   border: InputBorder.none,
                 ),
+                onChanged: (_) => setState(() {}),
                 onSubmitted: (_) => _sendMessage(),
               ),
             ),
           ),
           SizedBox(width: PanAfricanSpacing.xs),
-          GestureDetector(
-            onTap: _sending ? null : _sendMessage,
-            child: Opacity(
-              opacity: _sending ? 0.5 : 1,
-              child: Container(
-                width: 44.r,
-                height: 44.r,
-                decoration: BoxDecoration(
-                  gradient: ModernGriotGradients.signatureGradient,
-                  shape: BoxShape.circle,
-                  boxShadow: ModernGriotShadows.fab,
-                ),
-                child: _sending
-                    ? Padding(
-                        padding: EdgeInsets.all(10.r),
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
+          if (hasText)
+            GestureDetector(
+              onTap: _sending ? null : _sendMessage,
+              child: Opacity(
+                opacity: _sending ? 0.5 : 1,
+                child: Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    gradient: ModernGriotGradients.signatureGradient,
+                    shape: BoxShape.circle,
+                    boxShadow: ModernGriotShadows.fab,
+                  ),
+                  child: _sending
+                      ? Padding(
+                          padding: EdgeInsets.all(10.r),
+                          child: const CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: ModernGriotColors.onPrimary,
+                          ),
+                        )
+                      : Icon(
+                          Icons.send_rounded,
+                          size: 20.sp,
                           color: ModernGriotColors.onPrimary,
                         ),
-                      )
-                    : Icon(
-                        Icons.send_rounded,
-                        size: 20.sp,
-                        color: ModernGriotColors.onPrimary,
-                      ),
+                ),
               ),
+            )
+          else
+            VoiceNoteRecorder(
+              key: _voiceNoteKey,
+              enabled: !_sending && _firstDmKind == 'accepted',
+              holdLabel: 'Hold to record, slide left to cancel, up to lock',
+              onCompleted: (path, ms) => _sendVoiceNote(path, ms),
+              onCancel: () {},
             ),
-          ),
         ],
       ),
     );
@@ -1070,11 +2001,16 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
 }
 
 class _ChatMessage {
+  final String id;
   final String text;
   final bool isMe;
   final String time;
   final bool isRead;
   final bool isFromPolie;
+  final String messageType;
+  final String? audioUrl;
+  final Map<String, int> reactions;
+  final String? replySnippet;
 
   /// Milliseconds since epoch for ordering with server messages.
   final int sortMs;
@@ -1083,16 +2019,46 @@ class _ChatMessage {
   final String? vocabPronunciation;
   final String? vocabMeaning;
 
+  bool get isVoice => messageType == 'audio' && (audioUrl?.isNotEmpty ?? false);
+
   const _ChatMessage({
+    this.id = '',
     required this.text,
     required this.isMe,
     required this.time,
     required this.isRead,
     this.isFromPolie = false,
     this.sortMs = 0,
+    this.messageType = 'text',
+    this.audioUrl,
+    this.reactions = const {},
+    this.replySnippet,
     this.translation,
     this.vocabWord,
     this.vocabPronunciation,
     this.vocabMeaning,
   });
+
+  _ChatMessage copyWith({
+    bool? isRead,
+    Map<String, int>? reactions,
+  }) {
+    return _ChatMessage(
+      id: id,
+      text: text,
+      isMe: isMe,
+      time: time,
+      isRead: isRead ?? this.isRead,
+      isFromPolie: isFromPolie,
+      sortMs: sortMs,
+      messageType: messageType,
+      audioUrl: audioUrl,
+      reactions: reactions ?? this.reactions,
+      replySnippet: replySnippet,
+      translation: translation,
+      vocabWord: vocabWord,
+      vocabPronunciation: vocabPronunciation,
+      vocabMeaning: vocabMeaning,
+    );
+  }
 }

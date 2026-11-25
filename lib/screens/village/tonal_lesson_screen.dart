@@ -1,12 +1,9 @@
-import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
-import '../../widgets/game/game_widgets.dart';
 
 class TonalLessonScreen extends ConsumerStatefulWidget {
   const TonalLessonScreen({super.key});

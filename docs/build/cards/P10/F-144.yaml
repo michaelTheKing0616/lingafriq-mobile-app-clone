@@ -1,0 +1,106 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P10
+epic: E-P10-ME
+hub: Me
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T4
+  justification: 'Me hub screen revive or consolidation; no real-time audio; gate-critical (security / child safety / legal
+    / design direction): Fable reviews'
+token_budget: 80000
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f_144.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+p0_area: true
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+test_plan:
+  unit:
+  - entitlement mapping from server
+  integration:
+  - subscription screen with payments epic
+  e2e:
+  - open Plus from Me
+  a11y:
+  - comparison table semantics
+  content: []
+tags: []
+id: F-144
+title: Elevate Subscription & Plans
+req_ids:
+- F-144
+- F-144.D
+- F-144.E
+- F-144.U
+- F-144.L
+- P0-27
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P1-CONTAINMENT
+- E-P1-PAYMENTS
+file_allowlist:
+- screens/subscription/subscription_screen.dart
+context_anchors:
+- ELEVATION.md#§18.7:L5532-L5545
+delta:
+  current_state: Subscription screen unrouted; no live paywall or server-verified purchases.
+  defects_to_fix:
+  - No monetisation surface in app
+  elevation_to_build:
+  - LingAfriq Plus with free core learning forever
+  - Plus adds unlimited Polie voice, offline packs, mentor credits, family sharing
+  - Local pricing and mobile-money with server-verified receipts
+  ux_and_render:
+  - Honest comparison table without dark patterns
+  hub_placement: Me → Plus
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given Me → Plus, when paywall opens, then comparison table is reachable and uses design-system tokens.
+- id: AC2
+  text: Given a purchase attempt, when store returns a receipt, then entitlement updates only after server verification per
+    P0-27.
+- id: AC3
+  text: Given verification pending, when user views status, then UI shows pending honestly not Plus active.
+skills:
+  worker:
+  - prime/form-design
+  - prime/mobile-app-ui-design
+  - prime/ux-writing

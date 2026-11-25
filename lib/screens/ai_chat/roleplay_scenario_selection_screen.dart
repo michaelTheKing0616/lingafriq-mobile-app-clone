@@ -121,7 +121,7 @@ class RoleplayScenarioSelectionScreen extends HookConsumerWidget {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -199,7 +199,7 @@ class RoleplayScenarioSelectionScreen extends HookConsumerWidget {
           color: PolieColors.surfaceContainerLight,
           borderRadius: BorderRadius.circular(PolieRadius.pill),
           border: Border.all(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -216,7 +216,7 @@ class RoleplayScenarioSelectionScreen extends HookConsumerWidget {
             hintStyle: PolieTypography.body(context).copyWith(
               color: PolieColors.textSecondary,
             ),
-            prefixIcon: Icon(
+            prefixIcon: const Icon(
               Icons.search_rounded,
               color: PolieColors.textSecondary,
             ),
@@ -238,37 +238,44 @@ class RoleplayScenarioSelectionScreen extends HookConsumerWidget {
   ) {
     return SizedBox(
       height: 44.h,
-      child: ListView(
+      child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.symmetric(horizontal: PolieSpacing.md),
-        children: [
-          _CategoryChip(
-            label: 'All',
-            icon: Icons.apps_rounded,
-            isSelected: selectedCategory.value == null,
-            onTap: () {
-              HapticFeedback.lightImpact();
-              selectedCategory.value = null;
-            },
-            color: PolieColors.royalAmethyst,
-          ),
-          SizedBox(width: PolieSpacing.sm),
-          ...categories.map((category) {
-            return Padding(
-              padding: EdgeInsets.only(right: PolieSpacing.sm),
-              child: _CategoryChip(
-                label: category.name,
-                icon: category.icon,
-                isSelected: selectedCategory.value == category.id,
-                onTap: () {
-                  HapticFeedback.lightImpact();
-                  selectedCategory.value = category.id;
-                },
-                color: category.color,
-              ),
+        itemCount: 1 + categories.length,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _CategoryChip(
+                  label: 'All',
+                  icon: Icons.apps_rounded,
+                  isSelected: selectedCategory.value == null,
+                  onTap: () {
+                    HapticFeedback.lightImpact();
+                    selectedCategory.value = null;
+                  },
+                  color: PolieColors.royalAmethyst,
+                ),
+                SizedBox(width: PolieSpacing.sm),
+              ],
             );
-          }),
-        ],
+          }
+          final category = categories[index - 1];
+          return Padding(
+            padding: EdgeInsets.only(right: PolieSpacing.sm),
+            child: _CategoryChip(
+              label: category.name,
+              icon: category.icon,
+              isSelected: selectedCategory.value == category.id,
+              onTap: () {
+                HapticFeedback.lightImpact();
+                selectedCategory.value = category.id;
+              },
+              color: category.color,
+            ),
+          );
+        },
       ),
     ).animate().fadeIn(delay: 150.ms, duration: 300.ms);
   }
@@ -280,7 +287,7 @@ class RoleplayScenarioSelectionScreen extends HookConsumerWidget {
         children: [
           Container(
             padding: EdgeInsets.all(PolieSpacing.xl),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: PolieColors.surfaceContainerLight,
             ),
@@ -533,16 +540,16 @@ class _CategoryChip extends StatelessWidget {
           vertical: PolieSpacing.sm,
         ),
         decoration: BoxDecoration(
-          color: isSelected ? color.withOpacity(0.3) : PolieColors.surfaceContainerLight,
+          color: isSelected ? color.withValues(alpha: 0.3) : PolieColors.surfaceContainerLight,
           borderRadius: BorderRadius.circular(PolieRadius.pill),
           border: Border.all(
-            color: isSelected ? color : Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
+            color: isSelected ? color : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.1),
             width: 1,
           ),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: color.withOpacity(0.3),
+                    color: color.withValues(alpha: 0.3),
                     blurRadius: 12,
                     spreadRadius: 0,
                   ),
@@ -610,12 +617,12 @@ class _ScenarioCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(PolieRadius.lg),
           color: Theme.of(context).colorScheme.surfaceContainerHighest,
           border: Border.all(
-            color: category.color.withOpacity(0.3),
+            color: category.color.withValues(alpha: 0.3),
             width: 1,
           ),
           boxShadow: [
             BoxShadow(
-              color: category.color.withOpacity(0.15),
+              color: category.color.withValues(alpha: 0.15),
               blurRadius: 16,
               spreadRadius: 0,
             ),
@@ -640,7 +647,7 @@ class _ScenarioCard extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(PolieSpacing.sm),
                           decoration: BoxDecoration(
-                            color: category.color.withOpacity(0.2),
+                            color: category.color.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(PolieRadius.md),
                           ),
                           child: Icon(
@@ -671,7 +678,7 @@ class _ScenarioCard extends StatelessWidget {
                                       vertical: 2,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: diffColor.withOpacity(0.2),
+                                      color: diffColor.withValues(alpha: 0.2),
                                       borderRadius: BorderRadius.circular(PolieRadius.sm),
                                     ),
                                     child: Text(
@@ -704,7 +711,7 @@ class _ScenarioCard extends StatelessWidget {
                         ),
                         Container(
                           padding: EdgeInsets.all(PolieSpacing.sm),
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             gradient: LinearGradient(
                               colors: [PolieColors.royalAmethyst, PolieColors.electricTeal],
                             ),
@@ -763,7 +770,7 @@ class _GlassIconButton extends StatelessWidget {
           color: PolieColors.surfaceContainerLight,
           shape: BoxShape.circle,
           border: Border.all(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
             width: 1,
           ),
         ),

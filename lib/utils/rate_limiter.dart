@@ -171,7 +171,7 @@ final globalRateLimiter = RateLimiter();
 final Map<String, RateLimiter> endpointRateLimiters = {
   'auth': RateLimiter(config: RateLimitConfig.strict),
   'api': RateLimiter(config: RateLimitConfig.defaultConfig),
-  'upload': RateLimiter(config: RateLimitConfig(
+  'upload': RateLimiter(config: const RateLimitConfig(
     maxRequests: 20,
     window: Duration(minutes: 5),
   )),

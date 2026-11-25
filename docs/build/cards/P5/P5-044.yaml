@@ -1,0 +1,73 @@
+charter: v2
+id: P5-044
+kind: build
+title: Route items to paid linguist review by risk
+phase: P5
+epic: E-P5-QUALITY
+req_ids:
+- CP-§5-01
+- CP-§5-02
+- CP-§5-03
+- CP-§5-04
+- CP-§5-05
+- CP-§5-27
+depends_on:
+- P5-009
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- tools/content/review_router.py
+- test/content/review_router_test.py
+context_anchors:
+- CURRICULUM.md#§5:L592-L600
+acceptance_criteria:
+- id: AC1
+  text: Given high-risk items, when routed, then 100% are sent to a paid linguist
+- id: AC2
+  text: Given the A1-A2 core lexicon (about 1,500 headwords), when routed, then 100% are reviewed
+- id: AC3
+  text: Given Auto-Beta items, when sampled, then a random 10-15% is reviewed
+- id: AC4
+  text: Given review logs, when measured, then items per hour are recorded against the 60-150 planning range
+- id: AC5
+  text: Given reviewers, when assigned, then each is an academic or postgraduate in African-language linguistics
+test_plan:
+  unit:
+  - router
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - coverage 100/100/10-15
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers:
+- EXT-11
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

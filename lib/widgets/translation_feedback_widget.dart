@@ -164,7 +164,7 @@ class _TranslationFeedbackSheetState extends State<TranslationFeedbackSheet> {
                   width: 40.w,
                   height: 4.h,
                   decoration: BoxDecoration(
-                    color: PanAfricanColors.neutralMedium.withOpacity(0.3),
+                    color: PanAfricanColors.neutralMedium.withValues(alpha: 0.3),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -361,7 +361,7 @@ class _TranslationFeedbackSheetState extends State<TranslationFeedbackSheet> {
           vertical: PanAfricanSpacing.sm,
         ),
         decoration: BoxDecoration(
-          color: isSelected ? color.withOpacity(0.2) : Colors.transparent,
+          color: isSelected ? color.withValues(alpha: 0.2) : Colors.transparent,
           borderRadius: BorderRadius.circular(PanAfricanRadius.md),
           border: Border.all(
             color: isSelected ? color : Colors.transparent,

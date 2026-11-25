@@ -1,0 +1,97 @@
+charter: v2
+id: P6-026
+kind: build
+title: Build Tutor Correct-my-writing hybrid with uncertainty
+phase: P6
+epic: E-P6-MODES
+req_ids:
+- EP-§7.3-04
+- EP-§7.3-18
+- EP-§7.3-19
+- EP-§7.1-09
+- EP-§7.1-10
+depends_on:
+- P6-003
+- P6-008
+- P6-011
+- P6-014
+- P6-056
+size: M
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 2
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 3, ambiguity 2, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/modes/tutorCorrect.ts
+- lib/utils/diacritics_enforcer.dart
+- node-backend/src/ai-gateway/prompts/templates/tutor_correct.md
+context_anchors:
+- ELEVATION.md#§7.3:L1404-L1410
+acceptance_criteria:
+- id: AC1
+  text: Given learner text, when checked, then rule and lexicon checks run first and the model runs second
+- id: AC2
+  text: Given the DiacriticsEnforcer regex patching of model output, when the mode ships, then enforceWithMetadata no longer
+    edits model text and a lexicon-verified suggestion replaces it
+- id: AC3
+  text: Given an ambiguous tone or diacritic, when reported, then the UI shows tone uncertain here with a listen-to-native-audio
+    action instead of a confident fix
+- id: AC4
+  text: Given a correction, when returned, then it states category (diacritic, tone, grammar, register)
+- id: AC9
+  text: Given the mode eval set in CI, when run on a prompt or model change, then the mode meets the thresholds in the eval
+    config or the deploy is blocked
+test_plan:
+  unit:
+  - rule first ordering
+  integration:
+  - uncertain tone
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - diacritic fixtures
+user_facing: true
+ux_spec:
+  states:
+  - checking
+  - corrected
+  - uncertain
+  - error
+  copy_keys:
+  - correct.uncertain_tone
+  - correct.listen_native
+  tokens:
+  - color.warning
+  - type.body
+  motion_tier: product
+  a11y:
+  - uncertain state announced to screen readers
+  goldens:
+  - correct_uncertain
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

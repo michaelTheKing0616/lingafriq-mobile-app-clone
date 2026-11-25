@@ -92,7 +92,7 @@ class PanAfricanTabBar extends StatelessWidget {
                 vertical: 2.h,
               ),
               decoration: BoxDecoration(
-                color: tab.badgeColor ?? PanAfricanColors.secondary,
+                color: tab.badgeColor ?? context.panSecondary,
                 borderRadius: PanAfricanRadius.roundBR,
               ),
               child: Text(
@@ -159,7 +159,7 @@ class PanAfricanSegmentedControl<T> extends StatelessWidget {
             child: GestureDetector(
               onTap: () => onChanged(entry.key),
               child: AnimatedContainer(
-                duration: Duration(milliseconds: 200),
+                duration: const Duration(milliseconds: 200),
                 padding: EdgeInsets.symmetric(
                   vertical: PanAfricanSpacing.sm,
                   horizontal: PanAfricanSpacing.md,

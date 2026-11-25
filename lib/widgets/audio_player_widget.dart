@@ -70,6 +70,8 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindi
       } catch (_) {
         try {
           await _player.setAudioSource(
+            // just_audio still marks the caching source experimental.
+            // ignore: experimental_member_use
             LockCachingAudioSource(
               Uri.parse(url),
               headers: _authHeaders,
@@ -128,7 +130,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindi
       return Text(
         _errorMessage!,
         style: PanAfricanTypography.bodySmall(context).copyWith(
-          color: PanAfricanColors.error,
+          color: context.panError,
         ),
       );
     }
@@ -155,7 +157,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindi
                       }
                     },
               icon: buffering
-                  ? SizedBox(
+                  ? const SizedBox(
                       width: 24,
                       height: 24,
                       child: CircularProgressIndicator(

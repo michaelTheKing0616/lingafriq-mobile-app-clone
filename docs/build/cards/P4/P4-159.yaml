@@ -1,0 +1,86 @@
+charter: v2
+id: P4-159
+kind: build
+title: Build report-a-problem queue, placeholder detector and untranslated count
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§14.2-32
+- EP-§14.2-35
+- EP-§14.2-36
+depends_on:
+- P4-106
+- P4-151
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- lingafriq-admin/src/pages/ProblemQueue.tsx
+- lingafriq-admin/src/pages/PlaceholderDetector.tsx
+- node-backend/src/services/i18n_coverage.service.ts
+- test/admin/ProblemQueue.test.tsx
+context_anchors:
+- ELEVATION.md#§14.2:L1970-L1989
+- ELEVATION.md#§6.5:L1293-L1320
+acceptance_criteria:
+- id: AC1
+  text: Given user reports, when listed, then they are grouped by item with count, reason and pack version and can be assigned
+    to a reviewer
+- id: AC2
+  text: Given content, when the detector runs, then objects matching the CI placeholder regex are listed with location
+- id: AC3
+  text: Given UI string catalogues, when counted, then the untranslated count per language is shown and matches the ARB diff
+- id: AC4
+  text: Given a resolved report, when closed, then the resolution links to the new item version
+test_plan:
+  unit:
+  - ProblemQueue.test
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - empty
+  - list
+  - error
+  copy_keys:
+  - queue.empty
+  tokens:
+  - admin.table
+  motion_tier: product
+  a11y:
+  - table semantics
+  goldens: []
+tags:
+- placeholder_linter
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/ux-writing
+  - prime/localization-design

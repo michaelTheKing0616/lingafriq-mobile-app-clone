@@ -1,0 +1,104 @@
+charter: v2
+id: P4-140
+kind: build
+title: Build single target-language text renderer
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.7-01
+- EP-§6.7-02
+depends_on:
+- P4-101
+- E-P3-DESIGN-SYSTEM
+size: L
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 2, ambiguity 1, coupling 2'
+token_budget: 150000
+file_allowlist:
+- lib/widgets/target_text.dart
+- lib/widgets/tone_lens.dart
+- lib/services/content/gloss_lookup.dart
+- test/widgets/target_text_test.dart
+- test/goldens/target_text_diacritics_test.dart
+context_anchors:
+- ELEVATION.md#§6.7:L1339-L1346
+acceptance_criteria:
+- id: AC1
+  text: Given target-language text, when rendered, then Tone Lens, tap-to-hear and long-press gloss/IPA/minimal-pair are available
+    from one widget
+- id: AC2
+  text: Given lessons, chat, Polie, personas, games, the magazine and the dictionary, when they show target text, then each
+    uses this widget and a lint rule fails any other direct Text rendering of lexeme content
+- id: AC3
+  text: Given stacked diacritics (ọ̀, ẹ́, ṣ) at 1.0x and 2.0x text scale, when rendered, then no glyph is clipped, verified
+    by goldens
+- id: AC4
+  text: Given a word with no audio or gloss, when long-pressed, then a visible not-available state is shown, not an empty
+    sheet
+- id: AC5
+  text: Given a screen reader, when focused, then it announces the word and offers hear and gloss actions
+test_plan:
+  unit:
+  - target_text_test
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - screen reader, text scale
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - idle
+  - playing
+  - loading_gloss
+  - gloss_open
+  - no_audio
+  - no_gloss
+  copy_keys:
+  - text.hear
+  - text.gloss
+  - text.noAudio
+  - text.noGloss
+  tokens:
+  - font.target.andika
+  - color.tone.high
+  - color.tone.low
+  - space.2
+  motion_tier: product
+  a11y:
+  - semantic label
+  - 48dp targets
+  - text scale 2.0
+  goldens:
+  - yo_tone_lens
+  - ig_dot_below
+  - ha_hooked
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- font choice per D10 (Andika for target-language text)
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

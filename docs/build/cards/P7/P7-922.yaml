@@ -1,0 +1,108 @@
+charter: v2
+id: P7-922
+kind: build
+title: Build Word Card bottom sheet
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§17.7-30
+- EP-§17.7-31
+- EP-§17.7-32
+- EP-§17.7-33
+- EP-§17.7-35
+depends_on:
+- P7-916
+- P7-917
+- E-P3-DESIGN-SYSTEM
+- E-P6-SCORER
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, coupling 2, depth 1'
+token_budget: 60000
+file_allowlist:
+- lib/widgets/word_card_sheet.dart
+- lib/widgets/tone_lens_contour.dart
+- lib/widgets/dialect_chips.dart
+- test/widgets/word_card_sheet_test.dart
+context_anchors:
+- ELEVATION.md#§17.7:L2430-L2433
+acceptance_criteria:
+- id: AC1
+  text: Given a lexicon entry, when the sheet opens, then it shows a large lemma using Noto Sans with diacritic-safe line
+    height and tone marks never clipped
+- id: AC2
+  text: Given an entry with tones, when shown, then a Tone Lens contour is displayed
+- id: AC3
+  text: Given an entry with several speakers, when shown, then each speaker has its own play button
+- id: AC4
+  text: Given dialect variants, when shown, then dialect chips are selectable and change the displayed form and audio
+- id: AC5
+  text: Given examples, when shown, then each example has audio and the sheet has Save and Practise buttons
+- id: AC6
+  text: Given an AI-drafted entry, when shown, then the badge reads that it is an AI draft awaiting a native check
+- id: AC7
+  text: Given large text scale, when the sheet renders, then no diacritic is clipped
+test_plan:
+  unit:
+  - badge by status
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - diacritic clipping golden
+  - text scale golden
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - entry
+  - ai_draft
+  - no_audio
+  - error
+  copy_keys:
+  - wordcard.ai_draft
+  - wordcard.save
+  - wordcard.practise
+  tokens:
+  - type.lemma
+  - color.badge.status
+  - radius.sheet
+  motion_tier: product
+  a11y:
+  - lemma and tones described to screen reader
+  - touch targets >=48dp
+  - reduced-motion variant
+  goldens:
+  - default
+  - ai-draft
+  - large-text
+  - no-audio
+  - dark
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

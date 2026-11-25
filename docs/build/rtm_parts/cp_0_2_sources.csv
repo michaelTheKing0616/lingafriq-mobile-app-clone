@@ -1,0 +1,169 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+CP-§pre-01,CURRICULUM,§pre:L6-L7,requirement,"Build highly accurate, premium curricula for the Stage-1 seven",P1,agent,,Open
+CP-§pre-02,CURRICULUM,§pre:L7,requirement,and then as many African languages as possible,P1,agent,,Open
+CP-§pre-03,CURRICULUM,§pre:L7-L8,constraint,without native speakers writing them,P1,agent,,Open
+CP-§pre-04,CURRICULUM,§pre:L8,constraint,Native speakers come later as final validators.,P1,agent,,Open
+CP-§pre-05,CURRICULUM,§pre:L9,constraint,the app must never present an unverified item as certain,P1,agent,,Open
+CP-§pre-06,CURRICULUM,§pre:L10,informational,Licences and availability were checked on the live web,P1,agent,,Open
+CP-§pre-07,CURRICULUM,§pre:L10-L11,risk,"Legal points are a product manager's reading, not legal advice",P1,Tope,,Open
+CP-§pre-08,CURRICULUM,§pre:L11,external,get counsel to sign off the licence register (§2.4),P1,external,,Open
+CP-§pre-09,CURRICULUM,§pre:L11-L12,informational,Costs and accuracy figures are planning estimates,P1,agent,,Open
+CP-§pre-10,CURRICULUM,§pre:L12-L13,requirement,to be replaced by measured numbers from the pilot,P1,agent,,Open
+CP-§pre-11,CURRICULUM,§pre:L4,external,companion: LINGAFRIQ_ELEVATION_PLAN.md,P1,agent,,Open
+CP-§pre-12,CURRICULUM,§pre:L5,external,"companion: LINGAFRIQ_AI_MODEL_STACK.md (models, costs)",P1,agent,,Open
+CP-§0-01,CURRICULUM,§0:L15-L18,requirement,"Ground every item in a source, never in the model's memory.",P1,agent,,Open
+CP-§0-02,CURRICULUM,§0:L19-L22,requirement,Verify with machines that disagree with each other.,P1,agent,,Open
+CP-§0-03,CURRICULUM,§0:L23-L25,external,Buy expert spot-checks instead of authors.,P1,external,,Open
+CP-§0-04,CURRICULUM,§0:L26-L28,requirement,Label honestly.,P1,agent,,Open
+CP-§0-05,CURRICULUM,§0:L29-L31,requirement,Rebuild today's broken data through the same pipeline.,P1,agent,,Open
+CP-§0-06,CURRICULUM,§0:L32-L34,decision,Realistic outcome: Beta A1 for all seven languages in about 12 weeks,P1,Tope,,Open
+CP-§0-07,CURRICULUM,§0:L17-L18,requirement,must cite it claim by claim,P1,agent,,Open
+CP-§0-08,CURRICULUM,§0:L19,requirement,A second model family cross-checks,P1,agent,,Open
+CP-§0-09,CURRICULUM,§0:L20,requirement,independent MT back-translates,P1,agent,,Open
+CP-§0-10,CURRICULUM,§0:L20-L21,requirement,"deterministic linters check orthography, tone marks and Bantu concords",P1,agent,,Open
+CP-§0-11,CURRICULUM,§0:L21,requirement,morphological analysers parse Zulu,P1,agent,,Open
+CP-§0-12,CURRICULUM,§0:L21,requirement,Every item gets a confidence score,P1,agent,,Open
+CP-§0-13,CURRICULUM,§0:L21-L22,requirement,high scores publish as Beta,P1,agent,,Open
+CP-§0-14,CURRICULUM,§0:L22,requirement,mid scores go to a human queue,P1,agent,,Open
+CP-§0-15,CURRICULUM,§0:L22,requirement,low scores are rejected and regenerated,P1,agent,,Open
+CP-§0-16,CURRICULUM,§0:L23-L24,metric,review 100% of high-risk items,P1,external,,Open
+CP-§0-17,CURRICULUM,§0:L25,external,a statistical sample of the rest,P1,external,,Open
+CP-§0-18,CURRICULUM,§0:L24,external,tone marks with no lexicon match,P1,external,,Open
+CP-§0-19,CURRICULUM,§0:L24,external,idioms,P1,external,,Open
+CP-§0-20,CURRICULUM,§0:L24,external,culture and history,P1,external,,Open
+CP-§0-21,CURRICULUM,§0:L24,external,honorifics,P1,external,,Open
+CP-§0-22,CURRICULUM,§0:L24-L25,external,grammar explanations,P1,external,,Open
+CP-§0-23,CURRICULUM,§0:L26,requirement,"Items show Beta, Expert-reviewed or Native-verified",P1,agent,,Open
+CP-§0-24,CURRICULUM,§0:L26-L27,requirement,"synthetic audio says ""Synthetic voice""",P1,agent,,Open
+CP-§0-25,CURRICULUM,§0:L27,requirement,"Learners can tap ""Report a mistake"" on every item",P1,agent,,Open
+CP-§0-26,CURRICULUM,§0:L27-L28,requirement,errors flow back into the pipeline,P1,agent,,Open
+CP-§0-27,CURRICULUM,§0:L32,metric,about 12 weeks,P1,agent,,Open
+CP-§0-28,CURRICULUM,§0:L32,metric,A2 in about 24 weeks,P1,agent,,Open
+CP-§0-29,CURRICULUM,§0:L32-L33,metric,B1 Expert-reviewed by about month 9,P1,agent,,Open
+CP-§0-30,CURRICULUM,§0:L33,metric,roughly $4k–15k in content cost,P1,agent,,Open
+CP-§1-01,CURRICULUM,§1:L60-L66,requirement,CI placeholder linter blocks the build,P0,agent,,Open
+CP-§1-02,CURRICULUM,§1:L67-L73,requirement,Real phrases are salvaged as seeds and re-verified,P0,agent,,Open
+CP-§1-03,CURRICULUM,§1:L74-L78,requirement,"One source of truth; versioned, signed content packs downloaded per language",P0,agent,,Open
+CP-§1-04,CURRICULUM,§1:L79-L85,requirement,A per-language Pattern Library written from cited reference grammars,P0,agent,,Open
+CP-§1-05,CURRICULUM,§1:L86-L92,requirement,The tone-claim linter requires a lexicon source for every tone statement,P0,agent,,Open
+CP-§1-06,CURRICULUM,§1:L93-L98,requirement,The same orthography linters run on UI strings and phrase packs,P0,agent,,Open
+CP-§1-07,CURRICULUM,§1:L99-L102,requirement,Content-hash filenames,P0,agent,,Open
+CP-§1-08,CURRICULUM,§1:L84-L85,requirement,a claim linter rejects generic grammar text,P0,agent,,Open
+CP-§1-09,CURRICULUM,§1:L90-L92,requirement,IPA is generated by a deterministic grapheme-to-phoneme converter (G2P),P0,agent,,Open
+CP-§1-10,CURRICULUM,§1:L101-L102,requirement,every item carries an audio record (TTS-interim or human),P0,agent,,Open
+CP-§1-11,CURRICULUM,§1:L72-L73,metric,"targets 2,500–3,500 lexemes for A1–B1",P0,agent,,Open
+CP-§1-12,CURRICULUM,§1:L59,external,companion: evidence in elevation plan §6.1,P0,agent,,Open
+CP-§2.1-01,CURRICULUM,§2.1:L107,requirement,Learner-facing text is written fresh by the pipeline and cites sources,P1,agent,,Open
+CP-§2.1-02,CURRICULUM,§2.1:L107-L108,constraint,"Copy verbatim only from public-domain or compatible-licence sources, with attribution",P1,agent,,Open
+CP-§2.1-03,CURRICULUM,§2.1:L108-L109,external,counsel should confirm per source,P1,external,,Open
+CP-§2.1-04,CURRICULUM,§2.1:L110-L112,constraint,"is used as verification evidence, or kept in a clearly separated, attributed",P1,agent,,Open
+CP-§2.1-05,CURRICULUM,§2.1:L112-L113,constraint,It is not mixed into LingAfriq's proprietary lexicon text,P1,agent,,Open
+CP-§2.1-06,CURRICULUM,§2.1:L114-L115,constraint,Non-commercial means not usable in a paid app without a written licence,P1,agent,,Open
+CP-§2.1-07,CURRICULUM,§2.1:L115-L116,constraint,treat it as excluded unless licensed,P1,agent,,Open
+CP-§2.1-08,CURRICULUM,§2.1:L117-L118,requirement,Every source gets a licence register entry,P1,agent,,Open
+CP-§2.1-09,CURRICULUM,§2.1:L117-L118,requirement,"URL, licence, version/date, allowed uses (display, evidence, training)",P1,agent,,Open
+CP-§2.1-10,CURRICULUM,§2.1:L118,requirement,"attribution text, and owner sign-off",P1,Tope,,Open
+CP-§2.2-01,CURRICULUM,§2.2:L124-L134,requirement,"US government work, public domain",P1,agent,,Open
+CP-§2.2-02,CURRICULUM,§2.2:L136-L146,constraint,"Often US-gov public domain, but not established for every item",P1,external,,Open
+CP-§2.2-03,CURRICULUM,§2.2:L147-L157,constraint,CC BY-SA 4.0 + GFDL; wiktextract code is MIT,P1,agent,,Open
+CP-§2.2-04,CURRICULUM,§2.2:L158-L169,requirement,Downloadable corpora CC BY; web services and applications CC BY-NC,P1,agent,,Open
+CP-§2.2-05,CURRICULUM,§2.2:L170-L177,requirement,CC0 Yes Read-speech audio for listening examples and TTS/ASR evaluation,P1,agent,,Open
+CP-§2.2-06,CURRICULUM,§2.2:L178-L180,requirement,Google FLEURS (card) CC BY 4.0 Yes Parallel sentences plus audio,P1,agent,,Open
+CP-§2.2-07,CURRICULUM,§2.2:L181-L187,constraint,"Mixed: University of Ghana subsets CC BY 4.0, most others CC BY-SA",P1,agent,,Open
+CP-§2.2-08,CURRICULUM,§2.2:L188-L194,constraint,Per story: CC BY or CC BY-NC,P1,agent,,Open
+CP-§2.2-09,CURRICULUM,§2.2:L195-L198,constraint,"CC BY-SA 4.0 Yes, share-alike Parsed sentences as grammar evidence",P1,agent,,Open
+CP-§2.2-10,CURRICULUM,§2.2:L199-L206,constraint,CC BY-SA 4.0 (Biblica trademark removed from derivatives),P1,agent,,Open
+CP-§2.2-11,CURRICULUM,§2.2:L207-L210,requirement,Discovery only; always verify the licence at the source,P1,agent,,Open
+CP-§2.2-12,CURRICULUM,§2.2:L211-L214,requirement,Use its compatibility matrix as a checklist for the register,P1,agent,,Open
+CP-§2.2-13,CURRICULUM,§2.2:L133-L134,requirement,"Language is 1960s, so modernise vocabulary.",P1,agent,,Open
+CP-§2.2-14,CURRICULUM,§2.2:L135,informational,No FSI Zulu or Xhosa course found,P1,agent,,Open
+CP-§2.2-15,CURRICULUM,§2.2:L155-L157,constraint,do not copy into the proprietary lexicon,P1,agent,,Open
+CP-§2.2-16,CURRICULUM,§2.2:L174,metric,Recorded hours: Yoruba 8.3,P1,agent,,Open
+CP-§2.2-17,CURRICULUM,§2.2:L175,metric,Hausa 12.6,P1,agent,,Open
+CP-§2.2-18,CURRICULUM,§2.2:L175,metric,Igbo 18.9,P1,agent,,Open
+CP-§2.2-19,CURRICULUM,§2.2:L175-L176,metric,"Swahili 1,065",P1,agent,,Open
+CP-§2.2-20,CURRICULUM,§2.2:L193-L194,constraint,Filter to CC BY; attribute authors,P1,agent,,Open
+CP-§2.2-21,CURRICULUM,§2.2:L194,requirement,check for Igbo,P1,agent,,Open
+CP-§2.2-22,CURRICULUM,§2.2:L203-L204,constraint,Corpus and frequency evidence only; religious register,P1,agent,,Open
+CP-§2.3-01,CURRICULUM,§2.3:L217-L221,external,"JW300 Built in breach of jw.org terms, which prohibit text and data",P1,agent,,Open
+CP-§2.3-02,CURRICULUM,§2.3:L224-L227,external,"MAFAND-MT (README), MasakhaNER 2.0 (repo) CC BY-NC 4.0",P1,external,,Open
+CP-§2.3-03,CURRICULUM,§2.3:L228-L233,external,"AfriSenti (HF, paper) HF card says CC BY 4.0, but the paper",P1,external,,Open
+CP-§2.3-04,CURRICULUM,§2.3:L234-L238,external,PanLex (licence) CC BY-NC-SA 4.0; commercial use needs written permission,P1,external,,Open
+CP-§2.3-05,CURRICULUM,§2.3:L239-L243,external,"NaijaVoices (HF, licence, membership) CC BY-NC-SA 4.0; commercial waiver via",P1,external,,Open
+CP-§2.3-06,CURRICULUM,§2.3:L244-L245,external,IgboAPI dataset (paper) Data CC BY-NC-SA 4.0 (code Apache-2.0),P1,external,,Open
+CP-§2.3-07,CURRICULUM,§2.3:L246-L249,external,Kamusi (policy) CC BY-NC-SA; commercial licence on request,P1,external,,Open
+CP-§2.3-08,CURRICULUM,§2.3:L250-L256,external,"Helsinki Corpus of Swahili 2.0 (Kielipankki, ELRA) CLARIN ACA (academic only)",P1,external,,Open
+CP-§2.3-09,CURRICULUM,§2.3:L257-L264,external,"Oxford Languages datasets (datasets, API languages) Commercial licence",P1,external,,Open
+CP-§2.3-10,CURRICULUM,§2.3:L265-L272,external,"Bargery, Hausa–English, 1934, online) Copyright status unconfirmed",P1,external,,Open
+CP-§2.3-11,CURRICULUM,§2.3:L262-L264,external,"Get a quote covering tone-marked headwords, examples and the right to display",P1,external,,Open
+CP-§2.3-12,CURRICULUM,§2.3:L240,metric,"membership ($5,000+ tier",P1,agent,,Open
+CP-§2.3-13,CURRICULUM,§2.3:L240-L241,metric,12 months,P1,agent,,Open
+CP-§2.3-14,CURRICULUM,§2.3:L253,metric,"€7,500 (member)",P1,agent,,Open
+CP-§2.3-15,CURRICULUM,§2.3:L253-L254,metric,"€15,000",P1,agent,,Open
+CP-§2.3-16,CURRICULUM,§2.3:L220-L221,requirement,"Declare ""no JW300-derived data"" in the register",P1,agent,,Open
+CP-§2.3-17,CURRICULUM,§2.3:L237-L238,external,Request permission (info@panlex.org) before any use,P1,external,,Open
+CP-§2.3-18,CURRICULUM,§2.3:L262,decision,Buy (top pick for accuracy),P1,Tope,,Open
+CP-§2.3-19,CURRICULUM,§2.3:L245,external,license it from Nkọwa okwu,P1,external,,Open
+CP-§2.3-20,CURRICULUM,§2.3:L248-L249,decision,License it if a Swahili gap remains after Oxford,P1,Tope,,Open
+CP-§2.3-21,CURRICULUM,§2.3:L242-L243,decision,Buy the waiver if you need Igbo/Hausa/Yoruba speech at scale,P1,Tope,,Open
+CP-§2.3-22,CURRICULUM,§2.3:L255-L256,decision,Optional; Leipzig CC BY plus Common Voice may suffice for frequency,P1,Tope,,Open
+CP-§2.3-23,CURRICULUM,§2.3:L226-L227,decision,"Exclude, or request a commercial licence from Masakhane",P1,Tope,,Open
+CP-§2.3-24,CURRICULUM,§2.3:L231-L232,external,Treat as non-commercial; ask the creators.,P1,external,,Open
+CP-§2.4-yo-01,CURRICULUM,§2.4:L281-L286,constraint,Standard Yoruba orthography (Nigerian standard; full tone marking for pedagogy),P1,agent,,Open
+CP-§2.4-yo-02,CURRICULUM,§2.4:L287-L289,external,"Oxford Yoruba dataset (licensed) → Wiktionary, Abraham (reference)",P1,external,,Open
+CP-§2.4-yo-03,CURRICULUM,§2.4:L290-L297,external,"FSI Basic + Intermediate (PD); a modern reference grammar, e.g. Bámgbóṣé",P1,external,,Open
+CP-§2.4-yo-04,CURRICULUM,§2.4:L298-L303,requirement,"Leipzig, Biblica open Bible, Common Voice, FLEURS",P1,agent,,Open
+CP-§2.4-yo-05,CURRICULUM,§2.4:L304-L310,requirement,"NaijaML diacritizer, Apache-2.0: 80.3% full-tone word accuracy, 93.3% dot-below",P1,agent,,Open
+CP-§2.4-yo-06,CURRICULUM,§2.4:L305-L307,metric,80.3% full-tone word accuracy,P1,agent,,Open
+CP-§2.4-yo-07,CURRICULUM,§2.4:L307-L308,metric,93.3% dot-below,P1,agent,,Open
+CP-§2.4-yo-08,CURRICULUM,§2.4:L308-L310,requirement,Spitch tone marking (AI stack),P1,agent,,Open
+CP-§2.4-yo-09,CURRICULUM,§2.4:L308-L310,external,companion: Spitch tone marking (AI stack),P1,agent,,Open
+CP-§2.4-ig-01,CURRICULUM,§2.4:L311-L312,constraint,Standard Igbo (Ọnwụ orthography) [verify],P1,agent,,Open
+CP-§2.4-ig-02,CURRICULUM,§2.4:L316-L318,external,IgboAPI (license) + Oxford Igbo → Wiktionary,P1,external,,Open
+CP-§2.4-ig-03,CURRICULUM,§2.4:L319-L323,external,"FSI Igbo Basic (PD, tone drills; tape 1 missing); Emenanjo's Igbo grammar",P1,external,,Open
+CP-§2.4-ig-04,CURRICULUM,§2.4:L324-L327,requirement,"Leipzig, Common Voice, FLEURS",P1,agent,,Open
+CP-§2.4-ig-05,CURRICULUM,§2.4:L328-L333,risk,Igbo tone restorer only 61.6% tone-mark accuracy (model),P1,agent,,Open
+CP-§2.4-ig-06,CURRICULUM,§2.4:L312-L315,constraint,dialect policy: Central Igbo plus Onitsha/Owerri notes,P1,agent,,Open
+CP-§2.4-ig-07,CURRICULUM,§2.4:L331-L333,constraint,"so Igbo tone is lexicon-first, human-checked",P1,agent,,Open
+CP-§2.4-ig-08,CURRICULUM,§2.4:L329-L330,metric,61.6% tone-mark accuracy,P1,agent,,Open
+CP-§2.4-ha-01,CURRICULUM,§2.4:L334-L335,constraint,Standard Boko orthography (ɓ ɗ ƙ ƴ ʼ).,P1,agent,,Open
+CP-§2.4-ha-02,CURRICULUM,§2.4:L342-L344,external,"Oxford Hausa → Wiktionary, Bargery (reference)",P1,external,,Open
+CP-§2.4-ha-03,CURRICULUM,§2.4:L345-L349,external,FSI Hausa Basic (PD); Peace Corps Hausa; Newman The Hausa Language,P1,external,,Open
+CP-§2.4-ha-04,CURRICULUM,§2.4:L350-L355,requirement,"Leipzig, Biblica open Bible, Common Voice, FLEURS",P1,agent,,Open
+CP-§2.4-ha-05,CURRICULUM,§2.4:L356-L358,requirement,Lexicon lookup for tone and length marks,P1,agent,,Open
+CP-§2.4-ha-06,CURRICULUM,§2.4:L338-L341,requirement,so pedagogical marking comes from dictionaries,P1,agent,,Open
+CP-§2.4-pcm-01,CURRICULUM,§2.4:L370-L375,constraint,"Naija Langwej Akademi standard orthography (IFRA guide): phonetic Latin, high tone marked",P1,agent,,Open
+CP-§2.4-pcm-02,CURRICULUM,§2.4:L376-L380,external,"No commercial dictionary found; build from UD-Naija, Faraclas Nigerian Pidgin (1996) [purchase]",P1,external,,Open
+CP-§2.4-pcm-03,CURRICULUM,§2.4:L381-L382,requirement,UD-Naija-NSC (CC BY-SA),P1,agent,,Open
+CP-§2.4-pcm-04,CURRICULUM,§2.4:L383-L385,requirement,NSC speech corpus [verify licence],P1,agent,,Open
+CP-§2.4-pcm-05,CURRICULUM,§2.4:L388-L389,requirement,"LLM ""anglicisation"" detector (§3.4)",P1,agent,,Open
+CP-§2.4-pcm-06,CURRICULUM,§2.4:L386-L387,external,Intron for ASR,P1,external,,Open
+CP-§2.4-sw-01,CURRICULUM,§2.4:L390-L393,constraint,"Kiswahili Sanifu (BAKITA, Tanzania) [verify citation] + Kenyan notes",P1,agent,,Open
+CP-§2.4-sw-02,CURRICULUM,§2.4:L394-L396,external,"Oxford API Swahili → Wiktionary; Kamusi (license, optional)",P1,external,,Open
+CP-§2.4-sw-03,CURRICULUM,§2.4:L397-L401,external,"FSI Swahili Basic (PD, 150 units); Peace Corps Kiswahili; Ashton Swahili Grammar",P1,external,,Open
+CP-§2.4-sw-04,CURRICULUM,§2.4:L402-L407,requirement,"Leipzig, Common Voice (1,065 h), FLEURS, African Storybook",P1,agent,,Open
+CP-§2.4-sw-05,CURRICULUM,§2.4:L408-L409,requirement,Noun-class concord checker (§3.3),P1,agent,,Open
+CP-§2.4-zu-01,CURRICULUM,§2.4:L410-L413,constraint,"PanSALB revised spelling and orthography rules (Gazette, 6 Jul 2023)",P1,agent,,Open
+CP-§2.4-zu-02,CURRICULUM,§2.4:L414-L422,external,Commercial Zulu dictionary licence [Oxford API doesn't list Zulu;,P1,external,,Open
+CP-§2.4-zu-03,CURRICULUM,§2.4:L423-L425,external,Peace Corps Zulu; Poulos & Msimang [purchase],P1,external,,Open
+CP-§2.4-zu-04,CURRICULUM,§2.4:L430-L436,requirement,"NCHLT corpora (CC BY 2.5 ZA), FLEURS, WAXAL, African Storybook",P1,agent,,Open
+CP-§2.4-zu-05,CURRICULUM,§2.4:L437-L442,requirement,ZulMorph finite-state analyser; the SADiLaR record lists Apache-2.0,P1,agent,,Open
+CP-§2.4-zu-06,CURRICULUM,§2.4:L417-L419,external,approach the publisher of the Doke–Vilakazi dictionary,P1,external,,Open
+CP-§2.4-zu-07,CURRICULUM,§2.4:L425-L429,requirement,"SADiLaR morphologically annotated corpus, 45,933 tokens, CC BY 4.0 (repo)",P1,agent,,Open
+CP-§2.4-zu-08,CURRICULUM,§2.4:L428,metric,"45,933 tokens",P1,agent,,Open
+CP-§2.4-xh-01,CURRICULUM,§2.4:L443-L444,constraint,PanSALB revised rules (same Gazette),P1,agent,,Open
+CP-§2.4-xh-02,CURRICULUM,§2.4:L445-L446,external,Oxford isiXhosa dataset (license) → Wiktionary,P1,external,,Open
+CP-§2.4-xh-03,CURRICULUM,§2.4:L449-L452,external,a standard Xhosa reference grammar [linguist to choose],P1,external,,Open
+CP-§2.4-xh-04,CURRICULUM,§2.4:L453-L457,requirement,"NCHLT, FLEURS, WAXAL, African Storybook",P1,agent,,Open
+CP-§2.4-xh-05,CURRICULUM,§2.4:L458-L461,requirement,Concord checker; no mature open Xhosa,P1,agent,,Open
+CP-§2.4-xh-06,CURRICULUM,§2.4:L447-L449,requirement,"SADiLaR annotated corpus, 46,465 tokens, CC BY 4.0 (repo)",P1,agent,,Open
+CP-§2.4-xh-07,CURRICULUM,§2.4:L448,metric,"46,465 tokens",P1,agent,,Open
+CP-§2.4-xh-08,CURRICULUM,§2.4:L458-L460,risk,no mature open Xhosa analyser confirmed,P1,agent,,Open
+CP-§2.4-later-01,CURRICULUM,§2.4:L462,requirement,Later waves. Reuse the same template.,P1,agent,,Open
+CP-§2.4-later-02,CURRICULUM,§2.4:L462,requirement,1. an orthography authority;,P1,agent,,Open
+CP-§2.4-later-03,CURRICULUM,§2.4:L462-L463,requirement,2. one licensed or public-domain lexicon;,P1,agent,,Open
+CP-§2.4-later-04,CURRICULUM,§2.4:L463,requirement,3. one reference grammar;,P1,agent,,Open
+CP-§2.4-later-05,CURRICULUM,§2.4:L463,requirement,4. a CC-BY or PD corpus.,P1,agent,,Open
+CP-§2.4-later-06,CURRICULUM,§2.4:L464,requirement,Use Lanfrica to discover sources,P1,agent,,Open
+CP-§2.4-later-07,CURRICULUM,§2.4:L464,requirement,check each one against FSI's and the Peace Corps' language lists,P1,agent,,Open
+CP-§2.4-later-08,CURRICULUM,§2.4:L464-L465,constraint,A language without a lexicon source cannot pass the gates beyond L0,P1,agent,,Open

@@ -1,0 +1,75 @@
+charter: v2
+id: P11-045
+kind: build
+title: Build nested artboard customisation for hair, headwear, garments
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- AV-step5
+- EP-§4.2-28
+- EP-§4.2-29
+- EP-§4.2-30
+- EP-§4.3-04
+- EP-§4.3-22
+- EP-§4.6-17
+- EP-§4.6-18
+depends_on:
+- P11-037
+- P11-034
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- assets/rive/avatars/lingafriq_cast.riv
+- lib/avatars/customisation/slot_binding.dart
+context_anchors:
+- ELEVATION.md#§4.2:L895-L898
+- ELEVATION.md#§4.6:L1012-L1014
+acceptance_criteria:
+- id: AC1
+  text: Given nested artboards Hair/*, Headwear/*, Top/*, Bottom/*, Accessory/*, Prop/*, when swapped, then they change via
+    data-binding Artboard properties, not visibility toggles.
+- id: AC2
+  text: Given the library, when shipped, then ≥6 hair styles and ≥4 headwear options exist.
+- id: AC3
+  text: Given more than about 10 options per slot, when added, then they are streamed out-of-band rather than packed in the
+    main file.
+test_plan:
+  unit:
+  - slot swap via property
+  integration:
+  - contract test
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers:
+- EXT-16
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

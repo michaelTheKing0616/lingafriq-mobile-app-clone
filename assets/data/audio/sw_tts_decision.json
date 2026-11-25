@@ -1,0 +1,82 @@
+{
+  "charter": "v2",
+  "card_id": "P5-065",
+  "language_id": "sw",
+  "locale": "sw-KE",
+  "decision_date": "2026-10-26",
+  "owner": "Tope",
+  "sources": [
+    "docs/source/CURRICULUM.md#§7:L734-L736",
+    "docs/plan/LINGAFRIQ_AI_MODEL_STACK.md#§3.3",
+    "CP-§7-sw-01"
+  ],
+  "scores_are_calibration_fixture": true,
+  "scores_fixture_note": "MOS rows are engineering calibration placeholders until a live native blind panel replaces them; not linguistic ground truth.",
+  "blind_test": {
+    "method": "paired ABX listening on shared curriculum phrase set; reviewers score naturalness and intelligibility 1–5 MOS",
+    "sample_set_id": "sw-tts-blind-v1",
+    "reviewers": [
+      "sw_native_panel_a",
+      "sw_native_panel_b",
+      "kiswahili_linguist"
+    ],
+    "candidates": [
+      {
+        "id": "intron",
+        "vendor": "Intron",
+        "voice_ref": "intron_tts_sw",
+        "licence": "commercial_api",
+        "mos_by_reviewer": {
+          "sw_native_panel_a": 4.1,
+          "sw_native_panel_b": 4.0,
+          "kiswahili_linguist": 4.2
+        },
+        "mean_mos": 4.1
+      },
+      {
+        "id": "google_chirp3_hd_sw_ke",
+        "vendor": "Google Cloud TTS",
+        "voice_ref": "Chirp3-HD-sw-KE",
+        "licence": "commercial_api",
+        "mos_by_reviewer": {
+          "sw_native_panel_a": 4.3,
+          "sw_native_panel_b": 4.4,
+          "kiswahili_linguist": 4.2
+        },
+        "mean_mos": 4.3
+      },
+      {
+        "id": "azure_sw_ke",
+        "vendor": "Azure Neural TTS",
+        "voice_ref": "sw-KE",
+        "licence": "commercial_api",
+        "mos_by_reviewer": {
+          "sw_native_panel_a": 3.9,
+          "sw_native_panel_b": 4.0,
+          "kiswahili_linguist": 3.8
+        },
+        "mean_mos": 3.9
+      }
+    ],
+    "winner_id": "google_chirp3_hd_sw_ke",
+    "tie_mos_delta": 0.05,
+    "poor_mos_threshold": 3.5,
+    "fallback_if_tie_or_poor": {
+      "description": "If top two means differ by ≤ tie_mos_delta, or every candidate mean_mos < poor_mos_threshold, route dynamic Swahili TTS in order: Intron → Google Chirp 3 HD sw-KE → Azure sw-KE (EXT-01 §3.3).",
+      "provider_order": [
+        "intron",
+        "google_chirp3_hd_sw_ke",
+        "azure_sw_ke"
+      ]
+    },
+    "live_native_panel_required_before_production": true
+  },
+  "routing_for_p5_066": {
+    "primary_provider": "google_chirp3_hd_sw_ke",
+    "fallback_order": [
+      "intron",
+      "azure_sw_ke"
+    ],
+    "intron_enabled_gate": "AI_INTRON_ENABLED server flag; stays off in client"
+  }
+}

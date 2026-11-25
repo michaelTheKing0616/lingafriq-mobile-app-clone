@@ -133,14 +133,14 @@ class OfflineContentScreen extends ConsumerWidget {
               return AnimatedCard(
                 child: ListTile(
                   leading: CircleAvatar(
-                    backgroundColor: AfricanTheme.primaryGreen.withOpacity(0.1),
+                    backgroundColor: AfricanTheme.primaryGreen.withValues(alpha: 0.1),
                     child: Text(
                       language['flag']!,
                       style: TextStyle(fontSize: 20.sp),
                     ),
                   ),
                   title: Text(language['name']!),
-                  subtitle: Text('~50 MB'),
+                  subtitle: const Text('~50 MB'),
                   trailing: isDownloaded
                       ? IconButton(
                           icon: const Icon(Icons.delete_rounded),
@@ -174,7 +174,7 @@ class OfflineContentScreen extends ConsumerWidget {
               LinearProgressIndicator(
                 value: offlineContent.downloadProgress,
                 backgroundColor: Colors.grey[200],
-                valueColor: AlwaysStoppedAnimation<Color>(AfricanTheme.primaryGreen),
+                valueColor: const AlwaysStoppedAnimation<Color>(AfricanTheme.primaryGreen),
               ),
               SizedBox(height: 8.h),
               Text(
@@ -255,7 +255,7 @@ class OfflineContentScreen extends ConsumerWidget {
             return AnimatedCard(
               child: ListTile(
                 leading: CircleAvatar(
-                  backgroundColor: AfricanTheme.primaryGreen.withOpacity(0.1),
+                  backgroundColor: AfricanTheme.primaryGreen.withValues(alpha: 0.1),
                   child: Icon(
                     Icons.book_rounded,
                     color: AfricanTheme.primaryGreen,
@@ -283,7 +283,7 @@ class OfflineContentScreen extends ConsumerWidget {
                       LinearProgressIndicator(
                         value: progress,
                         backgroundColor: Colors.grey[200],
-                        valueColor: AlwaysStoppedAnimation<Color>(
+                        valueColor: const AlwaysStoppedAnimation<Color>(
                           AfricanTheme.primaryGreen,
                         ),
                       ),

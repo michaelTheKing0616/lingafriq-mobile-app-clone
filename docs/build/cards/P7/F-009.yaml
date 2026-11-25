@@ -1,0 +1,104 @@
+charter: v2
+id: F-009
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Lesson Flow
+phase: P7
+epic: E-P7-HUBS
+hub: Learn
+req_ids:
+- F-009
+- F-009.D
+- F-009.E
+- F-009.U
+- F-009.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P5-CONTENT-REAL
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: hub feature delta spec'
+token_budget: 80000
+file_allowlist:
+- lib/screens/lesson/lesson_flow_screen.dart
+- lib/screens/lesson/lesson_flow_stages.dart
+context_anchors:
+- ELEVATION.md#§18.3:L3629-L3640
+delta:
+  current_state: Ten-stage player works but content lacks audio and fixed stages.
+  defects_to_fix:
+  - Template content, missing audio, non-adaptive stage sequence.
+  elevation_to_build:
+  - 'Adaptive player: input → noticing → guided practice → speaking → mini-check with skip-when-mastered.'
+  - Every item includes native audio and a Why sheet.
+  ux_and_render:
+  - Full-screen one task per screen, haptics within 160 ms, segmented progress bar.
+  hub_placement: Opened from Path and Today.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given mastered skills, when starting a lesson, then skipped stages do not appear in the progress bar.
+- id: AC2
+  text: Given any lesson item, when displayed, then native audio plays and Why sheet is available.
+- id: AC3
+  text: Given offline cache, when playing a downloaded lesson, then flow completes without network.
+test_plan:
+  unit:
+  - domain rules for feature delta
+  integration:
+  - navigation and data wiring from hub placement
+  e2e:
+  - primary happy path from Lives in entry
+  a11y:
+  - goldens at 100%/200% text
+  - semantics order
+  content:
+  - honest labels on shown curriculum or media
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - learn.f_009.*
+tags: []
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

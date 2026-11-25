@@ -12,6 +12,15 @@ const Set<String> kSyncOutboxOperationTypes = {
   'phrase_dna_attempt_submit',
   'micro_mentor_session_request',
   'micro_mentor_rubric_submit',
+  'gamification_sync',
+  'game_session_sync',
+  'game_srs_sync',
+  'ai_chat_history_sync',
+  'ai_chat_srs_sync',
+  'progress_sync',
+  'onboarding_sync',
+  'telemetry_sync',
+  'learning_event',
 };
 
 bool isValidSyncOutboxOperationType(String type) =>

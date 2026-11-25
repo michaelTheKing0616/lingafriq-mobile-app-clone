@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "app_reference": "lib/widgets/target_text.dart",
+  "admin_reference": "lingafriq-admin/src/components/ItemPreview.tsx",
+  "renderer": {
+    "fontFamily": "Andika",
+    "fontSizePx": 18,
+    "lineHeight": 1.5,
+    "textBaseline": "alphabetic",
+    "leadingDistribution": "even",
+    "nfc": true,
+    "paddingVerticalPx": 4,
+    "paddingHorizontalPx": 2,
+    "borderRadiusPx": 8
+  },
+  "tone_lens": {
+    "contourWidthPx": 28,
+    "contourHeightPx": 14,
+    "gapBelowTextPx": 4
+  },
+  "parity": {
+    "pixelDiffThreshold": 0.02,
+    "goldenComparator": "ThresholdGoldenComparator"
+  },
+  "goldens": {
+    "preview_yo": {
+      "text": "ọkọ̀",
+      "tone_pattern": ["M", "L"],
+      "textScale": 1,
+      "flutterGolden": "test/goldens/goldens/target_text_yo_1x.png"
+    },
+    "preview_ig": {
+      "text": "ọ́ ẹ́",
+      "tone_pattern": null,
+      "textScale": 2,
+      "flutterGolden": "test/goldens/goldens/target_text_ig_2x.png"
+    }
+  }
+}

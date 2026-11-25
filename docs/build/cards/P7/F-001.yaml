@@ -1,0 +1,123 @@
+charter: v2
+id: F-001
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Home / Today session
+phase: P7
+epic: E-P7-HUBS
+hub: Today
+req_ids:
+- F-001
+- F-001.D
+- F-001.E
+- F-001.U
+- F-001.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P11-PERSONAS-AVATARS
+size: L
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: multi-widget hub consolidation; no real-time audio or scoring
+token_budget: 200000
+file_allowlist:
+- screens/tabs_view/home/home_tab.dart
+- screens/dashboard/dashboard_screen_material3.dart
+- screens/dashboard/modern_dashboard_screen.dart
+context_anchors:
+- ELEVATION.md#§18.2:L3497-L3517
+delta:
+  current_state: Tab 1 home works; modern dashboard file is unrouted duplicate.
+  defects_to_fix:
+  - Two competing dashboard implementations
+  - Continue learning shows placeholder when no lesson resolves
+  - Shortcut grid is not a coherent daily session plan
+  elevation_to_build:
+  - Single adaptive 10–15 min Today playlist from learner model
+  - Sequence reviews, new input, speaking moment, culture card, game round
+  - One Start control with filling progress ring
+  - Because-you shelf and streak or quest strip below session
+  - Consolidate best widgets from modern dashboard into unified layout
+  ux_and_render:
+  - Hero card with target-language avatar greeting via Tone Lens
+  - Layout-matched skeletons while loading
+  - Day-one empty state promises a six-minute first session
+  hub_placement: Today tab root
+  unlock_stage: per §17.4
+  harvest_list:
+  - Reusable widgets from modern_dashboard_screen.dart into home tab layout
+acceptance_criteria:
+- id: AC1
+  text: Given no resolved lesson, when Today loads, then continue card shows honest next step not a generic placeholder.
+- id: AC2
+  text: Given learner model data, when Start is tapped, then the 10–15 min playlist runs in the specified step order.
+- id: AC3
+  text: Given session progress, when steps complete, then the progress ring fills proportionally without client-minted XP.
+- id: AC4
+  text: Given modern dashboard widgets exist, when Today renders, then consolidated widgets appear once with no duplicate
+    dashboard route.
+- id: AC5
+  text: Given day-one user, when Today is empty, then copy states the first session takes about six minutes.
+test_plan:
+  unit:
+  - playlist step ordering
+  - ring progress from verified events
+  integration:
+  - home tab routes to session start
+  - lesson resolution fallback
+  e2e:
+  - Today tab first paint
+  - Start through one full micro-session
+  a11y:
+  - hero greeting semantics
+  - 200% text on hero and ring
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - today.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+tags:
+- enables_persona
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks:
+- learner-model playlist deps on downstream hub features not yet wired
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

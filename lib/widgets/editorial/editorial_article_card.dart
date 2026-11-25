@@ -67,7 +67,7 @@ class EditorialArticleCard extends StatelessWidget {
                     vertical: 4.h,
                   ),
                   decoration: BoxDecoration(
-                    color: colors.surface.withOpacity(0.9),
+                    color: colors.surface.withValues(alpha: 0.9),
                     borderRadius: BorderRadius.circular(4.r),
                   ),
                   child: Text(
@@ -102,12 +102,12 @@ class EditorialArticleCard extends StatelessWidget {
 
   Widget _buildPlaceholder(ColorScheme colors) {
     return ColoredBox(
-      color: colors.primaryContainer.withOpacity(0.4),
+      color: colors.primaryContainer.withValues(alpha: 0.4),
       child: Center(
         child: Icon(
           Icons.image_rounded,
           size: 32.sp,
-          color: colors.onSurface.withOpacity(0.15),
+          color: colors.onSurface.withValues(alpha: 0.15),
         ),
       ),
     );
@@ -143,7 +143,7 @@ class EditorialArticleCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w500,
-                        color: colors.onSurface.withOpacity(0.6),
+                        color: colors.onSurface.withValues(alpha: 0.6),
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -156,7 +156,7 @@ class EditorialArticleCard extends StatelessWidget {
                       '\u2022',
                       style: TextStyle(
                         fontSize: 10.sp,
-                        color: colors.onSurface.withOpacity(0.35),
+                        color: colors.onSurface.withValues(alpha: 0.35),
                       ),
                     ),
                   ),
@@ -166,7 +166,7 @@ class EditorialArticleCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
-                      color: colors.onSurface.withOpacity(0.5),
+                      color: colors.onSurface.withValues(alpha: 0.5),
                     ),
                   ),
               ],

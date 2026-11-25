@@ -1,0 +1,110 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P9
+epic: E-P9-SAFETY
+hub: Village
+gate: G9
+status: Draft
+size: M
+token_budget: 80000
+user_facing: true
+p0_area: false
+tags:
+- under18_social
+- uses_source
+external_blockers: []
+risks: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+id: F-122
+title: Elevate Community Corrections
+req_ids:
+- F-122
+- F-122.D
+- F-122.E
+- F-122.U
+- F-122.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P9-SAFETY
+- E-P4-CONTENT-ENGINE
+- P7-920
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: verified native corrections and reputation'
+file_allowlist:
+- lib/screens/social/community_corrections_screen.dart
+context_anchors:
+- ELEVATION.md#§18.6:L5230-L5241
+delta:
+  current_state: Corrections UI reachable from Social Hub.
+  defects_to_fix:
+  - No reputation or quality control for correctors.
+  elevation_to_build:
+  - Learners post short writing or audio; verified natives correct with inline edits and audio.
+  - Reputation for helpful correctors; best corrections feed Living Dictionary with consent.
+  ux_and_render:
+  - Diff-style inline edits and audio replies.
+  hub_placement: Village → Corrections.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given an unverified user, when they attempt to publish corrections, then the action is blocked until native verification.
+- id: AC2
+  text: Given a learner submission, when a verified native corrects, then inline diff and optional audio reply are stored
+    and shown.
+- id: AC3
+  text: Given a top correction with consent, when approved, then it can surface as a Living Dictionary usage example.
+- id: AC4
+  text: Given the account is under 18 or age-unknown, when this surface is opened, then it is hidden or guardian-gated until
+    E-P9-SAFETY is Done, and the restriction is enforced server-side.
+test_plan:
+  unit:
+  - domain helpers
+  integration:
+  - API and navigation
+  e2e:
+  - happy path
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content: []
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - community_corrections.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux
+  - adaptive/14-safety-and-high-stakes

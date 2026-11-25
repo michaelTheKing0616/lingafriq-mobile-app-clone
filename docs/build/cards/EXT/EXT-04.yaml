@@ -1,0 +1,40 @@
+charter: v2
+id: EXT-04
+kind: external
+title: 'Obtain: Oxford Languages datasets (yo, ig, ha, xh; sw via API) quote + licence'
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- D2
+depends_on: []
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T2
+  justification: agent prepares the artefact; a human completes the item
+token_budget: 20000
+file_allowlist: []
+context_anchors: []
+acceptance_criteria:
+- id: AC1
+  text: 'Artefact prepared and stored under docs/build/external/EXT-04/: RFQ: tone-marked headwords, examples, display rights,
+    API terms'
+- id: AC2
+  text: Owner (Tope) has the artefact and a one-line status in EXTERNAL.md; due gate G4
+owner: Tope
+due_gate: G4
+external_blockers:
+- EXT-04
+gate: G4
+status: Blocked-External
+skills:
+  worker:
+  - adaptive/09-writing-and-communication

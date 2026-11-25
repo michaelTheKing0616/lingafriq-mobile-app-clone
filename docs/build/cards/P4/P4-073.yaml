@@ -1,0 +1,89 @@
+charter: v2
+id: P4-073
+kind: build
+title: Build generation jobs UI with versioned prompts
+phase: P4
+epic: E-P4-STUDIO
+req_ids:
+- CP-§9.1-04
+depends_on:
+- P4-070
+- P4-055
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 2, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- lingafriq-admin/src/pages/CurriculumStudio/generationJobs.tsx
+- node-backend/src/routes/generationJobs.routes.ts
+- tools/content_engine/tests/studio_generationJobs.test.ts
+context_anchors:
+- CURRICULUM.md#§9.1:L782-L782
+acceptance_criteria:
+- id: AC1
+  text: Given a can-do or unit, when a job is created, then it records the prompt template version (git commit) and model
+    names
+- id: AC2
+  text: Given a prompt template change, when not committed to git, then job creation fails with PROMPT_NOT_VERSIONED
+- id: AC3
+  text: Given a running job, when viewed, then per-stage status and typed errors are visible
+test_plan:
+  unit:
+  - component states
+  integration:
+  - admin route contract
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - keyboard navigation
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - empty
+  - error
+  - ready
+  copy_keys:
+  - jobs.title
+  - jobs.promptVersion
+  - jobs.stageError
+  tokens:
+  - admin.surface
+  - admin.text
+  - admin.status
+  motion_tier: product
+  a11y:
+  - keyboard operable
+  - focus visible
+  - labelled controls
+  goldens:
+  - generationJobs-ready
+  - generationJobs-empty
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

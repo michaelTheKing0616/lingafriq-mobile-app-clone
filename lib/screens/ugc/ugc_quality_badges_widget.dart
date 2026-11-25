@@ -15,7 +15,7 @@ class UGCQualityBadgesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (badges.isEmpty) return SizedBox.shrink();
+    if (badges.isEmpty) return const SizedBox.shrink();
 
     return Wrap(
       spacing: PanAfricanSpacing.xs,
@@ -41,7 +41,7 @@ class _QualityBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final badgeData = _getBadgeData(badge);
+    final badgeData = _getBadgeData(context, badge);
 
     return Container(
       padding: EdgeInsets.symmetric(
@@ -77,13 +77,13 @@ class _QualityBadge extends StatelessWidget {
     );
   }
 
-  Map<String, dynamic> _getBadgeData(String badge) {
+  Map<String, dynamic> _getBadgeData(BuildContext context, String badge) {
     switch (badge.toLowerCase()) {
       case 'native_speaker_verified':
         return {
           'label': 'Native Verified',
           'icon': Icons.verified_user,
-          'color': PanAfricanColors.success,
+          'color': context.panSuccess,
         };
       case 'grammatically_perfect':
         return {
@@ -107,13 +107,13 @@ class _QualityBadge extends StatelessWidget {
         return {
           'label': 'Expert Reviewed',
           'icon': Icons.school,
-          'color': PanAfricanColors.secondary,
+          'color': context.panSecondary,
         };
       case 'community_favorite':
         return {
           'label': 'Community Favorite',
           'icon': Icons.favorite,
-          'color': PanAfricanColors.tertiary,
+          'color': context.panTertiary,
         };
       default:
         return {

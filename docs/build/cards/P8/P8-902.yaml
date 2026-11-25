@@ -1,0 +1,73 @@
+charter: v2
+id: P8-902
+kind: build
+title: 'GameKit: enforce session length and one core verb'
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.2-04
+- EP-§10.2-05
+depends_on:
+- E-P8-PLAY
+size: S
+difficulty:
+  score: 2
+  blast: 1
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 1, coupling 1'
+token_budget: 25000
+file_allowlist:
+- lib/games/gamekit/game_session.dart
+- lib/games/gamekit/game_engine.dart
+- lib/games/gamekit/game.dart
+- lib/games/gamekit/all_games_registry.dart
+context_anchors:
+- ELEVATION.md#§10.2:L1672
+acceptance_criteria:
+- id: AC1
+  text: Given any GameKit session, when it starts, then its planned duration is between 60 and 180 s and the engine ends the
+    session at 180 s at the latest
+- id: AC2
+  text: Given a game manifest, when it registers, then it declares exactly one core verb from the allowed verb list or registration
+    fails with GameManifestError
+- id: AC3
+  text: Given a session reaches its planned end mid-turn, when the current turn resolves, then the results screen shows and
+    no new turn begins
+- id: AC4
+  text: Given a registered game whose measured median session falls outside 60–180 s in telemetry, when the nightly report
+    runs, then the game is flagged in the report
+test_plan:
+  unit:
+  - duration clamp
+  - verb validation
+  integration: []
+  security: []
+  e2e: []
+  perf:
+  - fake-clock session timing
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

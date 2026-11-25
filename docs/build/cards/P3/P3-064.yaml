@@ -1,0 +1,67 @@
+charter: v2
+id: P3-064
+kind: verification
+title: Verify all 25 revived features are reachable
+phase: P3
+epic: E-P3-REVIVE
+req_ids:
+- EP-§17.5-01
+- EP-§17.5-02
+- EP-§17.5-03
+- EP-§17.5-04
+- EP-§17.5-05
+depends_on:
+- P3-053
+- P3-054
+- P3-055
+- P3-056
+- P3-057
+- P3-058
+- P3-059
+- P3-060
+- P3-061
+- P3-062
+- P3-063
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 1: script check'
+token_budget: 25000
+file_allowlist:
+- scripts/nav/reachability_scan.py
+context_anchors:
+- ELEVATION.md#§17.5:L2321-L2332
+acceptance_criteria:
+- id: AC1
+  text: Given the reachability scan from lib/main.dart, when it runs, then the 25 REV items are reachable and the count of
+    unreachable screens falls from 88 by at least 25 net of consolidation
+- id: AC2
+  text: Given each REV id, when listed, then its route and hub match the card that wired it
+- id: AC3
+  text: Given any REV item still unreachable, when the scan runs, then CI fails naming it
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

@@ -10,7 +10,7 @@ import '../learner_model/error_taxonomy.dart';
 ///
 /// Contract:
 /// - Games read from the learner model to determine difficulty
-/// - Games write back to the learner model after each response
+/// - Games write back through GameKitPracticeRecorder after each resolved turn
 /// - Difficulty is continuously tuned by the engine, not hardcoded
 /// - Game results feed the same error taxonomy as all other practice
 abstract class LearningGame {

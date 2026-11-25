@@ -1,0 +1,63 @@
+charter: v2
+id: P5-027
+kind: build
+title: Replace global 3-tone model with per-language tone models
+phase: P5
+epic: E-P5-A1
+req_ids:
+- EP-§6.2-16
+depends_on:
+- P5-026
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/learning/pronunciation/tone_models.dart
+- assets/data/tone/models.json
+- test/learning/tone_models_test.dart
+context_anchors:
+- ELEVATION.md#§6.2:L1179-L1183
+acceptance_criteria:
+- id: AC1
+  text: Given a language, when the tone trainer loads, then it uses that language model (yo, ig, ha) and non-tonal or different
+    systems never receive a 3-tone model
+- id: AC2
+  text: Given an unconfigured tonal language, when requested, then it returns ToneModelMissing and the trainer is hidden,
+    not defaulted
+test_plan:
+  unit:
+  - model selection
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

@@ -39,11 +39,11 @@ class VocabularyCard extends StatelessWidget {
         color: colors.surface,
         borderRadius: BorderRadius.circular(14.r),
         border: Border.all(
-          color: colors.outline.withOpacity(0.15),
+          color: colors.outline.withValues(alpha: 0.15),
         ),
         boxShadow: [
           BoxShadow(
-            color: colors.shadow.withOpacity(0.04),
+            color: colors.shadow.withValues(alpha: 0.04),
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),
@@ -87,7 +87,7 @@ class VocabularyCard extends StatelessWidget {
                       fontSize: 13.sp,
                       fontWeight: FontWeight.w400,
                       fontStyle: FontStyle.italic,
-                      color: colors.onSurface.withOpacity(0.5),
+                      color: colors.onSurface.withValues(alpha: 0.5),
                     ),
                   ),
                 ),
@@ -122,7 +122,7 @@ class VocabularyCard extends StatelessWidget {
         fontSize: 14.sp,
         fontWeight: FontWeight.w400,
         height: 1.5,
-        color: colors.onSurface.withOpacity(0.75),
+        color: colors.onSurface.withValues(alpha: 0.75),
       ),
     );
   }
@@ -164,7 +164,7 @@ class VocabularyCard extends StatelessWidget {
                 size: 24.sp,
                 color: isBookmarked
                     ? colors.primary
-                    : colors.onSurface.withOpacity(0.4),
+                    : colors.onSurface.withValues(alpha: 0.4),
               ),
             ),
           ),
@@ -196,7 +196,7 @@ class _ActionChip extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
         decoration: BoxDecoration(
-          color: colors.primary.withOpacity(0.08),
+          color: colors.primary.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(8.r),
         ),
         child: Row(

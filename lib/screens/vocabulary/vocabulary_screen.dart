@@ -159,7 +159,7 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
         backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
         leading: IconButton(
-          icon: Icon(PanAfricanIcons.back),
+          icon: const Icon(PanAfricanIcons.back),
           onPressed: () {
             HapticFeedback.lightImpact();
             Navigator.of(context).pop();
@@ -219,11 +219,11 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 4),
+                          const SizedBox(height: 4),
                           Text(
                             'Review now to strengthen your memory',
                             style: PanAfricanTypography.bodySmall(context).copyWith(
-                              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                              color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9),
                             ),
                           ),
                         ],
@@ -405,12 +405,12 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
         return PanAfricanColors.neutralMedium;
       case 1:
       case 2:
-        return PanAfricanColors.tertiary;
+        return context.panTertiary;
       case 3:
         return PanAfricanColors.kenteBlue;
       case 4:
       case 5:
-        return PanAfricanColors.success;
+        return context.panSuccess;
       default:
         return PanAfricanColors.neutralMedium;
     }

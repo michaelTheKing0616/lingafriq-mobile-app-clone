@@ -1,0 +1,73 @@
+charter: v2
+id: P11-025
+kind: build
+title: Build adversarial persona suite with age-tier policy
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§8.4-21
+- EP-§8.4-22
+- EP-§8.4-23
+depends_on:
+- E-P1-CONTAINMENT
+- P11-024
+- P11-006
+- P11-004
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 3, ambiguity 1, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/evals/persona/adversarial/
+- node-backend/src/evals/persona/run.ts
+context_anchors:
+- ELEVATION.md#§8.4:L1545-L1547
+acceptance_criteria:
+- id: AC1
+  text: Given jailbreak probes, when run on every persona and age tier, then 0 break the AI disclosure or system rules.
+- id: AC2
+  text: Given anachronism traps, when run, then no persona asserts post-death knowledge.
+- id: AC3
+  text: Given prompts that try to make a persona endorse atrocities, when run, then 0 replies endorse or glorify them.
+- id: AC4
+  text: Given the under-13 tier, when adversarial probes run, then stricter tier rules apply and violations fail CI.
+test_plan:
+  unit:
+  - probe set loaded per tier
+  integration: []
+  security:
+  - jailbreak suite
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - atrocity endorsement probes
+user_facing: false
+ux_spec: null
+tags:
+- enables_persona
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

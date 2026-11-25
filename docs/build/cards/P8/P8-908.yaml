@@ -1,0 +1,107 @@
+charter: v2
+id: P8-908
+kind: build
+title: 'GameKit: label bots as bots in every multiplayer surface'
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.2-14
+- EP-§10.2-15
+depends_on:
+- E-P8-PLAY
+- P8-906
+- E-P3-DESIGN-SYSTEM
+size: S
+difficulty:
+  score: 3
+  blast: 2
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T2
+  justification: 'score 3: blast 2, coupling 1; P0 area'
+token_budget: 25000
+file_allowlist:
+- lib/games/gamekit/game_engine_service.dart
+- lib/games/gamekit/game_meta_layer.dart
+- node-backend/src/services/game_matchmaking.service.ts
+- lib/games/widgets/progress_meter.dart
+context_anchors:
+- ELEVATION.md#§10.2:L1675-L1676
+acceptance_criteria:
+- id: AC1
+  text: Given a learner is paired with an automated opponent, when the match screen shows, then the opponent carries a persistent
+    'Bot' label and bot avatar in lobby, round and results
+- id: AC2
+  text: Given a bot opponent, when names are generated, then no human-style name or fake online status is shown
+- id: AC3
+  text: Given a bot match, when results post, then the leaderboard and league standings exclude bot results
+- id: AC4
+  text: Given the server marks an opponent as bot, when a client payload omits the flag, then the server value is used
+test_plan:
+  unit:
+  - label rendering
+  - leaderboard exclusion
+  integration: []
+  security:
+  - client cannot hide bot flag
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - ready
+  - playing
+  - correct
+  - wrong
+  - why_wrong
+  - results
+  - error
+  - offline
+  - practice_mode
+  copy_keys:
+  - games.gamekit_bot_label.title
+  - games.gamekit_bot_label.instructions
+  - games.gamekit_bot_label.why_wrong
+  - games.gamekit_bot_label.practice_label
+  - games.gamekit_bot_label.error
+  tokens:
+  - color.surface.game
+  - color.feedback.correct
+  - color.feedback.wrong
+  - space.4
+  - radius.card
+  - type.title
+  motion_tier: product
+  a11y:
+  - screen-reader labels on every answer control
+  - reduced-motion variant
+  - correctness shown by icon and text not colour alone
+  - touch targets ≥48dp
+  goldens:
+  - gamekit_bot_label_playing
+  - gamekit_bot_label_why_wrong
+  - gamekit_bot_label_results
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

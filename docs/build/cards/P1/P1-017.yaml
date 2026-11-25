@@ -1,0 +1,75 @@
+charter: v2
+id: P1-017
+kind: build
+title: Make currency grants server-only via event rules
+phase: P1
+epic: E-P1-ECONOMY
+req_ids:
+- P0-7
+- RM-P0-04
+depends_on:
+- E-P0-INTAKE
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 6; blast 3
+token_budget: 70000
+file_allowlist:
+- node-backend/src/routes/gamification/currency.route.ts
+- node-backend/src/services/rewardRules.service.ts
+- node-backend/src/controllers/currency.controller.ts
+context_anchors:
+- ELEVATION.md#§1:L162-L170
+- ELEVATION.md#§16.1:L2030-L2032
+acceptance_criteria:
+- id: AC1
+  text: Given an ordinary user calling the grant endpoint with any amount, when processed, then it returns 403 and the balance
+    is unchanged
+- id: AC2
+  text: Given a verified lesson-completed event, when the server processes it, then the grant equals the rule table value
+    and not any client amount
+- id: AC3
+  text: Given an admin or service token, when it grants currency, then the grant is audit-logged with actor and reason
+- id: AC4
+  text: Given amount fields in client requests, when validated, then unknown amount params are rejected by schema
+test_plan:
+  unit:
+  - rule table
+  integration:
+  - 403 test for user token
+  security:
+  - client-amount tamper test
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Client call sites for self-grants must be removed in the same release
+- "Production grants recognize is_admin. The service role exists only in the spec harness."
+- "Non-lesson admin awards still use the request amount and are audit-logged."
+gate: G1
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

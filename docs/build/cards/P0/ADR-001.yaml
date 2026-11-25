@@ -1,0 +1,92 @@
+charter: v2
+id: ADR-001
+kind: adr
+title: 'ADR: Three-label interim content policy (D1)'
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- D1
+- CP-§0-06
+- CP-§0-27
+- CP-§0-28
+- CP-§0-29
+- CP-§0-30
+- CP-§0-04
+- CP-§0-05
+- CP-§0-23
+- CP-§0-24
+- CP-§0-25
+- CP-§0-26
+- CP-§pre-01
+- CP-§pre-02
+- CP-§pre-03
+- CP-§pre-04
+- CP-§pre-05
+- CP-§pre-09
+- CP-§pre-10
+- RM-STOP-04
+depends_on:
+- E-P0-INTAKE
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T4
+  tester: T0
+  reviewer: T4
+  justification: ADR authored by the Orchestrator tier; conflict resolution already signed
+token_budget: 25000
+file_allowlist:
+- docs/build/adr/ADR-001.md
+- docs/build/DECISIONS.md
+- docs/build/CONFLICTS.md
+context_anchors:
+- CURRICULUM.md#§10:L852-L863
+- docs/build/CONFLICTS.md#C1
+- CURRICULUM.md#§0:L26-L34
+- CURRICULUM.md#§pre:L6-L12
+acceptance_criteria:
+- id: AC1
+  text: Given the ADR template, when ADR-001 is written, then it records labels Beta, Expert-reviewed and Native-verified,
+    status Accepted (Tope) dated per D1, and closes CONFLICTS C1
+- id: AC2
+  text: Given the policy, when read, then Beta content is excluded from checkpoints, placement, credentials and children's
+    mode, and grammar and culture items are never Beta
+- id: AC3
+  text: Given synthetic audio, when the ADR is read, then every TTS item carries the visible tag "Synthetic voice" and every
+    learner-facing item exposes a "Report a mistake" action feeding the pipeline
+- id: AC4
+  text: Given the Elevation §6.6 two-native-reviewer rule, when the ADR is read, then it is recorded as the Native-verified
+    promotion criterion, not removed
+- id: AC5
+  text: Given the timeline claims, when recorded, then Beta A1 for all seven languages in about 12 weeks, A2 in about 24 weeks,
+    B1 Expert-reviewed by about month 9 and USD 4k to 15k content cost are labelled planning estimates to be replaced by pilot
+    measurements
+- id: AC6
+  text: Given the stop-rule on unreviewed AI content, when the ADR is read, then it states that no AI-generated language content
+    ships without a label and the pipeline route (rebuild of current placeholder data goes through the same pipeline)
+- id: AC7
+  text: 'Given the ADR, when the verification section is read, then it names the conformance checks later cards must pass:
+    label enum in the content schema, Beta-exclusion test, Synthetic-voice tag test'
+user_facing: false
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- docs/build/adr/ADR-001.md
+- DECISIONS.md line
+- CONFLICTS.md row closed
+risks: []
+gate: G0
+external_blockers: []
+status: Ready
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - prime/diagram-design

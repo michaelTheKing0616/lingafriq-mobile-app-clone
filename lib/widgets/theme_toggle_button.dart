@@ -28,7 +28,7 @@ class ThemeToggleButton extends ConsumerWidget {
         mini: true,
         onPressed: () => _toggleTheme(context, ref),
         backgroundColor:
-            isDark ? PanAfricanColors.primary : PanAfricanColors.secondary,
+            isDark ? PanAfricanColors.primary : context.panSecondary,
         child: Icon(
           isDark ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
           color: Theme.of(context).colorScheme.onPrimary,
@@ -50,13 +50,13 @@ class ThemeToggleButton extends ConsumerWidget {
             ),
         decoration: BoxDecoration(
           color: isDark
-              ? PanAfricanColors.primary.withOpacity(0.1)
-              : PanAfricanColors.secondary.withOpacity(0.1),
+              ? PanAfricanColors.primary.withValues(alpha: 0.1)
+              : context.panSecondary.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(PanAfricanRadius.round),
           border: Border.all(
             color: isDark
-                ? PanAfricanColors.primary.withOpacity(0.3)
-                : PanAfricanColors.secondary.withOpacity(0.3),
+                ? PanAfricanColors.primary.withValues(alpha: 0.3)
+                : context.panSecondary.withValues(alpha: 0.3),
             width: 1,
           ),
         ),
@@ -67,7 +67,7 @@ class ThemeToggleButton extends ConsumerWidget {
               isDark ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
               size: 20.sp,
               color:
-                  isDark ? PanAfricanColors.primary : PanAfricanColors.secondary,
+                  isDark ? PanAfricanColors.primary : context.panSecondary,
             ),
             if (showLabel) ...[
               SizedBox(width: PanAfricanSpacing.xs),
@@ -77,7 +77,7 @@ class ThemeToggleButton extends ConsumerWidget {
                   fontWeight: FontWeight.w600,
                   color: isDark
                       ? PanAfricanColors.primary
-                      : PanAfricanColors.secondary,
+                      : context.panSecondary,
                 ),
               ),
             ],

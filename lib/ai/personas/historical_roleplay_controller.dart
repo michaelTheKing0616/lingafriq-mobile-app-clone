@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
+import 'package:lingafriq/ai/persona_cognition/groq_two_pass_orchestrator.dart';
 import 'package:lingafriq/ai/personas/historical_persona_registry.dart';
-import 'package:lingafriq/ai/validation/response_validator.dart';
+import 'package:lingafriq/ai/personas/persona_disclosure_badge.dart';
 import 'package:lingafriq/learning/learner_model/learner_model_service.dart';
 import 'package:lingafriq/learning/learner_model/learner_skill_state.dart';
 
@@ -51,6 +53,8 @@ class HistoricalRoleplayTurn {
   final String nextState;
   final List<String> closureOptions;
   final List<String> detectedErrors;
+  /// Persona lines are delivered via server TTS unless native clips are wired.
+  final bool usesSynthesisedVoice;
 
   const HistoricalRoleplayTurn({
     required this.speechText,
@@ -60,6 +64,18 @@ class HistoricalRoleplayTurn {
     required this.nextState,
     this.closureOptions = const [],
     this.detectedErrors = const [],
+    this.usesSynthesisedVoice = true,
+  });
+}
+
+/// Opening bundle: how-built preamble must precede the first in-character line (P11-007).
+class PersonaSessionStart {
+  final PersonaHowBuiltFacts howBuilt;
+  final HistoricalRoleplayTurn openingTurn;
+
+  const PersonaSessionStart({
+    required this.howBuilt,
+    required this.openingTurn,
   });
 }
 
@@ -113,11 +129,95 @@ class HistoricalRoleplayReport {
 /// Injects persona behavior, documented positions, and (for opinion_debate)
 /// opinion inference matrix into prompts. Enforces JSON response schema
 /// and updates learner model after each turn.
-class HistoricalRoleplayController {
+/// Single gateway endpoint for historical persona turns (P11-008).
+class PersonaHistoricalRoleplayGateway {
+  PersonaHistoricalRoleplayGateway(this._dio);
+
   final Dio _dio;
-  final String _apiKey;
-  final String _apiUrl;
-  final String _model;
+
+  static const turnPath = '/api/ai/persona/historical-roleplay/turn';
+
+  Future<Map<String, dynamic>> runTurn({
+    required String personaId,
+    required String languageCode,
+    required HistoricalEngagementType engagementType,
+    required bool isOpening,
+    required HistoricalPersona persona,
+    required double learnerMastery,
+    String? userMessage,
+    String? dominantErrorType,
+    List<String> turnHistory = const [],
+    List<String> contextMemory = const [],
+  }) async {
+    try {
+      final response = await _dio.post<Map<String, dynamic>>(
+        turnPath,
+        data: {
+          'persona_id': personaId,
+          'language_code': languageCode,
+          'engagement_type': engagementType.name,
+          'is_opening': isOpening,
+          if (userMessage != null) 'user_message': userMessage,
+          'learner_mastery': learnerMastery,
+          if (dominantErrorType != null) 'dominant_error_type': dominantErrorType,
+          'turn_history': turnHistory,
+          'context_memory': contextMemory,
+          'persona': _personaPayload(persona),
+        },
+        options: Options(contentType: Headers.jsonContentType),
+      );
+      if (response.statusCode != 200) {
+        throw PersonaTurnGatewayError.fromResponse(
+          response.statusCode,
+          response.data,
+        );
+      }
+      final data = response.data;
+      if (data == null || data['ok'] != true) {
+        throw PersonaTurnGatewayError.fromResponse(response.statusCode, data);
+      }
+      return data;
+    } on DioException catch (e) {
+      throw PersonaTurnGatewayError.fromDio(e);
+    }
+  }
+
+  static Map<String, dynamic> _personaPayload(HistoricalPersona persona) {
+    return {
+      'display_name': persona.displayName,
+      'start_year': persona.startYear,
+      'end_year': persona.endYear,
+      'short_bio': persona.shortBio,
+      'primary_language': persona.primaryLanguages.isNotEmpty
+          ? persona.primaryLanguages.first
+          : 'English',
+      'voice_style': persona.voiceStyle,
+      'pace': persona.pace,
+      'tone': persona.tone,
+      'openness': persona.openness,
+      'formality': persona.formality,
+      'humor_level': persona.humorLevel,
+      'emotion_range': persona.emotionRange,
+      'core_events': persona.coreEvents
+          .take(10)
+          .map((e) => {'year': e.year, 'event': e.event})
+          .toList(),
+      'documented_positions': persona.documentedPositions,
+      'common_vocabulary': persona.commonVocabulary.take(12).toList(),
+      'grammar_patterns': persona.grammarPatterns.take(8).toList(),
+      'cultural_pragmatics': persona.culturalPragmatics.take(8).toList(),
+      'opinion_inference_matrix': persona.opinionInferenceMatrix.map(
+        (k, v) => MapEntry(k, {
+          'inference_basis': v.inferenceBasis,
+          'confidence': v.confidence,
+        }),
+      ),
+    };
+  }
+}
+
+class HistoricalRoleplayController {
+  final PersonaHistoricalRoleplayGateway _turnGateway;
   final LearnerModelService _learnerModel;
 
   final Map<String, HistoricalRoleplaySession> _sessions = {};
@@ -127,18 +227,12 @@ class HistoricalRoleplayController {
 
   HistoricalRoleplayController({
     required Dio dio,
-    required String apiKey,
-    required String apiUrl,
-    String model = 'llama-3.3-70b-versatile',
     LearnerModelService? learnerModel,
-  })  : _dio = dio,
-        _apiKey = apiKey,
-        _apiUrl = apiUrl,
-        _model = model,
+  })  : _turnGateway = PersonaHistoricalRoleplayGateway(dio),
         _learnerModel = learnerModel ?? LearnerModelService.instance;
 
-  /// Starts a new historical roleplay session. Returns the opening turn.
-  Future<HistoricalRoleplayTurn> startPersonaSession({
+  /// Starts a new historical roleplay session. Returns how-built facts plus opening turn.
+  Future<PersonaSessionStart> startPersonaSession({
     required String learnerId,
     required String languageCode,
     required String personaId,
@@ -178,7 +272,10 @@ class HistoricalRoleplayController {
       userMessage: null,
     );
     session.turns.add(turn);
-    return turn;
+    return PersonaSessionStart(
+      howBuilt: PersonaHowBuiltFacts.fromPersona(persona),
+      openingTurn: turn,
+    );
   }
 
   /// Processes the learner's message and returns the next persona turn.
@@ -199,8 +296,6 @@ class HistoricalRoleplayController {
       throw StateError('Persona not found: ${session.personaId}');
     }
 
-    _addToContextMemory(session, response);
-
     final language = persona.primaryLanguages.isNotEmpty
         ? persona.primaryLanguages.first
         : session.languageCode;
@@ -215,6 +310,7 @@ class HistoricalRoleplayController {
       isOpening: false,
       userMessage: response,
     );
+    _addToContextMemory(session, response);
     session.turns.add(turn);
     session.currentNodeId = turn.nextState;
 
@@ -267,68 +363,85 @@ class HistoricalRoleplayController {
     required bool isOpening,
     String? userMessage,
   }) async {
-    final messages =
-        _buildMessages(session, persona, state, isOpening, userMessage);
-
-    try {
-      final response = await _dio.post(
-        _apiUrl,
-        options: Options(headers: {
-          'Authorization': 'Bearer $_apiKey',
-          'Content-Type': 'application/json',
-        }),
-        data: {
-          'model': _model,
-          'messages': messages,
-          'temperature': 0.35,
-          'max_tokens': 500,
-          'response_format': {'type': 'json_object'},
-        },
-      );
-
-      final content =
-          response.data['choices'][0]['message']['content'] as String;
-      final parsed = ResponseValidator.validateHistoricalRoleplayResponse(content);
-
-      final teachingPoints = (parsed['teaching_points'] as List<dynamic>?)
-              ?.map((e) => TeachingPoint.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [];
-      final citations =
-          (parsed['historical_citations'] as List<dynamic>?)
-              ?.map((e) =>
-                  HistoricalCitation.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [];
-      final closureOptions =
-          (parsed['closure_options'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList() ??
-          [];
-
-      final nextState = parsed['next_state'] as String? ??
-          parsed['conversation_state'] as String? ??
-          'turn_${session.turns.length + 1}';
-
-      return HistoricalRoleplayTurn(
-        speechText: parsed['speech_text'] as String,
-        teachingPoints: teachingPoints,
-        emotionTone: parsed['emotion_tone'] as String? ?? 'calm',
-        historicalCitations: citations,
-        nextState: nextState,
-        closureOptions: closureOptions,
-        detectedErrors: _parseDetectedErrors(parsed),
-      );
-    } catch (e) {
-      final fallback = isOpening
-          ? '${persona.displayName} greets you. (Response unavailable; please try again.)'
-          : 'I hear you. Let us continue.';
-      return HistoricalRoleplayTurn(
-        speechText: fallback,
-        nextState: session.currentNodeId,
-        detectedErrors: [],
-      );
+    final language = persona.primaryLanguages.isNotEmpty
+        ? persona.primaryLanguages.first
+        : session.languageCode;
+    final historyLines = <String>[];
+    for (final t in session.turns) {
+      historyLines.add('Persona: ${t.speechText}');
     }
+
+    final data = await _turnGateway.runTurn(
+      personaId: session.personaId,
+      languageCode: language,
+      engagementType: session.engagementType,
+      isOpening: isOpening,
+      persona: persona,
+      learnerMastery: state.mastery,
+      userMessage: userMessage,
+      dominantErrorType: state.dominantErrorType,
+      turnHistory: historyLines,
+      contextMemory: session.contextMemory,
+    );
+
+    final parsed = Map<String, dynamic>.from(data);
+
+    final teachingRaw = parsed['language_teaching_points'] as List<dynamic>? ??
+        parsed['teaching_points'] as List<dynamic>?;
+    final teachingPoints = teachingRaw
+            ?.map((e) => TeachingPoint.fromJson(e as Map<String, dynamic>))
+            .toList() ??
+        [];
+    final citations = (parsed['historical_citations'] as List<dynamic>?)
+            ?.map((e) => HistoricalCitation.fromJson(e as Map<String, dynamic>))
+            .toList() ??
+        [];
+    final closureOptions = (parsed['closure_options'] as List<dynamic>?)
+            ?.map((e) => e as String)
+            .toList() ??
+        [];
+
+    final nextState = parsed['next_beat'] as String? ??
+        parsed['next_state'] as String? ??
+        parsed['conversation_state'] as String? ??
+        'turn_${session.turns.length + 1}';
+
+    final emotion = parsed['emotion'] as String? ??
+        parsed['emotion_tone'] as String? ??
+        'neutral';
+
+    return HistoricalRoleplayTurn(
+      speechText: parsed['speech_text'] as String,
+      teachingPoints: teachingPoints,
+      emotionTone: emotion,
+      historicalCitations: citations,
+      nextState: nextState,
+      closureOptions: closureOptions,
+      detectedErrors: _parseDetectedErrors(parsed),
+      usesSynthesisedVoice: true,
+    );
+  }
+
+  /// Exposes the roleplay system prompt for compliance scans (P11-007 AC4).
+  @visibleForTesting
+  String buildRoleplaySystemPromptForTest({
+    required HistoricalPersona persona,
+    required String languageCode,
+    required HistoricalEngagementType engagementType,
+  }) {
+    final session = HistoricalRoleplaySession(
+      sessionId: 'scan',
+      learnerId: 'scan',
+      languageCode: languageCode,
+      personaId: persona.id,
+      engagementType: engagementType,
+    );
+    final state = LearnerSkillState.initial(
+      skillId: 'historical_roleplay_scan',
+      learnerId: 'scan',
+    );
+    final messages = _buildMessages(session, persona, state, true, null);
+    return messages.firstWhere((m) => m['role'] == 'system')['content']!;
   }
 
   List<String> _parseDetectedErrors(Map<String, dynamic> parsed) {
@@ -372,17 +485,17 @@ LANGUAGE TEACHING: Use vocabulary: ${persona.commonVocabulary.take(8).join(", ")
 Engagement mode: ${session.engagementType.name}.
 
 RULES:
-- Stay in character. Do not reference being an AI.
+- You are an AI recreation grounded in dossier sources. Stay in character for teaching dialogue; never claim to be the living historical person.
+- If the learner asks whether you are real, human, or AI, answer honestly that you are an AI recreation based on sources, then continue in character.
 - When discussing topics not in your documented positions, indicate uncertainty where appropriate.
 - TEACHING POINTS ARE MANDATORY: every response must include at least one teaching_points entry (vocabulary, grammar, or pragmatics).
-- Respond with JSON only. Schema:
+- Respond with JSON only. Schema (P11-003):
 {
   "speech_text": "your in-character response",
-  "teaching_points": [{"type": "vocabulary|grammar|pragmatics", "content": "brief teaching note"}],
-  "emotion_tone": "string",
-  "historical_citations": [{"source": "string", "relevance": "string"}],
-  "next_state": "string",
-  "closure_options": ["string"]
+  "language_teaching_points": [{"type": "vocabulary|grammar|pragmatics", "content": "brief teaching note"}],
+  "claims": [{"text": "factual claim", "support": "documented|inferred|legend", "source_ids": []}],
+  "emotion": "neutral|happy|proud|curious|concerned|surprised|thinking|encouraging|playful|focused",
+  "next_beat": "string"
 }''';
 
     if (session.engagementType == HistoricalEngagementType.opinionDebate &&

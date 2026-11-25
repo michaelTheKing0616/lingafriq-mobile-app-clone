@@ -15,7 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'package:lingafriq/models/game/game_content_models.dart';
 import 'package:lingafriq/models/game/game_session_model.dart';
 import 'package:lingafriq/screens/games/base_game_screen.dart';
 import 'package:lingafriq/screens/games/game_scenario_loader.dart';
@@ -123,7 +122,7 @@ class _CulturalSnakesLaddersGameState
       if (ok) {
         setState(() {
           _player = _ladders[target]!;
-          _status = 'Wisdom ladder! Climbed to ${_player}.';
+          _status = 'Wisdom ladder! Climbed to $_player.';
           _correctChecks++;
         });
         await completeTurn(
@@ -270,7 +269,7 @@ class _CulturalSnakesLaddersGameState
       enableDrag: false,
       backgroundColor: Theme.of(context).colorScheme.surface,
       builder: (ctx) => Padding(
-        padding: EdgeInsets.fromLTRB(20, 18, 20, 28).copyWith(
+        padding: const EdgeInsets.fromLTRB(20, 18, 20, 28).copyWith(
           bottom: 28 + MediaQuery.of(ctx).viewInsets.bottom,
         ),
         child: Column(
@@ -383,7 +382,7 @@ class _BoardGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: PanAfricanColors.kenteGold.withOpacity(0.08),
+        color: PanAfricanColors.kenteGold.withValues(alpha: 0.08),
         border: Border.all(color: PanAfricanColors.kenteGold, width: 1.0),
         borderRadius: BorderRadius.circular(16),
       ),
@@ -409,9 +408,9 @@ class _BoardGrid extends StatelessWidget {
           final isAi = aiSquare == boardSquare;
           final isLadder = ladders.containsKey(boardSquare);
           final isSnake = snakes.containsKey(boardSquare);
-          Color bg = Colors.white.withOpacity(0.85);
-          if (isLadder) bg = Colors.green.withOpacity(0.18);
-          if (isSnake) bg = PanAfricanColors.kenteRed.withOpacity(0.18);
+          Color bg = Colors.white.withValues(alpha: 0.85);
+          if (isLadder) bg = Colors.green.withValues(alpha: 0.18);
+          if (isSnake) bg = PanAfricanColors.kenteRed.withValues(alpha: 0.18);
           return Container(
             decoration: BoxDecoration(
               color: bg,
@@ -421,7 +420,7 @@ class _BoardGrid extends StatelessWidget {
                     ? Colors.green
                     : isSnake
                         ? PanAfricanColors.kenteRed
-                        : PanAfricanColors.kenteGold.withOpacity(0.6),
+                        : PanAfricanColors.kenteGold.withValues(alpha: 0.6),
                 width: isLadder || isSnake ? 1.4 : 0.6,
               ),
             ),
@@ -452,7 +451,7 @@ class _BoardGrid extends StatelessWidget {
                         child: Container(
                           width: 8,
                           height: 8,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: PanAfricanColors.kenteRed,
                             shape: BoxShape.circle,
                           ),

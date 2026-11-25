@@ -1,0 +1,39 @@
+name: Rollback drill
+
+# P12-017: rehearse store + pack rollback after forced gate failure at 10%.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 1 */3 *"
+
+permissions:
+  contents: read
+
+jobs:
+  drill:
+    name: Rollback drill
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Install PyYAML
+        run: python3 -m pip install --quiet pyyaml
+
+      - name: Tests
+        run: python3 test/release/rollback_drill_test.py
+
+      - name: Run drill
+        run: |
+          python3 scripts/release/rollback_drill.py run \
+            --report release/fixtures/rollback_drill_report.json \
+            --ledger release/rollback_drill_ledger.json
+
+      - name: Upload drill report
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: rollback-drill-report
+          path: |
+            release/fixtures/rollback_drill_report.json
+            release/rollback_drill_ledger.json
+          retention-days: 365

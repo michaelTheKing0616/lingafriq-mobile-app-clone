@@ -1,0 +1,90 @@
+charter: v2
+id: P11-018
+kind: build
+title: Build bilingual quest dialogue and comprehension checkpoint
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§8.2-11
+- EP-§8.2-12
+- EP-§8.2-13
+- EP-§8.2-14
+- EP-§8.2-15
+depends_on:
+- E-P1-CONTAINMENT
+- P11-016
+- P11-003
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1, depth 0'
+token_budget: 70000
+file_allowlist:
+- lib/ai/personas/quests/yaa_asantewaa/chapter3.dart
+- lib/ai/personas/quests/yaa_asantewaa/sentence_builder.dart
+context_anchors:
+- ELEVATION.md#§8.2:L1508-L1512
+acceptance_criteria:
+- id: AC1
+  text: Given the governor's demand, when played, then it is read in English; Yaa Asantewaa replies in Twi with subtitles
+    toggled by the learner's level.
+- id: AC2
+  text: Given the comprehension checkpoint, when taken, then the learner must understand three key sentences; failing any
+    shows the sentence with a replay option.
+- id: AC3
+  text: Given the debate step, when entered, then scaffolded sentence builders let the learner argue a position in simplified
+    Twi.
+test_plan:
+  unit:
+  - subtitle level toggle
+  - 3-sentence checkpoint
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - native Twi review
+user_facing: true
+ux_spec:
+  states:
+  - subtitles_on
+  - subtitles_off
+  - checkpoint_failed
+  - builder
+  copy_keys:
+  - quest.subtitles.toggle
+  - quest.checkpoint.replay
+  tokens:
+  - subtitle.text
+  motion_tier: product
+  a11y:
+  - subtitle toggle labelled
+  goldens:
+  - dialogue_subtitles
+tags:
+- enables_persona
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

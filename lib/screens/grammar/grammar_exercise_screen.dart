@@ -215,7 +215,7 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
   Future<void> _checkAnswer() async {
     if (_selectedAnswers[_currentIndex] == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Please select an answer'),
           backgroundColor: PolieColors.error,
         ),
@@ -295,7 +295,7 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
     if (_isLoading) {
       return Scaffold(
         body: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -306,7 +306,7 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
               ],
             ),
           ),
-          child: Center(
+          child: const Center(
             child: CircularProgressIndicator(color: PolieColors.goldEmber),
           ),
         ),
@@ -319,7 +319,7 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -369,7 +369,7 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
             label: 'Go back',
             button: true,
             child: IconButton(
-              icon: Icon(Icons.arrow_back, color: PolieColors.textPrimary, semanticLabel: 'Back'),
+              icon: const Icon(Icons.arrow_back, color: PolieColors.textPrimary, semanticLabel: 'Back'),
               onPressed: () {
                 HapticFeedback.lightImpact();
                 Navigator.of(context).pop();
@@ -431,8 +431,8 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
             value: '${_currentIndex + 1} of ${_exercises.length}',
             child: LinearProgressIndicator(
               value: (_currentIndex + 1) / _exercises.length,
-              backgroundColor: PolieColors.textSecondary.withOpacity(0.2),
-              valueColor: AlwaysStoppedAnimation<Color>(PolieColors.goldEmber),
+              backgroundColor: PolieColors.textSecondary.withValues(alpha: 0.2),
+              valueColor: const AlwaysStoppedAnimation<Color>(PolieColors.goldEmber),
               minHeight: 6.h,
               borderRadius: BorderRadius.circular(PolieRadius.sm),
             ),
@@ -509,14 +509,14 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
             Color? borderColor;
             if (isAnswered) {
               if (showCorrect) {
-                backgroundColor = PolieColors.success.withOpacity(0.2);
+                backgroundColor = PolieColors.success.withValues(alpha: 0.2);
                 borderColor = PolieColors.success;
               } else if (showIncorrect) {
-                backgroundColor = PolieColors.error.withOpacity(0.2);
+                backgroundColor = PolieColors.error.withValues(alpha: 0.2);
                 borderColor = PolieColors.error;
               }
             } else if (isSelected) {
-              backgroundColor = PolieColors.royalAmethyst.withOpacity(0.2);
+              backgroundColor = PolieColors.royalAmethyst.withValues(alpha: 0.2);
               borderColor = PolieColors.royalAmethyst;
             }
 
@@ -549,9 +549,9 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
                         ),
                       ),
                       if (showCorrect)
-                        Icon(Icons.check_circle, color: PolieColors.success),
+                        const Icon(Icons.check_circle, color: PolieColors.success),
                       if (showIncorrect)
-                        Icon(Icons.cancel, color: PolieColors.error),
+                        const Icon(Icons.cancel, color: PolieColors.error),
                     ],
                   ),
                 ),
@@ -686,8 +686,8 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
                         },
                         child: Chip(
                           label: Text(word),
-                          backgroundColor: PolieColors.royalAmethyst.withOpacity(0.3),
-                          deleteIcon: isAnswered ? null : Icon(Icons.close, size: 16),
+                          backgroundColor: PolieColors.royalAmethyst.withValues(alpha: 0.3),
+                          deleteIcon: isAnswered ? null : const Icon(Icons.close, size: 16),
                           onDeleted: isAnswered ? null : () {
                             setState(() {
                               selectedWords.value.remove(word);
@@ -859,14 +859,14 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
             Color? borderColor;
             if (isAnswered) {
               if (showCorrect) {
-                backgroundColor = PolieColors.success.withOpacity(0.2);
+                backgroundColor = PolieColors.success.withValues(alpha: 0.2);
                 borderColor = PolieColors.success;
               } else if (showIncorrect) {
-                backgroundColor = PolieColors.error.withOpacity(0.2);
+                backgroundColor = PolieColors.error.withValues(alpha: 0.2);
                 borderColor = PolieColors.error;
               }
             } else if (isSelected) {
-              backgroundColor = PolieColors.royalAmethyst.withOpacity(0.2);
+              backgroundColor = PolieColors.royalAmethyst.withValues(alpha: 0.2);
               borderColor = PolieColors.royalAmethyst;
             }
 
@@ -903,9 +903,9 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
                           ),
                         ),
                         if (showCorrect)
-                          Icon(Icons.check_circle, color: PolieColors.success, semanticLabel: 'Correct'),
+                          const Icon(Icons.check_circle, color: PolieColors.success, semanticLabel: 'Correct'),
                         if (showIncorrect)
-                          Icon(Icons.cancel, color: PolieColors.error, semanticLabel: 'Incorrect'),
+                          const Icon(Icons.cancel, color: PolieColors.error, semanticLabel: 'Incorrect'),
                       ],
                     ),
                   ),
@@ -1017,14 +1017,14 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
                     Color? borderColor;
                     if (isAnswered) {
                       if (showCorrect) {
-                        backgroundColor = PolieColors.success.withOpacity(0.2);
+                        backgroundColor = PolieColors.success.withValues(alpha: 0.2);
                         borderColor = PolieColors.success;
                       } else if (showIncorrect) {
-                        backgroundColor = PolieColors.error.withOpacity(0.2);
+                        backgroundColor = PolieColors.error.withValues(alpha: 0.2);
                         borderColor = PolieColors.error;
                       }
                     } else if (isSelected) {
-                      backgroundColor = PolieColors.royalAmethyst.withOpacity(0.2);
+                      backgroundColor = PolieColors.royalAmethyst.withValues(alpha: 0.2);
                       borderColor = PolieColors.royalAmethyst;
                     }
 
@@ -1062,11 +1062,11 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
                               ),
                               if (showCorrect) ...[
                                 SizedBox(width: PolieSpacing.xs),
-                                Icon(Icons.check_circle, color: PolieColors.success, size: 16),
+                                const Icon(Icons.check_circle, color: PolieColors.success, size: 16),
                               ],
                               if (showIncorrect) ...[
                                 SizedBox(width: PolieSpacing.xs),
-                                Icon(Icons.cancel, color: PolieColors.error, size: 16),
+                                const Icon(Icons.cancel, color: PolieColors.error, size: 16),
                               ],
                             ],
                           ),
@@ -1141,7 +1141,7 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -1250,7 +1250,7 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
                           },
                           style: OutlinedButton.styleFrom(
                             padding: EdgeInsets.symmetric(vertical: PolieSpacing.md),
-                            side: BorderSide(color: PolieColors.goldEmber),
+                            side: const BorderSide(color: PolieColors.goldEmber),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(PolieRadius.md),
                             ),

@@ -1,0 +1,345 @@
+{
+  "card": "P7-942",
+  "built": "2026-10-27",
+  "pack": "culture_taboo",
+  "pack_citation": "ELEVATION.md#\u00a711.2:L1795-L1796; assets/data/culture/*.json; assets/data/units/register/*.json",
+  "publish_status": "draft",
+  "external_blockers": [
+    "EXT-14"
+  ],
+  "cultural_consultant_sign_offs": [],
+  "native_reviewer_sign_offs": [],
+  "sign_off_requirements": [
+    {
+      "language_code": "yo",
+      "tutorial_id": "yo-culture-taboo",
+      "roles": [
+        "cultural_consultant",
+        "native"
+      ]
+    },
+    {
+      "language_code": "ig",
+      "tutorial_id": "ig-culture-taboo",
+      "roles": [
+        "cultural_consultant",
+        "native"
+      ]
+    },
+    {
+      "language_code": "ha",
+      "tutorial_id": "ha-culture-taboo",
+      "roles": [
+        "cultural_consultant",
+        "native"
+      ]
+    },
+    {
+      "language_code": "pcm",
+      "tutorial_id": "pcm-culture-taboo",
+      "roles": [
+        "cultural_consultant",
+        "native"
+      ]
+    },
+    {
+      "language_code": "sw",
+      "tutorial_id": "sw-culture-taboo",
+      "roles": [
+        "cultural_consultant",
+        "native"
+      ]
+    },
+    {
+      "language_code": "zu",
+      "tutorial_id": "zu-culture-taboo",
+      "roles": [
+        "cultural_consultant",
+        "native"
+      ]
+    },
+    {
+      "language_code": "xh",
+      "tutorial_id": "xh-culture-taboo",
+      "roles": [
+        "cultural_consultant",
+        "native"
+      ]
+    }
+  ],
+  "tutorials": [
+    {
+      "id": "yo-culture-taboo",
+      "language_code": "yo",
+      "title": "Taboo and sensitive topics",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 20,
+          "body_en": "Culture tutorials include taboo and sensitive topics for each language (ELEVATION.md#\u00a711.2:L1796). Lists are authored only by the cultural consultant panel with citations \u2014 none are auto-generated.",
+          "source_ids": [
+            "ELEVATION.md#\u00a711.2:L1796"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 25,
+          "presentation": "taboo_topic_list",
+          "body_en": "Consultant-reviewed taboo topics appear here before learners see them. Culture cards flag sensitive areas with risk_tags such as ['culture_history_religion'].",
+          "source_ids": [
+            "assets/data/culture/yo.json#yo.culture.greetings"
+          ],
+          "taboo_topics": [],
+          "taboo_topics_gate": "EXT-14_cultural_consultant",
+          "risk_tags_reference": [
+            "culture_history_religion"
+          ]
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 20,
+          "body_en": "This check unlocks after the consultant publishes a cited taboo topic list.",
+          "source_ids": [
+            "ELEVATION.md#\u00a711.2:L1796"
+          ],
+          "drill_kind": "gate_locked",
+          "unlock_requires": "taboo_topics_non_empty_and_signed_off"
+        }
+      ]
+    },
+    {
+      "id": "ig-culture-taboo",
+      "language_code": "ig",
+      "title": "Taboo and sensitive topics",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 20,
+          "body_en": "Culture tutorials include taboo and sensitive topics for each language (ELEVATION.md#\u00a711.2:L1796). Lists are authored only by the cultural consultant panel with citations \u2014 none are auto-generated.",
+          "source_ids": [
+            "ELEVATION.md#\u00a711.2:L1796"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 25,
+          "presentation": "taboo_topic_list",
+          "body_en": "Consultant-reviewed taboo topics appear here before learners see them. Culture cards flag sensitive areas with risk_tags such as ['culture_history_religion'].",
+          "source_ids": [
+            "assets/data/culture/ig.json#ig.culture.greetings"
+          ],
+          "taboo_topics": [],
+          "taboo_topics_gate": "EXT-14_cultural_consultant",
+          "risk_tags_reference": [
+            "culture_history_religion"
+          ]
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 20,
+          "body_en": "This check unlocks after the consultant publishes a cited taboo topic list.",
+          "source_ids": [
+            "ELEVATION.md#\u00a711.2:L1796"
+          ],
+          "drill_kind": "gate_locked",
+          "unlock_requires": "taboo_topics_non_empty_and_signed_off"
+        }
+      ]
+    },
+    {
+      "id": "ha-culture-taboo",
+      "language_code": "ha",
+      "title": "Taboo and sensitive topics",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 20,
+          "body_en": "Culture tutorials include taboo and sensitive topics for each language (ELEVATION.md#\u00a711.2:L1796). Lists are authored only by the cultural consultant panel with citations \u2014 none are auto-generated.",
+          "source_ids": [
+            "ELEVATION.md#\u00a711.2:L1796"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 25,
+          "presentation": "taboo_topic_list",
+          "body_en": "Consultant-reviewed taboo topics appear here before learners see them. Culture cards flag sensitive areas with risk_tags such as ['culture_history_religion'].",
+          "source_ids": [
+            "assets/data/culture/ha.json#ha.culture.greetings"
+          ],
+          "taboo_topics": [],
+          "taboo_topics_gate": "EXT-14_cultural_consultant",
+          "risk_tags_reference": [
+            "culture_history_religion"
+          ]
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 20,
+          "body_en": "This check unlocks after the consultant publishes a cited taboo topic list.",
+          "source_ids": [
+            "ELEVATION.md#\u00a711.2:L1796"
+          ],
+          "drill_kind": "gate_locked",
+          "unlock_requires": "taboo_topics_non_empty_and_signed_off"
+        }
+      ]
+    },
+    {
+      "id": "pcm-culture-taboo",
+      "language_code": "pcm",
+      "title": "Taboo and sensitive topics",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 20,
+          "body_en": "Culture tutorials include taboo and sensitive topics for each language (ELEVATION.md#\u00a711.2:L1796). Lists are authored only by the cultural consultant panel with citations \u2014 none are auto-generated.",
+          "source_ids": [
+            "ELEVATION.md#\u00a711.2:L1796"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 25,
+          "presentation": "taboo_topic_list",
+          "body_en": "Consultant-reviewed taboo topics appear here before learners see them. Culture cards flag sensitive areas with risk_tags such as ['culture_history_religion'].",
+          "source_ids": [
+            "assets/data/culture/pcm.json#pcm.culture.greetings"
+          ],
+          "taboo_topics": [],
+          "taboo_topics_gate": "EXT-14_cultural_consultant",
+          "risk_tags_reference": [
+            "culture_history_religion"
+          ]
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 20,
+          "body_en": "This check unlocks after the consultant publishes a cited taboo topic list.",
+          "source_ids": [
+            "ELEVATION.md#\u00a711.2:L1796"
+          ],
+          "drill_kind": "gate_locked",
+          "unlock_requires": "taboo_topics_non_empty_and_signed_off"
+        }
+      ]
+    },
+    {
+      "id": "sw-culture-taboo",
+      "language_code": "sw",
+      "title": "Taboo and sensitive topics",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 20,
+          "body_en": "Culture tutorials include taboo and sensitive topics for each language (ELEVATION.md#\u00a711.2:L1796). Lists are authored only by the cultural consultant panel with citations \u2014 none are auto-generated.",
+          "source_ids": [
+            "ELEVATION.md#\u00a711.2:L1796"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 25,
+          "presentation": "taboo_topic_list",
+          "body_en": "Consultant-reviewed taboo topics appear here before learners see them. Culture cards flag sensitive areas with risk_tags such as ['culture_history_religion'].",
+          "source_ids": [
+            "assets/data/culture/sw.json#sw.culture.greetings"
+          ],
+          "taboo_topics": [],
+          "taboo_topics_gate": "EXT-14_cultural_consultant",
+          "risk_tags_reference": [
+            "culture_history_religion"
+          ]
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 20,
+          "body_en": "This check unlocks after the consultant publishes a cited taboo topic list.",
+          "source_ids": [
+            "ELEVATION.md#\u00a711.2:L1796"
+          ],
+          "drill_kind": "gate_locked",
+          "unlock_requires": "taboo_topics_non_empty_and_signed_off"
+        }
+      ]
+    },
+    {
+      "id": "zu-culture-taboo",
+      "language_code": "zu",
+      "title": "Taboo and sensitive topics",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 20,
+          "body_en": "Culture tutorials include taboo and sensitive topics for each language (ELEVATION.md#\u00a711.2:L1796). Lists are authored only by the cultural consultant panel with citations \u2014 none are auto-generated.",
+          "source_ids": [
+            "ELEVATION.md#\u00a711.2:L1796"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 25,
+          "presentation": "taboo_topic_list",
+          "body_en": "Consultant-reviewed taboo topics appear here before learners see them. Culture cards flag sensitive areas with risk_tags such as ['culture_history_religion'].",
+          "source_ids": [
+            "assets/data/culture/zu.json#zu.culture.greetings"
+          ],
+          "taboo_topics": [],
+          "taboo_topics_gate": "EXT-14_cultural_consultant",
+          "risk_tags_reference": [
+            "culture_history_religion"
+          ]
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 20,
+          "body_en": "This check unlocks after the consultant publishes a cited taboo topic list.",
+          "source_ids": [
+            "ELEVATION.md#\u00a711.2:L1796"
+          ],
+          "drill_kind": "gate_locked",
+          "unlock_requires": "taboo_topics_non_empty_and_signed_off"
+        }
+      ]
+    },
+    {
+      "id": "xh-culture-taboo",
+      "language_code": "xh",
+      "title": "Taboo and sensitive topics",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 20,
+          "body_en": "Culture tutorials include taboo and sensitive topics for each language (ELEVATION.md#\u00a711.2:L1796). Lists are authored only by the cultural consultant panel with citations \u2014 none are auto-generated.",
+          "source_ids": [
+            "ELEVATION.md#\u00a711.2:L1796"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 25,
+          "presentation": "taboo_topic_list",
+          "body_en": "Consultant-reviewed taboo topics appear here before learners see them. Culture cards flag sensitive areas with risk_tags such as ['culture_history_religion'].",
+          "source_ids": [
+            "assets/data/culture/xh.json#xh.culture.greetings"
+          ],
+          "taboo_topics": [],
+          "taboo_topics_gate": "EXT-14_cultural_consultant",
+          "risk_tags_reference": [
+            "culture_history_religion"
+          ]
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 20,
+          "body_en": "This check unlocks after the consultant publishes a cited taboo topic list.",
+          "source_ids": [
+            "ELEVATION.md#\u00a711.2:L1796"
+          ],
+          "drill_kind": "gate_locked",
+          "unlock_requires": "taboo_topics_non_empty_and_signed_off"
+        }
+      ]
+    }
+  ]
+}

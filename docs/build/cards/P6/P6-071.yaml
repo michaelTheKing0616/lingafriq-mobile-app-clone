@@ -1,0 +1,62 @@
+charter: v2
+id: P6-071
+kind: build
+title: Gate each language before it reaches L2
+phase: P6
+epic: E-P6-EVALS
+req_ids:
+- EP-§7.6-15
+depends_on:
+- P6-056
+- P6-070
+size: S
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist:
+- release-gates/l2_language_gate.yaml
+- evals/gates/l2.ts
+context_anchors:
+- ELEVATION.md#§7.6:L1470
+acceptance_criteria:
+- id: AC1
+  text: Given a language below its eval thresholds, when L2 content is requested, then typed error language_not_gated is returned
+- id: AC2
+  text: Given a language passing, when gated, then the record names eval run id and date
+test_plan:
+  unit:
+  - gate
+  integration:
+  - blocked L2
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

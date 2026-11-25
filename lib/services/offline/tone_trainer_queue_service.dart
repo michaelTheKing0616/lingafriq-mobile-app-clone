@@ -18,7 +18,15 @@ class ToneTrainerQueueService {
   static const _boxName = 'lingafriq_tone_trainer_queue_v1';
   static const _uuid = Uuid();
 
+  /// Last tone-game pool diagnostics line (P8-913), e.g. excluded unverified counts.
+  String? lastPoolDiagnostics;
+
   Box<String>? _box;
+
+  void recordPoolDiagnostics(String line) {
+    lastPoolDiagnostics = line.trim().isEmpty ? null : line.trim();
+    logger.info('ToneTrainer pool diagnostics', context: {'line': line});
+  }
 
   Future<void> ensureOpen() async {
     if (_box != null && _box!.isOpen) return;

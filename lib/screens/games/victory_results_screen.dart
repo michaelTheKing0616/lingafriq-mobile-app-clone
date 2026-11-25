@@ -1,11 +1,8 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
-import '../../widgets/game/game_widgets.dart';
 
 class VictoryResultsScreen extends ConsumerStatefulWidget {
   const VictoryResultsScreen({
@@ -185,7 +182,7 @@ class _ScrollArtifactIcon extends StatelessWidget {
           height: 100.r,
           decoration: BoxDecoration(
             borderRadius: ModernGriotRadius.borderXxl,
-            gradient: LinearGradient(
+            gradient: const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [

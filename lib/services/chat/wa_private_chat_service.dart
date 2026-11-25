@@ -1,5 +1,40 @@
+import 'package:dio/dio.dart';
+import 'package:lingafriq/services/chat/outbox_message_queue.dart';
+import 'package:lingafriq/services/push/data_push_handler.dart';
 import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/utils/api_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
+
+/// Read receipts only for mutual 1:1 contacts (P9-944 AC3).
+class WaReadReceiptPolicy {
+  const WaReadReceiptPolicy._();
+
+  static bool showReadReceipts({
+    required bool isDirectMessage,
+    required bool isMutualContact,
+  }) {
+    if (!isDirectMessage) return false;
+    return isMutualContact;
+  }
+}
+
+class WaDmThreadPolicy {
+  const WaDmThreadPolicy({
+    required this.e2eeEnabled,
+    required this.requiresModeration,
+  });
+
+  final bool e2eeEnabled;
+  final bool requiresModeration;
+
+  factory WaDmThreadPolicy.fromJson(Map<String, dynamic> json) {
+    return WaDmThreadPolicy(
+      e2eeEnabled: json['e2ee_enabled'] == true,
+      requiresModeration: json['requires_moderation'] == true,
+    );
+  }
+}
 
 /// Row for the private chat inbox — backed by `GET /api/wa/conversations`.
 class WaPrivateConversationRow {
@@ -31,6 +66,78 @@ class WaPrivateConversationRow {
 class WaPrivateChatService {
   WaPrivateChatService._();
 
+  static const _uuid = Uuid();
+
+  static bool _realtimeHooksInstalled = false;
+
+  /// Wires P9-909 data-push foreground sync and prepares the DM outbox (idempotent).
+  static void ensureDmRealtimeInfrastructure({
+    ChatPushLocalNotifier? chatPushLocalNotifier,
+  }) {
+    ensureFirebaseForegroundDataPushBridge(
+      localNotifier: chatPushLocalNotifier,
+    );
+    _realtimeHooksInstalled = true;
+  }
+
+  static bool get realtimeHooksInstalled => _realtimeHooksInstalled;
+
+  static Future<ChatOutboxMessageQueue> _outboxQueue() async {
+    final prefs = await SharedPreferences.getInstance();
+    return ChatOutboxMessageQueue(prefs: prefs);
+  }
+
+  static bool _isOfflineTransportError(Object e) {
+    if (e is DioException) {
+      return e.type == DioExceptionType.connectionError ||
+          e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.sendTimeout ||
+          e.type == DioExceptionType.receiveTimeout;
+    }
+    return false;
+  }
+
+  static Future<Map<String, dynamic>?> _postWaTextPayload({
+    required String recipientId,
+    required String message,
+    required String clientMessageId,
+    bool firstDmIntro = false,
+    String? replyToId,
+  }) async {
+    final res = await ApiService.post(
+      Api.waMessages,
+      data: {
+        'recipientId': recipientId,
+        'message': message,
+        'message_type': 'text',
+        if (firstDmIntro) 'first_dm_intro': true,
+        'client_message_id': clientMessageId,
+        if (replyToId != null && replyToId.isNotEmpty) 'reply_to_id': replyToId,
+      },
+    );
+    final raw = res.data;
+    if (raw is Map && raw['data'] is Map) {
+      return Map<String, dynamic>.from(raw['data'] as Map);
+    }
+    if (raw is Map) return Map<String, dynamic>.from(raw);
+    return null;
+  }
+
+  /// Drains queued WA text sends after connectivity returns (P9-909 AC1).
+  static Future<void> flushTextOutbox({
+    required bool Function() isOnline,
+  }) async {
+    final queue = await _outboxQueue();
+    await queue.flush(
+      isOnline: isOnline,
+      send: (entry) => _postWaTextPayload(
+        recipientId: entry.recipientId,
+        message: entry.message,
+        clientMessageId: entry.clientMessageId,
+      ),
+    );
+  }
+
   static List<Map<String, dynamic>> _listFromResponse(dynamic raw) {
     if (raw is List) {
       return raw.whereType<Map>().map((e) => Map<String, dynamic>.from(e)).toList();
@@ -58,7 +165,7 @@ class WaPrivateChatService {
     if (a == null || b == null) return null;
     if (a == myNumericId) return b;
     if (b == myNumericId) return a;
-    return b;
+    return null;
   }
 
   static int? _readUserId(Map<String, dynamic> user) {
@@ -183,13 +290,86 @@ class WaPrivateChatService {
   static Future<Map<String, dynamic>?> sendTextMessage({
     required String recipientId,
     required String message,
+    String? clientMessageId,
+    bool firstDmIntro = false,
+    String? replyToId,
   }) async {
+    final cid = clientMessageId?.trim().isNotEmpty == true
+        ? clientMessageId!.trim()
+        : _uuid.v4();
+    try {
+      return await _postWaTextPayload(
+        recipientId: recipientId,
+        message: message,
+        clientMessageId: cid,
+        firstDmIntro: firstDmIntro,
+        replyToId: replyToId,
+      );
+    } catch (e) {
+      if (!_isOfflineTransportError(e)) rethrow;
+      final queue = await _outboxQueue();
+      await queue.enqueue(
+        recipientId: recipientId,
+        message: message,
+        clientMessageId: cid,
+      );
+      return {
+        'client_message_id': cid,
+        'queued_offline': true,
+        'message': message,
+      };
+    }
+  }
+
+  static Future<String?> uploadChatMediaFile(
+    String localPath, {
+    String type = 'audio',
+  }) async {
+    final res = await ApiService.uploadFile(
+      Api.mediaUpload(),
+      localPath,
+      additionalData: {'type': type},
+    );
+    final raw = res.data;
+    if (raw is! Map) return null;
+    final data = raw['data'];
+    if (data is Map) {
+      for (final k in ['url', 'file_url', 'mediaUrl', 'publicUrl']) {
+        final v = data[k];
+        if (v is String && v.isNotEmpty) return v;
+      }
+    }
+    for (final k in ['url', 'file_url']) {
+      final v = raw[k];
+      if (v is String && v.isNotEmpty) return v;
+    }
+    return null;
+  }
+
+  static Future<Map<String, dynamic>?> sendVoiceNote({
+    required String recipientId,
+    required String localFilePath,
+    int? durationMs,
+    String? replyToId,
+    String? clientMessageId,
+  }) async {
+    final url = await uploadChatMediaFile(localFilePath, type: 'audio');
+    if (url == null || url.isEmpty) {
+      throw StateError('VOICE_UPLOAD_FAILED');
+    }
+    final label = durationMs != null && durationMs > 0
+        ? 'Voice message (${(durationMs / 1000).ceil()}s)'
+        : 'Voice message';
     final res = await ApiService.post(
       Api.waMessages,
       data: {
         'recipientId': recipientId,
-        'message': message,
-        'message_type': 'text',
+        'message': label,
+        'message_type': 'audio',
+        'file_url': url,
+        if (replyToId != null && replyToId.isNotEmpty) 'reply_to_id': replyToId,
+        if (clientMessageId != null && clientMessageId.isNotEmpty)
+          'client_message_id': clientMessageId,
       },
     );
     final raw = res.data;
@@ -198,6 +378,184 @@ class WaPrivateChatService {
     }
     if (raw is Map) return Map<String, dynamic>.from(raw);
     return null;
+  }
+
+  static Future<Map<String, dynamic>?> sendGroupTextMessage({
+    required String tribeId,
+    required String message,
+    String messageType = 'text',
+    String? fileUrl,
+    String? replyToId,
+  }) async {
+    final res = await ApiService.post(
+      'chat/tribe/$tribeId',
+      data: {
+        'message': message,
+        'message_type': messageType,
+        if (fileUrl != null && fileUrl.isNotEmpty) 'file_url': fileUrl,
+        if (replyToId != null && replyToId.isNotEmpty) 'reply_to_id': replyToId,
+      },
+    );
+    final raw = res.data;
+    if (raw is Map && raw['data'] is Map) {
+      return Map<String, dynamic>.from(raw['data'] as Map);
+    }
+    if (raw is Map) return Map<String, dynamic>.from(raw);
+    return null;
+  }
+
+  static Future<WaDmThreadPolicy> fetchDmThreadPolicy(int peerUserId) async {
+    final res = await ApiService.post(
+      'api/v2/messaging-policy/dm-thread',
+      data: {'peer_user_id': peerUserId},
+    );
+    final raw = res.data;
+    if (raw is Map && raw['ok'] == true) {
+      return WaDmThreadPolicy.fromJson(Map<String, dynamic>.from(raw));
+    }
+    return const WaDmThreadPolicy(
+      e2eeEnabled: false,
+      requiresModeration: false,
+    );
+  }
+
+  static Future<List<Map<String, dynamic>>> toggleReaction({
+    required String messageId,
+    required String emoji,
+  }) async {
+    final res = await ApiService.post(
+      'api/wa/messages/$messageId/reaction',
+      data: {'emoji': emoji},
+    );
+    final raw = res.data;
+    if (raw is Map && raw['data'] is Map) {
+      final data = Map<String, dynamic>.from(raw['data'] as Map);
+      final reactions = data['reactions'];
+      if (reactions is List) {
+        return reactions.whereType<Map>().map((e) => Map<String, dynamic>.from(e)).toList();
+      }
+    }
+    return const [];
+  }
+
+  static Future<bool> toggleStarMessage(String messageId) async {
+    final res = await ApiService.post('api/wa/messages/$messageId/star');
+    final raw = res.data;
+    if (raw is Map && raw['data'] is Map) {
+      return raw['data']['starred'] == true;
+    }
+    return false;
+  }
+
+  static Future<void> markRoomRead({required String roomId}) async {
+    await ApiService.post(
+      'api/wa/messages/read',
+      data: {'roomId': roomId},
+    );
+  }
+
+  static String? mediaUrlFromMessageMap(Map<String, dynamic> m) {
+    for (final k in ['file_url', 'fileUrl', 'media_url', 'mediaUrl']) {
+      final v = m[k];
+      if (v is String && v.trim().isNotEmpty) return v.trim();
+    }
+    return null;
+  }
+
+  static String messageTypeFromMap(Map<String, dynamic> m) {
+    return (m['message_type'] ?? m['messageType'] ?? 'text').toString();
+  }
+
+  /// P9-929: `GET /api/v2/first-dm/state` → kind string from server payload.
+  static Future<Map<String, dynamic>> fetchFirstDmState(int peerUserId) async {
+    final res = await ApiService.get(
+      'api/v2/first-dm/state',
+      queryParameters: {'peer_user_id': peerUserId},
+    );
+    final raw = res.data;
+    if (raw is Map && raw['state'] is Map) {
+      return Map<String, dynamic>.from(raw['state'] as Map);
+    }
+    return const {'kind': 'none'};
+  }
+
+  static Future<void> respondFirstDmRequest({
+    required int initiatorUserId,
+    required String decision,
+  }) async {
+    await ApiService.post(
+      'api/v2/first-dm/respond',
+      data: {
+        'initiator_user_id': initiatorUserId,
+        'decision': decision,
+      },
+    );
+  }
+
+  /// Durable log catch-up for one device (`GET /api/wa/messages/sync`).
+  static Future<WaMessageSyncBatch?> syncMessagesSinceCursor({
+    required String roomId,
+    required String deviceId,
+    int afterSeq = 0,
+  }) async {
+    final res = await ApiService.get(
+      'api/wa/messages/sync',
+      queryParameters: {
+        'roomId': roomId,
+        'deviceId': deviceId,
+        'afterSeq': afterSeq,
+      },
+    );
+    final raw = res.data;
+    if (raw is! Map) return null;
+    final data = raw['data'];
+    if (data is! Map) return null;
+    final messages = data['messages'];
+    final cursor = data['cursor'];
+    final parsed = <WaSyncedMessage>[];
+    if (messages is List) {
+      for (final item in messages) {
+        if (item is! Map) continue;
+        final m = Map<String, dynamic>.from(item);
+        parsed.add(
+          WaSyncedMessage(
+            seq: int.tryParse(m['seq']?.toString() ?? '') ?? 0,
+            serverMessageId: m['serverMessageId']?.toString() ?? '',
+            clientMessageId: m['clientMessageId']?.toString(),
+            message: m['message']?.toString() ?? '',
+            read: m['read'] == true,
+          ),
+        );
+      }
+    }
+    return WaMessageSyncBatch(
+      messages: parsed,
+      cursor: int.tryParse(cursor?.toString() ?? '') ?? afterSeq,
+    );
+  }
+
+  /// Per-device read cursor (`POST /api/wa/messages/read-cursor`).
+  static Future<WaDeviceReadCursor?> pushReadCursor({
+    required String roomId,
+    required String deviceId,
+    required int readSeq,
+  }) async {
+    final res = await ApiService.post(
+      'api/wa/messages/read-cursor',
+      data: {
+        'roomId': roomId,
+        'deviceId': deviceId,
+        'readSeq': readSeq,
+      },
+    );
+    final raw = res.data;
+    if (raw is! Map) return null;
+    final data = raw['data'];
+    if (data is! Map) return null;
+    return WaDeviceReadCursor(
+      deliveredSeq: int.tryParse(data['deliveredSeq']?.toString() ?? '') ?? 0,
+      readSeq: int.tryParse(data['readSeq']?.toString() ?? '') ?? readSeq,
+    );
   }
 
   /// Normalized `private_low_high` room id (matches Node `normalizePrivateRoomId`).
@@ -239,4 +597,34 @@ class WaPrivateChatService {
       return false;
     }
   }
+}
+
+class WaSyncedMessage {
+  const WaSyncedMessage({
+    required this.seq,
+    required this.serverMessageId,
+    this.clientMessageId,
+    required this.message,
+    required this.read,
+  });
+
+  final int seq;
+  final String serverMessageId;
+  final String? clientMessageId;
+  final String message;
+  final bool read;
+}
+
+class WaMessageSyncBatch {
+  const WaMessageSyncBatch({required this.messages, required this.cursor});
+
+  final List<WaSyncedMessage> messages;
+  final int cursor;
+}
+
+class WaDeviceReadCursor {
+  const WaDeviceReadCursor({required this.deliveredSeq, required this.readSeq});
+
+  final int deliveredSeq;
+  final int readSeq;
 }

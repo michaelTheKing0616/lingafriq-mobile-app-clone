@@ -46,7 +46,7 @@ class Material3Helper {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return CardTheme(
       elevation: isDark ? 2 : 4,
-      shadowColor: Colors.black.withOpacity(isDark ? 0.3 : 0.1),
+      shadowColor: Colors.black.withValues(alpha: isDark ? 0.3 : 0.1),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.r),
       ),

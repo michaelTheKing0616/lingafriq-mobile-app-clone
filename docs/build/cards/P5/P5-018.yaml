@@ -1,0 +1,65 @@
+charter: v2
+id: P5-018
+kind: build
+title: 'Plan spiral exposures: at least 6 per lexeme across units'
+phase: P5
+epic: E-P5-A1
+req_ids:
+- CP-§4-08
+- CP-§4-09
+depends_on:
+- P5-016
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- tools/content/spiral_planner.py
+- lib/learning/scheduling/exposure_plan.dart
+- test/content/spiral_test.py
+context_anchors:
+- CURRICULUM.md#§4:L561-L562
+acceptance_criteria:
+- id: AC1
+  text: Given a lexeme in the A1 lexicon, when units are planned, then it appears at least 6 times across units in new contexts
+- id: AC2
+  text: Given a unit sequence, when planned, then each lexeme goes through input, controlled practice, speaking, then review
+- id: AC3
+  text: Given a lexeme with fewer than 6 exposures, when linted, then the build fails with SpiralShortfall listing lexemes
+test_plan:
+  unit:
+  - planner
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - exposure count over A1
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

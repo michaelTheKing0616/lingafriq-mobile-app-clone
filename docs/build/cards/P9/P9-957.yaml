@@ -1,0 +1,91 @@
+charter: v2
+id: P9-957
+kind: build
+title: Add Stories for circles
+phase: P9
+epic: E-P9-VILLAGE
+req_ids:
+- RM-P2-09
+- EP-§9.1-22
+depends_on:
+- E-P9-SAFETY
+- P9-911
+- P9-948
+- P9-943
+size: M
+difficulty:
+  score: 5
+  blast: 3
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 3, ambiguity 1, coupling 1, depth 0'
+token_budget: 80000
+file_allowlist:
+- lib/screens/village/circle_stories_screen.dart
+- node-backend/src/services/stories.service.ts
+context_anchors:
+- ELEVATION.md#§16.3:L2108
+acceptance_criteria:
+- id: AC1
+  text: Given a story posted to a circle, when 24 h pass, then it is hard-deleted per P9-911 and no longer served
+- id: AC2
+  text: Given a story, when viewed, then only circle members can see it and a minor's stories are visible only to approved
+    members
+- id: AC3
+  text: Given a screenshot or reshare, when attempted, then the UI states that stories are not protected from copying
+test_plan:
+  unit: []
+  integration:
+  - expiry
+  - visibility
+  security:
+  - viewer scope
+  e2e: []
+  perf: []
+  a11y:
+  - story viewer
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - viewing
+  - expired
+  - empty
+  copy_keys:
+  - stories.title
+  - stories.copy.warning
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - stories_default
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

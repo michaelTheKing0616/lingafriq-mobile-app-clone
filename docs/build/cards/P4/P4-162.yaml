@@ -1,0 +1,85 @@
+charter: v2
+id: P4-162
+kind: build
+title: Build persona console with dossiers, evals and kill switch
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§14.2-43
+- EP-§14.2-44
+- EP-§14.2-45
+- EP-§14.2-46
+depends_on:
+- P4-150
+- E-P1-CONTAINMENT
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 2, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lingafriq-admin/src/pages/PersonaConsole.tsx
+- node-backend/src/services/persona_admin.service.ts
+- test/backend/persona_admin.test.ts
+context_anchors:
+- ELEVATION.md#§14.2:L1970-L1989
+acceptance_criteria:
+- id: AC1
+  text: Given a persona, when opened, then its source dossier and claims audit are shown with the reviewing Historian
+- id: AC2
+  text: Given eval runs, when shown, then results per persona and date are listed with pass or fail
+- id: AC3
+  text: Given the kill switch, when activated by an authorised role, then the persona is disabled in the app on next fetch
+    and the action is audit-logged
+- id: AC4
+  text: Given a persona with no dossier, when enabling is attempted, then it is refused DOSSIER_MISSING
+test_plan:
+  unit:
+  - persona_admin.test
+  integration: []
+  security:
+  - role scope
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - list
+  - disabled
+  - error
+  copy_keys:
+  - persona.kill
+  tokens:
+  - admin.panel
+  motion_tier: product
+  a11y:
+  - confirm dialog focus
+  goldens: []
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

@@ -36,6 +36,18 @@ mixin BaseProviderMixin on Notifier<BaseProviderState> {
     state = state.copyWith(isLoading: false);
   }
 
+  void setProviderError(String message) {
+    state = state.copyWith(
+      isLoading: false,
+      errorMessage: message,
+      errorTimestamp: DateTime.now(),
+    );
+  }
+
+  void clearProviderError() {
+    state = state.copyWith(clearError: true, isLoading: false);
+  }
+
   bool get isLoading => state.isLoading;
 }
 

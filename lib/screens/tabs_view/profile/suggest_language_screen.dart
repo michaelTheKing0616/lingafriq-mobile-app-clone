@@ -7,6 +7,7 @@ import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/primary_text_field.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/titled_drop_down.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 class SuggestLanguageScreen extends HookConsumerWidget {
   const SuggestLanguageScreen({super.key});
@@ -36,8 +37,8 @@ class SuggestLanguageScreen extends HookConsumerWidget {
           48.heightBox,
           PrimaryTextField(
             controller: reasonController,
-            title: "What would you like us to know?",
-            hintText: "Please explain What would you like us to know?",
+            title: l10nOf(context).shellWhatWouldYouLikeUsTo0de8,
+            hintText: l10nOf(context).shellPleaseExplainWhatWouldYouLike,
             textInputAction: TextInputAction.done,
             minLines: 4,
             maxLines: 6,
@@ -45,15 +46,15 @@ class SuggestLanguageScreen extends HookConsumerWidget {
           32.heightBox,
           PrimaryTextField(
             controller: suggestLanguageController,
-            title: "Would you like to suggest a language? If yes, enter language below",
-            hintText: "Write your suggestion here",
+            title: l10nOf(context).shellWouldYouLikeToSuggestAb06a,
+            hintText: l10nOf(context).shellWriteYourSuggestionHere,
             textInputAction: TextInputAction.next,
             minLines: 2,
             maxLines: 3,
           ),
           32.heightBox,
           TitledDropDown<String>(
-            title: "Language Country",
+            title: l10nOf(context).shellLanguageCountry,
             titles: kCountries.keys.toList(),
             items: kCountries.keys.toList(),
             value: selectedCountry.value,
@@ -67,7 +68,7 @@ class SuggestLanguageScreen extends HookConsumerWidget {
               final reason = reasonController.text.trim();
               final country = selectedCountry.value;
               if (suggestion.isEmpty && reason.isEmpty) {
-                VxToast.show(context, msg: 'Please fill in some fields');
+                VxToast.show(context, msg: l10nOf(context).shellPleaseFillInSomeFields);
                 return;
               }
               String? encodeQueryParameters(Map<String, String> params) {
@@ -80,29 +81,29 @@ class SuggestLanguageScreen extends HookConsumerWidget {
               var body = '';
 
               if (reason.isNotEmpty) {
-                body += 'What would you like us to know:\n$reason\n\n';
+                body += l10nOf(context).shellWhatWouldYouLikeUsTo(reason.toString());
               }
 
               if (suggestion.isNotEmpty) {
                 body +=
-                    'Would you like to suggest a language? If yes, enter language below:\n$suggestion\n\n';
+                    l10nOf(context).shellWouldYouLikeToSuggestA(suggestion.toString());
               }
               if (country != null) {
-                body += 'Language Country:\n$country\n\n';
+                body += l10nOf(context).shellLanguageCountryCountry(country.toString());
               }
 
               final Uri emailLaunchUri = Uri(
                 scheme: 'mailto',
                 path: 'lingafriq@gmail.com',
                 query: encodeQueryParameters(<String, String>{
-                  'subject': 'Feedback Form on Mobile App',
+                  'subject': l10nOf(context).shellFeedbackFormOnMobileApp,
                   'body': body,
                 }),
               );
               kLaunchUrl(emailLaunchUri.toString());
               // Navigator.of(context).pop();
             },
-            label: "Submit",
+            label: l10nOf(context).shellSubmit,
           )
         ],
       ).px16().scrollVertical(),

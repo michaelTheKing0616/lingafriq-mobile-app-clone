@@ -1,0 +1,101 @@
+charter: v2
+id: P9-939
+kind: build
+title: Enable MLS E2EE for adult 1:1 and small-group chats by default
+phase: P9
+epic: E-P9-E2EE
+req_ids:
+- EP-§9.3-10
+- EP-§9.3-01
+depends_on:
+- E-P9-SAFETY
+- P9-938
+- P9-920
+- P9-944
+size: L
+difficulty:
+  score: 9
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T4
+  justification: 'score 9: blast 3, ambiguity 1, coupling 2, depth 2; gate-critical (security / child safety / legal / design
+    direction): Fable reviews'
+token_budget: 200000
+file_allowlist:
+- lib/services/chat/mls_session_service.dart
+- lib/screens/chat/private_chat_screen.dart
+context_anchors:
+- ELEVATION.md#§9.3:L1629-L1635
+acceptance_criteria:
+- id: AC1
+  text: Given an adult account, when starting a 1:1 or small-group chat, then E2EE is on by default and the thread shows a
+    visible encryption state
+- id: AC2
+  text: Given any account whose tier is under 18, when E2EE is requested, then the client does not offer it and the server
+    refuses
+- id: AC3
+  text: Given a new device, when added, then the user sees a key-change notice and history on the old device is not silently
+    exposed
+- id: AC4
+  text: Given lost keys, when the user recovers, then the UI states plainly that earlier messages may not be readable and
+    never shows false success
+test_plan:
+  unit:
+  - session state
+  integration:
+  - two-device E2EE
+  - tier switch to adult
+  security:
+  - downgrade attack
+  - key change warning
+  e2e: []
+  perf: []
+  a11y:
+  - encryption indicator
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - encrypted
+  - not-encrypted-minor
+  - key-changed
+  - recovery-failed
+  copy_keys:
+  - e2ee.on
+  - e2ee.keychange
+  - e2ee.recovery.lost
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - e2ee_default
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

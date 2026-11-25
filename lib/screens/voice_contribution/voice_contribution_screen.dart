@@ -107,7 +107,7 @@ class VoiceContributionScreen extends HookConsumerWidget {
     Future<void> submitContribution() async {
       if (selectedPrompt.value == null || audioFile.value == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please select a prompt and record audio')),
+          const SnackBar(content: Text('Please select a prompt and record audio')),
         );
         return;
       }
@@ -139,8 +139,8 @@ class VoiceContributionScreen extends HookConsumerWidget {
         if (response.statusCode == 201) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Thank you for your contribution! 🎉'),
-              backgroundColor: PanAfricanColors.success,
+              content: const Text('Thank you for your contribution! 🎉'),
+              backgroundColor: context.panSuccess,
             ),
           );
           
@@ -167,13 +167,13 @@ class VoiceContributionScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Voice Contributions'),
+        title: const Text('Voice Contributions'),
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
           if (userStats.value != null)
             IconButton(
-              icon: Icon(Icons.star),
+              icon: const Icon(Icons.star),
               tooltip: 'Your Stats',
               onPressed: () {
                 _showStatsDialog(context, userStats.value!, isDark);
@@ -185,7 +185,7 @@ class VoiceContributionScreen extends HookConsumerWidget {
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : LinearGradient(
+              : const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -203,13 +203,13 @@ class VoiceContributionScreen extends HookConsumerWidget {
                 // Info Card
                 PanAfricanCard(
                   hasGlow: true,
-                  glowColor: PanAfricanColors.secondary,
+                  glowColor: context.panSecondary,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
-                          Icon(Icons.mic, color: PanAfricanColors.secondary, size: 32.sp),
+                          Icon(Icons.mic, color: context.panSecondary, size: 32.sp),
                           SizedBox(width: PanAfricanSpacing.sm),
                           Expanded(
                             child: Text(
@@ -230,10 +230,10 @@ class VoiceContributionScreen extends HookConsumerWidget {
                           PanAfricanBadge(
                             label: 'Earn Rewards',
                             icon: Icons.stars,
-                            color: PanAfricanColors.secondary,
+                            color: context.panSecondary,
                           ),
                           SizedBox(width: PanAfricanSpacing.sm),
-                          PanAfricanBadge(
+                          const PanAfricanBadge(
                             label: 'Preserve Heritage',
                             icon: Icons.public,
                             color: PanAfricanColors.primary,
@@ -250,7 +250,7 @@ class VoiceContributionScreen extends HookConsumerWidget {
                   children: [
                     Expanded(
                       child: DropdownButtonFormField<String>(
-                        value: selectedLanguage.value,
+                        initialValue: selectedLanguage.value,
                         decoration: InputDecoration(
                           labelText: 'Language',
                           border: OutlineInputBorder(
@@ -279,7 +279,7 @@ class VoiceContributionScreen extends HookConsumerWidget {
                     SizedBox(width: PanAfricanSpacing.md),
                     Expanded(
                       child: DropdownButtonFormField<String>(
-                        value: selectedCategory.value,
+                        initialValue: selectedCategory.value,
                         decoration: InputDecoration(
                           labelText: 'Category',
                           border: OutlineInputBorder(
@@ -323,7 +323,7 @@ class VoiceContributionScreen extends HookConsumerWidget {
                 SizedBox(height: PanAfricanSpacing.sm),
 
                 if (isLoading.value)
-                  Center(child: CircularProgressIndicator())
+                  const Center(child: CircularProgressIndicator())
                 else if (prompts.value.isEmpty)
                   PanAfricanCard(
                     child: Center(
@@ -374,12 +374,12 @@ class VoiceContributionScreen extends HookConsumerWidget {
                                       Container(
                                         padding: EdgeInsets.all(PanAfricanSpacing.xs),
                                         decoration: BoxDecoration(
-                                          color: PanAfricanColors.info.withOpacity(0.1),
+                                          color: context.panInfo.withValues(alpha: 0.1),
                                           borderRadius: BorderRadius.circular(PanAfricanRadius.sm),
                                         ),
                                         child: Row(
                                           children: [
-                                            Icon(Icons.info_outline, size: 14.sp, color: PanAfricanColors.info),
+                                            Icon(Icons.info_outline, size: 14.sp, color: context.panInfo),
                                             SizedBox(width: PanAfricanSpacing.xxs),
                                             Expanded(
                                               child: Text(
@@ -395,7 +395,7 @@ class VoiceContributionScreen extends HookConsumerWidget {
                                 ),
                               ),
                               if (isSelected)
-                                Icon(Icons.check_circle, color: PanAfricanColors.primary),
+                                const Icon(Icons.check_circle, color: PanAfricanColors.primary),
                             ],
                           ),
                         ],
@@ -409,7 +409,7 @@ class VoiceContributionScreen extends HookConsumerWidget {
                 if (selectedPrompt.value != null) ...[
                   PanAfricanCard(
                     backgroundColor: audioFile.value != null
-                        ? PanAfricanColors.success.withOpacity(0.1)
+                        ? context.panSuccess.withValues(alpha: 0.1)
                         : null,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -439,8 +439,8 @@ class VoiceContributionScreen extends HookConsumerWidget {
                                   onPressed: () {
                                     // Play audio preview
                                   },
-                                  icon: Icon(Icons.play_arrow),
-                                  label: Text('Preview'),
+                                  icon: const Icon(Icons.play_arrow),
+                                  label: const Text('Preview'),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: PanAfricanColors.primary,
                                     foregroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -481,7 +481,7 @@ class VoiceContributionScreen extends HookConsumerWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Your Contribution Stats'),
+        title: const Text('Your Contribution Stats'),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -504,7 +504,7 @@ class VoiceContributionScreen extends HookConsumerWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Close'),
+            child: const Text('Close'),
           ),
         ],
       ),

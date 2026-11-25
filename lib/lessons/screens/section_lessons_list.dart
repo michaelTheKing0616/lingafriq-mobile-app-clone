@@ -21,7 +21,6 @@ import '../../widgets/loading_builder.dart';
 import '../../widgets/top_gradient_box_builder.dart';
 import '../models/section_lesson_model.dart';
 import 'package:lingafriq/navigation/learning_experience_navigation.dart';
-import 'package:lingafriq/utils/curriculum_languages.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 
@@ -63,7 +62,7 @@ class LessonSectionsListScreen extends ConsumerWidget {
                               width: 48,
                               height: 48,
                               decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                                color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Icon(
@@ -371,11 +370,14 @@ class _SectionLessonsList extends ConsumerWidget {
         final correctAnswersList = choices.where((e) => e['correct_answer'] == true);
         if (correctAnswersList.isEmpty) return null;
 
-        return QuizModel(
-          question: question,
+        return QuizModel.fromChoice(
+          system: 'unit_quiz',
+          id: '${e['question']['id'] ?? question.hashCode}',
+          prompt: question,
           score: sectionLesson.score / questions.length,
-          answer: correctAnswersList.first['text'],
-          choices: choices.map((e) => e['text'] as String).toList(),
+          choices: choices,
+          hint: e['question'] is Map ? e['question']['add_hint'] as String? : null,
+          funFact: e['question'] is Map ? e['question']['fun_fact'] as String? : null,
         );
       }).whereType<QuizModel>().toList();
 
@@ -403,7 +405,13 @@ class _SectionLessonsList extends ConsumerWidget {
     try {
       final questions = sectionLesson.otherData['word_question'] as List;
       final question = (questions.first as List).first;
-      final text = '${question['text'] as String}[]';
+      final bank = QuizModel.sentenceItem(
+        system: 'unit_quiz',
+        id: '${question['id'] ?? sectionLesson.id}',
+        prompt: '${question['text'] as String}[]',
+      );
+      if (bank == null) return false;
+      final text = bank.stimulusText!;
       // const text = '''Fill in the brackets with the correct translation.
       // Ling: Let me tell you a story.
       // Once upon a time, in one little town. There was this family of four. The [Father/Baba] a sarki (king),  and  [Mother/Mama] a sarauniya (queen) had two children. The [Female/Na mace] was [older/Babba], the  [Male/Na miji] was [Younger/Karami]. One day, the [Son/Da] said to his Father, “when I grow up, I want to wear babban riga like you. Babban riga is a big robe don by Hausa men of status during festivities.

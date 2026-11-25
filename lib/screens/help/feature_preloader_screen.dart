@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/widgets/first_use_tip.dart';
 
 /// Informative pre-loader screen that explains new features and terminologies
 /// Shown when users first encounter new features
@@ -13,6 +14,8 @@ class FeaturePreloaderScreen extends StatefulWidget {
   final IconData icon;
   final VoidCallback? onComplete;
   final Duration? duration;
+  final String? firstUseTipId;
+  final FirstUseTipStore? tipStore;
 
   const FeaturePreloaderScreen({
     super.key,
@@ -23,39 +26,68 @@ class FeaturePreloaderScreen extends StatefulWidget {
     required this.icon,
     this.onComplete,
     this.duration,
+    this.firstUseTipId,
+    this.tipStore,
   });
 
   @override
   State<FeaturePreloaderScreen> createState() => _FeaturePreloaderScreenState();
 }
 
-class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
+class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen> {
+  final PageController _pages = PageController();
   int _currentPage = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: widget.duration ?? const Duration(seconds: 5),
-      vsync: this,
+  int get _totalPages =>
+      1 + (widget.terms.isNotEmpty ? 1 : 0) + (widget.tips.isNotEmpty ? 1 : 0);
+
+  FirstUseTipStore get _store => resolveFirstUseTipStore(widget.tipStore);
+
+  bool get _dismissed {
+    final String? tipId = widget.firstUseTipId;
+    if (tipId == null) return false;
+    return _store.isDismissed(tipId);
+  }
+
+  void _finishPreloader() {
+    final String? tipId = widget.firstUseTipId;
+    if (tipId != null) {
+      _store.dismiss(tipId);
+    }
+    widget.onComplete?.call();
+    if (mounted) setState(() {});
+  }
+
+  void _go(int direction) {
+    final int next = _currentPage + direction;
+    if (next < 0 || next >= _totalPages) return;
+    final bool reduced = MediaQuery.disableAnimationsOf(context);
+    _pages.animateToPage(
+      next,
+      duration: reduced
+          ? Duration.zero
+          : (widget.duration ?? const Duration(milliseconds: 200)),
+      curve: Curves.easeOut,
     );
-    _controller.forward().then((_) {
-      widget.onComplete?.call();
-    });
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _pages.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final totalPages = 1 + (widget.terms.isNotEmpty ? 1 : 0) + (widget.tips.isNotEmpty ? 1 : 0);
-    
+    final String? tipId = widget.firstUseTipId;
+    if (tipId != null && _dismissed) {
+      return Scaffold(
+        appBar: AppBar(title: Text(widget.featureName)),
+        body: const SizedBox.shrink(key: ValueKey<String>('phase-hidden')),
+      );
+    }
+    final int totalPages = _totalPages;
+
     return Scaffold(
       appBar: AppBar(title: Text(widget.featureName)),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -63,9 +95,16 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
         top: false,
         child: Column(
           children: [
+            if (tipId != null)
+              FirstUseTip(
+                store: _store,
+                tipId: tipId,
+                sentence: firstUseTipSentence(tipId),
+                onDismiss: () => setState(() {}),
+              ),
             // Progress indicator
             LinearProgressIndicator(
-              value: _controller.value,
+              value: totalPages == 0 ? 0 : (_currentPage + 1) / totalPages,
               backgroundColor: Colors.grey[300],
               valueColor: const AlwaysStoppedAnimation<Color>(
                 PanAfricanColors.primary,
@@ -73,6 +112,7 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
             ),
             Expanded(
               child: PageView(
+                controller: _pages,
                 onPageChanged: (index) {
                   setState(() => _currentPage = index);
                 },
@@ -109,9 +149,7 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
                 children: [
                   if (_currentPage > 0)
                     TextButton(
-                      onPressed: () {
-                        // Previous page logic would go here
-                      },
+                      onPressed: () => _go(-1),
                       child: const Text('Previous'),
                     )
                   else
@@ -119,20 +157,27 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
                   FilledButton(
                     onPressed: () {
                       if (_currentPage < totalPages - 1) {
-                        // Next page logic
+                        _go(1);
                       } else {
-                        widget.onComplete?.call();
+                        _finishPreloader();
                       }
                     },
                     style: FilledButton.styleFrom(
                       backgroundColor: PanAfricanColors.primary,
                       foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                      padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 12.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 32.w,
+                        vertical: 12.h,
+                      ),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(PanAfricanRadius.round),
+                        borderRadius: BorderRadius.circular(
+                          PanAfricanRadius.round,
+                        ),
                       ),
                     ),
-                    child: Text(_currentPage < totalPages - 1 ? 'Next' : 'Got it!'),
+                    child: Text(
+                      _currentPage < totalPages - 1 ? 'Next' : 'Got it!',
+                    ),
                   ),
                 ],
               ),
@@ -144,45 +189,47 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
   }
 
   Widget _buildIntroPage() {
-    return Padding(
+    return SingleChildScrollView(
       padding: EdgeInsets.all(24.w),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 120.w,
-            height: 120.w,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: PanAfricanGradients.sunset,
-              boxShadow: PanAfricanShadows.lg,
-            ),
-            child: Icon(
-              widget.icon,
-              size: 60.sp,
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
-          )
+                width: 120.w,
+                height: 120.w,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: PanAfricanGradients.sunset,
+                  boxShadow: PanAfricanShadows.lg,
+                ),
+                child: Icon(
+                  widget.icon,
+                  size: 60.sp,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              )
               .animate()
               .scale(delay: 200.ms, duration: 600.ms, curve: Curves.elasticOut)
               .fadeIn(duration: 400.ms),
           SizedBox(height: 32.h),
           Text(
-            widget.featureName,
-            style: PanAfricanTypography.headlineLarge(context),
-            textAlign: TextAlign.center,
-          )
+                widget.featureName,
+                style: PanAfricanTypography.headlineLarge(context),
+                textAlign: TextAlign.center,
+              )
               .animate()
               .fadeIn(delay: 400.ms, duration: 500.ms)
               .slideY(begin: 0.2, end: 0),
           SizedBox(height: 16.h),
           Text(
-            widget.featureDescription,
-            style: PanAfricanTypography.bodyMedium(context).copyWith(
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-            ),
-            textAlign: TextAlign.center,
-          )
+                widget.featureDescription,
+                style: PanAfricanTypography.bodyMedium(context).copyWith(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.7),
+                ),
+                textAlign: TextAlign.center,
+              )
               .animate()
               .fadeIn(delay: 600.ms, duration: 500.ms)
               .slideY(begin: 0.2, end: 0),
@@ -200,10 +247,7 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
           Text(
             'New Terms',
             style: PanAfricanTypography.headlineSmall(context),
-          )
-              .animate()
-              .fadeIn(duration: 300.ms)
-              .slideX(begin: -0.1),
+          ).animate().fadeIn(duration: 300.ms).slideX(begin: -0.1),
           SizedBox(height: 24.h),
           ...widget.terms.map((term) => _buildTermCard(term)),
         ],
@@ -228,7 +272,7 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
                 Container(
                   padding: EdgeInsets.all(8.w),
                   decoration: BoxDecoration(
-                    color: PanAfricanColors.primary.withOpacity(0.1),
+                    color: PanAfricanColors.primary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   child: Icon(
@@ -251,19 +295,16 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
               ],
             ),
             SizedBox(height: 12.h),
-            Text(
-              term.definition,
-              style: TextStyle(fontSize: 16.sp),
-            ),
+            Text(term.definition, style: TextStyle(fontSize: 16.sp)),
             if (term.example != null) ...[
               SizedBox(height: 12.h),
               Container(
                 padding: EdgeInsets.all(12.w),
                 decoration: BoxDecoration(
-                  color: PanAfricanColors.primary.withOpacity(0.05),
+                  color: PanAfricanColors.primary.withValues(alpha: 0.05),
                   borderRadius: BorderRadius.circular(8.r),
                   border: Border.all(
-                    color: PanAfricanColors.primary.withOpacity(0.2),
+                    color: PanAfricanColors.primary.withValues(alpha: 0.2),
                   ),
                 ),
                 child: Row(
@@ -271,7 +312,7 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
                   children: [
                     Icon(
                       Icons.lightbulb_outline_rounded,
-                      color: PanAfricanColors.secondary,
+                      color: context.panSecondary,
                       size: 20.sp,
                     ),
                     SizedBox(width: 8.w),
@@ -303,10 +344,7 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
           Text(
             'Pro Tips',
             style: PanAfricanTypography.headlineSmall(context),
-          )
-              .animate()
-              .fadeIn(duration: 300.ms)
-              .slideX(begin: -0.1),
+          ).animate().fadeIn(duration: 300.ms).slideX(begin: -0.1),
           SizedBox(height: 24.h),
           ...widget.tips.map((tip) => _buildTipCard(tip)),
         ],
@@ -329,12 +367,12 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
             Container(
               padding: EdgeInsets.all(8.w),
               decoration: BoxDecoration(
-                color: PanAfricanColors.secondary.withOpacity(0.1),
+                color: context.panSecondary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8.r),
               ),
               child: Icon(
                 tip.icon ?? Icons.tips_and_updates_rounded,
-                color: PanAfricanColors.secondary,
+                color: context.panSecondary,
                 size: 24.sp,
               ),
             ),
@@ -351,10 +389,7 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
                     ),
                   ),
                   SizedBox(height: 4.h),
-                  Text(
-                    tip.description,
-                    style: TextStyle(fontSize: 16.sp),
-                  ),
+                  Text(tip.description, style: TextStyle(fontSize: 16.sp)),
                 ],
               ),
             ),
@@ -370,11 +405,7 @@ class FeatureTerm {
   final String definition;
   final String? example;
 
-  FeatureTerm({
-    required this.term,
-    required this.definition,
-    this.example,
-  });
+  FeatureTerm({required this.term, required this.definition, this.example});
 }
 
 class FeatureTip {
@@ -382,10 +413,31 @@ class FeatureTip {
   final String description;
   final IconData? icon;
 
-  FeatureTip({
-    required this.title,
-    required this.description,
-    this.icon,
-  });
+  FeatureTip({required this.title, required this.description, this.icon});
 }
 
+/// Pre-loader for the features overview (fourth revived preloader).
+class FeaturesHelpPreloader extends StatelessWidget {
+  const FeaturesHelpPreloader({super.key, this.onComplete, this.tipStore});
+
+  static const String routePath = '/help/features-tip';
+
+  static const String routeKey = 'help/features-tip';
+
+  final VoidCallback? onComplete;
+  final FirstUseTipStore? tipStore;
+
+  @override
+  Widget build(BuildContext context) {
+    return FeaturePreloaderScreen(
+      firstUseTipId: FirstUseTipIds.features,
+      tipStore: tipStore,
+      featureName: 'New Features',
+      featureDescription: FirstUseTipCopy.features,
+      icon: Icons.explore_rounded,
+      terms: const [],
+      tips: const [],
+      onComplete: onComplete,
+    );
+  }
+}

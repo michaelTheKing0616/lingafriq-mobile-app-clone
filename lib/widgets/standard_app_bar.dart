@@ -227,7 +227,7 @@ class StandardGradientHeader extends StatelessWidget {
                         }
                       },
                       style: IconButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.15),
+                        backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.15),
                         shape: const CircleBorder(),
                         padding: EdgeInsets.all(PanAfricanSpacing.sm),
                       ),
@@ -240,7 +240,7 @@ class StandardGradientHeader extends StatelessWidget {
                         Scaffold.of(context).openDrawer();
                       },
                       style: IconButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.15),
+                        backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.15),
                         shape: const CircleBorder(),
                         padding: EdgeInsets.all(PanAfricanSpacing.sm),
                       ),
@@ -271,7 +271,7 @@ class StandardGradientHeader extends StatelessWidget {
                               Scaffold.of(context).openDrawer();
                             },
                             style: IconButton.styleFrom(
-                              backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.15),
+                              backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.15),
                               shape: const CircleBorder(),
                               padding: EdgeInsets.all(PanAfricanSpacing.sm),
                             ),

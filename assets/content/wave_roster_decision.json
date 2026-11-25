@@ -1,0 +1,82 @@
+{
+  "charter": "v2",
+  "card_id": "P4-111",
+  "decision_date": "2026-10-26",
+  "owner": "Tope",
+  "sources": [
+    "ELEVATION.md#§6.4:L1221-L1262",
+    "docs/plan/LINGAFRIQ_AI_MODEL_STACK.md",
+    "DECISIONS.md#D15"
+  ],
+  "selection_criteria": [
+    "speakers",
+    "diaspora_demand",
+    "reviewer_voice_availability",
+    "ai_coverage",
+    "partner_support",
+    "mission_value"
+  ],
+  "score_scale": "1-5 integer; null means unscored (no evidence)",
+  "planning_targets": {
+    "wave_1": 7,
+    "wave_2": 14,
+    "wave_3": 25,
+    "wave_4": "50+",
+    "note": "Planning targets from ELEVATION §6.4; not shipped language counts."
+  },
+  "wave_4_start_rule": {
+    "summary": "Open Wave 4 Living Archive L0 kits only after Wave 1 has reached L1 on all seven Stage-1 languages and Wave 2 L0 has started for the full Wave 2 roster.",
+    "revisit_trigger": "Quarterly next-language scoring (ELEVATION §6.4) or material change in reviewer capacity (EXT-13)."
+  },
+  "egyptian_arabic_moroccan_darija": {
+    "egyptian_arabic_id": "ar-eg",
+    "moroccan_darija_id": "ary",
+    "wave": 4,
+    "included": true,
+    "reason": "D15 (Tope 2026-10-22): include both in Wave 4, not Waves 2–3. Large demand and strong competitors (ELEVATION L1247–1248); African-language waves stay priority. Content waits on licence and native reviewers like every language.",
+    "revisit_trigger": "Quarterly scoring run (P4-114) or counsel confirmation for Arabic register content (EXT-03)."
+  },
+  "wave_2": [
+    {"language_id": "am", "name": "Amharic", "scores": {"speakers": 5, "diaspora_demand": 4, "reviewer_voice_availability": null, "ai_coverage": 4, "partner_support": 3, "mission_value": 4}, "evidence": {"speakers": "Major Horn of Africa L1", "diaspora_demand": "ELEVATION Wave 2 roster", "reviewer_voice_availability": "EXT-13 roster empty", "ai_coverage": "Chirp preview + MADLAD long tail (LINGAFRIQ_AI_MODEL_STACK.md)", "partner_support": "Addis Ababa University listed §6.4", "mission_value": "Ethiopic script track §6.4"}},
+    {"language_id": "tw", "name": "Twi (Akan)", "scores": {"speakers": 5, "diaspora_demand": 4, "reviewer_voice_availability": null, "ai_coverage": 4, "partner_support": 3, "mission_value": 4}, "evidence": {"speakers": "ELEVATION Wave 2", "diaspora_demand": "ELEVATION Wave 2", "reviewer_voice_availability": "EXT-13 roster empty", "ai_coverage": "Chirp Twi + Google MT stack", "partner_support": "Partner list §6.4", "mission_value": "West African priority"}},
+    {"language_id": "so", "name": "Somali", "scores": {"speakers": 4, "diaspora_demand": 5, "reviewer_voice_availability": null, "ai_coverage": 3, "partner_support": 3, "mission_value": 4}, "evidence": {"speakers": "ELEVATION Wave 2", "diaspora_demand": "Large diaspora; ELEVATION Wave 2", "reviewer_voice_availability": "EXT-13 roster empty", "ai_coverage": "MADLAD / long-tail ASR", "partner_support": "Partner list §6.4", "mission_value": "Horn of Africa"}},
+    {"language_id": "rw", "name": "Kinyarwanda", "scores": {"speakers": 4, "diaspora_demand": 3, "reviewer_voice_availability": null, "ai_coverage": 3, "partner_support": 3, "mission_value": 4}, "evidence": {"speakers": "ELEVATION Wave 2", "diaspora_demand": "ELEVATION Wave 2", "reviewer_voice_availability": "EXT-13 roster empty", "ai_coverage": "MADLAD long tail", "partner_support": "Partner list §6.4", "mission_value": "East Africa"}},
+    {"language_id": "af", "name": "Afrikaans", "scores": {"speakers": 4, "diaspora_demand": 3, "reviewer_voice_availability": null, "ai_coverage": 5, "partner_support": 3, "mission_value": 2}, "evidence": {"speakers": "ELEVATION Wave 2", "diaspora_demand": "ELEVATION Wave 2", "reviewer_voice_availability": "EXT-13 roster empty", "ai_coverage": "Chirp af + broad vendor TTS/MT", "partner_support": "UCT/Rhodes listed §6.4", "mission_value": "Southern Africa; lower endangerment"}},
+    {"language_id": "sn", "name": "Shona", "scores": {"speakers": 5, "diaspora_demand": 3, "reviewer_voice_availability": null, "ai_coverage": 3, "partner_support": 3, "mission_value": 4}, "evidence": {"speakers": "ELEVATION Wave 2", "diaspora_demand": "ELEVATION Wave 2", "reviewer_voice_availability": "EXT-13 roster empty", "ai_coverage": "MADLAD long tail", "partner_support": "Partner list §6.4", "mission_value": "Southern Africa"}},
+    {"language_id": "wo", "name": "Wolof", "scores": {"speakers": 4, "diaspora_demand": 4, "reviewer_voice_availability": null, "ai_coverage": 4, "partner_support": 4, "mission_value": 4}, "evidence": {"speakers": "ELEVATION Wave 2", "diaspora_demand": "ELEVATION Wave 2", "reviewer_voice_availability": "EXT-13 roster empty", "ai_coverage": "Chirp wo listed stack doc", "partner_support": "Masakhane / West Africa partners §6.4", "mission_value": "West Africa"}},
+    {"language_id": "om", "name": "Oromo", "scores": {"speakers": 5, "diaspora_demand": 3, "reviewer_voice_availability": null, "ai_coverage": 3, "partner_support": 3, "mission_value": 4}, "evidence": {"speakers": "ELEVATION Wave 2", "diaspora_demand": "ELEVATION Wave 2", "reviewer_voice_availability": "EXT-13 roster empty", "ai_coverage": "MADLAD long tail", "partner_support": "Addis listed §6.4", "mission_value": "Ethiopia"}},
+    {"language_id": "lg", "name": "Luganda", "scores": {"speakers": 4, "diaspora_demand": 3, "reviewer_voice_availability": null, "ai_coverage": 3, "partner_support": 4, "mission_value": 4}, "evidence": {"speakers": "ELEVATION Wave 2", "diaspora_demand": "ELEVATION Wave 2", "reviewer_voice_availability": "EXT-13 roster empty", "ai_coverage": "MADLAD long tail", "partner_support": "Makerere listed §6.4", "mission_value": "East Africa"}},
+    {"language_id": "ln", "name": "Lingala", "scores": {"speakers": 4, "diaspora_demand": 4, "reviewer_voice_availability": null, "ai_coverage": 3, "partner_support": 3, "mission_value": 4}, "evidence": {"speakers": "ELEVATION Wave 2", "diaspora_demand": "ELEVATION Wave 2", "reviewer_voice_availability": "EXT-13 roster empty", "ai_coverage": "MADLAD long tail", "partner_support": "Partner list §6.4", "mission_value": "Central Africa"}},
+    {"language_id": "st", "name": "Sesotho", "scores": {"speakers": 4, "diaspora_demand": 2, "reviewer_voice_availability": null, "ai_coverage": 4, "partner_support": 3, "mission_value": 3}, "evidence": {"speakers": "ELEVATION Wave 2", "diaspora_demand": "ELEVATION Wave 2", "reviewer_voice_availability": "EXT-13 roster empty", "ai_coverage": "Chirp Sotho listed stack doc", "partner_support": "Wits listed §6.4", "mission_value": "Southern Africa"}},
+    {"language_id": "tn", "name": "Setswana", "scores": {"speakers": 4, "diaspora_demand": 2, "reviewer_voice_availability": null, "ai_coverage": 3, "partner_support": 3, "mission_value": 3}, "evidence": {"speakers": "ELEVATION Wave 2", "diaspora_demand": "ELEVATION Wave 2", "reviewer_voice_availability": "EXT-13 roster empty", "ai_coverage": "MADLAD long tail", "partner_support": "Partner list §6.4", "mission_value": "Southern Africa"}},
+    {"language_id": "ny", "name": "Chichewa/Nyanja", "scores": {"speakers": 4, "diaspora_demand": 2, "reviewer_voice_availability": null, "ai_coverage": 3, "partner_support": 3, "mission_value": 3}, "evidence": {"speakers": "ELEVATION Wave 2", "diaspora_demand": "ELEVATION Wave 2", "reviewer_voice_availability": "EXT-13 roster empty", "ai_coverage": "MADLAD long tail", "partner_support": "Partner list §6.4", "mission_value": "Southern Africa"}},
+    {"language_id": "mg", "name": "Malagasy", "scores": {"speakers": 4, "diaspora_demand": 2, "reviewer_voice_availability": null, "ai_coverage": 3, "partner_support": 2, "mission_value": 4}, "evidence": {"speakers": "ELEVATION Wave 2", "diaspora_demand": "ELEVATION Wave 2", "reviewer_voice_availability": "EXT-13 roster empty", "ai_coverage": "MADLAD long tail", "partner_support": "Partner list §6.4", "mission_value": "Indian Ocean Africa"}}
+  ],
+  "wave_3": [
+    {"language_id": "ti", "name": "Tigrinya", "scores": {"speakers": 4, "diaspora_demand": 4, "reviewer_voice_availability": null, "ai_coverage": 3, "partner_support": 3, "mission_value": 4}, "evidence": {"speakers": "ELEVATION Wave 3", "ai_coverage": "MADLAD long tail"}},
+    {"language_id": "ee", "name": "Ewe", "scores": {"speakers": 3, "diaspora_demand": 2, "reviewer_voice_availability": null, "ai_coverage": 3, "partner_support": 3, "mission_value": 4}, "evidence": {"speakers": "ELEVATION Wave 3"}},
+    {"language_id": "fon", "name": "Fon", "scores": {"speakers": 2, "diaspora_demand": 1, "reviewer_voice_availability": null, "ai_coverage": 2, "partner_support": 2, "mission_value": 5}, "evidence": {"mission_value": "Smaller language; ELEVATION Wave 3"}},
+    {"language_id": "ff", "name": "Fula/Fulfulde", "scripts": ["Latn", "Adlm"], "scores": {"speakers": 4, "diaspora_demand": 2, "reviewer_voice_availability": null, "ai_coverage": 3, "partner_support": 4, "mission_value": 4}, "evidence": {"partner_support": "Intron Fulani variants noted stack doc"}},
+    {"language_id": "bm", "name": "Bambara", "scripts": ["Latn", "Nkoo"], "scores": {"speakers": 4, "diaspora_demand": 2, "reviewer_voice_availability": null, "ai_coverage": 3, "partner_support": 3, "mission_value": 4}, "evidence": {"speakers": "ELEVATION Wave 3"}},
+    {"language_id": "kg", "name": "Kikongo", "scores": {"speakers": 3, "diaspora_demand": 2, "reviewer_voice_availability": null, "ai_coverage": 2, "partner_support": 3, "mission_value": 4}, "evidence": {"speakers": "ELEVATION Wave 3"}},
+    {"language_id": "ki", "name": "Kikuyu", "scores": {"speakers": 4, "diaspora_demand": 2, "reviewer_voice_availability": null, "ai_coverage": 3, "partner_support": 3, "mission_value": 4}, "evidence": {"speakers": "ELEVATION Wave 3"}},
+    {"language_id": "luo", "name": "Dholuo", "scores": {"speakers": 3, "diaspora_demand": 2, "reviewer_voice_availability": null, "ai_coverage": 2, "partner_support": 3, "mission_value": 4}, "evidence": {"speakers": "ELEVATION Wave 3"}},
+    {"language_id": "rn", "name": "Kirundi", "scores": {"speakers": 3, "diaspora_demand": 2, "reviewer_voice_availability": null, "ai_coverage": 2, "partner_support": 3, "mission_value": 4}, "evidence": {"speakers": "ELEVATION Wave 3"}},
+    {"language_id": "tzm", "name": "Tamazight", "scripts": ["Tfng", "Latn"], "scores": {"speakers": 4, "diaspora_demand": 3, "reviewer_voice_availability": null, "ai_coverage": 2, "partner_support": 3, "mission_value": 5}, "evidence": {"mission_value": "Script tracks §6.4"}},
+    {"language_id": "gaa", "name": "Ga", "scores": {"speakers": 2, "diaspora_demand": 2, "reviewer_voice_availability": null, "ai_coverage": 2, "partner_support": 2, "mission_value": 4}, "evidence": {"speakers": "ELEVATION Wave 3"}},
+    {"language_id": "efi", "name": "Efik/Ibibio", "scores": {"speakers": 3, "diaspora_demand": 2, "reviewer_voice_availability": null, "ai_coverage": 2, "partner_support": 3, "mission_value": 4}, "evidence": {"speakers": "ELEVATION Wave 3"}},
+    {"language_id": "tiv", "name": "Tiv", "scores": {"speakers": 3, "diaspora_demand": 1, "reviewer_voice_availability": null, "ai_coverage": 2, "partner_support": 2, "mission_value": 4}, "evidence": {"speakers": "ELEVATION Wave 3"}},
+    {"language_id": "kr", "name": "Kanuri", "scores": {"speakers": 3, "diaspora_demand": 1, "reviewer_voice_availability": null, "ai_coverage": 2, "partner_support": 2, "mission_value": 4}, "evidence": {"speakers": "ELEVATION Wave 3"}},
+    {"language_id": "bin", "name": "Edo (Bini)", "scores": {"speakers": 2, "diaspora_demand": 2, "reviewer_voice_availability": null, "ai_coverage": 2, "partner_support": 2, "mission_value": 4}, "evidence": {"speakers": "ELEVATION Wave 3"}},
+    {"language_id": "sg", "name": "Sango", "scores": {"speakers": 2, "diaspora_demand": 1, "reviewer_voice_availability": null, "ai_coverage": 2, "partner_support": 2, "mission_value": 4}, "evidence": {"speakers": "ELEVATION Wave 3"}},
+    {"language_id": "kri", "name": "Krio", "scores": {"speakers": 2, "diaspora_demand": 2, "reviewer_voice_availability": null, "ai_coverage": 3, "partner_support": 3, "mission_value": 4}, "evidence": {"speakers": "ELEVATION Wave 3"}},
+    {"language_id": "kea", "name": "Cape Verdean Kriolu", "scores": {"speakers": 2, "diaspora_demand": 3, "reviewer_voice_availability": null, "ai_coverage": 2, "partner_support": 2, "mission_value": 4}, "evidence": {"diaspora_demand": "ELEVATION Wave 3"}},
+    {"language_id": "nso", "name": "Sepedi (Northern Sotho)", "scores": {"speakers": 3, "diaspora_demand": 2, "reviewer_voice_availability": null, "ai_coverage": 3, "partner_support": 3, "mission_value": 3}, "evidence": {"speakers": "ELEVATION Wave 3"}},
+    {"language_id": "ts", "name": "Xitsonga", "scores": {"speakers": 3, "diaspora_demand": 1, "reviewer_voice_availability": null, "ai_coverage": 2, "partner_support": 2, "mission_value": 3}, "evidence": {"speakers": "ELEVATION Wave 3"}},
+    {"language_id": "ve", "name": "Tshivenda", "scores": {"speakers": 2, "diaspora_demand": 1, "reviewer_voice_availability": null, "ai_coverage": 2, "partner_support": 2, "mission_value": 3}, "evidence": {"speakers": "ELEVATION Wave 3"}},
+    {"language_id": "ss", "name": "siSwati", "scores": {"speakers": 2, "diaspora_demand": 1, "reviewer_voice_availability": null, "ai_coverage": 2, "partner_support": 2, "mission_value": 3}, "evidence": {"speakers": "ELEVATION Wave 3"}},
+    {"language_id": "nr", "name": "isiNdebele", "scores": {"speakers": 2, "diaspora_demand": 1, "reviewer_voice_availability": null, "ai_coverage": 2, "partner_support": 2, "mission_value": 3}, "evidence": {"speakers": "ELEVATION Wave 3"}},
+    {"language_id": "kam", "name": "Kamba", "scores": {"speakers": 2, "diaspora_demand": 1, "reviewer_voice_availability": null, "ai_coverage": 2, "partner_support": 2, "mission_value": 4}, "evidence": {"speakers": "ELEVATION Wave 3"}},
+    {"language_id": "mfe", "name": "Mauritian Creole", "scores": {"speakers": 2, "diaspora_demand": 2, "reviewer_voice_availability": null, "ai_coverage": 2, "partner_support": 2, "mission_value": 3}, "evidence": {"speakers": "ELEVATION Wave 3"}}
+  ]
+}

@@ -1,0 +1,177 @@
+{
+  "language": "sw",
+  "patterns": [
+    {
+      "id": "sw.pat.present-na",
+      "description_l1": "Infix -na- marks present progressive or habitual action on the verb stem",
+      "form": "Subject prefix + -na- + verb stem",
+      "examples": [
+        "Ninaenda shuleni",
+        "Anasoma kitabu",
+        "Wanakula chakula"
+      ],
+      "contrasts": [
+        "Nilienda shuleni (past)",
+        "Nitaenda shuleni (future)",
+        "Nimeenda shuleni (already gone)"
+      ],
+      "common_errors": [
+        "Omitting -na- and using the bare stem for ongoing actions",
+        "Confusing present -na- with perfect -me- after the subject prefix"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T21:00:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "FSI Swahili Basic Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:fsi-swahili; CURRICULUM.md#§4:L565",
+            "retrieved_at": "2026-10-26T21:00:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:fsi-swahili"
+        }
+      ],
+      "confidence": 0.92,
+      "risk_tags": ["grammar_explanation"],
+      "audio": []
+    },
+    {
+      "id": "sw.pat.past-li",
+      "description_l1": "Infix -li- marks a completed action in the past tense",
+      "form": "Subject prefix + -li- + verb stem",
+      "examples": [
+        "Nilienda sokoni",
+        "Alisoma gazeti",
+        "Tulikula jioni"
+      ],
+      "contrasts": [
+        "Ninaenda sokoni (present)",
+        "Nitaenda sokoni (future)",
+        "Nimeenda sokoni (perfect, result still relevant)"
+      ],
+      "common_errors": [
+        "Using -li- for future events instead of -ta-",
+        "Dropping -li- and relying only on a time adverb for past reference"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T21:00:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "FSI Swahili Basic Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:fsi-swahili; CURRICULUM.md#§4:L565",
+            "retrieved_at": "2026-10-26T21:00:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:fsi-swahili"
+        }
+      ],
+      "confidence": 0.92,
+      "risk_tags": ["grammar_explanation"],
+      "audio": []
+    },
+    {
+      "id": "sw.pat.future-ta",
+      "description_l1": "Infix -ta- marks a future or intended action",
+      "form": "Subject prefix + -ta- + verb stem",
+      "examples": [
+        "Nitaenda kesho",
+        "Atakuja baadaye",
+        "Tutasoma kesho asubuhi"
+      ],
+      "contrasts": [
+        "Ninaenda kesho (present progressive, not strictly future)",
+        "Nilienda jana (past)",
+        "Nimeenda tayari (already done)"
+      ],
+      "common_errors": [
+        "Using -na- alone with kesho instead of -ta- for a definite future plan",
+        "Placing time words without the -ta- infix when future reference is required"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T21:00:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "FSI Swahili Basic Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:fsi-swahili; CURRICULUM.md#§4:L565",
+            "retrieved_at": "2026-10-26T21:00:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:fsi-swahili"
+        }
+      ],
+      "confidence": 0.92,
+      "risk_tags": ["grammar_explanation"],
+      "audio": []
+    },
+    {
+      "id": "sw.pat.perfect-me",
+      "description_l1": "Infix -me- marks the perfect: an action completed with present relevance",
+      "form": "Subject prefix + -me- + verb stem",
+      "examples": [
+        "Nimefika",
+        "Amekula",
+        "Tumemaliza kazi"
+      ],
+      "contrasts": [
+        "Nilifika jana (past narrative, -li-)",
+        "Ninafika (still arriving, -na-)",
+        "Nitafika kesho (future, -ta-)"
+      ],
+      "common_errors": [
+        "Using -me- for distant past narratives better expressed with -li-",
+        "Confusing perfect -me- with English simple past without present relevance"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T21:00:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "FSI Swahili Basic Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:fsi-swahili; CURRICULUM.md#§4:L565",
+            "retrieved_at": "2026-10-26T21:00:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:fsi-swahili"
+        }
+      ],
+      "confidence": 0.92,
+      "risk_tags": ["grammar_explanation"],
+      "audio": []
+    }
+  ]
+}

@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 class DeleteAccountDialog extends StatelessWidget {
   const DeleteAccountDialog({super.key});
@@ -23,9 +24,9 @@ class DeleteAccountDialog extends StatelessWidget {
               shape: BoxShape.circle,
               color: Theme.of(context).colorScheme.surface,
             ),
-            child: Icon(Icons.close, color: PanAfricanColors.error, size: 0.2.sw),
+            child: Icon(Icons.close, color: context.panError, size: 0.2.sw),
           ),
-          "Are you sure you want to DELETE account?"
+          l10nOf(context).shellAreYouSureYouWantToecc5
               .text
               .center
               .xl2
@@ -34,7 +35,7 @@ class DeleteAccountDialog extends StatelessWidget {
               .pSymmetric(h: 0.15.sw, v: 24),
           PanAfricanButton(
             width: 0.5.sw,
-            label: "No",
+            label: l10nOf(context).shellNo,
             isOutlined: true,
             backgroundColor: PanAfricanColors.primary,
             foregroundColor: PanAfricanColors.primary,
@@ -45,8 +46,8 @@ class DeleteAccountDialog extends StatelessWidget {
           16.heightBox,
           PanAfricanButton(
             width: 0.5.sw,
-            label: "Yes",
-            backgroundColor: PanAfricanColors.error,
+            label: l10nOf(context).shellYes,
+            backgroundColor: context.panError,
             foregroundColor: Theme.of(context).colorScheme.onPrimary,
             onPressed: () {
               Navigator.of(context).pop(true);
@@ -60,7 +61,7 @@ class DeleteAccountDialog extends StatelessWidget {
   static Future showDeleteAccountDialog(BuildContext context) async {
     return await showDialog(
       context: context,
-      barrierColor: Theme.of(context).colorScheme.scrim.withOpacity(0.85),
+      barrierColor: Theme.of(context).colorScheme.scrim.withValues(alpha: 0.85),
       builder: (context) => const DeleteAccountDialog(),
     );
   }
@@ -75,19 +76,19 @@ class EnterPasswordDialog extends HookConsumerWidget {
     return Material(
       color: Colors.transparent,
       child: CupertinoAlertDialog(
-        title: const Text('Confirmation'),
+        title: Text(l10nOf(context).shellConfirmation),
         content: CupertinoTextField(
           controller: controller,
-          placeholder: 'Enter Current Password',
+          placeholder: l10nOf(context).shellEnterCurrentPassword,
           obscureText: true,
         ).pOnly(top: 24),
         actions: <Widget>[
           CupertinoDialogAction(
-            child: const Text("Cancel"),
+            child: Text(l10nOf(context).shellCancel),
             onPressed: () => Navigator.pop(context),
           ),
           CupertinoDialogAction(
-            child: const Text('Delete Now'),
+            child: Text(l10nOf(context).shellDeleteNow),
             onPressed: () => Navigator.pop(context, controller.text),
           ),
         ],
@@ -98,7 +99,7 @@ class EnterPasswordDialog extends HookConsumerWidget {
   static Future show(BuildContext context) async {
     return await showDialog(
       context: context,
-      barrierColor: Theme.of(context).colorScheme.scrim.withOpacity(0.85),
+      barrierColor: Theme.of(context).colorScheme.scrim.withValues(alpha: 0.85),
       builder: (context) => const EnterPasswordDialog(),
     );
   }

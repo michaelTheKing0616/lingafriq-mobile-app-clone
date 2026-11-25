@@ -1,0 +1,1105 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
+import 'package:lingafriq/screens/classroom/class_code_join_sheet.dart';
+import 'package:lingafriq/screens/classroom/classroom_student_requests_screen.dart';
+import 'package:lingafriq/screens/guardian/child_messages_screen.dart';
+import 'package:lingafriq/screens/guardian/family_tools_section.dart';
+import 'package:lingafriq/services/guarded_messaging_service.dart';
+
+import '../compliance/golden_kit.dart';
+import 'fake_guarded.dart';
+
+const _threads = 'GET /api/v2/guardian/children/7/dm-threads';
+const _requests = 'GET /api/v2/classroom/guarded/t1/pending-students';
+const _join = 'POST /api/tribes/classrooms/join';
+const _preview = 'POST /api/tribes/classrooms/preview';
+
+/// French variant: at least one fr golden per screen.
+const _fr = GoldenVariant('fr_390', Size(390, 844), locale: Locale('fr'));
+
+void main() {
+  setUpAll(() => loadComplianceFonts('test/guarded/guarded_screens_test.dart'));
+  final base = goldenVariants.first;
+
+  group('guardian: who is messaging my child', () {
+    testWidgets('shows peers, roles, counts and flags; never message text', (
+      t,
+    ) async {
+      final f = FakeGuarded({
+        _threads: const GuardedResponse(200, threadsJson),
+      });
+      await pumpVariant(
+        t,
+        base,
+        GuardianChildMessagesScreen(childUserId: 7, service: f.service),
+      );
+      expect(find.text('Mrs Adebayo'), findsOneWidget);
+      expect(find.text('Teacher'), findsOneWidget);
+      expect(find.text('14 messages'), findsOneWidget);
+      expect(find.text('1 report'), findsOneWidget);
+      expect(find.text('2 messages stopped by safety checks'), findsOneWidget);
+      expect(
+        find.text('1 photo or voice note waiting for a moderator'),
+        findsOneWidget,
+      );
+      expect(find.textContaining('waiting for a moderator'), findsOneWidget);
+      expect(find.text('Unknown user'), findsOneWidget);
+      expect(find.text('Messages stopped'), findsOneWidget);
+      expect(f.calls.single.path, '/api/v2/guardian/children/7/dm-threads');
+    });
+
+    testWidgets('stop asks first, then posts revoke-peer and flips to allow', (
+      t,
+    ) async {
+      final f = FakeGuarded({
+        _threads: const GuardedResponse(200, threadsJson),
+        'POST /api/v2/guardian/children/7/revoke-peer': const GuardedResponse(
+          200,
+          {'ok': true},
+        ),
+      });
+      await pumpVariant(
+        t,
+        base,
+        GuardianChildMessagesScreen(childUserId: 7, service: f.service),
+      );
+      await t.tap(find.byKey(const ValueKey('gdm-stop-11')));
+      await t.pumpAndSettle();
+      expect(find.text('Stop messages from Mrs Adebayo?'), findsOneWidget);
+      await t.tap(find.text('Cancel'));
+      await t.pumpAndSettle();
+      expect(f.calls.length, 1);
+      await t.tap(find.byKey(const ValueKey('gdm-stop-11')));
+      await t.pumpAndSettle();
+      await t.tap(find.byKey(const ValueKey('gdm-confirm-stop')));
+      await t.pumpAndSettle();
+      expect(f.calls.last.path, '/api/v2/guardian/children/7/revoke-peer');
+      expect(f.calls.last.data, {'peer_user_id': 11});
+      expect(find.byKey(const ValueKey('gdm-allow-11')), findsOneWidget);
+    });
+
+    testWidgets('Stop shows a 10 s Undo that restores the contact', (t) async {
+      final f = FakeGuarded({
+        _threads: const GuardedResponse(200, threadsJson),
+        'POST /api/v2/guardian/children/7/revoke-peer': const GuardedResponse(
+          200,
+          {'ok': true},
+        ),
+        'POST /api/v2/guardian/children/7/restore-peer': const GuardedResponse(
+          200,
+          {'ok': true},
+        ),
+      });
+      await pumpVariant(
+        t,
+        base,
+        GuardianChildMessagesScreen(childUserId: 7, service: f.service),
+      );
+      await t.tap(find.byKey(const ValueKey('gdm-stop-11')));
+      await t.pumpAndSettle();
+      await t.tap(find.byKey(const ValueKey('gdm-confirm-stop')));
+      await t.pumpAndSettle();
+      final snack = t.widget<SnackBar>(
+        find.byKey(const ValueKey('gdm-undo-snack')),
+      );
+      expect(snack.duration, const Duration(seconds: 10));
+      await t.tap(find.byKey(const ValueKey('gdm-undo')));
+      await t.pumpAndSettle();
+      expect(f.calls.last.path, '/api/v2/guardian/children/7/restore-peer');
+      expect(find.byKey(const ValueKey('gdm-stop-11')), findsOneWidget);
+    });
+
+    testWidgets('filters: New · Stopped · Media waiting', (t) async {
+      final f = FakeGuarded({
+        _threads: const GuardedResponse(200, threadsJson),
+      });
+      await pumpVariant(
+        t,
+        base,
+        GuardianChildMessagesScreen(
+          childUserId: 7,
+          service: f.service,
+          now: () => DateTime.utc(2026, 10, 29),
+        ),
+      );
+      expect(find.text('3 contacts · 1 new this week'), findsOneWidget);
+      Future<void> pick(String f) async {
+        await t.tap(find.byKey(ValueKey('gdm-filter-$f')));
+        await t.pumpAndSettle();
+      }
+
+      await pick('fresh');
+      expect(find.byKey(const ValueKey('gdm-stop-12')), findsOneWidget);
+      expect(find.byKey(const ValueKey('gdm-stop-11')), findsNothing);
+      await pick('stopped');
+      expect(find.byKey(const ValueKey('gdm-allow-13')), findsOneWidget);
+      expect(find.byKey(const ValueKey('gdm-stop-12')), findsNothing);
+      await pick('media');
+      expect(find.byKey(const ValueKey('gdm-stop-12')), findsOneWidget);
+      expect(find.byKey(const ValueKey('gdm-allow-13')), findsNothing);
+      await pick('all');
+      expect(find.byKey(const ValueKey('gdm-stop-11')), findsOneWidget);
+    });
+
+    testWidgets('headline is capped at 160% on 320 + 200% + Arabic', (t) async {
+      final f = FakeGuarded({
+        _threads: const GuardedResponse(200, threadsJson),
+      });
+      await pumpVariant(
+        t,
+        goldenVariants.last,
+        GuardianChildMessagesScreen(
+          childUserId: 7,
+          childName: 'Ada',
+          service: f.service,
+        ),
+      );
+      final title = find.descendant(
+        of: find.byKey(const ValueKey('gdm-title')),
+        matching: find.byType(RichText),
+      );
+      final p = t.renderObject<RenderParagraph>(title);
+      expect(p.textScaler.scale(10), closeTo(16, 0.01));
+      expect(p.didExceedMaxLines, isFalse);
+      expectNoLayoutErrors(t);
+    });
+
+    testWidgets('allow again posts restore-peer without a dialog', (t) async {
+      final f = FakeGuarded({
+        _threads: const GuardedResponse(200, threadsJson),
+        'POST /api/v2/guardian/children/7/restore-peer': const GuardedResponse(
+          200,
+          {'ok': true},
+        ),
+      });
+      await pumpVariant(
+        t,
+        base,
+        GuardianChildMessagesScreen(childUserId: 7, service: f.service),
+      );
+      await t.scrollUntilVisible(
+        find.byKey(const ValueKey('gdm-allow-13')),
+        200,
+      );
+      await t.ensureVisible(find.byKey(const ValueKey('gdm-allow-13')));
+      await t.pumpAndSettle();
+      await t.tap(find.byKey(const ValueKey('gdm-allow-13')));
+      await t.pumpAndSettle();
+      expect(f.calls.last.path, '/api/v2/guardian/children/7/restore-peer');
+      expect(find.byKey(const ValueKey('gdm-stop-13')), findsOneWidget);
+    });
+
+    testWidgets('error offers retry; empty explains who can message', (
+      t,
+    ) async {
+      final f = FakeGuarded({});
+      await pumpVariant(
+        t,
+        base,
+        GuardianChildMessagesScreen(childUserId: 7, service: f.service),
+      );
+      expect(
+        find.text('We could not load messages. Try again.'),
+        findsOneWidget,
+      );
+      f.routes[_threads] = const GuardedResponse(200, {
+        'ok': true,
+        'threads': [],
+      });
+      await t.tap(find.text('Try again'));
+      await t.pumpAndSettle();
+      expect(find.text('No direct messages yet'), findsOneWidget);
+    });
+
+    testWidgets('every Stop button uses the same outlined style', (t) async {
+      final f = FakeGuarded({
+        _threads: const GuardedResponse(200, threadsJson),
+      });
+      await pumpVariant(
+        t,
+        base,
+        GuardianChildMessagesScreen(childUserId: 7, service: f.service),
+      );
+      final stops = find.byWidgetPredicate(
+        (w) =>
+            w.key is ValueKey<String> &&
+            (w.key! as ValueKey<String>).value.startsWith('gdm-stop-'),
+      );
+      expect(stops, findsWidgets);
+      for (final e in stops.evaluate()) {
+        expect(e.widget, isA<OutlinedButton>());
+      }
+      expect(find.byType(FilledButton), findsNothing);
+    });
+
+    final stateCases = <String, GuardedResponse?>{
+      'loading': null,
+      'error': const GuardedResponse(500, {}),
+      'empty': const GuardedResponse(200, {'ok': true, 'threads': []}),
+    };
+    for (final v in [goldenVariants.first, goldenVariants.last]) {
+      stateCases.forEach((state, r) {
+        testWidgets('golden $state ${v.name}', (t) async {
+          final f = FakeGuarded({if (r != null) _threads: r});
+          final service = r == null
+              ? GuardedMessagingService(
+                  request: (m, p, {data}) =>
+                      Completer<GuardedResponse>().future,
+                )
+              : f.service;
+          await pumpVariant(
+            t,
+            v,
+            GuardianChildMessagesScreen(childUserId: 7, service: service),
+            settle: r != null,
+          );
+          if (r == null) await t.pump(const Duration(milliseconds: 100));
+          expectNoLayoutErrors(t);
+          await expectLater(
+            find.byType(GuardianChildMessagesScreen),
+            matchesGoldenFile('goldens/child_messages_${state}_${v.name}.png'),
+          );
+        });
+      });
+    }
+
+    for (final v in [...goldenVariants, _fr]) {
+      testWidgets('golden ${v.name}', (t) async {
+        final f = FakeGuarded({
+          _threads: const GuardedResponse(200, threadsJson),
+        });
+        await pumpVariant(
+          t,
+          v,
+          GuardianChildMessagesScreen(
+            childUserId: 7,
+            service: f.service,
+            now: () => DateTime.utc(2026, 10, 29),
+          ),
+        );
+        expectNoLayoutErrors(t);
+        await expectLater(
+          find.byType(GuardianChildMessagesScreen),
+          matchesGoldenFile('goldens/child_messages_${v.name}.png'),
+        );
+      });
+    }
+  });
+
+  group('class code sheet', () {
+    Future<FakeGuarded> pumpSheet(
+      WidgetTester t,
+      GuardedResponse r, {
+      GoldenVariant? v,
+    }) async {
+      final f = FakeGuarded({_join: r});
+      await pumpVariant(
+        t,
+        v ?? base,
+        Scaffold(body: _AsSheet(ClassCodeJoinSheet(service: f.service))),
+      );
+      return f;
+    }
+
+    testWidgets('has a drag handle and a close button that pops', (t) async {
+      final f = FakeGuarded({});
+      await pumpVariant(
+        t,
+        base,
+        Builder(
+          builder: (ctx) => Scaffold(
+            body: Center(
+              child: TextButton(
+                onPressed: () =>
+                    ClassCodeJoinSheet.show(ctx, service: f.service),
+                child: const Text('open'),
+              ),
+            ),
+          ),
+        ),
+      );
+      await t.tap(find.text('open'));
+      await t.pumpAndSettle();
+      expect(find.byKey(const ValueKey('gcc-handle')), findsOneWidget);
+      await t.tap(find.byKey(const ValueKey('gcc-close')));
+      await t.pumpAndSettle();
+      expect(find.byType(ClassCodeJoinSheet), findsNothing);
+    });
+
+    testWidgets('guardian link error offers Family hub', (t) async {
+      final f = FakeGuarded({
+        _join: const GuardedResponse(403, {'code': 'guardian_link_required'}),
+      });
+      final pushed = <String?>[];
+      await t.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          onGenerateRoute: (s) {
+            pushed.add(s.name);
+            return MaterialPageRoute<void>(
+              settings: s,
+              builder: (_) => s.name == '/'
+                  ? Scaffold(body: ClassCodeJoinSheet(service: f.service))
+                  : const Scaffold(body: Text('hub')),
+            );
+          },
+        ),
+      );
+      await t.enterText(find.byKey(const ValueKey('gcc-field')), 'ABC123');
+      await t.pump();
+      await t.tap(find.byKey(const ValueKey('gcc-submit')));
+      await t.pumpAndSettle();
+      expect(find.byKey(const ValueKey('gcc-family-hub')), findsOneWidget);
+      await t.tap(find.byKey(const ValueKey('gcc-family-hub')));
+      await t.pumpAndSettle();
+      expect(pushed.last, '/family-hub');
+      expect(find.text('hub'), findsOneWidget);
+    });
+
+    testWidgets('other errors do not show the Family hub button', (t) async {
+      await pumpSheet(t, const GuardedResponse(404, {}));
+      await t.enterText(find.byKey(const ValueKey('gcc-field')), 'ABC123');
+      await t.pump();
+      await t.tap(find.byKey(const ValueKey('gcc-submit')));
+      await t.pumpAndSettle();
+      expect(find.byKey(const ValueKey('gcc-family-hub')), findsNothing);
+    });
+
+    testWidgets('202 shows waiting for guardian', (t) async {
+      final f = await pumpSheet(
+        t,
+        const GuardedResponse(202, {'status': 'pending'}),
+      );
+      await t.enterText(find.byKey(const ValueKey('gcc-field')), ' yor201 ');
+      await t.pump();
+      await t.tap(find.byKey(const ValueKey('gcc-submit')));
+      await t.pumpAndSettle();
+      expect(f.calls.last.data, {'code': 'YOR201'});
+      expect(find.byKey(const ValueKey('gcc-waiting')), findsOneWidget);
+      expect(find.text('Waiting for your guardian'), findsOneWidget);
+    });
+
+    testWidgets('201 shows joined and calls onJoined', (t) async {
+      var joined = 0;
+      final f = FakeGuarded({_join: const GuardedResponse(201, {})});
+      await pumpVariant(
+        t,
+        base,
+        Scaffold(
+          body: ClassCodeJoinSheet(
+            service: f.service,
+            onJoined: () => joined++,
+          ),
+        ),
+      );
+      await t.enterText(find.byKey(const ValueKey('gcc-field')), 'ABC123');
+      await t.pump();
+      await t.tap(find.byKey(const ValueKey('gcc-submit')));
+      await t.pumpAndSettle();
+      expect(find.byKey(const ValueKey('gcc-joined')), findsOneWidget);
+      expect(joined, 1);
+    });
+
+    final cases = <String, (GuardedResponse, String)>{
+      'link': (
+        const GuardedResponse(403, {'code': 'guardian_link_required'}),
+        'Ask a parent or guardian to link to your account in Family hub first.',
+      ),
+      'age': (
+        const GuardedResponse(403, {'code': 'age_verification_required'}),
+        'Confirm your age in settings before joining a class.',
+      ),
+      'notfound': (
+        const GuardedResponse(404, {}),
+        'No class has that code. Check it with your teacher.',
+      ),
+      'member': (
+        const GuardedResponse(409, {}),
+        'You are already in this class.',
+      ),
+      'error': (
+        const GuardedResponse(0, {}),
+        'Could not join right now. Try again.',
+      ),
+    };
+    cases.forEach((name, c) {
+      testWidgets('refusal $name shows clear copy', (t) async {
+        await pumpSheet(t, c.$1);
+        await t.enterText(find.byKey(const ValueKey('gcc-field')), 'ABC123');
+        await t.pump();
+        await t.tap(find.byKey(const ValueKey('gcc-submit')));
+        await t.pumpAndSettle();
+        expect(find.text(c.$2), findsOneWidget);
+      });
+    });
+
+    const previewOk = GuardedResponse(200, {
+      'ok': true,
+      'class_name': 'JSS2 Yoruba',
+      'teacher_name': 'Mrs Adebayo',
+      'member_count': 24,
+      'language_tag': 'yo',
+      'is_member': false,
+    });
+
+    Future<FakeGuarded> pumpPreview(
+      WidgetTester t,
+      GuardedResponse preview, {
+      GoldenVariant? v,
+    }) async {
+      final f = FakeGuarded({
+        _preview: preview,
+        _join: const GuardedResponse(201, {'class_name': 'JSS2 Yoruba'}),
+      });
+      await pumpVariant(
+        t,
+        v ?? base,
+        Scaffold(body: _AsSheet(ClassCodeJoinSheet(service: f.service))),
+      );
+      await t.enterText(find.byKey(const ValueKey('gcc-field')), 'yor2k7qa');
+      await t.pump();
+      await t.tap(find.byKey(const ValueKey('gcc-submit')));
+      await t.pumpAndSettle();
+      return f;
+    }
+
+    testWidgets('shows the class before joining, then joins', (t) async {
+      final f = await pumpPreview(t, previewOk);
+      expect(f.calls.single.path, '/api/tribes/classrooms/preview');
+      expect(f.calls.single.data, {'code': 'YOR2K7QA'});
+      expect(find.byKey(const ValueKey('gcc-preview')), findsOneWidget);
+      expect(find.text('JSS2 Yoruba'), findsOneWidget);
+      expect(find.text('Teacher: Mrs Adebayo'), findsOneWidget);
+      expect(find.text('24 learners'), findsOneWidget);
+      await t.tap(find.byKey(const ValueKey('gcc-join')));
+      await t.pumpAndSettle();
+      expect(f.calls.last.path, '/api/tribes/classrooms/join');
+      expect(find.byKey(const ValueKey('gcc-joined')), findsOneWidget);
+    });
+
+    testWidgets('preview hides a withheld teacher name', (t) async {
+      await pumpPreview(
+        t,
+        const GuardedResponse(200, {
+          'ok': true,
+          'class_name': 'Study group',
+          'teacher_name': null,
+          'member_count': 1,
+        }),
+      );
+      expect(find.textContaining('Teacher'), findsNothing);
+      expect(find.text('1 learner'), findsOneWidget);
+    });
+
+    testWidgets('"Use a different code" goes back to the field', (t) async {
+      final f = await pumpPreview(t, previewOk);
+      await t.tap(find.byKey(const ValueKey('gcc-change')));
+      await t.pumpAndSettle();
+      expect(find.byKey(const ValueKey('gcc-preview')), findsNothing);
+      expect(find.byKey(const ValueKey('gcc-field')), findsOneWidget);
+      expect(f.calls, hasLength(1));
+    });
+
+    testWidgets('unknown code from preview never calls join', (t) async {
+      final f = await pumpPreview(
+        t,
+        const GuardedResponse(404, {
+          'ok': false,
+          'code': 'classroom_not_found',
+        }),
+      );
+      expect(
+        find.text('No class has that code. Check it with your teacher.'),
+        findsOneWidget,
+      );
+      expect(
+        f.calls.map((c) => c.path),
+        isNot(contains(_join.split(' ').last)),
+      );
+    });
+
+    testWidgets('already a member is said before joining', (t) async {
+      await pumpPreview(
+        t,
+        const GuardedResponse(200, {
+          'ok': true,
+          'class_name': 'JSS2 Yoruba',
+          'member_count': 3,
+          'is_member': true,
+        }),
+      );
+      expect(find.text('You are already in this class.'), findsOneWidget);
+    });
+
+    testWidgets('hint and 8-character code fit at 320 + 200% + Arabic', (
+      t,
+    ) async {
+      await pumpSheet(
+        t,
+        const GuardedResponse(201, {}),
+        v: goldenVariants.last,
+      );
+      final hint = t.renderObject<RenderParagraph>(find.text('ABC123'));
+      expect(hint.didExceedMaxLines, isFalse);
+      expect(
+        hint.getMaxIntrinsicWidth(double.infinity),
+        lessThanOrEqualTo(hint.size.width + 0.5),
+      );
+      await t.enterText(find.byKey(const ValueKey('gcc-field')), 'ABCD1234');
+      await t.pump();
+      expectNoLayoutErrors(t);
+    });
+
+    FilledButton submit(WidgetTester t) =>
+        t.widget<FilledButton>(find.byKey(const ValueKey('gcc-submit')));
+
+    testWidgets('Join stays disabled until the code is valid', (t) async {
+      final f = await pumpSheet(t, const GuardedResponse(201, {}));
+      expect(submit(t).onPressed, isNull);
+      await t.tap(find.byKey(const ValueKey('gcc-submit')));
+      await t.pumpAndSettle();
+      expect(f.calls, isEmpty);
+      for (final bad in ['AB', 'a b', '!!', '-']) {
+        await t.enterText(find.byKey(const ValueKey('gcc-field')), bad);
+        await t.pump();
+        expect(submit(t).onPressed, isNull, reason: bad);
+      }
+      // The field sanitises as you type: drops symbols/spaces, uppercases,
+      // and caps length at 16.
+      String fieldText() => t
+          .widget<TextField>(find.byKey(const ValueKey('gcc-field')))
+          .controller!
+          .text;
+      await t.enterText(find.byKey(const ValueKey('gcc-field')), 'abc!2 3');
+      await t.pump();
+      expect(fieldText(), 'ABC23');
+      await t.enterText(find.byKey(const ValueKey('gcc-field')), 'A' * 17);
+      await t.pump();
+      expect(fieldText().length, 16);
+      await t.enterText(find.byKey(const ValueKey('gcc-field')), 'yor-201');
+      await t.pump();
+      expect(submit(t).onPressed, isNotNull);
+    });
+
+    testWidgets('guardian guidance is calm info, not a field error', (t) async {
+      await pumpSheet(
+        t,
+        const GuardedResponse(403, {'code': 'guardian_link_required'}),
+      );
+      await t.enterText(find.byKey(const ValueKey('gcc-field')), 'YOR201');
+      await t.pump();
+      await t.tap(find.byKey(const ValueKey('gcc-submit')));
+      await t.pumpAndSettle();
+      expect(find.byKey(const ValueKey('gcc-guidance')), findsOneWidget);
+      final field = t.widget<TextField>(
+        find.byKey(const ValueKey('gcc-field')),
+      );
+      expect(field.decoration?.errorText, isNull);
+    });
+
+    testWidgets('joining shows a labelled checking state', (t) async {
+      final pending = Completer<GuardedResponse>();
+      await pumpVariant(
+        t,
+        base,
+        Scaffold(
+          body: _AsSheet(
+            ClassCodeJoinSheet(
+              service: GuardedMessagingService(
+                request: (m, p, {data}) => pending.future,
+              ),
+            ),
+          ),
+        ),
+      );
+      await t.enterText(find.byKey(const ValueKey('gcc-field')), 'YOR201');
+      await t.pump();
+      await t.tap(find.byKey(const ValueKey('gcc-submit')));
+      await t.pump();
+      expect(find.byKey(const ValueKey('gcc-checking')), findsOneWidget);
+      expect(find.text('Checking the code…'), findsOneWidget);
+      expect(submit(t).onPressed, isNull);
+      pending.complete(const GuardedResponse(201, {}));
+      await t.pumpAndSettle();
+      expect(find.byKey(const ValueKey('gcc-joined')), findsOneWidget);
+    });
+
+    for (final v in [...goldenVariants, _fr]) {
+      testWidgets('golden preview ${v.name}', (t) async {
+        await pumpPreview(t, previewOk, v: v);
+        expectNoLayoutErrors(t);
+        await expectLater(
+          find.byType(ClassCodeJoinSheet),
+          matchesGoldenFile('goldens/class_code_preview_${v.name}.png'),
+        );
+      });
+    }
+
+    for (final v in goldenVariants) {
+      testWidgets('golden waiting ${v.name}', (t) async {
+        await pumpSheet(t, const GuardedResponse(202, {}), v: v);
+        await t.enterText(find.byKey(const ValueKey('gcc-field')), 'YOR201');
+        await t.pump();
+        await t.tap(find.byKey(const ValueKey('gcc-submit')));
+        await t.pumpAndSettle();
+        expectNoLayoutErrors(t);
+        await expectLater(
+          find.byType(ClassCodeJoinSheet),
+          matchesGoldenFile('goldens/class_code_waiting_${v.name}.png'),
+        );
+      });
+      testWidgets('golden default ${v.name}', (t) async {
+        await pumpSheet(t, const GuardedResponse(201, {}), v: v);
+        await t.pumpAndSettle();
+        expectNoLayoutErrors(t);
+        await expectLater(
+          find.byType(ClassCodeJoinSheet),
+          matchesGoldenFile('goldens/class_code_default_${v.name}.png'),
+        );
+      });
+      testWidgets('golden joining ${v.name}', (t) async {
+        await pumpVariant(
+          t,
+          v,
+          Scaffold(
+            body: _AsSheet(
+              ClassCodeJoinSheet(
+                service: GuardedMessagingService(
+                  request: (m, p, {data}) =>
+                      Completer<GuardedResponse>().future,
+                ),
+              ),
+            ),
+          ),
+        );
+        await t.enterText(find.byKey(const ValueKey('gcc-field')), 'YOR201');
+        await t.pump();
+        await t.tap(find.byKey(const ValueKey('gcc-submit')));
+        await t.pump(const Duration(milliseconds: 100));
+        expectNoLayoutErrors(t);
+        await expectLater(
+          find.byType(ClassCodeJoinSheet),
+          matchesGoldenFile('goldens/class_code_joining_${v.name}.png'),
+        );
+      });
+      testWidgets('golden success ${v.name}', (t) async {
+        await pumpSheet(
+          t,
+          const GuardedResponse(201, {'class_name': 'JSS2 Yoruba'}),
+          v: v,
+        );
+        await t.enterText(find.byKey(const ValueKey('gcc-field')), 'yor201');
+        await t.pump();
+        expect(find.text('YOR201'), findsOneWidget);
+        await t.tap(find.byKey(const ValueKey('gcc-submit')));
+        await t.pumpAndSettle();
+        expectNoLayoutErrors(t);
+        // The success state names the class the server confirmed.
+        expect(find.textContaining('JSS2 Yoruba'), findsOneWidget);
+        await expectLater(
+          find.byType(ClassCodeJoinSheet),
+          matchesGoldenFile('goldens/class_code_success_${v.name}.png'),
+        );
+      });
+      testWidgets('golden link error ${v.name}', (t) async {
+        await pumpSheet(
+          t,
+          const GuardedResponse(403, {'code': 'guardian_link_required'}),
+          v: v,
+        );
+        await t.enterText(find.byKey(const ValueKey('gcc-field')), 'YOR201');
+        await t.pump();
+        await t.tap(find.byKey(const ValueKey('gcc-submit')));
+        await t.pumpAndSettle();
+        expectNoLayoutErrors(t);
+        await expectLater(
+          find.byType(ClassCodeJoinSheet),
+          matchesGoldenFile('goldens/class_code_link_${v.name}.png'),
+        );
+      });
+    }
+  });
+
+  group('teacher: student requests', () {
+    testWidgets('lists waiting and school students; toggle posts approval', (
+      t,
+    ) async {
+      final f = FakeGuarded({
+        _requests: const GuardedResponse(200, requestsJson),
+        'POST /api/v2/classroom/guarded/t1/students/31/approve-teacher-dm':
+            const GuardedResponse(200, {'ok': true}),
+        'POST /api/v2/classroom/guarded/t1/students/32/revoke-teacher-dm':
+            const GuardedResponse(200, {'ok': true}),
+      });
+      await pumpVariant(
+        t,
+        base,
+        ClassroomStudentRequestsScreen(tribeId: 't1', service: f.service),
+      );
+      expect(find.text('Amara'), findsOneWidget);
+      expect(find.text('Waiting for a guardian'), findsOneWidget);
+      expect(
+        find.text('Locked until the school confirms consent'),
+        findsOneWidget,
+      );
+      // Locked rows keep full-contrast text.
+      final scheme = Theme.of(t.element(find.text('Amara'))).colorScheme;
+      final lockedTitle = t.widget<Text>(
+        find
+            .descendant(
+              of: find.byKey(const ValueKey('gtp-dm-33')),
+              matching: find.byType(Text),
+            )
+            .first,
+      );
+      expect(lockedTitle.style?.color, scheme.onSurface);
+      SwitchListTile sw(int id) =>
+          t.widget<SwitchListTile>(find.byKey(ValueKey('gtp-dm-$id')));
+      expect(sw(31).value, isFalse);
+      expect(sw(32).value, isTrue);
+      expect(sw(33).onChanged, isNull);
+      // Expiry of an existing approval is shown to the teacher.
+      expect(find.textContaining('Messages on until'), findsOneWidget);
+      await t.tap(find.byKey(const ValueKey('gtp-dm-31')));
+      await t.pumpAndSettle();
+      expect(find.byKey(const ValueKey('gtp-dm-confirm')), findsOneWidget);
+      expect(f.calls.where((c) => c.method == 'POST'), isEmpty);
+      await t.tap(find.byKey(const ValueKey('gtp-dm-confirm-yes')));
+      await t.pumpAndSettle();
+      expect(
+        f.calls.last.path,
+        '/api/v2/classroom/guarded/t1/students/31/approve-teacher-dm',
+      );
+      expect(sw(31).value, isTrue);
+      await t.tap(find.byKey(const ValueKey('gtp-dm-32')));
+      await t.pumpAndSettle();
+      await t.tap(find.byKey(const ValueKey('gtp-dm-confirm-yes')));
+      await t.pumpAndSettle();
+      expect(
+        f.calls.last.path,
+        '/api/v2/classroom/guarded/t1/students/32/revoke-teacher-dm',
+      );
+      expect(sw(32).value, isFalse);
+    });
+
+    testWidgets('a failed toggle keeps the old value and says so', (t) async {
+      final f = FakeGuarded({
+        _requests: const GuardedResponse(200, requestsJson),
+      });
+      await pumpVariant(
+        t,
+        base,
+        ClassroomStudentRequestsScreen(tribeId: 't1', service: f.service),
+      );
+      await t.tap(find.byKey(const ValueKey('gtp-dm-31')));
+      await t.pumpAndSettle();
+      await t.tap(find.byKey(const ValueKey('gtp-dm-confirm-yes')));
+      await t.pumpAndSettle();
+      expect(
+        t.widget<SwitchListTile>(find.byKey(const ValueKey('gtp-dm-31'))).value,
+        isFalse,
+      );
+      expect(find.text('That did not work. Try again.'), findsOneWidget);
+    });
+
+    testWidgets('cancelling the confirmation changes nothing', (t) async {
+      final f = FakeGuarded({
+        _requests: const GuardedResponse(200, requestsJson),
+      });
+      await pumpVariant(
+        t,
+        base,
+        ClassroomStudentRequestsScreen(tribeId: 't1', service: f.service),
+      );
+      await t.tap(find.byKey(const ValueKey('gtp-dm-32')));
+      await t.pumpAndSettle();
+      expect(find.textContaining('Turn off messages with'), findsOneWidget);
+      await t.tap(find.text('Cancel'));
+      await t.pumpAndSettle();
+      expect(f.calls.where((c) => c.method == 'POST'), isEmpty);
+      expect(
+        t.widget<SwitchListTile>(find.byKey(const ValueKey('gtp-dm-32'))).value,
+        isTrue,
+      );
+    });
+
+    testWidgets('403 says only the teacher can see requests', (t) async {
+      final f = FakeGuarded({
+        _requests: const GuardedResponse(403, {
+          'code': 'not_classroom_teacher',
+        }),
+      });
+      await pumpVariant(
+        t,
+        base,
+        ClassroomStudentRequestsScreen(tribeId: 't1', service: f.service),
+      );
+      expect(
+        find.text("Only this class's teacher can see requests."),
+        findsOneWidget,
+      );
+      expect(find.text('Try again'), findsNothing);
+    });
+
+    for (final v in [goldenVariants.first, goldenVariants.last]) {
+      testWidgets('loading golden ${v.name}', (t) async {
+        await pumpVariant(
+          t,
+          v,
+          ClassroomStudentRequestsScreen(
+            tribeId: 't1',
+            tribeName: 'Yoruba 201',
+            service: GuardedMessagingService(
+              request: (m, p, {data}) => Completer<GuardedResponse>().future,
+            ),
+          ),
+          settle: false,
+        );
+        await t.pump(const Duration(milliseconds: 100));
+        expect(find.byKey(const ValueKey('gtp-loading')), findsOneWidget);
+        expectNoLayoutErrors(t);
+        await expectLater(
+          find.byType(ClassroomStudentRequestsScreen),
+          matchesGoldenFile('goldens/student_requests_loading_${v.name}.png'),
+        );
+      });
+      testWidgets('error golden ${v.name}', (t) async {
+        final f = FakeGuarded({_requests: const GuardedResponse(500, {})});
+        await pumpVariant(
+          t,
+          v,
+          ClassroomStudentRequestsScreen(
+            tribeId: 't1',
+            tribeName: 'Yoruba 201',
+            service: f.service,
+          ),
+        );
+        expect(find.byKey(const ValueKey('gtp-error')), findsOneWidget);
+        expect(
+          find.descendant(
+            of: find.byKey(const ValueKey('gtp-error')),
+            matching: find.byType(OutlinedButton),
+          ),
+          findsOneWidget,
+        );
+        expectNoLayoutErrors(t);
+        await expectLater(
+          find.byType(ClassroomStudentRequestsScreen),
+          matchesGoldenFile('goldens/student_requests_error_${v.name}.png'),
+        );
+      });
+      testWidgets('empty state golden ${v.name}', (t) async {
+        final f = FakeGuarded({
+          _requests: const GuardedResponse(200, {
+            'ok': true,
+            'waiting_for_guardian': [],
+            'school_students': [],
+          }),
+        });
+        await pumpVariant(
+          t,
+          v,
+          ClassroomStudentRequestsScreen(
+            tribeId: 't1',
+            tribeName: 'Yoruba 201',
+            service: f.service,
+          ),
+        );
+        expect(find.byKey(const ValueKey('gtp-empty')), findsOneWidget);
+        expectNoLayoutErrors(t);
+        await expectLater(
+          find.byType(ClassroomStudentRequestsScreen),
+          matchesGoldenFile('goldens/student_requests_empty_${v.name}.png'),
+        );
+      });
+    }
+
+    testWidgets('long class name wraps instead of truncating', (t) async {
+      final f = FakeGuarded({
+        _requests: const GuardedResponse(200, requestsJson),
+      });
+      await pumpVariant(
+        t,
+        goldenVariants.last,
+        ClassroomStudentRequestsScreen(
+          tribeId: 't1',
+          tribeName: 'Yoruba 201 for the Saturday morning group',
+          service: f.service,
+        ),
+      );
+      final title = find.text('Yoruba 201 for the Saturday morning group');
+      expect(title, findsOneWidget);
+      final para = t.renderObject<RenderParagraph>(title);
+      expect(para.didExceedMaxLines, isFalse);
+      expectNoLayoutErrors(t);
+    });
+
+    for (final v in goldenVariants) {
+      testWidgets('golden ${v.name}', (t) async {
+        final f = FakeGuarded({
+          _requests: const GuardedResponse(200, requestsJson),
+        });
+        await pumpVariant(
+          t,
+          v,
+          ClassroomStudentRequestsScreen(
+            tribeId: 't1',
+            tribeName: 'Yoruba 201',
+            service: f.service,
+          ),
+        );
+        expectNoLayoutErrors(t);
+        await expectLater(
+          find.byType(ClassroomStudentRequestsScreen),
+          matchesGoldenFile('goldens/student_requests_${v.name}.png'),
+        );
+      });
+    }
+  });
+
+  _whoMessagesTests(base);
+
+  group('family hub entries', () {
+    testWidgets('each entry opens its named route', (t) async {
+      final pushed = <(String?, Object?)>[];
+      await t.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          onGenerateRoute: (s) {
+            pushed.add((s.name, s.arguments));
+            return MaterialPageRoute<void>(
+              settings: s,
+              builder: (_) => s.name == '/'
+                  ? const Scaffold(
+                      body: SingleChildScrollView(
+                        child: FamilyToolsSection(
+                          activeChildIds: [7, 9],
+                          childNames: {7: 'Ada'},
+                        ),
+                      ),
+                    )
+                  : const Scaffold(body: Text('dest')),
+            );
+          },
+        ),
+      );
+      await t.pumpAndSettle();
+      Future<void> open(String key) async {
+        await t.tap(find.byKey(ValueKey(key)));
+        await t.pumpAndSettle();
+        Navigator.of(t.element(find.text('dest'))).pop();
+        await t.pumpAndSettle();
+      }
+
+      await open('family-tools-messages-9');
+      await open('family-tools-messages-7');
+      await open('family-tools-approvals');
+      await open('family-tools-guide');
+      await open('family-tools-circles');
+      expect(pushed.skip(1).map((e) => e.$1).toList(), [
+        '/guardian-child-messages',
+        '/guardian-child-messages',
+        '/guardian-approvals',
+        '/guardian-messaging-guide',
+        '/village-circles',
+      ]);
+      expect(pushed[1].$2, {'childUserId': 9});
+      expect(pushed[2].$2, {'childUserId': 7, 'childName': 'Ada'});
+      expect(find.text('Who messages Ada'), findsOneWidget);
+      expect(find.text('Who messages your learner'), findsOneWidget);
+      expect(find.textContaining('#'), findsNothing);
+    });
+  });
+}
+
+/// Renders the sheet the way the modal does: bottom-aligned, sized to content.
+class _AsSheet extends StatelessWidget {
+  const _AsSheet(this.child);
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => Align(
+    alignment: Alignment.bottomCenter,
+    child: Material(
+      color: Theme.of(context).colorScheme.surfaceContainerLow,
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+      child: child,
+    ),
+  );
+}
+
+void _whoMessagesTests(GoldenVariant base) {
+  group('who messages: loading, name and icon scale', () {
+    testWidgets('loading is labelled, not a bare spinner', (t) async {
+      await pumpVariant(
+        t,
+        base,
+        GuardianChildMessagesScreen(
+          childUserId: 7,
+          service: GuardedMessagingService(
+            request: (m, p, {data}) => Completer<GuardedResponse>().future,
+          ),
+        ),
+        settle: false,
+      );
+      await t.pump(const Duration(milliseconds: 100));
+      expect(find.byKey(const ValueKey('gdm-loading')), findsOneWidget);
+      expect(find.byType(CircularProgressIndicator), findsNothing);
+      expect(find.bySemanticsLabel('Loading contacts'), findsOneWidget);
+    });
+
+    testWidgets('title uses the real child name', (t) async {
+      final f = FakeGuarded({
+        _threads: const GuardedResponse(200, threadsJson),
+      });
+      await pumpVariant(
+        t,
+        base,
+        GuardianChildMessagesScreen(
+          childUserId: 7,
+          childName: 'Ada',
+          service: f.service,
+        ),
+      );
+      expect(find.text('Who is messaging Ada'), findsOneWidget);
+    });
+
+    testWidgets('icons grow with text size at 200%', (t) async {
+      Future<double> pillIcon(GoldenVariant v) async {
+        final f = FakeGuarded({
+          _threads: const GuardedResponse(200, threadsJson),
+        });
+        await pumpVariant(
+          t,
+          v,
+          GuardianChildMessagesScreen(childUserId: 7, service: f.service),
+        );
+        return t
+            .widgetList<Icon>(find.byIcon(Icons.chat_bubble_outline))
+            .first
+            .size!;
+      }
+
+      final normal = await pillIcon(base);
+      final big = await pillIcon(
+        goldenVariants.firstWhere((v) => v.name == 'scale200_390'),
+      );
+      expect(big, closeTo(normal * 2, 0.01));
+    });
+  });
+}

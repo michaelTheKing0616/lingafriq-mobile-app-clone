@@ -1,0 +1,79 @@
+charter: v2
+id: P9-928
+kind: build
+title: Escalate to law enforcement and hotlines through the safety lead
+phase: P9
+epic: E-P9-MODERATION
+req_ids:
+- EP-§9.4-20
+- EP-§9.4-21
+- EP-§9.4-22
+- EP-§9.4-23
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+- P9-927
+- P9-931
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 2
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 3, ambiguity 2, coupling 1, depth 0'
+token_budget: 80000
+file_allowlist:
+- node-backend/src/services/moderation/escalation.service.ts
+- docs/safety/ESCALATION_RUNBOOK.md
+context_anchors:
+- ELEVATION.md#§9.4:L1649-L1651
+acceptance_criteria:
+- id: AC1
+  text: Given a confirmed CSAM or imminent-harm case, when the safety lead approves it, then a report package is generated
+    for NCMEC CyberTipline for US-linked content and the configured local equivalent for the user's country
+- id: AC2
+  text: Given an escalation, when created, then it records who approved, when it was submitted, the reference id returned
+    and the evidence retention end date
+- id: AC3
+  text: Given no safety lead is assigned, when a case needs escalation, then the console shows ESCALATION_BLOCKED_NO_SAFETY_LEAD
+    and pages the owner rather than dropping the case
+- id: AC4
+  text: Given the runbook, when read, then it lists each country's hotline and legal contact and is marked unverified until
+    counsel confirms
+test_plan:
+  unit:
+  - report package
+  integration:
+  - case to submission with fake endpoint
+  security:
+  - evidence access log
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- hotline accounts and law-enforcement contacts are external; no EXT entry exists yet
+gate: G9
+external_blockers:
+- EXT-25
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

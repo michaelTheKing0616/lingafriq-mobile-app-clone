@@ -1,0 +1,93 @@
+charter: v2
+id: P11-006
+kind: build
+title: Replace persona blocklist with sensitivity classifier and age tiers
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§8.3-24
+- EP-§8.3-25
+- EP-§8.3-26
+- EP-§8.3-27
+- EP-§8.3-28
+- EP-§8.1-07
+- EP-§8.1-08
+- EP-§8.1-09
+- EP-§8.1-10
+- EP-§8.1-11
+depends_on:
+- E-P1-CONTAINMENT
+- P11-002
+- E-P9-SAFETY
+size: L
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, ambiguity 2, coupling 1, depth 1'
+token_budget: 150000
+file_allowlist:
+- node-backend/src/services/persona/sensitivityPolicy.ts
+- lib/ai/personas/roleplay_safety_filter.dart
+- docs/build/personas/sensitivity_rules.md
+context_anchors:
+- ELEVATION.md#§8.3:L1527-L1530
+- ELEVATION.md#§8.1:L1493-L1497
+acceptance_criteria:
+- id: AC1
+  text: Given the substring blocklist in roleplay_safety_filter, when this card is done, then it is removed and replaced by
+    a classifier-driven policy.
+- id: AC2
+  text: Given questions on Yaa Asantewaa's war, apartheid discrimination or Shaka's military history, when asked, then each
+    is answered historically at the age tier's level and never blocked.
+- id: AC3
+  text: Given the words "skill" or "whatever", when typed, then they never trigger a block (regression test).
+- id: AC4
+  text: Given violence in a source, when discussed, then it is contextualised and never glorified, with a policy table per
+    age tier (under-13, 13-17, adult) written with historians.
+- id: AC5
+  text: Given a slur present in a source, when quoted, then it is not reproduced; the reply paraphrases and adds a note that
+    wording was omitted.
+- id: AC6
+  text: Given classifier failure, when a turn is served, then it fails closed with a typed SensitivityCheckFailed error and
+    a visible retry state.
+test_plan:
+  unit:
+  - age-tier policy table
+  - false-positive regression words
+  integration:
+  - fail-closed path
+  security:
+  - minor tier cannot be downgraded client-side
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - historian-reviewed probe set
+user_facing: false
+ux_spec: null
+tags:
+- enables_persona
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers:
+- EXT-15
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

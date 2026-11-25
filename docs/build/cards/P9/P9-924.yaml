@@ -1,0 +1,76 @@
+charter: v2
+id: P9-924
+kind: build
+title: Match word-boundary-aware moderator lexicons per language
+phase: P9
+epic: E-P9-MODERATION
+req_ids:
+- EP-§9.4-11
+- EP-§9.4-12
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+- P9-921
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 80000
+file_allowlist:
+- node-backend/src/services/moderation/lexicon.engine.ts
+- node-backend/src/services/moderation/lexicons/README.md
+context_anchors:
+- ELEVATION.md#§9.4:L1645-L1646
+acceptance_criteria:
+- id: AC1
+  text: Given the word 'code', when the lexicon contains the Yoruba term 'ode', then the matcher does not flag 'code' because
+    matching respects word boundaries and diacritics-aware normalisation
+- id: AC2
+  text: Given a lexicon entry in a language, when loaded, then it records the curating native moderator, date and category
+    and a lexicon without these fields is rejected
+- id: AC3
+  text: Given a language with no curated lexicon, when text in it is checked, then the lexicon stage returns 'unsure' not
+    'clean'
+- id: AC4
+  text: Given 1,000 messages per second, when matched against all lexicons, then p95 match time stays under 5 ms per message
+test_plan:
+  unit:
+  - boundary cases ode/code
+  - tone-mark normalisation
+  integration:
+  - lexicon hot reload
+  security: []
+  e2e: []
+  perf:
+  - throughput
+  a11y: []
+  content:
+  - lexicon schema audit
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers:
+- EXT-26
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

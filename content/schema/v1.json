@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lingafriq.com/content/schema/v1.json",
+  "title": "LingAfriq content pack v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "items"],
+  "properties": {
+    "schema_version": { "const": "lingafriq.content.v1" },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/record" }
+    }
+  },
+  "$defs": {
+    "record": {
+      "type": "object",
+      "required": ["kind", "id"],
+      "properties": {
+        "kind": { "enum": ["lexeme", "pattern", "dialogue", "exercise", "unit"] },
+        "id": { "type": "string", "minLength": 1 }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "kind": { "const": "lexeme" } },
+            "required": ["kind"]
+          },
+          "then": { "$ref": "#/$defs/lexeme" }
+        },
+        {
+          "if": {
+            "properties": { "kind": { "const": "pattern" } },
+            "required": ["kind"]
+          },
+          "then": { "$ref": "#/$defs/pattern" }
+        },
+        {
+          "if": {
+            "properties": { "kind": { "const": "dialogue" } },
+            "required": ["kind"]
+          },
+          "then": { "$ref": "#/$defs/dialogue" }
+        },
+        {
+          "if": {
+            "properties": { "kind": { "const": "exercise" } },
+            "required": ["kind"]
+          },
+          "then": { "$ref": "#/$defs/exercise" }
+        },
+        {
+          "if": {
+            "properties": { "kind": { "const": "unit" } },
+            "required": ["kind"]
+          },
+          "then": { "$ref": "#/$defs/unit" }
+        }
+      ]
+    },
+    "lexeme": {
+      "type": "object",
+      "required": ["kind", "id", "language", "lemma", "orthography", "senses", "cefr", "provenance", "review"],
+      "properties": {
+        "kind": { "const": "lexeme" },
+        "id": { "type": "string", "minLength": 1 },
+        "language": { "type": "string", "enum": ["yo", "ig", "ha", "tw", "sw", "zu", "xh", "pcm", "am", "so"] },
+        "lemma": { "type": "string", "minLength": 1 },
+        "orthography": { "$ref": "#/$defs/orthography" },
+        "senses": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["gloss_en"],
+            "properties": { "gloss_en": { "type": "string", "minLength": 1 } }
+          }
+        },
+        "cefr": { "enum": ["A1", "A2", "B1", "B2", "C1", "C2"] },
+        "provenance": { "$ref": "#/$defs/provenance" },
+        "review": { "$ref": "#/$defs/review" }
+      }
+    },
+    "orthography": {
+      "type": "object",
+      "required": ["standard", "script"],
+      "properties": {
+        "standard": { "type": "string", "minLength": 1 },
+        "script": { "type": "string", "minLength": 1 }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["author", "source", "licence", "created_at"],
+      "properties": {
+        "author": { "type": "string", "minLength": 1 },
+        "source": { "type": "string", "minLength": 1 },
+        "licence": { "type": "string", "minLength": 1 },
+        "created_at": { "type": "string", "minLength": 1 }
+      }
+    },
+    "review": {
+      "type": "object",
+      "required": ["status", "reviewers", "tone_checked", "audio_checked", "version"],
+      "properties": {
+        "status": { "enum": ["draft", "approved"] },
+        "reviewers": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "tone_checked": { "type": "boolean" },
+        "audio_checked": { "type": "boolean" },
+        "version": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "pattern": {
+      "type": "object",
+      "required": ["kind", "id", "description_l1", "form", "examples", "contrasts", "common_errors", "cefr"],
+      "properties": {
+        "kind": { "const": "pattern" },
+        "id": { "type": "string" },
+        "description_l1": { "type": "string", "minLength": 1 },
+        "form": { "type": "string", "minLength": 1 },
+        "examples": { "type": "array", "items": { "type": "string" } },
+        "contrasts": { "type": "array", "items": { "type": "string" } },
+        "common_errors": { "type": "array", "items": { "type": "string" } },
+        "cefr": { "enum": ["A1", "A2", "B1", "B2", "C1", "C2"] }
+      }
+    },
+    "dialogue": {
+      "type": "object",
+      "required": ["kind", "id", "scene", "roles", "turns", "comprehension_items", "can_do_ids"],
+      "properties": {
+        "kind": { "const": "dialogue" },
+        "id": { "type": "string" },
+        "scene": { "type": "string", "minLength": 1 },
+        "roles": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "turns": { "type": "array", "minItems": 1 },
+        "comprehension_items": { "type": "array" },
+        "can_do_ids": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "exercise": {
+      "type": "object",
+      "required": ["kind", "id", "type", "answer", "skill_tags"],
+      "properties": {
+        "kind": { "const": "exercise" },
+        "id": { "type": "string" },
+        "type": { "type": "string", "minLength": 1 },
+        "answer": { "type": "string", "minLength": 1 },
+        "skill_tags": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "unit": {
+      "type": "object",
+      "required": ["kind", "id", "can_do_ids", "items"],
+      "properties": {
+        "kind": { "const": "unit" },
+        "id": { "type": "string" },
+        "can_do_ids": { "type": "array", "items": { "type": "string" } },
+        "items": { "type": "array" }
+      }
+    }
+  }
+}

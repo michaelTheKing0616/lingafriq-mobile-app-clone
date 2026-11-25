@@ -1,0 +1,98 @@
+charter: v2
+id: P3-052
+kind: build
+title: Enforce minor safety gates in Village
+phase: P3
+epic: E-P3-SHELL
+req_ids:
+- EP-§17.4-03
+- EP-§17.4-10
+- EP-§17.4-11
+- EP-§17.4-12
+- EP-§17.4-13
+- EP-§17.4-14
+depends_on:
+- P3-051
+- P3-042
+- E-P9-SAFETY
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T4
+  justification: 'score 7: minors safety boundary, coupling with server; gate-critical (security / child safety / legal /
+    design direction): Fable reviews'
+token_budget: 60000
+file_allowlist:
+- lib/navigation/minor_gates.dart
+- lib/services/age_band_service.dart
+- test/navigation/minor_gates_test.dart
+context_anchors:
+- ELEVATION.md#§17.4:L2309-L2320
+acceptance_criteria:
+- id: AC1
+  text: Given an under-18 account, when Circles opens, then only guardian-approved contacts are available
+- id: AC2
+  text: Given an under-18 account, when posting to the public feed, then the action is blocked server-side and the app shows
+    a locked state
+- id: AC3
+  text: Given an under-18 account, when a DM with an adult or a call is attempted, then both are blocked server-side with
+    a typed error
+- id: AC4
+  text: Given an under-18 account, when School and games open, then they are fully open
+- id: AC5
+  text: Given the client is modified, when a blocked request is sent, then the server still rejects it
+test_plan:
+  unit:
+  - age band rules
+  integration:
+  - server rejects
+  security:
+  - bypass attempts
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - locked_guardian
+  - open
+  copy_keys:
+  - minor.gate.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

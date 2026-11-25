@@ -430,7 +430,7 @@ class PersonalitySystem {
       },
     );
     
-    _personalities['okonkwo'] = AvatarPersonality(
+    _personalities['okonkwo'] = const AvatarPersonality(
       id: 'okonkwo',
       name: 'Okonkwo',
       title: 'Tone Master',
@@ -445,7 +445,7 @@ class PersonalitySystem {
         wisdom: 0.6,
       ),
       culturalInfluence: CulturalInfluence.westAfrican,
-      voice: const VoiceCharacteristics(pitch: 0.95, rate: 0.9, warmth: 0.6),
+      voice: VoiceCharacteristics(pitch: 0.95, rate: 0.9, warmth: 0.6),
       catchPhrases: [
         'Tone is meaning!',
         'Listen carefully to the melody.',
@@ -463,7 +463,7 @@ class PersonalitySystem {
       },
     );
     
-    _personalities['nneka'] = AvatarPersonality(
+    _personalities['nneka'] = const AvatarPersonality(
       id: 'nneka',
       name: 'Nneka',
       title: 'Grammar Teacher',
@@ -478,7 +478,7 @@ class PersonalitySystem {
         wisdom: 0.7,
       ),
       culturalInfluence: CulturalInfluence.westAfrican,
-      voice: const VoiceCharacteristics(pitch: 1.05, rate: 0.95, warmth: 0.7),
+      voice: VoiceCharacteristics(pitch: 1.05, rate: 0.95, warmth: 0.7),
       catchPhrases: [
         'Structure gives meaning.',
         'Grammar is the skeleton of language.',

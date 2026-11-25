@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
-import '../../../models/game/game_content_models.dart';
 import '../../../services/polie_content_generator.dart';
 import '../../../widgets/error_boundary.dart';
 import '../../loading/dynamic_loading_screen.dart';
@@ -186,6 +185,13 @@ class _FlashcardSafariGameState extends BaseGameScreenState<FlashcardSafariGame>
     });
   }
 
+  String get _currentCardAnnouncement {
+    final card = _currentCard;
+    final id = card?['id']?.toString();
+    if (id != null && id.isNotEmpty) return '$_word ($id)';
+    return _word;
+  }
+
   Future<void> _nextCard() async {
     await Future.delayed(const Duration(milliseconds: 800));
     await _loadNewCard();
@@ -216,7 +222,7 @@ class _FlashcardSafariGameState extends BaseGameScreenState<FlashcardSafariGame>
   Widget buildGameContent(BuildContext context) {
     try {
       if (isLoading) {
-        return DynamicLoadingScreen();
+        return const DynamicLoadingScreen();
       }
 
       if (error != null) {
@@ -276,10 +282,14 @@ class _FlashcardSafariGameState extends BaseGameScreenState<FlashcardSafariGame>
                           color: Colors.brown,
                         ),
                         SizedBox(height: 2.h),
-                        Text(
-                          _showWord ? _word : 'Tap to see word',
-                          style: TextStyle(fontSize: 28.sp, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.center,
+                        Semantics(
+                          liveRegion: true,
+                          label: _currentCardAnnouncement,
+                          child: Text(
+                            _showWord ? _word : 'Tap to see word',
+                            style: TextStyle(fontSize: 28.sp, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                         if (_showWord) ...[
                           SizedBox(height: 8.h),
@@ -325,14 +335,19 @@ class _FlashcardSafariGameState extends BaseGameScreenState<FlashcardSafariGame>
             }),
             if (_showResult) ...[
               SizedBox(height: 2.h),
-              Text(
-                _isCorrect ? 'Correct!' : 'Try again next round',
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                  color: _isCorrect ? Colors.green : Colors.red,
+              Semantics(
+                liveRegion: true,
+                label:
+                    '${_isCorrect ? 'Correct' : 'Try again next round'} for $_currentCardAnnouncement',
+                child: Text(
+                  _isCorrect ? 'Correct!' : 'Try again next round',
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                    color: _isCorrect ? Colors.green : Colors.red,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
               ),
               SizedBox(height: 2.h),
               FilledButton(

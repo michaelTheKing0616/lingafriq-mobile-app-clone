@@ -108,7 +108,7 @@ class LazyGameLoader {
   /// (see `node-backend-safe-push` `getGameCards`).
   Future<void> _prefetchCardsFromBackend(GameType gameType, {required String language}) async {
     if (_prefetchCardsOverride != null) {
-      return _prefetchCardsOverride!(gameType, language: language);
+      return _prefetchCardsOverride(gameType, language: language);
     }
     final res = await ApiService.get(
       ApiContract.url(ApiContract.games.cards),

@@ -1,0 +1,106 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P9
+epic: E-P9-SAFETY
+hub: Village
+gate: G9
+status: Draft
+size: M
+token_budget: 80000
+user_facing: true
+p0_area: false
+tags:
+- under18_social
+external_blockers: []
+risks: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+id: F-123
+title: Elevate Ancestral Tree
+req_ids:
+- F-123
+- F-123.D
+- F-123.E
+- F-123.U
+- F-123.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P9-SAFETY
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: heritage tree tied to kinship learning'
+file_allowlist:
+- lib/screens/social/ancestral_tree_screen.dart
+context_anchors:
+- ELEVATION.md#§18.6:L5242-L5253
+delta:
+  current_state: Ancestral tree route works but is isolated from learning.
+  defects_to_fix:
+  - Feature not connected to curriculum or practice.
+  elevation_to_build:
+  - Heritage learners build family tree with kinship terms and toned relative names.
+  - Invite relatives to add voice notes; private by default.
+  ux_and_render:
+  - Tree with avatar nodes and kinship labels on edges.
+  hub_placement: Me → Heritage; Learn → Culture.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given a new tree node, when the learner adds a relative, then kinship terms and tone-correct names are required fields.
+- id: AC2
+  text: Given default privacy, when the tree loads, then it is visible only to the owner until an invite is accepted.
+- id: AC3
+  text: Given Culture content, when kinship terms are studied, then progress links to matching tree nodes.
+- id: AC4
+  text: Given the account is under 18 or age-unknown, when this surface is opened, then it is hidden or guardian-gated until
+    E-P9-SAFETY is Done, and the restriction is enforced server-side.
+test_plan:
+  unit:
+  - domain helpers
+  integration:
+  - API and navigation
+  e2e:
+  - happy path
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content: []
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - ancestral_tree.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux
+  - adaptive/14-safety-and-high-stakes

@@ -240,6 +240,22 @@ class ClassroomService {
     return Map<String, dynamic>.from(data);
   }
 
+  /// P9-952 — CSV roster import; returns parseErrors + per-row imported results.
+  Future<Map<String, dynamic>> importRosterCsvV2(String tribeId, String csvText) async {
+    final res = await _dio.post<Map<String, dynamic>>(
+      ApiContract.url(ApiContract.classroom.v2RosterImport(tribeId)),
+      data: {'csv': csvText},
+    );
+    final data = res.data;
+    if (data == null || data['success'] != true) {
+      throw DioException(
+        requestOptions: res.requestOptions,
+        message: data?['error']?.toString() ?? 'Failed to import roster',
+      );
+    }
+    return Map<String, dynamic>.from(data);
+  }
+
   Future<Map<String, dynamic>> getTeacherDashboardV2(String tribeId) async {
     final res = await _dio.get<Map<String, dynamic>>(
       ApiContract.url(ApiContract.classroom.v2TeacherDashboard(tribeId)),
@@ -285,6 +301,20 @@ class ClassroomService {
       throw DioException(
         requestOptions: res.requestOptions,
         message: data?['error']?.toString() ?? 'Failed to update privacy settings',
+      );
+    }
+    return Map<String, dynamic>.from(data);
+  }
+
+  Future<Map<String, dynamic>> checkAssignmentsAccessV2(String tribeId) async {
+    final res = await _dio.get<Map<String, dynamic>>(
+      ApiContract.url(ApiContract.classroom.v2AssignmentsAccess(tribeId)),
+    );
+    final data = res.data;
+    if (data == null || data['success'] != true) {
+      throw DioException(
+        requestOptions: res.requestOptions,
+        message: data?['code']?.toString() ?? data?['error']?.toString() ?? 'Assignments blocked',
       );
     }
     return Map<String, dynamic>.from(data);

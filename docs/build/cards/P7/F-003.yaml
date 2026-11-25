@@ -1,0 +1,115 @@
+charter: v2
+id: F-003
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Daily Challenges (revived)
+phase: P7
+epic: E-P7-HUBS
+hub: Today
+req_ids:
+- F-003
+- F-003.D
+- F-003.E
+- F-003.U
+- F-003.L
+- P0-7
+- P0-8
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P1-ECONOMY
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: revive routing plus server-verified completion; P0 economy touch
+token_budget: 80000
+file_allowlist:
+- screens/goals/daily_challenges_screen.dart
+- widgets/gamification/daily_challenges_widget.dart
+- providers/daily_challenges_provider.dart
+context_anchors:
+- ELEVATION.md#§18.2:L3532-L3548
+delta:
+  current_state: Widget and provider live; full challenges screen unrouted.
+  defects_to_fix:
+  - No detail or board view to explore challenges
+  - Completion must be verified server-side not client-claimed
+  elevation_to_build:
+  - Challenge board behind Today widget from weak-skill generation
+  - Cross-link challenges deep-link into completing features
+  - Use challenges as contextual discovery for lesser-known features
+  ux_and_render:
+  - Three cards with progress chips and Do it deep-links
+  - Modest rare-tier completion animation
+  hub_placement: Today Challenges strip to board
+  unlock_stage: per §17.4
+  harvest_list:
+  - Route and wire daily_challenges_screen.dart into Today strip flow
+acceptance_criteria:
+- id: AC1
+  text: Given Today Challenges strip, when user opens board, then unrouted screen is reachable with three daily challenges.
+- id: AC2
+  text: Given a challenge card, when Do it is tapped, then navigation lands in the feature that can complete it.
+- id: AC3
+  text: Given user completes challenge actions, when server confirms, then progress chip updates without client-minted rewards.
+- id: AC4
+  text: Given weak-skill profile, when challenges refresh, then copy references learner gaps not generic placeholders.
+test_plan:
+  unit:
+  - provider challenge list
+  - deep-link resolver
+  integration:
+  - server completion webhook
+  - strip to board navigation
+  e2e:
+  - Today strip tap through challenge completion
+  a11y:
+  - card chips semantics
+  - Do it targets 48dp
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - challenges.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+tags: []
+p0_area: true
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

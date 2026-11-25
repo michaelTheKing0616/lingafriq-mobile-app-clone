@@ -1,0 +1,55 @@
+charter: v2
+id: P0-VER-11
+kind: verification
+title: Check consent and licensing of recorded UGC
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- UNV-E11
+depends_on:
+- E-P0-INTAKE
+- EXT-18
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: verification only; result recorded, never inferred
+token_budget: 20000
+file_allowlist:
+- docs/build/verification/P0-VER-11.md
+- docs/build/UNVERIFIED.md
+context_anchors:
+- ELEVATION.md#§18.6:L5402
+acceptance_criteria:
+- id: AC1
+  text: Given the ToS and recording models, when inspected, then the card records whether recording consent and a content
+    licence are captured per recording
+- id: AC2
+  text: Given the wording is unclear, when escalated, then counsel (EXT-18) response is attached before the row is marked
+    verified
+user_facing: false
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- docs/build/verification/P0-VER-11.md
+- UNVERIFIED.md row updated
+risks: []
+gate: G9
+external_blockers:
+- EXT-18
+owner: external
+status: Blocked-External
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

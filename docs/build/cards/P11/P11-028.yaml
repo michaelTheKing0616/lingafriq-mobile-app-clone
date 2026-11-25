@@ -1,0 +1,68 @@
+charter: v2
+id: P11-028
+kind: design
+title: Write one-page character bible per v1 character
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- AV-step1
+- EP-§4.4-04
+- EP-§4.6-01
+- EP-§4.6-02
+- EP-§4.6-03
+- EP-§4.6-04
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- P11-034
+size: M
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 1: blast 0, ambiguity 1, coupling 0, depth 0'
+token_budget: 70000
+file_allowlist:
+- docs/build/avatars/character_bible.md
+context_anchors:
+- ELEVATION.md#§4.6:L989-L992
+- ELEVATION.md#§4.4:L963
+acceptance_criteria:
+- id: AC1
+  text: Given each character, when the bible is written, then it has one page with personality, voice, region and palette.
+- id: AC2
+  text: Given silhouette sketches at 64 px, when viewed as 1-bit shapes at 48 px, then each character is distinguishable from
+    the others.
+- id: AC3
+  text: Given the bible, when submitted, then cultural consultant sign-off and reviewer approval of dress and hair references
+    are recorded.
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: true
+dod_evidence:
+- reviewer verdict
+- ledger row
+risks: []
+gate: G11
+external_blockers:
+- EXT-14
+- EXT-16
+status: Draft
+skills:
+  worker:
+  - prime/illustration-style
+  - prime/design-dna
+  - prime/rive
+  reviewer_extra:
+  - prime/critique-visual-hierarchy
+  - prime/critique-typography
+  - prime/design-to-code-check

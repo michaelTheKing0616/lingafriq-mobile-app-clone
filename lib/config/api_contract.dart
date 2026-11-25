@@ -132,13 +132,18 @@ class _Gamification {
       '/api/gamification/advanced/league/leaderboard';
   String get heartsUse => '/api/gamification/hearts/use';
   String get heartsRefill => '/api/gamification/hearts/refill';
-  String get challengeMode => '/api/gamification/challenge-mode';
+  String get challengeMode => '/api/gamification/hearts/toggle-challenge-mode';
+  String get heartsCompleteChallengeRun =>
+      '/api/gamification/hearts/complete-challenge-run';
   String get launchEvents => '/api/gamification/launch-events/';
   String launchEventLeaderboard(String eventId) =>
       '/api/gamification/launch-events/$eventId/leaderboard';
   String get ubuntuDonate => '/api/gamification/ubuntu/donate';
   String get dailyChallenges => '/api/gamification/advanced/challenges';
   String get league => '/api/gamification/advanced/league';
+  String get leagueMembership => '/api/gamification/advanced/league/membership';
+  String get leagueOptIn => '/api/gamification/advanced/league/opt-in';
+  String get leagueOptOut => '/api/gamification/advanced/league/opt-out';
 }
 
 // =============================================================================
@@ -364,6 +369,7 @@ class _Ai {
   String chatHistory(String mode) => '/api/ai/chat/history/$mode';
   String get chatSrsSync => '/api/ai/chat/srs/sync/';
   String get chatCompletion => '/api/ai/chat/completion';
+  String get personaCognitionTurn => '/api/ai/persona/cognition/turn';
   String get loadingScreenContent => '/api/v1/loading-screen/content';
   String loadingScreenImage(String prompt) =>
       '/api/v1/loading-screen/image/${Uri.encodeComponent(prompt)}';
@@ -756,8 +762,10 @@ class _Classroom {
 
   // V2 classroom admin (roster + assignments + staff dashboard)
   String v2Roster(String tribeId) => '/api/v2/classroom/$tribeId/roster';
+  String v2RosterImport(String tribeId) => '/api/v2/classroom/$tribeId/roster/import';
   String v2Privacy(String tribeId) => '/api/v2/classroom/$tribeId/privacy';
   String v2Assignments(String tribeId) => '/api/v2/classroom/$tribeId/assignments';
+  String v2AssignmentsAccess(String tribeId) => '/api/v2/classroom/$tribeId/assignments/access';
   String v2SubmitAssignment(String tribeId, String assignmentId) =>
       '/api/v2/classroom/$tribeId/assignments/$assignmentId/submit';
   String get v2SchoolDashboard => '/api/v2/classroom/school/dashboard';

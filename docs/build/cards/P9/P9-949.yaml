@@ -1,0 +1,95 @@
+charter: v2
+id: P9-949
+kind: build
+title: 'Provide clip templates: phrase of the day, proverbs, tongue twisters'
+phase: P9
+epic: E-P9-VILLAGE
+req_ids:
+- EP-§9.2-23
+- EP-§9.2-24
+- EP-§9.2-25
+depends_on:
+- E-P9-SAFETY
+- P9-948
+size: M
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 3: blast 1, ambiguity 1, coupling 1, depth 0'
+token_budget: 80000
+file_allowlist:
+- lib/screens/village/clip_templates_screen.dart
+- lib/models/clip_template.dart
+context_anchors:
+- ELEVATION.md#§9.2:L1606-L1607
+acceptance_criteria:
+- id: AC1
+  text: Given a template (phrase of the day, proverb explainer, tongue twister), when chosen, then the clip is created with
+    the template's prompt and language preset
+- id: AC2
+  text: Given template content, when displayed, then it comes from the verified content store and shows its verification state
+- id: AC3
+  text: Given no verified content for a language, when opened, then the template shows an honest empty state rather than placeholder
+    text
+- id: AC4
+  text: Given the account is under 18 or age-unknown, when this surface is opened, then it is hidden or guardian-gated until
+    E-P9-SAFETY is Done, and the restriction is enforced server-side.
+test_plan:
+  unit:
+  - template selection
+  integration:
+  - content binding
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - template list
+  content:
+  - verified content binding
+user_facing: true
+ux_spec:
+  states:
+  - list
+  - selected
+  - empty-language
+  copy_keys:
+  - template.phrase
+  - template.proverb
+  - template.twister
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - template_default
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

@@ -21,7 +21,6 @@ import 'package:lingafriq/utils/modern_griot_design_system.dart';
 import 'package:lingafriq/utils/supported_languages.dart';
 import 'package:lingafriq/utils/transport_error_policy.dart';
 import 'package:lingafriq/widgets/griot/griot_widgets.dart';
-import 'package:lingafriq/widgets/game/game_widgets.dart';
 import 'package:lingafriq/widgets/livekit/livekit_video_widgets.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
@@ -160,7 +159,7 @@ class _CollaborativeLobbyScreen extends HookConsumerWidget {
                 ),
                 SizedBox(height: PanAfricanSpacing.md),
                 DropdownButtonFormField<String?>(
-                  value: selectedLanguage.value,
+                  initialValue: selectedLanguage.value,
                   decoration: InputDecoration(
                     labelText: 'Language tag',
                     filled: true,
@@ -382,7 +381,7 @@ class _CollaborativeLiveSession extends HookConsumerWidget {
           await room.connect(
             url,
             token,
-            roomOptions: RoomOptions(),
+            roomOptions: const RoomOptions(),
           );
 
           roomState.value = room;
@@ -780,7 +779,7 @@ class _CollaborativeLiveSession extends HookConsumerWidget {
                       return Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          GriotAvatar(size: 28),
+                          const GriotAvatar(size: 28),
                           SizedBox(width: 8.w),
                           Expanded(
                             child: Column(
@@ -843,7 +842,7 @@ class _CollaborativeLiveSession extends HookConsumerWidget {
               child: Container(
                 width: 44.r,
                 height: 44.r,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   gradient: ModernGriotGradients.signatureGradient,
                   shape: BoxShape.circle,
                 ),

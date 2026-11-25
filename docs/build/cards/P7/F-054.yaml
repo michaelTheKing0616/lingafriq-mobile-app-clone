@@ -1,0 +1,124 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P7
+epic: E-P7-HUBS
+hub: Speak
+gate: HUB
+status: Draft
+user_facing: true
+p0_area: false
+external_blockers: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks:
+- "P7-960 is the shell. P7-961 is the lesson object. P7-962 is the four-form intake. This screen stays Draft until those three are Done."
+- "A pronunciation result may be unsure. The screen must not show a made-up score."
+tags: []
+token_budget: 80000
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: Speak hub feature elevation'
+id: F-054
+title: Elevate Import Media OCR and clips
+req_ids:
+- F-054
+- F-054.D
+- F-054.E
+- F-054.U
+- F-054.L
+depends_on:
+- E-P2-PLATFORM
+- E-P3-DESIGN-SYSTEM
+- E-P1-CONTAINMENT
+- E-P5-CONTENT-REAL
+- P7-961
+- P7-962
+file_allowlist:
+- lib/screens/media/import_media_screen.dart
+- lib/screens/media/media_clip_player_screen.dart
+- lib/services/media/media_import_service.dart
+context_anchors:
+- ELEVATION.md#§18.4:L4264-L4283
+delta:
+  current_state: Routed import media with ML Kit Latin OCR and backend transcription generation.
+  defects_to_fix:
+  - Latin OCR mangles stacked tone marks.
+  - Generated learning content lacks review status.
+  - A gloss can answer with the word itself, which is not a meaning.
+  - Shadowing is text only and is not the audio span of the import.
+  elevation_to_build:
+  - The learner can import a video, an audio clip, text, or an image. P7-962 turns that source into a transcript and a translation before this screen draws the lesson.
+  - One saved lesson from one verbatim sentence of the import. The guided blank hides that one word and leaves the rest of the sentence visible. The translation sits beside that sentence and does not replace it.
+  - Tone Lens shows the marks in the transcript and does not explain a tone it cannot cite.
+  - A gloss is cited to a lexicon or tagged AI-generated, unreviewed. At most 10 flashcards, each taken from the source, each storing the media id and span.
+  - Shadowing speaks that same sentence. When the import has no audio for the span, the step says the clip is missing and does not play device speech in its place.
+  - Private by default. A share shows a copyright notice. Processing steps name what actually ran, including low-confidence OCR.
+  ux_and_render:
+  - Import sheet with honest processing steps beyond shared bar.
+  hub_placement: Global Lens → Import; share-sheet target.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given an imported image with tone marks, when OCR completes, then diacritic-aware server pass preserves stacked marks
+    or shows honest low-confidence state.
+- id: AC2
+  text: Given a transcript and a span, when the lesson opens, then the learner sees that verbatim sentence under Tone Lens, shadows that same sentence, and sees at most 10 flashcards whose targets occur in the transcript.
+- id: AC3
+  text: Given a share attempt, when the learner confirms, then a copyright notice appears and the lesson stays private until that confirmation.
+- id: AC4
+  text: Given a generated gloss or check, when it is shown, then it is labelled AI-generated, unreviewed, it offers Report a mistake, and it does not present the word itself as the meaning.
+- id: AC5
+  text: Given an import with no audio for the span, when the shadowing step is shown, then the step says the clip is not available and does not substitute device speech.
+- id: AC6
+  text: Given a lesson step, when feedback is shown, then the feedback repeats the verbatim sentence and does not introduce a new sentence.
+test_plan:
+  unit:
+  - import pipeline steps UI
+  integration:
+  - media_import_service backend OCR
+  e2e:
+  - Lens Import share target
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content:
+  - generated lesson labelling
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - f-054.*
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

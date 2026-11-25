@@ -1,0 +1,88 @@
+charter: v2
+id: P11-005
+kind: build
+title: Show Source and Inferred chips on persona claims
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§8.3-18
+- EP-§8.3-19
+depends_on:
+- E-P1-CONTAINMENT
+- P11-003
+- E-P3-DESIGN-SYSTEM
+size: S
+difficulty:
+  score: 2
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 0, ambiguity 1, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist:
+- lib/ai/personas/persona_claim_chip.dart
+- lib/l10n/app_en.arb
+context_anchors:
+- ELEVATION.md#§8.3:L1522-L1523
+acceptance_criteria:
+- id: AC1
+  text: Given a claim with support documented, when rendered, then a small Source chip opens the cited card.
+- id: AC2
+  text: Given a claim with support inferred or legend, when rendered, then an Inferred or Legend label is shown on that claim.
+- id: AC3
+  text: Given screen-reader mode, when a claim is focused, then its support level is announced.
+test_plan:
+  unit:
+  - chip variant mapping
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - chip semantics label
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - documented
+  - inferred
+  - legend
+  - loading
+  - no_source_error
+  copy_keys:
+  - persona.chip.source
+  - persona.chip.inferred
+  - persona.chip.legend
+  tokens:
+  - chip.surface
+  - chip.text
+  motion_tier: product
+  a11y:
+  - support level in semantics label
+  - 44dp tap target
+  goldens:
+  - claim_chip_documented
+  - claim_chip_inferred
+tags:
+- enables_persona
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

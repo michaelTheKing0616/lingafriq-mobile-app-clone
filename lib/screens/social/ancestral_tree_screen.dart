@@ -124,7 +124,7 @@ class AncestralTreeScreen extends ConsumerWidget {
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
-                      child: Text(
+                      child: const Text(
                         'Got it',
                         style: TextStyle(color: PanAfricanColors.primary),
                       ),
@@ -181,7 +181,7 @@ class AncestralTreeScreen extends ConsumerWidget {
             ),
             SizedBox(height: PanAfricanSpacing.md),
             if (data.mentors.isEmpty && data.mentees.isEmpty)
-              AppEmptyState(
+              const AppEmptyState(
                 icon: Icons.nature_people_rounded,
                 title: 'No ancestry links yet',
                 subtitle: 'As you connect with mentors or help other learners, your tree will grow here.',
@@ -303,7 +303,7 @@ class _StatItem extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(PanAfricanSpacing.sm),
           decoration: BoxDecoration(
-            color: colorScheme.onPrimary.withOpacity(0.2),
+            color: colorScheme.onPrimary.withValues(alpha: 0.2),
             borderRadius: PanAfricanRadius.mdBR,
           ),
           child: Icon(icon, color: colorScheme.onPrimary, size: 20.sp),
@@ -319,7 +319,7 @@ class _StatItem extends StatelessWidget {
         Text(
           label,
           style: PanAfricanTypography.labelLarge(context).copyWith(
-            color: colorScheme.onPrimary.withOpacity(0.8),
+            color: colorScheme.onPrimary.withValues(alpha: 0.8),
           ),
         ),
       ],
@@ -381,7 +381,7 @@ class _TreeNodeCard extends StatelessWidget {
                     vertical: PanAfricanSpacing.xs,
                   ),
                   decoration: BoxDecoration(
-                    color: PanAfricanColors.primary.withOpacity(0.1),
+                    color: PanAfricanColors.primary.withValues(alpha: 0.1),
                     borderRadius: PanAfricanRadius.roundBR,
                   ),
                   child: Text(
@@ -398,7 +398,7 @@ class _TreeNodeCard extends StatelessWidget {
                       vertical: PanAfricanSpacing.xs,
                     ),
                     decoration: BoxDecoration(
-                      color: PanAfricanColors.textSecondary.withOpacity(0.1),
+                      color: PanAfricanColors.textSecondary.withValues(alpha: 0.1),
                       borderRadius: PanAfricanRadius.roundBR,
                     ),
                     child: Text(

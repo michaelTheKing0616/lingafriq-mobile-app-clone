@@ -1,0 +1,77 @@
+charter: v2
+id: P9-923
+kind: build
+title: Evaluate toxicity detection on African languages and code-switching
+phase: P9
+epic: E-P9-MODERATION
+req_ids:
+- EP-§9.4-09
+- EP-§9.4-10
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+- P9-922
+size: L
+difficulty:
+  score: 8
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 2, ambiguity 2, coupling 1, depth 2'
+token_budget: 200000
+file_allowlist:
+- scripts/moderation/eval_harness.py
+- docs/build/external/moderation_eval/README.md
+- node-backend/src/services/moderation/evalSets.ts
+context_anchors:
+- ELEVATION.md#§9.4:L1644-L1646
+acceptance_criteria:
+- id: AC1
+  text: Given labelled sets for Yoruba, Igbo, Hausa, Swahili, Zulu, Xhosa and for Pidgin/English, Sheng and Swahili/English
+    code-switching, when the harness runs, then it reports precision, recall and false-positive rate per language and per
+    code-switch pair
+- id: AC2
+  text: Given a language with fewer than 500 native-labelled examples, when evaluated, then the report marks it 'insufficient
+    evidence' and the pipeline treats it as unsure rather than reporting a score
+- id: AC3
+  text: Given a release candidate, when recall on severe categories falls below the threshold set in the ADR for any supported
+    language, then the harness exits non-zero and blocks the gate
+- id: AC4
+  text: Given the evaluation data, when stored, then labels come from native moderators and every example records annotator
+    and licence
+test_plan:
+  unit:
+  - metric math
+  integration:
+  - end-to-end eval run
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - label audit sample
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- labelled data depends on native moderators; coverage may force 'unsure' for several languages at launch
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

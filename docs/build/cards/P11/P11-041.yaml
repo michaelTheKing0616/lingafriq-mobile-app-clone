@@ -1,0 +1,75 @@
+charter: v2
+id: P11-041
+kind: build
+title: Build Polie states, idle micro-motion and transitions
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- AV-step3
+- EP-§4.1-02
+- EP-§4.1-03
+- EP-§4.1-04
+- EP-§4.6-09
+- EP-§4.6-10
+- EP-§4.6-11
+depends_on:
+- P11-037
+- P11-038
+size: L
+difficulty:
+  score: 6
+  blast: 1
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 1, ambiguity 2, coupling 1, depth 1'
+token_budget: 150000
+file_allowlist:
+- assets/rive/avatars/lingafriq_cast.riv
+- test/avatars/state_transition_test.dart
+context_anchors:
+- ELEVATION.md#§4.1:L861-L864
+- ELEVATION.md#§4.6:L1002-L1007
+acceptance_criteria:
+- id: AC1
+  text: Given activity values idle, listening, thinking, speaking, correct, incorrect, celebrating, encouraging, hint, levelUp,
+    lessonComplete, when set, then each plays.
+- id: AC2
+  text: Given idle, when running, then breathing, blink variance and eye darts are present.
+- id: AC3
+  text: Given any state change, when measured, then transitions take ≤300 ms with anticipation, overshoot and follow-through.
+- id: AC4
+  text: Given a 5-person hallway test at 64 px, when run, then each state reads correctly and results are recorded.
+test_plan:
+  unit:
+  - ≤300 ms transitions
+  integration: []
+  security: []
+  e2e:
+  - hallway test record
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers:
+- EXT-16
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

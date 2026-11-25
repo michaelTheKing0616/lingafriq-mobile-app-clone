@@ -1,0 +1,84 @@
+charter: v2
+id: P3-080
+kind: build
+title: Replace village questionnaire copy with grade-7 strings
+phase: P3
+epic: E-P3-ONBOARDING
+req_ids:
+- EP-§5.3-02
+- EP-§5.3-03
+- EP-§5.1-04
+depends_on:
+- P3-030
+- P3-079
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 1: blast 0, ambiguity 1, coupling 0'
+token_budget: 25000
+file_allowlist:
+- lib/l10n/app_en.arb
+- lib/screens/onboarding/unified_onboarding_screen.dart
+context_anchors:
+- ELEVATION.md#§5.3:L1064-L1065
+acceptance_criteria:
+- id: AC1
+  text: Given the old strings (Welcome Elder, Weaver, Elder's Question and the knowledge prompt), when replaced, then ARB
+    keys from the copy deck are used
+- id: AC2
+  text: Given every onboarding string, when scored, then grade level is <=7
+- id: AC3
+  text: Given the unified flow, when searched, then the old phrases appear 0 times
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - grade-7
+  - banned phrases
+user_facing: true
+ux_spec:
+  states:
+  - default
+  copy_keys:
+  - onboarding.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/ux-writing
+  - prime/localization-design

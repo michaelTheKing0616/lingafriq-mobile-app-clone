@@ -1,0 +1,111 @@
+charter: v2
+id: P9-948
+kind: build
+title: Build Clips capture and post flow for 15 to 60 second video or audio
+phase: P9
+epic: E-P9-VILLAGE
+req_ids:
+- EP-§9.2-21
+- EP-§9.2-22
+- EP-§9.1-02
+- EP-§9.1-03
+depends_on:
+- E-P9-SAFETY
+- P9-910
+- P9-926
+- P9-927
+- P9-943
+size: L
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, ambiguity 1, coupling 2, depth 0'
+token_budget: 200000
+file_allowlist:
+- lib/screens/village/clip_camera_screen.dart
+- lib/services/clips/clip_upload_service.dart
+- node-backend/src/services/clips.service.ts
+context_anchors:
+- ELEVATION.md#§9.2:L1600-L1605
+- ELEVATION.md#§9.1:L1551-L1552
+acceptance_criteria:
+- id: AC1
+  text: Given the camera, when recording, then clips under 15 s or over 60 s are rejected with a visible message and stored
+    only after scan verdicts allow them
+- id: AC2
+  text: Given a clip, when posted, then it needs a language tag and a caption passed through the moderation hook
+- id: AC3
+  text: Given a minor, when posting, then the clip can go only to a guardian-approved circle and never to the public feed
+- id: AC4
+  text: Given the old snap camera, stories and streaks and the X-style compose, explore, lists and notifications, when rebuilt,
+    then each is kept and listed in the harvest_list
+test_plan:
+  unit: []
+  integration:
+  - upload to visibility
+  - length limits
+  security:
+  - minor posting scope
+  e2e: []
+  perf: []
+  a11y:
+  - camera controls
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - recording
+  - review
+  - uploading
+  - held-for-review
+  - posted
+  - error
+  copy_keys:
+  - clip.record
+  - clip.held
+  - clip.limit
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - clip_default
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+harvest_list:
+- snap camera
+- stories
+- streaks
+- feed compose
+- explore
+- lists
+- notifications
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

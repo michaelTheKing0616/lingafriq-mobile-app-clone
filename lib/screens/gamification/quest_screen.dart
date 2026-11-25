@@ -150,7 +150,7 @@ class _ChapterCard extends StatelessWidget {
           borderRadius: PanAfricanRadius.lgBR,
           border: Border.all(
             color: chapter.isCompleted
-                ? PanAfricanColors.success
+                ? context.panSuccess
                 : (isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight),
             width: chapter.isCompleted ? 2 : 1,
           ),
@@ -170,7 +170,7 @@ class _ChapterCard extends StatelessWidget {
                       height: 48.w,
                       decoration: BoxDecoration(
                         color: chapter.isCompleted
-                            ? PanAfricanColors.success.withOpacity(0.15)
+                            ? context.panSuccess.withValues(alpha: 0.15)
                             : PanAfricanColors.primaryContainer,
                         borderRadius: PanAfricanRadius.mdBR,
                       ),
@@ -201,12 +201,12 @@ class _ChapterCard extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.all(PanAfricanSpacing.xxs),
                         decoration: BoxDecoration(
-                          color: PanAfricanColors.success.withOpacity(0.15),
+                          color: context.panSuccess.withValues(alpha: 0.15),
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
                           Icons.check_circle_rounded,
-                          color: PanAfricanColors.success,
+                          color: context.panSuccess,
                           size: 24.sp,
                         ),
                       ),
@@ -268,14 +268,14 @@ class _ChapterCard extends StatelessWidget {
                       Icon(
                         Icons.star_rounded,
                         size: 18.sp,
-                        color: PanAfricanColors.secondary,
+                        color: context.panSecondary,
                       ),
                       SizedBox(width: PanAfricanSpacing.xxs),
                       Text(
                         '${chapter.xpReward} XP',
                         style: PanAfricanTypography.labelSmall(
                           context,
-                          color: PanAfricanColors.secondary,
+                          color: context.panSecondary,
                         ),
                       ),
                       if (chapter.badgeReward != null) ...[
@@ -429,7 +429,7 @@ class _ChapterDetailScreenState extends ConsumerState<_ChapterDetailScreen> {
                 Icon(
                   Icons.error_outline_rounded,
                   size: 64.sp,
-                  color: PanAfricanColors.error,
+                  color: context.panError,
                 ),
                 SizedBox(height: PanAfricanSpacing.md),
                 Text(
@@ -588,7 +588,7 @@ class _ChapterDetailScreenState extends ConsumerState<_ChapterDetailScreen> {
                       'Completed: ${lesson.title}! +${lesson.xpReward} XP',
                       style: PanAfricanTypography.bodyMedium(context, color: colorScheme.onPrimary),
                     ),
-                    backgroundColor: PanAfricanColors.success,
+                    backgroundColor: context.panSuccess,
                     behavior: SnackBarBehavior.floating,
                     shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
                   ),
@@ -603,7 +603,7 @@ class _ChapterDetailScreenState extends ConsumerState<_ChapterDetailScreen> {
           borderRadius: PanAfricanRadius.lgBR,
           border: Border.all(
             color: lesson.isCompleted
-                ? PanAfricanColors.success
+                ? context.panSuccess
                 : (isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight),
           ),
           boxShadow: PanAfricanShadows.sm,
@@ -617,7 +617,7 @@ class _ChapterDetailScreenState extends ConsumerState<_ChapterDetailScreen> {
                 height: 40.w,
                 decoration: BoxDecoration(
                   color: lesson.isCompleted
-                      ? PanAfricanColors.success
+                      ? context.panSuccess
                       : PanAfricanColors.primary,
                   shape: BoxShape.circle,
                 ),
@@ -655,14 +655,14 @@ class _ChapterDetailScreenState extends ConsumerState<_ChapterDetailScreen> {
                   Icon(
                     Icons.star_rounded,
                     size: 16.sp,
-                    color: PanAfricanColors.secondary,
+                    color: context.panSecondary,
                   ),
                   SizedBox(width: PanAfricanSpacing.xxs),
                   Text(
                     '${lesson.xpReward} XP',
                     style: PanAfricanTypography.labelSmall(
                       context,
-                      color: PanAfricanColors.secondary,
+                      color: context.panSecondary,
                     ),
                   ),
                 ],

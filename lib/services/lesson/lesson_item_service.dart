@@ -13,14 +13,26 @@ import '../../models/lesson_item_model.dart';
 import 'package:lingafriq/config/api_contract.dart';
 import '../../utils/simple_cache.dart';
 import '../../core/network/api_client_with_recovery.dart';
-import '../../services/offline/offline_handler.dart';
+import 'package:lingafriq/services/connectivity_service.dart';
+import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
 
 /// Lesson Item Service
 class LessonItemService {
   final Dio _dio;
   final SimpleCache _cache = SimpleCache();
-  final OfflineHandler _offlineHandler = OfflineHandler();
   static const Duration _cacheTTL = Duration(hours: 24);
+
+  /// Test seam. Production calls [PersistedOutboxService.enqueue].
+  Future<String> Function({
+    required String type,
+    required Map<String, dynamic> payload,
+  })? enqueueOverride;
+
+  /// Lesson progress leaves the device only through the durable outbox.
+  Future<String> enqueueLessonProgress(Map<String, dynamic> payload) {
+    final send = enqueueOverride ?? PersistedOutboxService.instance.enqueue;
+    return send(type: 'progress_metrics_merge', payload: payload);
+  }
 
   LessonItemService(this._dio);
 
@@ -79,7 +91,7 @@ class LessonItemService {
     } catch (e) {
       debugPrint('Error fetching lesson items: $e');
       
-      if (!_offlineHandler.isOnline) {
+      if (!await ConnectivityService.hasInternet()) {
         final cached = _cache.get<List<LessonItem>>(cacheKey);
         if (cached != null) {
           return cached;
@@ -117,7 +129,7 @@ class LessonItemService {
     } catch (e) {
       debugPrint('Error fetching lesson item: $e');
       
-      if (!_offlineHandler.isOnline) {
+      if (!await ConnectivityService.hasInternet()) {
         final cached = _cache.get<LessonItem>(cacheKey);
         if (cached != null) {
           return cached;

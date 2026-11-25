@@ -1,0 +1,69 @@
+charter: v2
+id: P8-916
+kind: adr
+title: Decide consolidation of six games into flagships
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.3-01d
+- EP-§10.3-03d
+- EP-§10.3-04c
+- EP-§10.3-05c
+- EP-§10.3-09c
+- EP-§10.3-10c
+depends_on:
+- E-P8-PLAY
+size: S
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, coupling 1'
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§10.3:L1769-L1772
+acceptance_criteria:
+- id: AC1
+  text: Given the six pairs (Talking Drum ← Drum Word and Drum Rhythm; Market Haggle ← Market Bargaining; Danfo/Matatu Rush
+    ← Taxi Survival; Proverb Weaver ← Proverb Unlocker; Greeting Gauntlet ← Greeting Diplomacy; Echo Karaoke ← Pronunciation
+    Karaoke), when the ADR is accepted, then each pair records a harvest list of mechanics, content and assets to carry into
+    the flagship and a No-Cut statement that nothing is dropped
+- id: AC2
+  text: Given a harvested game, when its flagship ships, then the old game stays reachable on its skill shelf until the flagship
+    passes parity review
+- id: AC3
+  text: Given the ADR, when it is filed, then it is added to DECISIONS.md with the six flagship card ids
+test_plan: {}
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+harvest_list:
+- Talking Drum ← Drum Word (lib/screens/games/cultural/drum_word_game.dart), Drum Rhythm (lib/games/drum_rhythm/*)
+- Market Haggle ← Market Bargaining (lib/screens/games/market_bargaining_screen.dart)
+- Danfo/Matatu Rush ← Taxi Survival (lib/screens/games/taxi_survival_screen.dart)
+- Proverb Weaver ← Proverb Unlocker (lib/games/proverb_unlocker/*, lib/screens/games/cultural/proverb_unlocker_game.dart)
+- Greeting Gauntlet ← Greeting Diplomacy (lib/screens/games/greeting_diplomacy_screen.dart)
+- Echo Karaoke ← Pronunciation Karaoke (lib/screens/games/pronunciation_karaoke_screen.dart)
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - prime/diagram-design

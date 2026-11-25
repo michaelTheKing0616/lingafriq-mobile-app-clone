@@ -52,12 +52,12 @@ class AudioPlayerBar extends StatelessWidget {
         color: colors.surface,
         border: Border(
           top: BorderSide(
-            color: colors.outline.withOpacity(0.2),
+            color: colors.outline.withValues(alpha: 0.2),
           ),
         ),
         boxShadow: [
           BoxShadow(
-            color: colors.shadow.withOpacity(0.06),
+            color: colors.shadow.withValues(alpha: 0.06),
             blurRadius: 12,
             offset: const Offset(0, -2),
           ),
@@ -83,9 +83,9 @@ class AudioPlayerBar extends StatelessWidget {
         thumbShape: RoundSliderThumbShape(enabledThumbRadius: 6.r),
         overlayShape: RoundSliderOverlayShape(overlayRadius: 14.r),
         activeTrackColor: colors.primary,
-        inactiveTrackColor: colors.onSurface.withOpacity(0.1),
+        inactiveTrackColor: colors.onSurface.withValues(alpha: 0.1),
         thumbColor: colors.primary,
-        overlayColor: colors.primary.withOpacity(0.12),
+        overlayColor: colors.primary.withValues(alpha: 0.12),
       ),
       child: Slider(
         min: 0,
@@ -110,7 +110,7 @@ class AudioPlayerBar extends StatelessWidget {
               fontSize: 11.sp,
               fontWeight: FontWeight.w500,
               fontFeatures: const [FontFeature.tabularFigures()],
-              color: colors.onSurface.withOpacity(0.55),
+              color: colors.onSurface.withValues(alpha: 0.55),
             ),
           ),
           Text(
@@ -119,7 +119,7 @@ class AudioPlayerBar extends StatelessWidget {
               fontSize: 11.sp,
               fontWeight: FontWeight.w500,
               fontFeatures: const [FontFeature.tabularFigures()],
-              color: colors.onSurface.withOpacity(0.55),
+              color: colors.onSurface.withValues(alpha: 0.55),
             ),
           ),
         ],
@@ -150,7 +150,7 @@ class AudioPlayerBar extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
-                    color: colors.onSurface.withOpacity(0.55),
+                    color: colors.onSurface.withValues(alpha: 0.55),
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -182,7 +182,7 @@ class AudioPlayerBar extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
         decoration: BoxDecoration(
-          color: colors.onSurface.withOpacity(0.06),
+          color: colors.onSurface.withValues(alpha: 0.06),
           borderRadius: BorderRadius.circular(8.r),
         ),
         child: Text(
@@ -191,7 +191,7 @@ class AudioPlayerBar extends StatelessWidget {
             fontSize: 12.sp,
             fontWeight: FontWeight.w700,
             fontFeatures: const [FontFeature.tabularFigures()],
-            color: colors.onSurface.withOpacity(0.75),
+            color: colors.onSurface.withValues(alpha: 0.75),
           ),
         ),
       ),

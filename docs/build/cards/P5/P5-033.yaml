@@ -1,0 +1,65 @@
+charter: v2
+id: P5-033
+kind: build
+title: Limit historical personas to cited cards
+phase: P5
+epic: E-P5-A1
+req_ids:
+- CP-§4-29
+depends_on:
+- P5-008
+- E-P1-CONTAINMENT
+size: S
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T1
+  reviewer: T3
+  justification: 'score 7: blast 3, ambiguity 1, coupling 2, depth 1'
+token_budget: 25000
+file_allowlist:
+- lib/ai/persona_grounding.dart
+- test/ai/persona_grounding_test.dart
+context_anchors:
+- CURRICULUM.md#§4:L588-L588
+acceptance_criteria:
+- id: AC1
+  text: Given a historical persona, when answering, then it uses only cited culture cards
+- id: AC2
+  text: Given a question with no supporting card, when asked, then the persona says it cannot answer and cites nothing invented
+- id: AC3
+  text: Given an answer, when shown, then claim-level citations are available
+test_plan:
+  unit:
+  - grounding
+  integration:
+  - refusal path
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/conversational-ux
+  - adaptive/08-coding-and-debugging

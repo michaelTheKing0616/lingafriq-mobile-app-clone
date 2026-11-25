@@ -1,0 +1,113 @@
+charter: v2
+id: P8-932
+kind: build
+title: Mastery Map showing skills improved per game
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.4-03
+depends_on:
+- E-P8-PLAY
+- P8-901
+- P8-915
+- E-P6-SCORER
+- E-P3-DESIGN-SYSTEM
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T1
+  justification: 'score 5: blast 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/screens/games/game_mastery_map_screen.dart
+- lib/learning/learner_model/learner_skill_state.dart
+- lib/providers/learner_model_provider.dart
+- lib/games/gamekit/game_result.dart
+context_anchors:
+- ELEVATION.md#§10.4:L1775-L1777
+acceptance_criteria:
+- id: AC1
+  text: Given a learner's game history, when the Mastery Map opens, then it shows each skill and the games that changed it,
+    derived only from learner-model events
+- id: AC2
+  text: Given a skill with no events, when shown, then it reads 'not measured'
+- id: AC3
+  text: Given a pronunciation or tone skill, when shown, then the value comes from the real scorer or reads 'not measured',
+    never from practice mode
+- id: AC4
+  text: Given the map, when a learner taps a game, then it lists the sessions that moved that skill
+- id: AC5
+  text: Given the scorer is unavailable or its confidence is below the gate threshold, when a score would be shown, then the
+    UI shows the 'unsure' state, stores no number and never shows a fabricated score.
+test_plan:
+  unit:
+  - skill delta aggregation
+  integration:
+  - events to map
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - ready
+  - playing
+  - correct
+  - wrong
+  - why_wrong
+  - results
+  - error
+  - offline
+  - practice_mode
+  - not_measured
+  copy_keys:
+  - games.mastery_map.title
+  - games.mastery_map.instructions
+  - games.mastery_map.why_wrong
+  - games.mastery_map.practice_label
+  - games.mastery_map.error
+  tokens:
+  - color.surface.game
+  - color.feedback.correct
+  - color.feedback.wrong
+  - space.4
+  - radius.card
+  - type.title
+  motion_tier: product
+  a11y:
+  - screen-reader labels on every answer control
+  - reduced-motion variant
+  - correctness shown by icon and text not colour alone
+  - touch targets ≥48dp
+  goldens:
+  - mastery_map_playing
+  - mastery_map_why_wrong
+  - mastery_map_results
+tags:
+- shows_score
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

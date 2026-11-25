@@ -1,0 +1,78 @@
+charter: v2
+id: P12-016
+kind: build
+title: Automate staged rollout 1/10/50/100% with crash-free and ANR gates
+phase: P12
+epic: E-P12-RELEASE
+req_ids:
+- EP-§13.9-12
+- EP-§13.9-13
+- EP-§15-05
+depends_on:
+- P12-004
+- P12-012
+- P12-013
+size: L
+difficulty:
+  score: 8
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T1
+  reviewer: T3
+  justification: 'score 8: blast 2, ambiguity 1, coupling 2, depth 2'
+token_budget: 150000
+file_allowlist:
+- .github/workflows/staged-rollout.yml
+- .github/workflows/build-and-release.yml
+- scripts/release/rollout_gate.py
+- release/gates.yaml
+context_anchors:
+- ELEVATION.md#§13.9:L1956-L1957
+- ELEVATION.md#§15:L1992
+acceptance_criteria:
+- id: AC1
+  text: Given a release candidate, when rollout starts, then it proceeds in order 1%, 10%, 50%, 100% and never skips a stage
+- id: AC2
+  text: Given each stage, when the soak period ends, then promotion happens only if crash-free sessions and ANR rate meet
+    thresholds read from release/gates.yaml
+- id: AC3
+  text: Given a gate metric is missing or stale, when promotion is evaluated, then rollout halts with a visible reason, never
+    auto-promotes
+- id: AC4
+  text: Given a gate fails, when the workflow reacts, then it halts the rollout and opens an alert naming the failed metric
+- id: AC5
+  text: Given the workflow, when it commits, then it does not auto-increment and push commits (EP-§13.9-15 behaviour removed)
+test_plan:
+  unit:
+  - rollout_gate decision table
+  integration:
+  - dry-run staged promotion
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Threshold values are not in the source; Tope supplies them in release/gates.yaml
+gate: G12
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,66 @@
+charter: v2
+id: P3-027
+kind: build
+title: Lint banned words and fake-precision chips
+phase: P3
+epic: E-P3-COMPONENTS
+req_ids:
+- EP-§3.4-37
+- EP-§3.4-38
+depends_on:
+- P3-013
+size: S
+difficulty:
+  score: 2
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 0, ambiguity 1, coupling 1'
+token_budget: 25000
+file_allowlist:
+- scripts/lint/honest_copy.py
+- test/scripts/honest_copy_test.py
+context_anchors:
+- ELEVATION.md#§3.4:L850-L851
+acceptance_criteria:
+- id: AC1
+  text: Given a UI string containing World-class, Elite or Seamless, when linted, then CI fails with key and file
+- id: AC2
+  text: Given a numeric confidence chip, when its value is not from a measured source field, then the lint fails
+- id: AC3
+  text: Given em dashes in UI strings, when linted, then they fail
+test_plan:
+  unit:
+  - banned words
+  - em dash
+  - chip source
+  integration:
+  - CI wiring
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - banned list
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

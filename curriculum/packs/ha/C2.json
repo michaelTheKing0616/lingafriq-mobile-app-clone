@@ -1,0 +1,2971 @@
+{
+"lang": "ha",
+"level": "C2",
+"built": "2026-10-21",
+"items": [
+{
+"id": "ha.sen.9a193cde65d1",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Gasar rubutu, Magana da rubutun Hausa: Wannan ma wata hanya ce ta musamman da za a iya sanya yara na baya su koyi Hausa, kuma su iya amfani da ita da kyau.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s143 <http://hausa.leadership.ng/node/18772>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s143 <http://hausa.leadership.ng/node/18772>"
+}
+],
+"confidence": 0.73,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.819335815d2e",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Abinda za ka yi ka sami nutsuwa shi ne, ka dinga tunanin cewa, duk abinda Allah Ya sa ka idan ka bi shi ka sami wanda ya fi shi kyau.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s679 <http://hausa.leadership.ng/node/4283>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s679 <http://hausa.leadership.ng/node/4283>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.8605f006c45a",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Abu na biyu da dukansu suka yi kira a kai shi ne kowa Allah ya ba idan an bada sakamakon zaben jama'a su karba hannu biyu su yiwa shugaban biyayya.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s870 <http://www.voahausa.com/a/raayoyin-yan-nijar-akan-zaben-kasarsu/3203126.html>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s870 <http://www.voahausa.com/a/raayoyin-yan-nijar-akan-zaben-kasarsu/3203126.html>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.7259843a9291",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Abu na farko da uwargida za ta yi bayan askin gashin hammata shi ne, ta shafa man zaitun, kada ta shafa hoda, domin hoda na shanya wajen ya yi baki.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s889 <http://hausa.leadership.ng/node/2431>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s889 <http://hausa.leadership.ng/node/2431>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.6a6ae5a7cfe9",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "A karon farko wannan shiri ya baiwa mata kimanin dubu goma sha takwas (18,000) daga kowanne sako da lokunan kananan hukumomi 27 dake fadin jihar ta Jigawa damar tsallakewa daga waccan yanayi na kunci zuwa walwala da bunkasar tattalin arziki baki daya.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s2375 <http://hausa.leadership.ng/node/18583>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s2375 <http://hausa.leadership.ng/node/18583>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.a3ddce311c96",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "“Akwai ma’aikata mutum Dubu Daya da Dari Biya da gwamnati ta dauka a bara, kuma bana ma tana shirye-shiryen daukar wasu mutum sama da Dubu Hudu aiki,” in ji Sakataren na APC.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s2762 <http://hausa.leadership.ng/node/15743>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s2762 <http://hausa.leadership.ng/node/15743>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.3e0ae8f58b73",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Akwai wadanda su ka yi zamani da Annabi (SAW) su ka kafirta da shi kuma su ka yake shi; ka ga wadannan kowa ya san matsayinsu (na azaba ko wuta).",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s2834 <http://hausa.leadership.ng/node/16193>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s2834 <http://hausa.leadership.ng/node/16193>"
+}
+],
+"confidence": 0.74,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.4a159f8d2a86",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Alhaji Ramadan Sa’adu, daya daga cikin shugabannin kasuwar ya bayyanawa LEADERSHIP Hausa cewar yanzu haka ana sayar da kwandon tumatir a kan naira dubu ashirin da biyar har zuwa talatin maimakon naira dubu daya da dari biyar zuwa dubu biyu.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s3137 <http://hausa.leadership.ng/node/16596>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s3137 <http://hausa.leadership.ng/node/16596>"
+}
+],
+"confidence": 0.73,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.213cf40f3b81",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Allah ubangiji ya ba mu ikon gyarawa, Ya kuma ba mu hadin kai da ci gaba a wannan majalisa tun daga matakin jiha har zuwa na kasa baki daya.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s3357 <http://hausa.leadership.ng/node/16967>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s3357 <http://hausa.leadership.ng/node/16967>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.f21cc7e75bc5",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Ba ka daukar kudi kawai ka je ka sayi jirgin sama, sai Hukuma su sa masu ilimi, Injiniyoyi, su je su duba yana da lafiya, ko ba shi da lafiya?",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s8091 <http://almizan.faithweb.com/sls692.html>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s8091 <http://almizan.faithweb.com/sls692.html>"
+}
+],
+"confidence": 0.73,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.fab66d4a4279",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Ba ranar da za ka fita ba tare da ka koyi wani abu ba, dole idan ka fita aikin jarida za ka koma gida da wani abin da ka koya.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s8510 <http://hausa.leadership.ng/node/17789>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s8510 <http://hausa.leadership.ng/node/17789>"
+}
+],
+"confidence": 0.74,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.c334e15ce904",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Baya ga wannan daga shafi na daya har zuwa na karshe, a kowane shafin a kan samu akalla kura-kuran rubuta uku, zuwa biyar zuwa goma da sama da haka.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s8783 <http://hausa.leadership.ng/?p=5148>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s8783 <http://hausa.leadership.ng/?p=5148>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.8114d2e31734",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Da yake bayyana aikin jarida, Alhaji Yahaya Umar Balarabe ya bayyana aikin jarida da cewa, “aiki ne mai kima, aiki ne mai gwarjini, aiki ne mai daraja da farin jini.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s12100 <http://hausa.leadership.ng/node/6721>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s12100 <http://hausa.leadership.ng/node/6721>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.f501c6ac9685",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Dole mutanen Arewa su dawo su san su mutanen Arewa ne, kuma yadda aka mayar da shi mutumin banza marar amfani ya dawo gida ya zauna daga shi sai kansa.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s12380 <http://almizan.faithweb.com/slsb698.html>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s12380 <http://almizan.faithweb.com/slsb698.html>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.b6ba0e44dffd",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Domin idan gaskiya ne suna da makamai da suka fi na Boko Haram babu yadda 'yan kungiyar zasu dinga shiga koina a kowane lokaci su kashe mutane su yi kone-kone su kuma fita lafiya.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s12559 <http://www.voahausa.com/a/a-karon-farko-gwamna-danbaba-suntai-ya-yi-jawabi/3494929.html>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s12559 <http://www.voahausa.com/a/a-karon-farko-gwamna-danbaba-suntai-ya-yi-jawabi/3494929.html>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.ed0b678a6659",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Domin yanzu haka ba zai yiwu ba mai gona a nesa ya iya zuwa gona a wannan lokaci, domin har gona ake bin mutum a kama shi don neman kudin fansa, ga shi ba isasshen takin zamani.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s12772 <http://hausa.leadership.ng/node/17050>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s12772 <http://hausa.leadership.ng/node/17050>"
+}
+],
+"confidence": 0.73,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.7f5577da1f87",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Don sayen motar hawa (duk bayan shekara hudu) – kowane sanata za a ba shi (Naira Milyan Tara da Dubu Dari da Talatin da Shida da Dari Tara da Tamanin da Biyu).",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s13347 <http://hausa.leadership.ng/?p=16348>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s13347 <http://hausa.leadership.ng/?p=16348>"
+}
+],
+"confidence": 0.74,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.7200f18fb407",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Haka kuma jumlar kudin sanatoci 109 a duk wata shi ne – Naira Bilyan Uku, Milyan Dari Biyu da Sittin da Hudu, Dubu Dari Uku da Ashirin da Tara da Dari Biyu da Sittin da Hudu da Kwabo Goma!",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s15663 <http://hausa.leadership.ng/?p=16348>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s15663 <http://hausa.leadership.ng/?p=16348>"
+}
+],
+"confidence": 0.74,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.394e597343a8",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Haka nan lokaci salla da sauran bukukuwa, ‘yan uwanka za su je masallaci tsoro kake ji ko wani abu ya same su, haka nan kai kan ka ka shiga gari tsoro kake!",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s16032 <http://hausa.leadership.ng/node/16198>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s16032 <http://hausa.leadership.ng/node/16198>"
+}
+],
+"confidence": 0.74,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.cb9dfff9be0a",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Hanya ce ta bullo da wasu manufofi domin tabbatar da ana adalci ga kowa, domin kare wanda ba shi da karfi daga mai karfi, da kare talaka daga mai kudi.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s16507 <http://hausa.leadership.ng/node/16439>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s16507 <http://hausa.leadership.ng/node/16439>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.3c33a5ab9493",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Idan babu na’uran zamani irin Blender ko Juicer, sai mu yanyanka su kanana, har sai ya zama tamkar madarar lemo, mu yi amfani da dukkanin dabarun matse lemo domin sha.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s17420 <http://hausa.leadership.ng/node/2431>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s17420 <http://hausa.leadership.ng/node/2431>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.dfd040f5c50d",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Idan dayansu ya isa girma nan gare ka, ko dukkansu su biyu, to, kada ka ce da su affafairan, kada kuma ka yi musu tsawa, ka gaya musu magana mai girma mai taushi.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s17494 <http://almizan.faithweb.com/lits698.html>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s17494 <http://almizan.faithweb.com/lits698.html>"
+}
+],
+"confidence": 0.74,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.bc14f193258e",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Idan har muka mika mai laifi abu mafi kyau mu mika shi ga gwamnati, idan ba ta hukunta shi ba laifi na kanta, mu da muka mika shi mun fita wajen Allah ba mu da laifin komai.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s17560 <http://hausa.leadership.ng/?p=18755>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s17560 <http://hausa.leadership.ng/?p=18755>"
+}
+],
+"confidence": 0.74,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.050be39a7c32",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Idan ka cire Al-Amin Ciroma (wato Abban Umma), wanda ya kagi majalisar, Malam Magaji ya riga kowa fara bayar da gudunmawa a wannan zaure, domin shi ne mutum na farko da ya fara aikawa da SAKO a dandalin ‘Burin Zuciya.’",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s17600 <http://hausa.leadership.ng/?p=2574>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s17600 <http://hausa.leadership.ng/?p=2574>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.5cb653207ecf",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Idan za su fita, mu fita tare, ko kuma idan an yi wani bako mu yi hira da shi, kamar yadda muke yi da kai yanzu a gonar nan tawa.”",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s18034 <http://hausa.leadership.ng/node/14106>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s18034 <http://hausa.leadership.ng/node/14106>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.01a4edaeb8b0",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Ina kira ga ’yan uwa na mata, shi ne su tashi tsaye su fito su yi siyasa, na san mata ba su son yin siyasa ne saboda suna tsoron tozarci.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s18290 <http://hausa.leadership.ng/node/18721>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s18290 <http://hausa.leadership.ng/node/18721>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.a3431931abdd",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Iyaka dai shi Facebook kamar yadda na riga na ce, shi yana ba ka dama ka iya gyara wata magana da ka riga ka yi domin wasu dalilai naka.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s19190 <http://hausa.leadership.ng/node/17858>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s19190 <http://hausa.leadership.ng/node/17858>"
+}
+],
+"confidence": 0.73,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.7f808581725d",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Ka ga a ce mu kaddara ka yi aiki mai kyau kamar yadda Imam Musa ya yi azumi ya yi bude baki da dabino wanda aka sa wa guba.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s19939 <http://almizan.faithweb.com/tus695.html>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s19939 <http://almizan.faithweb.com/tus695.html>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.b8eb0cc289df",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Kamar yadda nake ganin duk da dai ga yadda nizamin tattalin arziki yake jaridar ALMIZAN ta riga ta zauna daram, saboda su mutane suna saye, masu karanta Hausa suna saye.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s20426 <http://almizan.faithweb.com/tus699.html>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s20426 <http://almizan.faithweb.com/tus699.html>"
+}
+],
+"confidence": 0.73,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.3b7a2d21b541",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Kasancewar wata abu da muka rasa mai suna KUNYA, ita wannan kalma tana cikin addinin musulunci, wanda ba kuma musulmi kadai ke da ita ba, amma akasarin musulmi aka fi sani da ita.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s20827 <http://hausa.leadership.ng/makaloli/dan-jarida/page/2>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s20827 <http://hausa.leadership.ng/makaloli/dan-jarida/page/2>"
+}
+],
+"confidence": 0.74,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.bc8d0d45816e",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Korafin mutanen shi ne gwamnati ta sa ido a daina kama masu mutane domin su basu taba taba wani ba ko wata kabila hatta ma kabilun dake makwaftaka da su.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s21747 <http://www.voahausa.com/a/sojoji-sun-kama-fulani-25-a-jihar-kaduna/1882673.html>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s21747 <http://www.voahausa.com/a/sojoji-sun-kama-fulani-25-a-jihar-kaduna/1882673.html>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.4ceb19c2e611",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Kuma wani lokaci za ka ga cewa ga jama’a suna nemanka ka zo ka tsaya domin ka yi wata takara, wasu ma su ce ko ka ki, ko ka so kai za mu tsayar a kaza.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s22703 <http://hausa.leadership.ng/?p=16979>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s22703 <http://hausa.leadership.ng/?p=16979>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.1012b398b0a9",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Lallai aure ya shiga wani hali na garari saboda yadda al’ummma musamman mu Musulmi mu kai mai rikon sakainar kashi saki ya zama kamar wasan yara yadda ake nunawa a finafinai.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s23204 <http://hausa.leadership.ng/node/3796>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s23204 <http://hausa.leadership.ng/node/3796>"
+}
+],
+"confidence": 0.74,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.3743ba5f0de2",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Mafi akasari muna kuka kan yadda za ka sanya kudinka, ka yi aikin littafi tun daga farko har karshe, amma ka zo daga baya, kana tsalle-tsalle da ‘yan kasuwa.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s23705 <http://hausa.leadership.ng/node/17855>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s23705 <http://hausa.leadership.ng/node/17855>"
+}
+],
+"confidence": 0.73,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.fa76b8cad2b6",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Malam, ko akwai wata akida wacce idan mutum ya yi riko da ita, ko da ya yi zina ya sha giya ya yi sata, ya na mutuwa zai shiga aljanna?",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s24242 <http://hausa.leadership.ng/?p=15843>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s24242 <http://hausa.leadership.ng/?p=15843>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.7f8750e6ba52",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Misali, saurayi ko budurwa suna furta kalaman soyayya wa juna, amma sai ka same su da samari biyu zuwa uku, ko mace mai samari biyu zuwa uku ko ma fiye.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s25399 <http://hausa.leadership.ng/node/3796>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s25399 <http://hausa.leadership.ng/node/3796>"
+}
+],
+"confidence": 0.75,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.e151eb50db79",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Mun sami takarda daga kasa mai tsarki cewa ranar 4 ga wata za a rufe filin jirgi, amma duk jirgin da ya sauka bayan wannan adadi za a ci shi tarar Riyal 200,000.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s25937 <http://almizan.faithweb.com/bls699b.html>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s25937 <http://almizan.faithweb.com/bls699b.html>"
+}
+],
+"confidence": 0.73,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.0a83286d4a98",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Na biyu kuma ka koma ka yi ta istigfari kafin sallar Asuba da bayan sallar Asuba, kuma bayan sallar La’asar har zuwa sallar Magriba ma ka yi ta istigfari, kuma ka rika hadawa da sadaka.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s26342 <http://hausa.leadership.ng/?p=5184>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s26342 <http://hausa.leadership.ng/?p=5184>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.bdac342425e7",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Na san sojojinmu, suna bin umurni kuma idan suka bi wannan alhali ‘yan Boko Haram suna rike da makamansu suna amfani da su, za su iya kawo mana gagarumin hari a kowane lokaci daga yanzu.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s26971 <http://hausa.leadership.ng/node/1819>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s26971 <http://hausa.leadership.ng/node/1819>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.f729dc76b613",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Saboda haka bayan kammala karatu a Senegal, na dawo gida, har na zama Malami mai koyar da Faransanci a wata makarant a nan Kaduna, ni ne ma shugaban fannin koyar da Faransanci na wannan makaranta.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s28091 <http://hausa.leadership.ng/node/6051>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s28091 <http://hausa.leadership.ng/node/6051>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.bb587cf9e4a7",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Saboda haka, idan ka shiga aikin nan, to ba don ka yi kudi ba, amma za ka ga ka samu nasara da kwarjini, kuma za ka ga ka yi suna da daraja.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s28179 <http://hausa.leadership.ng/node/9346>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s28179 <http://hausa.leadership.ng/node/9346>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.6e723f1cf14b",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Sai wannan dan kasuwa na Kano ya dauki alkalaminsa ya rubuta wasika da ajami cewa wani daga kasa kaza mai suna kaza ya zo da kaya kaza, amma ya rasu.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s29580 <http://almizan.faithweb.com/hts696.html>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s29580 <http://almizan.faithweb.com/hts696.html>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.f8b57ae26059",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Salam, edita barka da aiki ina neman izini ka ba ni dama in mika sakon gaisuwata ga Maimartaba Sarkin Kano, dattijo kuma uban mara uba, gaskiya Kanawa kun yi sa,ar Sarki.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s29842 <http://hausa.leadership.ng/node/3796>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s29842 <http://hausa.leadership.ng/node/3796>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.9bd27c0c764a",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Samun nasara a wannan wasa ta dogara ne ga mutum guda da ya tsallake shinge na kimanin kafa bakwai, amma fa ba mutane bakwai su tsallake kafa daya ba.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s29953 <http://hausa.leadership.ng/node/17840/embed>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s29953 <http://hausa.leadership.ng/node/17840/embed>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.70b37e79498c",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Sannan su kuma ‘yan kasuwar suna bawa gwamnati haraji daga cikin kowace naira dubu suna baiwa gwamnatin naira 150 a matsayin kudin haraji wannan shi ne tsarin da muke yi a nan jihar ta Kano.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s30451 <http://hausa.leadership.ng/node/16446>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s30451 <http://hausa.leadership.ng/node/16446>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.b4979aab2bc8",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Shi tsarin iyali a na yin sa ne saboda abu biyu; ko dai likita ya bawa mutum shawarar yi ko kuma miji da mata su yanke shawarar yi a tsakaninsu.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s31650 <http://hausa.leadership.ng/node/5607>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s31650 <http://hausa.leadership.ng/node/5607>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.851cb70895ec",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Shi yakan ba ka dama ka yi rubutu mai tarin yawa, kuma bayan shekaru da dama idan ka dawo za ka iya ganin duk abubuwan da ka rubuta akan shafin.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s31664 <http://hausa.leadership.ng/node/17858>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s31664 <http://hausa.leadership.ng/node/17858>"
+}
+],
+"confidence": 0.74,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.a5451fd07ec9",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "To ka ga idan ‘yan jarida suka fita daga wannan tsari na neman suna da shahara aka koma bisa kan neman arziki, shi ke nan an tafi zuwa haramun.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s34069 <http://hausa.leadership.ng/?p=14722>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s34069 <http://hausa.leadership.ng/?p=14722>"
+}
+],
+"confidence": 0.73,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.2e14c25a2d84",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "To sai dai ya nuna musu cewa kada su yawaita shirye-shirye domin hakan zai sa wasu su kasa zuwa, amma idan aka sa sau biyu asati kowa zai zo cikin marmari.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s34335 <http://almizan.faithweb.com/sls697.html>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s34335 <http://almizan.faithweb.com/sls697.html>"
+}
+],
+"confidence": 0.73,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.65b347dafd2f",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Tuni dai jama’a, wadanda su ka bukaci a sakaya sunayensu, su ka fara bayyana ra’ayoyinsu ciki har da wani mai cewa ya san Janar Abdu Kaza sosai mai sanayyar makamin aiki ne saboda ya rike makamai da yawa.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s34967 <http://www.voahausa.com/a/canjin-gwamnan-diffa-kura-na-cigaba-da-tashi/2984430.html>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s34967 <http://www.voahausa.com/a/canjin-gwamnan-diffa-kura-na-cigaba-da-tashi/2984430.html>"
+}
+],
+"confidence": 0.73,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.32b3d893902d",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Wanda ma saboda girman wannan masallaci, ba wani Annabi cikin Annabawa, tun daga Adamu har ya zuwa Manzo na karshe, mai tsira da aminci wanda bai da dangantaka da wannan masallaci.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s35747 <http://almizan.faithweb.com/tus690.html>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s35747 <http://almizan.faithweb.com/tus690.html>"
+}
+],
+"confidence": 0.73,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.28f7a7cf2479",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Wani masanin ilimin falsafa mai suna Ralph Waldo Emerson yana cewa “Hikima a kan kanta abar burgewa ce, amma kuma a aiki da ita cikin nishadi domin tabbatar da gaskiya, tana daga daraja da kimar mai ita”.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s36109 <http://hausa.leadership.ng/?p=2956>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s36109 <http://hausa.leadership.ng/?p=2956>"
+}
+],
+"confidence": 0.73,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.ab414c7a5da3",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Wannan babu laifi idan ka karanta wata aya ka yi addu’a kan wannan aya game da abinda ka ke so a cikinta ko ka ke jin tsoro a cikinta.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s36305 <http://hausa.leadership.ng/node/4283>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s36305 <http://hausa.leadership.ng/node/4283>"
+}
+],
+"confidence": 0.73,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.2c0acf882c56",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Wata rana ya ga wadansu mutane suna shan giya, bayan da ya duba lafiyar wani mutum mai suna Yan Xin, sai ya gaya masa cewa, sai ka daina shan giya kuma ka koma gida.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s37719 <http://hausa.cri.cn/chinaabc/chapter17/chapter170401.htm>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s37719 <http://hausa.cri.cn/chinaabc/chapter17/chapter170401.htm>"
+}
+],
+"confidence": 0.73,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.484407117d09",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Ya kuma ce idan ba sa son magana da gwamnati kai tsaye, su tuntubi wata kungiya mai zaman kanta da kasashen duniya suka san da ita, ta zama mai shiga tsakaninsu da gwamnatin kan yadda za a sako ‘yanmatan.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s39701 <http://hausa.leadership.ng/node/17273/embed>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s39701 <http://hausa.leadership.ng/node/17273/embed>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.6bca924ba44e",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Yanzu haka tuni an sa hanyar sabuwar Gandu zuwa helkwatar karamar hukumar Kumbotso cikin kasafin kudin wannan shekara, don haka kowane lokaci daga yanzu ana iya fara wannan gagarumin aiki wanda zai lamuke miliyoyin naira.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s40337 <http://hausa.leadership.ng/node/17264>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s40337 <http://hausa.leadership.ng/node/17264>"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "ha.sen.2904a66d9c8e",
+"lang": "ha",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Yawan maza na duk fadin kasar Sin sun kai milliyan dari shida da sittin da daya da dubu dari daya da hamsin,yawan mata kuwa sun kai milliyan dari shida ashirin da uku da dubu dari uku da tamanin.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "hau_community_2017#s40748 <http://hausa.cri.cn/chinaabc/chapter1/chapter10401.htm>",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "leipzig",
+"locator": "hau_community_2017#s40748 <http://hausa.cri.cn/chinaabc/chapter1/chapter10401.htm>"
+}
+],
+"confidence": 0.75,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+}
+]
+}

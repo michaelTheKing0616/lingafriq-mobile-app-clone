@@ -127,8 +127,8 @@ class EmailVerificationScreen extends HookConsumerWidget {
                       PanAfricanColors.secondaryDark,
                     ]
                   : [
-                      PanAfricanColors.primaryLight.withOpacity(0.1),
-                      PanAfricanColors.secondaryLight.withOpacity(0.1),
+                      PanAfricanColors.primaryLight.withValues(alpha: 0.1),
+                      PanAfricanColors.secondaryLight.withValues(alpha: 0.1),
                     ],
             ),
           ),
@@ -166,7 +166,7 @@ class EmailVerificationScreen extends HookConsumerWidget {
                       height: 100.h,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        gradient: LinearGradient(
+                        gradient: const LinearGradient(
                           colors: [
                             PanAfricanColors.primaryLight,
                             PanAfricanColors.secondaryLight,
@@ -174,7 +174,7 @@ class EmailVerificationScreen extends HookConsumerWidget {
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: PanAfricanColors.primaryLight.withOpacity(0.3),
+                            color: PanAfricanColors.primaryLight.withValues(alpha: 0.3),
                             blurRadius: 20,
                             spreadRadius: 5,
                           ),
@@ -189,7 +189,7 @@ class EmailVerificationScreen extends HookConsumerWidget {
                   )
                       .animate()
                       .fadeIn(duration: 400.ms)
-                      .scale(begin: Offset(0.8, 0.8), duration: 400.ms),
+                      .scale(begin: const Offset(0.8, 0.8), duration: 400.ms),
                   
                   SizedBox(height: PanAfricanSpacing.xl),
                   
@@ -243,10 +243,10 @@ class EmailVerificationScreen extends HookConsumerWidget {
                       padding: EdgeInsets.all(PanAfricanSpacing.md),
                       margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
                       decoration: BoxDecoration(
-                        color: PanAfricanColors.error.withOpacity(0.1),
+                        color: context.panError.withValues(alpha: 0.1),
                         borderRadius: PanAfricanRadius.lgBR,
                         border: Border.all(
-                          color: PanAfricanColors.error,
+                          color: context.panError,
                           width: 1,
                         ),
                       ),
@@ -254,7 +254,7 @@ class EmailVerificationScreen extends HookConsumerWidget {
                         children: [
                           Icon(
                             Icons.error_outline,
-                            color: PanAfricanColors.error,
+                            color: context.panError,
                             size: 20.sp,
                           ),
                           SizedBox(width: PanAfricanSpacing.sm),
@@ -262,7 +262,7 @@ class EmailVerificationScreen extends HookConsumerWidget {
                             child: Text(
                               errorMessage.value!,
                               style: PanAfricanTypography.bodyMedium(context).copyWith(
-                                color: PanAfricanColors.error,
+                                color: context.panError,
                               ),
                             ),
                           ),
@@ -315,7 +315,7 @@ class EmailVerificationScreen extends HookConsumerWidget {
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: PanAfricanRadius.mdBR,
-                              borderSide: BorderSide(
+                              borderSide: const BorderSide(
                                 color: PanAfricanColors.primary,
                                 width: 2,
                               ),
@@ -323,7 +323,7 @@ class EmailVerificationScreen extends HookConsumerWidget {
                             errorBorder: OutlineInputBorder(
                               borderRadius: PanAfricanRadius.mdBR,
                               borderSide: BorderSide(
-                                color: PanAfricanColors.error,
+                                color: context.panError,
                                 width: 2,
                               ),
                             ),
@@ -365,7 +365,7 @@ class EmailVerificationScreen extends HookConsumerWidget {
                                       content: const Text(
                                         'Verification code resent to your email',
                                       ),
-                                      backgroundColor: PanAfricanColors.success,
+                                      backgroundColor: context.panSuccess,
                                     ),
                                   );
                                 }
@@ -445,7 +445,7 @@ class EmailVerificationScreen extends HookConsumerWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: const Text('Email verified successfully!'),
-            backgroundColor: PanAfricanColors.success,
+            backgroundColor: context.panSuccess,
           ),
         );
 
@@ -467,7 +467,9 @@ class EmailVerificationScreen extends HookConsumerWidget {
         }
 
         // Navigate back or to home.
-        Navigator.of(context).popUntil((route) => route.isFirst);
+        if (context.mounted) {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+        }
       }
     } catch (e) {
       errorMessage.value = e.toString().replaceAll('Exception: ', '');

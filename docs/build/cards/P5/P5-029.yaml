@@ -1,0 +1,89 @@
+charter: v2
+id: P5-029
+kind: build
+title: Give specific feedback on tone production drills
+phase: P5
+epic: E-P5-A1
+req_ids:
+- EP-§6.2-21
+- EP-§6.2-22
+depends_on:
+- P5-027
+- E-P6-SCORER
+size: M
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 2
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T1
+  reviewer: T3
+  justification: 'score 8: blast 3, ambiguity 2, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/lessons/tone_production_drill.dart
+- test/lessons/tone_production_test.dart
+context_anchors:
+- ELEVATION.md#§6.2:L1197-L1199
+acceptance_criteria:
+- id: AC1
+  text: Given the real scorer, when a learner records a production attempt, then feedback is immediate, specific and actionable
+    (for example lower the second syllable)
+- id: AC2
+  text: Given an uncertain score, when shown, then the UI says unsure and offers retry instead of a number
+- id: AC3
+  text: Given legacy random scores, when found, then CI fails the build with RandomScoreForbidden
+test_plan:
+  unit:
+  - feedback mapping
+  integration:
+  - scorer contract
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - recording
+  - scoring
+  - feedback
+  - unsure
+  copy_keys:
+  - tone.feedback
+  - tone.unsure
+  tokens:
+  - color.label.native
+  - color.label.expert
+  - color.label.beta
+  - type.body
+  - space.4
+  motion_tier: product
+  a11y:
+  - screen-reader announces label name and meaning
+  - touch targets >=48dp
+  - contrast >=4.5:1 on label chips
+  goldens:
+  - tone_feedback
+tags:
+- shows_score
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

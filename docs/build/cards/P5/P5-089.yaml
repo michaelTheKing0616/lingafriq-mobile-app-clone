@@ -1,0 +1,50 @@
+charter: v2
+id: P5-089
+kind: verification
+title: Verify linguist review cost
+phase: P5
+epic: E-P5-A1
+req_ids:
+- CP-§9.4-03
+- CP-§9.4-04
+depends_on:
+- P5-086
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T0
+  tester: T0
+  reviewer: T1
+  justification: verification only; no code
+token_budget: 20000
+file_allowlist: []
+context_anchors:
+- CURRICULUM.md#§9.4:L833-L833
+acceptance_criteria:
+- id: AC1
+  text: Given quotes, when compared with 150-300 h at $20-40/h, then $3k-12k per language and $21k-84k for Stage 1 are confirmed
+    or deltas recorded [estimate]
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G5
+external_blockers:
+- EXT-11
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

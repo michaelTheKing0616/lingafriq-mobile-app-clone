@@ -1,0 +1,65 @@
+charter: v2
+id: P6-076
+kind: build
+title: Tune VAD and end-of-turn per language prosody
+phase: P6
+epic: E-P6-REALTIME
+req_ids:
+- EP-§7.7-02
+- EP-§7.7-07
+depends_on:
+- P6-075
+size: M
+difficulty:
+  score: 6
+  blast: 1
+  ambiguity: 2
+  coupling: 1
+  depth: 2
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 1, ambiguity 2, coupling 1, depth 2'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/realtime/vad.ts
+- node-backend/src/ai-gateway/realtime/endOfTurn.ts
+context_anchors:
+- ELEVATION.md#§7.7:L1477-L1482
+acceptance_criteria:
+- id: AC1
+  text: Given recorded turns per Stage-1 language, when end-of-turn thresholds are tuned, then premature cut-off rate is measured
+    per language and recorded
+- id: AC2
+  text: Given a tonal-language utterance with trailing pitch, when processed, then it is not cut off as end of turn solely
+    on pitch drop
+test_plan:
+  unit:
+  - threshold config
+  integration:
+  - recorded turns
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - per-language turn set
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

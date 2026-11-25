@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lingafriq/screens/ugc/ugc_enhanced_rules.dart';
+import 'package:lingafriq/screens/ugc/ugc_quality_badges_widget.dart';
 import 'package:lingafriq/services/user_generated_content_service.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
@@ -18,6 +20,7 @@ class CreateQuizScreen extends HookConsumerWidget {
     final selectedLanguage = useState<String>('yoruba');
     final questions = useState<List<Map<String, dynamic>>>([]);
     final isSubmitting = useState(false);
+    final qualityBadges = useState<List<String>>(const <String>[]);
     final currentQuestion = useState<Map<String, dynamic>?>(null);
     
     final languages = ['yoruba', 'hausa', 'igbo', 'swahili', 'zulu', 'afrikaans', 'nigerian_pidgin'];
@@ -30,7 +33,7 @@ class CreateQuizScreen extends HookConsumerWidget {
         backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
         leading: IconButton(
-          icon: Icon(PanAfricanIcons.back),
+          icon: const Icon(PanAfricanIcons.back),
           onPressed: () {
             HapticFeedback.lightImpact();
             Navigator.of(context).pop();
@@ -58,7 +61,7 @@ class CreateQuizScreen extends HookConsumerWidget {
           children: [
             // Language Selection
             DropdownButtonFormField<String>(
-              value: selectedLanguage.value,
+              initialValue: selectedLanguage.value,
               decoration: InputDecoration(
                 labelText: 'Language',
                 labelStyle: PanAfricanTypography.bodyMedium(context),
@@ -135,7 +138,7 @@ class CreateQuizScreen extends HookConsumerWidget {
                   title: Text(question['question'] ?? 'Question ${index + 1}', style: PanAfricanTypography.titleSmall(context)),
                   subtitle: Text('${question['options']?.length ?? 0} options', style: PanAfricanTypography.bodySmall(context)),
                   trailing: IconButton(
-                    icon: Icon(Icons.delete, color: PanAfricanColors.error),
+                    icon: Icon(Icons.delete, color: context.panError),
                     onPressed: () {
                       HapticFeedback.lightImpact();
                       questions.value = List.from(questions.value)..removeAt(index);
@@ -162,18 +165,34 @@ class CreateQuizScreen extends HookConsumerWidget {
             ],
             
             SizedBox(height: PanAfricanSpacing.lg),
+
+            if (qualityBadges.value.isNotEmpty)
+              UGCQualityBadgesWidget(
+                badges: qualityBadges.value,
+                isDark: isDark,
+              ),
+            SizedBox(height: PanAfricanSpacing.md),
             
             // Submit Button
             FilledButton(
-              onPressed: isSubmitting.value || questions.value.isEmpty
+              onPressed: isSubmitting.value
                   ? null
                   : () async {
                       HapticFeedback.mediumImpact();
-                      if (titleController.text.isEmpty) {
+                      final check = checkEnhancedQuiz(
+                        title: titleController.text,
+                        description: descriptionController.text,
+                        questions: questions.value,
+                      );
+                      qualityBadges.value = check.badges;
+                      if (!check.passed) {
+                        final notice = check.message.isEmpty
+                            ? ugcPleaseFixValidation()
+                            : check.message;
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Please fill in quiz title', style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary)),
-                            backgroundColor: PanAfricanColors.error,
+                            content: Text(notice, style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary)),
+                            backgroundColor: context.panError,
                           ),
                         );
                         return;
@@ -199,7 +218,7 @@ class CreateQuizScreen extends HookConsumerWidget {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text('Quiz created successfully!', style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary)),
-                                backgroundColor: PanAfricanColors.success,
+                                backgroundColor: context.panSuccess,
                               ),
                             );
                             Navigator.of(context).pop(true);
@@ -327,7 +346,7 @@ class _QuestionEditor extends HookConsumerWidget {
                     style: OutlinedButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.sm),
                       shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
-                      side: BorderSide(color: PanAfricanColors.primary),
+                      side: const BorderSide(color: PanAfricanColors.primary),
                     ),
                     child: Text('Cancel', style: PanAfricanTypography.labelLarge(context, color: PanAfricanColors.primary)),
                   ),

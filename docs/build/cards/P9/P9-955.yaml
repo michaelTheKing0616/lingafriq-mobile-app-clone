@@ -1,0 +1,95 @@
+charter: v2
+id: P9-955
+kind: build
+title: 'Build Events: festivals and live cultural sessions'
+phase: P9
+epic: E-P9-VILLAGE
+req_ids:
+- EP-§9.2-41
+- EP-§9.2-42
+- EP-§9.2-43
+depends_on:
+- E-P9-SAFETY
+- P9-947
+- P9-943
+size: M
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 4: blast 2, ambiguity 1, coupling 1, depth 0'
+token_budget: 80000
+file_allowlist:
+- lib/screens/village/events_screen.dart
+- node-backend/src/services/events.service.ts
+context_anchors:
+- ELEVATION.md#§9.2:L1624-L1627
+acceptance_criteria:
+- id: AC1
+  text: Given the festival calendar, when opened, then Ọdún Ọ̀ṣun, Eid, Timkat, Durbar, Homowo and Umhlanga appear with dates,
+    language and a live or replay session
+- id: AC2
+  text: Given a live cultural session, when joined, then it opens a Practice Room with the event theme and moderation applied
+- id: AC3
+  text: Given an event without verified cultural content, when listed, then it is labelled 'draft' and not shown to learners
+- id: AC4
+  text: Given the account is under 18 or age-unknown, when this surface is opened, then it is hidden or guardian-gated until
+    E-P9-SAFETY is Done, and the restriction is enforced server-side.
+test_plan:
+  unit: []
+  integration:
+  - event to room
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - events list
+  content:
+  - festival content review
+user_facing: true
+ux_spec:
+  states:
+  - upcoming
+  - live
+  - past
+  - draft-hidden
+  copy_keys:
+  - events.title
+  - events.live
+  - events.replay
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - events_default
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

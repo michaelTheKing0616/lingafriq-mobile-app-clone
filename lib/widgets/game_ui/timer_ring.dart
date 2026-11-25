@@ -68,7 +68,7 @@ class _RingPainter extends CustomPainter {
     final bgPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = stroke
-      ..color = color.withOpacity(0.2)
+      ..color = color.withValues(alpha: 0.2)
       ..strokeCap = StrokeCap.round;
     final fgPaint = Paint()
       ..style = PaintingStyle.stroke

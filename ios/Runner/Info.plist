@@ -27,11 +27,12 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
+	<!-- Booleans, not strings. A string value here is invalid and can kill launch. -->
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
-		<string>$(LINGAFRIQ_IOS_ALLOW_ARBITRARY_LOADS)</string>
+		<false/>
 		<key>NSAllowsLocalNetworking</key>
-		<string>$(LINGAFRIQ_IOS_ALLOWS_LOCAL_NETWORKING)</string>
+		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Need camera access for uploading images</string>

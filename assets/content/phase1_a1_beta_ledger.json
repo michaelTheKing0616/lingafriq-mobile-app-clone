@@ -1,0 +1,27 @@
+{
+  "card_id": "P5-077",
+  "updated_on": "2026-10-27",
+  "tts_listen_gates": [
+    { "language_id": "yo", "status": "not_run", "blocker": "P5-060" },
+    { "language_id": "ig", "status": "not_run", "blocker": "P5-061" },
+    { "language_id": "ha", "status": "not_run", "blocker": "P5-062" },
+    { "language_id": "pcm", "status": "not_run", "blocker": "P5-064" },
+    { "language_id": "sw", "status": "not_run", "blocker": "P5-066" },
+    { "language_id": "zu", "status": "not_run", "blocker": "P5-067" },
+    { "language_id": "xh", "status": "not_run", "blocker": "P5-069" }
+  ],
+  "beta_labels_live": [
+    { "language_id": "yo", "live": false },
+    { "language_id": "ig", "live": false },
+    { "language_id": "ha", "live": false },
+    { "language_id": "pcm", "live": false },
+    { "language_id": "sw", "live": false },
+    { "language_id": "zu", "live": false },
+    { "language_id": "xh", "live": false }
+  ],
+  "blind_sampling": {
+    "weekly_active": false,
+    "last_draw_week": null,
+    "blocker": "P5-046"
+  }
+}

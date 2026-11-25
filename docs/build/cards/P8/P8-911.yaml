@@ -1,0 +1,111 @@
+charter: v2
+id: P8-911
+kind: build
+title: 'GameKit: honest practice mode until real scoring ships'
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.1-02
+- P0-18
+depends_on:
+- E-P8-PLAY
+- P8-909
+- E-P3-DESIGN-SYSTEM
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- lib/games/gamekit/game_scoring.dart
+- lib/games/gamekit/universal_game_screen.dart
+- lib/games/gamekit/game_session.dart
+- lib/games/gamekit/game_meta_layer.dart
+context_anchors:
+- ELEVATION.md#§10.1:L1662-L1663
+- ELEVATION.md#§10.2:L1670-L1676
+acceptance_criteria:
+- id: AC1
+  text: Given a speaking game whose scorer is not live, when the game opens, then it runs in practice mode with a visible
+    'Practice, not scored' label
+- id: AC2
+  text: Given practice mode, when a turn completes, then no score, accuracy percentage or pronunciation feedback is displayed
+    and no XP, streak or league credit is issued
+- id: AC3
+  text: Given practice mode, when the learner records, then the recording may be replayed against the model audio but nothing
+    claims correctness
+- id: AC4
+  text: Given the feature flag for the real scorer turns on, when a game opens, then practice mode is replaced only for games
+    whose adapter test passes
+test_plan:
+  unit:
+  - mode selection by flag
+  integration:
+  - no reward in practice
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - ready
+  - playing
+  - correct
+  - wrong
+  - why_wrong
+  - results
+  - error
+  - offline
+  - practice_mode
+  - scorer_unavailable
+  copy_keys:
+  - games.gamekit_practice_mode.title
+  - games.gamekit_practice_mode.instructions
+  - games.gamekit_practice_mode.why_wrong
+  - games.gamekit_practice_mode.practice_label
+  - games.gamekit_practice_mode.error
+  tokens:
+  - color.surface.game
+  - color.feedback.correct
+  - color.feedback.wrong
+  - space.4
+  - radius.card
+  - type.title
+  motion_tier: product
+  a11y:
+  - screen-reader labels on every answer control
+  - reduced-motion variant
+  - correctness shown by icon and text not colour alone
+  - touch targets ≥48dp
+  goldens:
+  - gamekit_practice_mode_playing
+  - gamekit_practice_mode_why_wrong
+  - gamekit_practice_mode_results
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

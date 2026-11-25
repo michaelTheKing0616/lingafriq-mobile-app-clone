@@ -68,6 +68,25 @@ class CacheEvictionManager {
   Duration _maxAge = defaultMaxAge;
   EvictionPolicy _policy = EvictionPolicy.lru;
 
+  static String unitKey(String language) => 'unit_pack_$language';
+
+  Future<void> recordUnitBytes(String language, int bytes) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(unitKey(language), bytes);
+  }
+
+  Future<int?> unitBytes(String language) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt(unitKey(language));
+  }
+
+  /// Drops the recorded size for one unit. Other preferences stay.
+  Future<void> releaseUnit(String language) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(unitKey(language));
+    await prefs.remove('_cache_meta_${unitKey(language)}');
+  }
+
   /// Configure eviction policy
   void configure({
     int? maxSizeBytes,

@@ -149,7 +149,7 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
               },
               decoration: InputDecoration(
                 hintText: 'Search users...',
-                prefixIcon: Icon(Icons.search, color: PanAfricanColors.textSecondary),
+                prefixIcon: const Icon(Icons.search, color: PanAfricanColors.textSecondary),
                 border: OutlineInputBorder(
                   borderRadius: PanAfricanRadius.lgBR,
                   borderSide: BorderSide.none,
@@ -173,7 +173,7 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
                   width: 8.w,
                   height: 8.w,
                   decoration: BoxDecoration(
-                    color: isConnected ? PanAfricanColors.success : PanAfricanColors.error,
+                    color: isConnected ? context.panSuccess : context.panError,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -310,7 +310,7 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
                   width: 12.w,
                   height: 12.w,
                   decoration: BoxDecoration(
-                    color: PanAfricanColors.success,
+                    color: context.panSuccess,
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
@@ -330,14 +330,14 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
         subtitle: Text(
           isOnline ? 'Online' : 'Offline',
           style: PanAfricanTypography.labelLarge(context).copyWith(
-            color: isOnline ? PanAfricanColors.success : PanAfricanColors.textSecondary,
+            color: isOnline ? context.panSuccess : PanAfricanColors.textSecondary,
           ),
         ),
         trailing: Semantics(
           label: 'Start private chat with $username',
           button: true,
           child: IconButton(
-          icon: Icon(Icons.chat_bubble_outline_rounded, color: PanAfricanColors.primary, semanticLabel: 'Message'),
+          icon: const Icon(Icons.chat_bubble_outline_rounded, color: PanAfricanColors.primary, semanticLabel: 'Message'),
           onPressed: () {
             HapticFeedback.lightImpact();
             final contact = PrivateChatContact.fromOnlineMap(userData);

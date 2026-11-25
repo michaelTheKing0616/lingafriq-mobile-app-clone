@@ -1,0 +1,62 @@
+charter: v2
+id: P12-018
+kind: verification
+title: Execute quarterly MongoDB point-in-time restore test
+phase: P12
+epic: E-P12-RELEASE
+req_ids:
+- EP-§13.4-16
+depends_on:
+- E-P10-ME
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: 'score 3: blast 1, ambiguity 1, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§13.4:L1904-L1905
+acceptance_criteria:
+- id: AC1
+  text: Given a production backup, when restored to an isolated cluster at a chosen timestamp, then document counts of 3 named
+    collections match the source at that timestamp
+- id: AC2
+  text: Given the test completes, when the report is filed, then it records restore duration and the date, and the next test
+    is scheduled within 3 months
+- id: AC3
+  text: Given a restore fails, when reported, then it is raised as a P0 incident, never logged as passed
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks:
+- Atlas access is human-held; Tope runs or delegates
+gate: G12
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

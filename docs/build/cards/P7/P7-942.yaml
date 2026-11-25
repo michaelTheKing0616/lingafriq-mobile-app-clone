@@ -1,0 +1,73 @@
+charter: v2
+id: P7-942
+kind: build
+title: Author culture tutorials on greetings, names and taboos
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§11.2-17
+- EP-§11.2-18
+- EP-§11.2-19
+depends_on:
+- P7-930
+- E-P5-CONTENT-REAL
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 2
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, coupling 1, depth 0'
+token_budget: 60000
+file_allowlist:
+- assets/tutorials/culture_greetings.json
+- assets/tutorials/culture_naming.json
+- assets/tutorials/culture_taboo.json
+- test/content/culture_tutorials_test.dart
+context_anchors:
+- ELEVATION.md#§11.2:L1795-L1796
+acceptance_criteria:
+- id: AC1
+  text: Given the greeting tutorial, when it runs, then it shows who greets first and the greeting choreography for the language
+- id: AC2
+  text: Given the naming tutorial, when it runs, then it explains naming customs for the language
+- id: AC3
+  text: Given the taboo tutorial, when it runs, then it lists taboo topics for the language
+- id: AC4
+  text: Given any culture tutorial, when validated, then a cultural consultant and native reviewer sign-off is recorded before
+    publication
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - native and cultural review sign-off
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- cultural review depends on consultant (EXT-14)
+gate: HUB
+external_blockers:
+- EXT-14
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

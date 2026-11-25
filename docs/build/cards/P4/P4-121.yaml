@@ -1,0 +1,80 @@
+charter: v2
+id: P4-121
+kind: build
+title: Build AI bootstrap stage with grounding and flags
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.4-45
+- EP-§6.4-55
+- EP-§6.4-56
+- EP-§6.4-57
+- EP-§6.4-69
+- EP-§6.4-70
+depends_on:
+- P4-120
+- P4-100
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 2, ambiguity 2, coupling 1'
+token_budget: 60000
+file_allowlist:
+- tools/content_pipeline/ai_bootstrap.py
+- tools/content_pipeline/tone_suggest.py
+- test/content/test_ai_bootstrap.py
+context_anchors:
+- ELEVATION.md#§6.4.1:L1264-L1292
+acceptance_criteria:
+- id: AC1
+  text: Given a kit, when bootstrap runs, then LLM and MT draft frequency lexicon, glosses, examples, in-lexicon dialogues,
+    distractors, cultural-note drafts with citations and eval sets, and every output has ai_assisted true and label beta
+- id: AC2
+  text: Given Yoruba, when tone marks are suggested, then Spitch is the suggester, and for other languages an LLM output is
+    accepted only if validators pass
+- id: AC3
+  text: Given a tone mark with no lexicon anchor, when bootstrap finishes, then it is flagged for linguist review and never
+    auto-accepted (C2/D6)
+- id: AC4
+  text: Given a draft cultural note without a citation, when saved, then it is rejected CITATION_MISSING
+- id: AC5
+  text: Given the AI stack doc is unavailable, when bootstrap runs, then the vendor matrix is read from the coverage file
+    and the missing doc is reported EXT-01
+test_plan:
+  unit:
+  - test_ai_bootstrap
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - grounding fixtures
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Spitch/vendor terms unverified
+gate: G4
+external_blockers:
+- EXT-01
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

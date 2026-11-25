@@ -16,6 +16,9 @@ class PanAfricanButton extends StatefulWidget {
   final String label;
   final VoidCallback? onPressed;
   final IconData? icon;
+
+  /// Grow the icon with the user's text size (for icon+label CTAs).
+  final bool iconScalesWithText;
   final bool isLoading;
   final bool isOutlined;
   final Color? backgroundColor;
@@ -30,6 +33,7 @@ class PanAfricanButton extends StatefulWidget {
     required this.label,
     this.onPressed,
     this.icon,
+    this.iconScalesWithText = false,
     this.isLoading = false,
     this.isOutlined = false,
     this.backgroundColor,
@@ -46,6 +50,10 @@ class PanAfricanButton extends StatefulWidget {
 
 class _PanAfricanButtonState extends State<PanAfricanButton>
     with SingleTickerProviderStateMixin {
+  double _iconSize(BuildContext context) => widget.iconScalesWithText
+      ? MediaQuery.textScalerOf(context).scale(20.sp)
+      : 20.sp;
+
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   // ignore: unused_field
@@ -55,7 +63,7 @@ class _PanAfricanButtonState extends State<PanAfricanButton>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: Duration(milliseconds: 100),
+      duration: const Duration(milliseconds: 100),
       vsync: this,
     );
     _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
@@ -83,11 +91,11 @@ class _PanAfricanButtonState extends State<PanAfricanButton>
             ? SizedBox(
                 width: 16.w,
                 height: 16.h,
-                child: CircularProgressIndicator(strokeWidth: 2),
+                child: const CircularProgressIndicator(strokeWidth: 2),
               )
             : widget.icon != null
-                ? Icon(widget.icon, size: 20.sp)
-                : SizedBox.shrink(),
+                ? Icon(widget.icon, size: _iconSize(context))
+                : const SizedBox.shrink(),
         label: Text(
           widget.label,
           style: PanAfricanTypography.labelLarge(context),
@@ -160,7 +168,7 @@ class _PanAfricanButtonState extends State<PanAfricanButton>
                       ),
                     )
                   else if (widget.icon != null) ...[
-                    Icon(widget.icon, size: 20.sp, color: fgColor),
+                    Icon(widget.icon, size: _iconSize(context), color: fgColor),
                     SizedBox(width: PanAfricanSpacing.sm),
                   ],
                   Text(
@@ -187,11 +195,15 @@ class _PanAfricanButtonState extends State<PanAfricanButton>
                 ),
               )
             : widget.icon != null
-                ? Icon(widget.icon, size: 20.sp)
-                : SizedBox.shrink(),
+                ? Icon(widget.icon, size: _iconSize(context))
+                : const SizedBox.shrink(),
         label: Text(
           widget.label,
-          style: PanAfricanTypography.labelLarge(context),
+          // labelLarge carries its own (dark) colour, which would beat the
+          // button's foregroundColor and fail contrast on the green fill.
+          style: PanAfricanTypography.labelLarge(context).copyWith(
+            color: fgColor,
+          ),
         ),
         style: ElevatedButton.styleFrom(
           backgroundColor: bgColor,
@@ -207,7 +219,7 @@ class _PanAfricanButtonState extends State<PanAfricanButton>
             borderRadius: BorderRadius.circular(PanAfricanRadius.md),
           ),
           elevation: 2,
-          shadowColor: bgColor.withOpacity(0.3),
+          shadowColor: bgColor.withValues(alpha: 0.3),
         ),
       );
     }
@@ -218,7 +230,7 @@ class _PanAfricanButtonState extends State<PanAfricanButton>
     )
         .animate()
         .fadeIn(duration: 200.ms)
-        .scale(begin: Offset(0.95, 0.95), end: Offset(1, 1));
+        .scale(begin: const Offset(0.95, 0.95), end: const Offset(1, 1));
   }
 }
 
@@ -241,7 +253,7 @@ class PanAfricanSecondaryButton extends StatelessWidget {
       label: label,
       onPressed: onPressed,
       icon: icon,
-      backgroundColor: PanAfricanColors.secondary,
+      backgroundColor: context.panSecondary,
       foregroundColor: PanAfricanColors.neutralDarkest,
     );
   }
@@ -298,7 +310,7 @@ class _PanAfricanCardState extends State<PanAfricanCard>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 200),
       vsync: this,
     );
     _scaleAnimation = Tween<double>(begin: 1.0, end: 1.02).animate(
@@ -349,14 +361,14 @@ class _PanAfricanCardState extends State<PanAfricanCard>
           gradient: LinearGradient(
             colors: [
               widget.gradientStart ?? PanAfricanColors.primary,
-              widget.gradientEnd ?? PanAfricanColors.secondary,
+              widget.gradientEnd ?? context.panSecondary,
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
         ),
-        padding: EdgeInsets.all(2),
+        padding: const EdgeInsets.all(2),
         child: Container(
           decoration: BoxDecoration(
             color: cardColor,
@@ -389,7 +401,7 @@ class _PanAfricanCardState extends State<PanAfricanCard>
               }
             : null,
         child: ScaleTransition(
-          scale: widget.hasHoverEffect ? _scaleAnimation : AlwaysStoppedAnimation(1.0),
+          scale: widget.hasHoverEffect ? _scaleAnimation : const AlwaysStoppedAnimation(1.0),
           child: InkWell(
             onTap: widget.onTap,
             borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
@@ -402,7 +414,7 @@ class _PanAfricanCardState extends State<PanAfricanCard>
     return card
         .animate()
         .fadeIn(duration: 300.ms)
-        .scale(begin: Offset(0.95, 0.95), end: Offset(1, 1));
+        .scale(begin: const Offset(0.95, 0.95), end: const Offset(1, 1));
   }
 }
 
@@ -641,7 +653,7 @@ class PanAfricanTabBar extends StatelessWidget implements PreferredSizeWidget {
         controller: controller,
         isScrollable: isScrollable,
         labelColor: textColor,
-        unselectedLabelColor: textColor.withOpacity(0.6),
+        unselectedLabelColor: textColor.withValues(alpha: 0.6),
         indicator: BoxDecoration(
           color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
           borderRadius: BorderRadius.circular(PanAfricanRadius.pill),
@@ -814,7 +826,7 @@ class PanAfricanAvatar extends StatelessWidget {
                   width: badgeSize,
                   height: badgeSize,
                   decoration: BoxDecoration(
-                    color: badgeColor ?? PanAfricanColors.secondary,
+                    color: badgeColor ?? context.panSecondary,
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
@@ -930,6 +942,9 @@ class PanAfricanEmptyState extends StatelessWidget {
                 PanAfricanButton(
                   label: actionLabel!,
                   onPressed: onAction,
+                  // Deep brand green fill: white keeps the label above 4.5:1
+                  // whatever the theme's onPrimary resolves to.
+                  foregroundColor: Colors.white,
                 ),
               ],
             ],
@@ -945,12 +960,14 @@ class PanAfricanErrorState extends StatelessWidget {
   final String title;
   final String description;
   final VoidCallback? onRetry;
+  final String? retryLabel;
 
   const PanAfricanErrorState({
     super.key,
     required this.title,
     required this.description,
     this.onRetry,
+    this.retryLabel,
   });
 
   @override
@@ -959,7 +976,7 @@ class PanAfricanErrorState extends StatelessWidget {
       icon: PanAfricanIcons.error,
       title: title,
       description: description,
-      actionLabel: onRetry != null ? 'Retry' : null,
+      actionLabel: onRetry != null ? (retryLabel ?? 'Retry') : null,
       onAction: onRetry,
     );
   }
@@ -987,7 +1004,7 @@ class PanAfricanLoadingState extends StatelessWidget {
             child: CircularProgressIndicator(
               strokeWidth: 3,
               valueColor: AlwaysStoppedAnimation<Color>(
-                isDark ? PanAfricanColors.secondary : PanAfricanColors.primary,
+                isDark ? context.panSecondary : PanAfricanColors.primary,
               ),
             ),
           ),
@@ -1144,7 +1161,7 @@ class PanAfricanTextField extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: PanAfricanColors.primary,
             width: 2,
           ),
@@ -1152,7 +1169,7 @@ class PanAfricanTextField extends StatelessWidget {
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(PanAfricanRadius.md),
           borderSide: BorderSide(
-            color: PanAfricanColors.error,
+            color: context.panError,
           ),
         ),
       ),
@@ -1232,7 +1249,7 @@ class PanAfricanBadge extends StatelessWidget {
         vertical: PanAfricanSpacing.xxs,
       ),
       decoration: BoxDecoration(
-        color: badgeColor.withOpacity(0.2),
+        color: badgeColor.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(PanAfricanRadius.sm),
         border: Border.all(color: badgeColor, width: 1),
       ),
@@ -1314,7 +1331,7 @@ class PanAfricanDivider extends StatelessWidget {
     if (hasGradient) {
       return Container(
         height: thickness ?? 1,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
               Colors.transparent,

@@ -195,11 +195,14 @@ class DiacriticsEnforcer {
   
   /// Enforce diacritics with fuzzy matching support
   /// Returns: (corrected_text, was_changed, metadata)
+  /// When [patchModelOutput] is false (P6-026 tutor_correct), only exact lexicon phrase
+  /// matches apply — no fuzzy or token-wise patching of model text.
   static Map<String, dynamic> enforceWithMetadata(
     String text,
     String? language, {
     bool enableFuzzy = true,
     double fuzzyThreshold = 0.75,
+    bool patchModelOutput = true,
   }) {
     final metadata = {
       'original': text,
@@ -242,6 +245,14 @@ class DiacriticsEnforcer {
       };
     }
     
+    if (!patchModelOutput) {
+      return {
+        'text': text,
+        'changed': false,
+        'metadata': metadata,
+      };
+    }
+
     // Fuzzy matching if enabled
     if (enableFuzzy) {
       final fuzzyResult = _fuzzyMatch(normalized.toLowerCase(), map, threshold: fuzzyThreshold);

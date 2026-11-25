@@ -1,0 +1,189 @@
+card_id,role,model_tier,model_slug,tokens_in,tokens_out,attempts,outcome,note
+P0-INT-RTM-02,extract,T1,composer-2.5-fast,n/a,n/a,1,pass,§2 inventory 54 rows
+P0-INT-RTM-03,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§3 76 rows
+P0-INT-RTM-04,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§4 163 rows
+P0-INT-RTM-05,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§5 32 rows
+P0-INT-RTM-06,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§6 202 rows
+P0-INT-RTM-07,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§7 168 rows
+P0-INT-RTM-08,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§8 94 rows
+P0-INT-RTM-09,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§9 129 rows
+P0-INT-RTM-10,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§10 76 rows
+P0-INT-RTM-11,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§11-12 104 rows
+P0-INT-RTM-13,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§13 169 rows
+P0-INT-RTM-14,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§14-15 97 rows
+P0-INT-RTM-16,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§0+§16 129 rows
+P0-INT-RTM-17,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§17 226 rows
+P0-INT-RTM-C02,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,CP §0-2 168 rows
+P0-INT-RTM-C39,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,CP §3-9 263 rows
+P0-INT-SKELETON,orchestrate,T4,claude-fable-5-1,n/a,n/a,1,pass,Stage A+B: scripts + 00-04 docs + templates + state files
+P0-INT-CARDS-ENG,draft,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,"14 engineering slices → 928 cards (P0–P6, P7–P13 eng, epics)"
+P0-INT-CARDS-FEAT,draft,T1,composer-2.5-fast,n/a,n/a,1,pass,8 feature slices → F-001…F-151
+P0-INT-FIXES,orchestrate,T4,claude-fable-5-1,n/a,n/a,1,pass,"script fixes (relative paths, epic ships-after rule), EXT-24…30, harvest lists, honest-state + minor-gate ACs, 42 gate-critical reviewer→T4"
+P0-INT-DOCS-05-07,write,T4,claude-fable-5-1,n/a,n/a,1,pass,"05_UX_DESIGN_BAR, 06_TEST_STRATEGY, 07_REVIEW_STANDARDS"
+P0-INT-AUDIT,audit,T0,scripts,0,0,1,pass,validate 1079 OK · deps OK · coverage unmapped 0 · charter 1092 OK
+P0-INT-G0,gate,T4,claude-fable-5-1,n/a,n/a,1,pass,COVERAGE_REPORT.md + gates/G0_PACKET.md; D11–D19 raised
+P0-INT-SKILLS,orchestrate,T4,claude-fable-5-1,n/a,n/a,1,pass,08_SKILLS_MAP + assign_skills.py (1079 cards) + brief SKILLS slot + ORCHESTRATOR_PROMPT; G0 signed
+P1-007,build,T3,grok-4.7-xhigh,n/a,n/a,2,pass,controller 100/100 lines and branches; promptTemplates.ts:30 unreachable empty-template throw
+P1-031,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,2,pass,practice banner replaces finishGame; source-scan tests only
+P1-029,build,T3,grok-4.7-xhigh,n/a,n/a,3,pass,placeholder bundles out of pubspec; linter gates release and sideload builds
+P1-030,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,false tone and grammar quarantined; greeting cites elevation audit
+P1-032,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,2,pass,503 retryable on analyze/quick/batch; tutor banner shows pron.unavailable; omitted 200 fields still default overall_score 0.0
+P1-008,build,T3,grok-4.7-xhigh,n/a,n/a,2,pass,D21 clamps and quotas; provider rejection releases the reservation before 500
+P1-026,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,deny-AI instruction removed; persistent AI-recreation label; identity question answered before the model
+P1-012,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,2,pass,missions POST gateway mode roleplay with no client key; errors retry without a canned reply
+P1-014,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,socket identity is handshake.auth.token only; user_connected cannot rebind off the JWT subject
+P1-017,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,2,pass,ordinary user award is 403; lesson_completed credits rule table 25; is_admin JWT can grant and is audit-logged
+P1-013,build,T3,grok-4.7-xhigh,n/a,n/a,1,pass,non-member join is 403 with no room event; private rooms emit a server UUIDv7; REST still uses private_* ids
+P1-018,build,T3,grok-4.7-xhigh,n/a,n/a,2,pass,client points are 403; lesson amount and metadata stay at server base 30; cap is 500; sourceId is not a verified lesson event
+P1-015,build,T3,grok-4.7-xhigh,n/a,n/a,1,pass,room events use io.to(roomId); presence requires mutual share_presence; client roomId is not membership-checked
+P1-016,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,suite covers non-member join, JWT identity, and bystander leaks; onlineUsers map is not asserted
+P1-019,build,T3,grok-4.7-xhigh,n/a,n/a,1,pass,dry-run flags and writes nothing; apply stores the prior; second run writes 0; a crash before the adjustment row drops that prior
+P1-023,build,T3,grok-4.7-xhigh,n/a,n/a,1,pass,hosted moderation runs before chat delivery; substring filter is deleted; threshold is 0.8; no provider is signed; lesson options still skip the gate
+P1-027,build,T3,grok-4.7-xhigh,n/a,n/a,3,pass,skill whatever discrimination and killing are not substring-blocked; historical violence uses the server reply; an allow plus historical_violence is not overridden
+P1-028,build,T1,grok-4.7-xhigh,n/a,n/a,1,pass,Nzema not Twi; 1957 is Britain's first African majority-rule independence not the first sub-Saharan; historian review pending; Yankah's Fante is omitted
+P1-033,build,T3,grok-4.7-xhigh,n/a,n/a,1,pass,semver logout deleted; schema steps run once to version 2; failure shows SchemaRecoveryApp; Hive restore clears the box before rewrite and tests do not open Hive
+P1-024,build,T2,grok-4.7-xhigh,n/a,n/a,2,pass,reports return a reference id from the JWT subject; blocked private snap and global socket delivery are suppressed; a thrown block lookup fail-opens
+P1-034,build,T2,grok-4.7-xhigh,n/a,n/a,2,pass,startup migrates Map.toString before the reask gate; invalid JSON is a typed error; a no-quote heuristic can re-ask every field
+P1-035,build,T3,grok-4.7-xhigh,n/a,n/a,1,pass,simulate-sync queue deleted; rows delete only after ok true; failures keep attempts and backoff; Hive box is the only queue; lesson progress uses progress_metrics_merge
+P1-036,build,T4,grok-4.7-xhigh,n/a,n/a,1,pass,AES-GCM with a fresh nonce; a flipped bit throws cache_integrity_failed and returns no data; legacy records are discarded and not decrypted
+P1-037,build,T3,grok-4.7-xhigh,n/a,n/a,3,pass,API process starts no scheduler; one lock holder sends; a waiter follows the renewed lease; user reads are one query per collection
+P1-038,build,T2,grok-4.7,n/a,n/a,1,pass,One local-day cap across jobs; quiet hours unchanged; unknown timezone logs UTC
+P1-040,build,T2,grok-4.7,n/a,n/a,1,pass,Non-commercial TTS and NLLB routes return typed unavailable; the ban-list still names the excluded ids
+P1-042,build,T2,grok-4.7,n/a,n/a,1,pass,Scraper package and service removed; translate returns translation_unavailable with retryable false
+P1-043,build,T2,grok-4.7,n/a,n/a,1,pass,Unknown email and wrong password share one 401 body and a pbkdf2 verify; logs omit the header and password length
+P1-044,build,T2,grok-4.7,n/a,n/a,1,pass,Five failures arm a growing Retry-After; the correct password stays refused until it expires; the per-IP limiter remains
+P1-045,build,T2,grok-4.7,n/a,n/a,1,pass,New passwords require 8 characters and a hash-prefix breach check; a Django hash becomes Argon2id on the next successful login
+P1-046,build,T3,grok-4.7,n/a,n/a,1,pass,One loader trims JWT_SECRET and still accepts the untrimmed value; EdDSA and RS256 resolve by kid; HS256 is not cut over
+P1-047,build,T3,grok-4.7,n/a,n/a,1,pass,New logins issue a 15-minute access token and a hashed rotating refresh token; replay after 10 seconds revokes the family; installed 7-day tokens still refresh until they expire
+P1-048,build,T3,grok-4.7,n/a,n/a,1,pass,A signed-in user registers a passkey that signs in with a 15-minute session; replay and a foreign origin are rejected; removing the passkey blocks the next sign-in
+P1-049,build,T2,grok-4.7,n/a,n/a,1,pass,A verified Google or Apple token links the account and issues a 15-minute session; an unverified email does not; a magic link is single-use and an unknown email returns the same body
+P1-050,build,T3,grok-4.7,n/a,n/a,1,pass,Every route is inventoried with a Joi schema or an explicit exemption; normal JSON is capped at 256 KiB and an invalid auth body returns 400 without a stack
+P1-051,build,T3,grok-4.7,n/a,n/a,1,pass,A body that names another user does not become the actor; Rive state is stored for the JWT subject, and an unmarked body actor-id read fails the scan
+P1-052,build,T3,grok-4.7,n/a,n/a,1,pass,User B is denied on user A's private, self, and admin id routes; a new id route missing from the inventory fails the suite
+P1-053,build,T2,grok-4.7,n/a,n/a,1,pass,The 11th login from one IP returns 429; one account's backoff grows across IPs; unknown and known failures match; the clock is fake
+P1-054,adr,T2,grok-4.7,n/a,n/a,1,pass,Leaf DER SHA-256 on both platforms; the current pin and the next pin share CERTIFICATE_PIN_HASHES; a build with no pins stays open
+P1-055,build,T2,grok-4.7,n/a,n/a,1,pass,An unknown leaf throws certificate_pin_mismatch; the backup pin still matches; the Android placeholder pin is gone
+P1-056,build,T1,grok-4.7,n/a,n/a,1,pass,Release builds pass --obfuscate and upload symbols privately; symbolize restored uniqueReadableFrame from an obfuscated program counter
+P1-057,build,T1,grok-4.7,n/a,n/a,1,pass,Dependabot covers pub, npm, and GitHub Actions; a high production advisory fails npm audit; pub outdated is posted monthly
+P1-058,build,T1,grok-4.7,n/a,n/a,1,pass,Mobile action refs are full SHAs; an unpinned ref fails the lint; the app SBOM is attached to the release and the API SBOM is an artifact
+P1-059,build,T2,grok-4.7,n/a,n/a,1,pass,Admin builds on React 19.3.1 and Vite 8.3.5; production npm audit has 0 high
+P1-060,verification,T1,grok-4.7,n/a,n/a,1,pass,Scope lists API mounts, socket events, auth flows, minor-reachable surfaces, test-account roles, and exclusions for EXT-17
+P1-061,build,T3,grok-4.7,n/a,n/a,1,pass,A bad webhook secret returns 401; purchase renewal cancellation and expiry update the row; a repeated or older event does not roll it back; a write failure returns 500
+P1-062,build,T3,grok-4.7,n/a,n/a,1,pass,A missing entitlement returns 403 premium_required; an active row is allowed; a client premium claim is ignored; expiry is denied after the 60 second cache
+P2-001,build,T1,grok-4.7,n/a,n/a,1,pass,A new Dart file with a warning fails and names file:line; a legacy file with the same count passes and reports the baseline unchanged; a higher count fails with the delta
+P2-002,build,T2,grok-4.7,n/a,n/a,1,pass,A new placeholder or empty field fails with path:line and a rule id; Sample MCQ fails; a generic claim fails with its span; a tone line without a lexicon source fails; an allowlist entry passes only with a reason and an owner
+P2-003,build,T1,grok-4.7,n/a,n/a,1,pass,Pre-commit runs gitleaks 8.30.1 with redaction on staged changes; a leaked pattern fails and the report says REDACTED; the hygiene check is a blocking CI step and a new assignment fails without printing the value
+P2-002,build,T2,grok-4.7,n/a,n/a,1,pass,A lesson or tone note passes with a lexicon entry, a licensed corpus item, a native-speaker id and review date, or an Import Media id and span; no source fails; runtime Import Media lessons are not a CI failure
+P7-960,build,T2,grok-4.7,n/a,n/a,1,pass,Import Media builds a lesson whose model line is the media text, with at most 10 flashcards, a from your media tag, and an unreviewed tag on the generated check
+P2-004,build,T2,grok-4.7,n/a,n/a,1,pass,A v1 pack missing lemma fails with the item id and /items/0/lemma; non-NFC names the field; a tonal lemma without a tone mark fails; the four legacy bundles are rejected and the migration report records accepted 0
+P2-005,build,T2,grok-4.7,n/a,n/a,1,pass,A prompt or model-identifier change without eval outputs fails loud; a score under the threshold is blocked; a change that touches neither prints skipped with that reason
+P2-006,build,T1,grok-4.7,n/a,n/a,1,pass,A seeded high lodash advisory fails npm audit --omit=dev; Dependabot is weekly for npm, pub, and GitHub Actions; the monthly pub outdated report is uploaded as an artifact
+P2-007,build,T1,grok-4.7,n/a,n/a,1,pass,The release job uploads a CycloneDX SBOM for the app and the API and no longer commits a version bump; an action ref that is not a full SHA fails and names the action
+P2-008,build,T1,grok-4.7,n/a,n/a,1,pass,A domain file missing from lcov counts at 0% and fails the gate below 70%; lib/learning is at 0.0 percent; the elevation baseline of 64 Flutter test files is recorded
+P2-009,build,T2,grok-4.7,n/a,n/a,1,pass,User B is denied on user A's private object for every inventoried id route; a route missing from the inventory fails the suite; the API CI job is blocking
+P2-010,build,T1,grok-4.7,n/a,n/a,1,pass,A selected design-system chip and the Rive CharacterChip at frame zero match stored goldens; a pixel diff above 0.01 fails and the diff is written for upload
+P2-059,build,T2,grok-4.7,n/a,n/a,1,pass,Learning behaviour tests raise lib/learning to 83.3 percent (1058/1270); the 70 percent gate exits 0 and the threshold file is unchanged
+P2-011,build,T2,grok-4.7,n/a,n/a,1,pass,The OpenAPI spec is generated from the route inventory and Joi schemas at version 1.0.0; drift fails CI and a breaking diff fails unless the major version increases
+P2-012,build,T2,grok-4.7,n/a,n/a,1,pass,The Dart client is generated from the OpenAPI spec; personality calls use one contract path and a failed call throws ApiError
+P2-013,build,T2,grok-4.7,n/a,n/a,1,pass,Mounted routes must be in the OpenAPI spec, and an empty body on a schema route returns 400 naming the missing field
+P2-036,build,T3,grok-4.7,n/a,n/a,1,pass,Request logs are JSON with a request id. Secret keys and secret-shaped strings are scrubbed before the line is written. Login does not record the password or its length
+P2-033,build,T3,grok-4.7,n/a,n/a,1,pass,One W3C trace id links the app header, the API span, the AI gateway span, and the speech span. Prompt text and email addresses are not span attributes. A failed export increments the drop counter and the request still returns
+ADR-004,adr,T4,grok-4.7,n/a,n/a,1,pass,Tope chose Drift (SQLite), not Isar. Hive stays until the migration card moves the local data. P2-014 through P2-030 are unblocked
+P2-034,build,T2,grok-4.7,n/a,n/a,1,pass,Rate, errors and duration are recorded per route. OpenAI and Groq stamp first-token time from the stream. A five-minute window above 300 ms, 500 ms or 400 ms raises the matching alert
+P2-014,build,T3,grok-4.7,n/a,n/a,1,pass,Schema steps run in order. A failed step rolls back and leaves the signed-in session. Lessons, vocabulary, progress, media, and the Point & Say queue stay readable from Drift
+P2-015,build,T3,grok-4.7,n/a,n/a,1,pass,An offline write keeps a client idempotency key in Drift across restart. Retry delay grows to a 60 second cap. The same key applies once. A permanent 4xx stays in the dead-letter list
+P2-016,build,T3,grok-4.7,n/a,n/a,1,pass,The competing offline queues are deleted. Writes, preferences, and background flush go through the one Drift outbox. Downloads, review, Point and Say, and the tone trainer stay readable
+P2-017,build,T1,grok-4.7,n/a,n/a,1,pass,The sync chip shows the pending count, a failed state with Retry, and Offline whenever the device has no connection
+P2-018,build,T3,grok-4.7,n/a,n/a,1,pass,An unavailable pronunciation scorer returns 503 and no score. A failed persona reply is a typed error, not a canned line
+P2-019,build,T2,grok-4.7,n/a,n/a,1,pass,Downloads wait for Wi-Fi unless the learner overrides that download. The unit size is shown, a pack over 30 MB is flagged, and delete frees that unit
+P2-020,build,T2,grok-4.7,n/a,n/a,1,pass,Android Data Saver turns on low-bandwidth mode. A manual choice wins. Chat stays text until audio is tapped, and LazyImage asks for a smaller image
+P2-021,design,T1,grok-4.7,n/a,n/a,1,pass,The offline tone hook returns unavailable and no score until a commercial-licence model within 20 MB meets the 90 percent floor
+P2-041,adr,T4,grok-4.7,n/a,n/a,1,pass,One learner graph replaces the four named models. Events first, then FSRS-6. Audio stays off without opt-in.
+P2-023,build,T3,grok-4.7,n/a,n/a,1,pass,New sessions are RS256 with a kid for 15 minutes when a private key is set. HS256 still verifies. Cutover stays off.
+P2-024,build,T3,grok-4.7,n/a,n/a,1,pass,Refresh tokens rotate, reuse revokes the family, and only the hash is stored.
+P2-042,build,T3,grok-4.7,n/a,n/a,1,pass,A learning event with the same client id is applied once and ordered by time then id. Audio is dropped without opt-in.
+P2-025,build,T3,grok-4.7,n/a,n/a,1,pass,Saving progress creates a passkey linked to the anonymous id. A cancelled prompt offers Google, Apple, and email.
+P2-022,build,T3,grok-4.7,n/a,n/a,1,pass,Onboarding and the first lesson persist in Drift offline. The sync posts those events once. A failed step is named step:name.
+P2-026,build,T3,grok-4.7,n/a,n/a,1,pass,Google and Apple identity tokens are verified for audience, issuer, and expiry. An unverified email is not linked.
+P2-027,build,T3,grok-4.7,n/a,n/a,1,pass,A magic link lasts 15 minutes, is single use, hides whether the email exists, and returns rate_limited after the auth limit.
+P2-028,build,T3,grok-4.7,n/a,n/a,1,pass,A legacy Django hash becomes Argon2id on login. A 5-character password is checked against the hash. New passwords stay at 8 characters with a breach check.
+P2-037,build,T2,grok-4.7,n/a,n/a,1,pass,An Android ANR exit is reported with the release and device, and the email is scrubbed. The rollout gate still blocks below 0.995 crash-free or above 0.0047 ANR.
+P2-029,build,T2,grok-4.7,n/a,n/a,1,pass,Sentry starts before the other services. Independent init runs together. The 1.2 second splash wait is gone. The ten device cold starts are not recorded.
+P2-030,build,T3,grok-4.7,n/a,n/a,1,pass,Cron runs in the worker process under a lease. A second owner waits until the lease expires. The API process does not start workers.
+P2-035,build,T2,grok-4.7,n/a,n/a,1,pass,AI cost is per feature. A missing price is unknown, not zero. The fallback alert is above 20 percent in 15 minutes.
+P2-038,build,T3,grok-4.7,n/a,n/a,1,pass,Flag assignment is stable and snaps to 1, 10, 50, and 100. A failure or a stale cache turns the feature off.
+P2-039,adr,T4,grok-4.7,n/a,n/a,1,pass,Shorebird stays off. Store fixes keep the rollout stages. Tope may turn the patch channel on later.
+P2-040,build,T1,grok-4.7,n/a,n/a,1,pass,318 root notes moved with matching hashes. STATUS.md is unknown until a test report and a flag snapshot are passed in.
+P2-043,build,T3,grok-4.7,n/a,n/a,1,pass,FSRS-6 matches the published vectors within 1e-6. Fuzzing is off. The four named schedulers no longer use SM-2 or HLR.
+P2-044,build,T1,grok-4.7,n/a,n/a,1,pass,FSRS mutation score is 130/147 (0.8844). Seventeen survivors are listed. Four mutants do not compile and are not scored. A score under 80 percent fails the gate.
+P2-045,build,T3,grok-4.7,n/a,n/a,1,pass,One graph per learner and language. Evidence updates FSRS state, channel strength, and one error counter. Rebuilding the event log matches the stored graph.
+P2-046,build,T2,grok-4.7,n/a,n/a,1,pass,Due and weak nodes rank by recall, then error count. Polie receives at most the configured weak items and no learner id. An empty graph returns an empty result.
+P2-047,build,T3,grok-4.7,n/a,n/a,1,pass,An item stores its type, stimulus, diacritic-insensitive answer, IRT a and b, and skill tags. A draft is not served. An answer links the item id and those node ids. A distractor without a rationale is rejected.
+P2-048,build,T3,grok-4.7,n/a,n/a,1,pass,Language, history, random, and unit quizzes are served from item-bank items. Sample MCQ text is excluded. Bracket questions stay sentence building.
+P2-049,build,T3,grok-4.7,n/a,n/a,1,pass,Recovered difficulty correlates at least 0.9 with the simulation. Items under 200 responses stay uncalibrated and are not scored. The report lists fit and sample size.
+P2-050,build,T3,grok-4.7,n/a,n/a,1,pass,1000 simulated placements finished in 8 to 15 items. The result has an ability and a confidence interval. Fewer than 8 calibrated items is provisional and unsure.
+P2-051,build,T2,grok-4.7,n/a,n/a,1,pass,Listen items play the item-bank ref and grade the answer spec. Tone items grade the lexeme tone pattern. A picture without alt text is rejected.
+P2-052,build,T2,grok-4.7,n/a,n/a,1,pass,A missing tone mark is not fully correct. A listed ASCII variant passes with a hint. Sentence building accepts only the orderings on the item.
+P2-053,build,T3,grok-4.7,n/a,n/a,1,pass,A speaking prompt shows a score only with a finite confidence of at least 0.6 from the pronounce endpoint. Low confidence and an unavailable scorer show no number. Raw audio is discarded unless storage was opted in.
+P2-054,build,T3,grok-4.7,n/a,n/a,1,pass,Each can-do is met, not met, or unsure from scored turns. Thin evidence is not met. An unavailable scorer stores nothing.
+P2-055,build,T2,composer-2.5-fast,n/a,n/a,1,pass,Feedback shows the correct form and its audio. A wrong answer shows the item rationale. A missing rationale shows the form only and flags the item.
+P2-056,build,T3,grok-4.7,n/a,n/a,1,pass,Checkpoints keep only items that map to the unit can-dos. Evidence stores item ids, scores, and calibration. Uncalibrated items or a missing scorer issue nothing. Proctoring is passport-only with consent.
+P2-057,build,T1,composer-2.5-fast,n/a,n/a,1,pass,Each preloader shows once. A dismissed tip stays dismissed. Settings links to the features guide and the game onboarding overlay. Neither screen was removed.
+P2-058,build,T3,grok-4.7,n/a,n/a,1,pass,On-device Beta-Binomial mastery uses only the practice signals. A missing score is not invented. The under-16 record has no advertising id. Reset returns the prior.
+P4-001,build,T2,composer-2.5-fast,n/a,n/a,1,pass,A missing licence field fails by name. Use flags must be true or false. Unsigned display or training fails. Non-commercial and share-alike cannot be displayed or used for training.
+P4-002,build,T1,composer-2.5-fast,composer-2.5-fast,composer-2.5-fast,2,pass,FSI and Peace Corps rows are public-domain and evidence-only. Unconfirmed status forces display and training off. Unmodernised 1960s vocabulary fails the lexicon check. No FSI Zulu or Xhosa course.
+P4-003,build,T1,composer-2.5-fast,composer-2.5-fast,composer-2.5-fast,2,pass,Wiktionary, UD, and Biblica stay evidence-only under CC BY-SA. A derivative that still names Biblica fails. Bible rows allow corpus and frequency evidence only.
+P4-004,build,T1,composer-2.5-fast,composer-2.5-fast,composer-2.5-fast,1,pass,Leipzig web apps stay excluded. FLEURS lists six languages. WAXAL is two licence groups. A non-commercial story or a story with no author fails.
+P4-005,build,T1,composer-2.5-fast,composer-2.5-fast,composer-2.5-fast,1,pass,Common Voice is CC0 with empty attribution. Hours are the curriculum figures. Unknown Zulu and Xhosa hours stay empty and are not zero.
+P4-006,verification,T1,composer-2.5-fast,n/a,n/a,2,pass,The live catalogue did not state an Igbo CC BY count. The search index shows Igbo Attribution 4.0 pages. The register stays unverified.
+P4-007,build,T1,composer-2.5-fast,n/a,n/a,2,pass,Lanfrica is discovery only and all uses stay false. Checklist tiers come from arXiv 2606.28867. Unconfirmed Peace Corps, Leipzig, and WAXAL Ghana are not marked as clean open tiers.
+P4-008,build,T1,composer-2.5-fast,n/a,n/a,2,pass,Display or training without counsel fails. Verbatim copy needs attribution and a clean T1 or T2 tier. The gate stays Blocked-External EXT-03.
+P4-009,build,T2,grok-4.7,n/a,n/a,1,pass,Share-alike provenance fails out of the evidence layer and names the item and source. Evidence with attribution passes. The content-engine job runs the tests.
+P4-010,build,T2,grok-4.7,n/a,n/a,1,pass,Non-commercial and academic-only sources stay excluded. A manifest cannot lift them. No waiver is recorded.
+P4-011,build,T1,composer-2.5-fast,n/a,n/a,1,pass,JW300 is declared excluded and a derived manifest fails. MAFAND-MT and MasakhaNER stay CC BY-NC until Masakhane grants a licence.
+P4-012,build,T1,composer-2.5-fast,n/a,n/a,1,pass,AfriSenti stays excluded. The HF CC BY 4.0 label is stored as a conflict and does not allow a use.
+P4-013,build,T1,composer-2.5-fast,n/a,n/a,1,pass,PanLex stays excluded. The permission draft is pending and unsent. No use is allowed.
+P4-014,build,T1,composer-2.5-fast,n/a,n/a,1,pass,NaijaVoices stays excluded. The membership price is an unverified curriculum quote and the waiver is not purchased.
+P4-015,build,T1,composer-2.5-fast,n/a,n/a,1,pass,IgboAPI data stays excluded. Apache-2.0 covers the code only. EXT-05 is Open, so a document does not unlock the data.
+P4-016,build,T1,composer-2.5-fast,n/a,n/a,1,pass,Kamusi stays excluded. The commercial-licence request is optional and has not been sent.
+P4-017,build,T1,composer-2.5-fast,n/a,n/a,1,pass,Helsinki Swahili stays excluded. The ELRA prices are an unverified curriculum quote and nothing is purchased.
+P4-018,build,T1,composer-2.5-fast,n/a,n/a,1,pass,Oxford stays licence-required. The quote request is unsent and no use is allowed.
+P4-019,build,T1,composer-2.5-fast,n/a,n/a,1,pass,Abraham and Bargery stay excluded. Copyright is unconfirmed and neither work is public domain.
+P4-020,adr,T1,composer-2.5-fast,n/a,n/a,1,pass,Four restricted sources stay excluded. Oxford is buy only after a signed quote. Nothing is purchased.
+P4-021,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,A language kit must validate every required section. A missing kit stops the pipeline before generation.
+P4-022,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Yoruba stack records Oxford unheld, Abraham as reference, Bámgbóṣé unpurchased, and Spitch disabled.
+P4-023,verification,T1,n/a,n/a,n/a,0,blocked,No edition is chosen and no purchase is logged. EXT-22 is Open. The card is Blocked-External.
+P4-024,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Igbo stack records Ọnwụ unverified, IgboAPI and Oxford unheld, Emenanjo unpurchased, and the tone restorer advisory.
+P4-025,verification,T1,n/a,n/a,n/a,0,blocked,Ọnwụ stays unverified and no Emenanjo purchase is logged. EXT-22 is Open. The card is Blocked-External.
+P4-026,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Hausa tone and length come from dictionary lookup. Oxford is unheld and Newman is unpurchased.
+P4-027,verification,T1,n/a,n/a,n/a,0,blocked,No Newman purchase is logged. Bargery stays unconfirmed. EXT-22 is Open. The card is Blocked-External.
+P4-028,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Pidgin stack keeps UD-Naija-NSC as evidence only. Faraclas is unpurchased, NSC speech unverified, and Intron off.
+P4-029,verification,T1,n/a,n/a,n/a,0,blocked,No NSC licence is recorded and no Faraclas purchase is logged. EXT-22 is Open. The card is Blocked-External.
+P4-030,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Swahili stack leaves BAKITA unverified, Kamusi excluded, Ashton unpurchased, and Common Voice at 1065 hours.
+P4-031,verification,T1,n/a,n/a,n/a,0,blocked,No BAKITA citation is verified and no Ashton purchase is logged. EXT-22 is Open. The card is Blocked-External.
+P4-032,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Zulu stack leaves EXT-06 open, Poulos unpurchased, and ZulMorph disabled. SADiLaR and NCHLT are evidence only.
+P4-033,verification,T1,n/a,n/a,n/a,0,blocked,No Doke–Vilakazi licensor is recorded and no Poulos & Msimang purchase is logged. EXT-06 and EXT-22 stay Open. The card is Blocked-External.
+P4-034,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Xhosa stack leaves Oxford unheld, grammar pending linguist, and only the rule-based concord checker enabled. SADiLaR is evidence only.
+P4-035,verification,T1,n/a,n/a,n/a,0,blocked,No Xhosa grammar title or edition is chosen. No purchase is logged. EXT-11 and EXT-22 stay Open. The card is Blocked-External.
+P4-038,adr,T1,n/a,n/a,n/a,0,blocked,No Igbo tone convention is recorded. EXT-11 is Open. P4-036 stays Draft. The card is Blocked-External.
+P4-037,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,pcm, sw, zu and xh kits keep §3.3 gaps unenumerated. Linguist signoff stays false. load_kit does not read kit.yaml.
+P4-039,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Runner shares one function. Crashes are LINT_ERROR. CLI has no registered linters yet. Branch protection is unset.
+P4-040,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Unicode lint fails NFC, forbidden code points, and the explicit Greek and Cyrillic look-alikes.
+P4-041,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Yoruba lint checks underdot, syllabic nasal tone, lexicon diacritics, and unmarked learner-facing tokens. Mid stays unmarked.
+P4-043,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Hausa lint fails plain replacements of hooked letters, tone or length marks on display text, and teaching marks without a dictionary-sourced form.
+P4-044,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Swahili concord checks only the listed m/wa and ki/vi pairs against the kit table. An unknown noun fails and does not pass.
+P4-045,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Zulu and Xhosa concord uses the kit table for classes 1-15. A spaced verbal complex fails. Xhosa analyser is none. No ZulMorph call.
+P4-046,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,ZulMorph stays off. A missing module fails ZULMORPH_UNAVAILABLE. A labelled external parse failure goes to human review and does not auto-publish.
+P4-043,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Teaching marks also pass for dictionary/lexicon fields, a native-author id plus review date, and an Import Media id plus a span. 30 tests. Coverage 97% lines and 94% branches.
+P4-047,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,English spellings flag only from a kit NLA table. A missing, empty, or not-included table fails and does not pass. No rows were invented. 10 tests. Coverage 94% lines and 88% branches.
+P4-049,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Uncited explanation and culture-note facts fail CLAIM_NO_CITATION. The two banned grammar templates fail GENERIC_TEMPLATE first. 11 tests. Coverage 100% lines and 100% branches.
+P4-050,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,2,pass,Placeholder text fails before Draft 2020-12 schema validation. Blank required strings are read from the schema. 13 tests. Coverage 94% lines and 91% branches.
+P4-051,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Near-identical dialogues fail with both ids. A line past the kit repeat cap fails. Thresholds are not literals. 9 tests. Coverage 97% lines and 93% branches.
+P4-053,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Frequency rows keep registered source ids and are not merged. A lexeme stores tone, G2P-matched IPA, POS, noun class, and plural. All-false uses fail LICENCE_USE_FORBIDDEN. 24 tests. Coverage 98% lines and 96% branches.
+P4-054,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Two agreeing sources are anchored. One source is single-source and held only when the caller sets high_frequency. Disagreement is conflicted and unavailable. 9 tests. Coverage 91% lines and 78% branches.
+P4-080,verification,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Card sum 11.5 engineer-weeks inside 10–14. G4 not passed; calendar actuals pending. Evidence docs/build/verification/P4-080-2026-10-25.md. 4 tests.
+P4-069,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Curriculum Studio is a new admin route group. A user without content-admin gets 403 and a denied state. An unreachable Studio API shows the error state. 3 tests. New-file coverage 99% lines.
+P4-071,build,T1,grok-4.7,n/a,n/a,1,pass,Required licence fields block save. NC and excluded licences lock every use and show sources.excluded. Pending sign-off stays listed and generation select returns SIGN_OFF_PENDING. 3 tests. Route line coverage 93%.
+P4-067,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Reviewer approval publishes Beta Reviewed or Native-verified with reviewer id. Unapproved review_required items return REVIEW_REQUIRED. Auto-Beta from P4-064 routing needs no reviewer. 6 tests.
+P4-111,adr,T2,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Wave 2 (14) and Wave 3 (25) rosters with §6.4 scores; Wave 4 gate rule; ar-eg/ary Wave 4 per D15. 4 tests.
+P4-115,adr,T2,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Stage 1 dialect standards + marked regional tags; dialectPreference hook owner/review date. 4 tests.

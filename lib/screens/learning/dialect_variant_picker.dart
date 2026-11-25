@@ -69,7 +69,11 @@ class _DialectVariantPickerState extends State<DialectVariantPicker> {
       _error = null;
     });
     try {
-      final tag = _mode == 'local' ? _tagController.text.trim() : 'standard';
+      final controllerTag = _tagController.text.trim();
+      final tag = _mode == 'local'
+          ? (controllerTag.isEmpty ? _localTag.trim() : controllerTag)
+          : 'standard';
+      _localTag = tag;
       if (_mode == 'local' && tag.isEmpty) {
         throw Exception('Enter a local dialect tag (e.g., “yo-lagos”).');
       }

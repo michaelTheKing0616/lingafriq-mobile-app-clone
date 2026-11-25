@@ -3,16 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
-import '../../providers/game_content_provider.dart';
-import '../../models/game/game_content_models.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
 import 'base_game_screen.dart';
 import 'game_scenario_loader.dart';
+import '../../models/quiz_model.dart';
 
 class QuizChefGame extends BaseGameScreen {
   const QuizChefGame({
@@ -77,10 +75,21 @@ class _QuizChefGameState extends BaseGameScreenState<QuizChefGame> {
           options.add('${scenario.title} (alt)');
         }
         options.shuffle(rng);
+        final bank = QuizModel.fromChoice(
+          system: 'quiz_chef',
+          id: 'quiz-chef.${scenario.id}.$i',
+          prompt: scenario.prompt,
+          choices: [
+            for (final option in options.take(4))
+              {'text': option, 'correct_answer': option == correct},
+          ],
+          funFact: scenario.culturalNote,
+        );
+        if (bank == null) continue;
         _rounds.add(_RecipeRound(
-          question: scenario.prompt,
-          correctAnswer: correct,
-          options: options.take(4).toList(),
+          question: bank.question,
+          correctAnswer: bank.answer,
+          options: bank.choices,
           category: _categoryForIndex(i),
           proverbTip: scenario.culturalNote?.isNotEmpty == true
               ? scenario.culturalNote!
@@ -93,10 +102,21 @@ class _QuizChefGameState extends BaseGameScreenState<QuizChefGame> {
       for (var i = 0; i < _maxRounds; i++) {
         final t = templates[i % templates.length];
         final options = List<String>.from(t.options)..shuffle(rng);
+        final bank = QuizModel.fromChoice(
+          system: 'quiz_chef',
+          id: 'quiz-chef.template.$i',
+          prompt: t.question,
+          choices: [
+            for (final option in options)
+              {'text': option, 'correct_answer': option == t.correctAnswer},
+          ],
+          funFact: t.proverbTip,
+        );
+        if (bank == null) continue;
         _rounds.add(_RecipeRound(
-          question: t.question,
-          correctAnswer: t.correctAnswer,
-          options: options,
+          question: bank.question,
+          correctAnswer: bank.answer,
+          options: bank.choices,
           category: t.category,
           proverbTip: t.proverbTip,
           cardId: cards.isNotEmpty ? cards[i % cards.length].cardId : 'recipe_$i',

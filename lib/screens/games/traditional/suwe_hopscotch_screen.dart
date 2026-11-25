@@ -26,7 +26,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'package:lingafriq/models/game/game_content_models.dart';
 import 'package:lingafriq/models/game/game_session_model.dart';
 import 'package:lingafriq/screens/games/base_game_screen.dart';
 import 'package:lingafriq/screens/games/game_scenario_loader.dart';
@@ -199,7 +198,7 @@ class _SuweHopscotchGameState extends BaseGameScreenState<SuweHopscotchGame> {
       enableDrag: false,
       backgroundColor: Theme.of(context).colorScheme.surface,
       builder: (ctx) => Padding(
-        padding: EdgeInsets.fromLTRB(20, 18, 20, 28).copyWith(
+        padding: const EdgeInsets.fromLTRB(20, 18, 20, 28).copyWith(
           bottom: 28 + MediaQuery.of(ctx).viewInsets.bottom,
         ),
         child: Column(
@@ -347,14 +346,14 @@ class _IntroBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: PanAfricanColors.kenteGold.withOpacity(0.18),
+        color: PanAfricanColors.kenteGold.withValues(alpha: 0.18),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: PanAfricanColors.kenteGold, width: 1.0),
       ),
       padding: const EdgeInsets.all(12),
       child: Row(
         children: [
-          Icon(Icons.gesture_outlined,
+          const Icon(Icons.gesture_outlined,
               color: PanAfricanColors.kenteGold, size: 22),
           const SizedBox(width: 8),
           Expanded(
@@ -392,13 +391,13 @@ class _SuweTile extends StatelessWidget {
     Color bg;
     Color border;
     if (isStone) {
-      bg = PanAfricanColors.kenteRed.withOpacity(0.22);
+      bg = PanAfricanColors.kenteRed.withValues(alpha: 0.22);
       border = PanAfricanColors.kenteRed;
     } else if (hopped) {
-      bg = PanAfricanColors.kenteGold.withOpacity(0.30);
+      bg = PanAfricanColors.kenteGold.withValues(alpha: 0.30);
       border = PanAfricanColors.kenteGold;
     } else {
-      bg = Colors.white.withOpacity(0.86);
+      bg = Colors.white.withValues(alpha: 0.86);
       border = PanAfricanColors.kenteGold;
     }
     return GestureDetector(

@@ -1,0 +1,89 @@
+charter: v2
+id: P5-042
+kind: build
+title: Provide diacritic-aware keyboard bars per language
+phase: P5
+epic: E-P5-A1
+req_ids:
+- EP-§6.7-03
+- EP-§6.7-04
+- EP-§6.7-05
+- EP-§6.7-06
+- EP-§6.7-07
+depends_on:
+- P5-041
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/widgets/diacritic_keyboard_bar.dart
+- assets/data/keyboard/layouts.json
+- test/widgets/diacritic_keyboard_test.dart
+context_anchors:
+- ELEVATION.md#§6.7:L1342-L1343
+acceptance_criteria:
+- id: AC1
+  text: Given Yoruba input, when focused, then ẹ ọ ṣ and tone keys are shown
+- id: AC2
+  text: Given Igbo, when focused, then ṅ is shown; Hausa shows ɓ ɗ ƙ ƴ; Twi shows ɛ ɔ
+- id: AC3
+  text: Given a language with no layout, when focused, then a typed LayoutMissing is logged and the system keyboard is used
+    with a visible hint
+test_plan:
+  unit:
+  - layouts
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - keys labelled
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - bar-visible
+  - key-pressed
+  - layout-missing
+  copy_keys:
+  - kbd.hint
+  tokens:
+  - color.label.native
+  - color.label.expert
+  - color.label.beta
+  - type.body
+  - space.4
+  motion_tier: product
+  a11y:
+  - screen-reader announces label name and meaning
+  - touch targets >=48dp
+  - contrast >=4.5:1 on label chips
+  goldens:
+  - keyboard_yo
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

@@ -1,0 +1,66 @@
+charter: v2
+id: P5-019
+kind: build
+title: Unify review scheduling on FSRS-6
+phase: P5
+epic: E-P5-A1
+req_ids:
+- EP-§6.2-03
+- EP-§6.2-04
+- EP-§6.2-05
+depends_on:
+- P5-018
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T1
+  reviewer: T3
+  justification: 'score 7: blast 2, ambiguity 1, coupling 2, depth 2'
+token_budget: 70000
+file_allowlist:
+- lib/learning/scheduling/fsrs6_scheduler.dart
+- test/learning/fsrs6_test.dart
+context_anchors:
+- ELEVATION.md#§6.2:L1145-L1152
+acceptance_criteria:
+- id: AC1
+  text: Given the four legacy SRS models, when replaced, then one FSRS-6 scheduler runs on device and the others are removed
+- id: AC2
+  text: Given a learner with about 1,000 reviews, when parameters are optimised, then per-learner parameters are stored; with
+    fewer reviews defaults are used
+- id: AC3
+  text: Given a review log, when scheduled, then identical inputs always produce identical intervals (deterministic test)
+test_plan:
+  unit:
+  - fsrs intervals
+  integration:
+  - migration from legacy models
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

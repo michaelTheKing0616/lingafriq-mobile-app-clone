@@ -1,0 +1,75 @@
+charter: v2
+id: P6-003
+kind: build
+title: Build server-owned versioned prompt registry
+phase: P6
+epic: E-P6-GATEWAY
+req_ids:
+- EP-§7.2-10
+- EP-§7.2-11
+- EP-§7.1-02
+depends_on:
+- P6-002
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/prompts/registry.ts
+- node-backend/src/ai-gateway/prompts/templates/
+- node-backend/src/ai-gateway/prompts/version.ts
+context_anchors:
+- ELEVATION.md#§7.2:L1367-L1387
+- ELEVATION.md#§7.1:L1349-L1366
+acceptance_criteria:
+- id: AC1
+  text: Given a mode and language, when the gateway builds a request, then the system prompt is loaded from the registry by
+    name and version and logged by id and version only
+- id: AC2
+  text: Given an unknown prompt version, when requested, then typed error prompt_version_unknown is returned and no model
+    call is made
+- id: AC3
+  text: Given the old completion proxy that accepts a client system prompt, when the migration lands, then that route returns
+    410 and CI grep finds no client-prompt code path in node-backend
+- id: AC4
+  text: Given a template change, when the PR is opened, then the registry bumps a version and the eval gate runs for every
+    mode using that template
+test_plan:
+  unit:
+  - template resolve and version
+  integration:
+  - 410 on legacy proxy
+  security:
+  - prompt injection through template variables
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

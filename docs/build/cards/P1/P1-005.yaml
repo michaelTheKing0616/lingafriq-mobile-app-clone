@@ -1,0 +1,64 @@
+charter: v2
+id: P1-005
+kind: build
+title: Add quarterly secret-rotation calendar and reminder workflow
+phase: P1
+epic: E-P1-SECRETS
+req_ids:
+- EP-§13.1-32
+depends_on:
+- E-P0-INTAKE
+- P1-004
+size: S
+difficulty:
+  score: 1
+  blast: 1
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: score 1; blast 1
+token_budget: 25000
+file_allowlist:
+- docs/security/ROTATION_CALENDAR.md
+- .github/workflows/rotation-reminder.yml
+context_anchors:
+- ELEVATION.md#§13.1:L1872
+acceptance_criteria:
+- id: AC1
+  text: Given the calendar lists every secret class from the checklist, when read, then each has an owner, a 90-day interval
+    and the next due date
+- id: AC2
+  text: Given a due date reached, when the scheduled workflow runs, then it opens one tracking issue per due secret and opens
+    none for secrets not due
+test_plan:
+  unit: []
+  integration:
+  - workflow dry-run with fixture dates
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G1
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,112 @@
+charter: v2
+id: P8-914
+kind: build
+title: Revive Tone Forge as a featured tone game
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.3-15
+- EP-§10.1-09
+depends_on:
+- E-P8-PLAY
+- P8-913
+- P8-911
+- P8-917
+- E-P3-DESIGN-SYSTEM
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T1
+  justification: 'score 5: blast 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/games/tone_forge/tone_forge_game.dart
+- lib/games/tone_forge/tone_forge_screen.dart
+- lib/games/tone_forge/tone_forge_audio.dart
+- lib/games/tone_forge/tone_forge_feedback.dart
+- lib/games/tone_forge/tone_forge_scoring.dart
+- lib/games/gamekit/all_games_registry.dart
+context_anchors:
+- ELEVATION.md#§10.1:L1666-L1667
+- ELEVATION.md#§10.3:L1772-L1773
+acceptance_criteria:
+- id: AC1
+  text: Given the Arcade, when a learner opens the Tone shelf, then Tone Forge is reachable from the hub and marked Featured
+- id: AC2
+  text: Given Tone Forge, when it runs, then it uses the per-language tone inventory from P8-913 and GameKit result writing
+    from P8-901
+- id: AC3
+  text: Given Tone Forge scoring that shows a tone score, when the scorer is not live, then it runs in practice mode per P8-911
+- id: AC4
+  text: Given the reachability scan from lib/main.dart, when it runs after this card, then every tone_forge file is reachable
+test_plan:
+  unit:
+  - registry entry
+  integration:
+  - reachability scan
+  security: []
+  e2e:
+  - open Tone Forge from hub
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - ready
+  - playing
+  - correct
+  - wrong
+  - why_wrong
+  - results
+  - error
+  - offline
+  - practice_mode
+  copy_keys:
+  - games.tone_forge.title
+  - games.tone_forge.instructions
+  - games.tone_forge.why_wrong
+  - games.tone_forge.practice_label
+  - games.tone_forge.error
+  tokens:
+  - color.surface.game
+  - color.feedback.correct
+  - color.feedback.wrong
+  - space.4
+  - radius.card
+  - type.title
+  motion_tier: product
+  a11y:
+  - screen-reader labels on every answer control
+  - reduced-motion variant
+  - correctness shown by icon and text not colour alone
+  - touch targets ≥48dp
+  goldens:
+  - tone_forge_playing
+  - tone_forge_why_wrong
+  - tone_forge_results
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

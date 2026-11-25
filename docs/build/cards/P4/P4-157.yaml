@@ -1,0 +1,83 @@
+charter: v2
+id: P4-157
+kind: build
+title: Build item preview that renders exactly like the app
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§14.2-30
+depends_on:
+- P4-140
+- P4-150
+size: M
+difficulty:
+  score: 7
+  blast: 1
+  ambiguity: 2
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 1, ambiguity 2, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lingafriq-admin/src/components/ItemPreview.tsx
+- tools/content_pipeline/preview_contract.json
+- test/admin/ItemPreview.parity.test.tsx
+context_anchors:
+- ELEVATION.md#§14.2:L1970-L1989
+- ELEVATION.md#§6.7:L1339-L1346
+acceptance_criteria:
+- id: AC1
+  text: Given an item, when previewed, then the same renderer rules, fonts and diacritic handling as the app are applied via
+    a shared contract file
+- id: AC2
+  text: Given a golden item set, when rendered in preview and in the app, then pixel diff is below the configured threshold
+    in CI
+- id: AC3
+  text: Given a preview rule that drifts from the app, when CI runs, then the parity test fails
+test_plan:
+  unit:
+  - ItemPreview.parity.test
+  integration: []
+  security: []
+  e2e:
+  - parity goldens
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - ready
+  - error
+  copy_keys:
+  - studio.preview.error
+  tokens:
+  - font.target.andika
+  motion_tier: product
+  a11y:
+  - preview labelled
+  goldens:
+  - preview_yo
+  - preview_ig
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

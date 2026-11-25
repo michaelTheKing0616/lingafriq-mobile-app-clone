@@ -83,9 +83,9 @@ void main() {
       await tester.pumpWidget(
         ScreenUtilInit(
           designSize: const Size(390, 844),
-          builder: (_, __) => ProviderScope(
-            child: MaterialApp(
-              home: GrammarExerciseScreen(
+          builder: (_, __) => const ProviderScope(
+            child: const MaterialApp(
+              home: const GrammarExerciseScreen(
                 topicId: 'test-topic',
                 topicName: 'Test Topic',
               ),

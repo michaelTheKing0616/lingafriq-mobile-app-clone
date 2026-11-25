@@ -1,0 +1,47 @@
+{
+  "card": "P5-083",
+  "script_id": "geez_fidel",
+  "source_id": "unicode:geez_block; ELEVATION.md#§6.7:L1345-L1346",
+  "lessons": [
+    {
+      "lesson_id": "fidel-row1-intro",
+      "title": "First Fidel characters",
+      "label": "reviewed",
+      "language_codes": ["am", "ti"],
+      "glyphs": [
+        {
+          "character": "\u1200",
+          "romanization": "ha",
+          "note": "Ethiopic letter ha (first order)",
+          "source_id": "unicode:U+1200"
+        },
+        {
+          "character": "\u1208",
+          "romanization": "la",
+          "note": "Ethiopic letter la (first order)",
+          "source_id": "unicode:U+1208"
+        },
+        {
+          "character": "\u1210",
+          "romanization": "ha",
+          "note": "Ethiopic letter ha (second order)",
+          "source_id": "unicode:U+1210"
+        }
+      ]
+    },
+    {
+      "lesson_id": "fidel-row2-preview",
+      "title": "Second-order preview (beta)",
+      "label": "beta",
+      "language_codes": ["am"],
+      "glyphs": [
+        {
+          "character": "\u1218",
+          "romanization": "ma",
+          "note": "Ethiopic letter ma (first order)",
+          "source_id": "unicode:U+1218"
+        }
+      ]
+    }
+  ]
+}

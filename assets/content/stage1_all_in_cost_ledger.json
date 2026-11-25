@@ -1,0 +1,34 @@
+{
+  "charter": "v2",
+  "card_id": "P5-094",
+  "gate": "G5",
+  "depends_on": ["P5-088", "P5-089", "P5-090", "P5-091", "P5-092", "P5-093", "P5-070"],
+  "sources": [
+    "docs/source/CURRICULUM.md#§9.4:L846-L850",
+    "assets/content/llm_generation_cost_ledger.json",
+    "assets/content/interim_tts_cost_ledger.json",
+    "assets/content/data_licence_cost_ledger.json",
+    "assets/content/reference_books_cost_ledger.json",
+    "CP-§9.4-15",
+    "CP-§9.4-16"
+  ],
+  "planning_band_all_in": {
+    "usd_stage1_min": 65000,
+    "usd_stage1_max": 195000,
+    "source": "docs/source/CURRICULUM.md#§9.4:L847-L848",
+    "estimate": true,
+    "note": "content only; engineering weeks excluded per same paragraph"
+  },
+  "planning_band_later_language": {
+    "usd_min": 4000,
+    "usd_max": 15000,
+    "source": "docs/source/CURRICULUM.md#§9.4:L849-L850",
+    "estimate": true
+  },
+  "blocked_external_dependencies": [
+    {"card_id": "P5-089", "blocker": "EXT-11"},
+    {"card_id": "P5-090", "blocker": "EXT-11"},
+    {"card_id": "P5-070", "blocker": "EXT-12"}
+  ],
+  "stage1_all_in_cost_verifications": []
+}

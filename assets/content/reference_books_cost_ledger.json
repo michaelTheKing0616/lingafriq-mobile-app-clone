@@ -1,0 +1,30 @@
+{
+  "charter": "v2",
+  "card_id": "P5-093",
+  "gate": "G5",
+  "depends_on": ["P5-076"],
+  "sources": [
+    "docs/source/CURRICULUM.md#§9.4:L843-L844",
+    "assets/content/reference_books_purchases.json",
+    "assets/content/reference_books_engineering.json",
+    "CP-§9.4-13",
+    "CP-§9.4-14"
+  ],
+  "planning_band_usd": {
+    "usd_per_language_min": 200,
+    "usd_per_language_max": 600,
+    "usd_stage1_min": 2000,
+    "usd_stage1_max": 4000,
+    "source": "docs/source/CURRICULUM.md#§9.4:L843",
+    "estimate": true
+  },
+  "planning_band_engineer_weeks": {
+    "min": 14,
+    "max": 20,
+    "source": "docs/source/CURRICULUM.md#§9.4:L844",
+    "estimate": true
+  },
+  "purchases_ref": "assets/content/reference_books_purchases.json",
+  "engineering_ref": "assets/content/reference_books_engineering.json",
+  "reference_books_verifications": []
+}

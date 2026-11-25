@@ -35,7 +35,7 @@ Speak boldly before speaking perfectly.
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Icon(Icons.workspace_premium, size: 72, color: PanAfricanColors.primary),
+            const Icon(Icons.workspace_premium, size: 72, color: PanAfricanColors.primary),
             const SizedBox(height: 16),
             Text(
               '$language — $level',

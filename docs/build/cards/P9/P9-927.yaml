@@ -1,0 +1,79 @@
+charter: v2
+id: P9-927
+kind: build
+title: Integrate known-CSAM hash matching on unencrypted uploads
+phase: P9
+epic: E-P9-MODERATION
+req_ids:
+- EP-§9.3-22
+- EP-§9.1-25
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+- P9-926
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T4
+  justification: 'score 7: blast 3, ambiguity 2, coupling 1, depth 1; gate-critical (security / child safety / legal / design
+    direction): Fable reviews'
+token_budget: 80000
+file_allowlist:
+- node-backend/src/services/moderation/csamHash.adapter.ts
+- node-backend/src/services/moderation/csamHash.provider.ts
+context_anchors:
+- ELEVATION.md#§9.3:L1639-L1640
+- ELEVATION.md#§9.1:L1568
+acceptance_criteria:
+- id: AC1
+  text: Given any upload to an unencrypted surface, when received, then it is hashed and checked against the vendor's known-CSAM
+    service before it can be served and before the response confirms upload success
+- id: AC2
+  text: Given a match, when detected, then the content is blocked, preserved in sealed evidence, the account is suspended
+    and a P9-928 escalation case is opened automatically
+- id: AC3
+  text: Given the vendor service is unavailable, when an upload arrives, then the upload stays in pending-scan and is never
+    served, with a visible 'processing' state
+- id: AC4
+  text: Given the adapter, when no vendor credentials are configured, then the service refuses to start in production with
+    CSAM_PROVIDER_MISSING
+test_plan:
+  unit:
+  - adapter contract with fake vendor
+  integration:
+  - match path
+  - vendor outage
+  security:
+  - evidence access
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- vendor onboarding (PhotoDNA or equivalent) tracked as EXT-25; card stays Blocked-External until the account exists
+gate: G9
+external_blockers:
+- EXT-25
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

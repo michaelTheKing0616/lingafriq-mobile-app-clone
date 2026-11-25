@@ -1,0 +1,91 @@
+charter: v2
+id: P9-956
+kind: build
+title: Build the Square feed with Tone Lens
+phase: P9
+epic: E-P9-VILLAGE
+req_ids:
+- EP-§9.1-03
+- EP-§9.2-12
+depends_on:
+- E-P9-SAFETY
+- P9-948
+- P9-945
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 3, ambiguity 1, coupling 2, depth 0'
+token_budget: 80000
+file_allowlist:
+- lib/screens/village/square_screen.dart
+- node-backend/src/services/square.service.ts
+context_anchors:
+- ELEVATION.md#§9.1:L1551-L1552
+- ELEVATION.md#§9.2:L1587
+acceptance_criteria:
+- id: AC1
+  text: Given the Square, when opened by an adult, then public posts carry language tags and Tone Lens works on each post
+- id: AC2
+  text: Given a minor, when opening the Square, then the surface is hidden or read-only per policy and cannot post
+- id: AC3
+  text: Given a post, when created, then it passes the moderation hook before publication and report and block take two taps
+test_plan:
+  unit: []
+  integration:
+  - post lifecycle
+  - minor view
+  security:
+  - minor posting
+  e2e: []
+  perf: []
+  a11y:
+  - square feed
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - empty
+  - feed
+  - held
+  - minor-blocked
+  copy_keys:
+  - square.title
+  - square.minor.blocked
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - square_default
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

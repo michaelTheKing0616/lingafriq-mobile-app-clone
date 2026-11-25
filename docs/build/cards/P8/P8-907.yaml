@@ -1,0 +1,72 @@
+charter: v2
+id: P8-907
+kind: build
+title: 'GameKit: ban dark patterns with a CI lint'
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.2-12
+- EP-§10.2-13
+depends_on:
+- E-P8-PLAY
+size: S
+difficulty:
+  score: 2
+  blast: 1
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 1, coupling 1'
+token_budget: 25000
+file_allowlist:
+- lib/games/gamekit/game_meta_layer.dart
+- lib/games/gamekit/game_scoring.dart
+- lib/providers/gamification_provider.dart
+- scripts/lint_dark_patterns.py
+context_anchors:
+- ELEVATION.md#§10.2:L1675
+acceptance_criteria:
+- id: AC1
+  text: Given any GameKit game, when a learner starts a core-learning session, then no energy, heart or timer gate blocks
+    it
+- id: AC2
+  text: Given the reward layer, when rewards are issued, then every reward is deterministic from verified performance and
+    no randomised paid or earned loot-box mechanic exists in code
+- id: AC3
+  text: Given a pull request that adds an energy gate, a loot-box type or a random reward table, when the lint runs, then
+    CI fails with the file and line
+- id: AC4
+  text: Given an existing game that already gates on energy, when the lint first runs, then the finding is listed and the
+    game is migrated in the same card
+test_plan:
+  unit:
+  - lint rules on fixtures
+  integration:
+  - CI job red on bad fixture
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

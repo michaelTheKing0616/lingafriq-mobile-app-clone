@@ -56,12 +56,12 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
               vertical: PanAfricanSpacing.xs,
             ),
             decoration: BoxDecoration(
-              color: PanAfricanColors.secondary.withOpacity(0.2),
+              color: context.panSecondary.withValues(alpha: 0.2),
               borderRadius: PanAfricanRadius.roundBR,
             ),
             child: Text(
               '${unlockedBadges.length}/${allBadges.length}',
-              style: PanAfricanTypography.titleMedium(context, color: PanAfricanColors.secondary),
+              style: PanAfricanTypography.titleMedium(context, color: context.panSecondary),
             ),
           ),
           SizedBox(width: PanAfricanSpacing.md),
@@ -125,7 +125,7 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
           // Badge grid
           Expanded(
             child: filteredBadges.isEmpty
-                ? AppEmptyState(
+                ? const AppEmptyState(
                     icon: Icons.emoji_events_rounded,
                     title: 'No badges yet',
                     subtitle: 'Complete lessons and challenges to earn badges',
@@ -185,7 +185,7 @@ class _BadgeCard extends StatelessWidget {
     required this.isDark,
   });
 
-  Color _getRarityColor(BadgeRarity rarity) {
+  Color _getRarityColor(BuildContext context, BadgeRarity rarity) {
     switch (rarity) {
       case BadgeRarity.common:
         return PanAfricanColors.neutralMedium;
@@ -196,13 +196,13 @@ class _BadgeCard extends StatelessWidget {
       case BadgeRarity.epic:
         return PanAfricanColors.ankaraPurple;
       case BadgeRarity.legendary:
-        return PanAfricanColors.secondary;
+        return context.panSecondary;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final rarityColor = _getRarityColor(badge.rarity);
+    final rarityColor = _getRarityColor(context, badge.rarity);
     final colorScheme = Theme.of(context).colorScheme;
 
     return GestureDetector(
@@ -231,7 +231,7 @@ class _BadgeCard extends StatelessWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        PanAfricanColors.secondary.withOpacity(0.1),
+                        context.panSecondary.withValues(alpha: 0.1),
                         Colors.transparent,
                       ],
                     ),
@@ -249,7 +249,7 @@ class _BadgeCard extends StatelessWidget {
                     height: 64.w,
                     decoration: BoxDecoration(
                       color: isUnlocked
-                          ? rarityColor.withOpacity(0.15)
+                          ? rarityColor.withValues(alpha: 0.15)
                           : (isDark ? PanAfricanColors.surfaceContainerHighDark : PanAfricanColors.surfaceContainerHighLight),
                       shape: BoxShape.circle,
                       boxShadow: isUnlocked ? PanAfricanShadows.glow(rarityColor) : null,
@@ -281,7 +281,7 @@ class _BadgeCard extends StatelessWidget {
                       vertical: PanAfricanSpacing.xxxs,
                     ),
                     decoration: BoxDecoration(
-                      color: rarityColor.withOpacity(0.2),
+                      color: rarityColor.withValues(alpha: 0.2),
                       borderRadius: PanAfricanRadius.roundBR,
                     ),
                     child: Text(
@@ -296,7 +296,7 @@ class _BadgeCard extends StatelessWidget {
               Positioned.fill(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: (isDark ? Theme.of(context).colorScheme.scrim : colorScheme.surface).withOpacity(0.6),
+                    color: (isDark ? Theme.of(context).colorScheme.scrim : colorScheme.surface).withValues(alpha: 0.6),
                     borderRadius: PanAfricanRadius.lgBR,
                   ),
                   child: Center(

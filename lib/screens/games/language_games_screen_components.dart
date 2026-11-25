@@ -5,6 +5,7 @@ import '../../utils/pan_african_design_system.dart';
 import '../../widgets/pan_african_components.dart';
 import 'game_catalog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Language Selector Widget
 class LanguageSelector extends StatelessWidget {
@@ -112,10 +113,10 @@ class GameSection extends StatelessWidget {
     // Generate gradients based on game type
     final gradients = [
       const LinearGradient(colors: [Color(0xFFCE1126), Color(0xFFFF6B35)]),
-      const LinearGradient(colors: [Color(0xFF007A3D), Color(0xFF00A8E8)]),
+      const LinearGradient(colors: [Color(0xFF007A3D), LingAfriqTokens.hexFF00A8E8]),
       const LinearGradient(colors: [Color(0xFFFCD116), Color(0xFFFF6B35)]),
       const LinearGradient(colors: [Color(0xFF7B2CBF), Color(0xFFCE1126)]),
-      const LinearGradient(colors: [Color(0xFF00A8E8), Color(0xFF007A3D)]),
+      const LinearGradient(colors: [LingAfriqTokens.hexFF00A8E8, Color(0xFF007A3D)]),
     ];
     return gradients[game.index % gradients.length];
   }
@@ -169,7 +170,7 @@ class _GameCard extends StatelessWidget {
                 gradient: gradient,
                 borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                 boxShadow: PanAfricanShadows.sm,
-                border: Border.all(color: borderColor.withOpacity(0.2)),
+                border: Border.all(color: borderColor.withValues(alpha: 0.2)),
               ),
               child: Icon(icon, color: colorScheme.onPrimary, size: 28.sp),
             ),
@@ -189,8 +190,8 @@ class _GameCard extends StatelessWidget {
                       PanAfricanBadge(
                         label: isAvailable ? 'READY' : 'SOON',
                         color: isAvailable
-                            ? PanAfricanColors.success
-                            : PanAfricanColors.warning,
+                            ? context.panSuccess
+                            : context.panWarning,
                         icon: isAvailable
                             ? Icons.bolt_rounded
                             : Icons.hourglass_bottom_rounded,

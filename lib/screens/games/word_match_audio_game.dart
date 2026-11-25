@@ -4,16 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
-import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
-import '../../providers/game_content_provider.dart';
 import '../../widgets/content/vocab_audio_controls.dart';
-import '../../models/game/game_content_models.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../utils/pan_african_design_system.dart';
-import '../../widgets/griot/griot_widgets.dart';
-import '../../widgets/game/game_widgets.dart';
 import 'base_game_screen.dart';
 
 class WordMatchAudioGame extends BaseGameScreen {
@@ -169,7 +164,7 @@ class _WordMatchAudioGameState extends BaseGameScreenState<WordMatchAudioGame> {
                         borderRadius: ModernGriotRadius.borderPill,
                         boxShadow: [
                           BoxShadow(
-                            color: ModernGriotColors.secondary.withOpacity(0.22),
+                            color: ModernGriotColors.secondary.withValues(alpha: 0.22),
                             blurRadius: 14,
                             offset: const Offset(0, 4),
                           ),
@@ -220,7 +215,7 @@ class _WordMatchAudioGameState extends BaseGameScreenState<WordMatchAudioGame> {
                                       style: ModernGriotTypography.labelSmall(
                                         context: context,
                                         color: ModernGriotColors.primary
-                                            .withOpacity(0.7),
+                                            .withValues(alpha: 0.7),
                                       ).copyWith(
                                         letterSpacing: 1.5,
                                         fontWeight: FontWeight.w800,
@@ -231,7 +226,7 @@ class _WordMatchAudioGameState extends BaseGameScreenState<WordMatchAudioGame> {
                                       child: Container(
                                         height: 1,
                                         color: ModernGriotColors.outlineVariant
-                                            .withOpacity(0.35),
+                                            .withValues(alpha: 0.35),
                                       ),
                                     ),
                                   ],
@@ -269,7 +264,7 @@ class _WordMatchAudioGameState extends BaseGameScreenState<WordMatchAudioGame> {
                                       child: Container(
                                         height: 1,
                                         color: ModernGriotColors.outlineVariant
-                                            .withOpacity(0.35),
+                                            .withValues(alpha: 0.35),
                                       ),
                                     ),
                                     const SizedBox(width: 10),
@@ -278,7 +273,7 @@ class _WordMatchAudioGameState extends BaseGameScreenState<WordMatchAudioGame> {
                                       style: ModernGriotTypography.labelSmall(
                                         context: context,
                                         color: ModernGriotColors.secondary
-                                            .withOpacity(0.7),
+                                            .withValues(alpha: 0.7),
                                       ).copyWith(
                                         letterSpacing: 1.5,
                                         fontWeight: FontWeight.w800,
@@ -311,7 +306,7 @@ class _WordMatchAudioGameState extends BaseGameScreenState<WordMatchAudioGame> {
                     },
                   ),
                 ),
-                SizedBox(height: 92),
+                const SizedBox(height: 92),
               ],
             ),
           ),
@@ -330,10 +325,10 @@ class _WordMatchAudioGameState extends BaseGameScreenState<WordMatchAudioGame> {
                   PanAfricanSpacing.md,
                 ),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface.withOpacity(0.92),
+                  color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.92),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.08),
+                      color: Colors.black.withValues(alpha: 0.08),
                       blurRadius: 24,
                       offset: const Offset(0, -8),
                     ),
@@ -351,14 +346,14 @@ class _WordMatchAudioGameState extends BaseGameScreenState<WordMatchAudioGame> {
                   ).copyWith(
                     backgroundColor: WidgetStateProperty.resolveWith(
                       (states) => states.contains(WidgetState.disabled)
-                          ? ModernGriotColors.outlineVariant.withOpacity(0.6)
+                          ? ModernGriotColors.outlineVariant.withValues(alpha: 0.6)
                           : ModernGriotColors.outlineVariant,
                     ),
                     foregroundColor: WidgetStateProperty.resolveWith(
                       (states) => Theme.of(context)
                           .colorScheme
                           .onSurfaceVariant
-                          .withOpacity(states.contains(WidgetState.disabled) ? 0.6 : 1),
+                          .withValues(alpha: states.contains(WidgetState.disabled) ? 0.6 : 1),
                     ),
                   ),
                   child: Text(
@@ -441,26 +436,26 @@ class _WordTile extends StatelessWidget {
     Color borderColor;
     double borderWidth;
     if (isMatched) {
-      bg = ModernGriotColors.secondary.withOpacity(0.12);
+      bg = ModernGriotColors.secondary.withValues(alpha: 0.12);
       borderColor = ModernGriotColors.secondary;
       borderWidth = 1.5;
     } else if (isSelected) {
       bg = useBubbleStyle
           ? ModernGriotColors.primary
-          : ModernGriotColors.primaryContainer.withOpacity(0.25);
+          : ModernGriotColors.primaryContainer.withValues(alpha: 0.25);
       borderColor = ModernGriotColors.primary;
       borderWidth = 2.0;
     } else if (isError) {
-      bg = ModernGriotColors.error.withOpacity(0.1);
+      bg = ModernGriotColors.error.withValues(alpha: 0.1);
       borderColor = ModernGriotColors.error;
       borderWidth = 2.0;
     } else {
       bg = useIndigoStyle
-          ? ModernGriotColors.primaryFixed.withOpacity(0.55)
+          ? ModernGriotColors.primaryFixed.withValues(alpha: 0.55)
           : (useBubbleStyle
               ? ModernGriotColors.surfaceContainerLow
               : ModernGriotColors.surfaceContainerLowest);
-      borderColor = ModernGriotColors.outlineVariant.withOpacity(0.3);
+      borderColor = ModernGriotColors.outlineVariant.withValues(alpha: 0.3);
       borderWidth = 1.0;
     }
 

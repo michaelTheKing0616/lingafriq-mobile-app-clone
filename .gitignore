@@ -31,6 +31,7 @@
 .pub/
 /build/
 coverage/
+test/learning/mutation_run/
 ios/build/
 
 
@@ -53,17 +54,36 @@ android/key.properties
 *.jks
 upload-keystore.jks
 keystore_base64.txt
+android/app/sideload-release.jks
+
+# Sideload / local APK outputs (share via CI artifacts, not git)
+dist/
+*.apk
+*.apk.sha256
 
 # CI logs / local artifacts (do not commit)
 logs_*/
 output/
+.coverage
+.venv-ml/
 
 # Cursor / IDE artifacts
 Curosr_Chat_History/
-.cursor/
+.cursor/*
+# Keep shared agent rules versioned so every clone inherits the Token Economy Charter (charter: v2)
+!.cursor/rules/
 # Secrets / sensitive config
 lib/config/secrets_manager.dart
 *.env
 .env.*
 google-services.json
 GoogleService-Info.plist
+scripts/loadtest/node_modules/
+test/**/failures/
+
+# Secrets and key material (compliance batch 1, #1). Never commit; use Doppler/CI secrets.
+*.p8
+AuthKey_*.p8
+*-firebase-adminsdk-*.json
+dart_defines.json
+!*.example

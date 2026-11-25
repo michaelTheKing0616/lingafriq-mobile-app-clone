@@ -1,0 +1,37 @@
+{
+  "card": "P7-944",
+  "built": "2026-10-27",
+  "recognizer": "google_mlkit_text_recognition/latin",
+  "capture_tier": "fixture_until_device_rerun",
+  "capture_note": "Run integration_test/p7_944_ml_kit_ocr_capture_test.dart on one iOS and one Android device with RECORD_P7_944_LEDGER=1 to replace fixture rows.",
+  "platforms": {
+    "ios": {
+      "device_model": "fixture_placeholder",
+      "os_version": "pending",
+      "mlkit_version": "0.15.1",
+      "captured_at": "2026-10-27T00:00:00Z",
+      "runs": [
+        {"fixture_id": "yo.oko_hoe", "ml_kit_text": "Oko"},
+        {"fixture_id": "yo.oko_vehicle", "ml_kit_text": "Oko"},
+        {"fixture_id": "yo.bawo", "ml_kit_text": "Bawo"},
+        {"fixture_id": "ig.ahia", "ml_kit_text": "Ahia"},
+        {"fixture_id": "ig.adi_mma", "ml_kit_text": "Adi m mma"},
+        {"fixture_id": "ha.karshe", "ml_kit_text": "A karshe"}
+      ]
+    },
+    "android": {
+      "device_model": "fixture_placeholder",
+      "os_version": "pending",
+      "mlkit_version": "0.15.1",
+      "captured_at": "2026-10-27T00:00:00Z",
+      "runs": [
+        {"fixture_id": "yo.oko_hoe", "ml_kit_text": "oko"},
+        {"fixture_id": "yo.oko_vehicle", "ml_kit_text": "oko"},
+        {"fixture_id": "yo.bawo", "ml_kit_text": "Bawo"},
+        {"fixture_id": "ig.ahia", "ml_kit_text": "Ahia"},
+        {"fixture_id": "ig.adi_mma", "ml_kit_text": "Adi m mma"},
+        {"fixture_id": "ha.karshe", "ml_kit_text": "A karshe"}
+      ]
+    }
+  }
+}

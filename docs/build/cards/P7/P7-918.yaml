@@ -1,0 +1,80 @@
+charter: v2
+id: P7-918
+kind: build
+title: Merge admin lexicon and user entries into the two layers
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§17.7-05
+- EP-§17.7-06
+- EP-§17.7-12
+depends_on:
+- P7-901
+- P7-916
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, coupling 2, depth 1'
+token_budget: 60000
+file_allowlist:
+- node-backend/src/controllers/learningV2.controller.ts
+- node-backend/src/routes/admin/livingDictionary.admin.route.ts
+- node-backend/src/services/lexiconMigration.service.ts
+- node-backend/src/routes/learningV2.route.ts
+- test/node-backend/lexiconMigration.test.ts
+context_anchors:
+- ELEVATION.md#§17.7:L2400-L2405
+- ELEVATION.md#§17.7:L2411
+acceptance_criteria:
+- id: AC1
+  text: Given the admin lexicon store, when migration runs, then each admin entry becomes a Verified Lexicon entry with an
+    explicit status and no data is dropped
+- id: AC2
+  text: Given per-user LivingLexemeModel entries, when migration runs, then each is kept as a My Words entry and linked to
+    a verified entry where one matches
+- id: AC3
+  text: Given the migration is run twice, when it completes, then the result is identical (idempotent) and a count report
+    matches source totals
+- id: AC4
+  text: Given the admin CRUD and import routes, when they are used after migration, then they write into the Verified Lexicon
+    layer with the status rules from the schema card
+- id: AC5
+  text: Given migration fails midway, when it stops, then it can roll back and leaves no half-linked records
+test_plan:
+  unit:
+  - link matching
+  integration:
+  - idempotent migration
+  - rollback
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

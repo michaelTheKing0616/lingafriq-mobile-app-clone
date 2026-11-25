@@ -1,5 +1,3 @@
-import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/navigation/village_navigation.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 class TribeHubScreen extends ConsumerWidget {
   const TribeHubScreen({super.key});
@@ -65,7 +64,7 @@ class TribeHubScreen extends ConsumerWidget {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.fromLTRB(20.w, 20.h, 20.w, 24.h),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: ModernGriotGradients.signatureGradient,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(ModernGriotRadius.xxl),
@@ -355,7 +354,7 @@ class TribeHubScreen extends ConsumerWidget {
           gradient: const LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0xFF9E3D00), Color(0xFFFF7A35)],
+            colors: [LingAfriqTokens.hexFF9E3D00, LingAfriqTokens.hexFFFF7A35],
           ),
           borderRadius: ModernGriotRadius.borderXl,
           boxShadow: ModernGriotShadows.md,

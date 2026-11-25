@@ -1,0 +1,58 @@
+charter: v2
+id: P11-022
+kind: design
+title: Specify persona voice casting, consent and labelling
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§8.4-01
+- EP-§8.4-02
+- EP-§8.4-03
+depends_on:
+- P11-001
+- P11-007
+size: S
+difficulty:
+  score: 3
+  blast: 2
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T4
+  justification: 'score 3: blast 2, ambiguity 1, coupling 0, depth 0; gate-critical (security / child safety / legal / design
+    direction): Fable reviews'
+token_budget: 25000
+file_allowlist:
+- docs/build/personas/voice_casting_brief.md
+context_anchors:
+- ELEVATION.md#§8.4:L1535-L1536
+acceptance_criteria:
+- id: AC1
+  text: Given a persona, when voice is chosen, then the casting brief names one voice actor, target language and regional
+    accent.
+- id: AC2
+  text: Given a cloned voice, when proposed, then written consent and a licence are on file or the voice is rejected.
+- id: AC3
+  text: Given any synthesised persona voice, when released, then it carries the synthesised label per P11-007.
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- reviewer verdict
+- ledger row
+risks: []
+gate: G11
+external_blockers:
+- EXT-13
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/09-writing-and-communication

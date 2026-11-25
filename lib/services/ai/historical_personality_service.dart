@@ -16,6 +16,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/dio_provider.dart';
+import 'package:lingafriq/api/generated/api_error.dart';
 import 'package:lingafriq/config/api_contract.dart';
 
 /// Historical Personality
@@ -198,42 +199,6 @@ class HistoricalPersonalityService {
 
   HistoricalPersonalityService(this._ref) : _dio = _ref.read(client);
 
-  Future<Response<dynamic>> _getWithFallbackPaths(
-    List<String> paths, {
-    Map<String, dynamic>? queryParameters,
-  }) async {
-    Object? lastError;
-    for (final path in paths) {
-      try {
-        final response = await _dio.get(path, queryParameters: queryParameters);
-        if (response.statusCode != null && response.statusCode! < 500) {
-          return response;
-        }
-      } catch (e) {
-        lastError = e;
-      }
-    }
-    throw lastError ?? Exception('No reachable historical personality endpoint');
-  }
-
-  Future<Response<dynamic>> _postWithFallbackPaths(
-    List<String> paths, {
-    required Map<String, dynamic> data,
-  }) async {
-    Object? lastError;
-    for (final path in paths) {
-      try {
-        final response = await _dio.post(path, data: data);
-        if (response.statusCode != null && response.statusCode! < 500) {
-          return response;
-        }
-      } catch (e) {
-        lastError = e;
-      }
-    }
-    throw lastError ?? Exception('No reachable historical personality endpoint');
-  }
-
   dynamic _extractPayload(dynamic raw) {
     if (raw is Map<String, dynamic>) {
       return raw['data'] ?? raw['result'] ?? raw;
@@ -304,15 +269,8 @@ class HistoricalPersonalityService {
       if (language != null) queryParams['language'] = language;
       if (era != null) queryParams['era'] = era;
 
-      final response = await _getWithFallbackPaths(
-        [
-          ApiContract.url(ApiContract.personalities.list),
-          '/api/personalities',
-          '/api/v1/personalities',
-          '/api/v1/historical-personalities',
-          '/api/historical-personalities',
-          '/historical-personalities',
-        ],
+      final response = await _dio.get(
+        ApiContract.url(ApiContract.personalities.list),
         queryParameters: queryParams.isEmpty ? null : queryParams,
       );
 
@@ -360,15 +318,8 @@ class HistoricalPersonalityService {
     Map<String, dynamic>? initialContext,
   }) async {
     try {
-      final response = await _postWithFallbackPaths(
-        [
-          ApiContract.url(ApiContract.personalities.chatStart(personalityId)),
-          '/api/personalities/$personalityId/chat/start',
-          '/api/v1/personalities/$personalityId/chat/start',
-          '/api/v1/historical-personalities/$personalityId/chat/start',
-          '/api/historical-personalities/$personalityId/chat/start',
-          '/historical-personalities/$personalityId/chat/start',
-        ],
+      final response = await _dio.post(
+        ApiContract.url(ApiContract.personalities.chatStart(personalityId)),
         data: {
           'user_id': userId,
           'initial_context': initialContext ?? {},
@@ -388,6 +339,14 @@ class HistoricalPersonalityService {
       }
 
       throw Exception('Failed to start chat session');
+    } on DioException catch (error) {
+      debugPrint('Start chat session error: $error');
+      throw ApiError(
+        method: error.requestOptions.method,
+        path: error.requestOptions.uri.path,
+        statusCode: error.response?.statusCode,
+        cause: error,
+      );
     } catch (e) {
       debugPrint('Start chat session error: $e');
       rethrow;
@@ -401,15 +360,8 @@ class HistoricalPersonalityService {
     Map<String, dynamic>? context,
   }) async {
     try {
-      final response = await _postWithFallbackPaths(
-        [
-          ApiContract.url(ApiContract.personalities.chatMessage(sessionId)),
-          '/api/personalities/chat/$sessionId/message',
-          '/api/v1/personalities/chat/$sessionId/message',
-          '/api/v1/historical-personalities/chat/$sessionId/message',
-          '/api/historical-personalities/chat/$sessionId/message',
-          '/historical-personalities/chat/$sessionId/message',
-        ],
+      final response = await _dio.post(
+        ApiContract.url(ApiContract.personalities.chatMessage(sessionId)),
         data: {
           'message': message,
           'context': {
@@ -426,6 +378,14 @@ class HistoricalPersonalityService {
       }
 
       throw Exception('Failed to send message');
+    } on DioException catch (error) {
+      debugPrint('Send message error: $error');
+      throw ApiError(
+        method: error.requestOptions.method,
+        path: error.requestOptions.uri.path,
+        statusCode: error.response?.statusCode,
+        cause: error,
+      );
     } catch (e) {
       debugPrint('Send message error: $e');
       rethrow;

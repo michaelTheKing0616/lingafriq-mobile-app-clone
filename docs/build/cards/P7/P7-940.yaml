@@ -1,0 +1,86 @@
+charter: v2
+id: P7-940
+kind: build
+title: Build diacritic typing tutorial for the keyboard bar
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§11.2-15
+depends_on:
+- P7-930
+- P7-933
+size: S
+difficulty:
+  score: 2
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 0, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist:
+- lib/screens/tutorials/keyboard_bar_tutorial.dart
+- lib/widgets/lingafriq_keyboard_bar.dart
+- test/screens/tutorials/keyboard_bar_tutorial_test.dart
+context_anchors:
+- ELEVATION.md#§11.2:L1793
+acceptance_criteria:
+- id: AC1
+  text: Given the tutorial, when it runs, then the learner types diacritics using the LingAfriq keyboard bar in the try step
+- id: AC2
+  text: Given a typed character, when it is wrong, then the mismatch is explained and the learner can retry
+- id: AC3
+  text: Given a language, when the tutorial opens, then the bar shows that language's diacritics
+test_plan:
+  unit:
+  - character match
+  integration:
+  - keyboard bar input
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - intro
+  - typing
+  - correct
+  - incorrect
+  copy_keys:
+  - tutorial.kbd.try
+  tokens:
+  - type.input
+  - color.surface
+  motion_tier: product
+  a11y:
+  - bar keys labelled
+  - reduced-motion variant
+  - touch targets >=48dp
+  goldens:
+  - default
+  - loading
+  - error
+  - offline
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

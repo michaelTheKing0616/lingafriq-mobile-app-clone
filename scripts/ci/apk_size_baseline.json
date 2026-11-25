@@ -1,0 +1,8 @@
+{
+  "measurement": "compressed_apk_bytes",
+  "note": "Per-ABI release APK file size (download-size proxy). Update after a green release gate.",
+  "abis": {
+    "arm64-v8a": 38500000,
+    "armeabi-v7a": 36200000
+  }
+}

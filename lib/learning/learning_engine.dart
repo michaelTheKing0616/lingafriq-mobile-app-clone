@@ -14,7 +14,6 @@
 //   Lesson/Task Generator
 
 // Core math
-export 'core/hlr_forgetting_curve.dart';
 export 'core/bkt_mastery.dart';
 
 // Skill graph

@@ -1,0 +1,83 @@
+charter: v2
+id: P9-958
+kind: build
+title: Replace mock co-learners in Village flashcards with real or empty state
+phase: P9
+epic: E-P9-VILLAGE
+req_ids:
+- EP-§9.1-26
+depends_on:
+- E-P9-SAFETY
+- P9-943
+size: S
+difficulty:
+  score: 2
+  blast: 1
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T2
+  justification: 'score 2: blast 1, ambiguity 0, coupling 1, depth 0'
+token_budget: 30000
+file_allowlist:
+- lib/screens/village/flashcard_focus_screen.dart
+context_anchors:
+- ELEVATION.md#§9.1:L1569-L1570
+acceptance_criteria:
+- id: AC1
+  text: Given the flashcard focus screen, when opened, then no hard-coded co-learner names or counts appear
+- id: AC2
+  text: Given no real co-learners, when shown, then the screen displays an honest empty state
+- id: AC3
+  text: Given the account is under 18 or age-unknown, when this surface is opened, then it is hidden or guardian-gated until
+    E-P9-SAFETY is Done, and the restriction is enforced server-side.
+test_plan:
+  unit:
+  - no mock data test
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - empty
+  - real
+  copy_keys:
+  - flashcard.colearners.empty
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - flashcard_default
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/error-handling-ux
+  - prime/feedback-patterns
+  - prime/state-machine

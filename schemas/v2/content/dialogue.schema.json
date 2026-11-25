@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.lingafriq.com/v2/content/dialogue.schema.json",
+  "title": "LingAfriq dialogue (v2)",
+  "description": "Scene dialogue with turns and comprehension hooks (P4-102).",
+  "allOf": [
+    { "$ref": "common.schema.json" },
+    {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "scene", "roles", "can_do_ids", "turns", "comprehension_items"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z]{2,3}\\.dlg\\.[a-z0-9]+$"
+        },
+        "scene": { "type": "string", "minLength": 1 },
+        "roles": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/role" }
+        },
+        "can_do_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "turns": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/turn" }
+        },
+        "comprehension_items": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "role": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["role_id", "display_name"],
+      "properties": {
+        "role_id": { "type": "string", "minLength": 1 },
+        "display_name": { "type": "string", "minLength": 1 }
+      }
+    },
+    "turn": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["speaker", "text", "gloss", "audio", "tone_pattern"],
+      "properties": {
+        "speaker": { "type": "string", "minLength": 1 },
+        "text": { "type": "string", "minLength": 1 },
+        "gloss": { "type": "string", "minLength": 1 },
+        "tone_pattern": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "audio": { "$ref": "#/$defs/turnAudio" }
+      }
+    },
+    "turnAudio": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["kind", "uri", "text_hash"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["human", "tts_synthetic"] },
+        "uri": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^audio/[a-z]{2,3}/[0-9a-f]{8,64}\\.[a-z0-9]+$"
+        },
+        "text_hash": {
+          "type": "string",
+          "minLength": 8,
+          "pattern": "^[0-9a-f]{8,64}$"
+        },
+        "voice_id": { "type": "string", "minLength": 1 },
+        "synthetic_voice_tag": { "type": "string" }
+      }
+    }
+  }
+}

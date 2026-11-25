@@ -1,46 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lingafriq/theme/lingafriq_fonts.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Polie & AI Chat design tokens — Afro-futurist, cinematic learning experience.
 /// Heritage × intelligence × delight. Dark-first; light mode ceremonial.
 /// Aligns with 4pt grid, Manrope/Inter typography, glass & glow surfaces.
 
+@Deprecated('Use LingAfriqTokens. This file is a retired design system.')
 class PolieColors {
   PolieColors._();
 
   // TSX parity palette (earth/amber/cream family)
-  static const Color primary = Color(0xFF2D1B0E);
-  static const Color primaryDark = Color(0xFF0F0A04);
-  static const Color obsidian = Color(0xFF0F0A04);
+  static const Color primary = LingAfriqTokens.hexFF2D1B0E;
+  static const Color primaryDark = LingAfriqTokens.hexFF0F0A04;
+  static const Color obsidian = LingAfriqTokens.hexFF0F0A04;
 
   // Accents
-  static const Color goldEmber = Color(0xFFD4822A);
-  static const Color goldEmberLight = Color(0xFFF2C14E);
-  static const Color electricTeal = Color(0xFF4A7C59);
-  static const Color electricTealLight = Color(0xFF5C9070);
-  static const Color royalAmethyst = Color(0xFFC4663A);
-  static const Color royalAmethystLight = Color(0xFFD27A53);
+  static const Color goldEmber = LingAfriqTokens.hexFFD4822A;
+  static const Color goldEmberLight = LingAfriqTokens.hexFFF2C14E;
+  static const Color electricTeal = LingAfriqTokens.hexFF4A7C59;
+  static const Color electricTealLight = LingAfriqTokens.hexFF5C9070;
+  static const Color royalAmethyst = LingAfriqTokens.hexFFC4663A;
+  static const Color royalAmethystLight = LingAfriqTokens.hexFFD27A53;
 
   // States
-  static const Color success = Color(0xFF22C55E);
-  static const Color error = Color(0xFFB91C1C);
-  static const Color errorMuted = Color(0xFF991B1B);
+  static const Color success = LingAfriqTokens.hexFF22C55E;
+  static const Color error = LingAfriqTokens.hexFFB91C1C;
+  static const Color errorMuted = LingAfriqTokens.hexFF991B1B;
 
   // @deprecated — Glass-era tokens. Use surfaceContainer / surfaceContainerLight instead.
-  static const Color surfaceGlass = Color(0x1FFFFFFF);
-  static const Color surfaceGlassDark = Color(0x2BFFFFFF);
-  static const Color surfaceContainer = Color(0xFF1A130C);
-  static const Color surfaceContainerLight = Color(0xFFFAF3E0);
+  static const Color surfaceGlass = LingAfriqTokens.hex1FFFFFFF;
+  static const Color surfaceGlassDark = LingAfriqTokens.hex2BFFFFFF;
+  static const Color surfaceContainer = LingAfriqTokens.hexFF1A130C;
+  static const Color surfaceContainerLight = LingAfriqTokens.hexFFFAF3E0;
 
   // Surfaces — Light mode
-  static const Color surfaceLight = Color(0xFFFAF3E0);
+  static const Color surfaceLight = LingAfriqTokens.hexFFFAF3E0;
 
   // Text
-  static const Color textPrimary = Color(0xFFFAF3E0);
-  static const Color textSecondary = Color(0xFFC4B7A6);
-  static const Color textPrimaryLight = Color(0xFF2D1B0E);
-  static const Color textSecondaryLight = Color(0xFF7A624C);
+  static const Color textPrimary = LingAfriqTokens.hexFFFAF3E0;
+  static const Color textSecondary = LingAfriqTokens.hexFFC4B7A6;
+  static const Color textPrimaryLight = LingAfriqTokens.hexFF2D1B0E;
+  static const Color textSecondaryLight = LingAfriqTokens.hexFF7A624C;
 }
 
 class PolieSpacing {
@@ -72,31 +75,31 @@ class PolieElevation {
 
   static List<BoxShadow> level0 = [];
   static List<BoxShadow> level1(BuildContext context) => [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.15),
-          blurRadius: 16,
-          offset: const Offset(0, 4),
-        ),
-      ];
+    BoxShadow(
+      color: Colors.black.withValues(alpha: 0.15),
+      blurRadius: 16,
+      offset: const Offset(0, 4),
+    ),
+  ];
   static List<BoxShadow> level2(BuildContext context, {Color? glowColor}) => [
-        BoxShadow(
-          color: (glowColor ?? PolieColors.royalAmethyst).withOpacity(0.25),
-          blurRadius: 24,
-          spreadRadius: 0,
-        ),
-        BoxShadow(
-          color: Colors.black.withOpacity(0.2),
-          blurRadius: 24,
-          offset: const Offset(0, 6),
-        ),
-      ];
+    BoxShadow(
+      color: (glowColor ?? PolieColors.royalAmethyst).withValues(alpha: 0.25),
+      blurRadius: 24,
+      spreadRadius: 0,
+    ),
+    BoxShadow(
+      color: Colors.black.withValues(alpha: 0.2),
+      blurRadius: 24,
+      offset: const Offset(0, 6),
+    ),
+  ];
   static List<BoxShadow> level3(BuildContext context) => [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.25),
-          blurRadius: 32,
-          offset: const Offset(0, 8),
-        ),
-      ];
+    BoxShadow(
+      color: Colors.black.withValues(alpha: 0.25),
+      blurRadius: 32,
+      offset: const Offset(0, 8),
+    ),
+  ];
 }
 
 /// Typography parity with TSX spec: Playfair + Nunito + JetBrains Mono.
@@ -112,7 +115,9 @@ class PolieTypography {
 
   static TextStyle h1(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
+    final color = isDark
+        ? PolieColors.textPrimary
+        : PolieColors.textPrimaryLight;
     return GoogleFonts.playfairDisplay(
       fontSize: 32.sp,
       height: 1.25,
@@ -124,7 +129,9 @@ class PolieTypography {
 
   static TextStyle h2(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
+    final color = isDark
+        ? PolieColors.textPrimary
+        : PolieColors.textPrimaryLight;
     return GoogleFonts.playfairDisplay(
       fontSize: 24.sp,
       height: 1.33,
@@ -135,8 +142,10 @@ class PolieTypography {
 
   static TextStyle body(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
-    return GoogleFonts.nunito(
+    final color = isDark
+        ? PolieColors.textPrimary
+        : PolieColors.textPrimaryLight;
+    return LingAfriqFonts.roleStyle(
       fontSize: 16.sp,
       height: 1.5,
       fontWeight: FontWeight.w400,
@@ -146,8 +155,10 @@ class PolieTypography {
 
   static TextStyle bodySmall(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final color = isDark ? PolieColors.textSecondary : PolieColors.textSecondaryLight;
-    return GoogleFonts.nunito(
+    final color = isDark
+        ? PolieColors.textSecondary
+        : PolieColors.textSecondaryLight;
+    return LingAfriqFonts.roleStyle(
       fontSize: 13.sp,
       height: 1.38,
       fontWeight: FontWeight.w400,
@@ -157,8 +168,10 @@ class PolieTypography {
 
   static TextStyle label(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final color = isDark ? PolieColors.textSecondary : PolieColors.textSecondaryLight;
-    return GoogleFonts.nunito(
+    final color = isDark
+        ? PolieColors.textSecondary
+        : PolieColors.textSecondaryLight;
+    return LingAfriqFonts.roleStyle(
       fontSize: 14.sp,
       height: 1.3,
       fontWeight: FontWeight.w600,
@@ -168,7 +181,9 @@ class PolieTypography {
 
   static TextStyle h3(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
+    final color = isDark
+        ? PolieColors.textPrimary
+        : PolieColors.textPrimaryLight;
     return GoogleFonts.playfairDisplay(
       fontSize: 20.sp,
       height: 1.35,
@@ -179,7 +194,9 @@ class PolieTypography {
 
   static TextStyle titleLarge(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
+    final color = isDark
+        ? PolieColors.textPrimary
+        : PolieColors.textPrimaryLight;
     return GoogleFonts.playfairDisplay(
       fontSize: 22.sp,
       height: 1.3,
@@ -190,8 +207,10 @@ class PolieTypography {
 
   static TextStyle titleMedium(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
-    return GoogleFonts.nunito(
+    final color = isDark
+        ? PolieColors.textPrimary
+        : PolieColors.textPrimaryLight;
+    return LingAfriqFonts.roleStyle(
       fontSize: 18.sp,
       height: 1.35,
       fontWeight: FontWeight.w700,
@@ -201,8 +220,10 @@ class PolieTypography {
 
   static TextStyle titleSmall(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
-    return GoogleFonts.nunito(
+    final color = isDark
+        ? PolieColors.textPrimary
+        : PolieColors.textPrimaryLight;
+    return LingAfriqFonts.roleStyle(
       fontSize: 16.sp,
       height: 1.35,
       fontWeight: FontWeight.w700,
@@ -212,8 +233,10 @@ class PolieTypography {
 
   static TextStyle bodyLarge(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
-    return GoogleFonts.nunito(
+    final color = isDark
+        ? PolieColors.textPrimary
+        : PolieColors.textPrimaryLight;
+    return LingAfriqFonts.roleStyle(
       fontSize: 18.sp,
       height: 1.5,
       fontWeight: FontWeight.w400,
@@ -223,8 +246,10 @@ class PolieTypography {
 
   static TextStyle labelLarge(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final color = isDark ? PolieColors.textSecondary : PolieColors.textSecondaryLight;
-    return GoogleFonts.nunito(
+    final color = isDark
+        ? PolieColors.textSecondary
+        : PolieColors.textSecondaryLight;
+    return LingAfriqFonts.roleStyle(
       fontSize: 14.sp,
       height: 1.3,
       fontWeight: FontWeight.w600,
@@ -234,8 +259,10 @@ class PolieTypography {
 
   static TextStyle button(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
-    return GoogleFonts.nunito(
+    final color = isDark
+        ? PolieColors.textPrimary
+        : PolieColors.textPrimaryLight;
+    return LingAfriqFonts.roleStyle(
       fontSize: 16.sp,
       height: 1.25,
       fontWeight: FontWeight.w700,
@@ -246,7 +273,9 @@ class PolieTypography {
 
   static TextStyle mono(BuildContext context, {double size = 13}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
+    final color = isDark
+        ? PolieColors.textPrimary
+        : PolieColors.textPrimaryLight;
     return GoogleFonts.jetBrainsMono(
       fontSize: size.sp,
       height: 1.4,

@@ -1,0 +1,80 @@
+charter: v2
+id: P3-084
+kind: build
+title: Ask for notifications in context after lesson 1
+phase: P3
+epic: E-P3-ONBOARDING
+req_ids:
+- OB-step7
+depends_on:
+- P3-083
+size: S
+difficulty:
+  score: 2
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 0, ambiguity 1, coupling 1'
+token_budget: 25000
+file_allowlist:
+- lib/screens/onboarding/steps/notification_step.dart
+- lib/services/notification_permission_service.dart
+context_anchors:
+- ELEVATION.md#§5.2:L1058-L1059
+acceptance_criteria:
+- id: AC1
+  text: Given lesson 1 finishes, when the ask shows, then it explains the one daily reminder before the system prompt
+- id: AC2
+  text: Given permission is denied, when asked again, then the app does not re-prompt and offers a settings link
+- id: AC3
+  text: Given no permission, when the lesson ends, then the app works with in-app reminders only
+test_plan:
+  unit:
+  - no re-prompt
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - ask
+  - denied
+  copy_keys:
+  - onboarding.notify.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

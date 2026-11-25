@@ -1,0 +1,73 @@
+charter: v2
+id: P9-925
+kind: build
+title: Detect grooming patterns in conversations
+phase: P9
+epic: E-P9-MODERATION
+req_ids:
+- EP-§9.4-13
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+- P9-921
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, ambiguity 2, coupling 1, depth 1'
+token_budget: 80000
+file_allowlist:
+- node-backend/src/services/moderation/grooming.heuristics.ts
+- node-backend/src/services/moderation/groomingRules.json
+context_anchors:
+- ELEVATION.md#§9.4:L1646
+acceptance_criteria:
+- id: AC1
+  text: Given an adult repeatedly contacting minors, requesting move-to-private-channel, asking for photos or secrecy, when
+    signals accumulate past the rule threshold, then a high-priority case is created for the moderator queue
+- id: AC2
+  text: Given a flagged conversation, when stored, then evidence includes the matched rules and the surrounding messages only,
+    with access logged
+- id: AC3
+  text: Given a false-positive review, when moderators mark it, then the rule's precision is updated and visible on the console
+- id: AC4
+  text: Given the heuristics, when released, then they are described as signals for human review and no automatic accusation
+    is shown to users
+test_plan:
+  unit:
+  - rule evaluation
+  integration:
+  - case creation
+  security:
+  - evidence access control
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- rules must be reviewed by the safety lead before enabling
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

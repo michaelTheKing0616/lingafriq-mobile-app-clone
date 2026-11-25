@@ -1,0 +1,89 @@
+charter: v2
+id: P3-083
+kind: build
+title: 'Build step 6: account later after lesson 1'
+phase: P3
+epic: E-P3-ONBOARDING
+req_ids:
+- OB-step6
+- OB-step6-b
+depends_on:
+- P3-076
+- P3-039
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/screens/onboarding/steps/save_progress_step.dart
+- lib/services/account_link_service.dart
+context_anchors:
+- ELEVATION.md#§5.2:L1056-L1057
+acceptance_criteria:
+- id: AC1
+  text: Given the learner has not finished lesson 1, when using the app, then no account prompt appears
+- id: AC2
+  text: Given lesson 1 finishes, when the prompt shows, then Save progress offers passkey, Google, Apple and email magic link
+- id: AC3
+  text: Given the learner declines, when dismissed, then progress stays on device and the prompt returns at most once per
+    day
+- id: AC4
+  text: Given sign-up succeeds, when linked, then local progress merges into the account with no loss and a failure shows
+    a retry state
+test_plan:
+  unit:
+  - merge
+  integration:
+  - decline repeat cap
+  security:
+  - auth flow
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - prompt
+  - declined
+  - merge_failed
+  copy_keys:
+  - onboarding.account.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

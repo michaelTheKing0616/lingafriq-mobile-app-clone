@@ -1,0 +1,77 @@
+charter: v2
+id: P6-046
+kind: build
+title: Gate each voice on native tone-accuracy threshold
+phase: P6
+epic: E-P6-TTS
+req_ids:
+- EP-§7.5-19
+- EP-§7.5-20
+- EP-§7.5-21
+- EP-§7.5-08
+depends_on:
+- P6-045
+size: M
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 2
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 3, ambiguity 2, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/tts/voiceGate.ts
+- release-gates/tone_accuracy.yaml
+- docs/methodology/tts_blind_mos.md
+context_anchors:
+- ELEVATION.md#§7.5:L1449-L1460
+acceptance_criteria:
+- id: AC1
+  text: Given a voice candidate per language, when a blind native MOS test with the tone-accuracy rubric is scored, then the
+    result is stored per voice and language
+- id: AC2
+  text: Given a voice below the threshold recorded in DECISIONS.md, when TTS is requested, then typed error voice_not_gated
+    is returned and no audio is served
+- id: AC3
+  text: Given a voice at or above threshold, when approved, then its gate record names panel size, raters and date
+- id: AC4
+  text: Given licences, quality and tone accuracy per language, when a vendor is promoted, then all three are verified and
+    recorded
+test_plan:
+  unit:
+  - gate lookup
+  integration:
+  - blocked voice
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- tone_accuracy_gate
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Threshold value set by Tope before first run
+gate: G8
+external_blockers:
+- EXT-11
+- EXT-13
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

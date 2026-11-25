@@ -1,0 +1,114 @@
+charter: v2
+id: P9-944
+kind: build
+title: Build Chat engine for 1:1 and group text and voice notes
+phase: P9
+epic: E-P9-VILLAGE
+req_ids:
+- EP-§9.2-07
+- EP-§9.2-08
+- EP-§9.2-09
+- EP-§9.2-10
+- EP-§9.2-11
+- EP-§9.1-01
+depends_on:
+- E-P9-SAFETY
+- P9-908
+- P9-909
+- P9-910
+- P9-930
+- P9-920
+- P9-943
+size: L
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, ambiguity 1, coupling 2, depth 0'
+token_budget: 200000
+file_allowlist:
+- lib/screens/chat/private_chat_screen.dart
+- lib/services/chat/wa_private_chat_service.dart
+- lib/widgets/chat/voice_note_recorder.dart
+context_anchors:
+- ELEVATION.md#§9.2:L1582-L1586
+- ELEVATION.md#§9.1:L1550-L1551
+acceptance_criteria:
+- id: AC1
+  text: Given a chat, when the user holds the mic, then a voice note records and sends with a waveform and cancel and lock
+    gestures
+- id: AC2
+  text: Given a message, when a reaction or reply is added, then it syncs to all members and survives reconnect
+- id: AC3
+  text: Given read state, when enabled, then it is shown only between contacts and never to non-contacts
+- id: AC4
+  text: Given a minor in a thread, when a message is sent, then it follows the P9-920 policy and the thread shows the moderated
+    state
+- id: AC5
+  text: Given the WhatsApp-style status, starred messages and media gallery, when the chat is rebuilt, then each is kept and
+    works
+test_plan:
+  unit:
+  - read-state rule
+  integration:
+  - voice note round trip
+  - reaction sync
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - voice note controls
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - empty
+  - sending
+  - sent
+  - failed
+  - recording
+  copy_keys:
+  - chat.voice.hold
+  - chat.failed
+  - chat.read
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - chat_default
+  - chat_voice
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+harvest_list:
+- status
+- starred messages
+- media gallery
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

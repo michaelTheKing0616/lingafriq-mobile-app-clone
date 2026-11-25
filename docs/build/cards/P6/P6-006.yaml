@@ -1,0 +1,66 @@
+charter: v2
+id: P6-006
+kind: build
+title: Enforce cost budgets per mode
+phase: P6
+epic: E-P6-GATEWAY
+req_ids:
+- EP-§7.2-07
+depends_on:
+- P6-005
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/costBudget.ts
+- node-backend/src/ai-gateway/pricing.ts
+context_anchors:
+- ELEVATION.md#§7.2:L1367-L1387
+acceptance_criteria:
+- id: AC1
+  text: Given a per-mode monthly cost budget, when spend reaches 100 percent, then new requests for that mode degrade to the
+    cheaper route or return typed error mode_budget_exhausted
+- id: AC2
+  text: Given spend reaching 80 percent, when the next request is served, then an alert event is emitted once
+- id: AC3
+  text: Given each of the 8 modes, when budgets are loaded, then every mode has an explicit budget or startup fails loudly
+test_plan:
+  unit:
+  - spend accrual
+  - threshold alerts
+  integration:
+  - degrade path
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

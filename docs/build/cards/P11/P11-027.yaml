@@ -1,0 +1,59 @@
+charter: v2
+id: P11-027
+kind: verification
+title: Verify historian review for all five personas
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§8.3-02
+- EP-§8.3-07
+depends_on:
+- E-P1-CONTAINMENT
+- P11-010
+- P11-011
+- P11-012
+- P11-013
+- P11-014
+size: S
+difficulty:
+  score: 3
+  blast: 2
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T2
+  justification: 'score 3: blast 2, ambiguity 1, coupling 0, depth 0'
+token_budget: 25000
+file_allowlist: []
+context_anchors: []
+acceptance_criteria:
+- id: AC1
+  text: Given each of the five dossiers, when review completes, then a named historian signs against the rubric and sign-offs
+    are stored.
+- id: AC2
+  text: Given respectful-portrayal guidance from descendants or community bodies, when obtained, then it is recorded per persona
+    or marked not-available with a reason.
+- id: AC3
+  text: Given any persona without sign-off, when enabling, then the kill switch keeps it off.
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- reviewer verdict
+- ledger row
+risks: []
+gate: G11
+external_blockers:
+- EXT-15
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

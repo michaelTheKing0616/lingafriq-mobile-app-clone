@@ -22,6 +22,13 @@ class SocialAudioRoom {
   final List<String> tags;
   final String? coverImageUrl;
   final int? durationMinutes;
+  final String? practiceTopic;
+  final String? cefrLevel;
+  final bool dropIn;
+  final String? circleId;
+  final bool aiFacilitatorEnabled;
+  final bool aiFacilitatorMuted;
+  final String? sourceKind;
 
   SocialAudioRoom({
     required this.id,
@@ -46,6 +53,13 @@ class SocialAudioRoom {
     this.tags = const [],
     this.coverImageUrl,
     this.durationMinutes,
+    this.practiceTopic,
+    this.cefrLevel,
+    this.dropIn = false,
+    this.circleId,
+    this.aiFacilitatorEnabled = false,
+    this.aiFacilitatorMuted = false,
+    this.sourceKind,
   });
 
   bool get isLive => status == RoomStatus.live;
@@ -53,6 +67,8 @@ class SocialAudioRoom {
   bool get isEnded => status == RoomStatus.ended;
   bool get hasSpace => currentParticipants < maxParticipants;
   bool get isFull => currentParticipants >= maxParticipants;
+  bool get isPracticeRoom =>
+      sourceKind == 'practice_room' || (practiceTopic != null && practiceTopic!.isNotEmpty);
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -77,6 +93,13 @@ class SocialAudioRoom {
         'tags': tags,
         'cover_image_url': coverImageUrl,
         'duration_minutes': durationMinutes,
+        'practice_topic': practiceTopic,
+        'cefr_level': cefrLevel,
+        'drop_in': dropIn,
+        'circle_id': circleId,
+        'ai_facilitator_enabled': aiFacilitatorEnabled,
+        'ai_facilitator_muted': aiFacilitatorMuted,
+        'source_kind': sourceKind,
       };
 
   factory SocialAudioRoom.fromJson(Map<String, dynamic> json) => SocialAudioRoom(
@@ -122,7 +145,18 @@ class SocialAudioRoom {
                 .toList() ??
             [],
         coverImageUrl: json['cover_image_url'] as String?,
-        durationMinutes: json['duration_minutes'] as int?,
+        durationMinutes: json['duration_minutes'] as int? ?? json['durationMinutes'] as int?,
+        practiceTopic: json['practice_topic'] as String? ?? json['practiceTopic'] as String?,
+        cefrLevel: json['cefr_level'] as String? ?? json['cefrLevel'] as String?,
+        dropIn: json['drop_in'] as bool? ?? json['dropIn'] as bool? ?? false,
+        circleId: json['circle_id'] as String? ?? json['circleId'] as String?,
+        aiFacilitatorEnabled: json['ai_facilitator_enabled'] as bool? ??
+            json['aiFacilitatorEnabled'] as bool? ??
+            false,
+        aiFacilitatorMuted: json['ai_facilitator_muted'] as bool? ??
+            json['aiFacilitatorMuted'] as bool? ??
+            false,
+        sourceKind: json['source_kind'] as String? ?? json['sourceKind'] as String?,
       );
 
   SocialAudioRoom copyWith({

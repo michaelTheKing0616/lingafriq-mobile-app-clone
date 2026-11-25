@@ -1,0 +1,65 @@
+charter: v2
+id: P5-040
+kind: build
+title: Add Pidgin corpus anchoring and anglicisation detector
+phase: P5
+epic: E-P5-A1
+req_ids:
+- CP-§6-26
+- CP-§6-27
+depends_on:
+- P5-008
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T1
+  reviewer: T3
+  justification: 'score 7: blast 3, ambiguity 2, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- tools/content/pidgin_anglicisation.py
+- test/content/pidgin_test.py
+context_anchors:
+- CURRICULUM.md#§6:L692-L696
+acceptance_criteria:
+- id: AC1
+  text: Given a Pidgin item, when checked, then phrasing is anchored in UD-Naija or NSC
+- id: AC2
+  text: Given English with Pidgin spelling, when detected, then it fails the anglicisation check
+- id: AC3
+  text: Given native validation, when scheduled, then Pidgin is early priority
+test_plan:
+  unit:
+  - detector
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - gold set
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers:
+- EXT-13
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

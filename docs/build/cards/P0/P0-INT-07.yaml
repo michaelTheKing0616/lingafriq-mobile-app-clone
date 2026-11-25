@@ -1,0 +1,69 @@
+charter: v2
+id: P0-INT-07
+kind: build
+title: Provide card validation and coverage tooling
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- RM-STOP-08
+depends_on:
+- E-P0-INTAKE
+- P0-INT-06
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T0
+  tester: T0
+  reviewer: T1
+  justification: deterministic scripts already written
+token_budget: 25000
+file_allowlist:
+- scripts/plan/validate_cards.py
+- scripts/plan/check_rtm_coverage.py
+- scripts/plan/check_dependencies.py
+- scripts/plan/slice_rtm.py
+- scripts/plan/slice_coverage.py
+context_anchors:
+- docs/build/CARD_BRIEF.md
+acceptance_criteria:
+- id: AC1
+  text: Given card YAMLs, when `python3 scripts/plan/validate_cards.py` runs, then it prints OK or one line per violation
+    and exits 1 on any
+- id: AC2
+  text: Given a slice CSV, when `python3 scripts/plan/slice_coverage.py <slice>` runs, then it prints OK or the uncovered
+    rows
+- id: AC3
+  text: Given the card graph, when `python3 scripts/plan/check_dependencies.py` runs, then cycles and missing dependencies
+    exit non-zero
+- id: AC4
+  text: Given RTM.csv, when `python3 scripts/plan/slice_rtm.py` runs, then one slice CSV per phase group is written to docs/build/rtm_slices/
+test_plan:
+  unit:
+  - each script exits 0 on current tree
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- scripts/plan/*.py
+- validate_cards OK
+risks: []
+gate: G0
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

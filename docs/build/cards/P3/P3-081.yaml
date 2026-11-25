@@ -1,0 +1,88 @@
+charter: v2
+id: P3-081
+kind: build
+title: 'Build onboarding step 5: neutral age assurance'
+phase: P3
+epic: E-P3-ONBOARDING
+req_ids:
+- OB-step5
+- EP-§5.1-07
+depends_on:
+- P3-074
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: minors boundary, neutral design'
+token_budget: 60000
+file_allowlist:
+- lib/screens/onboarding/steps/age_step.dart
+- lib/services/age_band_service.dart
+context_anchors:
+- ELEVATION.md#§5.2:L1054
+- ELEVATION.md#§5.1:L1035-L1036
+acceptance_criteria:
+- id: AC1
+  text: Given step 5, when shown before any social feature, then a neutral date-of-birth picker appears with no hint of a
+    cut-off age
+- id: AC2
+  text: Given the date of birth, when saved, then it sets an age band used by the minor gates and has a consequence
+- id: AC3
+  text: Given a date in the future or before 1900, when entered, then a typed validation error shows
+- id: AC4
+  text: Given the age band, when stored, then only the band and a hashed check are sent to the server and the raw date stays
+    on device or server per the privacy spec
+test_plan:
+  unit:
+  - age band
+  - invalid dates
+  integration: []
+  security:
+  - no cut-off hint
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - default
+  - invalid
+  copy_keys:
+  - onboarding.age.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/onboarding-ux
+  - prime/form-design

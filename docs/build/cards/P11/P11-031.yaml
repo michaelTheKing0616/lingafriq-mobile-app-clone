@@ -1,0 +1,55 @@
+charter: v2
+id: P11-031
+kind: adr
+title: Decide forced aligner (ADR-033)
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§4.3-26
+- EP-§4.3-33
+- EP-§4.3-34
+depends_on:
+- P11-029
+size: S
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 2
+  coupling: 0
+  depth: 1
+  size: 0
+tiers:
+  worker: T4
+  tester: T0
+  reviewer: T4
+  justification: 'score 4: blast 1, ambiguity 2, coupling 0, depth 1'
+token_budget: 25000
+file_allowlist:
+- docs/build/adr/ADR-033.md
+context_anchors:
+- ELEVATION.md#§4.3:L953-L959
+acceptance_criteria:
+- id: AC1
+  text: Given Montreal Forced Aligner, a CTC aligner and TTS-native alignment, when ADR-033 is accepted, then one primary
+    and one fallback are chosen per language with licence noted.
+- id: AC2
+  text: Given the companion AI model stack §3.8, when unavailable, then the ADR marks the choice provisional and lists the
+    sections needed.
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- reviewer verdict
+- ledger row
+risks: []
+gate: G11
+external_blockers:
+- EXT-01
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - prime/diagram-design

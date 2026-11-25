@@ -1,0 +1,74 @@
+charter: v2
+id: P1-033
+kind: build
+title: Delete semver logout and add schema-versioned local migrations
+phase: P1
+epic: E-P1-OFFLINE-DATA
+req_ids:
+- P0-20
+- RM-P0-09
+depends_on:
+- E-P0-INTAKE
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: score 7; blast 3
+token_budget: 70000
+file_allowlist:
+- lib/providers/auth_provider.dart
+- lib/services/local_schema_migrator.dart
+- lib/services/offline/local_database_service.dart
+- lib/main.dart
+- test/services/p1_033_schema_migrator_test.dart
+context_anchors:
+- ELEVATION.md#§1:L315-L320
+- ELEVATION.md#§16.1:L2048-L2050
+acceptance_criteria:
+- id: AC1
+  text: Given an app upgrade across any version change, when the app starts, then the user stays signed in
+- id: AC2
+  text: Given the semver reset code, when searched, then it is deleted and no version comparison clears credentials
+- id: AC3
+  text: Given local data at schema N, when the app starts at schema N+1, then ordered migrations run once and the stored schemaVersion
+    is updated
+- id: AC4
+  text: Given a failing migration, when it throws, then the app shows a typed recovery state and preserves the original data
+test_plan:
+  unit:
+  - migrator
+  integration:
+  - upgrade-path tests across fixtures
+  security: []
+  e2e:
+  - upgrade keeps session
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "main.dart and the schema test were added to the allowlist because the typed recovery is shown at startup. Other init failures still log and continue. Hive restore clears the vocabulary box before rewriting it, and the tests never open Hive, so a throw during restore can drop vocabulary while the recovery text still says the data was unchanged (OW-037)."
+gate: G1
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

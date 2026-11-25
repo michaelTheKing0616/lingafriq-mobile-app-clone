@@ -1,0 +1,78 @@
+charter: v2
+id: P11-047
+kind: build
+title: Enforce avatar size, frame-cost and draw-call budgets
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§4.5-10
+- EP-§4.5-11
+- EP-§4.5-12
+- EP-§4.5-13
+- EP-§4.5-14
+- EP-§4.6-20
+- EP-§4.6-21
+- EP-§4.6-24
+- EP-§4.2-47
+- EP-§4.2-48
+depends_on:
+- P11-032
+- P11-045
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 2
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 1, depth 2'
+token_budget: 70000
+file_allowlist:
+- scripts/avatars/check_budgets.py
+- integration_test/avatars_perf_test.dart
+context_anchors:
+- ELEVATION.md#§4.5:L981-L983
+- ELEVATION.md#§4.6:L1015-L1020
+acceptance_criteria:
+- id: AC1
+  text: Given a character file, when CI measures it, then size ≤300 KB or CI fails.
+- id: AC2
+  text: Given a 2020 mid-range Android reference device, when idle and speaking, then frame cost ≤2 ms and 60 fps target is
+    met; falls back gracefully at 30 fps.
+- id: AC3
+  text: Given swapping an item on a Tecno/Infinix-class device, when measured, then no dropped frame occurs.
+- id: AC4
+  text: Given per-artboard budgets, when listed, then file size and draw calls are recorded per artboard.
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf:
+  - ≤2 ms frame
+  - ≤300 KB
+  - swap no drop
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

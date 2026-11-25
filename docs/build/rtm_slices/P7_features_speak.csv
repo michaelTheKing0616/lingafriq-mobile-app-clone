@@ -1,0 +1,101 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+F-035,ELEVATION,§18.4:L3979-L4003,requirement,Polie AI Tutor workspace,P1,agent,,Open
+F-035.D,ELEVATION,§18.4:L3994,requirement,"[4] 6,485-line god screen. Client keys (P0-3). No streaming on the backend",P1,agent,,Open
+F-035.E,ELEVATION,§18.4:L3996,requirement,[4] Polie becomes a voice-first companion: hold-to-talk with live transcript and Tone,P1,agent,,Open
+F-035.U,ELEVATION,§18.4:L4000,requirement,"[4] Chat surface with large target-language text (18 sp+), a gloss on",P1,agent,,Open
+F-035.L,ELEVATION,§18.4:L4003,requirement,[4] Speak tab (root) → Polie.,P1,agent,,Open
+F-036,ELEVATION,§18.4:L4004-L4019,requirement,Tutor: Dialogue mode,P1,agent,,Open
+F-036.D,ELEVATION,§18.4:L4010,requirement,[4] Client key dependency (P0-3): in release builds these modes fail and,P1,agent,,Open
+F-036.E,ELEVATION,§18.4:L4012,requirement,"[4] Scripted-goal dialogues (""order food"", ""ask directions"") where Polie improvises inside",P1,agent,,Open
+F-036.U,ELEVATION,§18.4:L4015,requirement,"[4] Shared tutor shell: header with avatar and mode chip, transcript, mic",P1,agent,,Open
+F-036.L,ELEVATION,§18.4:L4019,requirement,[4] Speak → Polie → mode chips.,P1,agent,,Open
+F-037,ELEVATION,§18.4:L4020-L4033,requirement,Tutor: Grammar mode,P1,agent,,Open
+F-037.D,ELEVATION,§18.4:L4026,requirement,[4] Client key dependency (P0-3): in release builds these modes fail and,P1,agent,,Open
+F-037.E,ELEVATION,§18.4:L4028,requirement,"[4] Answers come only from the Pattern Library (retrieval), cite the pattern",P1,agent,,Open
+F-037.U,ELEVATION,§18.4:L4030,requirement,"[4] Shared tutor shell: header with avatar and mode chip, transcript, mic",P1,agent,,Open
+F-037.L,ELEVATION,§18.4:L4033,requirement,[4] Speak → Polie → mode chips.,P1,agent,,Open
+F-038,ELEVATION,§18.4:L4034-L4048,requirement,Tutor: Story mode,P1,agent,,Open
+F-038.D,ELEVATION,§18.4:L4040,requirement,[4] Client key dependency (P0-3): in release builds these modes fail and,P1,agent,,Open
+F-038.E,ELEVATION,§18.4:L4042,requirement,"[4] Choose-your-path stories at the learner's level using known plus due words,",P1,agent,,Open
+F-038.U,ELEVATION,§18.4:L4045,requirement,"[4] Shared tutor shell: header with avatar and mode chip, transcript, mic",P1,agent,,Open
+F-038.L,ELEVATION,§18.4:L4048,requirement,[4] Speak → Polie → mode chips.,P1,agent,,Open
+F-039,ELEVATION,§18.4:L4049-L4064,requirement,Tutor: Translation mode,P1,agent,,Open
+F-039.D,ELEVATION,§18.4:L4055,requirement,[4] Client key dependency (P0-3): in release builds these modes fail and,P1,agent,,Open
+F-039.E,ELEVATION,§18.4:L4057,requirement,"[4] Translate & teach: shows the translation, word-by-word alignment, register options",P1,agent,,Open
+F-039.U,ELEVATION,§18.4:L4060,requirement,"[4] Shared tutor shell: header with avatar and mode chip, transcript, mic",P1,agent,,Open
+F-039.L,ELEVATION,§18.4:L4063,requirement,[4] Speak → Polie → mode chips.,P1,agent,,Open
+F-040,ELEVATION,§18.4:L4065-L4080,requirement,Tutor: Pronunciation mode,P1,agent,,Open
+F-040.D,ELEVATION,§18.4:L4072,requirement,[4] Client key dependency (P0-3): in release builds these modes fail and,P1,agent,,Open
+F-040.E,ELEVATION,§18.4:L4074,requirement,[4] Real scoring (§7.4): per-syllable tone and phone feedback with the native,P1,agent,,Open
+F-040.U,ELEVATION,§18.4:L4077,requirement,"[4] Shared tutor shell: header with avatar and mode chip, transcript, mic",P1,agent,,Open
+F-040.L,ELEVATION,§18.4:L4080,requirement,[4] Speak → Polie → mode chips.,P1,agent,,Open
+F-041,ELEVATION,§18.4:L4081-L4094,requirement,Tutor: Assess mode,P1,agent,,Open
+F-041.D,ELEVATION,§18.4:L4087,requirement,[4] Client key dependency (P0-3): in release builds these modes fail and,P1,agent,,Open
+F-041.E,ELEVATION,§18.4:L4089,requirement,[4] An oral proficiency interview lite: a 5-minute adaptive conversation rated against,P1,agent,,Open
+F-041.U,ELEVATION,§18.4:L4091,requirement,"[4] Shared tutor shell: header with avatar and mode chip, transcript, mic",P1,agent,,Open
+F-041.L,ELEVATION,§18.4:L4094,requirement,[4] Speak → Polie → mode chips.,P1,agent,,Open
+F-042,ELEVATION,§18.4:L4095-L4107,requirement,Tutor dashboard,P1,agent,,Open
+F-042.D,ELEVATION,§18.4:L4102,requirement,[4] Modes are listed rather than recommended.,P1,agent,,Open
+F-042.E,ELEVATION,§18.4:L4103,requirement,[4] Coach view: Polie recommends the next mode based on weak skills;,P1,agent,,Open
+F-042.U,ELEVATION,§18.4:L4105,requirement,"[4] Cards with ""Recommended"" ribbon; small charts. Rendered on the single unified",P1,agent,,Open
+F-042.L,ELEVATION,§18.4:L4107,requirement,"[4] Speak → Polie → ""Coach"".",P1,agent,,Open
+F-043,ELEVATION,§18.4:L4108-L4121,requirement,Shadowing (revived),P1,agent,,Open
+F-043.D,ELEVATION,§18.4:L4115,requirement,[4] Unreachable; client key dependency.,P1,agent,,Open
+F-043.E,ELEVATION,§18.4:L4116,requirement,[4] Revive as Shadow Me: a native clip plays and the learner,P1,agent,,Open
+F-043.U,ELEVATION,§18.4:L4119,requirement,"[4] Lyrics-style scrolling transcript; dual waveform; ""slow"" toggle. Rendered on the",P1,agent,,Open
+F-043.L,ELEVATION,§18.4:L4121,requirement,[4] Speak → Practice → Shadowing; Today slot.,P1,agent,,Open
+F-044,ELEVATION,§18.4:L4122-L4142,requirement,Conversation Scenarios & Roleplay (revived),P1,agent,,Open
+F-044.D,ELEVATION,§18.4:L4133,requirement,"[4] Without summary and progress, roleplay has no closure or progression. Client",P1,agent,,Open
+F-044.E,ELEVATION,§18.4:L4135,requirement,[4] Scenario Theatre: a library of real-life scenes with goals and a,P1,agent,,Open
+F-044.U,ELEVATION,§18.4:L4139,requirement,[4] Scene cards with illustrated settings; summary screen with replay of key,P1,agent,,Open
+F-044.L,ELEVATION,§18.4:L4142,requirement,[4] Speak → Scenarios.,P1,agent,,Open
+F-045,ELEVATION,§18.4:L4143-L4154,requirement,Conversation Analytics (revived),P1,agent,,Open
+F-045.D,ELEVATION,§18.4:L4148,requirement,[4] Insight data is collected but never shown.,P1,agent,,Open
+F-045.E,ELEVATION,§18.4:L4149,requirement,"[4] Revive as ""How I speak"": words used vs avoided, average utterance",P1,agent,,Open
+F-045.U,ELEVATION,§18.4:L4152,requirement,"[4] Simple, honest charts with an explanation line under each. Rendered on",P1,agent,,Open
+F-045.L,ELEVATION,§18.4:L4154,requirement,[4] Speak → Coach → Insights; Me → Progress.,P1,agent,,Open
+F-046,ELEVATION,§18.4:L4155-L4169,requirement,Speak Engine Lab (code-switch & register coach),P1,agent,,Open
+F-046.D,ELEVATION,§18.4:L4162,requirement,"[4] ""Lab"" framing hides two genuinely novel features.",P1,agent,,Open
+F-046.E,ELEVATION,§18.4:L4163,requirement,[4] Split into two named features. Code-Switch Coach: practise natural Yoruba-English or,P1,agent,,Open
+F-046.U,ELEVATION,§18.4:L4167,requirement,"[4] Side-by-side ""casual vs respectful"" cards with audio. Rendered on the single",P1,agent,,Open
+F-046.L,ELEVATION,§18.4:L4169,requirement,[4] Speak → Practice → Code-Switch Coach / Respect Coach.,P1,agent,,Open
+F-047,ELEVATION,§18.4:L4170-L4181,requirement,Speak Missions,P1,agent,,Open
+F-047.D,ELEVATION,§18.4:L4175,requirement,[4] Client AI dependency; evaluation not grounded in a rubric.,P1,agent,,Open
+F-047.E,ELEVATION,§18.4:L4176,requirement,"[4] Weekly speaking missions in the real world (""Greet three people in",P1,agent,,Open
+F-047.U,ELEVATION,§18.4:L4179,requirement,[4] Mission card with checklist; recording sheet; rubric feedback. Rendered on the,P1,agent,,Open
+F-047.L,ELEVATION,§18.4:L4181,requirement,[4] Speak → Missions; Today → Challenges.,P1,agent,,Open
+F-048,ELEVATION,§18.4:L4182-L4196,requirement,Historical Personas,P1,agent,,Open
+F-048.D,ELEVATION,§18.4:L4189,requirement,[4] P0-13/14/15; ungrounded answers.,P1,agent,,Open
+F-048.E,ELEVATION,§18.4:L4190,requirement,"[4] See §8: grounded, cited, AI-disclosed personas with illustrated story chapters (Yaa",P1,agent,,Open
+F-048.U,ELEVATION,§18.4:L4193,requirement,"[4] Portrait busts (Rive), a sources drawer on every answer, and an",P1,agent,,Open
+F-048.L,ELEVATION,§18.4:L4196,requirement,[4] Speak → Personas.,P1,agent,,Open
+F-049,ELEVATION,§18.4:L4197-L4211,requirement,Persona Missions,P1,agent,,Open
+F-049.D,ELEVATION,§18.4:L4205,requirement,"[4] P0-13 canned fallback ""I hear you. Let us continue.""",P1,agent,,Open
+F-049.E,ELEVATION,§18.4:L4206,requirement,"[4] The story-chapter format from §8: era scene, objective (greet the Queen",P1,agent,,Open
+F-049.U,ELEVATION,§18.4:L4209,requirement,"[4] Illustrated scene header, ambient audio, objective tracker. Rendered on the single",P1,agent,,Open
+F-049.L,ELEVATION,§18.4:L4211,requirement,[4] Speak → Personas → Missions.,P1,agent,,Open
+F-050,ELEVATION,§18.4:L4212-L4223,requirement,LingChat AI conversation,P1,agent,,Open
+F-050.D,ELEVATION,§18.4:L4217,requirement,[4] Duplicates Polie in a different place.,P1,agent,,Open
+F-050.E,ELEVATION,§18.4:L4218,requirement,"[4] Becomes ""Practice with Polie"" inside chat: open a practice DM with",P1,agent,,Open
+F-050.U,ELEVATION,§18.4:L4221,requirement,"[4] Appears as a pinned contact in Chats with an ""AI"" label.",P1,agent,,Open
+F-050.L,ELEVATION,§18.4:L4223,requirement,"[4] Village → Chats → pinned ""Polie (AI)"".",P1,agent,,Open
+F-051,ELEVATION,§18.4:L4224-L4235,requirement,Synthetic Voice Styles,P1,agent,,Open
+F-051.D,ELEVATION,§18.4:L4229,requirement,"[4] Voices come from non-commercial models (MMS-TTS, XTTS-v2; P0-24).",P1,agent,,Open
+F-051.E,ELEVATION,§18.4:L4230,requirement,"[4] Voice picker with commercial voices per language (Intron, Spitch, Azure, custom;",P1,agent,,Open
+F-051.U,ELEVATION,§18.4:L4233,requirement,[4] Voice cards with a play sample and region tag. Rendered on,P1,agent,,Open
+F-051.L,ELEVATION,§18.4:L4235,requirement,[4] Me → Settings → Voice; Speak → Polie settings.,P1,agent,,Open
+F-052,ELEVATION,§18.4:L4236-L4245,requirement,Point & Say,P1,agent,,Open
+F-052.D,ELEVATION,§18.4:L4241,requirement,[4] See §17.6.,P1,agent,,Open
+F-052.E,ELEVATION,§18.4:L4242,requirement,[4] See §17.6 (exemplar deep-dive).,P1,agent,,Open
+F-052.U,ELEVATION,§18.4:L4243,requirement,"[4] See §17.6. Rendered on the single unified design system (§3.4), with",P1,agent,,Open
+F-052.L,ELEVATION,§18.4:L4245,requirement,[4] Global Lens button; Learn/Speak contextual.,P1,agent,,Open
+F-053,ELEVATION,§18.4:L4246-L4263,requirement,Live Translate,P1,agent,,Open
+F-053.D,ELEVATION,§18.4:L4254,requirement,"[4] On-device recognisers rarely support Yoruba, Igbo, Hausa, Xhosa or Pidgin, so",P1,agent,,Open
+F-053.E,ELEVATION,§18.4:L4256,requirement,"[4] Conversation Bridge: two people, two languages, one phone. Each speaks in",P1,agent,,Open
+F-053.U,ELEVATION,§18.4:L4260,requirement,[4] Split-screen facing layout (one half upside-down for the other person); big,P1,agent,,Open
+F-053.L,ELEVATION,§18.4:L4263,requirement,"[4] Global Lens → ""Bridge""; Speak → Practice.",P1,agent,,Open
+F-054,ELEVATION,§18.4:L4264-L4280,requirement,Import Media (OCR & clips),P1,agent,,Open
+F-054.D,ELEVATION,§18.4:L4270,requirement,[4] ML Kit Latin OCR mangles stacked tone marks [verify on device].,P1,agent,,Open
+F-054.E,ELEVATION,§18.4:L4272,requirement,"[4] Learn from anything: import a song, a WhatsApp voice note, a",P1,agent,,Open
+F-054.U,ELEVATION,§18.4:L4276,requirement,[4] Import sheet (camera/files/share-sheet target); processing steps shown honestly.,P1,agent,,Open
+F-054.L,ELEVATION,§18.4:L4279,requirement,"[4] Global Lens → ""Import""; share-sheet target from other apps.",P1,agent,,Open

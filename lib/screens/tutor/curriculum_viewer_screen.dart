@@ -90,7 +90,7 @@ class CurriculumViewerScreen extends StatelessWidget {
                       ],
                     ],
                   ),
-                  trailing: Icon(
+                  trailing: const Icon(
                     Icons.arrow_forward_ios,
                     size: 16,
                     color: PanAfricanColors.primary,

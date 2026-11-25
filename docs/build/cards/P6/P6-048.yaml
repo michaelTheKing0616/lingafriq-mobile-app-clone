@@ -1,0 +1,70 @@
+charter: v2
+id: P6-048
+kind: build
+title: Build commissioned-voice fine-tune pipeline
+phase: P6
+epic: E-P6-TTS
+req_ids:
+- EP-§7.5-01
+- EP-§7.5-02
+- EP-§7.5-04
+- EP-§7.5-05
+depends_on:
+- P6-045
+size: L
+difficulty:
+  score: 8
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 2, ambiguity 2, coupling 1, depth 2'
+token_budget: 160000
+file_allowlist:
+- speech-service/tts/finetune/
+- speech-service/tts/licence_manifest.py
+context_anchors:
+- ELEVATION.md#§7.5:L1449-L1460
+acceptance_criteria:
+- id: AC1
+  text: Given at least 2 voices per Stage-1 language recorded under a commercial licence, when ingested, then each has a signed
+    licence and consent row
+- id: AC2
+  text: Given a commercially licensed TTS architecture, when fine-tuned on those voices, then a checkpoint and sample set
+    per voice are produced
+- id: AC3
+  text: Given any recording without a licence row, when the pipeline runs, then it fails with typed error unlicensed_audio
+test_plan:
+  unit:
+  - manifest check
+  integration:
+  - tiny fixture
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers:
+- EXT-13
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

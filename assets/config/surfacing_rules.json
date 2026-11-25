@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "id": "lesson_recap",
+      "when": {
+        "all": ["lesson_finished", "lesson_recap_open"]
+      },
+      "offers": [
+        {
+          "id": "say_it",
+          "label": "Say it",
+          "place": "lesson_recap"
+        },
+        {
+          "id": "tone_twins",
+          "label": "Tone twins",
+          "place": "play",
+          "role": "matching_game"
+        }
+      ]
+    },
+    {
+      "id": "word_card",
+      "when": {
+        "all": ["word_long_pressed", "word_card_open"]
+      },
+      "offers": [
+        {
+          "id": "living_dictionary",
+          "label": "Living Dictionary",
+          "place": "word_card"
+        },
+        {
+          "id": "save",
+          "label": "Save",
+          "place": "word_card"
+        },
+        {
+          "id": "practise",
+          "label": "Practise",
+          "place": "word_card"
+        }
+      ]
+    },
+    {
+      "id": "lens_point_say",
+      "when": {
+        "any": ["object_lesson", "camera_button"]
+      },
+      "offers": [
+        {
+          "id": "lens_point_say",
+          "label": "Point & Say",
+          "place": "lens"
+        }
+      ]
+    },
+    {
+      "id": "object_lesson_at_home",
+      "when": {
+        "all": ["object_lesson"]
+      },
+      "offers": [
+        {
+          "id": "find_three_at_home",
+          "label": "Find 3 of these at home",
+          "place": "lesson"
+        }
+      ]
+    },
+    {
+      "id": "tone_struggle",
+      "when": {
+        "event": "tone_error",
+        "min_count": 2
+      },
+      "offers": [
+        {
+          "id": "tone_gym",
+          "label": "Tone Gym",
+          "place": "today",
+          "max_per_day": 1
+        },
+        {
+          "id": "tone_forge",
+          "label": "Tone Forge",
+          "place": "play",
+          "max_per_day": 1
+        },
+        {
+          "id": "talking_drum",
+          "label": "Talking Drum",
+          "place": "play",
+          "max_per_day": 1
+        }
+      ]
+    },
+    {
+      "id": "scenario_market",
+      "when": {
+        "scenario_unit": "market"
+      },
+      "offers": [
+        {
+          "id": "scenario_theatre",
+          "label": "Scenario Theatre",
+          "place": "scenario"
+        },
+        {
+          "id": "market_haggle",
+          "label": "Market Haggle",
+          "place": "play"
+        }
+      ]
+    },
+    {
+      "id": "weekend",
+      "when": {
+        "weekend": true
+      },
+      "offers": [
+        {
+          "id": "circle_clash",
+          "label": "Circle Clash",
+          "place": "village",
+          "social": true
+        },
+        {
+          "id": "village_radio",
+          "label": "Village Radio show",
+          "place": "radio",
+          "social": true
+        },
+        {
+          "id": "festival_event",
+          "label": "Festival event",
+          "place": "events",
+          "social": true
+        }
+      ]
+    },
+    {
+      "id": "active_adult_a2",
+      "when": {
+        "adult": true,
+        "active": true,
+        "min_level": "A2"
+      },
+      "offers": [
+        {
+          "id": "native_corrections",
+          "label": "Try Native Corrections",
+          "place": "corrections",
+          "social": true
+        },
+        {
+          "id": "post_status",
+          "label": "Post a Status",
+          "place": "status",
+          "social": true
+        }
+      ]
+    }
+  ]
+}

@@ -91,7 +91,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    PanAfricanColors.primary.withOpacity(0.05),
+                    PanAfricanColors.primary.withValues(alpha: 0.05),
                     PanAfricanColors.surfaceLight,
                   ],
                 ),
@@ -110,10 +110,10 @@ class ChangePasswordScreen extends HookConsumerWidget {
                   Container(
                     padding: EdgeInsets.all(PanAfricanSpacing.md),
                     decoration: BoxDecoration(
-                      color: PanAfricanColors.primary.withOpacity(0.1),
+                      color: PanAfricanColors.primary.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
                       border: Border.all(
-                        color: PanAfricanColors.primary.withOpacity(0.3),
+                        color: PanAfricanColors.primary.withValues(alpha: 0.3),
                       ),
                     ),
                     child: Row(
@@ -121,7 +121,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
                         Container(
                           padding: EdgeInsets.all(PanAfricanSpacing.sm),
                           decoration: BoxDecoration(
-                            color: PanAfricanColors.primary.withOpacity(0.1),
+                            color: PanAfricanColors.primary.withValues(alpha: 0.1),
                             borderRadius:
                                 BorderRadius.circular(PanAfricanRadius.md),
                           ),
@@ -263,7 +263,7 @@ class _PasswordTextField extends StatelessWidget {
           margin: EdgeInsets.all(PanAfricanSpacing.sm),
           padding: EdgeInsets.all(PanAfricanSpacing.sm),
           decoration: BoxDecoration(
-            color: PanAfricanColors.primary.withOpacity(0.1),
+            color: PanAfricanColors.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(PanAfricanRadius.sm),
           ),
           child: Icon(
@@ -302,7 +302,7 @@ class _PasswordTextField extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: PanAfricanColors.primary,
             width: 2,
           ),
@@ -310,13 +310,13 @@ class _PasswordTextField extends StatelessWidget {
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
           borderSide: BorderSide(
-            color: PanAfricanColors.error,
+            color: context.panError,
           ),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
           borderSide: BorderSide(
-            color: PanAfricanColors.error,
+            color: context.panError,
             width: 2,
           ),
         ),

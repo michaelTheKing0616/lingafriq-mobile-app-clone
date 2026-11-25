@@ -284,8 +284,8 @@ class _DrumRhythmScreenState extends BaseGameScreenState<DrumRhythmScreen>
             SizedBox(height: 2.h),
             Card(
               color: _lastResult!.score.isCorrect
-                  ? Colors.green.withOpacity(0.2)
-                  : Colors.red.withOpacity(0.2),
+                  ? Colors.green.withValues(alpha: 0.2)
+                  : Colors.red.withValues(alpha: 0.2),
               child: Padding(
                 padding: EdgeInsets.all(4.w),
                 child: Column(

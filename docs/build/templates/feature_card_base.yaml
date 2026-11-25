@@ -1,0 +1,35 @@
+charter: v2
+# Shared bar inherited by every feature card F-001…F-151. Feature cards contain only their delta
+# (defects, elevation, hub placement, unlock stage, dependencies, harvest list). Never copy this text into a card.
+base_id: FEATURE_BASE
+base_req_ids: [EP-§3.4-01, EP-§13.7-01, EP-§13.8-01, EP-§13.5-01, P0-3, P0-7, P0-8, P0-19]  # validated against RTM.csv
+shared_acceptance_criteria:
+  - id: B1
+    text: Renders only with design-system tokens (no hard-coded colour, size, font, string); T0 token lint passes
+  - id: B2
+    text: Target-language text uses bundled Andika/Noto, ≥18 sp, line-height ≥1.5; stacked diacritics verified at 100% and 200% text scale
+  - id: B3
+    text: Every tappable target ≥48 dp; dark mode designed and golden-tested
+  - id: B4
+    text: All UI strings in ARB with diacritics; pseudo-localisation shows no overflow
+  - id: B5
+    text: States kit present: skeleton, empty (points forward), error (what/why/next), offline, AI-unavailable, content-under-review
+  - id: B6
+    text: Tone Lens component wraps every target-language text; never colour-only
+  - id: B7
+    text: Long-press on any target-language word opens the Word Card
+  - id: B8
+    text: Semantics labels on all interactive widgets; reduced-motion honoured; screen-reader order verified
+  - id: B9
+    text: Telemetry events emitted per the analytics schema; no PII in payloads
+  - id: B10
+    text: Offline behaviour defined: reads from cache, writes go to the single outbox, sync state visible
+  - id: B11
+    text: Any reward (XP, currency, streak) is computed server-side from verified events; client sends events only
+  - id: B12
+    text: No AI provider key in the client; every AI call goes through the gateway with a mode enum
+  - id: B13
+    text: Errors are typed and visible; no fake-success path, no swallowed catch, no placeholder copy
+  - id: B14
+    text: Content shown carries its label (Beta/Expert-reviewed/Native-verified), Synthetic-voice tag and "Report a mistake"
+delta_fields_required: [defects_to_fix, elevation_to_build, hub_placement, unlock_stage, depends_on, harvest_list_if_consolidated]

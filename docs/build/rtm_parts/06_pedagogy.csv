@@ -1,0 +1,203 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+EP-§6.1-01,ELEVATION,§6.1:L1073-L1084,informational,"1 lesson per level, ""vocab"": [{""word"":""example"",""meaning"":""sample""}",P1,agent,,Open
+EP-§6.1-02,ELEVATION,§6.1:L1085-L1090,informational,"""word1a"", ""example meaning"", ""Sample MCQ"", answer ""a""",P1,agent,,Open
+EP-§6.1-03,ELEVATION,§6.1:L1091-L1099,informational,"""Yor_word1a"", ""Example sentence with Yor_word1a.""",P1,agent,,Open
+EP-§6.1-04,ELEVATION,§6.1:L1100-L1107,informational,"Real phrases with correct-looking diacritics, but see below",P1,agent,,Open
+EP-§6.1-05,ELEVATION,§6.1:L1108,metric,126 lessons per language,P1,agent,,Open
+EP-§6.1-06,ELEVATION,§6.1:L1108-L1109,metric,only 85 (Lingala) to 111 (Yoruba) unique vocabulary items per language,P1,agent,,Open
+EP-§6.1-07,ELEVATION,§6.1:L1109,metric,A real A1 alone needs about 500–800 items,P1,agent,,Open
+EP-§6.1-08,ELEVATION,§6.1:L1109-L1110,metric,"B2 needs about 4,000",P1,agent,,Open
+EP-§6.1-09,ELEVATION,§6.1:L1110,metric,"C2 is beyond 10,000 word families",P1,agent,,Open
+EP-§6.1-10,ELEVATION,§6.1:L1110-L1111,informational,Every dialogue repeats lines (126/126 for each language),P1,agent,,Open
+EP-§6.1-11,ELEVATION,§6.1:L1112-L1114,informational,"Grammar is two generic sentences pasted into 1,546 lessons",P1,agent,,Open
+EP-§6.1-12,ELEVATION,§6.1:L1115,informational,Somali and Amharic are SOV,P1,agent,,Open
+EP-§6.1-13,ELEVATION,§6.1:L1115-L1116,informational,"mark tense and aspect with preverbal particles, not affixes",P1,agent,,Open
+EP-§6.1-14,ELEVATION,§6.1:L1116-L1117,risk,Teaching this is actively harmful,P1,agent,,Open
+EP-§6.1-15,ELEVATION,§6.1:L1117-L1118,informational,cultural_notes at unit level is a template,P1,agent,,Open
+EP-§6.1-16,ELEVATION,§6.1:L1118-L1119,metric,Three identical 11.3 MB copies,P1,agent,,Open
+EP-§6.1-17,ELEVATION,§6.1:L1118-L1119,metric,about 34 MB of APK bloat,P1,agent,,Open
+EP-§6.1-18,ELEVATION,§6.1:L1119-L1120,informational,Zero audio references in any curriculum file,P1,agent,,Open
+EP-§6.1-19,ELEVATION,§6.1:L1120-L1121,metric,"audio_manifest.json lists 1,363 entries pointing at assets/audio/...",P1,agent,,Open
+EP-§6.1-20,ELEVATION,§6.1:L1121-L1122,risk,That breaks across NFC/NFD normalisation,P1,agent,,Open
+EP-§6.1-21,ELEVATION,§6.1:L1122-L1123,informational,the file name drops the tone mark on kọ́ while the text,P1,agent,,Open
+EP-§6.1-22,ELEVATION,§6.1:L1124,informational,assets/audio is not in pubspec.yaml assets,P1,agent,,Open
+EP-§6.1-23,ELEVATION,§6.1:L1124-L1125,requirement,Sample label errors to send to native review,P1,external,,Open
+EP-§6.1-24,ELEVATION,§6.1:L1126,requirement,"Twi A1 Akyiade for ""Greetings""",P1,external,,Open
+EP-§6.1-25,ELEVATION,§6.1:L1128,metric,"1,409 words across 14 languages, about 85–118 each",P1,agent,,Open
+EP-§6.1-26,ELEVATION,§6.1:L1128-L1129,informational,"phonetic_guide is a copy of tonal_note for all 1,409",P1,agent,,Open
+EP-§6.1-27,ELEVATION,§6.1:L1129-L1130,informational,entry teaches a false tone rule (P0-17),P1,agent,,Open
+EP-§6.1-28,ELEVATION,§6.1:L1130,informational,3 topics are truncated mid-parenthesis,P1,agent,,Open
+EP-§6.1-29,ELEVATION,§6.1:L1131,metric,app_yo.arb has 62 of 103 keys,P1,agent,,Open
+EP-§6.1-30,ELEVATION,§6.1:L1131-L1133,informational,no Yoruba tone marks or subdots,P1,agent,,Open
+EP-§6.1-31,ELEVATION,§6.1:L1134-L1136,informational,"""Omo"", ""Eniyan"", ""Okunrin"" without diacritics",P1,agent,,Open
+EP-§6.2-01,ELEVATION,§6.2:L1139-L1143,requirement,Every unit is anchored in authentic-style audio stories and dialogues at i+1,P1,agent,,Open
+EP-§6.2-02,ELEVATION,§6.2:L1144,informational,Template dialogues,P1,agent,,Open
+EP-§6.2-03,ELEVATION,§6.2:L1145-L1150,requirement,"FSRS-6 scheduler (open-source, benchmarked well ahead of SM-2) running on device",P1,agent,,Open
+EP-§6.2-04,ELEVATION,§6.2:L1149-L1150,metric,"parameters optimised per learner after about 1,000 reviews",P1,agent,,Open
+EP-§6.2-05,ELEVATION,§6.2:L1151-L1152,informational,4 competing SRS models,P1,agent,,Open
+EP-§6.2-06,ELEVATION,§6.2:L1153-L1156,requirement,"Mix item types (listen, say, choose, build, translate), voices",P1,agent,,Open
+EP-§6.2-07,ELEVATION,§6.2:L1157,informational,Each game is siloed,P1,agent,,Open
+EP-§6.2-08,ELEVATION,§6.2:L1158-L1159,requirement,Desirable difficulty with high success,P1,agent,,Open
+EP-§6.2-09,ELEVATION,§6.2:L1160,metric,Aim for about 80–85% success; adapt in real time,P1,agent,,Open
+EP-§6.2-10,ELEVATION,§6.2:L1160,informational,Fixed,P1,agent,,Open
+EP-§6.2-11,ELEVATION,§6.2:L1161-L1165,requirement,Speaking from session 1; negotiated meaning with Polie; recasts rather,P1,agent,,Open
+EP-§6.2-12,ELEVATION,§6.2:L1166,informational,Text-heavy,P1,agent,,Open
+EP-§6.2-13,ELEVATION,§6.2:L1167-L1170,requirement,"Short grammar ""aha"" cards with contrastive examples, then practice.",P1,agent,,Open
+EP-§6.2-14,ELEVATION,§6.2:L1171,informational,Generic sentences,P1,agent,,Open
+EP-§6.2-15,ELEVATION,§6.2:L1172-L1178,requirement,Tone perception (minimal pairs: Yoruba ọkọ́ hoe / ọkọ̀ vehicle,P1,agent,,Open
+EP-§6.2-16,ELEVATION,§6.2:L1179-L1183,informational,Tone trainer forces a 3-tone model on all languages,P1,agent,,Open
+EP-§6.2-17,ELEVATION,§6.2:L1184-L1186,requirement,Every unit maps to CEFR / ACTFL can-do statements,P1,agent,,Open
+EP-§6.2-18,ELEVATION,§6.2:L1187-L1188,informational,Objectives are templates,P1,agent,,Open
+EP-§6.2-19,ELEVATION,§6.2:L1191-L1193,requirement,"A unit is ""mastered"" when its can-dos are demonstrated",P1,agent,,Open
+EP-§6.2-20,ELEVATION,§6.2:L1194-L1196,informational,Unlock rule previous_lesson_completed,P1,agent,,Open
+EP-§6.2-21,ELEVATION,§6.2:L1197-L1198,requirement,"Immediate, specific, actionable (""lower the second syllable"")",P1,agent,,Open
+EP-§6.2-22,ELEVATION,§6.2:L1199,informational,Random scores in places,P1,agent,,Open
+EP-§6.2-23,ELEVATION,§6.2:L1200-L1202,requirement,"Greetings by time and status, honorifics (Yoruba ẹ vs o), kinship terms",P1,agent,,Open
+EP-§6.2-24,ELEVATION,§6.2:L1203,informational,Mostly notes,P1,agent,,Open
+EP-§6.2-25,ELEVATION,§6.2:L1204-L1209,requirement,"Autonomy (choose themes), competence (visible skill growth), relatedness",P1,agent,,Open
+EP-§6.2-26,ELEVATION,§6.2:L1210,informational,Streak pressure,P1,agent,,Open
+EP-§6.3-01,ELEVATION,§6.3:L1211,decision,"Learner model (one, not four)",P1,agent,,Open
+EP-§6.3-02,ELEVATION,§6.3:L1212,requirement,A single Learner Knowledge Graph per user and language,P1,agent,,Open
+EP-§6.3-03,ELEVATION,§6.3:L1212-L1213,requirement,"Nodes: lexemes (with senses), grammar patterns, phonological skills",P1,agent,,Open
+EP-§6.3-04,ELEVATION,§6.3:L1214-L1215,requirement,"Per node: FSRS memory state (stability, difficulty, retrievability)",P1,agent,,Open
+EP-§6.3-05,ELEVATION,§6.3:L1215,requirement,"error taxonomy counts (tone error, segmental error, word order, register)",P1,agent,,Open
+EP-§6.3-06,ELEVATION,§6.3:L1216-L1217,requirement,"Evidence sources: lesson items, games, Polie conversations (graded turns)",P1,agent,,Open
+EP-§6.3-07,ELEVATION,§6.3:L1217-L1218,requirement,idempotent event log (learning_event with client_event_id),P1,agent,,Open
+EP-§6.3-08,ELEVATION,§6.3:L1218-L1219,requirement,"Uses: session builder, Polie's prompt context",P1,agent,,Open
+EP-§6.3-09,ELEVATION,§6.3:L1220,constraint,Privacy: on-device first,P1,agent,,Open
+EP-§6.3-10,ELEVATION,§6.3:L1220,constraint,raw audio is not stored unless the learner opts in,P1,agent,,Open
+EP-§6.4-01,ELEVATION,§6.4:L1222,requirement,breadth is a first-class goal,P1,agent,,Open
+EP-§6.4-02,ELEVATION,§6.4:L1222-L1223,metric,teach dozens of African languages within two years,P1,agent,,Open
+EP-§6.4-03,ELEVATION,§6.4:L1223,constraint,without ever shipping unvalidated content,P1,agent,,Open
+EP-§6.4-04,ELEVATION,§6.4:L1223-L1224,requirement,a repeatable content and QA pipeline,P1,agent,,Open
+EP-§6.4-05,ELEVATION,§6.4:L1224-L1225,requirement,so a language can go live early at a small but correct,P1,agent,,Open
+EP-§6.4-06,ELEVATION,§6.4:L1225,requirement,an AI stack chosen for long-tail coverage,P1,agent,,Open
+EP-§6.4-07,ELEVATION,§6.4:L1225-L1226,external,companion: LINGAFRIQ_AI_MODEL_STACK.md §2 and §4,P1,external,,Open
+EP-§6.4-08,ELEVATION,§6.4:L1227,requirement,each language moves up independently,P1,agent,,Open
+EP-§6.4-09,ELEVATION,§6.4:L1227-L1228,requirement,"L0 ""Taste"": greetings, numbers, 50–100 words, a culture card",P1,agent,,Open
+EP-§6.4-10,ELEVATION,§6.4:L1227-L1228,metric,50–100 words,P1,agent,,Open
+EP-§6.4-11,ELEVATION,§6.4:L1228-L1229,requirement,"L1 ""Starter"": A1 with native audio for every item and ASR",P1,agent,,Open
+EP-§6.4-12,ELEVATION,§6.4:L1229-L1230,requirement,"L2 ""Core"": A1–A2 with tone and pronunciation scoring, dynamic TTS,",P1,agent,,Open
+EP-§6.4-13,ELEVATION,§6.4:L1230-L1231,requirement,"L3 ""Full"": A1–B1, realtime voice conversation, personas, and checkpoints",P1,agent,,Open
+EP-§6.4-14,ELEVATION,§6.4:L1232-L1233,requirement,"Stage 1 (Wave 1, building now): 7 languages. Yoruba, Igbo, Hausa, Nigerian",P1,agent,,Open
+EP-§6.4-15,ELEVATION,§6.4:L1233,metric,Target: all seven at L1 within the first quarter of the,P1,agent,,Open
+EP-§6.4-16,ELEVATION,§6.4:L1233-L1234,metric,L2 within two quarters,P1,agent,,Open
+EP-§6.4-17,ELEVATION,§6.4:L1234,requirement,with L3 first for whichever languages pass the realtime and persona evals,P1,agent,,Open
+EP-§6.4-18,ELEVATION,§6.4:L1235,requirement,ASR: Intron covers all seven (code-switching in six),P1,agent,,Open
+EP-§6.4-19,ELEVATION,§6.4:L1235-L1236,requirement,"Dynamic TTS: - Intron covers yo, ig, ha, pcm and sw",P1,agent,,Open
+EP-§6.4-20,ELEVATION,§6.4:L1236,requirement,Azure covers isiZulu,P1,agent,,Open
+EP-§6.4-21,ELEVATION,§6.4:L1236-L1237,external,isiXhosa needs a commissioned custom voice,P1,external,,Open
+EP-§6.4-22,ELEVATION,§6.4:L1237,requirement,"Realtime native audio: Gemini Live covers yo, ha, sw and zu",P1,agent,,Open
+EP-§6.4-23,ELEVATION,§6.4:L1237-L1238,requirement,"ig, pcm and xh use the cascade",P1,agent,,Open
+EP-§6.4-24,ELEVATION,§6.4:L1238,requirement,"Tone scoring: in-house. It matters most for yo, ig and ha.",P1,agent,,Open
+EP-§6.4-25,ELEVATION,§6.4:L1239-L1242,requirement,"Wave 2 (next, about 14 languages; start L0 once Stage 1 reaches",P1,agent,,Open
+EP-§6.4-26,ELEVATION,§6.4:L1241-L1242,decision,"They were chosen for speaker numbers, diaspora demand, and existing vendor coverage",P1,agent,,Open
+EP-§6.4-27,ELEVATION,§6.4:L1244-L1248,requirement,"Wave 3 (about 25 languages; L0 → L1): Tigrinya, Ewe, Fon, Fula/Fulfulde",P1,agent,,Open
+EP-§6.4-28,ELEVATION,§6.4:L1244-L1245,requirement,"Fula/Fulfulde (Latin + Adlam), Bambara (Latin + N'Ko)",P1,agent,,Open
+EP-§6.4-29,ELEVATION,§6.4:L1247-L1248,decision,Make a deliberate decision on Egyptian Arabic and Moroccan Darija,P1,Tope,,Open
+EP-§6.4-30,ELEVATION,§6.4:L1249-L1254,requirement,"Wave 4, the ""Living Archive"" (50+ languages, community-built L0 starter kits",P1,agent,,Open
+EP-§6.4-31,ELEVATION,§6.4:L1253-L1254,external,only with community consent and benefit-sharing,P1,external,,Open
+EP-§6.4-32,ELEVATION,§6.4:L1254,requirement,"plus Ajami, N'Ko, Adlam, Tifinagh and Ge'ez script tracks",P1,agent,,Open
+EP-§6.4-33,ELEVATION,§6.4:L1255,external,"Partner with Masakhane, Lanfrica/NaijaVoices, African Next Voices, Lelapa, Intron",P1,external,,Open
+EP-§6.4-34,ELEVATION,§6.4:L1255-L1257,external,"university linguistics departments (UNILAG, UI Ibadan, UNN, ABU Zaria, Makerere",P1,external,,Open
+EP-§6.4-35,ELEVATION,§6.4:L1257,external,community and diaspora associations,P1,external,,Open
+EP-§6.4-36,ELEVATION,§6.4:L1258,metric,Running total: 7 → about 21 → about 46 → 95+ languages,P1,agent,,Open
+EP-§6.4-37,ELEVATION,§6.4:L1258-L1259,constraint,"treat these as planning targets, not promises",P1,agent,,Open
+EP-§6.4-38,ELEVATION,§6.4:L1260,requirement,"How to pick the next language (score 1–5 each, revisit quarterly)",P1,Tope,,Open
+EP-§6.4-39,ELEVATION,§6.4:L1260-L1261,requirement,"speakers (L1+L2) and diaspora demand (waitlist, search data)",P1,Tope,,Open
+EP-§6.4-40,ELEVATION,§6.4:L1261,requirement,availability of paid native reviewers and voice talent,P1,Tope,,Open
+EP-§6.4-41,ELEVATION,§6.4:L1261-L1262,requirement,AI coverage (ASR/TTS/MT/LLM eval results from the AI stack doc),P1,Tope,,Open
+EP-§6.4-42,ELEVATION,§6.4:L1262,requirement,partner support,P1,Tope,,Open
+EP-§6.4-43,ELEVATION,§6.4:L1262,requirement,mission value (endangerment),P1,Tope,,Open
+EP-§6.4-44,ELEVATION,§6.4.1:L1264-L1266,requirement,"Language kit (week 0–1): orthography spec (Unicode, NFC, diacritics, keyboard layout)",P1,agent,,Open
+EP-§6.4-45,ELEVATION,§6.4.1:L1267-L1270,requirement,"AI bootstrap (week 1–3): LLM and MT draft the frequency lexicon, glosses,",P1,agent,,Open
+EP-§6.4-46,ELEVATION,§6.4.1:L1271-L1273,requirement,Native validation (week 2–6): two independent natives plus linguist adjudication,P1,external,,Open
+EP-§6.4-47,ELEVATION,§6.4.1:L1274-L1275,requirement,Audio (week 3–6): native recordings of every item,P1,external,,Open
+EP-§6.4-48,ELEVATION,§6.4.1:L1276-L1278,requirement,Speech enablement (parallel): ASR via Intron or Omnilingual,P1,agent,,Open
+EP-§6.4-49,ELEVATION,§6.4.1:L1279-L1280,requirement,"Pilot and stats (week 6–8): a beta cohort, item statistics",P1,agent,,Open
+EP-§6.4-50,ELEVATION,§6.4.1:L1281-L1284,requirement,"Throughput target: one content squad (lead, 2 writers, linguist time",P1,agent,,Open
+EP-§6.4-51,ELEVATION,§6.4.1:L1265,requirement,"dialect standard, phone inventory and tone system",P1,external,,Open
+EP-§6.4-52,ELEVATION,§6.4.1:L1265,requirement,a phoneme-to-viseme table,P1,agent,,Open
+EP-§6.4-53,ELEVATION,§6.4.1:L1265-L1266,requirement,a seed lexicon from licensed corpora,P1,external,,Open
+EP-§6.4-54,ELEVATION,§6.4.1:L1266,metric,"a native reviewer panel ( ≥ 3, paid, contracts with consent",P1,external,,Open
+EP-§6.4-55,ELEVATION,§6.4.1:L1268-L1269,requirement,Spitch handles tone-mark suggestions for Yoruba,P1,agent,,Open
+EP-§6.4-56,ELEVATION,§6.4.1:L1269,requirement,an LLM with validators handles other languages,P1,agent,,Open
+EP-§6.4-57,ELEVATION,§6.4.1:L1270,requirement,Everything is tagged ai_assisted: true,P1,agent,,Open
+EP-§6.4-58,ELEVATION,§6.4.1:L1272,constraint,"Tone marks, cultural claims and audio are never AI-only",P1,agent,,Open
+EP-§6.4-59,ELEVATION,§6.4.1:L1272-L1273,requirement,Disagreements become dialect notes,P1,agent,,Open
+EP-§6.4-60,ELEVATION,§6.4.1:L1274,metric,"native recordings of every item ( ≥ 2 voices at L0/L1,",P1,external,,Open
+EP-§6.4-61,ELEVATION,§6.4.1:L1274-L1275,requirement,"forced alignment for highlighting, scoring references and lip-sync",P1,agent,,Open
+EP-§6.4-62,ELEVATION,§6.4.1:L1276,metric,evaluated on a 300-utterance set,P1,agent,,Open
+EP-§6.4-63,ELEVATION,§6.4.1:L1277,requirement,"TTS via vendor or custom voice, gated on native MOS and tone-error",P1,agent,,Open
+EP-§6.4-64,ELEVATION,§6.4.1:L1277-L1278,requirement,Tone-scoring calibration with native judges,P1,external,,Open
+EP-§6.4-65,ELEVATION,§6.4.1:L1280,constraint,Promote to the next readiness level only when the gates pass,P1,agent,,Open
+EP-§6.4-66,ELEVATION,§6.4.1:L1282,metric,runs 4–6 languages in parallel,P1,agent,,Open
+EP-§6.4-67,ELEVATION,§6.4.1:L1282-L1283,metric,so 2–3 squads clear a wave of 14 within about two quarters,P1,agent,,Open
+EP-§6.4-68,ELEVATION,§6.4.1:L1283-L1284,requirement,"Tooling (content studio §14, validators §6.5, eval harness) is shared",P1,agent,,Open
+EP-§6.4-69,ELEVATION,§6.4.1:L1285-L1286,external,companion: LINGAFRIQ_AI_MODEL_STACK.md §7,P1,external,,Open
+EP-§6.4-70,ELEVATION,§6.4.1:L1286-L1287,requirement,"AI drafts word lists, glosses, examples, dialogues, distractors, explanations and UI translations",P1,agent,,Open
+EP-§6.4-71,ELEVATION,§6.4.1:L1287,constraint,"Natives must approve every learner-facing string, all tone and diacritic marks",P1,external,,Open
+EP-§6.4-72,ELEVATION,§6.4.1:L1287-L1288,constraint,cultural notes and persona facts,P1,external,,Open
+EP-§6.4-73,ELEVATION,§6.4.1:L1288,constraint,Curriculum audio is always human-recorded,P1,external,,Open
+EP-§6.4-74,ELEVATION,§6.4.1:L1290-L1291,decision,"Dialect policy: declare the standard taught (Standard Yoruba, Central Igbo",P1,Tope,,Open
+EP-§6.4-75,ELEVATION,§6.4.1:L1292,requirement,mark regional variants explicitly,P1,agent,,Open
+EP-§6.4-76,ELEVATION,§6.4.1:L1292,informational,The existing dialectPreference model is a good hook,P1,agent,,Open
+EP-§6.5-01,ELEVATION,§6.5:L1293,requirement,Content schema (replace all four bundles),P1,agent,,Open
+EP-§6.5-02,ELEVATION,§6.5:L1295,requirement,"id: yo.lex.ọkọ.vehicle # stable, language-scoped",P1,agent,,Open
+EP-§6.5-03,ELEVATION,§6.5:L1296,requirement,"lemma: ""ọkọ̀"" # NFC-normalised, full diacritics",P1,agent,,Open
+EP-§6.5-04,ELEVATION,§6.5:L1297,requirement,"orthography: {standard: ""ọkọ̀"", ascii_fallback: ""oko"", script: Latn}",P1,agent,,Open
+EP-§6.5-05,ELEVATION,§6.5:L1298,requirement,"ipa: ""/ɔ̄kɔ̀/"" # with tone diacritics or Chao numbers",P1,agent,,Open
+EP-§6.5-06,ELEVATION,§6.5:L1299,requirement,"tone_pattern: [M, L]",P1,agent,,Open
+EP-§6.5-07,ELEVATION,§6.5:L1300,requirement,"syllables: [""ọ"", ""kọ̀""]",P1,agent,,Open
+EP-§6.5-08,ELEVATION,§6.5:L1301,requirement,"senses: [{gloss_en: ""vehicle"", gloss_fr: ""véhicule"", domain: transport,",P1,agent,,Open
+EP-§6.5-09,ELEVATION,§6.5:L1302,requirement,"minimal_pairs: [yo.lex.ọkọ.husband, yo.lex.ọkọ.hoe]",P1,agent,,Open
+EP-§6.5-10,ELEVATION,§6.5:L1303-L1304,requirement,"audio: [{voice_id: yo_f_lagos_01, speed: natural, uri: audio/yo/9f2c...ogg",P1,agent,,Open
+EP-§6.5-11,ELEVATION,§6.5:L1305,requirement,"image: {uri, alt_text, cultural_review: approved}",P1,agent,,Open
+EP-§6.5-12,ELEVATION,§6.5:L1306,requirement,cefr: A1; frequency_rank: 812,P1,agent,,Open
+EP-§6.5-13,ELEVATION,§6.5:L1307,requirement,"provenance: {author, source, licence, created_at}",P1,agent,,Open
+EP-§6.5-14,ELEVATION,§6.5:L1308-L1309,requirement,"review: {status: approved, reviewers: [native_1, linguist_1], tone_checked: true,",P1,agent,,Open
+EP-§6.5-15,ELEVATION,§6.5:L1310,requirement,"Pattern (grammar): id, description_l1, form, examples[], contrasts[], common_errors[], cefr",P1,agent,,Open
+EP-§6.5-16,ELEVATION,§6.5:L1311-L1312,requirement,"Dialogue: id, scene, roles, turns[{speaker, text, gloss, audio, tone_pattern}],",P1,agent,,Open
+EP-§6.5-17,ELEVATION,§6.5:L1313-L1314,requirement,"Item (exercise): id, type, stimulus refs, answer spec",P1,agent,,Open
+EP-§6.5-18,ELEVATION,§6.5:L1313-L1314,requirement,accepted variants incl. diacritic-insensitive matching rules,P1,agent,,Open
+EP-§6.5-19,ELEVATION,§6.5:L1314,requirement,"IRT params (a, b), skill tags",P1,agent,,Open
+EP-§6.5-20,ELEVATION,§6.5:L1315-L1316,requirement,"Unit: id, can_do_ids[], input (story/dialogue), patterns[], lexemes[],",P1,agent,,Open
+EP-§6.5-21,ELEVATION,§6.5:L1317,constraint,"file names are content hashes (ASCII), never orthography",P1,agent,,Open
+EP-§6.5-22,ELEVATION,§6.5:L1317,constraint,All text is NFC,P1,agent,,Open
+EP-§6.5-23,ELEVATION,§6.5:L1317-L1318,requirement,The validator rejects missing tone marks for tonal languages,P1,agent,,Open
+EP-§6.5-24,ELEVATION,§6.5:L1318,requirement,mismatched audio,P1,agent,,Open
+EP-§6.5-25,ELEVATION,§6.5:L1318,requirement,unreviewed items,P1,agent,,Open
+EP-§6.5-26,ELEVATION,§6.5:L1318-L1319,requirement,placeholder patterns (/word\d|example|sample|lorem/i) in CI,P1,agent,,Open
+EP-§6.6-01,ELEVATION,§6.6:L1321-L1323,requirement,Syllabus design by an applied linguist per language,P1,external,,Open
+EP-§6.6-02,ELEVATION,§6.6:L1324-L1325,requirement,"Drafting: human writers, with LLMs allowed for variants and distractors only",P1,external,,Open
+EP-§6.6-03,ELEVATION,§6.6:L1326-L1327,requirement,"Native review, two independent reviewers (different regions where dialects differ)",P1,external,,Open
+EP-§6.6-04,ELEVATION,§6.6:L1330-L1333,requirement,Audio production: studio or high-quality remote recording with ≥ 2 voices,P1,external,,Open
+EP-§6.6-05,ELEVATION,§6.6:L1334-L1335,requirement,Pilot: release to a beta cohort; collect item statistics,P1,agent,,Open
+EP-§6.6-06,ELEVATION,§6.6:L1336-L1337,requirement,Versioning: content packs are semver'd and signed; the app downloads diffs,P1,agent,,Open
+EP-§6.6-07,ELEVATION,§6.6:L1321-L1322,external,"corpora such as JW300 alternatives with clear licences, Masakhane datasets",P1,external,,Open
+EP-§6.6-08,ELEVATION,§6.6:L1325,requirement,on a grounded prompt with the approved lexicon,P1,agent,,Open
+EP-§6.6-09,ELEVATION,§6.6:L1325,requirement,Every AI-drafted string is tagged ai_assisted: true,P1,agent,,Open
+EP-§6.6-10,ELEVATION,§6.6:L1327-L1328,requirement,"Checks: orthography and tone, naturalness, register, cultural appropriateness,",P1,external,,Open
+EP-§6.6-11,ELEVATION,§6.6:L1328,requirement,Track inter-reviewer agreement,P1,agent,,Open
+EP-§6.6-12,ELEVATION,§6.6:L1328-L1329,requirement,"disagreement becomes dialect notes, not silent edits",P1,agent,,Open
+EP-§6.6-13,ELEVATION,§6.6:L1330-L1331,metric,recording with ≥ 2 voices per language at L0/L1,P1,external,,Open
+EP-§6.6-14,ELEVATION,§6.6:L1331,metric,"≥ 4 at L2+ (gender, age, region)",P1,external,,Open
+EP-§6.6-15,ELEVATION,§6.6:L1331-L1332,requirement,"natural and slow takes, forced alignment for word and phone",P1,external,,Open
+EP-§6.6-16,ELEVATION,§6.6:L1332,requirement,QA listen-through,P1,external,,Open
+EP-§6.6-17,ELEVATION,§6.6:L1332,external,Contributors sign clear licence and consent forms,P1,external,,Open
+EP-§6.6-18,ELEVATION,§6.6:L1333,external,revenue share or fair payment,P1,external,,Open
+EP-§6.6-19,ELEVATION,§6.6:L1333,requirement,the UGC voice contribution feature becomes this pipeline,P1,agent,,Open
+EP-§6.6-20,ELEVATION,§6.6:L1334,requirement,"item statistics (p-value, discrimination, time, hint use)",P1,agent,,Open
+EP-§6.6-21,ELEVATION,§6.6:L1335,requirement,"""this is wrong"" button on every item, routed to reviewers",P1,agent,,Open
+EP-§6.6-22,ELEVATION,§6.6:L1336-L1337,requirement,every item keeps its history,P1,agent,,Open
+EP-§6.7-01,ELEVATION,§6.7:L1340-L1341,requirement,"One renderer for target-language text (Tone Lens, tap-to-hear, long-press for gloss/IPA/minimal",P1,agent,,Open
+EP-§6.7-02,ELEVATION,§6.7:L1341,requirement,"used by lessons, chat, Polie, personas, games, the magazine and the dictionary",P1,agent,,Open
+EP-§6.7-03,ELEVATION,§6.7:L1342,requirement,Diacritic-aware input: a custom keyboard bar for each language,P1,agent,,Open
+EP-§6.7-04,ELEVATION,§6.7:L1342,requirement,ẹ ọ ṣ + tone keys for Yoruba,P1,agent,,Open
+EP-§6.7-05,ELEVATION,§6.7:L1342-L1343,requirement,ṅ for Igbo,P1,agent,,Open
+EP-§6.7-06,ELEVATION,§6.7:L1343,requirement,ɓ ɗ ƙ ƴ for Hausa,P1,agent,,Open
+EP-§6.7-07,ELEVATION,§6.7:L1343,requirement,ɛ ɔ for Twi,P1,agent,,Open
+EP-§6.7-08,ELEVATION,§6.7:L1343-L1344,requirement,"""lenient"" grading that accepts missing tone marks in early levels",P1,agent,,Open
+EP-§6.7-09,ELEVATION,§6.7:L1344,requirement,"always shows the correct form, then tightens with level",P1,agent,,Open
+EP-§6.7-10,ELEVATION,§6.7:L1345,requirement,"Script learning tracks for Ge'ez/Fidel (Amharic, Tigrinya), N'Ko, Adlam, Tifinagh and Ajami",P1,agent,,Open
+EP-§6.7-11,ELEVATION,§6.7:L1345-L1346,requirement,stroke-order animation and handwriting recognition practice,P1,agent,,Open

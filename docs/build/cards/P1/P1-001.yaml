@@ -1,0 +1,79 @@
+charter: v2
+id: P1-001
+kind: build
+title: Write history-purge script and key revocation checklist
+phase: P1
+epic: E-P1-SECRETS
+req_ids:
+- P0-1
+- P0-2
+- P0-3
+- RM-P0-01
+depends_on:
+- E-P0-INTAKE
+size: S
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 1
+  coupling: 0
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: score 4; blast 2
+token_budget: 25000
+file_allowlist:
+- scripts/security/purge_history.sh
+- docs/security/REVOCATION_CHECKLIST.md
+- docs/security/purge_paths.txt
+context_anchors:
+- ELEVATION.md#§1:L84-L102
+- ELEVATION.md#§1:L104-L112
+- ELEVATION.md#§1:L114-L129
+- ELEVATION.md#§16.1:L2016-L2021
+acceptance_criteria:
+- id: AC1
+  text: Given a mirror clone of the repo, when purge_history.sh runs with --dry-run, then it lists every blob matched by purge_paths.txt
+    (sample.json, *firebase-adminsdk*.json, AuthKey_*.p8, historic .env files) and exits 0 without rewriting history
+- id: AC2
+  text: Given a mirror clone and --apply with --confirm-backup, when the script finishes, then gitleaks detect over all refs
+    reports 0 findings
+- id: AC3
+  text: Given --apply without --confirm-backup, when the script runs, then it exits with code 2 and rewrites nothing
+- id: AC4
+  text: Given REVOCATION_CHECKLIST.md, when read, then each of the Firebase service account, Apple .p8 and the five client-shipped
+    AI keys has console location, revoke step, replacement store and a tick box, and cites EXT-21
+test_plan:
+  unit:
+  - purge_history.sh dry-run bats test on fixture repo
+  integration:
+  - filter-repo apply on mirror fixture then gitleaks all-refs scan
+  security:
+  - gitleaks all-refs clean
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- History rewrite is destructive; the run is human-owned (EXT-21)
+gate: G1
+external_blockers:
+- EXT-21
+status: Blocked-External
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,61 @@
+charter: v2
+id: P1-039
+kind: verification
+title: Verify live scheduler count and RevenueCat key injection
+phase: P1
+epic: E-P1-OFFLINE-DATA
+req_ids:
+- P0-23
+- P0-27
+depends_on:
+- E-P0-INTAKE
+size: S
+difficulty:
+  score: 2
+  blast: 1
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T2
+  justification: score 2; blast 1
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§1:L344-L357
+- ELEVATION.md#§1:L398-L409
+acceptance_criteria:
+- id: AC1
+  text: Given access to the live server and release workflow, when the checklist is run, then it records how many scheduler
+    processes run, and how RevenueCat keys reach the app, each marked Verified or Not-found with evidence
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Unverified in source; human or credentialed access required
+gate: G1
+external_blockers:
+- EXT-23
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

@@ -1,0 +1,42 @@
+{
+  "card": "P5-003",
+  "source_anchor": "docs/source/ELEVATION.md#§6.1:L1112-L1117",
+  "languages": {
+    "amharic": {
+      "word_order": "SOV",
+      "tense_aspect": "verb_morphology_or_particles",
+      "forbid_english_svo_grammar_template": true
+    },
+    "somali": {
+      "word_order": "SOV",
+      "tense_aspect": "verb_morphology_or_particles",
+      "forbid_english_svo_grammar_template": true
+    },
+    "yoruba": {
+      "word_order": "SVO",
+      "tense_aspect": "preverbal_particles",
+      "person_on_verb": false,
+      "forbid_affix_tense_person_template": true
+    },
+    "nigerian_pidgin": {
+      "word_order": "SVO",
+      "tense_aspect": "preverbal_particles",
+      "forbid_affix_tense_person_template": true
+    },
+    "pidgin": {
+      "word_order": "SVO",
+      "tense_aspect": "preverbal_particles",
+      "forbid_affix_tense_person_template": true
+    },
+    "twi": {
+      "word_order": "SVO",
+      "tense_aspect": "preverbal_particles",
+      "forbid_affix_tense_person_template": true
+    },
+    "ewe": {
+      "word_order": "SVO",
+      "tense_aspect": "preverbal_particles",
+      "forbid_affix_tense_person_template": true
+    }
+  }
+}

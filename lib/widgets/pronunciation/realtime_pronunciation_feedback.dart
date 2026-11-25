@@ -164,7 +164,7 @@ class _ExpectedTextDisplay extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(Icons.language, size: 16),
+              const Icon(Icons.language, size: 16),
               SizedBox(width: PanAfricanSpacing.xs),
               Text(
                 language.toUpperCase(),
@@ -333,7 +333,7 @@ class _FeedbackIndicators extends StatelessWidget {
           margin: EdgeInsets.only(bottom: PanAfricanSpacing.xs),
           padding: EdgeInsets.all(PanAfricanSpacing.xs),
           decoration: BoxDecoration(
-            color: _getFeedbackColor(context, feedback.type).withOpacity(0.1),
+            color: _getFeedbackColor(context, feedback.type).withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(PanAfricanRadius.sm),
           ),
           child: Row(
@@ -401,7 +401,7 @@ class _PronunciationScoreDisplay extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(PanAfricanSpacing.md),
       decoration: BoxDecoration(
-        color: _getScoreColor(context, score).withOpacity(0.1),
+        color: _getScoreColor(context, score).withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(PanAfricanRadius.md),
         border: Border.all(
           color: _getScoreColor(context, score),
@@ -466,8 +466,8 @@ class _RecordingControls extends StatelessWidget {
         if (!isRecording)
           ElevatedButton.icon(
             onPressed: onStart,
-            icon: Icon(Icons.mic),
-            label: Text('Start Recording'),
+            icon: const Icon(Icons.mic),
+            label: const Text('Start Recording'),
             style: ElevatedButton.styleFrom(
               padding: EdgeInsets.symmetric(
                 horizontal: PanAfricanSpacing.lg,
@@ -478,8 +478,8 @@ class _RecordingControls extends StatelessWidget {
         else
           ElevatedButton.icon(
             onPressed: onStop,
-            icon: Icon(Icons.stop),
-            label: Text('Stop Recording'),
+            icon: const Icon(Icons.stop),
+            label: const Text('Stop Recording'),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
               foregroundColor: Theme.of(context).colorScheme.onPrimary,

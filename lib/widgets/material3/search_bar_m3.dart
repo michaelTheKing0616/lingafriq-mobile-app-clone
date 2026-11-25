@@ -51,10 +51,10 @@ class SearchBarM3 extends StatelessWidget {
               ),
             ]
           : null,
-      padding: MaterialStateProperty.all(
+      padding: WidgetStateProperty.all(
         EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       ),
-      shape: MaterialStateProperty.all(
+      shape: WidgetStateProperty.all(
         RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(28.r),
         ),

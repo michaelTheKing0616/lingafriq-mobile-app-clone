@@ -1,0 +1,93 @@
+charter: v2
+id: P5-026
+kind: build
+title: Build tone perception drills from sourced minimal pairs
+phase: P5
+epic: E-P5-A1
+req_ids:
+- EP-§6.2-15
+- CP-§4-15
+- CP-§4-16
+depends_on:
+- P5-017
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 3, ambiguity 1, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/lessons/tone_perception_drill.dart
+- assets/data/tone/minimal_pairs.json
+- test/lessons/tone_perception_test.dart
+context_anchors:
+- ELEVATION.md#§6.2:L1172-L1178
+- CURRICULUM.md#§4:L566-L567
+acceptance_criteria:
+- id: AC1
+  text: Given Yoruba, when drills are built, then they use sourced minimal pairs such as ọkọ́ (hoe) vs ọkọ̀ (vehicle) with
+    pair source recorded
+- id: AC2
+  text: Given yo, ig and ha, when FSI tone drills are referenced, then they are used as references only with licence and attribution
+    recorded
+- id: AC3
+  text: Given a pair without a source, when added, then the build fails TonePairUnsourced
+- id: AC4
+  text: Given perception drills, when answered, then only correct/incorrect is shown, no pronunciation score
+test_plan:
+  unit:
+  - pair loader
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - audio alternatives
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - intro
+  - listen
+  - choose
+  - result
+  copy_keys:
+  - tone.listen
+  - tone.pick
+  tokens:
+  - color.label.native
+  - color.label.expert
+  - color.label.beta
+  - type.body
+  - space.4
+  motion_tier: product
+  a11y:
+  - screen-reader announces label name and meaning
+  - touch targets >=48dp
+  - contrast >=4.5:1 on label chips
+  goldens:
+  - tone_perception
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

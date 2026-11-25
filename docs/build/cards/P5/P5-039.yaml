@@ -1,0 +1,65 @@
+charter: v2
+id: P5-039
+kind: build
+title: Add declared standard and per-item dialect tags
+phase: P5
+epic: E-P5-A1
+req_ids:
+- CP-§6-28
+- CP-§6-29
+- CP-§6-30
+depends_on:
+- P5-008
+size: S
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist:
+- schemas/v2/item.schema.json
+- tools/content/dialect_check.py
+- test/content/dialect_test.py
+context_anchors:
+- CURRICULUM.md#§6:L697-L700
+acceptance_criteria:
+- id: AC1
+  text: Given each language kit, when read, then it declares its standard for Yoruba and Igbo
+- id: AC2
+  text: Given an item, when stored, then it has a dialect tag
+- id: AC3
+  text: Given a variant, when published, then it is from a sourced entry or fails DialectUnsourced
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - dialect tag on all yo/ig items
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,85 @@
+charter: v2
+id: P1-026
+kind: build
+title: Disclose AI persona and remove deny-being-AI instruction
+phase: P1
+epic: E-P1-CONTENT-HONESTY
+req_ids:
+- P0-15
+- RM-P0-07
+depends_on:
+- E-P0-INTAKE
+size: S
+difficulty:
+  score: 5
+  blast: 3
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 5; blast 3
+token_budget: 25000
+file_allowlist:
+- node-backend/src/services/historicalPersonality.service.ts
+- lib/screens/personalities/personality_chat_screen.dart
+- lib/l10n/app_en.arb
+context_anchors:
+- ELEVATION.md#§1:L258-L268
+- ELEVATION.md#§16.1:L2039-L2041
+acceptance_criteria:
+- id: AC1
+  text: Given the persona system prompt, when built, then it contains no instruction to avoid mentioning being an AI
+- id: AC2
+  text: Given a persona conversation, when it opens, then a persistent label states it is an AI recreation based on sources
+    and is visible without scrolling
+- id: AC3
+  text: Given a user asking whether the persona is an AI, when answered, then the reply states it is an AI
+- id: AC4
+  text: Given a prompt-regression test, when run in CI, then it fails if a deny-AI phrase returns
+test_plan:
+  unit:
+  - prompt content test
+  integration:
+  - disclosure shown in widget test
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - label readable by screen reader
+  content:
+  - disclosure copy review
+user_facing: true
+ux_spec:
+  states:
+  - disclosure-label
+  copy_keys:
+  - persona.ai_disclosure
+  tokens:
+  - design-system caption tokens
+  motion_tier: product
+  a11y:
+  - label in reading order
+  goldens:
+  - persona_disclosure
+tags:
+- ai_disclosure
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "Unmatched identity questions still use the in-character prompt and may not disclose"
+gate: G1
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
-import '../../../models/game/game_content_models.dart';
 import '../../../services/polie_content_generator.dart';
 import '../game_scenario_loader.dart';
 import '../../../widgets/error_boundary.dart';
@@ -209,7 +208,7 @@ class _RhythmTypingGameState extends BaseGameScreenState<RhythmTypingGame>
   Widget buildGameContent(BuildContext context) {
     try {
       if (isLoading) {
-        return DynamicLoadingScreen();
+        return const DynamicLoadingScreen();
       }
 
       if (error != null) {
@@ -300,7 +299,7 @@ class _RhythmTypingGameState extends BaseGameScreenState<RhythmTypingGame>
             if (_isComplete) ...[
               SizedBox(height: 2.h),
               Card(
-                color: Colors.green.withOpacity(0.2),
+                color: Colors.green.withValues(alpha: 0.2),
                 child: Padding(
                   padding: EdgeInsets.all(4.w),
                   child: Column(

@@ -49,7 +49,7 @@ class LevelDisplayWidget extends ConsumerWidget {
             ),
           ),
           const SizedBox(width: 4),
-          Icon(
+          const Icon(
             Icons.star,
             color: Colors.amber,
             size: 16,

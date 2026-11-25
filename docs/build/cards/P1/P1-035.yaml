@@ -1,0 +1,82 @@
+charter: v2
+id: P1-035
+kind: build
+title: Consolidate to one durable outbox and delete the stub
+phase: P1
+epic: E-P1-OFFLINE-DATA
+req_ids:
+- P0-22
+- RM-P0-09
+depends_on:
+- E-P0-INTAKE
+size: L
+difficulty:
+  score: 9
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: score 9; blast 3
+token_budget: 160000
+file_allowlist:
+- lib/services/offline/offline_handler.dart
+- lib/services/offline/persisted_outbox_service.dart
+- lib/services/lesson/lesson_item_service.dart
+- lib/services/offline/sync_v2_service.dart
+- test/services/offline/p1_035_outbox_test.dart
+context_anchors:
+- ELEVATION.md#§1:L333-L342
+- ELEVATION.md#§16.1:L2048-L2050
+acceptance_criteria:
+- id: AC1
+  text: Given an operation queued offline, when sync runs, then it is marked complete only after the server acknowledges it,
+    and the stub that simulates sync is deleted
+- id: AC2
+  text: Given a failed sync, when it errors, then the operation stays queued with retry count and backoff and is never removed
+- id: AC3
+  text: Given an app kill with queued operations, when restarted, then all operations persist and sync
+- id: AC4
+  text: Given duplicate delivery after a retry, when the server receives the same operation, then an idempotency key makes
+    it apply once
+- id: AC5
+  text: Given lesson_item_service, when it enqueues, then it uses the persisted outbox only and no second queue exists
+test_plan:
+  unit:
+  - outbox state machine
+  integration:
+  - kill and restart test
+  - server ack test
+  security: []
+  e2e:
+  - offline lesson then sync
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- 'harvest: keep useful behaviours of offline_handler.dart before deletion'
+- 'residual: OfflineHandler.initialize is never called, so its online flush does not run. MyApp and OfflineService still flush the same box. enqueueLessonProgress has no production caller. A permanent HTTP error stays in the Hive box. Unit tests encode the outbox and do not open Hive.'
+gate: G1
+external_blockers: []
+status: Done
+harvest_list:
+- offline_handler.dart retry policy
+- conflict handling hooks
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

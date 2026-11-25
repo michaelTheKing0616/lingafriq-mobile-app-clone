@@ -1,0 +1,58 @@
+charter: v2
+id: P7-944
+kind: verification
+title: Verify ML Kit Latin OCR on stacked diacritics on device
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§17.6-14
+depends_on: []
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 1: blast 0, coupling 0, depth 0'
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§17.6:L2366
+acceptance_criteria:
+- id: AC1
+  text: Verification is complete when a fixture set of printed Yoruba, Igbo and Hausa signs is scanned on one iOS and one
+    Android device with the existing Latin TextRecognizer and the per-mark error rate is recorded in DECISIONS.md
+- id: AC2
+  text: The Unverified tag on the claim is replaced by the measured result, or the claim is withdrawn, and card P7-912 is
+    updated with the outcome
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - diacritic fixture set
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

@@ -1,0 +1,520 @@
+{
+  "card": "P5-030",
+  "language": "yo",
+  "wave": "A1_u1_u6_pilot",
+  "unit_bindings": [
+    {
+      "unit_key": "yoruba-A1-u1",
+      "dialogue_id": "yo.dlg.a1u1",
+      "cefr": "A1"
+    },
+    {
+      "unit_key": "yoruba-A1-u2",
+      "dialogue_id": "yo.dlg.a1u2",
+      "cefr": "A1"
+    },
+    {
+      "unit_key": "yoruba-A1-u3",
+      "dialogue_id": "yo.dlg.a1u3",
+      "cefr": "A1"
+    },
+    {
+      "unit_key": "yoruba-A1-u4",
+      "dialogue_id": "yo.dlg.a1u4",
+      "cefr": "A1"
+    },
+    {
+      "unit_key": "yoruba-A1-u5",
+      "dialogue_id": "yo.dlg.a1u5",
+      "cefr": "A1"
+    },
+    {
+      "unit_key": "yoruba-A1-u6",
+      "dialogue_id": "yo.dlg.a1u6",
+      "cefr": "A1"
+    }
+  ],
+  "dialogues": [
+    {
+      "id": "yo.dlg.a1u1",
+      "scene": "A1 unit 1 lexicon dialogue",
+      "roles": [
+        {
+          "role_id": "a",
+          "display_name": "Speaker A"
+        },
+        {
+          "role_id": "b",
+          "display_name": "Speaker B"
+        }
+      ],
+      "can_do_ids": [
+        "yo.cando.yoruba_a1_u1.l1"
+      ],
+      "turns": [
+        {
+          "speaker": "a",
+          "text": "rẹ",
+          "gloss": "rank 16 anchor",
+          "tone_pattern": [
+            "REF"
+          ],
+          "audio": {
+            "kind": "tts_synthetic",
+            "uri": "audio/yo/a931ce929855893d.ogg",
+            "text_hash": "a931ce929855893d",
+            "synthetic_voice_tag": "Synthetic voice"
+          }
+        },
+        {
+          "speaker": "b",
+          "text": "sọ",
+          "gloss": "rank 17 i+1",
+          "tone_pattern": [
+            "REF"
+          ],
+          "audio": {
+            "kind": "tts_synthetic",
+            "uri": "audio/yo/a3e4dc4035c41b3b.ogg",
+            "text_hash": "a3e4dc4035c41b3b",
+            "synthetic_voice_tag": "Synthetic voice"
+          }
+        }
+      ],
+      "comprehension_items": [],
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T23:00:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "A1 frequency lexicon (Leipzig)",
+            "licence": "CC BY",
+            "uri_or_citation": "assets/data/lexicon/a1/yo.json",
+            "retrieved_at": "2026-10-26T23:00:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "leipzig:yo:rank17"
+        }
+      ],
+      "confidence": 0.9,
+      "risk_tags": [],
+      "audio": [],
+      "content_graph": {
+        "surfaces": [
+          "lessons",
+          "scenario_theatre",
+          "market_haggle",
+          "greeting_gauntlet"
+        ],
+        "primary_ref": "yo.dlg.a1u1"
+      }
+    },
+    {
+      "id": "yo.dlg.a1u2",
+      "scene": "A1 unit 2 lexicon dialogue",
+      "roles": [
+        {
+          "role_id": "a",
+          "display_name": "Speaker A"
+        },
+        {
+          "role_id": "b",
+          "display_name": "Speaker B"
+        }
+      ],
+      "can_do_ids": [
+        "yo.cando.yoruba_a1_u2.l1"
+      ],
+      "turns": [
+        {
+          "speaker": "a",
+          "text": "omi",
+          "gloss": "rank 32 anchor",
+          "tone_pattern": [
+            "REF"
+          ],
+          "audio": {
+            "kind": "tts_synthetic",
+            "uri": "audio/yo/83ad149fd36bd384.ogg",
+            "text_hash": "83ad149fd36bd384",
+            "synthetic_voice_tag": "Synthetic voice"
+          }
+        },
+        {
+          "speaker": "b",
+          "text": "wo",
+          "gloss": "rank 33 i+1",
+          "tone_pattern": [
+            "REF"
+          ],
+          "audio": {
+            "kind": "tts_synthetic",
+            "uri": "audio/yo/f8f26225fd1d7a1c.ogg",
+            "text_hash": "f8f26225fd1d7a1c",
+            "synthetic_voice_tag": "Synthetic voice"
+          }
+        }
+      ],
+      "comprehension_items": [],
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T23:00:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "A1 frequency lexicon (Leipzig)",
+            "licence": "CC BY",
+            "uri_or_citation": "assets/data/lexicon/a1/yo.json",
+            "retrieved_at": "2026-10-26T23:00:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "leipzig:yo:rank33"
+        }
+      ],
+      "confidence": 0.9,
+      "risk_tags": [],
+      "audio": [],
+      "content_graph": {
+        "surfaces": [
+          "lessons",
+          "scenario_theatre",
+          "market_haggle",
+          "greeting_gauntlet"
+        ],
+        "primary_ref": "yo.dlg.a1u2"
+      }
+    },
+    {
+      "id": "yo.dlg.a1u3",
+      "scene": "A1 unit 3 lexicon dialogue",
+      "roles": [
+        {
+          "role_id": "a",
+          "display_name": "Speaker A"
+        },
+        {
+          "role_id": "b",
+          "display_name": "Speaker B"
+        }
+      ],
+      "can_do_ids": [
+        "yo.cando.yoruba_a1_u3.l1"
+      ],
+      "turns": [
+        {
+          "speaker": "a",
+          "text": "ta",
+          "gloss": "rank 48 anchor",
+          "tone_pattern": [
+            "REF"
+          ],
+          "audio": {
+            "kind": "tts_synthetic",
+            "uri": "audio/yo/76592b9de6d38238.ogg",
+            "text_hash": "76592b9de6d38238",
+            "synthetic_voice_tag": "Synthetic voice"
+          }
+        },
+        {
+          "speaker": "b",
+          "text": "ọjọ",
+          "gloss": "rank 49 i+1",
+          "tone_pattern": [
+            "REF"
+          ],
+          "audio": {
+            "kind": "tts_synthetic",
+            "uri": "audio/yo/70356fb179d144e2.ogg",
+            "text_hash": "70356fb179d144e2",
+            "synthetic_voice_tag": "Synthetic voice"
+          }
+        }
+      ],
+      "comprehension_items": [],
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T23:00:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "A1 frequency lexicon (Leipzig)",
+            "licence": "CC BY",
+            "uri_or_citation": "assets/data/lexicon/a1/yo.json",
+            "retrieved_at": "2026-10-26T23:00:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "leipzig:yo:rank49"
+        }
+      ],
+      "confidence": 0.9,
+      "risk_tags": [],
+      "audio": [],
+      "content_graph": {
+        "surfaces": [
+          "lessons",
+          "scenario_theatre",
+          "market_haggle",
+          "greeting_gauntlet"
+        ],
+        "primary_ref": "yo.dlg.a1u3"
+      }
+    },
+    {
+      "id": "yo.dlg.a1u4",
+      "scene": "A1 unit 4 lexicon dialogue",
+      "roles": [
+        {
+          "role_id": "a",
+          "display_name": "Speaker A"
+        },
+        {
+          "role_id": "b",
+          "display_name": "Speaker B"
+        }
+      ],
+      "can_do_ids": [
+        "yo.cando.yoruba_a1_u4.l1"
+      ],
+      "turns": [
+        {
+          "speaker": "a",
+          "text": "san",
+          "gloss": "rank 63 anchor",
+          "tone_pattern": [
+            "REF"
+          ],
+          "audio": {
+            "kind": "tts_synthetic",
+            "uri": "audio/yo/6b9cd7872ae63453.ogg",
+            "text_hash": "6b9cd7872ae63453",
+            "synthetic_voice_tag": "Synthetic voice"
+          }
+        },
+        {
+          "speaker": "b",
+          "text": "ra",
+          "gloss": "rank 64 i+1",
+          "tone_pattern": [
+            "REF"
+          ],
+          "audio": {
+            "kind": "tts_synthetic",
+            "uri": "audio/yo/37e7702e5ce449c1.ogg",
+            "text_hash": "37e7702e5ce449c1",
+            "synthetic_voice_tag": "Synthetic voice"
+          }
+        }
+      ],
+      "comprehension_items": [],
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T23:00:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "A1 frequency lexicon (Leipzig)",
+            "licence": "CC BY",
+            "uri_or_citation": "assets/data/lexicon/a1/yo.json",
+            "retrieved_at": "2026-10-26T23:00:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "leipzig:yo:rank64"
+        }
+      ],
+      "confidence": 0.9,
+      "risk_tags": [],
+      "audio": [],
+      "content_graph": {
+        "surfaces": [
+          "lessons",
+          "scenario_theatre",
+          "market_haggle",
+          "greeting_gauntlet"
+        ],
+        "primary_ref": "yo.dlg.a1u4"
+      }
+    },
+    {
+      "id": "yo.dlg.a1u5",
+      "scene": "A1 unit 5 lexicon dialogue",
+      "roles": [
+        {
+          "role_id": "a",
+          "display_name": "Speaker A"
+        },
+        {
+          "role_id": "b",
+          "display_name": "Speaker B"
+        }
+      ],
+      "can_do_ids": [
+        "yo.cando.yoruba_a1_u5.l1"
+      ],
+      "turns": [
+        {
+          "speaker": "a",
+          "text": "gan-an",
+          "gloss": "rank 78 anchor",
+          "tone_pattern": [
+            "REF",
+            "REF"
+          ],
+          "audio": {
+            "kind": "tts_synthetic",
+            "uri": "audio/yo/2e711c8cfd9931a0.ogg",
+            "text_hash": "2e711c8cfd9931a0",
+            "synthetic_voice_tag": "Synthetic voice"
+          }
+        },
+        {
+          "speaker": "b",
+          "text": "tabi",
+          "gloss": "rank 79 i+1",
+          "tone_pattern": [
+            "REF"
+          ],
+          "audio": {
+            "kind": "tts_synthetic",
+            "uri": "audio/yo/f6eb4792f04d78ce.ogg",
+            "text_hash": "f6eb4792f04d78ce",
+            "synthetic_voice_tag": "Synthetic voice"
+          }
+        }
+      ],
+      "comprehension_items": [],
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T23:00:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "A1 frequency lexicon (Leipzig)",
+            "licence": "CC BY",
+            "uri_or_citation": "assets/data/lexicon/a1/yo.json",
+            "retrieved_at": "2026-10-26T23:00:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "leipzig:yo:rank79"
+        }
+      ],
+      "confidence": 0.9,
+      "risk_tags": [],
+      "audio": [],
+      "content_graph": {
+        "surfaces": [
+          "lessons",
+          "scenario_theatre",
+          "market_haggle",
+          "greeting_gauntlet"
+        ],
+        "primary_ref": "yo.dlg.a1u5"
+      }
+    },
+    {
+      "id": "yo.dlg.a1u6",
+      "scene": "A1 unit 6 lexicon dialogue",
+      "roles": [
+        {
+          "role_id": "a",
+          "display_name": "Speaker A"
+        },
+        {
+          "role_id": "b",
+          "display_name": "Speaker B"
+        }
+      ],
+      "can_do_ids": [
+        "yo.cando.yoruba_a1_u6.l1"
+      ],
+      "turns": [
+        {
+          "speaker": "a",
+          "text": "sọrọ",
+          "gloss": "rank 94 anchor",
+          "tone_pattern": [
+            "REF"
+          ],
+          "audio": {
+            "kind": "tts_synthetic",
+            "uri": "audio/yo/fa6936bba1f229d7.ogg",
+            "text_hash": "fa6936bba1f229d7",
+            "synthetic_voice_tag": "Synthetic voice"
+          }
+        },
+        {
+          "speaker": "b",
+          "text": "gbin",
+          "gloss": "rank 95 i+1",
+          "tone_pattern": [
+            "REF"
+          ],
+          "audio": {
+            "kind": "tts_synthetic",
+            "uri": "audio/yo/cfe3ea34ce76db66.ogg",
+            "text_hash": "cfe3ea34ce76db66",
+            "synthetic_voice_tag": "Synthetic voice"
+          }
+        }
+      ],
+      "comprehension_items": [],
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T23:00:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "A1 frequency lexicon (Leipzig)",
+            "licence": "CC BY",
+            "uri_or_citation": "assets/data/lexicon/a1/yo.json",
+            "retrieved_at": "2026-10-26T23:00:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "leipzig:yo:rank95"
+        }
+      ],
+      "confidence": 0.9,
+      "risk_tags": [],
+      "audio": [],
+      "content_graph": {
+        "surfaces": [
+          "lessons",
+          "scenario_theatre",
+          "market_haggle",
+          "greeting_gauntlet"
+        ],
+        "primary_ref": "yo.dlg.a1u6"
+      }
+    }
+  ]
+}

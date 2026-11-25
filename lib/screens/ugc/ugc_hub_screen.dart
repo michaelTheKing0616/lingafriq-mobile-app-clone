@@ -32,7 +32,7 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
           label: 'Go back',
           button: true,
           child: IconButton(
-            icon: Icon(PanAfricanIcons.back, semanticLabel: 'Back'),
+            icon: const Icon(PanAfricanIcons.back, semanticLabel: 'Back'),
             onPressed: () {
               HapticFeedback.lightImpact();
               Navigator.of(context).pop();
@@ -75,7 +75,7 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Lesson created!', style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary)),
-                      backgroundColor: PanAfricanColors.success,
+                      backgroundColor: context.panSuccess,
                     ),
                   );
                 }
@@ -103,7 +103,7 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Quiz created!', style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary)),
-                      backgroundColor: PanAfricanColors.success,
+                      backgroundColor: context.panSuccess,
                     ),
                   );
                 }
@@ -120,7 +120,7 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
               title: 'Create Story',
               description: 'Share cultural stories and narratives',
               icon: PanAfricanIcons.book,
-              color: PanAfricanColors.tertiary,
+              color: context.panTertiary,
               onTap: () async {
                 HapticFeedback.lightImpact();
                 final result = await safeNavigate(
@@ -131,7 +131,7 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Story created!', style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary)),
-                      backgroundColor: PanAfricanColors.success,
+                      backgroundColor: context.panSuccess,
                     ),
                   );
                 }
@@ -151,7 +151,7 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
               future: ref.read(userGeneratedContentServiceProvider).getUserContent(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator(color: PanAfricanColors.primary));
+                  return const Center(child: CircularProgressIndicator(color: PanAfricanColors.primary));
                 }
                 
                 if (snapshot.hasError) {
@@ -207,7 +207,7 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text('Content shared!', style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary)),
-                                  backgroundColor: PanAfricanColors.success,
+                                  backgroundColor: context.panSuccess,
                                 ),
                               );
                             }
@@ -264,7 +264,7 @@ class _ContentTypeCard extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(PanAfricanSpacing.sm),
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.15),
+                    color: color.withValues(alpha: 0.15),
                     borderRadius: PanAfricanRadius.mdBR,
                   ),
                   child: Icon(icon, color: color, size: 32.sp),

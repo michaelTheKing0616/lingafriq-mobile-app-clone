@@ -1,0 +1,85 @@
+charter: v2
+id: P4-105
+kind: build
+title: Build signed semver content packs with hash filenames
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.5-01
+- EP-§6.5-21
+- EP-§6.5-22
+- EP-§6.6-06
+depends_on:
+- P4-101
+- P4-102
+- P4-103
+- P4-104
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 6: blast 2, signing and hashing coupling'
+token_budget: 60000
+file_allowlist:
+- tools/content_pipeline/pack_builder.py
+- tools/content_pipeline/pack_signing.py
+- schemas/v2/content/pack_manifest.schema.json
+- test/content/test_pack_builder.py
+context_anchors:
+- ELEVATION.md#§6.5:L1293-L1320
+- ELEVATION.md#§6.6:L1321-L1337
+acceptance_criteria:
+- id: AC1
+  text: Given validated content, when a pack is built, then it carries a semver, a manifest listing every object hash and
+    an ed25519 signature, and the pack replaces the four legacy bundles
+- id: AC2
+  text: Given an audio or image file, when packed, then its filename is the ASCII content hash with extension and never contains
+    orthography
+- id: AC3
+  text: Given any text in a pack, when built, then it is NFC-normalised or the build fails NFC_VIOLATION
+- id: AC4
+  text: Given a pack with a tampered file or bad signature, when verified, then verification fails PACK_SIGNATURE_INVALID
+    and the pack is not installed
+- id: AC5
+  text: Given two pack versions, when diffed, then the diff manifest lists added, changed and removed hashes only and applying
+    it to the old pack yields the new pack byte-identically
+- id: AC6
+  text: Given a content change, when the pack is rebuilt, then the semver bump follows the rule major=breaking id change,
+    minor=new objects, patch=text or audio fix
+test_plan:
+  unit:
+  - test_pack_builder
+  integration:
+  - diff apply round trip
+  security:
+  - signature tamper test
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,94 @@
+charter: v2
+id: P10-922
+kind: build
+title: Gate voice recordings on opt-in with delete-after-scoring
+phase: P10
+epic: E-P10-PRIVACY
+req_ids:
+- EP-§13.2-11
+- EP-§13.2-12
+- EP-§13.2-13
+depends_on:
+- P10-920
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 6; blast 2; p0 area
+token_budget: 60000
+file_allowlist:
+- node-backend/src/services/voice-consent.service.ts
+- lib/screens/settings/privacy_settings_screen.dart
+- node-backend/src/services/audio-retention.service.ts
+context_anchors:
+- ELEVATION.md#§13.2:L1884-L1884
+acceptance_criteria:
+- id: AC1
+  text: Given a learner has not opted in, when audio is scored, then the audio is deleted right after scoring and only the
+    score and non-identifying metrics remain.
+- id: AC2
+  text: Given a learner opts in to store recordings, when they accept, then the consent text, version and time are stored.
+- id: AC3
+  text: Given an opted-in learner withdraws, when they confirm, then stored recordings are deleted within 30 days and a confirmation
+    is shown.
+- id: AC4
+  text: Given a minor, when storage consent is asked, then it requires the guardian path before any recording is kept.
+- id: AC5
+  text: Given the consent screen, when it renders, then the toggle is off by default and explains in plain words what is stored
+    and for how long.
+test_plan:
+  unit:
+  - default delete
+  - consent record
+  integration:
+  - withdraw purge
+  security:
+  - minor needs guardian
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - 'off'
+  - 'on'
+  - withdrawing
+  - guardian-needed
+  copy_keys:
+  - voice_store_optin
+  tokens:
+  - color.semantic
+  - type.scale
+  - space.scale
+  motion_tier: product
+  a11y:
+  - screen reader labels
+  - 48dp touch targets
+  - reduced motion honoured
+  goldens:
+  - voice_store_optin_golden
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G12
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

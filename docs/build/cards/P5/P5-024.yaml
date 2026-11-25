@@ -1,0 +1,67 @@
+charter: v2
+id: P5-024
+kind: build
+title: Author A1 patterns for ig, ha, pcm and xh
+phase: P5
+epic: E-P5-A1
+req_ids:
+- CP-§4-10
+depends_on:
+- P5-020
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 2, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- assets/data/patterns/ig.json
+- assets/data/patterns/ha.json
+- assets/data/patterns/pcm.json
+- assets/data/patterns/xh.json
+context_anchors:
+- CURRICULUM.md#§4:L563-L565
+acceptance_criteria:
+- id: AC1
+  text: Given each of ig, ha, pcm, xh, when authored, then every A1 pattern in its language kit has an entry with examples,
+    contrasts, learner errors and citations
+- id: AC2
+  text: Given Pidgin patterns, when published, then phrasing is corpus-anchored and no English-spelling-as-Pidgin entry passes
+    the anglicisation check
+- id: AC3
+  text: Given each entry, when published, then it is Expert-reviewed at minimum
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - coverage and citations for 4 languages
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

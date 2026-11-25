@@ -1,0 +1,69 @@
+charter: v2
+id: P9-935
+kind: verification
+title: Remediate pen-test findings on sockets, auth and minors' surfaces
+phase: P9
+epic: E-P9-REALTIME
+req_ids:
+- EP-§13.1-40
+depends_on:
+- EXT-17
+- P9-904
+- P9-917
+- P9-918
+- P9-930
+size: M
+difficulty:
+  score: 5
+  blast: 3
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T2
+  justification: 'score 5: blast 3, ambiguity 1, coupling 1, depth 0'
+token_budget: 80000
+file_allowlist:
+- docs/security/PENTEST_REMEDIATION.md
+context_anchors:
+- ELEVATION.md#§13.1:L1877
+acceptance_criteria:
+- id: AC1
+  text: Given the third-party report, when received, then every finding is logged with severity, owner and status in PENTEST_REMEDIATION.md
+- id: AC2
+  text: Given findings rated high or critical, when the gate is evaluated, then each is fixed and retested by the testers
+    or the gate stays closed
+- id: AC3
+  text: Given the pen test scope, when verified, then it covers routes, sockets, auth and every minor-facing surface and any
+    omitted surface is listed with a reason
+test_plan:
+  unit: []
+  integration: []
+  security:
+  - retest of each high/critical finding
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers:
+- EXT-17
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

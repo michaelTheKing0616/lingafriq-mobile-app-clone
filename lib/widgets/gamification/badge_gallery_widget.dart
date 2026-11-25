@@ -98,7 +98,7 @@ class _BadgeCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
           border: Border.all(
             color: isUnlocked
-                ? PanAfricanColors.secondary
+                ? context.panSecondary
                 : (isDark ? Colors.grey[700]! : Colors.grey[300]!),
             width: isUnlocked ? 2 : 1,
           ),
@@ -112,7 +112,7 @@ class _BadgeCard extends StatelessWidget {
               padding: EdgeInsets.all(PanAfricanSpacing.xs),
               decoration: BoxDecoration(
                 color: isUnlocked
-                    ? PanAfricanColors.secondary.withOpacity(0.2)
+                    ? context.panSecondary.withValues(alpha: 0.2)
                     : Colors.transparent,
                 shape: BoxShape.circle,
               ),
@@ -120,7 +120,7 @@ class _BadgeCard extends StatelessWidget {
                 _getBadgeIcon(badge.category.name),
                 size: 32.sp,
                 color: isUnlocked
-                    ? PanAfricanColors.secondary
+                    ? context.panSecondary
                     : (isDark ? Colors.grey[600] : Colors.grey[400]),
               ),
             ),
@@ -145,13 +145,13 @@ class _BadgeCard extends StatelessWidget {
                   vertical: PanAfricanSpacing.xxxs,
                 ),
                 decoration: BoxDecoration(
-                  color: PanAfricanColors.secondary.withOpacity(0.2),
+                  color: context.panSecondary.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                 ),
                 child: Text(
                   'Unlocked',
                   style: PanAfricanTypography.labelSmall(context).copyWith(
-                    color: PanAfricanColors.secondary,
+                    color: context.panSecondary,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -216,14 +216,14 @@ class BadgeDetailDialog extends StatelessWidget {
               padding: EdgeInsets.all(PanAfricanSpacing.md),
               decoration: BoxDecoration(
                 color: isUnlocked
-                    ? PanAfricanColors.secondary.withOpacity(0.2)
-                    : Colors.grey.withOpacity(0.2),
+                    ? context.panSecondary.withValues(alpha: 0.2)
+                    : Colors.grey.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.workspace_premium_rounded,
                 size: 64.sp,
-                color: isUnlocked ? PanAfricanColors.secondary : Colors.grey,
+                color: isUnlocked ? context.panSecondary : Colors.grey,
               ),
             ),
             SizedBox(height: PanAfricanSpacing.md),
@@ -253,14 +253,14 @@ class BadgeDetailDialog extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 color: isUnlocked
-                    ? PanAfricanColors.secondary.withOpacity(0.2)
-                    : Colors.grey.withOpacity(0.2),
+                    ? context.panSecondary.withValues(alpha: 0.2)
+                    : Colors.grey.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(PanAfricanRadius.round),
               ),
               child: Text(
                 isUnlocked ? 'Unlocked' : 'Locked',
                 style: PanAfricanTypography.labelLarge(context).copyWith(
-                  color: isUnlocked ? PanAfricanColors.secondary : Colors.grey,
+                  color: isUnlocked ? context.panSecondary : Colors.grey,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -270,7 +270,7 @@ class BadgeDetailDialog extends StatelessWidget {
             PanAfricanButton(
               label: 'Close',
               onPressed: () => Navigator.of(context).pop(),
-              backgroundColor: PanAfricanColors.secondary,
+              backgroundColor: context.panSecondary,
               foregroundColor: PanAfricanColors.onSecondaryContainer,
             ),
           ],

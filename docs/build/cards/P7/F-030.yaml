@@ -1,0 +1,105 @@
+charter: v2
+id: F-030
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Living Dictionary
+phase: P7
+epic: E-P7-HUBS
+hub: Learn
+req_ids:
+- F-030
+- F-030.D
+- F-030.E
+- F-030.U
+- F-030.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- P7-920
+- P7-921
+size: L
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: hub feature delta spec'
+token_budget: 200000
+file_allowlist:
+- lib/screens/vocabulary/living_dictionary_screen.dart
+- lib/services/learning/living_dictionary_service.dart
+context_anchors:
+- ELEVATION.md#§18.3:L3912-L3923
+delta:
+  current_state: Living dictionary route works as per-user list; see §17.7 evidence.
+  defects_to_fix:
+  - Per-user list only; no shared verified lexicon or promotion path.
+  elevation_to_build:
+  - 'Two-layer lexicon: verified shared entries with badges and rich fields; My Words links to verified lemmas.'
+  - Suggest-verify-promote loop via Village queue; global long-press and search; pan-African cognate strip; offline pack.
+  ux_and_render:
+  - Word Card bottom sheet with tone-safe lemma, contours, multi-speaker audio, dialect chips, honest verification badges.
+  hub_placement: Global search and long-press; Learn → Words.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given learner suggests a word, when natives verify, then entry promotes to verified lexicon with credit.
+- id: AC2
+  text: Given saved My Word with verified match, when Word Card opens, then rich verified fields display.
+- id: AC3
+  text: Given offline pack synced, when searching, then top entries and audio load without network.
+test_plan:
+  unit:
+  - domain rules for feature delta
+  integration:
+  - navigation and data wiring from hub placement
+  e2e:
+  - primary happy path from Lives in entry
+  a11y:
+  - goldens at 100%/200% text
+  - semantics order
+  content:
+  - honest labels on shown curriculum or media
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - learn.f_030.*
+tags: []
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

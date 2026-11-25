@@ -1,0 +1,18 @@
+{
+  "charter": "v2",
+  "card_id": "P5-093",
+  "sources": [
+    "docs/source/CURRICULUM.md#§9.4:L844",
+    "docs/build/verification/P4-080-2026-10-25.md",
+    "docs/source/CURRICULUM.md#§9.1:L789",
+    "CP-§9.4-14"
+  ],
+  "studio_planned_engineer_weeks": 11.5,
+  "studio_source": "P4-080 card-sum (P4-069…P4-080)",
+  "pipeline_planned_weeks_min": 4,
+  "pipeline_planned_weeks_max": 6,
+  "pipeline_source": "CURRICULUM §9.1 pipeline service [estimate]",
+  "g4_passed": false,
+  "actual_engineer_weeks": null,
+  "note": "Combined planned 15.5–17.5 engineer-weeks vs §9.4 14–20 band; calendar actuals pending G4."
+}

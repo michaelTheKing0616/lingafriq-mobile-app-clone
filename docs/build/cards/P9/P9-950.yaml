@@ -1,0 +1,94 @@
+charter: v2
+id: P9-950
+kind: build
+title: Add duets and stitch-style native corrections to clips
+phase: P9
+epic: E-P9-VILLAGE
+req_ids:
+- EP-§9.2-26
+- EP-§9.2-27
+- EP-§9.2-28
+depends_on:
+- E-P9-SAFETY
+- P9-948
+- P9-951
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 2, depth 0'
+token_budget: 80000
+file_allowlist:
+- lib/screens/village/clip_duet_screen.dart
+- node-backend/src/services/clipDuet.service.ts
+context_anchors:
+- ELEVATION.md#§9.2:L1607-L1611
+acceptance_criteria:
+- id: AC1
+  text: Given a clip, when a user starts a duet, then a split-screen recorder plays the original and records a say-it-after-me
+    response linked to the source
+- id: AC2
+  text: Given the original creator, when blocking a user, then that user can no longer duet or stitch their clips and existing
+    ones are hidden for the creator
+- id: AC3
+  text: Given a verified native speaker, when stitching a correction, then it is labelled 'native correction' with their verification
+    and appears under the original
+test_plan:
+  unit: []
+  integration:
+  - duet linking
+  - block effects
+  security:
+  - duet of minor's clip
+  e2e: []
+  perf: []
+  a11y:
+  - duet controls
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - recording
+  - linked
+  - blocked
+  copy_keys:
+  - duet.start
+  - duet.blocked
+  - stitch.label
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - duet_default
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

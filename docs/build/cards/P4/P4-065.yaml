@@ -1,0 +1,69 @@
+charter: v2
+id: P4-065
+kind: build
+title: Enforce high-risk tags as never AI-only
+phase: P4
+epic: E-P4-PIPELINE
+req_ids:
+- CP-§3.4-16
+- CP-§3.4-17
+- CP-§3.4-18
+- CP-§3.4-19
+- CP-§3.4-20
+- CP-§3.4-21
+depends_on:
+- P4-064
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- tools/content_engine/pipeline/highrisk.py
+- tools/content_engine/tests/test_highrisk.py
+context_anchors:
+- CURRICULUM.md#§3.4:L551-L552
+acceptance_criteria:
+- id: AC1
+  text: Given an item with tone-marked tokens lacking a lexicon match, an idiom or proverb, a culture, history or religion
+    claim, an honorific, a grammar explanation, or content shown to children, when tagged, then it carries a high-risk tag
+- id: AC2
+  text: Given any high-risk tag, when routed, then it always goes to a human regardless of score and cannot reach Beta without
+    a reviewer id
+test_plan:
+  unit:
+  - happy path
+  - typed error path
+  integration:
+  - stage contract with fixtures
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

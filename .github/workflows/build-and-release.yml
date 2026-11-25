@@ -1,5 +1,7 @@
 name: Build and Release iOS & Android
 
+# Store rollout 1%→100% runs in staged-rollout.yml (P12-016). This workflow never commits version bumps.
+
 on:
   push:
     branches: [ main ]
@@ -12,7 +14,7 @@ jobs:
     name: Increment Version Number
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
     outputs:
       version: ${{ steps.increment.outputs.version }}
       version_name: ${{ steps.increment.outputs.version_name }}
@@ -20,50 +22,58 @@ jobs:
     
     steps:
       - name: 🛎️ Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: 🔢 Increment build number
         id: increment
+        env:
+          # Last CFBundleVersion App Store Connect already accepted. This job
+          # does not commit the bump, so "pubspec + 1" repeats 333 and
+          # TestFlight rejects the upload. github.run_number increases by 1 on
+          # every run of this workflow. Adding that offset keeps the number
+          # strictly above 333 even if the workflow counter is reset. Android
+          # versionCode and iOS CFBundleVersion both consume this output.
+          LAST_ACCEPTED_BUNDLE_VERSION: "333"
         run: |
-          # Extract current version from pubspec.yaml
-          # The part before + (marketing / CFBundleShortVersionString) must stay STRICTLY above the latest
-          # version ever approved on the App Store, or TestFlight upload fails with 409 (train closed / invalid version).
-          # This job only bumps the build number after +; raise the marketing version in pubspec when Apple approves a release.
+          # Marketing version (CFBundleShortVersionString / versionName) stays in pubspec.
+          # It must stay strictly above the latest version approved on the App Store,
+          # or TestFlight upload fails with 409 (train closed / invalid version).
           current_version=$(grep '^version:' pubspec.yaml | sed 's/version: //')
-          version_name=$(echo $current_version | cut -d'+' -f1)
-          build_number=$(echo $current_version | cut -d'+' -f2)
-          
-          # Ensure build number is at least 91 (last prod was 90)
-          # If current build is less than 91, set to 91, otherwise increment
-          if [ "$build_number" -lt 91 ]; then
-            echo "⚠️ Build number $build_number is less than 91. Setting to 91."
-            build_number=91
-          elif [ "$build_number" -eq 90 ]; then
-            echo "📦 Current build is 90, incrementing to 91."
-            build_number=91
-          else
-            # Increment build number
-            build_number=$((build_number + 1))
-          fi
-          
-          new_version="${version_name}+${build_number}"
-          
-          # Update pubspec.yaml
-          sed -i "s/^version: .*/version: $new_version/" pubspec.yaml
-          
-          echo "version=$new_version" >> $GITHUB_OUTPUT
-          echo "version_name=$version_name" >> $GITHUB_OUTPUT
-          echo "build_number=$build_number" >> $GITHUB_OUTPUT
-          echo "📦 Updated version: $new_version (build number: $build_number)"
+          version_name=$(echo "$current_version" | cut -d'+' -f1)
+          pubspec_build=$(echo "$current_version" | cut -d'+' -f2)
+          run_number="${{ github.run_number }}"
 
-      - name: 💾 Commit version update
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add pubspec.yaml
-          git commit -m "chore: auto-increment build number to ${{ steps.increment.outputs.version }}" || echo "No changes to commit"
-          # Downstream jobs checkout main; if push fails they would build the old marketing version and TestFlight rejects (409).
-          git push
+          if ! [[ "$run_number" =~ ^[0-9]+$ ]] || [ "$run_number" -lt 1 ]; then
+            echo "::error::github.run_number must be a positive integer (got '$run_number')"
+            exit 1
+          fi
+          if ! [[ "$pubspec_build" =~ ^[0-9]+$ ]]; then
+            echo "::error::pubspec build number must be an integer (got '$pubspec_build')"
+            exit 1
+          fi
+          if ! [[ "${LAST_ACCEPTED_BUNDLE_VERSION}" =~ ^[0-9]+$ ]]; then
+            echo "::error::LAST_ACCEPTED_BUNDLE_VERSION must be an integer"
+            exit 1
+          fi
+
+          # Same integer for Android versionCode and iOS CFBundleVersion.
+          build_number=$((run_number + LAST_ACCEPTED_BUNDLE_VERSION))
+          # If pubspec is later set above that sum, step past it by run_number
+          # so an uncommitted pubspec value cannot be reused on the next run.
+          if [ "$pubspec_build" -ge "$build_number" ]; then
+            build_number=$((pubspec_build + run_number))
+          fi
+          if [ "$build_number" -le "$LAST_ACCEPTED_BUNDLE_VERSION" ]; then
+            echo "::error::Build number $build_number is not above ${LAST_ACCEPTED_BUNDLE_VERSION}"
+            exit 1
+          fi
+
+          new_version="${version_name}+${build_number}"
+
+          echo "version=$new_version" >> "$GITHUB_OUTPUT"
+          echo "version_name=$version_name" >> "$GITHUB_OUTPUT"
+          echo "build_number=$build_number" >> "$GITHUB_OUTPUT"
+          echo "Build number for this run: $new_version (run_number=$run_number offset=$LAST_ACCEPTED_BUNDLE_VERSION pubspec_build=$pubspec_build)"
 
   build-android:
     name: Build Android App Bundle
@@ -78,25 +88,35 @@ jobs:
 
     steps:
       - name: 🛎️ Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          ref: main
+          # f2df125a checked out main so this job would see a version commit
+          # pushed by increment-version. That push is gone; the build number is
+          # a job output. Checking out main tested stale main on a PR.
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
+
+      - name: Placeholder / template bundle linter
+        run: |
+          python3 scripts/ci/placeholder_linter.py assets/data
+          python3 scripts/ci/placeholder_linter.py schemas/v2
 
       - name: 🔧 Ensure Gradle wrapper is executable
         run: |
           chmod +x android/gradlew || true
 
       - name: 🧰 Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
       - name: 🐦 Setup Flutter
-        uses: subosito/flutter-action@v2
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
         with:
-          flutter-version: '3.35.0'
+          # Stable 3.47.9 (2026-10-29, Dart 3.13.7). Lockfile requires
+          # Flutter >=3.44.0 and Dart >=3.12.0. 3.50 was still beta on 2026-11-07.
+          flutter-version: '3.47.9'
 
       - name: 🔧 Install CMake (required for rive_common native builds)
         run: sudo apt-get update && sudo apt-get install -y cmake
@@ -131,17 +151,25 @@ jobs:
           done
 
       - name: Flutter analyze
-        run: |
-          echo "🔍 Running Flutter analyze..."
-          # Default flutter analyze treats infos/warnings as fatal; CI should fail only on errors.
-          flutter analyze --no-fatal-infos --no-fatal-warnings
-          echo "✅ Flutter analyze passed"
+        run: bash scripts/ci/analyze_new_code.sh
 
       - name: i18n literal gate
         run: dart run tool/i18n_gate.dart
 
       - name: TTS purity gate (no flutter_tts outside AfricanTtsService)
         run: dart run tool/tts_purity_gate.dart
+
+      - name: Prepare Rive native runtime
+        run: |
+          if [ "$(uname)" = "Darwin" ]; then
+            dart run rive_native:setup --platform macos
+          else
+            dart run rive_native:setup --platform linux
+            echo "LD_LIBRARY_PATH=$PWD/build/rive_native/native/build/linux/bin/lib/debug_shared" >> $GITHUB_ENV
+          fi
+
+      - name: Avatar contract
+        run: flutter test test/avatar/contract_test.dart
 
       - name: Flutter test (with coverage)
         run: |
@@ -160,9 +188,21 @@ jobs:
             exit 1
           fi
 
+      - name: Upload golden diffs
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: golden-diffs
+          path: test/golden/failures
+          if-no-files-found: ignore
+
+      - name: Domain coverage gate
+        if: success()
+        run: python3 scripts/ci/coverage_gate.py coverage/lcov.info
+
       - name: Upload coverage artifact
         if: success()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: coverage-android
           path: coverage/
@@ -203,6 +243,12 @@ jobs:
             .flutter-plugins .flutter-plugins-dependencies || true
           flutter pub get
 
+      - name: Write Firebase native config
+        env:
+          FIREBASE_API_KEY_ANDROID: ${{ secrets.FIREBASE_API_KEY_ANDROID }}
+          FIREBASE_API_KEY_IOS: ${{ secrets.FIREBASE_API_KEY_IOS }}
+        run: bash scripts/ci/write_firebase_native_config.sh
+
       # Logs: normal build (no --verbose). On failure, only grep'd errors + last 80 lines to diagnose.
       - name: 🏗️ Build AAB (Release)
         env:
@@ -212,8 +258,10 @@ jobs:
         run: |
           set +e
           chmod +x android/gradlew || true
-          flutter build appbundle --release --split-debug-info=build/symbols \
+          flutter build appbundle --release --obfuscate --split-debug-info=build/symbols \
             --dart-define=CERTIFICATE_PIN_HASHES="${{ secrets.CERTIFICATE_PIN_HASHES }}" \
+            --dart-define=FIREBASE_API_KEY_ANDROID="${{ secrets.FIREBASE_API_KEY_ANDROID }}" \
+            --dart-define=FIREBASE_API_KEY_IOS="${{ secrets.FIREBASE_API_KEY_IOS }}" \
             --build-name="$VERSION_NAME" --build-number="$BUILD_NUMBER" 2>&1 | tee build.log
           BUILD_EXIT_CODE=${PIPESTATUS[0]}
           if [ $BUILD_EXIT_CODE -eq 0 ]; then echo "Build succeeded"; exit 0; fi
@@ -230,8 +278,10 @@ jobs:
           (cd android && ./gradlew clean --refresh-dependencies --stacktrace 2>&1 | tail -20) || true
           flutter pub get
 
-          flutter build appbundle --release --split-debug-info=build/symbols \
+          flutter build appbundle --release --obfuscate --split-debug-info=build/symbols \
             --dart-define=CERTIFICATE_PIN_HASHES="${{ secrets.CERTIFICATE_PIN_HASHES }}" \
+            --dart-define=FIREBASE_API_KEY_ANDROID="${{ secrets.FIREBASE_API_KEY_ANDROID }}" \
+            --dart-define=FIREBASE_API_KEY_IOS="${{ secrets.FIREBASE_API_KEY_IOS }}" \
             --build-name="$VERSION_NAME" --build-number="$BUILD_NUMBER" 2>&1 | tee build-retry.log
           BUILD_EXIT_CODE=${PIPESTATUS[0]}
           if [ $BUILD_EXIT_CODE -eq 0 ]; then echo "Build succeeded on retry"; exit 0; fi
@@ -241,6 +291,24 @@ jobs:
           echo "=== Last 80 lines (context) ==="
           tail -n 80 build-retry.log || true
           exit 1
+
+      - name: Build per-ABI release APKs (download size gate)
+        env:
+          GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.caching=false -Dorg.gradle.console=plain"
+          VERSION_NAME: ${{ needs.increment-version.outputs.version_name }}
+          BUILD_NUMBER: ${{ needs.increment-version.outputs.build_number }}
+        run: |
+          chmod +x android/gradlew || true
+          flutter build apk --release --split-per-abi --obfuscate --split-debug-info=build/symbols-apk \
+            --dart-define=CERTIFICATE_PIN_HASHES="${{ secrets.CERTIFICATE_PIN_HASHES }}" \
+            --dart-define=FIREBASE_API_KEY_ANDROID="${{ secrets.FIREBASE_API_KEY_ANDROID }}" \
+            --dart-define=FIREBASE_API_KEY_IOS="${{ secrets.FIREBASE_API_KEY_IOS }}" \
+            --build-name="$VERSION_NAME" --build-number="$BUILD_NUMBER"
+
+      - name: APK download size gate (P12-004)
+        run: |
+          chmod +x scripts/ci/apk_size_gate.sh
+          bash scripts/ci/apk_size_gate.sh
 
       - name: 🚚 Package AAB and mapping file
         run: |
@@ -255,16 +323,23 @@ jobs:
           fi
           cp "$AAB_PATH" "build/release/LingAfriq-${version}.aab"
           [ -f build/app/outputs/mapping/release/mapping.txt ] && cp build/app/outputs/mapping/release/mapping.txt build/release/mapping.txt || true
-          [ -d build/symbols ] && cp -r build/symbols build/release/ || true
 
       - name: 📤 Upload AAB and mapping file
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: android-aab-${{ needs.increment-version.outputs.version }}
           path: |
             build/release/LingAfriq-${{ needs.increment-version.outputs.version }}.aab
             build/release/mapping.txt
           if-no-files-found: warn
+
+      - name: 📤 Upload Android debug symbols
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: android-debug-symbols-${{ needs.increment-version.outputs.version }}
+          path: build/symbols/
+          if-no-files-found: error
+          retention-days: 90
 
   build-ios:
     name: Build iOS IPA
@@ -280,15 +355,21 @@ jobs:
 
     steps:
       - name: 🛎️ Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          ref: main
+          # Same triggering SHA as Android. Do not check out main.
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
 
+      - name: Placeholder / template bundle linter
+        run: |
+          python3 scripts/ci/placeholder_linter.py assets/data
+          python3 scripts/ci/placeholder_linter.py schemas/v2
+
       - name: 🐦 Setup Flutter
-        uses: subosito/flutter-action@v2
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
         with:
-          flutter-version: '3.35.0'
+          flutter-version: '3.47.9'
 
       - name: 📦 Get Flutter dependencies
         run: flutter pub get
@@ -302,16 +383,25 @@ jobs:
           done
 
       - name: Flutter analyze
-        run: |
-          echo "🔍 Running Flutter analyze..."
-          flutter analyze --no-fatal-infos --no-fatal-warnings
-          echo "✅ Flutter analyze passed"
+        run: bash scripts/ci/analyze_new_code.sh
 
       - name: i18n literal gate
         run: dart run tool/i18n_gate.dart
 
       - name: TTS purity gate (no flutter_tts outside AfricanTtsService)
         run: dart run tool/tts_purity_gate.dart
+
+      - name: Prepare Rive native runtime
+        run: |
+          if [ "$(uname)" = "Darwin" ]; then
+            dart run rive_native:setup --platform macos
+          else
+            dart run rive_native:setup --platform linux
+            echo "LD_LIBRARY_PATH=$PWD/build/rive_native/native/build/linux/bin/lib/debug_shared" >> $GITHUB_ENV
+          fi
+
+      - name: Avatar contract
+        run: flutter test test/avatar/contract_test.dart
 
       - name: Flutter test (with coverage)
         run: |
@@ -333,7 +423,7 @@ jobs:
 
       - name: Upload coverage artifact
         if: success()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: coverage-ios
           path: coverage/
@@ -549,6 +639,12 @@ jobs:
           print("Patched Runner Release for manual signing (profile + team in pbxproj only).")
           PY
 
+      - name: Write Firebase native config
+        env:
+          FIREBASE_API_KEY_ANDROID: ${{ secrets.FIREBASE_API_KEY_ANDROID }}
+          FIREBASE_API_KEY_IOS: ${{ secrets.FIREBASE_API_KEY_IOS }}
+        run: bash scripts/ci/write_firebase_native_config.sh
+
       # Logs: full output to build-ios.log. On failure, only grep'd errors + last 80 lines.
       - name: 🏗️ Build iOS Archive (Release)
         env:
@@ -559,8 +655,10 @@ jobs:
           set -o pipefail
           set +e
           if [ "$IOS_SIGNING_READY" = "true" ] && [ -n "$IOS_P12" ]; then
-            flutter build ios --release --no-codesign --split-debug-info=build/symbols \
+            flutter build ios --release --no-codesign --obfuscate --split-debug-info=build/symbols \
               --dart-define=CERTIFICATE_PIN_HASHES="${{ secrets.CERTIFICATE_PIN_HASHES }}" \
+              --dart-define=FIREBASE_API_KEY_ANDROID="${{ secrets.FIREBASE_API_KEY_ANDROID }}" \
+              --dart-define=FIREBASE_API_KEY_IOS="${{ secrets.FIREBASE_API_KEY_IOS }}" \
               --build-name="$VERSION_NAME" --build-number="$BUILD_NUMBER" 2>&1 | tee build-ios.log
             build_code=${PIPESTATUS[0]}
             if [ $build_code -eq 0 ]; then
@@ -586,8 +684,10 @@ jobs:
               code=$build_code
             fi
           else
-            flutter build ios --release --no-codesign --split-debug-info=build/symbols \
+            flutter build ios --release --no-codesign --obfuscate --split-debug-info=build/symbols \
               --dart-define=CERTIFICATE_PIN_HASHES="${{ secrets.CERTIFICATE_PIN_HASHES }}" \
+              --dart-define=FIREBASE_API_KEY_ANDROID="${{ secrets.FIREBASE_API_KEY_ANDROID }}" \
+              --dart-define=FIREBASE_API_KEY_IOS="${{ secrets.FIREBASE_API_KEY_IOS }}" \
               --build-name="$VERSION_NAME" --build-number="$BUILD_NUMBER" 2>&1 | tee build-ios.log
             code=${PIPESTATUS[0]}
           fi
@@ -613,7 +713,8 @@ jobs:
               if [ -n "$ipa_found" ] && [ -f "$ipa_found" ]; then
                 cp "$ipa_found" "build/release/ios/LingAfriq-$version.ipa"
               else
-                echo "⚠️ Signed build path enabled, but no IPA was found under build/. Skipping IPA copy."
+                echo "::error::Signed iOS build produced no IPA under build/."
+                exit 1
               fi
             fi
           else
@@ -626,9 +727,17 @@ jobs:
             fi
           fi
 
+      - name: 📤 Upload iOS debug symbols
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ios-debug-symbols-${{ needs.increment-version.outputs.version }}
+          path: build/symbols/
+          if-no-files-found: error
+          retention-days: 90
+
       - name: 📤 Upload iOS build artifact
         continue-on-error: true
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: ios-build-${{ needs.increment-version.outputs.version }}
           path: build/release/ios/
@@ -643,8 +752,9 @@ jobs:
       # then re-run this workflow. See: https://developer.apple.com/help/app-store-connect/manage-agreements/sign-and-update-agreements
       - name: 🚀 Upload IPA to TestFlight (App Store Connect API)
         if: >
-          github.ref == 'refs/heads/main' &&
-          (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+          github.event_name == 'workflow_dispatch' ||
+          (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+          (github.event_name == 'pull_request' && github.head_ref == 'cloud-handoff')
         env:
           ASC_API_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
           APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
@@ -652,8 +762,8 @@ jobs:
         run: |
           set -euo pipefail
           if [ "${IOS_SIGNING_READY:-false}" != "true" ]; then
-            echo "Skipping TestFlight: iOS signing credentials not available (IOS_SIGNING_READY=false)."
-            exit 0
+            echo "::error::TestFlight upload requires iOS signing credentials (IOS_SIGNING_READY=false)."
+            exit 1
           fi
           version="${{ needs.increment-version.outputs.version }}"
           IPA="build/release/ios/LingAfriq-${version}.ipa"
@@ -700,22 +810,26 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    if: always()
+    # Pull requests must not publish. A main push or a manual dispatch of the
+    # selected ref publishes only after both build jobs succeed.
+    if: >-
+      (github.event_name == 'workflow_dispatch' ||
+       (github.event_name == 'push' && github.ref == 'refs/heads/main'))
 
     steps:
       - name: 🛎️ Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: 📥 Download Android AAB and mapping file
         continue-on-error: true
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: android-aab-${{ needs.increment-version.outputs.version }}
           path: build/release/android
 
       - name: 📥 Download iOS IPA/Archive
         continue-on-error: true
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: ios-build-${{ needs.increment-version.outputs.version }}
           path: build/release/ios
@@ -742,14 +856,50 @@ jobs:
             echo "has_artifacts=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: ℹ️ Skip empty release
-        if: steps.check-artifacts.outputs.has_artifacts != 'true'
-        run: echo "No Android/iOS artifacts found. Skipping release creation."
+      - name: Require signed AAB and IPA
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          aab=(build/release/android/*.aab)
+          ipa=(build/release/ios/*.ipa)
+          if [ "${#aab[@]}" -eq 0 ] || [ "${#ipa[@]}" -eq 0 ]; then
+            echo "::error::Refusing to publish without a signed AAB and a signed IPA."
+            ls -la build/release/android build/release/ios 2>/dev/null || true
+            exit 1
+          fi
+
+      - name: Fail on an unpinned action
+        run: python3 scripts/ci/check_pinned_actions.py .github/workflows
+
+      - name: Write app SBOM
+        run: |
+          mkdir -p build/release
+          python3 scripts/ci/pub_sbom.py pubspec.lock build/release/app.cdx.json
+
+      - name: Setup Node for the backend SBOM
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+
+      - name: Write backend SBOM from the API lockfile
+        run: |
+          set -euo pipefail
+          work="$(mktemp -d)"
+          git clone --depth 1 --branch cloud-handoff https://github.com/LingAfrika/node-backend.git "$work"
+          cd "$work"
+          npx --yes @cyclonedx/cyclonedx-npm@6.0.1 --package-lock-only --omit dev --output-file "$GITHUB_WORKSPACE/build/release/backend.cdx.json"
+
+      - name: Upload app and backend SBOMs
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: release-sbom
+          path: |
+            build/release/app.cdx.json
+            build/release/backend.cdx.json
+          retention-days: 90
 
       - name: 🏁 Create GitHub Release
-        if: steps.check-artifacts.outputs.has_artifacts == 'true'
-        continue-on-error: true
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
         with:
           name: "LingAfriq v${{ steps.version.outputs.version }}"
           tag_name: "v${{ steps.version.outputs.version }}"
@@ -759,9 +909,101 @@ jobs:
             build/release/ios/*.ipa
             build/release/ios/*.zip
             build/release/ios/*.xcarchive.zip
+            build/release/app.cdx.json
+            build/release/backend.cdx.json
           generate_release_notes: true
           draft: false
           prerelease: false
           fail_on_unmatched_files: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  fsrs-mutation:
+    name: FSRS mutation gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+        with:
+          flutter-version: '3.47.9'
+          channel: stable
+
+      - name: Install CMake
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake
+
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      - name: Prepare Rive native runtime
+        run: |
+          dart run rive_native:setup --platform linux
+          echo "LD_LIBRARY_PATH=$PWD/build/rive_native/native/build/linux/bin/lib/debug_shared" >> $GITHUB_ENV
+
+      - name: FSRS mutation score
+        run: bash scripts/ci/mutation_gate.sh
+
+  analyze-new-code:
+    name: Analyze new Dart
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+        with:
+          flutter-version: '3.47.9'
+          channel: stable
+
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      - name: Analyze changed Dart
+        run: bash scripts/ci/analyze_new_code.sh
+
+  content-lint:
+    name: Content lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Placeholder and claim linters
+        run: |
+          python3 scripts/ci/placeholder_lint.py --baseline scripts/ci/lint_baseline.tsv
+          # Claim lint reads bundled curriculum only. Runtime Import Media lessons are not in this job.
+          python3 scripts/ci/claim_lint.py --baseline scripts/ci/lint_baseline.tsv
+          python3 test/ci/lint_fixtures_test.py
+
+  secrets-scan:
+    name: Secrets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+
+      - name: Hygiene check and gitleaks
+        run: |
+          node scripts/secrets-hygiene-check.mjs --strict
+          curl -sSL -o /tmp/gitleaks.tar.gz https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz
+          mkdir -p "$HOME/bin"
+          tar -xzf /tmp/gitleaks.tar.gz -C "$HOME/bin" gitleaks
+          before="${{ github.event.before }}"
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git fetch origin "${{ github.base_ref }}"
+            range="origin/${{ github.base_ref }}..HEAD"
+          elif [ -n "$before" ] && [ "$before" != "0000000000000000000000000000000000000000" ]; then
+            range="${before}..HEAD"
+          else
+            range="HEAD~1..HEAD"
+          fi
+          "$HOME/bin/gitleaks" git --redact --no-banner --log-opts="$range"

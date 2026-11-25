@@ -1,514 +1,436 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/design/components/ling_button.dart';
+import 'package:lingafriq/design/components/ling_state.dart';
+import 'package:lingafriq/design/states/empty_state.dart';
+import 'package:lingafriq/design/states/error_state.dart';
+import 'package:lingafriq/design/states/offline_state.dart';
+import 'package:lingafriq/design/tokens.g.dart';
+import 'package:lingafriq/games/gamekit/game_scoring.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 import 'package:lingafriq/models/roleplay_progress_model.dart';
+import 'package:lingafriq/screens/ai_chat/conversation_analytics_screen.dart';
+import 'package:lingafriq/services/conversation_analytics_service.dart';
 import 'package:lingafriq/services/roleplay_progress_service.dart';
-import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:lingafriq/screens/ai_chat/roleplay_scenario_selection_screen.dart';
-import 'package:lingafriq/utils/structured_logger.dart';
 
-/// Roleplay Progress Dashboard
-/// Shows comprehensive progress tracking, statistics, and recommendations
-class RoleplayProgressDashboardScreen extends HookConsumerWidget {
-  final String language;
-  final String languageName;
-
-  const RoleplayProgressDashboardScreen({
-    super.key,
-    required this.language,
-    required this.languageName,
+/// copy_keys: rev.rv_speak.*
+///
+/// One saved scenario on the progress list. Accuracy and fluency are not
+/// fields here: the stored averages have no scorer source, so they are omitted.
+class RoleplaySceneRow {
+  const RoleplaySceneRow({
+    required this.id,
+    required this.name,
+    this.category = '',
+    this.difficulty = '',
+    this.timesCompleted = 0,
   });
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final progressService = ref.read(roleplayProgressServiceProvider);
-    final progress = useState<RoleplayProgress?>(null);
-    final isLoading = useState(true);
-    final selectedCategory = useState<String?>(null);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+  final String id;
+  final String name;
+  final String category;
+  final String difficulty;
+  final int timesCompleted;
+}
 
-    // Load progress
-    useEffect(() {
-      _loadProgress(progressService, progress, isLoading);
-      return null;
-    }, []);
+/// What [RoleplayProgressDashboardScreen] should paint.
+class RoleplayProgressLoad {
+  const RoleplayProgressLoad._(
+    this.status,
+    this.scenes,
+    this.pronunciation,
+    this.tone,
+  );
 
-    if (isLoading.value || progress.value == null) {
-      return Scaffold(
-        appBar: AppBar(title: Text('Roleplay Progress')),
-        body: Center(child: CircularProgressIndicator()),
+  const RoleplayProgressLoad.ready(
+    List<RoleplaySceneRow> scenes, {
+    GameScore? pronunciation,
+    GameScore? tone,
+  }) : this._(SpeakInsightStatus.ready, scenes, pronunciation, tone);
+
+  const RoleplayProgressLoad.empty()
+    : this._(SpeakInsightStatus.empty, const <RoleplaySceneRow>[], null, null);
+
+  const RoleplayProgressLoad.error()
+    : this._(SpeakInsightStatus.error, const <RoleplaySceneRow>[], null, null);
+
+  const RoleplayProgressLoad.offline()
+    : this._(
+        SpeakInsightStatus.offline,
+        const <RoleplaySceneRow>[],
+        null,
+        null,
       );
+
+  final SpeakInsightStatus status;
+  final List<RoleplaySceneRow> scenes;
+  final GameScore? pronunciation;
+  final GameScore? tone;
+}
+
+/// Scenes for [languageName] or [language]. Empty names keep every saved scene.
+/// A scene with no name is dropped. Accuracy is not copied.
+List<RoleplaySceneRow> scenesFromProgress(
+  RoleplayProgress progress,
+  String languageName,
+  String language,
+) {
+  final String name = languageName.trim();
+  final String code = language.trim();
+  final List<RoleplaySceneRow> rows = <RoleplaySceneRow>[];
+  for (final ScenarioProgress scene in progress.scenarios.values) {
+    final String sceneLanguage = scene.language.trim();
+    if (name.isNotEmpty || code.isNotEmpty) {
+      final bool matches =
+          sceneLanguage.isEmpty ||
+          sceneLanguage == name ||
+          sceneLanguage == code;
+      if (!matches) continue;
     }
-
-    final p = progress.value!;
-    final scenarios = p.scenarios.values
-        .where((s) => s.language == languageName)
-        .where((s) => selectedCategory.value == null || s.category == selectedCategory.value)
-        .toList();
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Roleplay Progress'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: () => _loadProgress(progressService, progress, isLoading),
-          ),
-        ],
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: isDark
-              ? PanAfricanGradients.darkSurface
-              : LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    PanAfricanColors.surfaceLight,
-                    PanAfricanColors.surfaceContainerLight,
-                  ],
-                ),
-        ),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.all(PanAfricanSpacing.lg),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Overall Stats
-                _OverallStatsCard(progress: p, isDark: isDark)
-                    .animate()
-                    .fadeIn(duration: 300.ms)
-                    .slideY(begin: -0.1),
-                SizedBox(height: PanAfricanSpacing.lg),
-
-                // Category Filter
-                _CategoryFilter(
-                  selectedCategory: selectedCategory.value,
-                  onCategorySelected: (cat) => selectedCategory.value = cat,
-                  isDark: isDark,
-                )
-                    .animate(delay: 100.ms)
-                    .fadeIn(duration: 300.ms),
-                SizedBox(height: PanAfricanSpacing.lg),
-
-                // Difficulty Progress
-                _DifficultyProgressCard(progress: p, isDark: isDark)
-                    .animate(delay: 200.ms)
-                    .fadeIn(duration: 300.ms)
-                    .slideX(begin: 0.1),
-                SizedBox(height: PanAfricanSpacing.lg),
-
-                // Scenarios List
-                Text(
-                  'Scenarios',
-                  style: PanAfricanTypography.titleLarge(context).copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-                    .animate(delay: 300.ms)
-                    .fadeIn(duration: 300.ms),
-                SizedBox(height: PanAfricanSpacing.md),
-
-                if (scenarios.isEmpty)
-                  Card(
-                    color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-                    child: Padding(
-                      padding: EdgeInsets.all(PanAfricanSpacing.xl),
-                      child: Column(
-                        children: [
-                          Icon(Icons.inbox, size: 64.sp, color: PanAfricanColors.neutralMedium),
-                          SizedBox(height: PanAfricanSpacing.md),
-                          Text(
-                            'No scenarios completed yet',
-                            style: PanAfricanTypography.bodyLarge(context),
-                          ),
-                          SizedBox(height: PanAfricanSpacing.sm),
-                          ElevatedButton.icon(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                SmoothPageRoute(
-                                  child: RoleplayScenarioSelectionScreen(
-                                    language: language,
-                                    languageName: languageName,
-                                  ),
-                                ),
-                              );
-                            },
-                            icon: Icon(Icons.play_arrow),
-                            label: Text('Start Your First Scenario'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                else
-                  ...scenarios.map((scenario) {
-                    return _ScenarioProgressCard(
-                      scenario: scenario,
-                      isDark: isDark,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          SmoothPageRoute(
-                            child: RoleplayScenarioSelectionScreen(
-                              language: language,
-                              languageName: languageName,
-                            ),
-                          ),
-                        );
-                      },
-                    )
-                        .animate()
-                        .fadeIn(duration: 200.ms)
-                        .slideX(begin: 0.1);
-                  }),
-              ],
-            ),
-          ),
-        ),
+    final String title = scene.scenarioName.trim().isEmpty
+        ? scene.scenarioId.trim()
+        : scene.scenarioName.trim();
+    if (title.isEmpty) continue;
+    rows.add(
+      RoleplaySceneRow(
+        id: scene.scenarioId,
+        name: title,
+        category: scene.category.trim(),
+        difficulty: scene.difficulty.trim(),
+        timesCompleted: scene.timesCompleted,
       ),
     );
   }
-
-  Future<void> _loadProgress(
-    RoleplayProgressService service,
-    ValueNotifier<RoleplayProgress?> progress,
-    ValueNotifier<bool> isLoading,
-  ) async {
-    isLoading.value = true;
-    try {
-      final p = await service.loadProgress();
-      progress.value = p;
-    } catch (e) {
-      StructuredLogger().error('Error loading roleplay progress', error: e, context: {'language': language});
-    } finally {
-      isLoading.value = false;
-    }
-  }
+  return rows;
 }
 
-class _OverallStatsCard extends StatelessWidget {
-  final RoleplayProgress progress;
-  final bool isDark;
-
-  const _OverallStatsCard({
-    required this.progress,
-    required this.isDark,
+/// Roleplay progress. No scenes shows [LingEmptyState].
+/// A failed load shows [LingErrorState] and drops the list that was on screen.
+class RoleplayProgressDashboardScreen extends StatefulWidget {
+  const RoleplayProgressDashboardScreen({
+    super.key,
+    this.language = '',
+    this.languageName = '',
+    this.load,
   });
+
+  /// App route `/speak/roleplay-progress`. The map key drops the leading slash.
+  static const String routePath = '/speak/roleplay-progress';
+
+  static const String routeKey = 'speak/roleplay-progress';
+
+  static const Key emptyKey = ValueKey<String>('speak-progress-empty');
+
+  static const Key errorKey = ValueKey<String>('speak-progress-error');
+
+  static const Key offlineKey = ValueKey<String>('speak-progress-offline');
+
+  static const Key listKey = ValueKey<String>('speak-progress-list');
+
+  static const Key scoreKey = ValueKey<String>('speak-progress-score');
+
+  static const Key toneKey = ValueKey<String>('speak-progress-tone');
+
+  static const Key unsureKey = ValueKey<String>('speak-progress-unsure');
+
+  static const Key practiceKey = ValueKey<String>('speak-progress-practice');
+
+  static const Key refreshKey = ValueKey<String>('speak-progress-refresh');
+
+  static const Key backKey = ValueKey<String>('speak-progress-back');
+
+  static Key sceneKey(String id) => ValueKey<String>('speak-progress-$id');
+
+  final String language;
+  final String languageName;
+
+  /// Loads the list. Null with no language means there is nothing saved.
+  final Future<RoleplayProgressLoad> Function()? load;
+
+  @override
+  State<RoleplayProgressDashboardScreen> createState() =>
+      _RoleplayProgressDashboardScreenState();
+}
+
+class _RoleplayProgressDashboardScreenState
+    extends State<RoleplayProgressDashboardScreen> {
+  SpeakInsightStatus _status = SpeakInsightStatus.loading;
+  List<RoleplaySceneRow> _scenes = const <RoleplaySceneRow>[];
+  GameScore? _pronunciation;
+  GameScore? _tone;
+  int _generation = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.load == null && _languageKey().isEmpty) {
+      _status = SpeakInsightStatus.empty;
+      return;
+    }
+    _run(_generation);
+  }
+
+  @override
+  void didUpdateWidget(RoleplayProgressDashboardScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (identical(oldWidget.load, widget.load) &&
+        oldWidget.language == widget.language &&
+        oldWidget.languageName == widget.languageName) {
+      return;
+    }
+    _clearList();
+    _generation += 1;
+    if (widget.load == null && _languageKey().isEmpty) {
+      _status = SpeakInsightStatus.empty;
+      return;
+    }
+    _status = SpeakInsightStatus.loading;
+    _run(_generation);
+  }
+
+  String _languageKey() {
+    final String name = widget.languageName.trim();
+    if (name.isNotEmpty) return name;
+    return widget.language.trim();
+  }
+
+  void _clearList() {
+    _scenes = const <RoleplaySceneRow>[];
+    _pronunciation = null;
+    _tone = null;
+  }
+
+  Future<void> _run(int generation) async {
+    final Future<RoleplayProgressLoad> Function() load =
+        widget.load ?? _loadNamed;
+    try {
+      final RoleplayProgressLoad view = await load();
+      if (!mounted || generation != _generation) return;
+      setState(() => _apply(view));
+    } on SpeakDataUnavailable catch (error) {
+      if (!mounted || generation != _generation) return;
+      setState(() {
+        _clearList();
+        _status = error.offline
+            ? SpeakInsightStatus.offline
+            : SpeakInsightStatus.error;
+      });
+    } catch (_) {
+      if (!mounted || generation != _generation) return;
+      setState(() {
+        _clearList();
+        _status = SpeakInsightStatus.error;
+      });
+    }
+  }
+
+  Future<RoleplayProgressLoad> _loadNamed() async {
+    final ProviderContainer container = ProviderScope.containerOf(
+      context,
+      listen: false,
+    );
+    final RoleplayProgressService service = container.read(
+      roleplayProgressServiceProvider,
+    );
+    final RoleplayProgress? stored = await service.readStored();
+    if (stored == null) return const RoleplayProgressLoad.empty();
+    final List<RoleplaySceneRow> scenes = scenesFromProgress(
+      stored,
+      widget.languageName,
+      widget.language,
+    );
+    if (scenes.isEmpty) return const RoleplayProgressLoad.empty();
+    return RoleplayProgressLoad.ready(scenes);
+  }
+
+  void _apply(RoleplayProgressLoad view) {
+    if (view.status == SpeakInsightStatus.ready && view.scenes.isNotEmpty) {
+      _status = SpeakInsightStatus.ready;
+      _scenes = List<RoleplaySceneRow>.unmodifiable(view.scenes);
+      _pronunciation = view.pronunciation;
+      _tone = view.tone;
+      return;
+    }
+    _clearList();
+    if (view.status == SpeakInsightStatus.offline) {
+      _status = SpeakInsightStatus.offline;
+    } else if (view.status == SpeakInsightStatus.error ||
+        view.status == SpeakInsightStatus.loading) {
+      _status = SpeakInsightStatus.error;
+    } else {
+      _status = SpeakInsightStatus.empty;
+    }
+  }
+
+  void _retry() {
+    setState(() {
+      _clearList();
+      _status = SpeakInsightStatus.loading;
+      _generation += 1;
+    });
+    _run(_generation);
+  }
+
+  void _back() {
+    final NavigatorState? navigator = Navigator.maybeOf(context);
+    if (navigator != null && navigator.canPop()) navigator.pop();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(PanAfricanSpacing.xl),
-        child: Column(
-          children: [
+    final AppLocalizations l10n = l10nOf(context);
+    final LingPalette palette = LingPalette.of(Theme.of(context).brightness);
+    return Scaffold(
+      backgroundColor: palette.surface,
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(LingAfriqTokens.spacing16),
+          children: <Widget>[
             Text(
-              'Overall Progress',
-              style: PanAfricanTypography.titleLarge(context).copyWith(
-                fontWeight: FontWeight.bold,
+              l10n.hubHSpeakRoleplayProgress,
+              style: lingBody(palette.onSurface),
+              softWrap: true,
+              overflow: TextOverflow.visible,
+            ),
+            const SizedBox(height: LingAfriqTokens.spacing16),
+            _body(l10n, palette),
+            if (_status != SpeakInsightStatus.empty) ...<Widget>[
+              const SizedBox(height: LingAfriqTokens.spacing16),
+              LingButton(
+                key: RoleplayProgressDashboardScreen.backKey,
+                label: l10n.hubHSpeakBack,
+                unavailableLabel: l10n.commonStateUnavailable,
+                onPressed: _back,
               ),
-            ),
-            SizedBox(height: PanAfricanSpacing.lg),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _StatItem(
-                  label: 'Completed',
-                  value: '${progress.totalScenariosCompleted}',
-                  icon: Icons.check_circle,
-                  color: PanAfricanColors.success,
-                ),
-                _StatItem(
-                  label: 'Mastered',
-                  value: '${progress.masteredScenarios.length}',
-                  icon: Icons.star,
-                  color: PanAfricanColors.accent,
-                ),
-                _StatItem(
-                  label: 'Streak',
-                  value: '${progress.currentStreak}',
-                  icon: Icons.local_fire_department,
-                  color: PanAfricanColors.error,
-                ),
-              ],
-            ),
-            SizedBox(height: PanAfricanSpacing.lg),
-            Divider(),
-            SizedBox(height: PanAfricanSpacing.lg),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _StatItem(
-                  label: 'Accuracy',
-                  value: '${(progress.averageAccuracy * 100).toStringAsFixed(0)}%',
-                  icon: Icons.flag,
-                  color: PanAfricanColors.primary,
-                ),
-                _StatItem(
-                  label: 'Fluency',
-                  value: '${(progress.averageFluency * 100).toStringAsFixed(0)}%',
-                  icon: Icons.speed,
-                  color: PanAfricanColors.secondary,
-                ),
-              ],
-            ),
+            ],
           ],
         ),
       ),
     );
   }
-}
 
-class _StatItem extends StatelessWidget {
-  final String label;
-  final String value;
-  final IconData icon;
-  final Color color;
+  Widget _body(AppLocalizations l10n, LingPalette palette) {
+    switch (_status) {
+      case SpeakInsightStatus.loading:
+        return Text(
+          l10n.loading,
+          style: lingBody(palette.onSurface),
+          softWrap: true,
+          overflow: TextOverflow.visible,
+        );
+      case SpeakInsightStatus.empty:
+        return LingEmptyState(
+          key: RoleplayProgressDashboardScreen.emptyKey,
+          title: l10n.hubHSpeakRoleplayProgress,
+          whatHappened: l10n.revRvSpeakProgressEmptyWhat,
+          why: l10n.revRvSpeakProgressEmptyWhy,
+          whatToDo: l10n.revRvSpeakProgressEmptyNext,
+          actionLabel: l10n.hubHSpeakBack,
+          unavailableLabel: l10n.commonStateUnavailable,
+          onAction: _back,
+        );
+      case SpeakInsightStatus.error:
+        return LingErrorState(
+          key: RoleplayProgressDashboardScreen.errorKey,
+          whatHappened: l10n.revRvSpeakProgressErrorWhat,
+          why: l10n.revRvSpeakProgressErrorWhy,
+          whatToDo: l10n.revRvSpeakProgressErrorNext,
+          actionLabel: l10n.commonActionTryAgain,
+          unavailableLabel: l10n.commonStateUnavailable,
+          onAction: _retry,
+        );
+      case SpeakInsightStatus.offline:
+        return LingOfflineState(
+          key: RoleplayProgressDashboardScreen.offlineKey,
+          whatHappened: l10n.shellOfflineWhat,
+          why: l10n.revRvSpeakProgressOfflineWhy,
+          whatToDo: l10n.shellOfflineNext,
+          queuedActions: 0,
+          actionLabel: l10n.commonActionTryAgain,
+          unavailableLabel: l10n.commonStateUnavailable,
+          onAction: _retry,
+        );
+      case SpeakInsightStatus.ready:
+        if (_scenes.isEmpty) {
+          return LingEmptyState(
+            key: RoleplayProgressDashboardScreen.emptyKey,
+            title: l10n.hubHSpeakRoleplayProgress,
+            whatHappened: l10n.revRvSpeakProgressEmptyWhat,
+            why: l10n.revRvSpeakProgressEmptyWhy,
+            whatToDo: l10n.revRvSpeakProgressEmptyNext,
+            actionLabel: l10n.hubHSpeakBack,
+            unavailableLabel: l10n.commonStateUnavailable,
+            onAction: _back,
+          );
+        }
+        return _list(l10n, palette);
+    }
+  }
 
-  const _StatItem({
-    required this.label,
-    required this.value,
-    required this.icon,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _list(AppLocalizations l10n, LingPalette palette) {
     return Column(
-      children: [
-        Icon(icon, color: color, size: 32.sp),
-        SizedBox(height: PanAfricanSpacing.xs),
-        Text(
-          value,
-          style: PanAfricanTypography.titleMedium(context).copyWith(
-            fontWeight: FontWeight.bold,
-            color: color,
+      key: RoleplayProgressDashboardScreen.listKey,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        for (final RoleplaySceneRow scene in _scenes) ...<Widget>[
+          Semantics(
+            container: true,
+            label: l10n.revRvSpeakSceneSemantics(scene.name),
+            child: Text(
+              scene.name,
+              key: RoleplayProgressDashboardScreen.sceneKey(scene.id),
+              style: lingBody(palette.onSurface),
+              softWrap: true,
+              overflow: TextOverflow.visible,
+            ),
           ),
+          const SizedBox(height: LingAfriqTokens.spacing16),
+          if (scene.category.isNotEmpty) ...<Widget>[
+            Text(
+              scene.category,
+              style: lingBody(palette.onSurface),
+              softWrap: true,
+              overflow: TextOverflow.visible,
+            ),
+            const SizedBox(height: LingAfriqTokens.spacing16),
+          ],
+          if (scene.difficulty.isNotEmpty) ...<Widget>[
+            Text(
+              scene.difficulty,
+              style: lingBody(palette.onSurface),
+              softWrap: true,
+              overflow: TextOverflow.visible,
+            ),
+            const SizedBox(height: LingAfriqTokens.spacing16),
+          ],
+          if (scene.timesCompleted > 0) ...<Widget>[
+            Text(
+              l10n.revRvSpeakCompletedCount(scene.timesCompleted),
+              style: lingBody(palette.onSurface),
+              softWrap: true,
+              overflow: TextOverflow.visible,
+            ),
+            const SizedBox(height: LingAfriqTokens.spacing16),
+          ],
+        ],
+        ...speakScoreLines(
+          l10n: l10n,
+          palette: palette,
+          pronunciation: _pronunciation,
+          tone: _tone,
+          scoreKey: RoleplayProgressDashboardScreen.scoreKey,
+          toneKey: RoleplayProgressDashboardScreen.toneKey,
+          unsureKey: RoleplayProgressDashboardScreen.unsureKey,
+          practiceKey: RoleplayProgressDashboardScreen.practiceKey,
         ),
-        SizedBox(height: PanAfricanSpacing.xxs),
-        Text(
-          label,
-          style: PanAfricanTypography.bodySmall(context),
+        LingButton(
+          key: RoleplayProgressDashboardScreen.refreshKey,
+          label: l10n.revRvSpeakRefresh,
+          unavailableLabel: l10n.commonStateUnavailable,
+          onPressed: _retry,
         ),
       ],
     );
   }
 }
-
-class _CategoryFilter extends StatelessWidget {
-  final String? selectedCategory;
-  final Function(String?) onCategorySelected;
-  final bool isDark;
-
-  const _CategoryFilter({
-    required this.selectedCategory,
-    required this.onCategorySelected,
-    required this.isDark,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final categories = ['All', 'Greetings', 'Shopping', 'Food', 'Travel', 'Health', 'Social', 'Business', 'Emergency'];
-    
-    return SizedBox(
-      height: 50.h,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: categories.map((cat) {
-          final isSelected = (cat == 'All' && selectedCategory == null) || cat == selectedCategory;
-          return Padding(
-            padding: EdgeInsets.only(right: PanAfricanSpacing.sm),
-            child: FilterChip(
-              label: Text(cat),
-              selected: isSelected,
-              onSelected: (_) => onCategorySelected(cat == 'All' ? null : cat),
-              selectedColor: PanAfricanColors.primary,
-              checkmarkColor: Theme.of(context).colorScheme.onPrimary,
-            ),
-          );
-        }).toList(),
-      ),
-    );
-  }
-}
-
-class _DifficultyProgressCard extends StatelessWidget {
-  final RoleplayProgress progress;
-  final bool isDark;
-
-  const _DifficultyProgressCard({
-    required this.progress,
-    required this.isDark,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final difficulties = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
-    final currentDiff = progress.currentDifficulty;
-    
-    return Card(
-      color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-      child: Padding(
-        padding: EdgeInsets.all(PanAfricanSpacing.lg),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Difficulty Progress',
-              style: PanAfricanTypography.titleMedium(context).copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: PanAfricanSpacing.md),
-            ...difficulties.map((diff) {
-              final count = progress.difficultyProgress[diff] ?? 0;
-              final isCurrent = diff == currentDiff;
-              return Padding(
-                padding: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 60.w,
-                      child: Text(
-                        diff,
-                        style: PanAfricanTypography.bodyMedium(context).copyWith(
-                          fontWeight: isCurrent ? FontWeight.bold : FontWeight.normal,
-                          color: isCurrent ? PanAfricanColors.primary : null,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: LinearProgressIndicator(
-                        value: count > 0 ? (count / 10).clamp(0.0, 1.0) : 0.0,
-                        backgroundColor: PanAfricanColors.neutralLight,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          isCurrent ? PanAfricanColors.primary : PanAfricanColors.neutralMedium,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: PanAfricanSpacing.sm),
-                    Text(
-                      '$count',
-                      style: PanAfricanTypography.bodySmall(context),
-                    ),
-                  ],
-                ),
-              );
-            }),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ScenarioProgressCard extends StatelessWidget {
-  final ScenarioProgress scenario;
-  final bool isDark;
-  final VoidCallback onTap;
-
-  const _ScenarioProgressCard({
-    required this.scenario,
-    required this.isDark,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
-      color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-        child: Padding(
-          padding: EdgeInsets.all(PanAfricanSpacing.lg),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      scenario.scenarioName,
-                      style: PanAfricanTypography.titleMedium(context).copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  if (scenario.isMastered)
-                    Icon(Icons.star, color: PanAfricanColors.accent, size: 24.sp),
-                ],
-              ),
-              SizedBox(height: PanAfricanSpacing.sm),
-              Row(
-                children: [
-                  Chip(
-                    label: Text(scenario.category),
-                    backgroundColor: PanAfricanColors.primary.withOpacity(0.1),
-                    labelStyle: PanAfricanTypography.labelSmall(context).copyWith(
-                      color: PanAfricanColors.primary,
-                    ),
-                  ),
-                  SizedBox(width: PanAfricanSpacing.sm),
-                  Chip(
-                    label: Text(scenario.difficulty),
-                    backgroundColor: PanAfricanColors.secondary.withOpacity(0.1),
-                    labelStyle: PanAfricanTypography.labelSmall(context).copyWith(
-                      color: PanAfricanColors.secondary,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: PanAfricanSpacing.sm),
-              Row(
-                children: [
-                  Icon(Icons.check_circle, size: 16.sp, color: PanAfricanColors.success),
-                  SizedBox(width: PanAfricanSpacing.xs),
-                  Text(
-                    'Completed ${scenario.timesCompleted}x',
-                    style: PanAfricanTypography.bodySmall(context),
-                  ),
-                  SizedBox(width: PanAfricanSpacing.md),
-                  Icon(Icons.flag, size: 16.sp, color: PanAfricanColors.primary),
-                  SizedBox(width: PanAfricanSpacing.xs),
-                  Text(
-                    '${(scenario.averageAccuracy * 100).toStringAsFixed(0)}%',
-                    style: PanAfricanTypography.bodySmall(context),
-                  ),
-                ],
-              ),
-              if (scenario.streak > 0) ...[
-                SizedBox(height: PanAfricanSpacing.xs),
-                Row(
-                  children: [
-                    Icon(Icons.local_fire_department, size: 16.sp, color: PanAfricanColors.error),
-                    SizedBox(width: PanAfricanSpacing.xs),
-                    Text(
-                      '${scenario.streak} day streak',
-                      style: PanAfricanTypography.bodySmall(context),
-                    ),
-                  ],
-                ),
-              ],
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-

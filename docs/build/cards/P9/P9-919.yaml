@@ -1,0 +1,70 @@
+charter: v2
+id: P9-919
+kind: build
+title: Apply stricter AI conversation policy and no memory for children
+phase: P9
+epic: E-P9-GUARDIAN
+req_ids:
+- EP-§13.3-11
+- EP-§13.3-12
+depends_on:
+- E-P9-GUARDIAN
+- P9-912
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, ambiguity 1, coupling 2, depth 1'
+token_budget: 80000
+file_allowlist:
+- node-backend/src/services/aiGateway/minorPolicy.ts
+- node-backend/src/services/aiGateway/memory.ts
+context_anchors:
+- ELEVATION.md#§13.3:L1895
+acceptance_criteria:
+- id: AC1
+  text: Given a minor account, when an AI conversation starts, then the gateway applies the stricter policy profile and logs
+    the profile id with the request
+- id: AC2
+  text: Given a minor discloses personal details, when the conversation ends, then no persistent memory of those details is
+    stored and a test asserts the memory table is unchanged
+- id: AC3
+  text: Given the policy profile cannot be loaded, when a minor opens AI chat, then the chat is unavailable with a visible
+    reason and no fallback to the adult profile
+test_plan:
+  unit:
+  - profile selection
+  integration:
+  - memory write guard
+  security:
+  - prompt-injection to unlock adult profile
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

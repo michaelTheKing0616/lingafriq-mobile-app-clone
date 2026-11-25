@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-import 'package:lingafriq/utils/pan_african_design_system.dart'
-    show PanAfricanSpacing;
+import 'package:lingafriq/theme/lingafriq_fonts.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // THE MODERN GRIOT — LingAfriq Canonical Design System
@@ -33,21 +31,22 @@ import 'package:lingafriq/utils/pan_african_design_system.dart'
 /// Palette inspired by Sahel sunsets, laterite earth, and savanna canopy.
 /// Every value is hand-picked to maintain WCAG AA contrast on its paired
 /// surface while preserving warmth — no cool greys, no pure black.
+@Deprecated('Use LingAfriqTokens. This file is a retired design system.')
 class ModernGriotColors {
   ModernGriotColors._();
 
   // ── Primary ──────────────────────────────────────────────────────────────
   /// Earthy ochre / terracotta — brand anchor.
-  static const Color primary = Color(0xFF9E3D00);
+  static const Color primary = LingAfriqTokens.hexFF9E3D00;
 
   /// Sun-glow orange — used for primary containers and vibrant fills.
-  static const Color primaryContainer = Color(0xFFFF7A35);
+  static const Color primaryContainer = LingAfriqTokens.hexFFFF7A35;
 
   /// Text/icons on primary surfaces.
-  static const Color onPrimary = Color(0xFFFFF0EA);
+  static const Color onPrimary = LingAfriqTokens.hexFFFFF0EA;
 
   /// Text/icons on primaryContainer.
-  static const Color onPrimaryContainer = Color(0xFF3A1500);
+  static const Color onPrimaryContainer = LingAfriqTokens.hexFF3A1500;
 
   /// M3-style aliases for surfaces that pair with [primary] / [onPrimary].
   static const Color primaryFixed = primaryContainer;
@@ -55,77 +54,88 @@ class ModernGriotColors {
 
   // ── Secondary ────────────────────────────────────────────────────────────
   /// Deep forest green — knowledge, growth.
-  static const Color secondary = Color(0xFF526124);
+  static const Color secondary = LingAfriqTokens.hexFF526124;
 
   /// Text/icons on secondary surfaces.
-  static const Color onSecondary = Color(0xFFE8FBAC);
+  static const Color onSecondary = LingAfriqTokens.hexFFE8FBAC;
 
   /// Lighter secondary fill for containers.
-  static const Color secondaryContainer = Color(0xFFD6ED79);
+  static const Color secondaryContainer = LingAfriqTokens.hexFFD6ED79;
 
   /// Text/icons on secondaryContainer.
-  static const Color onSecondaryContainer = Color(0xFF192600);
+  static const Color onSecondaryContainer = LingAfriqTokens.hexFF192600;
 
   // ── Tertiary (accent) ────────────────────────────────────────────────────
-  static const Color tertiary = Color(0xFF7B5733);
-  static const Color onTertiary = Color(0xFFFFFFFF);
-  static const Color tertiaryContainer = Color(0xFFFFDCC4);
-  static const Color onTertiaryContainer = Color(0xFF2E1500);
+  static const Color tertiary = LingAfriqTokens.hexFF7B5733;
+  static const Color onTertiary = LingAfriqTokens.hexFFFFFFFF;
+  static const Color tertiaryContainer = LingAfriqTokens.hexFFFFDCC4;
+  static const Color onTertiaryContainer = LingAfriqTokens.hexFF2E1500;
 
   // ── Surface system (tonal layering, lightest → darkest) ──────────────────
   /// Warm parchment — main canvas.
-  static const Color surface = Color(0xFFFEF6E7);
+  static const Color surface = LingAfriqTokens.hexFFFEF6E7;
 
   /// Default container tint.
-  static const Color surfaceContainer = Color(0xFFF0E7D6);
+  static const Color surfaceContainer = LingAfriqTokens.hexFFF0E7D6;
 
   /// Cards sitting low (slightly lighter than container).
-  static const Color surfaceContainerLow = Color(0xFFF8F0E0);
+  static const Color surfaceContainerLow = LingAfriqTokens.hexFFF8F0E0;
 
   /// Elevated cards, modals.
-  static const Color surfaceContainerLowest = Color(0xFFFFFFFF);
+  static const Color surfaceContainerLowest = LingAfriqTokens.hexFFFFFFFF;
 
   /// Between container and highest — subtle layering.
-  static const Color surfaceContainerHigh = Color(0xFFE8DFD0);
+  static const Color surfaceContainerHigh = LingAfriqTokens.hexFFE8DFD0;
 
   /// Input backgrounds, recessed areas.
-  static const Color surfaceContainerHighest = Color(0xFFE5DCC9);
+  static const Color surfaceContainerHighest = LingAfriqTokens.hexFFE5DCC9;
 
   /// Dimmed surface for overlays / scrims.
-  static const Color surfaceDim = Color(0xFFDCD4C0);
+  static const Color surfaceDim = LingAfriqTokens.hexFFDCD4C0;
 
   /// Variant surface — same role as highest, semantic alias.
-  static const Color surfaceVariant = Color(0xFFE5DCC9);
+  static const Color surfaceVariant = LingAfriqTokens.hexFFE5DCC9;
 
   // ── On-surface ───────────────────────────────────────────────────────────
   /// Warm dark — headings, primary text. NEVER pure black.
-  static const Color onSurface = Color(0xFF322E25);
+  static const Color onSurface = LingAfriqTokens.hexFF322E25;
 
   /// Body text, secondary labels.
-  static const Color onSurfaceVariant = Color(0xFF605B50);
+  static const Color onSurfaceVariant = LingAfriqTokens.hexFF605B50;
 
   // ── Outline ──────────────────────────────────────────────────────────────
   /// Standard outline.
-  static const Color outline = Color(0xFF8A8478);
+  static const Color outline = LingAfriqTokens.hexFF8A8478;
 
   /// Ghost border for inputs — apply at 15% opacity only.
-  static const Color outlineVariant = Color(0xFFB3AC9F);
+  static const Color outlineVariant = LingAfriqTokens.hexFFB3AC9F;
 
   // ── Error ────────────────────────────────────────────────────────────────
-  static const Color error = Color(0xFFBA1A1A);
-  static const Color onError = Color(0xFFFFFFFF);
-  static const Color errorContainer = Color(0xFFFFDAD6);
-  static const Color onErrorContainer = Color(0xFF410002);
+  static const Color error = LingAfriqTokens.hexFFBA1A1A;
+  static const Color onError = LingAfriqTokens.hexFFFFFFFF;
+  static const Color errorContainer = LingAfriqTokens.hexFFFFDAD6;
+  static const Color onErrorContainer = LingAfriqTokens.hexFF410002;
 
   // ── Inverse ──────────────────────────────────────────────────────────────
-  static const Color inverseSurface = Color(0xFF322E25);
-  static const Color onInverseSurface = Color(0xFFFEF6E7);
-  static const Color inversePrimary = Color(0xFFFFB68A);
+  static const Color inverseSurface = LingAfriqTokens.hexFF322E25;
+  static const Color onInverseSurface = LingAfriqTokens.hexFFFEF6E7;
+  static const Color inversePrimary = LingAfriqTokens.hexFFFFB68A;
 
   // ── Misc ─────────────────────────────────────────────────────────────────
-  static const Color shadow = Color(0xFF322E25);
-  static const Color scrim = Color(0xFF322E25);
+  static const Color shadow = LingAfriqTokens.hexFF322E25;
+  static const Color scrim = LingAfriqTokens.hexFF322E25;
   static const Color surfaceTint = primary;
+
+  // ── Brand kit accents (LingAfriq Gold / Coral) ────────────────────────────
+  /// CTA fill. Pair only with [onBrandGold] (AA ≥ 8:1).
+  static const Color brandGold = LingAfriqTokens.hexFFFFC53D;
+
+  /// Text/icons on [brandGold].
+  static const Color onBrandGold = LingAfriqTokens.hexFF322E25;
+
+  /// Selection and text accent. Darkened from #E5603B so body text clears 4.5:1
+  /// on parchment and on white.
+  static const Color brandCoral = LingAfriqTokens.hexFFC4413A;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -136,59 +146,60 @@ class ModernGriotColors {
 ///
 /// Surfaces use dark warm browns (never pure black / cool grey).
 /// Primary shifts to lighter peach-orange for contrast.
+@Deprecated('Use LingAfriqTokens. This file is a retired design system.')
 class ModernGriotColorsDark {
   ModernGriotColorsDark._();
 
   // ── Primary ──────────────────────────────────────────────────────────────
-  static const Color primary = Color(0xFFFFB68A);
-  static const Color primaryContainer = Color(0xFF7C2D00);
-  static const Color onPrimary = Color(0xFF532200);
-  static const Color onPrimaryContainer = Color(0xFFFFDBC9);
+  static const Color primary = LingAfriqTokens.hexFFFFB68A;
+  static const Color primaryContainer = LingAfriqTokens.hexFF7C2D00;
+  static const Color onPrimary = LingAfriqTokens.hexFF532200;
+  static const Color onPrimaryContainer = LingAfriqTokens.hexFFFFDBC9;
 
   // ── Secondary ────────────────────────────────────────────────────────────
-  static const Color secondary = Color(0xFFBBD15F);
-  static const Color onSecondary = Color(0xFF2A3400);
-  static const Color secondaryContainer = Color(0xFF3D4A0E);
-  static const Color onSecondaryContainer = Color(0xFFD6ED79);
+  static const Color secondary = LingAfriqTokens.hexFFBBD15F;
+  static const Color onSecondary = LingAfriqTokens.hexFF2A3400;
+  static const Color secondaryContainer = LingAfriqTokens.hexFF3D4A0E;
+  static const Color onSecondaryContainer = LingAfriqTokens.hexFFD6ED79;
 
   // ── Tertiary ─────────────────────────────────────────────────────────────
-  static const Color tertiary = Color(0xFFE6BF99);
-  static const Color onTertiary = Color(0xFF462A0D);
-  static const Color tertiaryContainer = Color(0xFF60401E);
-  static const Color onTertiaryContainer = Color(0xFFFFDCC4);
+  static const Color tertiary = LingAfriqTokens.hexFFE6BF99;
+  static const Color onTertiary = LingAfriqTokens.hexFF462A0D;
+  static const Color tertiaryContainer = LingAfriqTokens.hexFF60401E;
+  static const Color onTertiaryContainer = LingAfriqTokens.hexFFFFDCC4;
 
   // ── Surface system (darkest → lightest) ──────────────────────────────────
-  static const Color surface = Color(0xFF1C1A15);
-  static const Color surfaceContainer = Color(0xFF252219);
-  static const Color surfaceContainerLow = Color(0xFF201E17);
-  static const Color surfaceContainerLowest = Color(0xFF16140F);
-  static const Color surfaceContainerHigh = Color(0xFF2E2A22);
-  static const Color surfaceContainerHighest = Color(0xFF3A352C);
-  static const Color surfaceDim = Color(0xFF1C1A15);
-  static const Color surfaceVariant = Color(0xFF4D4639);
+  static const Color surface = LingAfriqTokens.hexFF1C1A15;
+  static const Color surfaceContainer = LingAfriqTokens.hexFF252219;
+  static const Color surfaceContainerLow = LingAfriqTokens.hexFF201E17;
+  static const Color surfaceContainerLowest = LingAfriqTokens.hexFF16140F;
+  static const Color surfaceContainerHigh = LingAfriqTokens.hexFF2E2A22;
+  static const Color surfaceContainerHighest = LingAfriqTokens.hexFF3A352C;
+  static const Color surfaceDim = LingAfriqTokens.hexFF1C1A15;
+  static const Color surfaceVariant = LingAfriqTokens.hexFF4D4639;
 
   // ── On-surface ───────────────────────────────────────────────────────────
-  static const Color onSurface = Color(0xFFEDE0D0);
-  static const Color onSurfaceVariant = Color(0xFFCFC5B4);
+  static const Color onSurface = LingAfriqTokens.hexFFEDE0D0;
+  static const Color onSurfaceVariant = LingAfriqTokens.hexFFCFC5B4;
 
   // ── Outline ──────────────────────────────────────────────────────────────
-  static const Color outline = Color(0xFF9A9080);
-  static const Color outlineVariant = Color(0xFF4D4639);
+  static const Color outline = LingAfriqTokens.hexFF9A9080;
+  static const Color outlineVariant = LingAfriqTokens.hexFF4D4639;
 
   // ── Error ────────────────────────────────────────────────────────────────
-  static const Color error = Color(0xFFFFB4AB);
-  static const Color onError = Color(0xFF690005);
-  static const Color errorContainer = Color(0xFF93000A);
-  static const Color onErrorContainer = Color(0xFFFFDAD6);
+  static const Color error = LingAfriqTokens.hexFFFFB4AB;
+  static const Color onError = LingAfriqTokens.hexFF690005;
+  static const Color errorContainer = LingAfriqTokens.hexFF93000A;
+  static const Color onErrorContainer = LingAfriqTokens.hexFFFFDAD6;
 
   // ── Inverse ──────────────────────────────────────────────────────────────
-  static const Color inverseSurface = Color(0xFFEDE0D0);
-  static const Color onInverseSurface = Color(0xFF322E25);
-  static const Color inversePrimary = Color(0xFF9E3D00);
+  static const Color inverseSurface = LingAfriqTokens.hexFFEDE0D0;
+  static const Color onInverseSurface = LingAfriqTokens.hexFF322E25;
+  static const Color inversePrimary = LingAfriqTokens.hexFF9E3D00;
 
   // ── Misc ─────────────────────────────────────────────────────────────────
-  static const Color shadow = Color(0xFF000000);
-  static const Color scrim = Color(0xFF000000);
+  static const Color shadow = LingAfriqTokens.hexFF000000;
+  static const Color scrim = LingAfriqTokens.hexFF000000;
   static const Color surfaceTint = primary;
 }
 
@@ -201,76 +212,76 @@ class ModernGriotColorScheme {
   ModernGriotColorScheme._();
 
   static ColorScheme get light => const ColorScheme(
-        brightness: Brightness.light,
-        primary: ModernGriotColors.primary,
-        onPrimary: ModernGriotColors.onPrimary,
-        primaryContainer: ModernGriotColors.primaryContainer,
-        onPrimaryContainer: ModernGriotColors.onPrimaryContainer,
-        secondary: ModernGriotColors.secondary,
-        onSecondary: ModernGriotColors.onSecondary,
-        secondaryContainer: ModernGriotColors.secondaryContainer,
-        onSecondaryContainer: ModernGriotColors.onSecondaryContainer,
-        tertiary: ModernGriotColors.tertiary,
-        onTertiary: ModernGriotColors.onTertiary,
-        tertiaryContainer: ModernGriotColors.tertiaryContainer,
-        onTertiaryContainer: ModernGriotColors.onTertiaryContainer,
-        error: ModernGriotColors.error,
-        onError: ModernGriotColors.onError,
-        errorContainer: ModernGriotColors.errorContainer,
-        onErrorContainer: ModernGriotColors.onErrorContainer,
-        surface: ModernGriotColors.surface,
-        onSurface: ModernGriotColors.onSurface,
-        surfaceContainerHighest: ModernGriotColors.surfaceContainerHighest,
-        surfaceContainerHigh: ModernGriotColors.surfaceContainerHigh,
-        surfaceContainer: ModernGriotColors.surfaceContainer,
-        surfaceContainerLow: ModernGriotColors.surfaceContainerLow,
-        surfaceContainerLowest: ModernGriotColors.surfaceContainerLowest,
-        onSurfaceVariant: ModernGriotColors.onSurfaceVariant,
-        outline: ModernGriotColors.outline,
-        outlineVariant: ModernGriotColors.outlineVariant,
-        shadow: ModernGriotColors.shadow,
-        scrim: ModernGriotColors.scrim,
-        inverseSurface: ModernGriotColors.inverseSurface,
-        onInverseSurface: ModernGriotColors.onInverseSurface,
-        inversePrimary: ModernGriotColors.inversePrimary,
-        surfaceTint: ModernGriotColors.surfaceTint,
-      );
+    brightness: Brightness.light,
+    primary: ModernGriotColors.primary,
+    onPrimary: ModernGriotColors.onPrimary,
+    primaryContainer: ModernGriotColors.primaryContainer,
+    onPrimaryContainer: ModernGriotColors.onPrimaryContainer,
+    secondary: ModernGriotColors.secondary,
+    onSecondary: ModernGriotColors.onSecondary,
+    secondaryContainer: ModernGriotColors.secondaryContainer,
+    onSecondaryContainer: ModernGriotColors.onSecondaryContainer,
+    tertiary: ModernGriotColors.tertiary,
+    onTertiary: ModernGriotColors.onTertiary,
+    tertiaryContainer: ModernGriotColors.tertiaryContainer,
+    onTertiaryContainer: ModernGriotColors.onTertiaryContainer,
+    error: ModernGriotColors.error,
+    onError: ModernGriotColors.onError,
+    errorContainer: ModernGriotColors.errorContainer,
+    onErrorContainer: ModernGriotColors.onErrorContainer,
+    surface: ModernGriotColors.surface,
+    onSurface: ModernGriotColors.onSurface,
+    surfaceContainerHighest: ModernGriotColors.surfaceContainerHighest,
+    surfaceContainerHigh: ModernGriotColors.surfaceContainerHigh,
+    surfaceContainer: ModernGriotColors.surfaceContainer,
+    surfaceContainerLow: ModernGriotColors.surfaceContainerLow,
+    surfaceContainerLowest: ModernGriotColors.surfaceContainerLowest,
+    onSurfaceVariant: ModernGriotColors.onSurfaceVariant,
+    outline: ModernGriotColors.outline,
+    outlineVariant: ModernGriotColors.outlineVariant,
+    shadow: ModernGriotColors.shadow,
+    scrim: ModernGriotColors.scrim,
+    inverseSurface: ModernGriotColors.inverseSurface,
+    onInverseSurface: ModernGriotColors.onInverseSurface,
+    inversePrimary: ModernGriotColors.inversePrimary,
+    surfaceTint: ModernGriotColors.surfaceTint,
+  );
 
   static ColorScheme get dark => const ColorScheme(
-        brightness: Brightness.dark,
-        primary: ModernGriotColorsDark.primary,
-        onPrimary: ModernGriotColorsDark.onPrimary,
-        primaryContainer: ModernGriotColorsDark.primaryContainer,
-        onPrimaryContainer: ModernGriotColorsDark.onPrimaryContainer,
-        secondary: ModernGriotColorsDark.secondary,
-        onSecondary: ModernGriotColorsDark.onSecondary,
-        secondaryContainer: ModernGriotColorsDark.secondaryContainer,
-        onSecondaryContainer: ModernGriotColorsDark.onSecondaryContainer,
-        tertiary: ModernGriotColorsDark.tertiary,
-        onTertiary: ModernGriotColorsDark.onTertiary,
-        tertiaryContainer: ModernGriotColorsDark.tertiaryContainer,
-        onTertiaryContainer: ModernGriotColorsDark.onTertiaryContainer,
-        error: ModernGriotColorsDark.error,
-        onError: ModernGriotColorsDark.onError,
-        errorContainer: ModernGriotColorsDark.errorContainer,
-        onErrorContainer: ModernGriotColorsDark.onErrorContainer,
-        surface: ModernGriotColorsDark.surface,
-        onSurface: ModernGriotColorsDark.onSurface,
-        surfaceContainerHighest: ModernGriotColorsDark.surfaceContainerHighest,
-        surfaceContainerHigh: ModernGriotColorsDark.surfaceContainerHigh,
-        surfaceContainer: ModernGriotColorsDark.surfaceContainer,
-        surfaceContainerLow: ModernGriotColorsDark.surfaceContainerLow,
-        surfaceContainerLowest: ModernGriotColorsDark.surfaceContainerLowest,
-        onSurfaceVariant: ModernGriotColorsDark.onSurfaceVariant,
-        outline: ModernGriotColorsDark.outline,
-        outlineVariant: ModernGriotColorsDark.outlineVariant,
-        shadow: ModernGriotColorsDark.shadow,
-        scrim: ModernGriotColorsDark.scrim,
-        inverseSurface: ModernGriotColorsDark.inverseSurface,
-        onInverseSurface: ModernGriotColorsDark.onInverseSurface,
-        inversePrimary: ModernGriotColorsDark.inversePrimary,
-        surfaceTint: ModernGriotColorsDark.surfaceTint,
-      );
+    brightness: Brightness.dark,
+    primary: ModernGriotColorsDark.primary,
+    onPrimary: ModernGriotColorsDark.onPrimary,
+    primaryContainer: ModernGriotColorsDark.primaryContainer,
+    onPrimaryContainer: ModernGriotColorsDark.onPrimaryContainer,
+    secondary: ModernGriotColorsDark.secondary,
+    onSecondary: ModernGriotColorsDark.onSecondary,
+    secondaryContainer: ModernGriotColorsDark.secondaryContainer,
+    onSecondaryContainer: ModernGriotColorsDark.onSecondaryContainer,
+    tertiary: ModernGriotColorsDark.tertiary,
+    onTertiary: ModernGriotColorsDark.onTertiary,
+    tertiaryContainer: ModernGriotColorsDark.tertiaryContainer,
+    onTertiaryContainer: ModernGriotColorsDark.onTertiaryContainer,
+    error: ModernGriotColorsDark.error,
+    onError: ModernGriotColorsDark.onError,
+    errorContainer: ModernGriotColorsDark.errorContainer,
+    onErrorContainer: ModernGriotColorsDark.onErrorContainer,
+    surface: ModernGriotColorsDark.surface,
+    onSurface: ModernGriotColorsDark.onSurface,
+    surfaceContainerHighest: ModernGriotColorsDark.surfaceContainerHighest,
+    surfaceContainerHigh: ModernGriotColorsDark.surfaceContainerHigh,
+    surfaceContainer: ModernGriotColorsDark.surfaceContainer,
+    surfaceContainerLow: ModernGriotColorsDark.surfaceContainerLow,
+    surfaceContainerLowest: ModernGriotColorsDark.surfaceContainerLowest,
+    onSurfaceVariant: ModernGriotColorsDark.onSurfaceVariant,
+    outline: ModernGriotColorsDark.outline,
+    outlineVariant: ModernGriotColorsDark.outlineVariant,
+    shadow: ModernGriotColorsDark.shadow,
+    scrim: ModernGriotColorsDark.scrim,
+    inverseSurface: ModernGriotColorsDark.inverseSurface,
+    onInverseSurface: ModernGriotColorsDark.onInverseSurface,
+    inversePrimary: ModernGriotColorsDark.inversePrimary,
+    surfaceTint: ModernGriotColorsDark.surfaceTint,
+  );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -285,35 +296,26 @@ class ModernGriotColorScheme {
 class ModernGriotTypography {
   ModernGriotTypography._();
 
-  static const List<String> _fontFallback = [
-    'Noto Sans',
-    'Roboto',
-    'Segoe UI',
-    'Arial Unicode MS',
-    'Apple Color Emoji',
-    'Segoe UI Emoji',
-    'Noto Color Emoji',
-  ];
+  static const List<String> _fontFallback = LingAfriqFonts.fallback;
 
   static TextStyle _base(TextStyle style, {Color? color}) =>
       style.copyWith(fontFamilyFallback: _fontFallback, color: color);
 
   // ── Display ────────────────────────────────────────────────────────────
 
-  static TextStyle displayLarge({BuildContext? context, Color? color}) =>
-      _base(
-        GoogleFonts.plusJakartaSans(
-          fontSize: 57.sp,
-          fontWeight: FontWeight.w700,
-          letterSpacing: -0.25,
-          height: 1.12,
-        ),
-        color: color ?? _headingColor(context),
-      );
+  static TextStyle displayLarge({BuildContext? context, Color? color}) => _base(
+    LingAfriqFonts.displayStyle(
+      fontSize: 57.sp,
+      fontWeight: FontWeight.w700,
+      letterSpacing: -0.25,
+      height: 1.12,
+    ),
+    color: color ?? _headingColor(context),
+  );
 
   static TextStyle displayMedium({BuildContext? context, Color? color}) =>
       _base(
-        GoogleFonts.plusJakartaSans(
+        LingAfriqFonts.displayStyle(
           fontSize: 45.sp,
           fontWeight: FontWeight.w700,
           height: 1.16,
@@ -321,21 +323,20 @@ class ModernGriotTypography {
         color: color ?? _headingColor(context),
       );
 
-  static TextStyle displaySmall({BuildContext? context, Color? color}) =>
-      _base(
-        GoogleFonts.plusJakartaSans(
-          fontSize: 36.sp,
-          fontWeight: FontWeight.w600,
-          height: 1.22,
-        ),
-        color: color ?? _headingColor(context),
-      );
+  static TextStyle displaySmall({BuildContext? context, Color? color}) => _base(
+    LingAfriqFonts.displayStyle(
+      fontSize: 36.sp,
+      fontWeight: FontWeight.w600,
+      height: 1.22,
+    ),
+    color: color ?? _headingColor(context),
+  );
 
   // ── Headline ───────────────────────────────────────────────────────────
 
   static TextStyle headlineLarge({BuildContext? context, Color? color}) =>
       _base(
-        GoogleFonts.plusJakartaSans(
+        LingAfriqFonts.displayStyle(
           fontSize: 32.sp,
           fontWeight: FontWeight.w600,
           height: 1.25,
@@ -345,7 +346,7 @@ class ModernGriotTypography {
 
   static TextStyle headlineMedium({BuildContext? context, Color? color}) =>
       _base(
-        GoogleFonts.plusJakartaSans(
+        LingAfriqFonts.displayStyle(
           fontSize: 28.sp,
           fontWeight: FontWeight.w500,
           height: 1.29,
@@ -355,7 +356,7 @@ class ModernGriotTypography {
 
   static TextStyle headlineSmall({BuildContext? context, Color? color}) =>
       _base(
-        GoogleFonts.plusJakartaSans(
+        LingAfriqFonts.displayStyle(
           fontSize: 24.sp,
           fontWeight: FontWeight.w500,
           height: 1.33,
@@ -366,97 +367,97 @@ class ModernGriotTypography {
   // ── Title ──────────────────────────────────────────────────────────────
 
   static TextStyle titleLarge({BuildContext? context, Color? color}) => _base(
-        GoogleFonts.plusJakartaSans(
-          fontSize: 22.sp,
-          fontWeight: FontWeight.w700,
-          height: 1.27,
-        ),
-        color: color ?? _headingColor(context),
-      );
+    LingAfriqFonts.displayStyle(
+      fontSize: 22.sp,
+      fontWeight: FontWeight.w700,
+      height: 1.27,
+    ),
+    color: color ?? _headingColor(context),
+  );
 
   static TextStyle titleMedium({BuildContext? context, Color? color}) => _base(
-        GoogleFonts.plusJakartaSans(
-          fontSize: 16.sp,
-          fontWeight: FontWeight.w600,
-          letterSpacing: 0.15,
-          height: 1.5,
-        ),
-        color: color ?? _headingColor(context),
-      );
+    LingAfriqFonts.displayStyle(
+      fontSize: 16.sp,
+      fontWeight: FontWeight.w600,
+      letterSpacing: 0.15,
+      height: 1.5,
+    ),
+    color: color ?? _headingColor(context),
+  );
 
   static TextStyle titleSmall({BuildContext? context, Color? color}) => _base(
-        GoogleFonts.plusJakartaSans(
-          fontSize: 14.sp,
-          fontWeight: FontWeight.w600,
-          letterSpacing: 0.1,
-          height: 1.43,
-        ),
-        color: color ?? _headingColor(context),
-      );
+    LingAfriqFonts.displayStyle(
+      fontSize: 14.sp,
+      fontWeight: FontWeight.w600,
+      letterSpacing: 0.1,
+      height: 1.43,
+    ),
+    color: color ?? _headingColor(context),
+  );
 
   // ── Body ───────────────────────────────────────────────────────────────
 
   static TextStyle bodyLarge({BuildContext? context, Color? color}) => _base(
-        GoogleFonts.plusJakartaSans(
-          fontSize: 16.sp,
-          fontWeight: FontWeight.w400,
-          letterSpacing: 0.5,
-          height: 1.5,
-        ),
-        color: color ?? _bodyColor(context),
-      );
+    LingAfriqFonts.textStyle(
+      fontSize: 16.sp,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.5,
+      height: 1.5,
+    ),
+    color: color ?? _bodyColor(context),
+  );
 
   static TextStyle bodyMedium({BuildContext? context, Color? color}) => _base(
-        GoogleFonts.plusJakartaSans(
-          fontSize: 14.sp,
-          fontWeight: FontWeight.w400,
-          letterSpacing: 0.25,
-          height: 1.43,
-        ),
-        color: color ?? _bodyColor(context),
-      );
+    LingAfriqFonts.textStyle(
+      fontSize: 14.sp,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.25,
+      height: 1.45,
+    ),
+    color: color ?? _bodyColor(context),
+  );
 
   static TextStyle bodySmall({BuildContext? context, Color? color}) => _base(
-        GoogleFonts.plusJakartaSans(
-          fontSize: 12.sp,
-          fontWeight: FontWeight.w400,
-          letterSpacing: 0.4,
-          height: 1.33,
-        ),
-        color: color ?? _bodyColor(context),
-      );
+    LingAfriqFonts.textStyle(
+      fontSize: 12.sp,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.4,
+      height: 1.45,
+    ),
+    color: color ?? _bodyColor(context),
+  );
 
   // ── Label (wider spacing for uppercase chip / badge styling) ───────────
 
   static TextStyle labelLarge({BuildContext? context, Color? color}) => _base(
-        GoogleFonts.plusJakartaSans(
-          fontSize: 14.sp,
-          fontWeight: FontWeight.w600,
-          letterSpacing: 0.1,
-          height: 1.43,
-        ),
-        color: color ?? _headingColor(context),
-      );
+    LingAfriqFonts.displayStyle(
+      fontSize: 14.sp,
+      fontWeight: FontWeight.w600,
+      letterSpacing: 0.1,
+      height: 1.43,
+    ),
+    color: color ?? _headingColor(context),
+  );
 
   static TextStyle labelMedium({BuildContext? context, Color? color}) => _base(
-        GoogleFonts.plusJakartaSans(
-          fontSize: 12.sp,
-          fontWeight: FontWeight.w600,
-          letterSpacing: 0.5,
-          height: 1.33,
-        ),
-        color: color ?? _headingColor(context),
-      );
+    LingAfriqFonts.textStyle(
+      fontSize: 12.sp,
+      fontWeight: FontWeight.w600,
+      letterSpacing: 0.5,
+      height: 1.33,
+    ),
+    color: color ?? _headingColor(context),
+  );
 
   static TextStyle labelSmall({BuildContext? context, Color? color}) => _base(
-        GoogleFonts.plusJakartaSans(
-          fontSize: 11.sp,
-          fontWeight: FontWeight.w500,
-          letterSpacing: 0.5,
-          height: 1.45,
-        ),
-        color: color ?? _bodyColor(context),
-      );
+    LingAfriqFonts.textStyle(
+      fontSize: 11.sp,
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0.5,
+      height: 1.45,
+    ),
+    color: color ?? _bodyColor(context),
+  );
 
   // ── Internal helpers ──────────────────────────────────────────────────
 
@@ -487,20 +488,14 @@ class ModernGriotGradients {
   static const LinearGradient signatureGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [
-      ModernGriotColors.primary,
-      ModernGriotColors.primaryContainer,
-    ],
+    colors: [ModernGriotColors.primary, ModernGriotColors.primaryContainer],
   );
 
   /// Secondary range — success states, progress indicators.
   static const LinearGradient forestGrowth = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [
-      ModernGriotColors.secondary,
-      Color(0xFF7A8C3A),
-    ],
+    colors: [ModernGriotColors.secondary, LingAfriqTokens.hexFF7A8C3A],
   );
 
   /// Dark surface gradient — dark-mode hero / app-bar backgrounds.
@@ -517,26 +512,23 @@ class ModernGriotGradients {
   static const LinearGradient sunsetWarm = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [
-      ModernGriotColors.surface,
-      Color(0xFFFDE8D0),
-    ],
+    colors: [ModernGriotColors.surface, LingAfriqTokens.hexFFFDE8D0],
   );
 
   /// Surface at 80% opacity — glassmorphism panels.
   static LinearGradient glassSurface({bool isDark = false}) => LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: isDark
-            ? [
-                ModernGriotColorsDark.surfaceContainer.withAlpha(204),
-                ModernGriotColorsDark.surfaceContainerHigh.withAlpha(204),
-              ]
-            : [
-                ModernGriotColors.surfaceContainerLowest.withAlpha(204),
-                ModernGriotColors.surfaceContainerLow.withAlpha(204),
-              ],
-      );
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: isDark
+        ? [
+            ModernGriotColorsDark.surfaceContainer.withAlpha(204),
+            ModernGriotColorsDark.surfaceContainerHigh.withAlpha(204),
+          ]
+        : [
+            ModernGriotColors.surfaceContainerLowest.withAlpha(204),
+            ModernGriotColors.surfaceContainerLow.withAlpha(204),
+          ],
+  );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -552,62 +544,73 @@ class ModernGriotShadows {
 
   /// Subtle elevation — lighter than [sm].
   static List<BoxShadow> get xs => [
-        BoxShadow(color: _ambient, blurRadius: 4, offset: const Offset(0, 1)),
-      ];
+    BoxShadow(color: _ambient, blurRadius: 4, offset: const Offset(0, 1)),
+  ];
 
   static List<BoxShadow> get sm => [
-        BoxShadow(color: _ambient, blurRadius: 8, offset: const Offset(0, 2)),
-      ];
+    BoxShadow(color: _ambient, blurRadius: 8, offset: const Offset(0, 2)),
+  ];
 
   static List<BoxShadow> get md => [
-        BoxShadow(color: _ambient, blurRadius: 20, offset: const Offset(0, 4)),
-      ];
+    BoxShadow(color: _ambient, blurRadius: 20, offset: const Offset(0, 4)),
+  ];
 
   static List<BoxShadow> get lg => [
-        BoxShadow(
-            color: _ambient, blurRadius: 30, offset: const Offset(0, 8)),
-      ];
+    BoxShadow(color: _ambient, blurRadius: 30, offset: const Offset(0, 8)),
+  ];
 
   static List<BoxShadow> get xl => [
-        BoxShadow(
-            color: _ambient, blurRadius: 40, offset: const Offset(0, 12)),
-      ];
+    BoxShadow(color: _ambient, blurRadius: 40, offset: const Offset(0, 12)),
+  ];
 
   /// FAB shadow — tinted with primary at 15% opacity for brand warmth.
   static List<BoxShadow> get fab => [
-        BoxShadow(
-          color: ModernGriotColors.primary.withAlpha(38),
-          blurRadius: 24,
-          offset: const Offset(0, 8),
-        ),
-      ];
+    BoxShadow(
+      color: ModernGriotColors.primary.withAlpha(38),
+      blurRadius: 24,
+      offset: const Offset(0, 8),
+    ),
+  ];
 
   /// Colored glow (e.g. success badge, warning).
   static List<BoxShadow> glow(Color color) => [
-        BoxShadow(
-          color: color.withAlpha(38),
-          blurRadius: 24,
-          spreadRadius: 2,
-        ),
-      ];
+    BoxShadow(color: color.withAlpha(38), blurRadius: 24, spreadRadius: 2),
+  ];
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// SPACING — reuse PanAfricanSpacing, re-exported above
+// SPACING — 4/8 grid (canonical; prefer over ad-hoc .h/.w literals)
 // ─────────────────────────────────────────────────────────────────────────────
-//
-// Spacing is provided by [PanAfricanSpacing] from pan_african_design_system.dart.
-//   PanAfricanSpacing.xxxs  → 2
-//   PanAfricanSpacing.xxs   → 4
-//   PanAfricanSpacing.xs    → 8
-//   PanAfricanSpacing.sm    → 12
-//   PanAfricanSpacing.md    → 16
-//   PanAfricanSpacing.lg    → 24
-//   PanAfricanSpacing.xl    → 32
-//   PanAfricanSpacing.xxl   → 48
-//   PanAfricanSpacing.xxxl  → 64
-//
-// Import this file and use PanAfricanSpacing directly.
+
+/// Spacing tokens on a strict 4/8 grid.
+///
+/// Apply with ScreenUtil at the call site: `ModernGriotSpacing.md.h` (vertical)
+/// or `ModernGriotSpacing.md.w` (horizontal). Do not invent off-grid values
+/// (6, 10, 14, 20, 28) in feature UI.
+class ModernGriotSpacing {
+  ModernGriotSpacing._();
+
+  static const double xxs = 4;
+  static const double xs = 8;
+  static const double sm = 12;
+  static const double md = 16;
+  static const double lg = 24;
+  static const double xl = 32;
+  static const double xxl = 48;
+  static const double xxxl = 64;
+}
+
+/// Layout constants that pair with [ModernGriotSpacing] / [ModernGriotRadius].
+class ModernGriotLayout {
+  ModernGriotLayout._();
+
+  /// Minimum tappable target (WCAG 2.5.5 / Material).
+  static const double minTouchTarget = 48;
+
+  /// Language / goal selection row height range (reference pack: 56–64).
+  static const double selectRowMin = 56;
+  static const double selectRowComfortable = 64;
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // RADIUS
@@ -679,7 +682,7 @@ class ModernGriotThemeExtension
 
   static const ModernGriotThemeExtension light = ModernGriotThemeExtension(
     signatureGradient: ModernGriotGradients.signatureGradient,
-    glassColor: Color(0xCCFFFFFF),
+    glassColor: LingAfriqTokens.hexCCFFFFFF,
     glassBlur: 24.0,
     ambientShadowColor: ModernGriotColors.onSurface,
     patternOpacity: 0.03,
@@ -687,9 +690,9 @@ class ModernGriotThemeExtension
 
   static const ModernGriotThemeExtension dark = ModernGriotThemeExtension(
     signatureGradient: ModernGriotGradients.signatureGradient,
-    glassColor: Color(0xCC252219),
+    glassColor: LingAfriqTokens.hexCC252219,
     glassBlur: 24.0,
-    ambientShadowColor: Color(0xFF000000),
+    ambientShadowColor: LingAfriqTokens.hexFF000000,
     patternOpacity: 0.05,
   );
 
@@ -702,14 +705,13 @@ class ModernGriotThemeExtension
     double? glassBlur,
     Color? ambientShadowColor,
     double? patternOpacity,
-  }) =>
-      ModernGriotThemeExtension(
-        signatureGradient: signatureGradient ?? this.signatureGradient,
-        glassColor: glassColor ?? this.glassColor,
-        glassBlur: glassBlur ?? this.glassBlur,
-        ambientShadowColor: ambientShadowColor ?? this.ambientShadowColor,
-        patternOpacity: patternOpacity ?? this.patternOpacity,
-      );
+  }) => ModernGriotThemeExtension(
+    signatureGradient: signatureGradient ?? this.signatureGradient,
+    glassColor: glassColor ?? this.glassColor,
+    glassBlur: glassBlur ?? this.glassBlur,
+    ambientShadowColor: ambientShadowColor ?? this.ambientShadowColor,
+    patternOpacity: patternOpacity ?? this.patternOpacity,
+  );
 
   @override
   ModernGriotThemeExtension lerp(
@@ -718,12 +720,18 @@ class ModernGriotThemeExtension
   ) {
     if (other is! ModernGriotThemeExtension) return this;
     return ModernGriotThemeExtension(
-      signatureGradient:
-          LinearGradient.lerp(signatureGradient, other.signatureGradient, t)!,
+      signatureGradient: LinearGradient.lerp(
+        signatureGradient,
+        other.signatureGradient,
+        t,
+      )!,
       glassColor: Color.lerp(glassColor, other.glassColor, t)!,
       glassBlur: lerpDouble(glassBlur, other.glassBlur, t)!,
-      ambientShadowColor:
-          Color.lerp(ambientShadowColor, other.ambientShadowColor, t)!,
+      ambientShadowColor: Color.lerp(
+        ambientShadowColor,
+        other.ambientShadowColor,
+        t,
+      )!,
       patternOpacity: lerpDouble(patternOpacity, other.patternOpacity, t)!,
     );
   }

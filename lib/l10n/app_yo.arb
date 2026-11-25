@@ -1,65 +1,518 @@
 {
   "@@locale": "yo",
   "appTitle": "LingAfriq",
-  "welcomeMessage": "E kaabo si LingAfriq",
-  "continueButton": "Tesiwaju",
-  "startLearning": "Bere Kiko",
-  "loading": "N gbe wole...",
-  "errorOccurred": "Asise kan sele",
-  "tryAgain": "Gbiyanju Leekansi",
-  "home": "Ile",
-  "learn": "Ko",
-  "games": "Ere",
-  "profile": "Akosilè",
-  "settings": "Eto",
-  "language": "Ede",
-  "selectLanguage": "Yan Ede",
-  "lessons": "Eko",
-  "quizzes": "Idanwo",
-  "takeQuiz": "Se Idanwo",
-  "takeLesson": "Ko Eko",
-  "dailyStreak": "Itesiwaju Ojoojumo",
-  "daysStreak": "Ojo {count}",
+  "@appTitle": {
+    "linguistReview": true,
+    "betaShipAllowed": false
+  },
+  "welcomeMessage": "Ẹ káàbọ̀ sí LingAfriq",
+  "@welcomeMessage": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "continueButton": "Tẹ̀síwájú",
+  "@continueButton": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "startLearning": "Bẹ̀rẹ̀ ẹ̀kọ́",
+  "@startLearning": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "loading": "Ó ń gbé wọlé...",
+  "@loading": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "errorOccurred": "Àṣìṣe kan ṣẹlẹ̀",
+  "@errorOccurred": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "tryAgain": "Gbìyànjú lẹ́ẹ̀kansi",
+  "@tryAgain": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "home": "Ilé",
+  "@home": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "learn": "Kọ́",
+  "@learn": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "games": "Eré",
+  "@games": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "profile": "Àkọsílẹ̀",
+  "@profile": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "settings": "Ètò",
+  "@settings": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "language": "Èdè",
+  "@language": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "selectLanguage": "Yan èdè",
+  "@selectLanguage": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "lessons": "Ẹ̀kọ́",
+  "@lessons": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "quizzes": "Ìdánwò",
+  "@quizzes": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "takeQuiz": "Ṣe ìdánwò",
+  "@takeQuiz": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "takeLesson": "Kọ́ ẹ̀kọ́",
+  "@takeLesson": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "dailyStreak": "Ìtẹ̀síwájú ojoojúmọ́",
+  "@dailyStreak": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "daysStreak": "Ọjọ́ {count}",
+  "@daysStreak": {
+    "linguistReview": true,
+    "betaShipAllowed": false
+  },
   "xpEarned": "XP {count}",
-  "level": "Ipele",
-  "beginner": "Alabere",
-  "intermediate": "Aarin",
-  "advanced": "Agbayan",
-  "correct": "O to!",
-  "incorrect": "Ko to",
-  "next": "To n bo",
-  "back": "Pada",
-  "skip": "Fo",
-  "cancel": "Fagile",
-  "save": "Fipamo",
-  "done": "Pari",
-  "submit": "Fowosi",
-  "logout": "Jade",
-  "login": "Wole",
-  "signup": "Forukosile",
-  "email": "Imeeli",
-  "password": "Oro asina",
-  "forgotPassword": "Se o gbagbe Oro Asina?",
-  "noAccount": "O ni akole?",
-  "haveAccount": "Se o ni akole tele?",
-  "congratulations": "Ku oriire!",
-  "lessonComplete": "Eko Pari!",
-  "quizComplete": "Idanwo Pari!",
-  "accuracy": "Dedede",
-  "score": "Iye",
-  "aiTutor": "Oluko AI",
-  "cultureMagazine": "Iwe Asa",
-  "tribes": "Eya",
-  "leaderboard": "Atojo Asaju",
+  "@xpEarned": {
+    "linguistReview": true,
+    "betaShipAllowed": false
+  },
+  "level": "Ìpele",
+  "@level": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "beginner": "Alábẹ̀ẹ̀rẹ̀",
+  "@beginner": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "intermediate": "Ààrin",
+  "@intermediate": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "advanced": "Agbára",
+  "@advanced": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "correct": "Ó tọ́!",
+  "@correct": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "incorrect": "Kò tọ́",
+  "@incorrect": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "next": "Tókàn",
+  "@next": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "back": "Padà",
+  "@back": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "skip": "Fò",
+  "@skip": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "cancel": "Fagílé",
+  "@cancel": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "save": "Fípamọ́",
+  "@save": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "done": "Parí",
+  "@done": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "submit": "Fiwé",
+  "@submit": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "logout": "Jáde",
+  "@logout": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "login": "Wọlé",
+  "@login": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "signup": "Forúkọsílẹ̀",
+  "@signup": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "email": "Ímeèlì",
+  "@email": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "password": "Ọ̀rọ̀ àṣínà",
+  "@password": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "forgotPassword": "Ṣe o gbàgbé ọ̀rọ̀ àṣínà?",
+  "@forgotPassword": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "noAccount": "O ní àkọọ́lẹ̀?",
+  "@noAccount": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "haveAccount": "Ṣé o ní àkọọ́lẹ̀ tẹ́lẹ̀?",
+  "@haveAccount": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "congratulations": "Kú oríire!",
+  "@congratulations": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "lessonComplete": "Ẹ̀kọ́ parí!",
+  "@lessonComplete": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "quizComplete": "Ìdánwò parí!",
+  "@quizComplete": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "accuracy": "Ìtọ́ọ̀tọ́",
+  "@accuracy": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "score": "Àmì",
+  "@score": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "aiTutor": "Olùkọ́ AI",
+  "@aiTutor": {
+    "linguistReview": true,
+    "betaShipAllowed": false
+  },
+  "cultureMagazine": "Ìwé àṣà",
+  "@cultureMagazine": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "tribes": "Ẹ̀yà",
+  "@tribes": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "leaderboard": "Àtòjọ́ àsájú",
+  "@leaderboard": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
   "flbHeritageTitle": "FLB Heritage",
+  "@flbHeritageTitle": {
+    "linguistReview": true,
+    "betaShipAllowed": false
+  },
   "flbHeritageSearchHint": "Search title, country, or tags",
+  "@flbHeritageSearchHint": {
+    "linguistReview": true,
+    "betaShipAllowed": false
+  },
   "flbHeritageEmptyMessage": "No entries match your search. Try another keyword or pull to refresh.",
+  "@flbHeritageEmptyMessage": {
+    "linguistReview": true,
+    "betaShipAllowed": false
+  },
   "flbHeritageLoadError": "Could not load heritage archive. Pull to retry.",
+  "@flbHeritageLoadError": {
+    "linguistReview": true,
+    "betaShipAllowed": false
+  },
   "flbHeritageRefresh": "Refresh",
+  "@flbHeritageRefresh": {
+    "linguistReview": true,
+    "betaShipAllowed": false
+  },
   "flbHeritageDetailTitle": "Heritage",
+  "@flbHeritageDetailTitle": {
+    "linguistReview": true,
+    "betaShipAllowed": false
+  },
   "flbHeritageMissingContent": "Missing heritage content",
+  "@flbHeritageMissingContent": {
+    "linguistReview": true,
+    "betaShipAllowed": false
+  },
   "tooltipFlbHeritageArchive": "FLB Heritage archive",
+  "@tooltipFlbHeritageArchive": {
+    "linguistReview": true,
+    "betaShipAllowed": false
+  },
   "tooltipTribeDiscovery": "Tribe discovery",
+  "@tooltipTribeDiscovery": {
+    "linguistReview": true,
+    "betaShipAllowed": false
+  },
   "drawerFlbHeritageArchive": "FLB Heritage Archive",
-  "tooltipTribes": "Tribes"
+  "@drawerFlbHeritageArchive": {
+    "linguistReview": true,
+    "betaShipAllowed": false
+  },
+  "tooltipTribes": "Tribes",
+  "@tooltipTribes": {
+    "linguistReview": true,
+    "betaShipAllowed": false
+  },
+  "aboutUs": "Nípa wa",
+  "@aboutUs": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "achievements": "Àṣeyọrí",
+  "@achievements": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "animals": "Ẹranko",
+  "@animals": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "badges": "Àmì",
+  "@badges": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "changePassword": "Yí ọ̀rọ̀ àṣínà padà",
+  "@changePassword": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "chooseLanguageToLearn": "Yan èdè láti kọ́",
+  "@chooseLanguageToLearn": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "colors": "Àwọ̀",
+  "@colors": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "contactUs": "Kàn sí wa",
+  "@contactUs": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "conversations": "Ìbánisọ̀rọ̀",
+  "@conversations": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "culture": "Àṣà",
+  "@culture": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "dailyGoal": "Èro ojoojúmọ́",
+  "@dailyGoal": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "darkMode": "Àkókò òkùnkùn",
+  "@darkMode": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "deleteAccount": "Pa àkọọ́lẹ̀ rẹ́",
+  "@deleteAccount": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "dictionary": "Àtọ̀kọ̀ ọ̀rọ̀",
+  "@dictionary": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "family": "Ẹ̀bí",
+  "@family": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "faq": "Àwọn ìbéèrè",
+  "@faq": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "feedback": "Èsì",
+  "@feedback": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "flashcards": "Káàdì",
+  "@flashcards": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "food": "Oúnjẹ",
+  "@food": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "grammar": "Gírámà",
+  "@grammar": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "greetings": "Ìkíni",
+  "@greetings": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "health": "Ìlera",
+  "@health": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "help": "Ìrànwọ́",
+  "@help": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "history": "Ìtàn",
+  "@history": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "lightMode": "Àkókò ìmọ́lẹ̀",
+  "@lightMode": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "listening": "Gbígbọ́",
+  "@listening": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "motivation": "Ìwúlò",
+  "@motivation": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "notifications": "Ìfitónilétí",
+  "@notifications": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "numbers": "Nọ́mbà",
+  "@numbers": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "privacyPolicy": "Ètò ìpamọ́",
+  "@privacyPolicy": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "pronunciation": "Ìsọ̀rọ̀",
+  "@pronunciation": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "proverbs": "Òwe",
+  "@proverbs": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "rateApp": "Fi àmì sí app",
+  "@rateApp": {
+    "linguistReview": true,
+    "betaShipAllowed": false
+  },
+  "reading": "Kíkà",
+  "@reading": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "rewards": "Ẹ̀bùn",
+  "@rewards": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "search": "Wá",
+  "@search": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "shareApp": "Pín app",
+  "@shareApp": {
+    "linguistReview": true,
+    "betaShipAllowed": false
+  },
+  "shopping": "Ríra",
+  "@shopping": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "speaking": "Sísọ̀rọ̀",
+  "@speaking": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "stories": "Ìtàn",
+  "@stories": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  },
+  "streak": "Ìtẹ̀síwájú",
+  "@streak": {
+    "lexiconAnchored": true,
+    "betaShipAllowed": true
+  }
 }

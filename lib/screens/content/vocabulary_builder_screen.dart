@@ -424,7 +424,7 @@ class _VocabularyBuilderScreenState extends ConsumerState<VocabularyBuilderScree
     return Scaffold(
       backgroundColor: isDark ? PolieColors.obsidian : PolieColors.surfaceLight,
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -443,7 +443,7 @@ class _VocabularyBuilderScreenState extends ConsumerState<VocabularyBuilderScree
               _buildTabBar(context),
               Expanded(
                 child: _isLoading
-                    ? Center(child: CircularProgressIndicator(color: PolieColors.electricTeal))
+                    ? const Center(child: CircularProgressIndicator(color: PolieColors.electricTeal))
                     : _buildTabContent(context),
               ),
             ],
@@ -462,7 +462,7 @@ class _VocabularyBuilderScreenState extends ConsumerState<VocabularyBuilderScree
             label: 'Go back',
             button: true,
             child: IconButton(
-              icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
+              icon: const Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
               onPressed: () {
                 HapticFeedback.lightImpact();
                 Navigator.of(context).pop();
@@ -499,7 +499,7 @@ class _VocabularyBuilderScreenState extends ConsumerState<VocabularyBuilderScree
       margin: EdgeInsets.symmetric(horizontal: PolieSpacing.md),
       padding: EdgeInsets.all(PolieSpacing.md),
       decoration: BoxDecoration(
-        color: PolieColors.surfaceContainerLight.withOpacity(0.1),
+        color: PolieColors.surfaceContainerLight.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(PolieRadius.md),
       ),
       child: Row(
@@ -530,7 +530,7 @@ class _VocabularyBuilderScreenState extends ConsumerState<VocabularyBuilderScree
 
   Widget _buildTabBar(BuildContext context) {
     return Container(
-      color: PolieColors.surfaceContainerLight.withOpacity(0.1),
+      color: PolieColors.surfaceContainerLight.withValues(alpha: 0.1),
       child: TabBar(
         controller: _tabController,
         indicatorColor: PolieColors.electricTeal,
@@ -588,19 +588,19 @@ class _VocabularyBuilderScreenState extends ConsumerState<VocabularyBuilderScree
   }
 
   Widget _buildWordOfTheDay() {
-    if (_wordOfTheDay == null) return SizedBox.shrink();
+    if (_wordOfTheDay == null) return const SizedBox.shrink();
     
     return Container(
       margin: EdgeInsets.all(PolieSpacing.md),
       padding: EdgeInsets.all(PolieSpacing.lg),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           colors: [PolieColors.goldEmber, PolieColors.goldEmberLight],
         ),
         borderRadius: BorderRadius.circular(PolieRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: PolieColors.goldEmber.withOpacity(0.3),
+            color: PolieColors.goldEmber.withValues(alpha: 0.3),
             blurRadius: 16,
             spreadRadius: 0,
           ),
@@ -639,7 +639,7 @@ class _VocabularyBuilderScreenState extends ConsumerState<VocabularyBuilderScree
                     Text(
                       _wordOfTheDay!.pronunciation,
                       style: PolieTypography.body(context).copyWith(
-                        color: Colors.white.withOpacity(0.9),
+                        color: Colors.white.withValues(alpha: 0.9),
                         fontStyle: FontStyle.italic,
                       ),
                     ),
@@ -657,7 +657,7 @@ class _VocabularyBuilderScreenState extends ConsumerState<VocabularyBuilderScree
                 label: 'Play pronunciation of ${_wordOfTheDay!.word}',
                 button: true,
                 child: IconButton(
-                  icon: Icon(Icons.volume_up_rounded, color: Colors.white, semanticLabel: 'Play audio'),
+                  icon: const Icon(Icons.volume_up_rounded, color: Colors.white, semanticLabel: 'Play audio'),
                   onPressed: () => _playAudio(_wordOfTheDay!.audioUrl, _wordOfTheDay!.word),
                 ),
               ),
@@ -724,7 +724,7 @@ class _VocabularyBuilderScreenState extends ConsumerState<VocabularyBuilderScree
                         color: PolieColors.surfaceContainer,
                         borderRadius: BorderRadius.circular(PolieRadius.lg),
                         border: Border.all(
-                          color: PolieColors.textSecondary.withOpacity(0.35),
+                          color: PolieColors.textSecondary.withValues(alpha: 0.35),
                         ),
                       ),
                       child: Column(
@@ -793,7 +793,7 @@ class _VocabularyBuilderScreenState extends ConsumerState<VocabularyBuilderScree
         )
             .animate(delay: (index * 30).ms)
             .fadeIn(duration: 200.ms)
-            .scale(begin: Offset(0.9, 0.9));
+            .scale(begin: const Offset(0.9, 0.9));
       },
     );
   }
@@ -918,7 +918,7 @@ class _FamilyCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(PolieRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: PolieColors.royalAmethyst.withOpacity(0.15),
+            color: PolieColors.royalAmethyst.withValues(alpha: 0.15),
             blurRadius: 16,
             spreadRadius: 0,
           ),
@@ -942,7 +942,7 @@ class _FamilyCard extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(PolieSpacing.md),
                   decoration: BoxDecoration(
-                    color: PolieColors.royalAmethyst.withOpacity(0.2),
+                    color: PolieColors.royalAmethyst.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(PolieRadius.md),
                   ),
                   child: Icon(
@@ -1011,7 +1011,7 @@ class _VocabularyCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(PolieRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: PolieColors.royalAmethyst.withOpacity(0.15),
+            color: PolieColors.royalAmethyst.withValues(alpha: 0.15),
             blurRadius: 16,
             spreadRadius: 0,
           ),
@@ -1034,14 +1034,14 @@ class _VocabularyCard extends StatelessWidget {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: PolieColors.royalAmethyst.withOpacity(0.1),
+                    color: PolieColors.royalAmethyst.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.vertical(top: Radius.circular(PolieRadius.lg)),
                   ),
                   child: word.imageUrl != null
                       ? CachedNetworkImage(
                           imageUrl: word.imageUrl!,
                           fit: BoxFit.cover,
-                          placeholder: (context, url) => Center(
+                          placeholder: (context, url) => const Center(
                             child: CircularProgressIndicator(strokeWidth: 2),
                           ),
                           errorWidget: (context, url, error) => Icon(
@@ -1084,7 +1084,7 @@ class _VocabularyCard extends StatelessWidget {
                               onPlayAudio();
                             },
                             padding: EdgeInsets.zero,
-                            constraints: BoxConstraints(),
+                            constraints: const BoxConstraints(),
                           ),
                         ),
                       ],
@@ -1136,7 +1136,7 @@ class _WordDetailSheet extends StatelessWidget {
               height: 4.h,
               margin: EdgeInsets.only(bottom: PolieSpacing.md),
               decoration: BoxDecoration(
-                color: PolieColors.textSecondary.withOpacity(0.3),
+                color: PolieColors.textSecondary.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -1152,7 +1152,7 @@ class _WordDetailSheet extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: word.imageUrl!,
                 fit: BoxFit.cover,
-                placeholder: (context, url) => Center(
+                placeholder: (context, url) => const Center(
                   child: CircularProgressIndicator(),
                 ),
               ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Stitch / FLB editorial tokens from
 /// `Elite Features/.../f_l_b_heritage/DESIGN.md` (The Digital Curator).
+@Deprecated('Use LingAfriqTokens. This file is a retired design system.')
 @immutable
 class FlbEditorialTheme extends ThemeExtension<FlbEditorialTheme> {
   const FlbEditorialTheme({
@@ -40,26 +42,27 @@ class FlbEditorialTheme extends ThemeExtension<FlbEditorialTheme> {
   final Color ambientShadow;
 
   static const FlbEditorialTheme light = FlbEditorialTheme(
-    paperSurface: Color(0xFFFCF9F2),
-    surfaceContainerLowest: Color(0xFFFFFFFF),
-    surfaceContainerHigh: Color(0xFFEBE8E1),
-    terracotta: Color(0xFF9F3E07),
-    terracottaContainer: Color(0xFFC05621),
-    onTerracotta: Color(0xFFFFF8F2),
-    ochreTertiary: Color(0xFF735C00),
-    ambientShadow: Color(0x281C1C18),
+    paperSurface: LingAfriqTokens.hexFFFCF9F2,
+    surfaceContainerLowest: LingAfriqTokens.hexFFFFFFFF,
+    surfaceContainerHigh: LingAfriqTokens.hexFFEBE8E1,
+    terracotta: LingAfriqTokens.hexFF9F3E07,
+    terracottaContainer: LingAfriqTokens.hexFFC05621,
+    // FFF8F2 on the gradient end (#C05621) is 4.34:1. White clears 4.5:1.
+    onTerracotta: LingAfriqTokens.hexFFFFFFFF,
+    ochreTertiary: LingAfriqTokens.hexFF735C00,
+    ambientShadow: LingAfriqTokens.hex281C1C18,
   );
 
   /// Studio / night reading — deeper paper, same terracotta brand.
   static const FlbEditorialTheme dark = FlbEditorialTheme(
-    paperSurface: Color(0xFF1B1A16),
-    surfaceContainerLowest: Color(0xFF25241F),
-    surfaceContainerHigh: Color(0xFF2E2C26),
-    terracotta: Color(0xFFE07A3A),
-    terracottaContainer: Color(0xFFFF9B5C),
-    onTerracotta: Color(0xFF1B0C00),
-    ochreTertiary: Color(0xFFD4B870),
-    ambientShadow: Color(0x40000000),
+    paperSurface: LingAfriqTokens.hexFF1B1A16,
+    surfaceContainerLowest: LingAfriqTokens.hexFF25241F,
+    surfaceContainerHigh: LingAfriqTokens.hexFF2E2C26,
+    terracotta: LingAfriqTokens.hexFFE07A3A,
+    terracottaContainer: LingAfriqTokens.hexFFFF9B5C,
+    onTerracotta: LingAfriqTokens.hexFF1B0C00,
+    ochreTertiary: LingAfriqTokens.hexFFD4B870,
+    ambientShadow: LingAfriqTokens.hex40000000,
   );
 
   LinearGradient get terracottaCtaGradient => LinearGradient(
@@ -129,19 +132,19 @@ class StitchArcadeTheme extends ThemeExtension<StitchArcadeTheme> {
   final Color terracottaAccent;
 
   static const StitchArcadeTheme light = StitchArcadeTheme(
-    heroIndigo: Color(0xFF333697),
-    heroIndigoDeep: Color(0xFF4B4FB0),
-    parchment: Color(0xFFFAFAF5),
-    parchmentLow: Color(0xFFF4F4EF),
-    terracottaAccent: Color(0xFFB85C38),
+    heroIndigo: LingAfriqTokens.hexFF333697,
+    heroIndigoDeep: LingAfriqTokens.hexFF4B4FB0,
+    parchment: LingAfriqTokens.hexFFFAFAF5,
+    parchmentLow: LingAfriqTokens.hexFFF4F4EF,
+    terracottaAccent: LingAfriqTokens.hexFFB85C38,
   );
 
   static const StitchArcadeTheme dark = StitchArcadeTheme(
-    heroIndigo: Color(0xFF5C61D6),
-    heroIndigoDeep: Color(0xFF7A7EE8),
-    parchment: Color(0xFF121318),
-    parchmentLow: Color(0xFF1A1C24),
-    terracottaAccent: Color(0xFFE88B5A),
+    heroIndigo: LingAfriqTokens.hexFF5C61D6,
+    heroIndigoDeep: LingAfriqTokens.hexFF7A7EE8,
+    parchment: LingAfriqTokens.hexFF121318,
+    parchmentLow: LingAfriqTokens.hexFF1A1C24,
+    terracottaAccent: LingAfriqTokens.hexFFE88B5A,
   );
 
   LinearGradient get heroGradient => LinearGradient(
@@ -195,15 +198,15 @@ class StitchCommunityChatTheme extends ThemeExtension<StitchCommunityChatTheme> 
   final Color accentCopper;
 
   static const StitchCommunityChatTheme light = StitchCommunityChatTheme(
-    warmCanvas: Color(0xFFFFF7F0),
-    warmSurface: Color(0xFFFFE8D9),
-    accentCopper: Color(0xFFC45D35),
+    warmCanvas: LingAfriqTokens.hexFFFFF7F0,
+    warmSurface: LingAfriqTokens.hexFFFFE8D9,
+    accentCopper: LingAfriqTokens.hexFFC45D35,
   );
 
   static const StitchCommunityChatTheme dark = StitchCommunityChatTheme(
-    warmCanvas: Color(0xFF1A1512),
-    warmSurface: Color(0xFF2A221C),
-    accentCopper: Color(0xFFE8A078),
+    warmCanvas: LingAfriqTokens.hexFF1A1512,
+    warmSurface: LingAfriqTokens.hexFF2A221C,
+    accentCopper: LingAfriqTokens.hexFFE8A078,
   );
 
   @override

@@ -60,7 +60,7 @@ class LanguageGamesScreen extends HookConsumerWidget {
           Container(
             height: 30.h,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
@@ -80,7 +80,7 @@ class LanguageGamesScreen extends HookConsumerWidget {
                 Positioned.fill(
                   child: CustomPaint(
                     painter: _PatternPainter(
-                      color: colorScheme.onPrimary.withOpacity(0.1),
+                      color: colorScheme.onPrimary.withValues(alpha: 0.1),
                     ),
                   ),
                 ),
@@ -103,7 +103,7 @@ class LanguageGamesScreen extends HookConsumerWidget {
                                 backAction();
                               },
                               style: IconButton.styleFrom(
-                              backgroundColor: colorScheme.onPrimary.withOpacity(0.2),
+                              backgroundColor: colorScheme.onPrimary.withValues(alpha: 0.2),
                                 shape: const CircleBorder(),
                               ),
                             ),
@@ -130,7 +130,7 @@ class LanguageGamesScreen extends HookConsumerWidget {
                         SizedBox(height: PanAfricanSpacing.xs),
                         Text(
                           'Learn while having fun!',
-                          style: PanAfricanTypography.bodyMedium(context, color: colorScheme.onPrimary.withOpacity(0.9)),
+                          style: PanAfricanTypography.bodyMedium(context, color: colorScheme.onPrimary.withValues(alpha: 0.9)),
                         ),
                         SizedBox(height: PanAfricanSpacing.sm),
                         Wrap(
@@ -140,12 +140,12 @@ class LanguageGamesScreen extends HookConsumerWidget {
                           children: [
                             PanAfricanBadge(
                               label: '37 games',
-                              color: PanAfricanColors.secondary,
+                              color: context.panSecondary,
                               icon: Icons.extension_rounded,
                             ),
                             PanAfricanBadge(
                               label: 'Daily XP',
-                              color: PanAfricanColors.tertiary,
+                              color: context.panTertiary,
                               icon: Icons.local_fire_department_rounded,
                             ),
                           ],

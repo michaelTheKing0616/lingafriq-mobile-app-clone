@@ -1,0 +1,45 @@
+{
+  "card": "P12-008",
+  "entries": [
+    {
+      "at": "2026-10-28T01:02:20.142550+00:00",
+      "note": "P12-008 deleted superseded chat screens",
+      "deleted_source_bytes_removed": 0,
+      "apk_baseline_snapshot": {
+        "measurement": "compressed_apk_bytes",
+        "note": "Per-ABI release APK file size (download-size proxy). Update after a green release gate.",
+        "abis": {
+          "arm64-v8a": 38500000,
+          "armeabi-v7a": 36200000
+        }
+      },
+      "pairs": [
+        {
+          "duplicate": "lib/screens/chat/global_chat_screen.dart",
+          "replacement": "lib/screens/chat/global_chat_screen_material3.dart",
+          "card": "P9-F-113"
+        },
+        {
+          "duplicate": "lib/screens/ai_chat/ai_chat_screen.dart",
+          "replacement": "lib/features/polie_workspace/polie_workspace_screen.dart",
+          "card": "P3-065"
+        },
+        {
+          "duplicate": "lib/screens/ai_chat/ai_chat_screen_new.dart",
+          "replacement": "lib/features/polie_workspace/polie_workspace_screen.dart",
+          "card": "P3-065"
+        },
+        {
+          "duplicate": "lib/screens/ai_chat/ai_chat_screen_with_tracking.dart",
+          "replacement": "lib/features/polie_workspace/polie_workspace_screen.dart",
+          "card": "P3-065"
+        },
+        {
+          "duplicate": "lib/screens/ai_chat/conversation_enhanced_screen.dart",
+          "replacement": "lib/features/polie_workspace/polie_workspace_screen.dart",
+          "card": "P3-065"
+        }
+      ]
+    }
+  ]
+}

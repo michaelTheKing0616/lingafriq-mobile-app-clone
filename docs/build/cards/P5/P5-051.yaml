@@ -1,0 +1,54 @@
+charter: v2
+id: P5-051
+kind: verification
+title: Verify Tier C Beta error ≤5% for Yoruba and Igbo
+phase: P5
+epic: E-P5-QUALITY
+req_ids:
+- CP-§6-05
+- CP-§6-12
+- CP-§6-16
+depends_on:
+- P5-046
+- P5-017
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T0
+  tester: T0
+  reviewer: T1
+  justification: verification only; no code
+token_budget: 20000
+file_allowlist: []
+context_anchors:
+- CURRICULUM.md#§6:L655-L664
+acceptance_criteria:
+- id: AC1
+  text: Given Yoruba and Igbo Beta items, when scored, then the error rate is ≤5% with Beta restricted to lexicon-anchored
+    tokens
+- id: AC2
+  text: Given restorers at about 80% (Yoruba) and about 62% (Igbo) on their own, when results are reviewed, then non-anchored
+    items are not counted as Beta
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

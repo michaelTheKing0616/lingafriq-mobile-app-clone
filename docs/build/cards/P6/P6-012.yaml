@@ -1,0 +1,69 @@
+charter: v2
+id: P6-012
+kind: build
+title: Enforce model licence allowlist in router
+phase: P6
+epic: E-P6-GATEWAY
+req_ids:
+- EP-§7.6-07
+- EP-§7.6-08
+- EP-§7.6-09
+depends_on:
+- P6-011
+size: S
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist:
+- node-backend/src/ai-gateway/licenceAllowlist.ts
+- docs/build/licence_register.csv
+context_anchors:
+- ELEVATION.md#§7.6:L1462-L1475
+acceptance_criteria:
+- id: AC1
+  text: Given a route referencing a model whose licence is non-commercial (Aya, CC-BY-NC), when config loads, then startup
+    fails with typed error licence_blocked
+- id: AC2
+  text: Given N-ATLaS capped at 1,000 users without a licence, when active users on that route reach 900, then an alert fires
+    and at 1,000 the route is disabled
+- id: AC3
+  text: Given every route, when the register check runs in CI, then each model has a licence row and a commercial-use flag
+test_plan:
+  unit:
+  - allowlist
+  integration:
+  - startup fail on blocked
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- licence_register
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

@@ -33,7 +33,7 @@ class InfoWidget extends StatelessWidget {
                 text,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Theme.of(context).dividerColor.withOpacity(0.54),
+                  color: Theme.of(context).dividerColor.withValues(alpha: 0.54),
                   fontSize: 22.sp,
                 ),
               ).px16(),
@@ -43,7 +43,7 @@ class InfoWidget extends StatelessWidget {
                   subText!,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Theme.of(context).dividerColor.withOpacity(0.54),
+                    color: Theme.of(context).dividerColor.withValues(alpha: 0.54),
                     fontSize: 16.sp,
                   ),
                 ).px32(),

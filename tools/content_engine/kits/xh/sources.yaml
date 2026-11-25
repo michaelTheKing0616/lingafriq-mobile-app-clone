@@ -1,0 +1,39 @@
+orthography:
+  authority: PanSALB revised rules
+  gazette: same Gazette
+  gazette_date: 6 Jul 2023
+
+lexicon:
+  - source_id: oxford-languages
+    role: licensed
+    held: false
+    dataset: isiXhosa
+    ext04_status: Open
+  - source_id: wiktionary-kaikki
+    role: cross-check
+
+grammar:
+  status: pending-linguist-choice
+  title: ""
+  edition: ""
+  purchased: false
+
+corpora_audio:
+  - source_id: sadilar-xhosa-annotated
+    tokens: 46465
+    licence: CC BY 4.0
+  - source_id: nchlt
+    licence: CC BY 2.5 ZA
+  - source_id: fleurs
+  - source_id: waxal-other
+  - source_id: african-storybook
+
+tools:
+  concord-checker:
+    kind: rule-based
+    enabled: true
+    card: P4-045
+  analyser:
+    confirmed: false
+    enabled: false
+    risk: no mature open Xhosa analyser confirmed

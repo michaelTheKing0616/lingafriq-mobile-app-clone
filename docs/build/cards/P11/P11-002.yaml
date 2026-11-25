@@ -1,0 +1,87 @@
+charter: v2
+id: P11-002
+kind: build
+title: Define persona dossier schema and retrieval index
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§8.3-01
+- EP-§8.3-03
+- EP-§8.3-04
+- EP-§8.3-05
+- EP-§8.3-06
+- EP-§8.3-08
+- EP-§8.3-09
+- EP-§8.1-01
+- EP-§8.1-03
+depends_on:
+- E-P1-CONTAINMENT
+- P11-001
+- E-P4-CONTENT-ENGINE
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/services/persona/dossier.schema.ts
+- node-backend/src/services/persona/retrieval.service.ts
+- lib/ai/personas/historical_persona_registry.dart
+- docs/build/personas/dossier_template.md
+context_anchors:
+- ELEVATION.md#§8.3:L1517-L1520
+- ELEVATION.md#§8.1:L1485-L1489
+acceptance_criteria:
+- id: AC1
+  text: Given a dossier JSON, when validated, then it requires primary_sources[], secondary_sources[], contested_points[],
+    known_myths[], death_date and review {historian_id, signed_at} or fails with a typed DossierInvalid error naming the field.
+- id: AC2
+  text: Given a valid dossier, when ingested, then each source is stored as a retrievable card with a stable source_id and
+    a retrieval index exists per persona.
+- id: AC3
+  text: Given a persona turn, when it is served, then retrieval runs against that persona's index before generation; with
+    zero retrieved cards the turn returns a typed NoGroundingError (no plain-system-prompt fallback).
+- id: AC4
+  text: Given the legacy 27-persona client registry and the backend persona chat, when this card is done, then one dossier-backed
+    registry is the only source and the client registry is removed or generated from it.
+test_plan:
+  unit:
+  - dossier schema accept/reject
+  - source_id stability
+  integration:
+  - ingest then retrieve per persona
+  - NoGroundingError path
+  security:
+  - index isolation across personas
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- enables_persona
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/11-data-and-quantitative-work
+  - adaptive/07-research-and-fact-checking

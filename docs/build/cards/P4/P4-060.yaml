@@ -1,0 +1,73 @@
+charter: v2
+id: P4-060
+kind: build
+title: Run linters and morphological analysers as a stage
+phase: P4
+epic: E-P4-PIPELINE
+req_ids:
+- CP-§3.1-06
+depends_on:
+- P4-040
+- P4-041
+- P4-042
+- P4-043
+- P4-044
+- P4-045
+- P4-046
+- P4-047
+- P4-049
+- P4-050
+- P4-051
+size: S
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 0
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 0, coupling 2, depth 1, size 0'
+token_budget: 25000
+file_allowlist:
+- tools/content_engine/pipeline/stage_lint.py
+- tools/content_engine/tests/test_stage_lint.py
+context_anchors:
+- CURRICULUM.md#§3.1:L491-L492
+acceptance_criteria:
+- id: AC1
+  text: Given an item at the linter stage, when run, then all language linters plus ZulMorph for Zulu and rule-based concord
+    checks for sw and xh execute
+- id: AC2
+  text: Given a hard linter failure, when the stage ends, then the item routes to Reject
+test_plan:
+  unit:
+  - happy path
+  - typed error path
+  integration:
+  - stage contract with fixtures
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

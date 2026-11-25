@@ -156,7 +156,7 @@ class DifficultyPredictor {
     );
 
     if (recommendations.isEmpty) {
-      return ChallengeRecommendation(
+      return const ChallengeRecommendation(
         skillId: '',
         challengeType: 'new_skill',
         difficulty: 0.2,

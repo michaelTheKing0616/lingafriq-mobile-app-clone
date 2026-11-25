@@ -255,6 +255,11 @@ class SocialAudioNotifier extends Notifier<SocialAudioState> {
     List<String> tags = const [],
     DateTime? scheduledStartTime,
     int? durationMinutes,
+    String? practiceTopic,
+    String? cefrLevel,
+    bool dropIn = false,
+    String? circleId,
+    bool aiFacilitatorEnabled = false,
   }) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
@@ -268,6 +273,11 @@ class SocialAudioNotifier extends Notifier<SocialAudioState> {
         tags: tags,
         scheduledStartTime: scheduledStartTime,
         durationMinutes: durationMinutes,
+        practiceTopic: practiceTopic,
+        cefrLevel: cefrLevel,
+        dropIn: dropIn,
+        circleId: circleId,
+        aiFacilitatorEnabled: aiFacilitatorEnabled,
       );
       state = state.copyWith(
         isLoading: false,

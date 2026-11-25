@@ -218,47 +218,47 @@ class PhonemeAlignment {
   /// Extensible for African language phonemes.
   static final Map<String, _PhonemeFeatures> _featureMap = {
     // Stops
-    'p': _PhonemeFeatures(place: 'bilabial', manner: 'stop', voiced: false),
-    'b': _PhonemeFeatures(place: 'bilabial', manner: 'stop', voiced: true),
-    't': _PhonemeFeatures(place: 'alveolar', manner: 'stop', voiced: false),
-    'd': _PhonemeFeatures(place: 'alveolar', manner: 'stop', voiced: true),
-    'k': _PhonemeFeatures(place: 'velar', manner: 'stop', voiced: false),
-    'g': _PhonemeFeatures(place: 'velar', manner: 'stop', voiced: true),
+    'p': const _PhonemeFeatures(place: 'bilabial', manner: 'stop', voiced: false),
+    'b': const _PhonemeFeatures(place: 'bilabial', manner: 'stop', voiced: true),
+    't': const _PhonemeFeatures(place: 'alveolar', manner: 'stop', voiced: false),
+    'd': const _PhonemeFeatures(place: 'alveolar', manner: 'stop', voiced: true),
+    'k': const _PhonemeFeatures(place: 'velar', manner: 'stop', voiced: false),
+    'g': const _PhonemeFeatures(place: 'velar', manner: 'stop', voiced: true),
     // Implosives (common in African languages)
-    '\u0253': _PhonemeFeatures(place: 'bilabial', manner: 'implosive', voiced: true), // ɓ
-    '\u0257': _PhonemeFeatures(place: 'alveolar', manner: 'implosive', voiced: true), // ɗ
+    '\u0253': const _PhonemeFeatures(place: 'bilabial', manner: 'implosive', voiced: true), // ɓ
+    '\u0257': const _PhonemeFeatures(place: 'alveolar', manner: 'implosive', voiced: true), // ɗ
     // Fricatives
-    'f': _PhonemeFeatures(place: 'labiodental', manner: 'fricative', voiced: false),
-    'v': _PhonemeFeatures(place: 'labiodental', manner: 'fricative', voiced: true),
-    's': _PhonemeFeatures(place: 'alveolar', manner: 'fricative', voiced: false),
-    'z': _PhonemeFeatures(place: 'alveolar', manner: 'fricative', voiced: true),
-    '\u0283': _PhonemeFeatures(place: 'postalveolar', manner: 'fricative', voiced: false), // ʃ
-    '\u0292': _PhonemeFeatures(place: 'postalveolar', manner: 'fricative', voiced: true), // ʒ
-    'h': _PhonemeFeatures(place: 'glottal', manner: 'fricative', voiced: false),
+    'f': const _PhonemeFeatures(place: 'labiodental', manner: 'fricative', voiced: false),
+    'v': const _PhonemeFeatures(place: 'labiodental', manner: 'fricative', voiced: true),
+    's': const _PhonemeFeatures(place: 'alveolar', manner: 'fricative', voiced: false),
+    'z': const _PhonemeFeatures(place: 'alveolar', manner: 'fricative', voiced: true),
+    '\u0283': const _PhonemeFeatures(place: 'postalveolar', manner: 'fricative', voiced: false), // ʃ
+    '\u0292': const _PhonemeFeatures(place: 'postalveolar', manner: 'fricative', voiced: true), // ʒ
+    'h': const _PhonemeFeatures(place: 'glottal', manner: 'fricative', voiced: false),
     // Nasals
-    'm': _PhonemeFeatures(place: 'bilabial', manner: 'nasal', voiced: true),
-    'n': _PhonemeFeatures(place: 'alveolar', manner: 'nasal', voiced: true),
-    '\u014B': _PhonemeFeatures(place: 'velar', manner: 'nasal', voiced: true), // ŋ
-    '\u0272': _PhonemeFeatures(place: 'palatal', manner: 'nasal', voiced: true), // ɲ
+    'm': const _PhonemeFeatures(place: 'bilabial', manner: 'nasal', voiced: true),
+    'n': const _PhonemeFeatures(place: 'alveolar', manner: 'nasal', voiced: true),
+    '\u014B': const _PhonemeFeatures(place: 'velar', manner: 'nasal', voiced: true), // ŋ
+    '\u0272': const _PhonemeFeatures(place: 'palatal', manner: 'nasal', voiced: true), // ɲ
     // Laterals and rhotics
-    'l': _PhonemeFeatures(place: 'alveolar', manner: 'lateral', voiced: true),
-    'r': _PhonemeFeatures(place: 'alveolar', manner: 'trill', voiced: true),
-    '\u0279': _PhonemeFeatures(place: 'alveolar', manner: 'approximant', voiced: true), // ɹ
+    'l': const _PhonemeFeatures(place: 'alveolar', manner: 'lateral', voiced: true),
+    'r': const _PhonemeFeatures(place: 'alveolar', manner: 'trill', voiced: true),
+    '\u0279': const _PhonemeFeatures(place: 'alveolar', manner: 'approximant', voiced: true), // ɹ
     // Approximants
-    'w': _PhonemeFeatures(place: 'bilabial', manner: 'approximant', voiced: true),
-    'j': _PhonemeFeatures(place: 'palatal', manner: 'approximant', voiced: true),
+    'w': const _PhonemeFeatures(place: 'bilabial', manner: 'approximant', voiced: true),
+    'j': const _PhonemeFeatures(place: 'palatal', manner: 'approximant', voiced: true),
     // Vowels (simplified)
-    'a': _PhonemeFeatures(place: 'open', manner: 'vowel', voiced: true),
-    'e': _PhonemeFeatures(place: 'mid-front', manner: 'vowel', voiced: true),
-    'i': _PhonemeFeatures(place: 'close-front', manner: 'vowel', voiced: true),
-    'o': _PhonemeFeatures(place: 'mid-back', manner: 'vowel', voiced: true),
-    'u': _PhonemeFeatures(place: 'close-back', manner: 'vowel', voiced: true),
-    '\u025B': _PhonemeFeatures(place: 'open-mid-front', manner: 'vowel', voiced: true), // ɛ
-    '\u0254': _PhonemeFeatures(place: 'open-mid-back', manner: 'vowel', voiced: true), // ɔ
+    'a': const _PhonemeFeatures(place: 'open', manner: 'vowel', voiced: true),
+    'e': const _PhonemeFeatures(place: 'mid-front', manner: 'vowel', voiced: true),
+    'i': const _PhonemeFeatures(place: 'close-front', manner: 'vowel', voiced: true),
+    'o': const _PhonemeFeatures(place: 'mid-back', manner: 'vowel', voiced: true),
+    'u': const _PhonemeFeatures(place: 'close-back', manner: 'vowel', voiced: true),
+    '\u025B': const _PhonemeFeatures(place: 'open-mid-front', manner: 'vowel', voiced: true), // ɛ
+    '\u0254': const _PhonemeFeatures(place: 'open-mid-back', manner: 'vowel', voiced: true), // ɔ
     // Click consonants (for Zulu, Xhosa, etc.)
-    '\u01C0': _PhonemeFeatures(place: 'dental', manner: 'click', voiced: false), // ǀ
-    '\u01C1': _PhonemeFeatures(place: 'lateral', manner: 'click', voiced: false), // ǁ
-    '\u01C3': _PhonemeFeatures(place: 'alveolar', manner: 'click', voiced: false), // ǃ
+    '\u01C0': const _PhonemeFeatures(place: 'dental', manner: 'click', voiced: false), // ǀ
+    '\u01C1': const _PhonemeFeatures(place: 'lateral', manner: 'click', voiced: false), // ǁ
+    '\u01C3': const _PhonemeFeatures(place: 'alveolar', manner: 'click', voiced: false), // ǃ
   };
 }
 

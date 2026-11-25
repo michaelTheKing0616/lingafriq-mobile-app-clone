@@ -15,14 +15,14 @@ class XpToast extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tint = color ?? PanAfricanColors.secondary;
+    final tint = color ?? context.panSecondary;
     return Material(
       color: Colors.transparent,
       child: Container(
         margin: const EdgeInsets.all(12),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
-          color: tint.withOpacity(0.92),
+          color: tint.withValues(alpha: 0.92),
           borderRadius: BorderRadius.circular(PanAfricanRadius.md),
           boxShadow: PanAfricanShadows.md,
         ),

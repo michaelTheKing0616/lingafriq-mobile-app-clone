@@ -1,0 +1,84 @@
+charter: v2
+id: P6-039
+kind: build
+title: Show learner contour overlaid on native contour
+phase: P6
+epic: E-P6-SCORING
+req_ids:
+- EP-§7.4-19
+depends_on:
+- P6-038
+- E-P6-SCORER
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/screens/pronunciation/tone_overlay_view.dart
+- lib/widgets/pitch_contour_painter.dart
+context_anchors:
+- ELEVATION.md#§7.4:L1435-L1440
+acceptance_criteria:
+- id: AC1
+  text: Given a scored attempt, when displayed, then the learner contour is drawn over the native contour on a shared semitone
+    axis
+- id: AC2
+  text: Given an unsure syllable, when drawn, then it is shown hatched with no correct or incorrect colour
+- id: AC3
+  text: Given screen reader use, when the view opens, then a text summary of each syllable result is read
+test_plan:
+  unit:
+  - axis mapping
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - screen reader summary
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - scored
+  - unsure
+  - error
+  copy_keys:
+  - tone.unsure_syllable
+  tokens:
+  - color.pitch_native
+  - color.pitch_learner
+  motion_tier: rare
+  a11y:
+  - text summary
+  - colour-blind safe pair
+  goldens:
+  - overlay_scored
+  - overlay_unsure
+tags:
+- shows_score
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

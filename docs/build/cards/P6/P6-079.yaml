@@ -1,0 +1,66 @@
+charter: v2
+id: P6-079
+kind: build
+title: Support barge-in during agent speech
+phase: P6
+epic: E-P6-REALTIME
+req_ids:
+- EP-§7.7-06
+depends_on:
+- P6-076
+- P6-078
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 2, ambiguity 1, coupling 2, depth 2'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/realtime/bargeIn.ts
+- lib/services/realtime_voice_client.dart
+context_anchors:
+- ELEVATION.md#§7.7:L1477-L1482
+acceptance_criteria:
+- id: AC1
+  text: Given the agent speaking, when the learner speaks for the configured minimum duration, then agent audio stops within
+    300 ms and the new turn starts
+- id: AC2
+  text: Given background noise below the VAD threshold, when it occurs, then agent speech continues
+- id: AC3
+  text: Given a barge-in, when processed, then the interrupted reply is truncated in history at the spoken point
+test_plan:
+  unit:
+  - interrupt logic
+  integration:
+  - barge in sim
+  security: []
+  e2e: []
+  perf:
+  - stop within 300 ms
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

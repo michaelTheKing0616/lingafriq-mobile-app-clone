@@ -1,0 +1,104 @@
+charter: v2
+id: P9-945
+kind: build
+title: Add Language Status, Tone Lens, tap-to-gloss and message check to chat
+phase: P9
+epic: E-P9-VILLAGE
+req_ids:
+- EP-§9.2-12
+- EP-§9.2-13
+- EP-§9.2-14
+- EP-§9.1-05
+depends_on:
+- E-P9-SAFETY
+- P9-944
+- P9-940
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 80000
+file_allowlist:
+- lib/widgets/chat/language_status_chip.dart
+- lib/widgets/chat/tone_lens_sheet.dart
+- lib/services/chat/chat_room_learning_service.dart
+context_anchors:
+- ELEVATION.md#§9.2:L1587-L1589
+- ELEVATION.md#§9.1:L1553-L1554
+acceptance_criteria:
+- id: AC1
+  text: Given a message in a target language, when the user taps a word, then a gloss appears and the word can be saved to
+    review in at most two taps
+- id: AC2
+  text: Given Tone Lens on a message, when opened, then it shows the tone marks and meaning on device; if the tone cannot
+    be determined it states 'unsure' rather than guessing
+- id: AC3
+  text: Given 'check my message' before sending, when run, then it returns suggestions and the user can send unchanged or
+    edited
+- id: AC4
+  text: Given the user's Language Status, when set, then it shows learning or native for a language and is visible only to
+    allowed viewers
+- id: AC5
+  text: Given the account is under 18 or age-unknown, when this surface is opened, then it is hidden or guardian-gated until
+    E-P9-SAFETY is Done, and the restriction is enforced server-side.
+test_plan:
+  unit:
+  - gloss lookup
+  integration:
+  - save to review
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - tone lens sheet
+  content:
+  - tone sample audit
+user_facing: true
+ux_spec:
+  states:
+  - default
+  - unsure
+  - saved
+  - offline
+  copy_keys:
+  - tonelens.title
+  - tonelens.unsure
+  - gloss.save
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - tonelens_default
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

@@ -1,0 +1,52 @@
+charter: v2
+id: P0-VER-12
+kind: verification
+title: Read the wait and loading screen content
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- UNV-E12
+depends_on:
+- E-P0-INTAKE
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: verification only; result recorded, never inferred
+token_budget: 20000
+file_allowlist:
+- docs/build/verification/P0-VER-12.md
+- docs/build/UNVERIFIED.md
+context_anchors:
+- ELEVATION.md#§18.7:L5608
+acceptance_criteria:
+- id: AC1
+  text: Given the wait screen source, when read, then the card records what content it shows and whether any is learner-useful,
+    with file and line
+- id: AC2
+  text: Given the result, when written, then UNVERIFIED.md row E12 is marked Verified
+user_facing: false
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- docs/build/verification/P0-VER-12.md
+- UNVERIFIED.md row updated
+risks: []
+gate: G3
+external_blockers: []
+owner: agent
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

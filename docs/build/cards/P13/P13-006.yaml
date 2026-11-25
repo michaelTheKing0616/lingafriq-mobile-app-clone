@@ -1,0 +1,74 @@
+charter: v2
+id: P13-006
+kind: design
+title: Design open tone corpus and on-device tone model
+phase: P13
+epic: E-P13-SCALE
+req_ids:
+- RM-MS-02
+- RM-MS-09
+depends_on:
+- E-P12-RELEASE
+- P13-004
+- E-P4-CONTENT-ENGINE
+- E-P6-SCORER
+size: S
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 2, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§16.4:L2120-L2126
+acceptance_criteria:
+- id: AC1
+  text: Given the design doc, when reviewed, then it defines corpus collection, consent, licence and release terms for 10+
+    tonal languages
+- id: AC2
+  text: Given the on-device tone model, when specified, then it states an accuracy gate measured per language against native-labelled
+    data before any score is shown
+- id: AC3
+  text: Given a language lacks enough labelled data, when the design is applied, then the feature shows an unsure state, not
+    a score
+- id: AC4
+  text: Given the doc, when complete, then external dependencies (partners, funding, compute) are listed with owner Tope
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- uses_source
+- shows_score
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks:
+- Owner is external; no EXT item exists, add one before G13
+- On-device performance is unverified in source
+- Priority MS; design and ADR only, no build before P13-004 gate passes
+gate: G13
+external_blockers:
+- EXT-28
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - adaptive/09-writing-and-communication

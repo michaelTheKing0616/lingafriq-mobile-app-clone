@@ -1,0 +1,96 @@
+charter: v2
+id: P6-027
+kind: build
+title: Build Story Mode from approved lexicon with AI labels
+phase: P6
+epic: E-P6-MODES
+req_ids:
+- EP-§7.3-05
+- EP-§7.3-20
+- EP-§7.3-21
+- EP-§7.3-22
+depends_on:
+- P6-003
+- P6-008
+- P6-011
+- P6-014
+- P6-056
+size: M
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 2
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 3, ambiguity 2, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/modes/story.ts
+- node-backend/src/ai-gateway/prompts/templates/story.md
+- lib/screens/story/
+context_anchors:
+- ELEVATION.md#§7.3:L1411-L1415
+acceptance_criteria:
+- id: AC1
+  text: Given the approved lexicon and level, when a micro-story is generated, then every word is inside the lexicon and tap-to-gloss
+    and comprehension questions are included
+- id: AC2
+  text: Given a story, when published to the shared library, then it requires human approval and unapproved stories are never
+    listed
+- id: AC3
+  text: Given a personal story, when displayed, then it carries the visible label AI-generated
+- id: AC4
+  text: Given story audio, when requested, then it follows the TTS routing policy
+- id: AC9
+  text: Given the mode eval set in CI, when run on a prompt or model change, then the mode meets the thresholds in the eval
+    config or the deploy is blocked
+test_plan:
+  unit:
+  - lexicon check
+  integration:
+  - approval gate
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - AI label present
+user_facing: true
+ux_spec:
+  states:
+  - generating
+  - ready
+  - pending_review
+  - error
+  copy_keys:
+  - story.ai_generated_label
+  tokens:
+  - color.badge
+  - type.caption
+  motion_tier: product
+  a11y:
+  - label read by screen reader
+  goldens:
+  - story_ai_label
+tags:
+- ai_disclosure
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

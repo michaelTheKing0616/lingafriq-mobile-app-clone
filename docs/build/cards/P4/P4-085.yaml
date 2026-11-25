@@ -1,0 +1,65 @@
+charter: v2
+id: P4-085
+kind: build
+title: Regenerate dialogues from can-do targets
+phase: P4
+epic: E-P4-LEGACY-REBUILD
+req_ids:
+- CP-§8-05
+depends_on:
+- P4-082
+- P4-055
+- P4-051
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- tools/content_engine/legacy/dialogues.py
+- tools/content_engine/tests/test_legacy_dialogues.py
+context_anchors:
+- CURRICULUM.md#§8:L768-L769
+acceptance_criteria:
+- id: AC1
+  text: Given a can-do target, when dialogues are regenerated, then they pass the duplicate-content linter with zero DUPLICATE_DIALOGUE
+    failures
+- id: AC2
+  text: Given regeneration fails twice, when run, then the item is parked for a human and not published
+test_plan:
+  unit:
+  - dry run lists changes
+  integration:
+  - re-run is idempotent
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/conversational-ux
+  - adaptive/08-coding-and-debugging

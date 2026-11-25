@@ -1,0 +1,66 @@
+charter: v2
+id: P11-039
+kind: design
+title: Design chip artboard for 32, 48 and 64 px
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§4.2-39
+- EP-§4.2-40
+- EP-§4.2-42
+- EP-§4.2-43
+- EP-§4.2-44
+- EP-§4.2-45
+- EP-§4.2-46
+- EP-§4.3-03
+depends_on:
+- P11-028
+size: S
+difficulty:
+  score: 2
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 0, ambiguity 1, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist:
+- docs/build/avatars/chip_artboard_spec.md
+context_anchors:
+- ELEVATION.md#§4.2:L906-L909
+- ELEVATION.md#§4.3:L919-L920
+acceptance_criteria:
+- id: AC1
+  text: Given the chip artboard, when drawn, then it uses a simplified face with exaggerated brows and mouth.
+- id: AC2
+  text: Given 64 px rendering, when measured, then every stroke is ≥2 px and no thin hair strands exist.
+- id: AC3
+  text: Given a 1-bit silhouette test, when run at 32, 48 and 64 px, then expression and silhouette remain readable.
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: true
+dod_evidence:
+- reviewer verdict
+- ledger row
+risks: []
+gate: G11
+external_blockers:
+- EXT-16
+status: Draft
+skills:
+  worker:
+  - prime/illustration-style
+  - prime/design-dna
+  - prime/rive
+  reviewer_extra:
+  - prime/critique-visual-hierarchy
+  - prime/critique-typography
+  - prime/design-to-code-check

@@ -4,17 +4,17 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' show VoidCallback;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/config/api_contract.dart';
+import 'package:lingafriq/models/onboarding_answers.dart';
 import 'package:lingafriq/models/profile_model.dart';
 import 'package:lingafriq/providers/user_provider.dart';
-import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
+import 'package:lingafriq/screens/home_screen.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/services/auth/credential_storage_service.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 import '../screens/auth/world_class_login_screen.dart';
 import '../screens/auth/email_verification_screen.dart';
-import '../screens/onboarding/onboarding_screen_material3.dart';
+import '../screens/onboarding/unified_onboarding_screen.dart';
 import 'api_provider.dart';
 import 'base_provider.dart';
 import 'dialog_provider.dart';
@@ -33,55 +33,8 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     return BaseProviderState();
   }
 
-  static const _lastSeenAppVersionKey = 'last_seen_app_version';
-
   Future<void> navigateBasedOnCondition() async {
     final prefs = ref.read(sharedPreferencesProvider).prefs;
-
-    // App version gate: after a MAJOR or MINOR version change, require
-    // onboarding + login again. Build number increments (e.g. 1.6.0+161 →
-    // 1.6.0+180) do NOT reset credentials or onboarding — they represent
-    // internal iteration, not user-facing feature changes.
-    try {
-      final info = await PackageInfo.fromPlatform();
-      final currentSemver = info.version; // e.g. "1.6.0"
-      final currentFull = '${info.version}+${info.buildNumber}';
-      final lastSeenVersion = prefs.getString(_lastSeenAppVersionKey);
-
-      // Extract semver portion from stored version (strip build number)
-      final lastSeenSemver = lastSeenVersion?.split('+').first;
-
-      if (lastSeenSemver == null || lastSeenSemver != currentSemver) {
-        // Semver changed (e.g. 1.5.0 → 1.6.0) — full reset
-        logger.info('App semver changed, resetting onboarding & auth flow', context: {
-          'lastSeen': lastSeenVersion,
-          'current': currentFull,
-          'lastSemver': lastSeenSemver,
-          'currentSemver': currentSemver,
-        });
-        await prefs.setBool('onboarding_seen', false);
-        await prefs.remove('onboarding_complete');
-        await prefs.remove('onboarding_data');
-        await ref.read(sharedPreferencesProvider).clearAuthTokens();
-        ref.read(apiProvider.notifier).clearToken();
-        ref.read(userProvider.notifier).overrideUser(null);
-        try {
-          await CredentialStorageService().clearCredentials();
-        } catch (_) {
-          // Ignore clear errors
-        }
-        await prefs.setString(_lastSeenAppVersionKey, currentFull);
-      } else if (lastSeenVersion != currentFull) {
-        // Only build number changed — update stored version without resetting
-        logger.info('Build number changed, preserving auth & onboarding', context: {
-          'lastSeen': lastSeenVersion,
-          'current': currentFull,
-        });
-        await prefs.setString(_lastSeenAppVersionKey, currentFull);
-      }
-    } catch (e) {
-      logger.warn('Version check failed, continuing with existing flow', error: e);
-    }
 
     // Log backend URL configuration for debugging
     logger.info('App startup navigation', context: {
@@ -97,10 +50,9 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     //
     // Previous logic treated `hasOnboardingData` as a proxy for completion,
     // which caused onboarding to be skipped when old data existed from a
-    // prior build that never set the `onboarding_complete` flag, or when the
-    // semver didn't change so the version-check reset didn't trigger.
+    // prior build that never set the `onboarding_complete` flag.
     //
-    // Fix: require the explicit `onboarding_complete` flag. If old data
+    // Require the explicit `onboarding_complete` flag. If old data
     // exists without it, migrate it forward so existing users are not forced
     // to redo onboarding.
     final isOnboardingSeen = ref.read(sharedPreferencesProvider).isOnboardingSeen;
@@ -128,7 +80,20 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       await prefs.setBool('onboarding_seen', false);
       await prefs.remove('onboarding_complete');
       await prefs.remove('onboarding_data');
-      ref.read(navigationProvider).navigateOffAll(const OnboardingScreenMaterial3());
+      ref.read(navigationProvider).navigateOffAll(const UnifiedOnboardingScreen());
+      return;
+    }
+
+    final migration = await OnboardingAnswers.migrate(prefs);
+    if (migration.error != null) {
+      logger.error(
+        'Onboarding answers could not be read',
+        tag: 'auth',
+        error: migration.error,
+      );
+    }
+    if (migration.reask.isNotEmpty) {
+      ref.read(navigationProvider).navigateOffAll(const UnifiedOnboardingScreen());
       return;
     }
 
@@ -156,7 +121,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
       
       // Already logged in and verified, navigate to tabs view
-      ref.read(navigationProvider).navigateOffAll(const TabsViewMaterial3());
+      ref.read(navigationProvider).navigateOffAll(const HomeScreen());
       return;
     }
 
@@ -181,7 +146,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
             );
             return;
           }
-          ref.read(navigationProvider).navigateOffAll(const TabsViewMaterial3());
+          ref.read(navigationProvider).navigateOffAll(const HomeScreen());
           return;
         }
       }
@@ -255,7 +220,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         } else {
           final isOnboardingSeen = ref.read(sharedPreferencesProvider).isOnboardingSeen;
           ref.read(navigationProvider).navigateOffAll(
-            isOnboardingSeen ? const TabsViewMaterial3() : const OnboardingScreenMaterial3(),
+            isOnboardingSeen ? const HomeScreen() : const UnifiedOnboardingScreen(),
           );
         }
       }
@@ -346,6 +311,11 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
   Future<void> signOut({bool deleteAccount = false}) async {
     try {
+      try {
+        await ref.read(apiProvider.notifier).logout();
+      } catch (_) {
+        // Local sign-out continues when the server cannot be reached.
+      }
       final prefs = ref.read(sharedPreferencesProvider);
       await prefs.removeEmailAndPassword();
       await prefs.clearAuthTokens();

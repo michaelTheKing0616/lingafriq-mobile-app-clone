@@ -1,9 +1,14 @@
 import '../../models/cultural_mastery_profile.dart';
 import '../../models/game_streak.dart';
 import '../../services/cultural_mastery_service.dart';
+import '../circles/circle_goal_service.dart';
+import '../festival/festival_theme_service.dart';
 import 'game_result.dart';
+import 'game_scoring.dart';
+import 'game_session.dart';
 
 /// Meta-game layer - tracks streaks, mastery, badges
+/// Rewards follow [GameKitRewardPolicy] (deterministic badges from turn scores).
 /// This is what makes the app addictive
 class GameMetaLayer {
   final CulturalMasteryService masteryService;
@@ -16,7 +21,31 @@ class GameMetaLayer {
     required String language,
     required String gameId,
     required GameTurnResult result,
+    bool duelOpponentIsBot = false,
+    bool practiceNotScored = false,
   }) async {
+    final countsForLeaderboard = !duelOpponentIsBot && !practiceNotScored;
+    if (practiceNotScored ||
+        result.score.honestPracticeMode ||
+        !result.score.countsForRewards) {
+      final streak = await masteryService.getStreak(
+        userId: userId,
+        language: language,
+      );
+      final mastery = await masteryService.getMasteryProfile(
+            userId: userId,
+            language: language,
+          ) ??
+          CulturalMasteryProfile(userId: userId, language: language);
+      return MetaGameUpdate(
+        mastery: mastery,
+        streak: streak,
+        badges: const [],
+        countsForLeaderboard: false,
+        festivalWeekKey: FestivalThemeService.instance.cached?.weekKey,
+        festivalThemeId: FestivalThemeService.instance.cached?.themeId.name,
+      );
+    }
     // Update mastery profile
     final learningSignal = result.feedback.metadata?['learning_signal'] as Map<String, dynamic>?;
     final signalValue = learningSignal?.values.first as num? ?? 0.0;
@@ -50,7 +79,24 @@ class GameMetaLayer {
       mastery: mastery,
       streak: streak,
       badges: badges,
+      countsForLeaderboard: countsForLeaderboard,
+      festivalWeekKey: FestivalThemeService.instance.cached?.weekKey,
+      festivalThemeId: FestivalThemeService.instance.cached?.themeId.name,
     );
+  }
+
+  /// After a scored session, sync newly learned skills to the circle co-op goal (P8-933).
+  Future<int> syncCircleWordGoalAfterSession({
+    required GameSession session,
+    required String? circleGroupId,
+    CircleGoalService? circleGoals,
+  }) async {
+    if (circleGroupId == null || circleGroupId.isEmpty) return 0;
+    if (session.practiceNotScored) return 0;
+    if (newlyLearnedSkillIdsFromSession(session).isEmpty) return 0;
+    final svc = circleGoals;
+    if (svc == null) return 0;
+    return svc.claimSessionLearnedWords(groupId: circleGroupId, session: session);
   }
 
   List<String> _checkBadges(
@@ -94,11 +140,18 @@ class MetaGameUpdate {
   final CulturalMasteryProfile mastery;
   final GameStreak streak;
   final List<String> badges;
+  /// False when the duel opponent was a labelled bot (P8-908 AC3).
+  final bool countsForLeaderboard;
+  final String? festivalWeekKey;
+  final String? festivalThemeId;
 
   MetaGameUpdate({
     required this.mastery,
     required this.streak,
     this.badges = const [],
+    this.countsForLeaderboard = true,
+    this.festivalWeekKey,
+    this.festivalThemeId,
   });
 }
 

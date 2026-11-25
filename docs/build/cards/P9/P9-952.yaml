@@ -1,0 +1,97 @@
+charter: v2
+id: P9-952
+kind: build
+title: Build teacher dashboard with roster import for Classrooms
+phase: P9
+epic: E-P9-VILLAGE
+req_ids:
+- EP-§9.2-33
+- EP-§9.2-34
+- EP-§9.2-40
+- RM-P1-08
+depends_on:
+- E-P9-SAFETY
+- P9-916
+- P9-904
+size: L
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, ambiguity 1, coupling 2, depth 0'
+token_budget: 200000
+file_allowlist:
+- web/teacher/dashboard.tsx
+- node-backend/src/services/classroom.service.ts
+- node-backend/src/services/rosterImport.service.ts
+- lib/screens/classroom/classroom_roster_screen.dart
+context_anchors:
+- ELEVATION.md#§9.2:L1616-L1623
+acceptance_criteria:
+- id: AC1
+  text: Given a CSV roster, when imported, then valid rows create or invite students and invalid rows are listed with the
+    line number and reason
+- id: AC2
+  text: Given a teacher, when opening the dashboard, then they see only classes they own and cross-class access returns 403
+- id: AC3
+  text: Given school and congregation classes, when created, then the organisation type is recorded for the B2B pipeline
+- id: AC4
+  text: Given a student under 18, when imported, then the account is created pending guardian or school consent and not activated
+test_plan:
+  unit:
+  - roster parser
+  integration:
+  - import to pending accounts
+  security:
+  - cross-class access
+  e2e: []
+  perf: []
+  a11y:
+  - dashboard
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - empty
+  - importing
+  - partial-errors
+  - ready
+  copy_keys:
+  - teacher.roster.import
+  - teacher.roster.errors
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - teacher_default
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

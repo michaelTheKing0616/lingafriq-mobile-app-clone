@@ -1,0 +1,98 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+EP-§14.1-01,ELEVATION,§14.1:L1965-L1966,metric,lingafriq-admin has 33 pages,P1,agent,,Open
+EP-§14.1-02,ELEVATION,§14.1:L1966,informational,but no review workflow,P1,agent,,Open
+EP-§14.1-03,ELEVATION,§14.1:L1966,informational,no roles beyond admin,P1,agent,,Open
+EP-§14.1-04,ELEVATION,§14.1:L1967,informational,no content versioning,P1,agent,,Open
+EP-§14.1-05,ELEVATION,§14.1:L1967,informational,no audit trail UI,P1,agent,,Open
+EP-§14.1-06,ELEVATION,§14.1:L1967,metric,and 0 tests,P1,agent,,Open
+EP-§14.1-07,ELEVATION,§14.1:L1967-L1968,informational,Lesson drafts autosave to localStorage,P1,agent,,Open
+EP-§14.1-08,ELEVATION,§14.1:L1968,informational,The app-side native verification tools are dead code.,P1,agent,,Open
+EP-§14.2-01,ELEVATION,§14.2:L1970,requirement,Roles: Owner,P1,agent,,Open
+EP-§14.2-02,ELEVATION,§14.2:L1970,requirement,Content Lead (per language),P1,agent,,Open
+EP-§14.2-03,ELEVATION,§14.2:L1970,requirement,Writer,P1,agent,,Open
+EP-§14.2-04,ELEVATION,§14.2:L1970,requirement,Native Reviewer,P1,agent,,Open
+EP-§14.2-05,ELEVATION,§14.2:L1970,requirement,Linguist,P1,agent,,Open
+EP-§14.2-06,ELEVATION,§14.2:L1970,requirement,Audio Producer,P1,agent,,Open
+EP-§14.2-07,ELEVATION,§14.2:L1971,requirement,Historian (personas),P1,agent,,Open
+EP-§14.2-08,ELEVATION,§14.2:L1971,requirement,Moderator,P1,agent,,Open
+EP-§14.2-09,ELEVATION,§14.2:L1971,requirement,Support,P1,agent,,Open
+EP-§14.2-10,ELEVATION,§14.2:L1971,requirement,Analyst.,P1,agent,,Open
+EP-§14.2-11,ELEVATION,§14.2:L1971,constraint,Least privilege enforced on the server.,P1,agent,,Open
+EP-§14.2-12,ELEVATION,§14.2:L1972,requirement,Workflow: Draft,P1,agent,,Open
+EP-§14.2-13,ELEVATION,§14.2:L1972,requirement,"AI-assist (optional, flagged)",P1,agent,,Open
+EP-§14.2-14,ELEVATION,§14.2:L1972,requirement,Native review ×2,P1,agent,,Open
+EP-§14.2-15,ELEVATION,§14.2:L1972,requirement,Linguist approve,P1,agent,,Open
+EP-§14.2-16,ELEVATION,§14.2:L1972-L1973,requirement,Audio recorded and aligned,P1,agent,,Open
+EP-§14.2-17,ELEVATION,§14.2:L1973,requirement,QA,P1,agent,,Open
+EP-§14.2-18,ELEVATION,§14.2:L1973,requirement,Scheduled publish,P1,agent,,Open
+EP-§14.2-19,ELEVATION,§14.2:L1973,requirement,Monitor item stats,P1,agent,,Open
+EP-§14.2-20,ELEVATION,§14.2:L1973,requirement,Revise.,P1,agent,,Open
+EP-§14.2-21,ELEVATION,§14.2:L1973-L1974,constraint,Every state change is audited.,P1,agent,,Open
+EP-§14.2-22,ELEVATION,§14.2:L1976,requirement,a tone-aware text field,P1,agent,,Open
+EP-§14.2-23,ELEVATION,§14.2:L1976,requirement,diacritic palette,P1,agent,,Open
+EP-§14.2-24,ELEVATION,§14.2:L1976,requirement,NFC enforcement,P1,agent,,Open
+EP-§14.2-25,ELEVATION,§14.2:L1977,requirement,live Tone Lens preview,P1,agent,,Open
+EP-§14.2-26,ELEVATION,§14.2:L1977,requirement,audio waveform with alignment view,P1,agent,,Open
+EP-§14.2-27,ELEVATION,§14.2:L1977,requirement,minimal-pair linker,P1,agent,,Open
+EP-§14.2-28,ELEVATION,§14.2:L1977-L1978,requirement,dialogue editor with per-turn audio,P1,agent,,Open
+EP-§14.2-29,ELEVATION,§14.2:L1978,requirement,can-do mapper,P1,agent,,Open
+EP-§14.2-30,ELEVATION,§14.2:L1978,requirement,an item preview that renders exactly like the app.,P1,agent,,Open
+EP-§14.2-31,ELEVATION,§14.2:L1979,requirement,Quality dashboards: item difficulty and discrimination,P1,agent,,Open
+EP-§14.2-32,ELEVATION,§14.2:L1979,requirement,"report a problem" queue,P1,agent,,Open
+EP-§14.2-33,ELEVATION,§14.2:L1979-L1980,requirement,reviewer agreement,P1,agent,,Open
+EP-§14.2-34,ELEVATION,§14.2:L1980,requirement,audio coverage per language and level,P1,agent,,Open
+EP-§14.2-35,ELEVATION,§14.2:L1980,requirement,placeholder detector,P1,agent,,Open
+EP-§14.2-36,ELEVATION,§14.2:L1980-L1981,requirement,untranslated UI string count.,P1,agent,,Open
+EP-§14.2-37,ELEVATION,§14.2:L1982,requirement,Moderation console: report queues with evidence,P1,agent,,Open
+EP-§14.2-38,ELEVATION,§14.2:L1982,requirement,user history,P1,agent,,Open
+EP-§14.2-39,ELEVATION,§14.2:L1982,requirement,"actions (warn, mute, suspend, ban)",P1,agent,,Open
+EP-§14.2-40,ELEVATION,§14.2:L1983,requirement,appeals,P1,agent,,Open
+EP-§14.2-41,ELEVATION,§14.2:L1983,requirement,law-enforcement escalation workflow,P1,agent,,Open
+EP-§14.2-42,ELEVATION,§14.2:L1983,constraint,CSAM handling restricted to trained staff.,P1,agent,,Open
+EP-§14.2-43,ELEVATION,§14.2:L1984,requirement,Persona console: source dossiers,P1,agent,,Open
+EP-§14.2-44,ELEVATION,§14.2:L1984,requirement,claims audit,P1,agent,,Open
+EP-§14.2-45,ELEVATION,§14.2:L1984,requirement,eval results per persona,P1,agent,,Open
+EP-§14.2-46,ELEVATION,§14.2:L1984,requirement,kill switch.,P1,agent,,Open
+EP-§14.2-47,ELEVATION,§14.2:L1985,requirement,AI ops: prompt registry with versions and diffs,P1,agent,,Open
+EP-§14.2-48,ELEVATION,§14.2:L1985,requirement,eval runs,P1,agent,,Open
+EP-§14.2-49,ELEVATION,§14.2:L1985,requirement,cost per feature,P1,agent,,Open
+EP-§14.2-50,ELEVATION,§14.2:L1985,requirement,model routing table,P1,agent,,Open
+EP-§14.2-51,ELEVATION,§14.2:L1986,requirement,incident switches.,P1,agent,,Open
+EP-§14.2-52,ELEVATION,§14.2:L1987,requirement,Tech: upgrade to current React and Vite,P1,agent,,Open
+EP-§14.2-53,ELEVATION,§14.2:L1987,requirement,typed API client generated from OpenAPI,P1,agent,,Open
+EP-§14.2-54,ELEVATION,§14.2:L1987,requirement,SSO for staff,P1,agent,,Open
+EP-§14.2-55,ELEVATION,§14.2:L1987-L1988,constraint,mandatory 2FA,P1,agent,,Open
+EP-§14.2-56,ELEVATION,§14.2:L1988,requirement,server-side sessions or httpOnly cookies instead of sessionStorage tokens,P1,agent,,Open
+EP-§14.2-57,ELEVATION,§14.2:L1989,requirement,Playwright tests on critical flows.,P1,agent,,Open
+EP-§15-01,ELEVATION,§15:L1991-L1992,decision,North-star metric: weekly learners who demonstrated a new can-do,P1,Tope,,Open
+EP-§15-02,ELEVATION,§15:L1992,metric,guardrails on D1/D7/D30 retention,P1,agent,,Open
+EP-§15-03,ELEVATION,§15:L1992,metric,minutes practised,P1,agent,,Open
+EP-§15-04,ELEVATION,§15:L1992,metric,speaking minutes,P1,agent,,Open
+EP-§15-05,ELEVATION,§15:L1992,metric,crash-free sessions,P1,agent,,Open
+EP-§15-06,ELEVATION,§15:L1993,constraint,Do not optimise on streak length alone.,P1,agent,,Open
+EP-§15-07,ELEVATION,§15:L1994,requirement,"Event taxonomy (one schema, versioned)",P1,agent,,Open
+EP-§15-08,ELEVATION,§15:L1994,requirement,session_started,P1,agent,,Open
+EP-§15-09,ELEVATION,§15:L1994-L1995,requirement,"item_answered{item_id, correct, latency, hints}",P1,agent,,Open
+EP-§15-10,ELEVATION,§15:L1995,requirement,"speech_attempt_scored{phones_ok, tone_ok, confidence}",P1,agent,,Open
+EP-§15-11,ELEVATION,§15:L1995,requirement,cando_demonstrated,P1,agent,,Open
+EP-§15-12,ELEVATION,§15:L1996,requirement,"ai_turn{mode, tokens, latency, fallback_used}",P1,agent,,Open
+EP-§15-13,ELEVATION,§15:L1996,requirement,content_reported.,P1,agent,,Open
+EP-§15-14,ELEVATION,§15:L1996-L1997,constraint,Send on-device aggregates where possible (privacy).,P1,agent,,Open
+EP-§15-15,ELEVATION,§15:L1998,requirement,Experimentation: feature-flag-based A/B,P1,agent,,Open
+EP-§15-16,ELEVATION,§15:L1998-L1999,constraint,pre-registered hypotheses and minimum detectable effects,P1,agent,,Open
+EP-§15-17,ELEVATION,§15:L1999,constraint,never experiment on minors' safety settings.,P1,agent,,Open
+EP-§15-18,ELEVATION,§15:L2000,external,an external efficacy study,P1,external,,Open
+EP-§15-19,ELEVATION,§15:L2000-L2001,requirement,pre/post oral proficiency interview with blinded raters,P1,external,,Open
+EP-§15-20,ELEVATION,§15:L2000-L2001,metric,for two Stage-1 languages,P1,Tope,,Open
+EP-§15-21,ELEVATION,§15:L2001,decision,one tonal West African language such as Yoruba,P1,Tope,,Open
+EP-§15-22,ELEVATION,§15:L2001,decision,one Bantu language such as isiZulu,P1,Tope,,Open
+EP-§15-23,ELEVATION,§15:L2001,metric,within a year.,P1,external,,Open
+EP-§15-24,ELEVATION,§15:L2001-L2002,constraint,it must be real (no invented stats; Playbook §9),P1,agent,,Open
+EP-§15-25,ELEVATION,§15:L2003,requirement,"Copy: warm, clear, specific",P1,agent,,Open
+EP-§15-26,ELEVATION,§15:L2003,metric,grade-7 reading level,P1,agent,,Open
+EP-§15-27,ELEVATION,§15:L2003,requirement,"verb-first buttons (""Start lesson"", ""Hear it again"")",P1,agent,,Open
+EP-§15-28,ELEVATION,§15:L2004,requirement,"name continuity (""Publish"" → ""Published"")",P1,agent,,Open
+EP-§15-29,ELEVATION,§15:L2004,constraint,no em dashes in UI strings,P1,agent,,Open
+EP-§15-30,ELEVATION,§15:L2004-L2005,constraint,"no ""World-class/Elite/Seamless"" in product copy",P1,agent,,Open
+EP-§15-31,ELEVATION,§15:L2005-L2006,constraint,"The village voice lives in characters, not in every label.",P1,agent,,Open
+EP-§15-32,ELEVATION,§15:L2006-L2007,requirement,"Error copy follows ""what happened, why, what next""",P1,agent,,Open

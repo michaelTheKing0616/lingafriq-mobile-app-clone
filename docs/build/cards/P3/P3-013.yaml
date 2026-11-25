@@ -1,0 +1,74 @@
+charter: v2
+id: P3-013
+kind: build
+title: Add token-compliance lint for colours, sizes, fonts, strings
+phase: P3
+epic: E-P3-TOKENS
+req_ids:
+- EP-§3.2-09
+depends_on:
+- P3-009
+- P3-008
+- P3-012
+- P3-010
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 4: T0-style lint code, coupling across tree'
+token_budget: 60000
+file_allowlist:
+- scripts/lint/token_compliance.py
+- scripts/lint/token_baseline.json
+- test/scripts/token_compliance_test.py
+context_anchors:
+- ELEVATION.md#§3.2:L781-L784
+acceptance_criteria:
+- id: AC1
+  text: Given a Dart file in new design code, when it holds a Color(0x...) literal, then the lint fails with file and line
+- id: AC2
+  text: Given hard-coded font family, font size, spacing number or user-visible string, when linted, then each fails with
+    its own rule id
+- id: AC3
+  text: Given the legacy tree with 740 colour literals, when the baseline is recorded, then a ratchet blocks any increase
+    and the count is printed per run
+- id: AC4
+  text: Given a path outside the baseline in lib/design/ or widgetbook/, when linted, then the allowed count is 0
+- id: AC5
+  text: Given CI, when the lint fails, then the job fails and prints a <=15 line summary
+test_plan:
+  unit:
+  - each rule
+  - ratchet
+  integration:
+  - CI wiring
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

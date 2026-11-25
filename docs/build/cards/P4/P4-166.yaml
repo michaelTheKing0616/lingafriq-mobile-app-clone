@@ -1,0 +1,74 @@
+charter: v2
+id: P4-166
+kind: build
+title: Add staff SSO, mandatory 2FA and cookie sessions
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§14.2-54
+- EP-§14.2-55
+- EP-§14.2-56
+depends_on:
+- P4-150
+size: L
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: auth area, blast 3'
+token_budget: 150000
+file_allowlist:
+- node-backend/src/routes/staff_auth.routes.ts
+- node-backend/src/services/staff_session.service.ts
+- node-backend/src/middleware/require_2fa.middleware.ts
+- lingafriq-admin/src/pages/Login.tsx
+- test/backend/staff_auth.test.ts
+context_anchors:
+- ELEVATION.md#§14.2:L1970-L1989
+acceptance_criteria:
+- id: AC1
+  text: Given a staff login, when SSO succeeds, then a second factor is required before any session is issued
+- id: AC2
+  text: Given a session, when issued, then it is a server-side session or httpOnly Secure SameSite cookie and no token is
+    stored in sessionStorage or localStorage
+- id: AC3
+  text: Given an account without 2FA enrolled, when it signs in, then access is limited to the enrolment screen
+- id: AC4
+  text: Given repeated failed 2FA, when the limit is reached, then the account is locked with an audited event
+test_plan:
+  unit:
+  - staff_auth.test
+  integration: []
+  security:
+  - cookie flags
+  - token not in storage
+  - lockout
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

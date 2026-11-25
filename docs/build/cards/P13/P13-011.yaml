@@ -1,0 +1,73 @@
+charter: v2
+id: P13-011
+kind: design
+title: Design verified native teacher marketplace
+phase: P13
+epic: E-P13-SCALE
+req_ids:
+- RM-MS-07
+depends_on:
+- E-P12-RELEASE
+- P13-004
+- E-P9-SAFETY
+- E-P5-CONTENT-REAL
+size: S
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 2, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§16.4:L2147-L2151
+acceptance_criteria:
+- id: AC1
+  text: Given a tutor applies, when verified, then the design defines native-speaker verification steps and a credential record
+- id: AC2
+  text: Given live sessions, when specified, then learners under 18 are covered by guardian consent, session safeguards and
+    moderation from E-P9-SAFETY
+- id: AC3
+  text: Given payments, when specified, then the revenue split is a configured value with a published fairness rule, with
+    no figure assumed here
+- id: AC4
+  text: Given a dispute or safeguarding report, when raised, then the design defines the path and response time owner
+- id: AC5
+  text: Given the doc, when complete, then external dependencies (payments, legal, tutor onboarding) are listed with owner
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks:
+- Owner is external; no EXT item exists, add one before G13
+- Payments and minors touched
+- Priority MS; design and ADR only, no build before P13-004 gate passes
+gate: G13
+external_blockers:
+- EXT-30
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - adaptive/09-writing-and-communication

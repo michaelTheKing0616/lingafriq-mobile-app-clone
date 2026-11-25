@@ -1,0 +1,117 @@
+charter: v2
+id: F-004
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Quests
+phase: P7
+epic: E-P7-HUBS
+hub: Today
+req_ids:
+- F-004
+- F-004.D
+- F-004.E
+- F-004.U
+- F-004.L
+- P0-3
+- P0-7
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P1-CONTAINMENT
+- E-P1-ECONOMY
+- E-P5-CONTENT-REAL
+size: M
+difficulty:
+  score: 6
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: narrative multi-stop flow with gateway quests and server rewards; P0 areas
+token_budget: 80000
+file_allowlist:
+- screens/gamification/quest_screen.dart
+context_anchors:
+- ELEVATION.md#§18.2:L3549-L3561
+delta:
+  current_state: Quest route works with client-side Groq generation detected.
+  defects_to_fix:
+  - Quest generation relies on client AI
+  - Rewards can be minted on the client
+  elevation_to_build:
+  - Village narrative story quests with weekly chapter unlocks
+  - Stops tie Learn Speak and Play into one arc
+  - Server-authored or gateway-generated quest steps
+  ux_and_render:
+  - Illustrated quest map with deep-link stops
+  hub_placement: Today Quest card; Play Quests
+  unlock_stage: per §17.4
+  harvest_list: []
+acceptance_criteria:
+- id: AC1
+  text: Given quest list loads, when generation runs, then no client Groq key is used and steps come from gateway or server.
+- id: AC2
+  text: Given user finishes a stop, when reward is granted, then payout is server-computed from verified events only.
+- id: AC3
+  text: Given Today Quest card, when opened, then map shows illustrated stops each deep-linking to the correct hub feature.
+- id: AC4
+  text: Given a new week, when chapter unlocks, then narrative copy matches reviewed village content labels.
+test_plan:
+  unit:
+  - stop deep-link map
+  - chapter gating
+  integration:
+  - gateway quest fetch
+  - reward ledger
+  e2e:
+  - Today card to map to first stop completion
+  a11y:
+  - map stop semantics
+  - 200% text on stop labels
+  content:
+  - quest narrative carries content honesty labels
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - quests.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+tags:
+- enables_persona
+p0_area: true
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks:
+- illustrated map art dependency
+gate: HUB
+external_blockers:
+- EXT-16
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/hooked-ux
+  - prime/feedback-patterns

@@ -1,0 +1,371 @@
+{
+ "file_bytes": 298228,
+ "Character": {
+  "stateMachines": [
+   "CharacterSM"
+  ],
+  "vmPropsMatchContract": true,
+  "enumsMatch": true
+ },
+ "diff": "32 vs 32",
+ "CharacterChip": {
+  "stateMachines": [
+   "CharacterSM"
+  ],
+  "vmPropsMatchContract": true,
+  "enumsMatch": true
+ },
+ "Bust": {
+  "stateMachines": [
+   "CharacterSM"
+  ],
+  "vmPropsMatchContract": true,
+  "enumsMatch": true
+ },
+ "activities": [
+  {
+   "label": "activity=idle",
+   "states": [],
+   "pixelsChanged": true
+  },
+  {
+   "label": "activity=listening",
+   "states": [
+    "listening"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "activity=thinking",
+   "states": [
+    "thinking"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "activity=speaking",
+   "states": [
+    "speaking"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "activity=celebrating",
+   "states": [
+    "celebrating"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "activity=encouraging",
+   "states": [
+    "encouraging"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "activity=hinting",
+   "states": [
+    "hinting"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "activity=sleeping",
+   "states": [
+    "sleeping"
+   ],
+   "pixelsChanged": true
+  }
+ ],
+ "triggers": [
+  {
+   "label": "fire correct",
+   "states": [
+    "os_correct",
+    "face_joy"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "fire incorrect",
+   "states": [
+    "os_incorrect",
+    "face_kind"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "fire celebrate",
+   "states": [
+    "os_celebrate",
+    "face_joy"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "fire levelUp",
+   "states": [
+    "os_levelUp",
+    "face_joy"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "fire wave",
+   "states": [
+    "os_wave"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "fire nod",
+   "states": [
+    "os_nod"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "fire shrug",
+   "states": [
+    "os_shrug"
+   ],
+   "pixelsChanged": true
+  }
+ ],
+ "expressions": [
+  {
+   "label": "expression=neutral",
+   "states": [
+    "unknown"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "expression=happy",
+   "states": [
+    "unknown"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "expression=proud",
+   "states": [
+    "unknown"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "expression=curious",
+   "states": [
+    "unknown"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "expression=concerned",
+   "states": [
+    "unknown"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "expression=surprised",
+   "states": [
+    "unknown"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "expression=playful",
+   "states": [
+    "unknown"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "expression=focused",
+   "states": [
+    "unknown"
+   ],
+   "pixelsChanged": true
+  }
+ ],
+ "visemes": [
+  "viseme=sil -> ",
+  "viseme=PP -> vis_PP",
+  "viseme=FF -> vis_FF",
+  "viseme=TH -> vis_TH",
+  "viseme=DD -> vis_DD",
+  "viseme=kk -> vis_kk",
+  "viseme=CH -> vis_CH",
+  "viseme=SS -> vis_SS",
+  "viseme=nn -> vis_nn",
+  "viseme=RR -> vis_RR",
+  "viseme=aa -> vis_aa",
+  "viseme=E -> vis_E",
+  "viseme=I -> vis_I",
+  "viseme=O -> vis_O",
+  "viseme=U -> vis_U",
+  "viseme=KP -> vis_PP",
+  "viseme=GB -> ",
+  "viseme=C -> vis_CH",
+  "viseme=Q -> vis_U",
+  "viseme=X -> vis_sil",
+  "viseme=Nnasal -> vis_nn"
+ ],
+ "reducedMotion": [
+  {
+   "label": "reducedMotion=true",
+   "states": [
+    "idle_calm_rm",
+    "vis_sil"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "idleStillWhileReduced": true
+  }
+ ],
+ "bodyType": [
+  {
+   "label": "bodyType=average",
+   "states": [
+    "unknown",
+    "body_average"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "bodyType=child",
+   "states": [
+    "body_child"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "bodyType=teen",
+   "states": [
+    "body_teen"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "bodyType=slim",
+   "states": [
+    "body_slim"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "bodyType=tall",
+   "states": [
+    "body_tall"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "bodyType=broad",
+   "states": [
+    "body_broad"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "bodyType=curvy",
+   "states": [
+    "body_curvy"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "bodyType=elder",
+   "states": [
+    "body_elder"
+   ],
+   "pixelsChanged": true
+  }
+ ],
+ "wheelchair": [
+  {
+   "label": "wheelchair=true",
+   "states": [
+    "seat_on"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "wheelchair=false",
+   "states": [
+    "seat_off"
+   ],
+   "pixelsChanged": true
+  }
+ ],
+ "faceShape": [
+  {
+   "label": "faceShape=oval",
+   "states": [
+    "faceshape_oval"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "faceShape=round",
+   "states": [
+    "faceshape_round"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "faceShape=long",
+   "states": [
+    "faceshape_long"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "faceShape=square",
+   "states": [
+    "faceshape_square"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "faceShape=heart",
+   "states": [
+    "faceshape_heart"
+   ],
+   "pixelsChanged": true
+  },
+  {
+   "label": "faceShape=diamond",
+   "states": [
+    "faceshape_diamond"
+   ],
+   "pixelsChanged": true
+  }
+ ],
+ "blinkRate": {
+  "label": "blinkRate=0.9",
+  "states": [],
+  "pixelsChanged": true
+ },
+ "gaze": {
+  "label": "gazeX=1,gazeY=-1,headTilt=1",
+  "states": [],
+  "pixelsChanged": true
+ },
+ "swap": {
+  "label": "hair=Hair/Locs, headwear=Headwear/Gele",
+  "states": [],
+  "pixelsChanged": true
+ },
+ "color": {
+  "label": "skinTone change",
+  "states": [],
+  "pixelsChanged": true
+ },
+ "tappedFired": 1,
+ "errors": []
+}

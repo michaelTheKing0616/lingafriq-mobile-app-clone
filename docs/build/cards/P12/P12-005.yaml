@@ -1,0 +1,71 @@
+charter: v2
+id: P12-005
+kind: build
+title: Split polie_workspace_screen into feature modules
+phase: P12
+epic: E-P12-RELEASE
+req_ids:
+- EP-§13.6-09
+depends_on:
+- E-P10-ME
+size: L
+difficulty:
+  score: 8
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T1
+  reviewer: T3
+  justification: 'score 8: blast 2, ambiguity 1, coupling 2, depth 2'
+token_budget: 150000
+file_allowlist:
+- lib/screens/ai_chat/polie_workspace_screen.dart
+- lib/features/polie_workspace
+- test/features/polie_workspace
+- analysis_options.yaml
+context_anchors:
+- ELEVATION.md#§13.6:L1930
+acceptance_criteria:
+- id: AC1
+  text: Given lib/screens/ai_chat/polie_workspace_screen.dart (6,485 lines per source), when the split lands, then no resulting
+    Dart file exceeds 500 lines
+- id: AC2
+  text: Given the split, when the existing widget and golden tests run, then they pass unchanged
+- id: AC3
+  text: Given the new module boundary, when the import-boundary lint runs, then UI files do not import provider internals
+    except through the module's public barrel
+- id: AC4
+  text: Given the split, when a user opens the workspace, then behaviour is identical, verified by a recorded smoke path with
+    no new error logs
+test_plan:
+  unit:
+  - extracted controllers
+  integration:
+  - workspace smoke path
+  security: []
+  e2e:
+  - open, send, receive
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G12
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

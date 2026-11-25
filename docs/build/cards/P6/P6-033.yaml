@@ -1,0 +1,75 @@
+charter: v2
+id: P6-033
+kind: build
+title: Compute GOP segmental scores with learner advice
+phase: P6
+epic: E-P6-SCORING
+req_ids:
+- EP-§7.4-01
+- EP-§7.4-08
+- EP-§7.4-09
+depends_on:
+- P6-031
+- P6-032
+- P6-022
+size: M
+difficulty:
+  score: 9
+  blast: 3
+  ambiguity: 2
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T3
+  justification: 'score 9: blast 3, ambiguity 2, coupling 2, depth 2; DSP tester T3'
+token_budget: 70000
+file_allowlist:
+- speech-service/scorer/gop.py
+- speech-service/scorer/advice_map.py
+- speech-service/scorer/data/substitutions/
+context_anchors:
+- ELEVATION.md#§7.4:L1430-L1434
+acceptance_criteria:
+- id: AC1
+  text: Given audio forced-aligned to the expected phone sequence, when scored, then a per-phone GOP score with confidence
+    is returned
+- id: AC2
+  text: Given a substitution such as gb realised as b, when detected, then learner-friendly advice from the substitution map
+    is returned
+- id: AC3
+  text: Given a phone with low alignment confidence, when scored, then it is marked unsure and omitted from averages
+- id: AC4
+  text: Given a held-out native set, when scored, then native mean per-phone GOP exceeds learner mean for each Stage-1 language
+test_plan:
+  unit:
+  - GOP math
+  - advice map
+  integration:
+  - fixture audio
+  security:
+  - malformed audio
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

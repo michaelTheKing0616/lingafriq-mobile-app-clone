@@ -45,7 +45,14 @@ void main() {
       await tester.tap(find.text('Open'));
       await tester.pumpAndSettle();
 
-      expect(find.text('Missing heritage content'), findsOneWidget);
+      // P10-940 three-part error copy: what happened, why, what to do.
+      expect(
+        find.text(
+          'This heritage page is missing. The link did not include an item. '
+          'Go back and pick another entry.',
+        ),
+        findsOneWidget,
+      );
     },
   );
 }

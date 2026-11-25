@@ -1,0 +1,53 @@
+charter: v2
+id: P5-086
+kind: verification
+title: Measure linguist review throughput
+phase: P5
+epic: E-P5-A1
+req_ids:
+- CP-§9.3-03
+- CP-§9.3-04
+- CP-§9.3-05
+depends_on:
+- P5-077
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T0
+  tester: T0
+  reviewer: T1
+  justification: verification only; no code
+token_budget: 20000
+file_allowlist: []
+context_anchors:
+- CURRICULUM.md#§9.3:L821-L822
+acceptance_criteria:
+- id: AC1
+  text: Given one part-time linguist at 20 h/week, when measured, then items cleared per week are recorded against 1,000-1,500
+    [estimate]
+- id: AC2
+  text: Given the log, when analysed, then items per hour are recorded against 60-150 by type
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G5
+external_blockers:
+- EXT-11
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

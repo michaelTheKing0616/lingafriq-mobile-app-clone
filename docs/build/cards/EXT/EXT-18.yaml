@@ -1,0 +1,39 @@
+charter: v2
+id: EXT-18
+kind: external
+title: 'Obtain: NDPC registration check + DPIA (incl. voice data thresholds [verify with counsel])'
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- UNV-E06
+depends_on: []
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T2
+  justification: agent prepares the artefact; a human completes the item
+token_budget: 20000
+file_allowlist: []
+context_anchors: []
+acceptance_criteria:
+- id: AC1
+  text: 'Artefact prepared and stored under docs/build/external/EXT-18/: DPIA draft, data map, retention schedule'
+- id: AC2
+  text: Owner (Tope → counsel) has the artefact and a one-line status in EXTERNAL.md; due gate G12
+owner: Tope → counsel
+due_gate: G12
+external_blockers:
+- EXT-18
+gate: G12
+status: Blocked-External
+skills:
+  worker:
+  - adaptive/09-writing-and-communication

@@ -1,0 +1,380 @@
+{
+  "card": "P7-942",
+  "built": "2026-10-27",
+  "pack": "culture_naming",
+  "pack_citation": "ELEVATION.md#\u00a711.2:L1795-L1796; assets/data/culture/*.json; assets/data/units/register/*.json",
+  "publish_status": "draft",
+  "external_blockers": [
+    "EXT-14"
+  ],
+  "cultural_consultant_sign_offs": [],
+  "native_reviewer_sign_offs": [],
+  "sign_off_requirements": [
+    {
+      "language_code": "yo",
+      "tutorial_id": "yo-culture-naming",
+      "roles": [
+        "cultural_consultant",
+        "native"
+      ]
+    },
+    {
+      "language_code": "ig",
+      "tutorial_id": "ig-culture-naming",
+      "roles": [
+        "cultural_consultant",
+        "native"
+      ]
+    },
+    {
+      "language_code": "ha",
+      "tutorial_id": "ha-culture-naming",
+      "roles": [
+        "cultural_consultant",
+        "native"
+      ]
+    },
+    {
+      "language_code": "pcm",
+      "tutorial_id": "pcm-culture-naming",
+      "roles": [
+        "cultural_consultant",
+        "native"
+      ]
+    },
+    {
+      "language_code": "sw",
+      "tutorial_id": "sw-culture-naming",
+      "roles": [
+        "cultural_consultant",
+        "native"
+      ]
+    },
+    {
+      "language_code": "zu",
+      "tutorial_id": "zu-culture-naming",
+      "roles": [
+        "cultural_consultant",
+        "native"
+      ]
+    },
+    {
+      "language_code": "xh",
+      "tutorial_id": "xh-culture-naming",
+      "roles": [
+        "cultural_consultant",
+        "native"
+      ]
+    }
+  ],
+  "tutorials": [
+    {
+      "id": "yo-culture-naming",
+      "language_code": "yo",
+      "title": "Naming customs",
+      "culture_card_id": "yo.culture.kinship",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 21,
+          "body_en": "Kinship vocabulary is used when speakers introduce family members. (assets/data/culture/yo.json#yo.culture.kinship). Naming-custom detail beyond cited kinship introductions requires cultural consultant review (ELEVATION.md#\u00a711.2:L1795-L1796; EXT-14).",
+          "source_ids": [
+            "assets/data/culture/yo.json#yo.culture.kinship",
+            "ELEVATION.md#\u00a711.2:L1795-L1796"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 27,
+          "presentation": "naming_customs",
+          "body_en": "Family terms support polite introductions in basic dialogues.",
+          "source_ids": [
+            "assets/data/culture/yo.json#yo.culture.kinship"
+          ],
+          "naming_customs": {
+            "kinship_introduction_claim": "Kinship vocabulary is used when speakers introduce family members.",
+            "culture_card_id": "yo.culture.kinship",
+            "image_uri": "images/yo/culture_kinship.jpg",
+            "extended_naming_rules": [],
+            "extended_naming_gate": "EXT-14_cultural_consultant"
+          }
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 22,
+          "body_en": "Which statement matches the cited kinship introduction note?",
+          "source_ids": [
+            "assets/data/culture/yo.json#yo.culture.kinship"
+          ],
+          "drill_kind": "true_false_claim",
+          "claim_text": "Kinship vocabulary is used when speakers introduce family members.",
+          "correct_answer": true
+        }
+      ]
+    },
+    {
+      "id": "ig-culture-naming",
+      "language_code": "ig",
+      "title": "Naming customs",
+      "culture_card_id": "ig.culture.kinship",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 21,
+          "body_en": "Kinship vocabulary is used when speakers introduce family members. (assets/data/culture/ig.json#ig.culture.kinship). Naming-custom detail beyond cited kinship introductions requires cultural consultant review (ELEVATION.md#\u00a711.2:L1795-L1796; EXT-14).",
+          "source_ids": [
+            "assets/data/culture/ig.json#ig.culture.kinship",
+            "ELEVATION.md#\u00a711.2:L1795-L1796"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 27,
+          "presentation": "naming_customs",
+          "body_en": "Family terms support polite introductions in basic dialogues.",
+          "source_ids": [
+            "assets/data/culture/ig.json#ig.culture.kinship"
+          ],
+          "naming_customs": {
+            "kinship_introduction_claim": "Kinship vocabulary is used when speakers introduce family members.",
+            "culture_card_id": "ig.culture.kinship",
+            "image_uri": "images/ig/culture_kinship.jpg",
+            "extended_naming_rules": [],
+            "extended_naming_gate": "EXT-14_cultural_consultant"
+          }
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 22,
+          "body_en": "Which statement matches the cited kinship introduction note?",
+          "source_ids": [
+            "assets/data/culture/ig.json#ig.culture.kinship"
+          ],
+          "drill_kind": "true_false_claim",
+          "claim_text": "Kinship vocabulary is used when speakers introduce family members.",
+          "correct_answer": true
+        }
+      ]
+    },
+    {
+      "id": "ha-culture-naming",
+      "language_code": "ha",
+      "title": "Naming customs",
+      "culture_card_id": "ha.culture.kinship",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 21,
+          "body_en": "Kinship vocabulary is used when speakers introduce family members. (assets/data/culture/ha.json#ha.culture.kinship). Naming-custom detail beyond cited kinship introductions requires cultural consultant review (ELEVATION.md#\u00a711.2:L1795-L1796; EXT-14).",
+          "source_ids": [
+            "assets/data/culture/ha.json#ha.culture.kinship",
+            "ELEVATION.md#\u00a711.2:L1795-L1796"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 27,
+          "presentation": "naming_customs",
+          "body_en": "Family terms support polite introductions in basic dialogues.",
+          "source_ids": [
+            "assets/data/culture/ha.json#ha.culture.kinship"
+          ],
+          "naming_customs": {
+            "kinship_introduction_claim": "Kinship vocabulary is used when speakers introduce family members.",
+            "culture_card_id": "ha.culture.kinship",
+            "image_uri": "images/ha/culture_kinship.jpg",
+            "extended_naming_rules": [],
+            "extended_naming_gate": "EXT-14_cultural_consultant"
+          }
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 22,
+          "body_en": "Which statement matches the cited kinship introduction note?",
+          "source_ids": [
+            "assets/data/culture/ha.json#ha.culture.kinship"
+          ],
+          "drill_kind": "true_false_claim",
+          "claim_text": "Kinship vocabulary is used when speakers introduce family members.",
+          "correct_answer": true
+        }
+      ]
+    },
+    {
+      "id": "pcm-culture-naming",
+      "language_code": "pcm",
+      "title": "Naming customs",
+      "culture_card_id": "pcm.culture.kinship",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 21,
+          "body_en": "Kinship vocabulary is used when speakers introduce family members. (assets/data/culture/pcm.json#pcm.culture.kinship). Naming-custom detail beyond cited kinship introductions requires cultural consultant review (ELEVATION.md#\u00a711.2:L1795-L1796; EXT-14).",
+          "source_ids": [
+            "assets/data/culture/pcm.json#pcm.culture.kinship",
+            "ELEVATION.md#\u00a711.2:L1795-L1796"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 27,
+          "presentation": "naming_customs",
+          "body_en": "Family terms support polite introductions in basic dialogues.",
+          "source_ids": [
+            "assets/data/culture/pcm.json#pcm.culture.kinship"
+          ],
+          "naming_customs": {
+            "kinship_introduction_claim": "Kinship vocabulary is used when speakers introduce family members.",
+            "culture_card_id": "pcm.culture.kinship",
+            "image_uri": "images/pcm/culture_kinship.jpg",
+            "extended_naming_rules": [],
+            "extended_naming_gate": "EXT-14_cultural_consultant"
+          }
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 22,
+          "body_en": "Which statement matches the cited kinship introduction note?",
+          "source_ids": [
+            "assets/data/culture/pcm.json#pcm.culture.kinship"
+          ],
+          "drill_kind": "true_false_claim",
+          "claim_text": "Kinship vocabulary is used when speakers introduce family members.",
+          "correct_answer": true
+        }
+      ]
+    },
+    {
+      "id": "sw-culture-naming",
+      "language_code": "sw",
+      "title": "Naming customs",
+      "culture_card_id": "sw.culture.kinship",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 21,
+          "body_en": "Kinship vocabulary is used when speakers introduce family members. (assets/data/culture/sw.json#sw.culture.kinship). Naming-custom detail beyond cited kinship introductions requires cultural consultant review (ELEVATION.md#\u00a711.2:L1795-L1796; EXT-14).",
+          "source_ids": [
+            "assets/data/culture/sw.json#sw.culture.kinship",
+            "ELEVATION.md#\u00a711.2:L1795-L1796"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 27,
+          "presentation": "naming_customs",
+          "body_en": "Family terms support polite introductions in basic dialogues.",
+          "source_ids": [
+            "assets/data/culture/sw.json#sw.culture.kinship"
+          ],
+          "naming_customs": {
+            "kinship_introduction_claim": "Kinship vocabulary is used when speakers introduce family members.",
+            "culture_card_id": "sw.culture.kinship",
+            "image_uri": "images/sw/culture_kinship.jpg",
+            "extended_naming_rules": [],
+            "extended_naming_gate": "EXT-14_cultural_consultant"
+          }
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 22,
+          "body_en": "Which statement matches the cited kinship introduction note?",
+          "source_ids": [
+            "assets/data/culture/sw.json#sw.culture.kinship"
+          ],
+          "drill_kind": "true_false_claim",
+          "claim_text": "Kinship vocabulary is used when speakers introduce family members.",
+          "correct_answer": true
+        }
+      ]
+    },
+    {
+      "id": "zu-culture-naming",
+      "language_code": "zu",
+      "title": "Naming customs",
+      "culture_card_id": "zu.culture.kinship",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 21,
+          "body_en": "Kinship vocabulary is used when speakers introduce family members. (assets/data/culture/zu.json#zu.culture.kinship). Naming-custom detail beyond cited kinship introductions requires cultural consultant review (ELEVATION.md#\u00a711.2:L1795-L1796; EXT-14).",
+          "source_ids": [
+            "assets/data/culture/zu.json#zu.culture.kinship",
+            "ELEVATION.md#\u00a711.2:L1795-L1796"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 27,
+          "presentation": "naming_customs",
+          "body_en": "Family terms support polite introductions in basic dialogues.",
+          "source_ids": [
+            "assets/data/culture/zu.json#zu.culture.kinship"
+          ],
+          "naming_customs": {
+            "kinship_introduction_claim": "Kinship vocabulary is used when speakers introduce family members.",
+            "culture_card_id": "zu.culture.kinship",
+            "image_uri": "images/zu/culture_kinship.jpg",
+            "extended_naming_rules": [],
+            "extended_naming_gate": "EXT-14_cultural_consultant"
+          }
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 22,
+          "body_en": "Which statement matches the cited kinship introduction note?",
+          "source_ids": [
+            "assets/data/culture/zu.json#zu.culture.kinship"
+          ],
+          "drill_kind": "true_false_claim",
+          "claim_text": "Kinship vocabulary is used when speakers introduce family members.",
+          "correct_answer": true
+        }
+      ]
+    },
+    {
+      "id": "xh-culture-naming",
+      "language_code": "xh",
+      "title": "Naming customs",
+      "culture_card_id": "xh.culture.kinship",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 21,
+          "body_en": "Kinship vocabulary is used when speakers introduce family members. (assets/data/culture/xh.json#xh.culture.kinship). Naming-custom detail beyond cited kinship introductions requires cultural consultant review (ELEVATION.md#\u00a711.2:L1795-L1796; EXT-14).",
+          "source_ids": [
+            "assets/data/culture/xh.json#xh.culture.kinship",
+            "ELEVATION.md#\u00a711.2:L1795-L1796"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 27,
+          "presentation": "naming_customs",
+          "body_en": "Family terms support polite introductions in basic dialogues.",
+          "source_ids": [
+            "assets/data/culture/xh.json#xh.culture.kinship"
+          ],
+          "naming_customs": {
+            "kinship_introduction_claim": "Kinship vocabulary is used when speakers introduce family members.",
+            "culture_card_id": "xh.culture.kinship",
+            "image_uri": "images/xh/culture_kinship.jpg",
+            "extended_naming_rules": [],
+            "extended_naming_gate": "EXT-14_cultural_consultant"
+          }
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 22,
+          "body_en": "Which statement matches the cited kinship introduction note?",
+          "source_ids": [
+            "assets/data/culture/xh.json#xh.culture.kinship"
+          ],
+          "drill_kind": "true_false_claim",
+          "claim_text": "Kinship vocabulary is used when speakers introduce family members.",
+          "correct_answer": true
+        }
+      ]
+    }
+  ]
+}

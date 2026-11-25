@@ -1,0 +1,43 @@
+{
+ "yo": {
+  "culture_note:needs-review": 4,
+  "lexeme:needs-review": 1493,
+  "pattern:needs-review": 10,
+  "sentence:Beta": 380,
+  "sentence:needs-review": 20
+ },
+ "ig": {
+  "culture_note:needs-review": 2,
+  "lexeme:needs-review": 900,
+  "pattern:needs-review": 31,
+  "sentence:needs-review": 400
+ },
+ "ha": {
+  "culture_note:needs-review": 3,
+  "pattern:needs-review": 16,
+  "sentence:Beta": 1,
+  "sentence:needs-review": 399
+ },
+ "pcm": {},
+ "sw": {
+  "culture_note:needs-review": 6,
+  "dialogue:needs-review": 5,
+  "lexeme:Beta": 838,
+  "lexeme:needs-review": 762,
+  "pattern:needs-review": 12,
+  "sentence:Beta": 230,
+  "sentence:needs-review": 170
+ },
+ "zu": {
+  "dialogue:needs-review": 1,
+  "lexeme:Beta": 63,
+  "lexeme:needs-review": 630,
+  "sentence:needs-review": 400
+ },
+ "xh": {
+  "lexeme:Beta": 204,
+  "lexeme:needs-review": 641,
+  "sentence:Beta": 1,
+  "sentence:needs-review": 399
+ }
+}

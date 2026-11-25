@@ -1,0 +1,49 @@
+{
+  "card_id": "P5-076",
+  "updated_on": "2026-10-27",
+  "counsel_register_signed": false,
+  "counsel_blocker": "EXT-03",
+  "licence_requests": [
+    {
+      "blocker": "EXT-04",
+      "vendor": "Oxford Languages",
+      "status": "not_requested"
+    },
+    {
+      "blocker": "EXT-05",
+      "vendor": "IgboAPI (Nkọwa okwu)",
+      "status": "not_requested"
+    },
+    {
+      "blocker": "EXT-06",
+      "vendor": "isiZulu dictionary (Doke–Vilakazi / isiZulu NLU)",
+      "status": "not_requested"
+    },
+    {
+      "blocker": "EXT-07",
+      "vendor": "PanLex",
+      "status": "not_requested"
+    },
+    {
+      "blocker": "EXT-08",
+      "vendor": "NaijaVoices commercial waiver",
+      "status": "not_requested",
+      "optional": true
+    },
+    {
+      "blocker": "EXT-11",
+      "vendor": "NaijaVoices / related voice waiver (see EXT-08)",
+      "status": "not_requested",
+      "optional": true
+    }
+  ],
+  "reviewer_panels": [
+    { "language_id": "yo", "contracted_linguists": 0, "target": 2 },
+    { "language_id": "ig", "contracted_linguists": 0, "target": 2 },
+    { "language_id": "ha", "contracted_linguists": 0, "target": 2 },
+    { "language_id": "pcm", "contracted_linguists": 0, "target": 2 },
+    { "language_id": "sw", "contracted_linguists": 0, "target": 2 },
+    { "language_id": "zu", "contracted_linguists": 0, "target": 2 },
+    { "language_id": "xh", "contracted_linguists": 0, "target": 2 }
+  ]
+}

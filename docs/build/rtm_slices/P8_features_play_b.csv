@@ -1,0 +1,121 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+F-079,ELEVATION,§18.5:L4640-L4653,requirement,Clan Lineage Story Builder,P1,agent,,Open
+F-079.D,ELEVATION,§18.5:L4647,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-079.E,ELEVATION,§18.5:L4648,requirement,[5] Teaches kinship vocabulary through a family tree you build; links to,P1,agent,,Open
+F-079.U,ELEVATION,§18.5:L4650,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-079.L,ELEVATION,§18.5:L4653,requirement,[5] Play → Culture shelf.,P1,agent,,Open
+F-080,ELEVATION,§18.5:L4654-L4668,requirement,Conversation Relay,P1,agent,,Open
+F-080.D,ELEVATION,§18.5:L4661,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-080.E,ELEVATION,§18.5:L4662,requirement,[5] Classroom and circle relay: each player adds a turn by voice;,P1,agent,,Open
+F-080.U,ELEVATION,§18.5:L4664,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-080.L,ELEVATION,§18.5:L4667,requirement,[5] Play → Speaking shelf.,P1,agent,,Open
+F-081,ELEVATION,§18.5:L4669-L4681,requirement,Board Word Games,P1,agent,,Open
+F-081.D,ELEVATION,§18.5:L4676,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-081.E,ELEVATION,§18.5:L4677,requirement,[5] Diacritic-aware word puzzles (Wordle-like with tone marks as a mechanic).,P1,agent,,Open
+F-081.U,ELEVATION,§18.5:L4678,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-081.L,ELEVATION,§18.5:L4681,requirement,[5] Play → Words shelf.,P1,agent,,Open
+F-082,ELEVATION,§18.5:L4682-L4693,requirement,Cultural Games collection,P1,agent,,Open
+F-082.D,ELEVATION,§18.5:L4688,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-082.E,ELEVATION,§18.5:L4689,requirement,"[5] Becomes the Arcade's ""Culture"" shelf (the screen remains as a themed",P1,agent,,Open
+F-082.U,ELEVATION,§18.5:L4690,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-082.L,ELEVATION,§18.5:L4693,requirement,[5] Play → Culture shelf.,P1,agent,,Open
+F-083,ELEVATION,§18.5:L4694-L4707,requirement,Accent Puzzle,P1,agent,,Open
+F-083.D,ELEVATION,§18.5:L4701,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-083.E,ELEVATION,§18.5:L4702,requirement,[5] Decode the same sentence spoken in different regional accents; builds real-world,P1,agent,,Open
+F-083.U,ELEVATION,§18.5:L4704,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-083.L,ELEVATION,§18.5:L4707,requirement,[5] Play → Tone & Sound shelf.,P1,agent,,Open
+F-084,ELEVATION,§18.5:L4708-L4721,requirement,Call & Response,P1,agent,,Open
+F-084.D,ELEVATION,§18.5:L4716,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-084.E,ELEVATION,§18.5:L4717,requirement,[5] Musical call-and-response with real singers; responses scored on rhythm and tone.,P1,agent,,Open
+F-084.U,ELEVATION,§18.5:L4718,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-084.L,ELEVATION,§18.5:L4721,requirement,[5] Play → Speaking shelf.,P1,agent,,Open
+F-085,ELEVATION,§18.5:L4722-L4735,requirement,Cultural Etiquette,P1,agent,,Open
+F-085.D,ELEVATION,§18.5:L4729,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-085.E,ELEVATION,§18.5:L4730,requirement,"[5] Linked to Etiquette cards; consequences shown kindly (""Mama is surprised you",P1,agent,,Open
+F-085.U,ELEVATION,§18.5:L4732,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-085.L,ELEVATION,§18.5:L4735,requirement,[5] Play → Culture shelf.,P1,agent,,Open
+F-086,ELEVATION,§18.5:L4736-L4748,requirement,Drum Word,P1,agent,,Open
+F-086.D,ELEVATION,§18.5:L4743,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-086.E,ELEVATION,§18.5:L4744,requirement,"[5] Becomes Talking Drum (§10.3): drummed tone contours → words, then speak",P1,agent,,Open
+F-086.U,ELEVATION,§18.5:L4745,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-086.L,ELEVATION,§18.5:L4748,requirement,[5] Play → Tone & Sound shelf.,P1,agent,,Open
+F-087,ELEVATION,§18.5:L4749-L4762,requirement,Flashcard Safari,P1,agent,,Open
+F-087.D,ELEVATION,§18.5:L4756,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-087.E,ELEVATION,§18.5:L4757,requirement,"[5] Shares the Point & Say camera pipeline: a scavenger hunt (""find",P1,agent,,Open
+F-087.U,ELEVATION,§18.5:L4758,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-087.L,ELEVATION,§18.5:L4762,requirement,[5] Play → Words shelf.,P1,agent,,Open
+F-088,ELEVATION,§18.5:L4763-L4775,requirement,Food Quest,P1,agent,,Open
+F-088.D,ELEVATION,§18.5:L4770,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-088.E,ELEVATION,§18.5:L4771,requirement,[5] Market-to-pot quests with regional dishes; ties to Quiz Chef recipes.,P1,agent,,Open
+F-088.U,ELEVATION,§18.5:L4772,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-088.L,ELEVATION,§18.5:L4775,requirement,[5] Play → Culture shelf.,P1,agent,,Open
+F-089,ELEVATION,§18.5:L4776-L4789,requirement,Liar Liar,P1,agent,,Open
+F-089.D,ELEVATION,§18.5:L4783,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-089.E,ELEVATION,§18.5:L4784,requirement,"[5] Social bluffing: friends submit sentences, some wrong; others spot the lie.",P1,agent,,Open
+F-089.U,ELEVATION,§18.5:L4786,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-089.L,ELEVATION,§18.5:L4789,requirement,[5] Play → Grammar shelf.,P1,agent,,Open
+F-090,ELEVATION,§18.5:L4790-L4803,requirement,Multilingual Relay,P1,agent,,Open
+F-090.D,ELEVATION,§18.5:L4797,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-090.E,ELEVATION,§18.5:L4798,requirement,[5] Pan-African relay: one word passed through several languages (Yoruba → Swahili,P1,agent,,Open
+F-090.U,ELEVATION,§18.5:L4800,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-090.L,ELEVATION,§18.5:L4803,requirement,[5] Play → Words shelf.,P1,agent,,Open
+F-091,ELEVATION,§18.5:L4804-L4817,requirement,Phrase Sniper,P1,agent,,Open
+F-091.D,ELEVATION,§18.5:L4812,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-091.E,ELEVATION,§18.5:L4813,requirement,[5] Listening reflex game with native audio; accessibility mode without time pressure.,P1,agent,,Open
+F-091.U,ELEVATION,§18.5:L4814,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-091.L,ELEVATION,§18.5:L4817,requirement,[5] Play → Tone & Sound shelf.,P1,agent,,Open
+F-092,ELEVATION,§18.5:L4818-L4832,requirement,Proverb Unlocker,P1,agent,,Open
+F-092.D,ELEVATION,§18.5:L4825,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-092.E,ELEVATION,§18.5:L4826,requirement,[5] Becomes Proverb Weaver (§10.3). CONSOLIDATE with the unrouted GameKit rewrite,P1,agent,,Open
+F-092.U,ELEVATION,§18.5:L4829,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-092.L,ELEVATION,§18.5:L4832,requirement,[5] Play → Culture shelf.,P1,agent,,Open
+F-093,ELEVATION,§18.5:L4833-L4845,requirement,Rhythm Typing,P1,agent,,Open
+F-093.D,ELEVATION,§18.5:L4840,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-093.E,ELEVATION,§18.5:L4841,requirement,[5] Diacritic typing trainer to rhythm; builds tone-mark keyboard fluency.,P1,agent,,Open
+F-093.U,ELEVATION,§18.5:L4842,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-093.L,ELEVATION,§18.5:L4845,requirement,[5] Play → Words shelf.,P1,agent,,Open
+F-094,ELEVATION,§18.5:L4846-L4860,requirement,Tongue Twister Race,P1,agent,,Open
+F-094.D,ELEVATION,§18.5:L4854,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-094.E,ELEVATION,§18.5:L4855,requirement,[5] Real scoring with fluency metrics; native tongue twisters per language; shareable,P1,agent,,Open
+F-094.U,ELEVATION,§18.5:L4857,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-094.L,ELEVATION,§18.5:L4860,requirement,[5] Play → Speaking shelf.,P1,agent,,Open
+F-095,ELEVATION,§18.5:L4861-L4874,requirement,Village Quest,P1,agent,,Open
+F-095.D,ELEVATION,§18.5:L4868,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-095.E,ELEVATION,§18.5:L4869,requirement,[5] Becomes the playable layer of the Village map: talk to NPCs,P1,agent,,Open
+F-095.U,ELEVATION,§18.5:L4871,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-095.L,ELEVATION,§18.5:L4874,requirement,[5] Play → Speaking shelf.,P1,agent,,Open
+F-096,ELEVATION,§18.5:L4875-L4888,requirement,Ayo (mancala),P1,agent,,Open
+F-096.D,ELEVATION,§18.5:L4882,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-096.E,ELEVATION,§18.5:L4883,requirement,[5] Keep the authentic game; questions become due-word reviews; online play with,P1,agent,,Open
+F-096.U,ELEVATION,§18.5:L4885,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-096.L,ELEVATION,§18.5:L4888,requirement,[5] Play → Traditional shelf.,P1,agent,,Open
+F-097,ELEVATION,§18.5:L4889-L4903,requirement,Snakes & Ladders (cultural),P1,agent,,Open
+F-097.D,ELEVATION,§18.5:L4896,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-097.E,ELEVATION,§18.5:L4897,requirement,"[5] Family mode for heritage households (pass-and-play), with questions at each player's",P1,agent,,Open
+F-097.U,ELEVATION,§18.5:L4900,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-097.L,ELEVATION,§18.5:L4903,requirement,[5] Play → Traditional shelf.,P1,agent,,Open
+F-098,ELEVATION,§18.5:L4904-L4916,requirement,Language Ludo,P1,agent,,Open
+F-098.D,ELEVATION,§18.5:L4911,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-098.E,ELEVATION,§18.5:L4912,requirement,[5] Multiplayer with friends and circles; speaking challenges on special squares.,P1,agent,,Open
+F-098.U,ELEVATION,§18.5:L4913,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-098.L,ELEVATION,§18.5:L4916,requirement,[5] Play → Traditional shelf.,P1,agent,,Open
+F-099,ELEVATION,§18.5:L4917-L4929,requirement,Suwe (hopscotch),P1,agent,,Open
+F-099.D,ELEVATION,§18.5:L4924,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-099.E,ELEVATION,§18.5:L4925,requirement,[5] Kids-friendly counting and body-movement vocabulary; a guardian-safe offline mode.,P1,agent,,Open
+F-099.U,ELEVATION,§18.5:L4926,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-099.L,ELEVATION,§18.5:L4929,requirement,[5] Play → Traditional shelf.,P1,agent,,Open
+F-100,ELEVATION,§18.5:L4930-L4943,requirement,Whot!,P1,agent,,Open
+F-100.D,ELEVATION,§18.5:L4937,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-100.E,ELEVATION,§18.5:L4938,requirement,"[5] Card names and calls in the target language (""Check up!"", ""Last",P1,agent,,Open
+F-100.U,ELEVATION,§18.5:L4940,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-100.L,ELEVATION,§18.5:L4943,requirement,[5] Play → Traditional shelf.,P1,agent,,Open
+F-101,ELEVATION,§18.5:L4944-L4957,requirement,Drum Rhythm,P1,agent,,Open
+F-101.D,ELEVATION,§18.5:L4952,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-101.E,ELEVATION,§18.5:L4953,requirement,[5] Merge with Talking Drum as its rhythm mode; rhythm mapped to,P1,agent,,Open
+F-101.U,ELEVATION,§18.5:L4954,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-101.L,ELEVATION,§18.5:L4957,requirement,[5] Play → Tone & Sound shelf.,P1,agent,,Open
+F-102,ELEVATION,§18.5:L4958-L4971,requirement,Tone Forge (revived),P1,agent,,Open
+F-102.D,ELEVATION,§18.5:L4963,requirement,[5] A flagship tone game that nobody can reach.,P1,agent,,Open
+F-102.E,ELEVATION,§18.5:L4964,requirement,[5] Revive as a headline Tone & Sound game: forge words by,P1,agent,,Open
+F-102.U,ELEVATION,§18.5:L4967,requirement,[5] Tactile contour editor; blacksmith-forge art direction (a nod to Ogun /,P1,agent,,Open
+F-102.L,ELEVATION,§18.5:L4970,requirement,[5] Play → Tone & Sound (featured).,P1,agent,,Open

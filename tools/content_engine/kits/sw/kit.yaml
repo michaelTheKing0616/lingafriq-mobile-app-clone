@@ -1,0 +1,29 @@
+linguist_signoff: false
+character_set:
+  - Latin
+character_set_note: code points not enumerated in §3.3
+nfc: NFC
+tone_marking: vowel purity and stress
+phone_inventory:
+  - vowel-purity
+  - stress
+g2p:
+  status: not enumerated in §3.3
+  output: IPA
+  citation: CURRICULUM.md#§3.1:L474
+noun_class:
+  source: CURRICULUM.md#§3.3:L529-L531
+  pairs:
+    - m/wa
+    - ki/vi
+  remainder: not enumerated in §3.3
+concord:
+  subject: class prefix determines this concord; forms not enumerated in §3.3
+  object: class prefix determines this concord; forms not enumerated in §3.3
+  adjectival: class prefix determines this concord; forms not enumerated in §3.3
+  relative: class prefix determines this concord; forms not enumerated in §3.3
+  possessive: class prefix determines this concord; forms not enumerated in §3.3
+dialect: Kiswahili Sanifu
+citation_status: unverified
+honorifics:
+  status: not enumerated in §3.3

@@ -1,0 +1,75 @@
+charter: v2
+id: P13-001
+kind: build
+title: Create later-wave language admission template
+phase: P13
+epic: E-P13-SCALE
+req_ids:
+- CP-§2.4-later-01
+- CP-§2.4-later-02
+- CP-§2.4-later-03
+- CP-§2.4-later-04
+- CP-§2.4-later-05
+depends_on:
+- E-P12-RELEASE
+- E-P4-CONTENT-ENGINE
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 60000
+file_allowlist:
+- scripts/content/later_wave_admission.py
+- content/templates/later_wave_language.yaml
+- test/content/later_wave_admission_test.py
+context_anchors:
+- CURRICULUM.md#§2.4:L462-L465
+acceptance_criteria:
+- id: AC1
+  text: 'Given a candidate later-wave language, when its admission file is created from the template, then it requires 4 entries:
+    orthography authority, one licensed or public-domain lexicon, one reference grammar, one CC-BY or PD corpus'
+- id: AC2
+  text: Given any of the 4 entries is empty, when the validator runs, then admission is rejected with the missing entry named
+- id: AC3
+  text: Given each source entry, when validated, then it carries a licence and a register id, and a source without them is
+    rejected
+- id: AC4
+  text: Given the template is reused for another language, when generated, then no per-language code change is needed
+test_plan:
+  unit:
+  - admission validator
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - template completeness
+user_facing: false
+ux_spec: null
+tags:
+- uses_source
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Must register with the licence register owned by E-P4-CONTENT-ENGINE
+gate: G13
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,99 @@
+charter: v2
+id: P7-911
+kind: build
+title: Build Lens Clip sharing with face blur
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§17.6-22
+- EP-§17.6-23
+depends_on:
+- P7-909
+- P7-914
+- E-P9-SAFETY
+- E-P3-DESIGN-SYSTEM
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 2, coupling 2, depth 2'
+token_budget: 60000
+file_allowlist:
+- lib/services/lens/lens_clip_service.dart
+- lib/services/lens/face_blur.dart
+- lib/screens/lens/lens_share_sheet.dart
+- test/services/lens/face_blur_test.dart
+context_anchors:
+- ELEVATION.md#§17.6:L2378-L2379
+acceptance_criteria:
+- id: AC1
+  text: Given a saved Lens photo, when the learner chooses Share, then a Clip is created with the phrase overlay for Village
+    Clips
+- id: AC2
+  text: Given any detected face in the photo, when sharing, then the face is blurred before the image leaves the device
+- id: AC3
+  text: Given face detection fails, when sharing, then sharing is blocked with a visible reason and the unblurred image is
+    never uploaded
+- id: AC4
+  text: Given a learner under 18, when they open Share, then the Clip follows the under-18 social rules from the safety epic
+- id: AC5
+  text: Given sharing is cancelled, when the sheet closes, then no upload is made
+test_plan:
+  unit:
+  - blur applied before upload
+  - fail-closed
+  integration: []
+  security:
+  - unblurred bytes never reach network layer
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - preview
+  - blurring
+  - blocked
+  - uploading
+  - error
+  copy_keys:
+  - lens.share.blocked
+  tokens:
+  - color.surface
+  - motion.share
+  motion_tier: product
+  a11y:
+  - screen-reader labels on every control
+  - touch targets >=48dp
+  - reduced-motion variant
+  goldens:
+  - default
+  - loading
+  - error
+  - offline
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

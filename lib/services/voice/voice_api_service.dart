@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -256,32 +255,42 @@ class VoiceApiService {
     try {
       final normalizedLanguage = _normalizeLanguage(language);
       final clipped = text.length > 500 ? text.substring(0, 500) : text;
-      // Prefer the newer voice-service synth endpoint (supports voice + speed),
-      // and fall back to MMS-TTS when unavailable.
-      try {
-        final response = await _dio.post(
-          ApiContract.url(ApiContract.voice.ttsSynthesize),
-          data: {
-            'text': clipped,
-            'language': normalizedLanguage,
-            if (voice != null && voice.trim().isNotEmpty) 'voice': voice.trim(),
-            'speed': speed,
-          },
-          options: Options(
-            responseType: ResponseType.bytes,
-            contentType: 'application/json',
-            receiveTimeout: const Duration(seconds: 45),
-            sendTimeout: const Duration(seconds: 30),
-          ),
-        );
+      // lingafriq-voice-service accepts form fields on
+      // POST /api/voice/tts/synthesize. A JSON body is the older proxy shape.
+      final fields = <String, dynamic>{
+        'text': clipped,
+        'language': normalizedLanguage,
+        if (voice != null && voice.trim().isNotEmpty) 'voice': voice.trim(),
+        'speed': speed,
+      };
+      for (final contentType in <String>[
+        Headers.formUrlEncodedContentType,
+        Headers.jsonContentType,
+      ]) {
+        try {
+          final response = await _dio.post(
+            ApiContract.url(ApiContract.voice.ttsSynthesize),
+            data: contentType == Headers.jsonContentType
+                ? fields
+                : fields.map((key, value) => MapEntry(key, '$value')),
+            options: Options(
+              responseType: ResponseType.bytes,
+              contentType: contentType,
+              receiveTimeout: const Duration(seconds: 45),
+              sendTimeout: const Duration(seconds: 30),
+            ),
+          );
 
-        if (response.statusCode == 200 && response.data != null) {
-          final data = response.data;
-          if (data is List<int>) return Uint8List.fromList(data);
-          if (data is Uint8List) return data;
+          if (response.statusCode == 200 && response.data != null) {
+            final data = response.data;
+            if (data is List<int> && data.isNotEmpty) {
+              return Uint8List.fromList(data);
+            }
+            if (data is Uint8List && data.isNotEmpty) return data;
+          }
+        } catch (_) {
+          // try the other body shape, then MMS-TTS
         }
-      } catch (_) {
-        // ignore and fall back
       }
 
       final response = await _dio.get(

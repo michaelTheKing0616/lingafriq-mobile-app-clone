@@ -1,0 +1,80 @@
+charter: v2
+id: P4-106
+kind: build
+title: Build content validator and CI linters
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.5-23
+- EP-§6.5-24
+- EP-§6.5-25
+- EP-§6.5-26
+depends_on:
+- P4-101
+- P4-102
+- P4-103
+- P4-104
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- tools/content_pipeline/validate_content.py
+- tools/content_pipeline/placeholder_patterns.py
+- .github/workflows/content-validate.yml
+- test/content/test_validate_content.py
+context_anchors:
+- ELEVATION.md#§6.5:L1293-L1320
+acceptance_criteria:
+- id: AC1
+  text: Given a tonal-language lexeme lacking tone marks on its lemma, when the validator runs, then it fails MISSING_TONE_MARKS
+    naming the object id
+- id: AC2
+  text: Given an audio uri whose hash does not match the file or whose transcript differs from the text, when validated, then
+    AUDIO_MISMATCH fails the run
+- id: AC3
+  text: Given an item whose review.status is not approved, when it is included in a release pack, then the run fails UNREVIEWED_ITEM
+- id: AC4
+  text: Given any text matching /word\d|example|sample|lorem/i, when CI runs, then the job fails and prints file and line,
+    with no allowlist bypass flag
+- id: AC5
+  text: Given the CI workflow, when a pull request touches content, then validate_content runs and a non-zero exit blocks
+    merge
+test_plan:
+  unit:
+  - test_validate_content
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - negative fixtures per rule
+user_facing: false
+ux_spec: null
+tags:
+- placeholder_linter
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

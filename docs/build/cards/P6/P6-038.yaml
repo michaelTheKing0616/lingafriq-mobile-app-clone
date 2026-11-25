@@ -1,0 +1,65 @@
+charter: v2
+id: P6-038
+kind: build
+title: Return per-syllable tone correctness with confidence
+phase: P6
+epic: E-P6-SCORING
+req_ids:
+- EP-§7.4-18
+depends_on:
+- P6-036
+- P6-037
+size: S
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T3
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1; DSP tester T3'
+token_budget: 25000
+file_allowlist:
+- speech-service/scorer/tone_result.py
+- node-backend/src/ai-gateway/routes/score.route.ts
+context_anchors:
+- ELEVATION.md#§7.4:L1435-L1440
+acceptance_criteria:
+- id: AC1
+  text: Given a scored attempt, when returned, then each syllable has tone label, correct or incorrect, and a confidence value
+- id: AC2
+  text: Given confidence below threshold, when returned, then correctness is null with reason unsure
+- id: AC3
+  text: Given the response, when serialised, then it also carries native and learner contour arrays for the overlay
+test_plan:
+  unit:
+  - serialiser
+  integration:
+  - api contract
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

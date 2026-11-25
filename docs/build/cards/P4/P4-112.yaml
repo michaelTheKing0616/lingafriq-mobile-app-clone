@@ -1,0 +1,88 @@
+charter: v2
+id: P4-112
+kind: build
+title: Build language registry with waves, scripts and consent flags
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.4-01
+- EP-§6.4-02
+- EP-§6.4-08
+- EP-§6.4-14
+- EP-§6.4-25
+- EP-§6.4-27
+- EP-§6.4-28
+- EP-§6.4-30
+- EP-§6.4-31
+- EP-§6.4-32
+- EP-§6.4-36
+- EP-§6.4-37
+depends_on:
+- P4-110
+- P4-111
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T4
+  justification: 'score 5: blast 1, ambiguity 1, coupling 1; gate-critical (security / child safety / legal / design direction):
+    Fable reviews'
+token_budget: 60000
+file_allowlist:
+- tools/content_pipeline/language_registry.py
+- schemas/v2/language_registry.schema.json
+- assets/content/language_registry.json
+- test/content/test_language_registry.py
+context_anchors:
+- ELEVATION.md#§6.4:L1221-L1262
+acceptance_criteria:
+- id: AC1
+  text: Given the registry, when loaded, then Wave 1 holds yo, ig, ha, pcm, sw, xh, zu and Waves 2-4 hold the rosters decided
+    in P4-111 with wave, scripts and readiness level per language
+- id: AC2
+  text: Given a language with two scripts (Fula Latin+Adlam, Bambara Latin+N'Ko, Tamazight Tifinagh+Latin), when registered,
+    then each script is a separate entry sharing one language id
+- id: AC3
+  text: Given each language, when its readiness is updated, then it changes independently of every other language
+- id: AC4
+  text: Given the registry, when totals are computed, then they report 7, ~21, ~46 and 95+ as planning targets labelled targets
+    and never as shipped counts
+- id: AC5
+  text: Given a Wave 4 language flagged community_consent_required (e.g. N|uu), when a kit is created without recorded consent
+    and benefit-sharing terms, then creation fails CONSENT_MISSING
+- id: AC6
+  text: Given Wave 2 languages, when Stage 1 has not reached L1, then starting L0 for them is refused WAVE_GATE_NOT_MET
+test_plan:
+  unit:
+  - test_language_registry
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- rosters depend on ADR P4-111
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

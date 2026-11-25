@@ -80,7 +80,9 @@ void main() {
       // Check immediately after pumpWidget — before the deferred init
       // (postFrameCallback + microtask) triggers a rebuild with populated state.
       // The extra pump() would process the deferred init and remove the indicator.
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      // Lesson-shaped skeleton (not a bare spinner) with a visible caption.
+      expect(find.byKey(const Key('lesson-skeleton')), findsOneWidget);
+      expect(find.text('Preparing your lesson'), findsOneWidget);
     });
 
     testWidgets('should navigate between sections', (WidgetTester tester) async {
@@ -245,10 +247,16 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final backButton = find.byType(BackButton);
-      expect(backButton.evaluate().isNotEmpty, isTrue);
-      await tester.tap(backButton);
+      // Reference pack (lesson-flow 21): ✕ asks before leaving; keep is primary.
+      final close = find.byKey(const Key('lesson-close'));
+      expect(close, findsOneWidget);
+      await tester.tap(close);
       await tester.pumpAndSettle();
+      expect(find.text('Leave this lesson?'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('lesson-keep-learning')));
+      await tester.pumpAndSettle();
+      expect(find.text('Leave this lesson?'), findsNothing);
+      expect(find.text('Test Lesson'), findsOneWidget);
     });
 
     testWidgets('should display combo tracker when combo is active', (WidgetTester tester) async {

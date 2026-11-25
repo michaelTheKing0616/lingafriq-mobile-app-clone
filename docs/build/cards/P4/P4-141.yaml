@@ -1,0 +1,89 @@
+charter: v2
+id: P4-141
+kind: build
+title: Build diacritic keyboard bar per language
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.7-03
+- EP-§6.7-04
+- EP-§6.7-05
+- EP-§6.7-06
+- EP-§6.7-07
+depends_on:
+- P4-140
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- lib/widgets/diacritic_keyboard_bar.dart
+- assets/content/keyboard_layouts.json
+- test/widgets/diacritic_keyboard_bar_test.dart
+context_anchors:
+- ELEVATION.md#§6.7:L1339-L1346
+acceptance_criteria:
+- id: AC1
+  text: Given Yoruba input, when the bar shows, then ẹ ọ ṣ and tone keys are available and inserting produces NFC text
+- id: AC2
+  text: Given Igbo, Hausa or Twi input, when the bar shows, then ṅ; ɓ ɗ ƙ ƴ; or ɛ ɔ are available respectively
+- id: AC3
+  text: Given a language with no layout defined, when input is requested, then the system keyboard is used and a diagnostic
+    is logged, never a wrong layout
+test_plan:
+  unit:
+  - diacritic_keyboard_bar_test
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - key labels
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - visible
+  - hidden
+  - no_layout
+  copy_keys:
+  - keyboard.tone.high
+  - keyboard.tone.low
+  tokens:
+  - space.1
+  - color.surface.raised
+  motion_tier: product
+  a11y:
+  - key semantics
+  - 44dp keys
+  goldens:
+  - bar_yo
+  - bar_ig
+  - bar_ha
+  - bar_tw
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

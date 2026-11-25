@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.lingafriq.com/verified_lexicon.schema.json",
+  "title": "Verified Lexicon entry (P7-916)",
+  "description": "ADR-013 layer-1 shared lexicon; identical payload to v2 lexeme.schema.json.",
+  "$ref": "v2/content/lexeme.schema.json"
+}

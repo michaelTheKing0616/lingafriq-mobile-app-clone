@@ -1,0 +1,52 @@
+charter: v2
+id: P11-030
+kind: adr
+title: Decide avatar economy and identity rules (ADR-032)
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§4.2-54
+depends_on:
+- P11-029
+size: S
+difficulty:
+  score: 5
+  blast: 3
+  ambiguity: 2
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T4
+  tester: T0
+  reviewer: T4
+  justification: 'score 5: blast 3, ambiguity 2, coupling 0, depth 0'
+token_budget: 25000
+file_allowlist:
+- docs/build/adr/ADR-032.md
+context_anchors:
+- ELEVATION.md#§4.2:L914-L916
+- ELEVATION.md#§4.4:L965-L973
+acceptance_criteria:
+- id: AC1
+  text: Given the item types, when ADR-032 is accepted, then it states which items are earned, bought or show mastery.
+- id: AC2
+  text: Given minors, when ADR-032 is accepted, then real-money cosmetics are adult-only, there are no loot boxes and entitlements
+    are server-verified.
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- reviewer verdict
+- ledger row
+risks: []
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - prime/diagram-design

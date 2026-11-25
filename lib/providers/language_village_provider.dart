@@ -157,7 +157,7 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
       await _livekitRoom!.connect(
         serverUrl,
         token,
-        roomOptions: RoomOptions(),
+        roomOptions: const RoomOptions(),
       );
 
       _isRoomConnected = true;

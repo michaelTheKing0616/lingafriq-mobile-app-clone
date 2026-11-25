@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.core.view.WindowCompat
 import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.engine.FlutterEngine
 
 class MainActivity: FlutterActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -11,5 +12,11 @@ class MainActivity: FlutterActivity() {
         // WindowCompat.setDecorFitsSystemWindows is the recommended way (works on all API levels)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
+    }
+
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+        super.configureFlutterEngine(flutterEngine)
+        DataSaverChannel.register(this, flutterEngine)
+        AnrExitChannel.register(this, flutterEngine)
     }
 }

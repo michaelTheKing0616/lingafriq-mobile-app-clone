@@ -4,6 +4,18 @@
 import 'dart:convert';
 import 'package:encrypt/encrypt.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:lingafriq/services/offline/cache_migrator.dart';
+
+/// Thrown when a cached record fails authenticated decryption.
+class CacheIntegrityException implements Exception {
+  CacheIntegrityException({required this.code, required this.message});
+
+  final String code;
+  final String message;
+
+  @override
+  String toString() => 'CacheIntegrityException($code): $message';
+}
 
 class CacheEncryption {
   static final FlutterSecureStorage _storage = const FlutterSecureStorage();
@@ -21,35 +33,45 @@ class CacheEncryption {
     return Key.fromBase64(keyString);
   }
 
-  /// Encrypt data
+  /// Encrypt data with AES-GCM. Each record gets a new 12-byte nonce.
   static Future<String> encrypt(String plainText) async {
     final key = await _getKey();
-    final iv = IV.fromSecureRandom(16);
-    final encrypter = Encrypter(AES(key));
-    final encrypted = encrypter.encrypt(plainText, iv: iv);
-    
-    // Combine IV and encrypted data
-    final combined = '${iv.base64}:${encrypted.base64}';
-    return combined;
+    final nonce = IV.fromSecureRandom(12);
+    final encrypter = Encrypter(AES(key, mode: AESMode.gcm));
+    final encrypted = encrypter.encrypt(plainText, iv: nonce);
+    return 'gcm1:${nonce.base64}:${encrypted.base64}';
   }
 
-  /// Decrypt data
+  /// Decrypt an authenticated record. A legacy or tampered payload throws
+  /// [CacheIntegrityException] and returns no data.
   static Future<String> decrypt(String encryptedData) async {
+    final migration = CacheMigrator.migrateRecord(encryptedData);
+    if (migration.discarded || migration.record == null) {
+      throw CacheIntegrityException(
+        code: 'cache_integrity_failed',
+        message: 'Cached record is not an authenticated gcm1 payload',
+      );
+    }
     try {
-      final parts = encryptedData.split(':');
-      if (parts.length != 2) {
-        throw Exception('Invalid encrypted data format');
+      final parts = migration.record!.split(':');
+      if (parts.length != 3 || parts[0] != 'gcm1') {
+        throw CacheIntegrityException(
+          code: 'cache_integrity_failed',
+          message: 'Cached record is not an authenticated gcm1 payload',
+        );
       }
-
       final key = await _getKey();
-      final iv = IV.fromBase64(parts[0]);
-      final encrypted = Encrypted.fromBase64(parts[1]);
-      final encrypter = Encrypter(AES(key));
-      
-      return encrypter.decrypt(encrypted, iv: iv);
-    } catch (e) {
-      // If decryption fails, return original (might be unencrypted)
-      return encryptedData;
+      final nonce = IV.fromBase64(parts[1]);
+      final encrypted = Encrypted.fromBase64(parts[2]);
+      final encrypter = Encrypter(AES(key, mode: AESMode.gcm));
+      return encrypter.decrypt(encrypted, iv: nonce);
+    } on CacheIntegrityException {
+      rethrow;
+    } catch (_) {
+      throw CacheIntegrityException(
+        code: 'cache_integrity_failed',
+        message: 'Authenticated decryption failed',
+      );
     }
   }
 

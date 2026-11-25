@@ -155,7 +155,6 @@ class WhotEngine {
   /// Returns the new state.
   WhotState play(WhotState s, int player, int cardIndex, {WhotSuit? demandSuit}) {
     assert(player == s.turn);
-    final card = s.hands[player][cardIndex];
     final hands = [for (final h in s.hands) List<WhotCard>.from(h)];
     final played = hands[player].removeAt(cardIndex);
     final pile = List<WhotCard>.from(s.pile)..add(played);

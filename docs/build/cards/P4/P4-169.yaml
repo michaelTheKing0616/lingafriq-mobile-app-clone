@@ -1,0 +1,71 @@
+charter: v2
+id: P4-169
+kind: build
+title: Import course items only from the canonical curriculum packs
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- CP-D28-01
+depends_on:
+- P4-009
+- P4-010
+- P4-040
+- P4-041
+- P4-043
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1, depth 0, size 1'
+token_budget: 60000
+file_allowlist:
+- tools/content_engine/curriculum/import_packs.py
+- tools/content_engine/tests/test_import_packs.py
+context_anchors:
+- CURRICULUM.md#§3.3:L519-L528
+acceptance_criteria:
+- id: AC1
+  text: Given an item in ../curriculum/packs, when it is imported, then it passes schema/item.schema.json, the pack validators, the licensing layer, and the Unicode linter or the import fails closed
+- id: AC2
+  text: Given a Yoruba item, when it is imported, then the Yoruba tone linter runs and a failure rejects the item
+- id: AC3
+  text: Given a Hausa item, when it is imported, then the Hausa linter runs and a failure rejects the item
+- id: AC4
+  text: Given a *.synth.json item, when it is imported, then it stays draft and is not published
+- id: AC5
+  text: Given a path in the mobile curriculum directory, lingafriq_full_curriculum_bundle, lingafriq_FINAL_curriculum, LingAfriq Content Writing/generated, or node-backend/data/content-packs, when an import is requested, then the import fails and no item is loaded
+test_plan:
+  unit:
+  - pass and fail fixtures for schema, licence, linters, synth draft, and legacy paths
+  integration:
+  - a legacy path cannot satisfy AC1
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

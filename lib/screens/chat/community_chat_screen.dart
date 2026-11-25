@@ -316,7 +316,7 @@ class CommunityChatScreen extends HookConsumerWidget {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: PanAfricanRadius.lgBR,
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: PanAfricanColors.primary,
                             width: 2,
                           ),
@@ -347,9 +347,9 @@ class CommunityChatScreen extends HookConsumerWidget {
                           ? SizedBox(
                               width: 20.w,
                               height: 20.h,
-                              child: CircularProgressIndicator(strokeWidth: 2),
+                              child: const CircularProgressIndicator(strokeWidth: 2),
                             )
-                          : Icon(Icons.send),
+                          : const Icon(Icons.send),
                       onPressed: isLoading.value
                           ? null
                           : () {

@@ -1,0 +1,73 @@
+charter: v2
+id: P1-036
+kind: build
+title: Use authenticated encryption for cached data
+phase: P1
+epic: E-P1-OFFLINE-DATA
+req_ids:
+- EP-§13.1-25
+- EP-§13.1-26
+depends_on:
+- E-P0-INTAKE
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 2
+  size: 0
+tiers:
+  worker: T2
+  tester: T3
+  reviewer: T4
+  justification: 'score 6; blast 2; security/crypto tester; gate-critical (security / child safety / legal / design direction):
+    Fable reviews'
+token_budget: 70000
+file_allowlist:
+- lib/services/offline/cache_encryption.dart
+- lib/services/offline/cache_migrator.dart
+- test/services/offline/p1_036_cache_encryption_test.dart
+context_anchors:
+- ELEVATION.md#§13.1:L1866
+- ELEVATION.md#§13.1:L1867-L1868
+acceptance_criteria:
+- id: AC1
+  text: Given cached data, when written, then it is encrypted with AES-GCM with a unique nonce per record and tag verification
+    on read
+- id: AC2
+  text: Given a ciphertext with one flipped bit, when decrypted, then it fails with a typed integrity error and returns no
+    data
+- id: AC3
+  text: Given existing CTR-mode caches, when the app updates, then they are re-encrypted or discarded and rebuilt, never read
+    unauthenticated
+- id: AC4
+  text: Given the encrypt package default mode, when searched in the file, then no SIC/CTR usage remains
+test_plan:
+  unit:
+  - GCM round trip, tamper test, nonce uniqueness
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- 'residual: a legacy blob stays stored until the caller rebuilds after CacheIntegrityException. Decrypt does not return it.'
+gate: G1
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

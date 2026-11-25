@@ -3,6 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/design/components/ling_state.dart';
+import 'package:lingafriq/design/states/error_state.dart';
+import 'package:lingafriq/design/tokens.g.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 import 'package:lingafriq/providers/gamification_services_provider.dart';
 import 'package:lingafriq/services/polie_content_generator.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
@@ -11,7 +16,7 @@ import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/screens/classroom/classroom_assignments_screen.dart';
 import 'package:lingafriq/screens/classroom/classroom_privacy_screen.dart';
 import 'package:lingafriq/screens/classroom/classroom_roster_screen.dart';
-import 'package:lingafriq/screens/classroom/classroom_session_screen.dart';
+import 'package:lingafriq/screens/classroom/live_classroom_screen.dart';
 
 class ClassroomDashboardScreen extends ConsumerStatefulWidget {
   final String tribeId;
@@ -19,13 +24,29 @@ class ClassroomDashboardScreen extends ConsumerStatefulWidget {
   final String languageTag;
   final String? classroomCode;
 
+  /// True only when the caller passes that this person is a teacher.
+  final bool isTeacher;
+
+  /// Replaces the class fetch when the caller supplies one. Ignored unless
+  /// [isTeacher] is true.
+  final Future<Map<String, dynamic>> Function()? dashboardLoad;
+
   const ClassroomDashboardScreen({
     super.key,
-    required this.tribeId,
-    required this.tribeName,
-    required this.languageTag,
+    this.tribeId = '',
+    this.tribeName = '',
+    this.languageTag = '',
     this.classroomCode,
+    this.isTeacher = false,
+    this.dashboardLoad,
   });
+
+  /// App route `/village/school/teacher`. The map key drops the leading slash.
+  static const String routePath = '/village/school/teacher';
+
+  static const String routeKey = 'village/school/teacher';
+
+  static const Key deniedKey = ValueKey<String>('teacher-denied');
 
   @override
   ConsumerState<ClassroomDashboardScreen> createState() =>
@@ -71,7 +92,7 @@ class _ClassroomDashboardScreenState
               SizedBox(height: PanAfricanSpacing.xxs),
               Text(
                 status.isEmpty ? '—' : status,
-                style: PanAfricanTypography.bodySmall(context, color: colorScheme.onSurface.withOpacity(0.75)),
+                style: PanAfricanTypography.bodySmall(context, color: colorScheme.onSurface.withValues(alpha: 0.75)),
               ),
               if (agenda != null && agenda.trim().isNotEmpty) ...[
                 SizedBox(height: PanAfricanSpacing.md),
@@ -90,36 +111,115 @@ class _ClassroomDashboardScreenState
   @override
   void initState() {
     super.initState();
+    if (!widget.isTeacher) {
+      _isLoading = false;
+      _data = null;
+      return;
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _load();
     });
   }
 
+  @override
+  void didUpdateWidget(ClassroomDashboardScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!widget.isTeacher) {
+      _data = null;
+      _error = null;
+      _isLoading = false;
+      _poliePrompt = null;
+      return;
+    }
+    if (!oldWidget.isTeacher || oldWidget.dashboardLoad != widget.dashboardLoad) {
+      _data = null;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && widget.isTeacher) _load();
+      });
+    }
+  }
+
   Future<void> _load() async {
+    if (!widget.isTeacher) {
+      if (!mounted) return;
+      setState(() {
+        _data = null;
+        _error = null;
+        _isLoading = false;
+        _poliePrompt = null;
+      });
+      return;
+    }
     setState(() {
       _isLoading = true;
       _error = null;
     });
     try {
-      final res =
-          await ref.read(classroomServiceProvider).getTeacherDashboardV2(widget.tribeId);
+      final Map<String, dynamic> res = widget.dashboardLoad != null
+          ? await widget.dashboardLoad!()
+          : await ref
+                .read(classroomServiceProvider)
+                .getTeacherDashboardV2(widget.tribeId);
+      if (!mounted || !widget.isTeacher) return;
       setState(() {
         _data = res;
         _isLoading = false;
       });
     } catch (e) {
-      if (mounted) {
-        ErrorHandler.showError(context, e);
-      }
+      if (!mounted || !widget.isTeacher) return;
+      ErrorHandler.showError(context, e);
       setState(() {
+        _data = null;
         _error = 'Unable to load classroom progress right now.';
         _isLoading = false;
       });
     }
   }
 
+  void _leaveDenied() {
+    final NavigatorState nav = Navigator.of(context);
+    nav.popUntil((Route<dynamic> route) {
+      final String? name = route.settings.name;
+      return name == '/village' || name == '/village/map' || route.isFirst;
+    });
+  }
+
+  Widget _teacherDenied(BuildContext context) {
+    final AppLocalizations l10n = l10nOf(context);
+    final LingPalette palette = LingPalette.of(Theme.of(context).brightness);
+    return Scaffold(
+      backgroundColor: palette.surface,
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(LingAfriqTokens.spacing16),
+          children: <Widget>[
+            Text(
+              l10n.revRvContribTeacherTitle,
+              style: lingBody(palette.onSurface),
+              softWrap: true,
+              overflow: TextOverflow.visible,
+            ),
+            const SizedBox(height: LingAfriqTokens.spacing16),
+            LingErrorState(
+              key: ClassroomDashboardScreen.deniedKey,
+              whatHappened: l10n.revRvContribTeacherDeniedWhat,
+              why: l10n.revRvContribTeacherDeniedWhy,
+              whatToDo: l10n.revRvContribTeacherDeniedNext,
+              actionLabel: l10n.hubHVillageBack,
+              unavailableLabel: l10n.commonStateUnavailable,
+              onAction: _leaveDenied,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (!widget.isTeacher) {
+      return _teacherDenied(context);
+    }
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -211,7 +311,7 @@ class _ClassroomDashboardScreenState
                       'Class code copied',
                       style: PanAfricanTypography.bodyMedium(context, color: colorScheme.onPrimary),
                     ),
-                    backgroundColor: PanAfricanColors.success,
+                    backgroundColor: context.panSuccess,
                     behavior: SnackBarBehavior.floating,
                     shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
                   ),
@@ -221,7 +321,7 @@ class _ClassroomDashboardScreenState
         ],
       ),
       body: _isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(
                 color: PanAfricanColors.primary,
               ),
@@ -236,7 +336,7 @@ class _ClassroomDashboardScreenState
                         Icon(
                           Icons.error_outline_rounded,
                           size: 64.sp,
-                          color: PanAfricanColors.error,
+                          color: context.panError,
                         ),
                         SizedBox(height: PanAfricanSpacing.md),
                         Text(
@@ -348,7 +448,7 @@ class _ClassroomDashboardScreenState
           SizedBox(height: PanAfricanSpacing.sm),
           Text(
             'Languages: ${languages.isEmpty ? 'None yet' : languages.join(', ')}',
-            style: PanAfricanTypography.bodySmall(context, color: colorScheme.onPrimary.withOpacity(0.85)),
+            style: PanAfricanTypography.bodySmall(context, color: colorScheme.onPrimary.withValues(alpha: 0.85)),
           ),
           if (recentSessions.isNotEmpty) ...[
             SizedBox(height: PanAfricanSpacing.md),
@@ -368,8 +468,8 @@ class _ClassroomDashboardScreenState
                   final barHeight = (rate.clamp(0, 100) / 100.0) * 34.0;
                   final status = s['status']?.toString() ?? '';
                   final barColor = status.toLowerCase().contains('ended')
-                      ? Colors.white.withOpacity(0.95)
-                      : Colors.white.withOpacity(0.75);
+                      ? Colors.white.withValues(alpha: 0.95)
+                      : Colors.white.withValues(alpha: 0.75);
                   return Expanded(
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 3.w),
@@ -400,7 +500,7 @@ class _ClassroomDashboardScreenState
             SizedBox(height: PanAfricanSpacing.xxxs),
             Text(
               'Tap a bar for details',
-              style: PanAfricanTypography.labelSmall(context, color: colorScheme.onPrimary.withOpacity(0.8)),
+              style: PanAfricanTypography.labelSmall(context, color: colorScheme.onPrimary.withValues(alpha: 0.8)),
             ),
           ],
           if (recentAssignments.isNotEmpty) ...[
@@ -421,7 +521,7 @@ class _ClassroomDashboardScreenState
                   '$title — $rate% ($submitted/$size)',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: PanAfricanTypography.bodySmall(context, color: colorScheme.onPrimary.withOpacity(0.9)),
+                  style: PanAfricanTypography.bodySmall(context, color: colorScheme.onPrimary.withValues(alpha: 0.9)),
                 ),
               );
             }),
@@ -444,7 +544,7 @@ class _ClassroomDashboardScreenState
           ),
           Text(
             label,
-            style: PanAfricanTypography.labelSmall(context, color: colorScheme.onPrimary.withOpacity(0.85)),
+            style: PanAfricanTypography.labelSmall(context, color: colorScheme.onPrimary.withValues(alpha: 0.85)),
           ),
         ],
       ),
@@ -478,7 +578,7 @@ class _ClassroomDashboardScreenState
               Container(
                 width: 44.w,
                 height: 44.w,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: PanAfricanColors.primary,
                   shape: BoxShape.circle,
                 ),
@@ -574,7 +674,7 @@ class _ClassroomDashboardScreenState
         color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         borderRadius: PanAfricanRadius.lgBR,
         border: Border.all(
-          color: PanAfricanColors.ankaraPurple.withOpacity(0.3),
+          color: PanAfricanColors.ankaraPurple.withValues(alpha: 0.3),
         ),
         boxShadow: PanAfricanShadows.sm,
       ),
@@ -587,7 +687,7 @@ class _ClassroomDashboardScreenState
                 width: 36.w,
                 height: 36.w,
                 decoration: BoxDecoration(
-                  color: PanAfricanColors.ankaraPurple.withOpacity(0.15),
+                  color: PanAfricanColors.ankaraPurple.withValues(alpha: 0.15),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(

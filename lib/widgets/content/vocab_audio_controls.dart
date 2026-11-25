@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 import 'package:lingafriq/services/content/curriculum_audio_service.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 
@@ -32,7 +33,7 @@ class VocabAudioControls extends ConsumerWidget {
         children: [
           IconButton(
             style: style,
-            tooltip: 'Listen slowly',
+            tooltip: l10nOf(context).lessonListenSlowly,
             icon: const Icon(Icons.slow_motion_video_outlined, size: 20),
             onPressed: () => audio.speakPhrase(
               language: language,
@@ -42,7 +43,7 @@ class VocabAudioControls extends ConsumerWidget {
           ),
           IconButton(
             style: style,
-            tooltip: 'Listen native speed',
+            tooltip: l10nOf(context).lessonListen,
             icon: const Icon(Icons.volume_up_outlined, size: 20),
             onPressed: () => audio.speakPhrase(
               language: language,

@@ -1,56 +1,290 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lingafriq/design/components/ling_button.dart';
+import 'package:lingafriq/design/components/ling_state.dart';
+import 'package:lingafriq/design/states/empty_state.dart';
+import 'package:lingafriq/design/states/error_state.dart';
+import 'package:lingafriq/design/states/offline_state.dart';
+import 'package:lingafriq/design/tokens.g.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
+import 'package:lingafriq/navigation/hub_learn.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/models/review_progress_model.dart';
 import 'package:lingafriq/services/review_progress_service.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
-/// Review Dashboard Screen
-/// Shows review statistics, accuracy trends, and review schedule
-class ReviewDashboardScreen extends HookConsumerWidget {
+/// What a review load returned. [ready] is the only status that carries stats.
+enum ReviewDashboardStatus { loading, ready, empty, error, offline }
+
+class ReviewDashboardView {
+  const ReviewDashboardView._(this.status, this.statistics);
+
+  const ReviewDashboardView.ready(ReviewStatistics statistics)
+    : this._(ReviewDashboardStatus.ready, statistics);
+
+  const ReviewDashboardView.empty() : this._(ReviewDashboardStatus.empty, null);
+
+  const ReviewDashboardView.error() : this._(ReviewDashboardStatus.error, null);
+
+  const ReviewDashboardView.offline()
+    : this._(ReviewDashboardStatus.offline, null);
+
+  final ReviewDashboardStatus status;
+  final ReviewStatistics? statistics;
+}
+
+/// True when the saved review has something to show. An all-zero record is empty.
+bool reviewStatisticsHasData(ReviewStatistics statistics) {
+  return statistics.totalReviews > 0 ||
+      statistics.totalItemsReviewed > 0 ||
+      statistics.recentSessions.isNotEmpty ||
+      statistics.accuracyByType.isNotEmpty;
+}
+
+/// Review dashboard. With no loader and no language, the page is empty.
+/// A failed load clears any statistics that were on screen.
+class ReviewDashboardScreen extends StatefulWidget {
+  const ReviewDashboardScreen({
+    super.key,
+    this.language = '',
+    this.languageName = '',
+    this.load,
+  });
+
+  /// App route `/learn/review-dashboard`. The map key drops the leading slash.
+  static const String routePath = '/learn/review-dashboard';
+
+  static const String routeKey = 'learn/review-dashboard';
+
+  static const Key emptyKey = ValueKey<String>('learn-review-dashboard-empty');
+
+  static const Key errorKey = ValueKey<String>('learn-review-dashboard-error');
+
+  static const Key offlineKey = ValueKey<String>(
+    'learn-review-dashboard-offline',
+  );
+
+  static const Key contentKey = ValueKey<String>(
+    'learn-review-dashboard-content',
+  );
+
   final String language;
   final String languageName;
 
-  const ReviewDashboardScreen({
-    super.key,
-    required this.language,
-    required this.languageName,
-  });
+  /// Loads the review. Null with an empty [languageName] means there is nothing to show.
+  final Future<ReviewDashboardView> Function()? load;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final reviewService = ref.read(reviewProgressServiceProvider);
-    final statistics = useState<ReviewStatistics?>(null);
-    final isLoading = useState(true);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+  State<ReviewDashboardScreen> createState() => _ReviewDashboardScreenState();
+}
 
-    // Load statistics
-    useEffect(() {
-      _loadStatistics(reviewService, statistics, isLoading);
-      return null;
-    }, []);
+class _ReviewDashboardScreenState extends State<ReviewDashboardScreen> {
+  ReviewDashboardStatus _status = ReviewDashboardStatus.loading;
+  ReviewStatistics? _statistics;
+  int _generation = 0;
 
-    if (isLoading.value || statistics.value == null) {
-      return Scaffold(
-        appBar: AppBar(title: Text('Review Statistics')),
-        body: Center(child: CircularProgressIndicator()),
-      );
+  @override
+  void initState() {
+    super.initState();
+    if (widget.load == null && widget.languageName.trim().isEmpty) {
+      _status = ReviewDashboardStatus.empty;
+      _statistics = null;
+      return;
     }
+    _run(_generation);
+  }
 
-    final stats = statistics.value!;
-    final accuracyTrend = stats.getAccuracyTrend(days: 7);
+  @override
+  void didUpdateWidget(ReviewDashboardScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (identical(oldWidget.load, widget.load) &&
+        oldWidget.languageName == widget.languageName) {
+      return;
+    }
+    _statistics = null;
+    _generation += 1;
+    if (widget.load == null && widget.languageName.trim().isEmpty) {
+      _status = ReviewDashboardStatus.empty;
+      return;
+    }
+    _status = ReviewDashboardStatus.loading;
+    _run(_generation);
+  }
 
+  Future<void> _run(int generation) async {
+    final Future<ReviewDashboardView> Function() load =
+        widget.load ?? () => _loadNamed(widget.languageName);
+    try {
+      final ReviewDashboardView view = await load();
+      if (!mounted || generation != _generation) return;
+      setState(() => _apply(view));
+    } catch (_) {
+      if (!mounted || generation != _generation) return;
+      setState(() {
+        _status = ReviewDashboardStatus.error;
+        _statistics = null;
+      });
+    }
+  }
+
+  Future<ReviewDashboardView> _loadNamed(String languageName) async {
+    final String name = languageName.trim();
+    if (name.isEmpty) return const ReviewDashboardView.empty();
+    final ProviderContainer container = ProviderScope.containerOf(context);
+    final ReviewProgressService service = container.read(
+      reviewProgressServiceProvider,
+    );
+    final ReviewStatistics stats = await service.loadStatistics(name);
+    if (!reviewStatisticsHasData(stats)) {
+      return const ReviewDashboardView.empty();
+    }
+    return ReviewDashboardView.ready(stats);
+  }
+
+  void _apply(ReviewDashboardView view) {
+    final ReviewStatistics? stats = view.statistics;
+    if (view.status == ReviewDashboardStatus.ready &&
+        stats != null &&
+        reviewStatisticsHasData(stats)) {
+      _status = ReviewDashboardStatus.ready;
+      _statistics = stats;
+      return;
+    }
+    _statistics = null;
+    if (view.status == ReviewDashboardStatus.offline) {
+      _status = ReviewDashboardStatus.offline;
+    } else if (view.status == ReviewDashboardStatus.error ||
+        view.status == ReviewDashboardStatus.loading) {
+      _status = ReviewDashboardStatus.error;
+    } else {
+      _status = ReviewDashboardStatus.empty;
+    }
+  }
+
+  void _retry() {
+    setState(() {
+      _statistics = null;
+      _status = ReviewDashboardStatus.loading;
+      _generation += 1;
+    });
+    _run(_generation);
+  }
+
+  void _back() {
+    final NavigatorState? navigator = Navigator.maybeOf(context);
+    if (navigator != null && navigator.canPop()) navigator.pop();
+  }
+
+  void _openPath() {
+    Navigator.of(context).pushNamed(LearnRoutes.path);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations l10n = l10nOf(context);
+    switch (_status) {
+      case ReviewDashboardStatus.loading:
+        return _statusPage(
+          l10n,
+          Text(
+            l10n.loading,
+            style: lingBody(
+              LingPalette.of(Theme.of(context).brightness).onSurface,
+            ),
+            softWrap: true,
+            overflow: TextOverflow.visible,
+          ),
+        );
+      case ReviewDashboardStatus.empty:
+        return _statusPage(
+          l10n,
+          LingEmptyState(
+            key: ReviewDashboardScreen.emptyKey,
+            title: l10n.revRvLearnReviewDashboard,
+            whatHappened: l10n.revRvLearnReviewEmptyWhat,
+            why: l10n.revRvLearnReviewEmptyWhy,
+            whatToDo: l10n.revRvLearnReviewEmptyNext,
+            actionLabel: l10n.hubLearnOpenPath,
+            unavailableLabel: l10n.commonStateUnavailable,
+            onAction: _openPath,
+          ),
+        );
+      case ReviewDashboardStatus.error:
+        return _statusPage(
+          l10n,
+          LingErrorState(
+            key: ReviewDashboardScreen.errorKey,
+            whatHappened: l10n.revRvLearnReviewFailWhat,
+            why: l10n.revRvLearnReviewFailWhy,
+            whatToDo: l10n.revRvLearnReviewFailNext,
+            actionLabel: l10n.commonActionTryAgain,
+            unavailableLabel: l10n.commonStateUnavailable,
+            onAction: _retry,
+          ),
+        );
+      case ReviewDashboardStatus.offline:
+        return _statusPage(
+          l10n,
+          LingOfflineState(
+            key: ReviewDashboardScreen.offlineKey,
+            whatHappened: l10n.shellOfflineWhat,
+            why: l10n.revRvLearnReviewOfflineWhy,
+            whatToDo: l10n.shellOfflineNext,
+            queuedActions: 0,
+            actionLabel: l10n.commonActionTryAgain,
+            unavailableLabel: l10n.commonStateUnavailable,
+            onAction: _retry,
+          ),
+        );
+      case ReviewDashboardStatus.ready:
+        return _ready(context, _statistics!);
+    }
+  }
+
+  Widget _statusPage(AppLocalizations l10n, Widget body) {
+    final LingPalette palette = LingPalette.of(Theme.of(context).brightness);
     return Scaffold(
+      backgroundColor: palette.surface,
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(LingAfriqTokens.spacing16),
+          children: <Widget>[
+            Text(
+              l10n.revRvLearnReviewDashboard,
+              style: lingBody(palette.onSurface),
+              softWrap: true,
+              overflow: TextOverflow.visible,
+            ),
+            const SizedBox(height: LingAfriqTokens.spacing16),
+            body,
+            const SizedBox(height: LingAfriqTokens.spacing16),
+            LingButton(
+              label: l10n.hubLearnBack,
+              unavailableLabel: l10n.commonStateUnavailable,
+              onPressed: _back,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _ready(BuildContext context, ReviewStatistics stats) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final List<double> accuracyTrend = stats.getAccuracyTrend(days: 7);
+    final bool reduced = MediaQuery.disableAnimationsOf(context);
+    return Scaffold(
+      key: ReviewDashboardScreen.contentKey,
       appBar: AppBar(
-        title: Text('Review Statistics'),
+        title: const Text('Review Statistics'),
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
           IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: () => _loadStatistics(reviewService, statistics, isLoading),
+            icon: const Icon(Icons.refresh),
+            onPressed: _retry,
           ),
         ],
       ),
@@ -58,7 +292,7 @@ class ReviewDashboardScreen extends HookConsumerWidget {
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : LinearGradient(
+              : const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -73,34 +307,33 @@ class ReviewDashboardScreen extends HookConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Overall Stats
-                _OverallStatsCard(statistics: stats, isDark: isDark)
-                    .animate()
-                    .fadeIn(duration: 300.ms)
-                    .slideY(begin: -0.1),
+                _motion(
+                  _OverallStatsCard(statistics: stats, isDark: isDark),
+                  reduced: reduced,
+                ),
                 SizedBox(height: PanAfricanSpacing.lg),
-
-                // Accuracy Trend
-                _AccuracyTrendCard(trend: accuracyTrend, isDark: isDark)
-                    .animate(delay: 100.ms)
-                    .fadeIn(duration: 300.ms)
-                    .slideX(begin: 0.1),
+                _motion(
+                  _AccuracyTrendCard(trend: accuracyTrend, isDark: isDark),
+                  reduced: reduced,
+                  delay: 100,
+                ),
                 SizedBox(height: PanAfricanSpacing.lg),
-
-                // Accuracy by Type
                 if (stats.accuracyByType.isNotEmpty)
-                  _AccuracyByTypeCard(statistics: stats, isDark: isDark)
-                      .animate(delay: 200.ms)
-                      .fadeIn(duration: 300.ms)
-                      .slideX(begin: -0.1),
+                  _motion(
+                    _AccuracyByTypeCard(statistics: stats, isDark: isDark),
+                    reduced: reduced,
+                    delay: 200,
+                  ),
                 SizedBox(height: PanAfricanSpacing.lg),
-
-                // Recent Sessions
                 if (stats.recentSessions.isNotEmpty)
-                  _RecentSessionsCard(sessions: stats.recentSessions, isDark: isDark)
-                      .animate(delay: 300.ms)
-                      .fadeIn(duration: 300.ms)
-                      .slideY(begin: 0.1),
+                  _motion(
+                    _RecentSessionsCard(
+                      sessions: stats.recentSessions,
+                      isDark: isDark,
+                    ),
+                    reduced: reduced,
+                    delay: 300,
+                  ),
               ],
             ),
           ),
@@ -109,20 +342,12 @@ class ReviewDashboardScreen extends HookConsumerWidget {
     );
   }
 
-  Future<void> _loadStatistics(
-    ReviewProgressService service,
-    ValueNotifier<ReviewStatistics?> statistics,
-    ValueNotifier<bool> isLoading,
-  ) async {
-    isLoading.value = true;
-    try {
-      final stats = await service.loadStatistics(languageName);
-      statistics.value = stats;
-    } catch (e) {
-      debugPrint('Error loading review statistics: $e');
-    } finally {
-      isLoading.value = false;
-    }
+  Widget _motion(Widget child, {required bool reduced, int delay = 0}) {
+    if (reduced) return child;
+    return child
+        .animate(delay: delay.ms)
+        .fadeIn(duration: 300.ms)
+        .slideY(begin: 0.1);
   }
 }
 
@@ -155,30 +380,35 @@ class _OverallStatsCard extends StatelessWidget {
             ),
             SizedBox(height: PanAfricanSpacing.lg),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _StatItem(
-                  label: 'Reviews',
-                  value: '${statistics.totalReviews}',
-                  icon: Icons.refresh,
-                  color: PanAfricanColors.primary,
+                Expanded(
+                  child: _StatItem(
+                    label: 'Reviews',
+                    value: '${statistics.totalReviews}',
+                    icon: Icons.refresh,
+                    color: PanAfricanColors.primary,
+                  ),
                 ),
-                _StatItem(
-                  label: 'Items',
-                  value: '${statistics.totalItemsReviewed}',
-                  icon: Icons.quiz,
-                  color: PanAfricanColors.secondary,
+                Expanded(
+                  child: _StatItem(
+                    label: 'Items',
+                    value: '${statistics.totalItemsReviewed}',
+                    icon: Icons.quiz,
+                    color: context.panSecondary,
+                  ),
                 ),
-                _StatItem(
-                  label: 'Streak',
-                  value: '${statistics.currentStreak}',
-                  icon: Icons.local_fire_department,
-                  color: PanAfricanColors.error,
+                Expanded(
+                  child: _StatItem(
+                    label: 'Streak',
+                    value: '${statistics.currentStreak}',
+                    icon: Icons.local_fire_department,
+                    color: context.panError,
+                  ),
                 ),
               ],
             ),
             SizedBox(height: PanAfricanSpacing.lg),
-            Divider(),
+            const Divider(),
             SizedBox(height: PanAfricanSpacing.lg),
             Text(
               'Average Accuracy',
@@ -196,7 +426,7 @@ class _OverallStatsCard extends StatelessWidget {
             LinearProgressIndicator(
               value: statistics.averageAccuracy / 100.0,
               backgroundColor: PanAfricanColors.neutralLight,
-              valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.accent),
+              valueColor: const AlwaysStoppedAnimation<Color>(PanAfricanColors.accent),
               minHeight: 8.h,
             ),
           ],
@@ -262,12 +492,16 @@ class _AccuracyTrendCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.trending_up, color: PanAfricanColors.accent),
+                const Icon(Icons.trending_up, color: PanAfricanColors.accent),
                 SizedBox(width: PanAfricanSpacing.sm),
-                Text(
-                  'Accuracy Trend (Last 7 Days)',
-                  style: PanAfricanTypography.titleMedium(context).copyWith(
-                    fontWeight: FontWeight.bold,
+                Expanded(
+                  child: Text(
+                    'Accuracy Trend (Last 7 Days)',
+                    style: PanAfricanTypography.titleMedium(context).copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    softWrap: true,
+                    overflow: TextOverflow.visible,
                   ),
                 ),
               ],
@@ -337,12 +571,16 @@ class _AccuracyByTypeCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.bar_chart, color: PanAfricanColors.secondary),
+                Icon(Icons.bar_chart, color: context.panSecondary),
                 SizedBox(width: PanAfricanSpacing.sm),
-                Text(
-                  'Accuracy by Type',
-                  style: PanAfricanTypography.titleMedium(context).copyWith(
-                    fontWeight: FontWeight.bold,
+                Expanded(
+                  child: Text(
+                    'Accuracy by Type',
+                    style: PanAfricanTypography.titleMedium(context).copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    softWrap: true,
+                    overflow: TextOverflow.visible,
                   ),
                 ),
               ],
@@ -352,19 +590,24 @@ class _AccuracyByTypeCard extends StatelessWidget {
               final type = entry.key;
               final correct = entry.value;
               
-              // Calculate total items for this type from recent sessions
+              // Count only items that were actually reviewed for this type.
               final totalForType = statistics.recentSessions.fold<int>(
                 0,
                 (sum, session) => sum + session.itemsReviewed
                     .where((item) => item.type == type)
                     .length,
               );
-              
-              // If no recent sessions, use correct count as estimate
-              final total = totalForType > 0 ? totalForType : (correct * 1.3).round();
-              final percentage = total > 0 
-                  ? (correct / total * 100).clamp(0.0, 100.0)
-                  : 0.0;
+              if (totalForType <= 0) {
+                return Padding(
+                  padding: EdgeInsets.only(bottom: PanAfricanSpacing.md),
+                  child: Text(
+                    type,
+                    style: PanAfricanTypography.bodyMedium(context),
+                  ),
+                );
+              }
+              final int total = totalForType;
+              final percentage = (correct / total * 100).clamp(0.0, 100.0);
               
               return Padding(
                 padding: EdgeInsets.only(bottom: PanAfricanSpacing.md),
@@ -389,10 +632,10 @@ class _AccuracyByTypeCard extends StatelessWidget {
                           style: PanAfricanTypography.bodyMedium(context).copyWith(
                             fontWeight: FontWeight.bold,
                             color: percentage >= 80 
-                                ? PanAfricanColors.success 
+                                ? context.panSuccess 
                                 : percentage >= 60 
                                     ? PanAfricanColors.accent 
-                                    : PanAfricanColors.error,
+                                    : context.panError,
                           ),
                         ),
                       ],
@@ -403,10 +646,10 @@ class _AccuracyByTypeCard extends StatelessWidget {
                       backgroundColor: PanAfricanColors.neutralLight,
                       valueColor: AlwaysStoppedAnimation<Color>(
                         percentage >= 80 
-                            ? PanAfricanColors.success 
+                            ? context.panSuccess 
                             : percentage >= 60 
                                 ? PanAfricanColors.accent 
-                                : PanAfricanColors.error,
+                                : context.panError,
                       ),
                       minHeight: 6.h,
                     ),
@@ -441,12 +684,16 @@ class _RecentSessionsCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.history, color: PanAfricanColors.tertiary),
+                Icon(Icons.history, color: context.panTertiary),
                 SizedBox(width: PanAfricanSpacing.sm),
-                Text(
-                  'Recent Sessions',
-                  style: PanAfricanTypography.titleMedium(context).copyWith(
-                    fontWeight: FontWeight.bold,
+                Expanded(
+                  child: Text(
+                    'Recent Sessions',
+                    style: PanAfricanTypography.titleMedium(context).copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    softWrap: true,
+                    overflow: TextOverflow.visible,
                   ),
                 ),
               ],
@@ -460,8 +707,8 @@ class _RecentSessionsCard extends StatelessWidget {
                     Icon(
                       session.accuracy >= 80 ? Icons.check_circle : Icons.error,
                       color: session.accuracy >= 80
-                          ? PanAfricanColors.success
-                          : PanAfricanColors.error,
+                          ? context.panSuccess
+                          : context.panError,
                       size: 20.sp,
                     ),
                     SizedBox(width: PanAfricanSpacing.sm),

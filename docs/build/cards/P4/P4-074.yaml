@@ -1,0 +1,89 @@
+charter: v2
+id: P4-074
+kind: build
+title: Build per-item verification report
+phase: P4
+epic: E-P4-STUDIO
+req_ids:
+- CP-§9.1-05
+depends_on:
+- P4-063
+- P4-069
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 2, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- lingafriq-admin/src/pages/CurriculumStudio/verificationReport.tsx
+- node-backend/src/routes/verificationReport.routes.ts
+- tools/content_engine/tests/studio_verificationReport.test.ts
+context_anchors:
+- CURRICULUM.md#§9.1:L782-L784
+acceptance_criteria:
+- id: AC1
+  text: Given an item, when its report opens, then it shows each model opinion, back-translation, linter results, citations
+    with entailment and the confidence breakdown
+- id: AC2
+  text: Given a missing stage result, when shown, then the report shows an unsure state, not a pass
+- id: AC3
+  text: Given the report, when exported, then it contains only data stored on the item
+test_plan:
+  unit:
+  - component states
+  integration:
+  - admin route contract
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - keyboard navigation
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - empty
+  - error
+  - ready
+  copy_keys:
+  - report.title
+  - report.unsure
+  - report.citations
+  tokens:
+  - admin.surface
+  - admin.text
+  - admin.status
+  motion_tier: product
+  a11y:
+  - keyboard operable
+  - focus visible
+  - labelled controls
+  goldens:
+  - verificationReport-ready
+  - verificationReport-empty
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

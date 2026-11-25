@@ -13,15 +13,5 @@
         <domain includeSubdomains="true">10.0.2.2</domain>
     </domain-config>
     
-    <!-- Certificate pinning for production API endpoints -->
-    <!-- Uncomment and update with actual certificate hashes for production -->
-    <!--
-    <domain-config cleartextTrafficPermitted="false">
-        <domain includeSubdomains="true">admin.lingafriq.com</domain>
-        <pin-set expiration="2027-01-01">
-            <pin digest="SHA-256">YOUR_CERTIFICATE_PIN_HERE</pin>
-            <pin digest="SHA-256">YOUR_BACKUP_PIN_HERE</pin>
-        </pin-set>
-    </domain-config>
-    -->
+    <!-- Cleartext stays off. Leaf pins are the Dart client check, from CERTIFICATE_PIN_HASHES. -->
 </network-security-config>

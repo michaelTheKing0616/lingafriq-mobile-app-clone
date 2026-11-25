@@ -1,11 +1,9 @@
-import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/modern_griot_design_system.dart';
-import '../../widgets/griot/griot_widgets.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 class ElderHutScreen extends ConsumerStatefulWidget {
   const ElderHutScreen({super.key});
@@ -20,13 +18,13 @@ class _ElderHutScreenState extends ConsumerState<ElderHutScreen>
   late Animation<double> _glowAnim;
   int _selectedProverb = 0;
 
-  static const _darkBg = Color(0xFF1C1A15);
-  static const _darkSurface = Color(0xFF252219);
-  static const _darkSurfaceHigh = Color(0xFF2E2A22);
-  static const _gold = Color(0xFFFFD700);
+  static const _darkBg = LingAfriqTokens.hexFF1C1A15;
+  static const _darkSurface = LingAfriqTokens.hexFF252219;
+  static const _darkSurfaceHigh = LingAfriqTokens.hexFF2E2A22;
+  static const _gold = LingAfriqTokens.hexFFFFD700;
   static const _goldMuted = Color(0xFFB8960C);
-  static const _warmText = Color(0xFFEDE0D0);
-  static const _warmTextDim = Color(0xFFCFC5B4);
+  static const _warmText = LingAfriqTokens.hexFFEDE0D0;
+  static const _warmTextDim = LingAfriqTokens.hexFFCFC5B4;
 
   static const _proverbs = [
     _Proverb(
@@ -148,7 +146,7 @@ class _ElderHutScreenState extends ConsumerState<ElderHutScreen>
             child: Container(
               width: 40.r,
               height: 40.r,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: _darkSurface,
                 shape: BoxShape.circle,
               ),
@@ -214,13 +212,13 @@ class _ElderHutScreenState extends ConsumerState<ElderHutScreen>
         height: 160.r,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          gradient: RadialGradient(
+          gradient: const RadialGradient(
             colors: [
               _darkSurfaceHigh,
               _darkSurface,
               _darkBg,
             ],
-            stops: const [0.0, 0.6, 1.0],
+            stops: [0.0, 0.6, 1.0],
           ),
           border: Border.all(
             color: _gold.withAlpha(60),
@@ -435,7 +433,7 @@ class _ElderHutScreenState extends ConsumerState<ElderHutScreen>
                     color: turn.isElder
                         ? _gold.withAlpha(10)
                         : _darkSurfaceHigh,
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(ModernGriotRadius.xl),
                       bottomLeft: Radius.circular(ModernGriotRadius.xl),
                       bottomRight: Radius.circular(ModernGriotRadius.xl),
@@ -458,9 +456,9 @@ class _ElderHutScreenState extends ConsumerState<ElderHutScreen>
 
   Widget _buildInteractionButtons(BuildContext context) {
     final buttons = [
-      _ActionBtn('Ask', Icons.question_answer_rounded, 'Seek wisdom'),
-      _ActionBtn('Explain', Icons.lightbulb_outline_rounded, 'Deepen meaning'),
-      _ActionBtn('Practice', Icons.record_voice_over_rounded, 'Speak aloud'),
+      const _ActionBtn('Ask', Icons.question_answer_rounded, 'Seek wisdom'),
+      const _ActionBtn('Explain', Icons.lightbulb_outline_rounded, 'Deepen meaning'),
+      const _ActionBtn('Practice', Icons.record_voice_over_rounded, 'Speak aloud'),
     ];
 
     return Row(

@@ -1,0 +1,65 @@
+charter: v2
+id: P0-INT-01
+kind: build
+title: Install token-economy charter rule and root AGENTS.md
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- RM-STOP-03
+depends_on:
+- E-P0-INTAKE
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T0
+  tester: T0
+  reviewer: T1
+  justification: rule files already authored; verification by script only
+token_budget: 25000
+file_allowlist:
+- .cursor/rules/00-token-economy.mdc
+- AGENTS.md
+- scripts/check_agent_files.py
+context_anchors:
+- docs/build/01_TOKEN_CHARTER.md#enforcement
+acceptance_criteria:
+- id: AC1
+  text: 'Given the repo root, when .cursor/rules/00-token-economy.mdc is read, then it carries `charter: v2` and `alwaysApply:
+    true`'
+- id: AC2
+  text: 'Given the repo root, when AGENTS.md is read, then it carries `charter: v2` and links the plan of record, pipeline,
+    routing and RTM paths'
+- id: AC3
+  text: Given both files, when `python3 scripts/check_agent_files.py` runs, then it exits 0 and prints OK
+test_plan:
+  unit:
+  - check_agent_files.py exit 0
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- .cursor/rules/00-token-economy.mdc
+- AGENTS.md
+- python3 scripts/check_agent_files.py OK
+risks: []
+gate: G0
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

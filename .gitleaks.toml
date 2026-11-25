@@ -1,0 +1,33 @@
+title = "LingAfriq"
+
+[extend]
+useDefault = true
+
+# Curriculum ids, route keys, and documented example curls trip the default
+# rules. Each allowlist is one class of false positive. A real secret in
+# app code is still reported.
+[[allowlists]]
+description = "Curriculum locators and unit ids look like tokens"
+paths = [
+  '''(?i)curriculum/''',
+  '''(?i)assets/data/cando_map\.json''',
+  '''(?i)assets/data/dialogues/pcm\.json''',
+]
+
+[[allowlists]]
+description = "Setup docs use example curls and a sample JWT of x characters"
+paths = [
+  '''(?i)docs/''',
+  '''(?i)Elite Features to implement/''',
+]
+
+[[allowlists]]
+description = "Screen route keys, not API keys"
+regexes = [
+  '''village/contribute''',
+  '''speak/shadowing''',
+]
+
+[[allowlists]]
+description = "Local rating-console storage key"
+paths = ['''(?i)tools/rating_console/index\.html''']

@@ -1,0 +1,79 @@
+charter: v2
+id: P1-019
+kind: build
+title: Reconcile and remove fraudulent currency and XP balances
+phase: P1
+epic: E-P1-ECONOMY
+req_ids:
+- P0-7
+- P0-8
+- RM-P0-04
+depends_on:
+- E-P0-INTAKE
+- P1-017
+- P1-018
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: score 7; blast 3
+token_budget: 70000
+file_allowlist:
+- node-backend/scripts/reconcile/reconcile_balances.ts
+- node-backend/src/services/rewardLedger.service.ts
+- node-backend/src/__test__/P1-019.reconcile.test.ts
+- docs/security/RECONCILIATION_RUNBOOK.md
+context_anchors:
+- ELEVATION.md#§1:L162-L170
+- ELEVATION.md#§1:L172-L180
+- ELEVATION.md#§16.1:L2030-L2032
+acceptance_criteria:
+- id: AC1
+  text: Given the production-like snapshot, when reconcile_balances runs in --dry-run, then it outputs per-user recomputed
+    vs stored balances and flags every divergence without writes
+- id: AC2
+  text: Given --apply, when it runs, then each corrected balance writes a reversible ledger adjustment with the prior value
+    stored
+- id: AC3
+  text: Given the same run twice, when repeated, then the second run changes 0 balances
+- id: AC4
+  text: Given the runbook, when read, then it defines the divergence threshold and the owner who approves --apply
+test_plan:
+  unit:
+  - recompute math
+  integration:
+  - dry-run and apply on fixture DB
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "Snapshot hold waived 2026-10-21. The suite uses a fixture, not a production dump. Divergence threshold is 0 because AC1 flags every mismatch. Unbacked currency and points are flagged and not wiped unless --include-unbacked."
+- "Script path is node-backend/scripts/reconcile/reconcile_balances.ts. The drafted scripts/ path is not a repo root. The spec was added to the allowlist."
+- "--apply writes the new balance before the rewardAdjustments row. A crash drops the stored prior, and a second run will not recreate it (OW-033)."
+gate: G1
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

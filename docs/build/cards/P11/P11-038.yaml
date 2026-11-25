@@ -1,0 +1,62 @@
+charter: v2
+id: P11-038
+kind: build
+title: Add layer isolation check for L1–L5
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§4.2-27
+- EP-§4.6-12
+depends_on:
+- P11-037
+size: S
+difficulty:
+  score: 2
+  blast: 0
+  ambiguity: 0
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 0, ambiguity 0, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist:
+- scripts/avatars/check_layer_isolation.py
+- test/avatars/layer_isolation_test.dart
+context_anchors:
+- ELEVATION.md#§4.2:L893-L894
+- ELEVATION.md#§4.6:L1006-L1007
+acceptance_criteria:
+- id: AC1
+  text: Given the .riv, when analysed, then a script lists keyed properties per layer.
+- id: AC2
+  text: Given two layers keying the same property, when CI runs, then it fails naming layers and property.
+test_plan:
+  unit:
+  - detects overlap
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

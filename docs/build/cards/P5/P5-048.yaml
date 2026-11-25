@@ -1,0 +1,62 @@
+charter: v2
+id: P5-048
+kind: build
+title: Compute IRT item statistics and flag abnormal items
+phase: P5
+epic: E-P5-QUALITY
+req_ids:
+- CP-§5-16
+depends_on:
+- P5-008
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T1
+  reviewer: T3
+  justification: 'score 7: blast 2, ambiguity 1, coupling 2, depth 2'
+token_budget: 70000
+file_allowlist:
+- tools/content/irt_stats.py
+- test/content/irt_stats_test.py
+context_anchors:
+- CURRICULUM.md#§5:L618-L620
+acceptance_criteria:
+- id: AC1
+  text: Given responses, when enough exist, then difficulty and discrimination are computed per item
+- id: AC2
+  text: Given experts failing an item or abnormal patterns, when found, then the item is flagged for review
+- id: AC3
+  text: Given too few responses, when requested, then InsufficientData is returned
+test_plan:
+  unit:
+  - estimator
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

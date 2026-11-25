@@ -1,0 +1,113 @@
+charter: v2
+id: P9-943
+kind: build
+title: Build Circles engine for small groups of 5 to 50
+phase: P9
+epic: E-P9-VILLAGE
+req_ids:
+- EP-§9.2-03
+- EP-§9.2-04
+- EP-§9.2-05
+- EP-§9.2-06
+- EP-§9.1-04
+- EP-§9.1-07
+- RM-P1-08
+depends_on:
+- E-P9-SAFETY
+- P9-904
+- P9-914
+size: L
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, ambiguity 1, coupling 2, depth 0'
+token_budget: 200000
+file_allowlist:
+- node-backend/src/services/circles.service.ts
+- node-backend/src/models/circle.ts
+- lib/screens/village/circles_screen.dart
+- lib/screens/chat/tribe_chat_screen.dart
+context_anchors:
+- ELEVATION.md#§9.2:L1575-L1581
+- ELEVATION.md#§9.1:L1550-L1555
+acceptance_criteria:
+- id: AC1
+  text: Given a circle of type family, study circle, class or language village, when members are added, then the cap of 50
+    is enforced with CIRCLE_FULL and study and village types need at least 5 members to open
+- id: AC2
+  text: Given the existing tribes, villages, friends, social audio rooms, micro-mentors and friend quests, when migrated,
+    then each maps to a Circle or a kept place with membership preserved and no record lost
+- id: AC3
+  text: Given a circle with a minor member, when an adult joins, then the adult must be guardian-approved or teacher-verified
+    and the join is logged
+- id: AC4
+  text: Given any circle action, when executed, then room authorisation and the moderation hook run server-side
+test_plan:
+  unit:
+  - cap rules
+  integration:
+  - migration
+  - join leave moderation
+  security:
+  - unapproved adult join
+  e2e: []
+  perf: []
+  a11y:
+  - circles screen
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - empty
+  - list
+  - full
+  - pending-approval
+  - error
+  copy_keys:
+  - circles.title
+  - circles.full
+  - circles.pending
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - circles_default
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+harvest_list:
+- tribes
+- villages
+- friends
+- social audio rooms
+- micro-mentors
+- friend quests
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

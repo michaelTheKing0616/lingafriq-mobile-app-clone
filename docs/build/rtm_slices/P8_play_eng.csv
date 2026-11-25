@@ -1,0 +1,77 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+EP-§10.1-01,ELEVATION,§10.1:L1662,informational,"About 45 game screens (screens/games/*, games/*) built on a shared ""gamekit""",P1,agent,,Open
+EP-§10.1-02,ELEVATION,§10.1:L1662-L1663,informational,(a) fake scoring in the speaking games (P0-18),P1,agent,,Open
+EP-§10.1-03,ELEVATION,§10.1:L1663,metric,content comes from a 85–118-word pool per language,P1,agent,,Open
+EP-§10.1-04,ELEVATION,§10.1:L1663-L1664,informational,with no audio,P1,agent,,Open
+EP-§10.1-05,ELEVATION,§10.1:L1664,informational,and with tone errors,P1,agent,,Open
+EP-§10.1-06,ELEVATION,§10.1:L1664-L1665,informational,tone trainer applies one H/M/L model with one correct tone per word,P1,agent,,Open
+EP-§10.1-07,ELEVATION,§10.1:L1665-L1666,informational,games are a separate destination rather than part of spaced practice,P1,agent,,Open
+EP-§10.1-08,ELEVATION,§10.1:L1665-L1666,informational,playing them does not reliably update the learner model,P1,agent,,Open
+EP-§10.1-09,ELEVATION,§10.1:L1666-L1667,informational,finished game code is unreachable,P1,agent,,Open
+EP-§10.1-10,ELEVATION,§10.1:L1667-L1668,requirement,all of it is revived in §17.5,P1,agent,,Open
+EP-§10.2-01,ELEVATION,§10.2:L1670,requirement,Every game is a retrieval or perception exercise in disguise,P1,agent,,Open
+EP-§10.2-02,ELEVATION,§10.2:L1670-L1671,requirement,reads and writes the learner knowledge graph (§6.3),P1,agent,,Open
+EP-§10.2-03,ELEVATION,§10.2:L1671,requirement,uses due items first,P1,agent,,Open
+EP-§10.2-04,ELEVATION,§10.2:L1672,metric,Sessions of 60–180 s,P1,agent,,Open
+EP-§10.2-05,ELEVATION,§10.2:L1672,constraint,one core verb,P1,agent,,Open
+EP-§10.2-06,ELEVATION,§10.2:L1672,metric,instant feedback ≤ 160 ms,P1,agent,,Open
+EP-§10.2-07,ELEVATION,§10.2:L1672,requirement,juicy but brief celebration,P1,agent,,Open
+EP-§10.2-08,ELEVATION,§10.2:L1672-L1673,requirement,"a ""why was I wrong"" explanation with audio",P1,agent,,Open
+EP-§10.2-09,ELEVATION,§10.2:L1674,requirement,Difficulty adapts,P1,agent,,Open
+EP-§10.2-10,ELEVATION,§10.2:L1674,metric,(target 80–85% success),P1,agent,,Open
+EP-§10.2-11,ELEVATION,§10.2:L1674,requirement,Multiplayer is matched by level.,P1,agent,,Open
+EP-§10.2-12,ELEVATION,§10.2:L1675,constraint,No dark patterns: no energy gates on core learning,P1,agent,,Open
+EP-§10.2-13,ELEVATION,§10.2:L1675,constraint,no loot boxes,P1,agent,,Open
+EP-§10.2-14,ELEVATION,§10.2:L1675-L1676,constraint,no fake opponents presented as real people,P1,agent,,Open
+EP-§10.2-15,ELEVATION,§10.2:L1676,requirement,(label bots as bots),P1,agent,,Open
+EP-§10.3-11,ELEVATION,§10.3:L1677,constraint,every existing game stays in the Arcade,P1,agent,,Open
+EP-§10.3-01,ELEVATION,§10.3:L1679-L1685,requirement,"A phrase is ""drummed"" (pitch contour played on a talking-drum timbre)",P1,agent,,Open
+EP-§10.3-01a,ELEVATION,§10.3:L1683-L1685,requirement,"the learner picks the phrase whose tones match, then speaks it",P1,agent,,Open
+EP-§10.3-01b,ELEVATION,§10.3:L1684-L1685,requirement,sees their contour vs the drum,P1,agent,,Open
+EP-§10.3-01c,ELEVATION,§10.3:L1689-L1691,constraint,per-language tone inventories,P1,agent,,Open
+EP-§10.3-02,ELEVATION,§10.3:L1692-L1696,requirement,"Hear one of 2–4 near-identical words (ọkọ/ọkọ̀/ọkọ́), tap the right picture",P1,agent,,Open
+EP-§10.3-02a,ELEVATION,§10.3:L1694,metric,Hear one of 2–4 near-identical words,P1,agent,,Open
+EP-§10.3-02b,ELEVATION,§10.3:L1695-L1696,requirement,head-to-head async with friends,P1,agent,,Open
+EP-§10.3-02c,ELEVATION,§10.3:L1699,requirement,Uses the minimal_pairs field;,P1,agent,,Open
+EP-§10.3-02d,ELEVATION,§10.3:L1700-L1701,constraint,"leagues by accuracy, not speed only",P1,agent,,Open
+EP-§10.3-03,ELEVATION,§10.3:L1702-L1704,requirement,"Voice roleplay with a market trader (AI, scripted goals)",P1,agent,,Open
+EP-§10.3-03a,ELEVATION,§10.3:L1703-L1704,requirement,"get the price down without being rude; numbers, politeness and bargaining phrases",P1,agent,,Open
+EP-§10.3-03b,ELEVATION,§10.3:L1708-L1709,requirement,Scored on goal achieved + politeness + correctness,P1,agent,,Open
+EP-§10.3-03c,ELEVATION,§10.3:L1710-L1711,requirement,replayable traders with personalities,P1,agent,,Open
+EP-§10.3-04,ELEVATION,§10.3:L1712-L1715,requirement,Listen to rapid conductor calls and stop names; tap to board,P1,agent,,Open
+EP-§10.3-04a,ELEVATION,§10.3:L1718-L1719,external,Real recorded audio with accents,P1,external,,Open
+EP-§10.3-04b,ELEVATION,§10.3:L1719,requirement,difficulty by speed,P1,agent,,Open
+EP-§10.3-05,ELEVATION,§10.3:L1720-L1721,requirement,"Assemble a proverb from fragments, hear it, then pick the situation",P1,agent,,Open
+EP-§10.3-05a,ELEVATION,§10.3:L1725,constraint,B1+,P1,agent,,Open
+EP-§10.3-05b,ELEVATION,§10.3:L1725-L1726,external,proverbs reviewed by elders/linguists,P1,external,,Open
+EP-§10.3-06,ELEVATION,§10.3:L1727-L1730,requirement,Collaborative story: each player records a sentence continuing the story,P1,agent,,Open
+EP-§10.3-06a,ELEVATION,§10.3:L1730-L1731,requirement,AI checks grammar and suggests a fix,P1,agent,,Open
+EP-§10.3-06b,ELEVATION,§10.3:L1731-L1732,requirement,the result plays as an illustrated audio story,P1,agent,,Open
+EP-§10.3-06c,ELEVATION,§10.3:L1735,requirement,Great for classrooms and circles,P1,agent,,Open
+EP-§10.3-07,ELEVATION,§10.3:L1736-L1740,requirement,Build Swahili/Zulu words from noun-class prefixes and verb slots (a-na-ku-penda),P1,agent,,Open
+EP-§10.3-07a,ELEVATION,§10.3:L1739-L1740,requirement,see the meaning change live,P1,agent,,Open
+EP-§10.3-07b,ELEVATION,§10.3:L1744-L1745,requirement,Language-specific; Yoruba variant builds serial verbs,P1,agent,,Open
+EP-§10.3-08,ELEVATION,§10.3:L1748-L1751,requirement,Trace and recognise Ge'ez/N'Ko/Adlam/Tifinagh characters in a flying game,P1,agent,,Open
+EP-§10.3-08a,ELEVATION,§10.3:L1752-L1753,requirement,Handwriting recognition on device,P1,agent,,Open
+EP-§10.3-09,ELEVATION,§10.3:L1754-L1758,requirement,"Fast scenarios: time of day × person (elder, peer, child)",P1,agent,,Open
+EP-§10.3-09a,ELEVATION,§10.3:L1757-L1758,requirement,respond with the right greeting and gesture,P1,agent,,Open
+EP-§10.3-09b,ELEVATION,§10.3:L1759-L1760,requirement,"Avatar performs the gesture (kneel, bow, handshake style)",P1,agent,,Open
+EP-§10.3-10,ELEVATION,§10.3:L1761-L1764,requirement,"Sing or chant short songs, children's rhymes and praise phrases",P1,agent,,Open
+EP-§10.3-10a,ELEVATION,§10.3:L1767,requirement,Real F0 tracking,P1,agent,,Open
+EP-§10.3-10b,ELEVATION,§10.3:L1767-L1768,external,licensed or commissioned music,P1,external,,Open
+EP-§10.3-01d,ELEVATION,§10.3:L1769-L1770,decision,Talking Drum ← Drum Word and Drum Rhythm,P1,agent,,Open
+EP-§10.3-12,ELEVATION,§10.3:L1769,requirement,These ten are the headliners of the Arcade.,P1,agent,,Open
+EP-§10.3-03d,ELEVATION,§10.3:L1770,decision,Market Haggle ← Market Bargaining,P1,agent,,Open
+EP-§10.3-04c,ELEVATION,§10.3:L1770,decision,Danfo/Matatu Rush ← Taxi Survival,P1,agent,,Open
+EP-§10.3-05c,ELEVATION,§10.3:L1770-L1771,decision,Proverb Weaver ← Proverb Unlocker,P1,agent,,Open
+EP-§10.3-09c,ELEVATION,§10.3:L1771,decision,Greeting Gauntlet ← Greeting Diplomacy,P1,agent,,Open
+EP-§10.3-10c,ELEVATION,§10.3:L1771-L1772,decision,Echo Karaoke ← Pronunciation Karaoke,P1,agent,,Open
+EP-§10.3-13,ELEVATION,§10.3:L1772,requirement,Every other existing game stays on its skill shelf,P1,agent,,Open
+EP-§10.3-14,ELEVATION,§10.3:L1772,requirement,with its own elevation in §18.5,P1,agent,,Open
+EP-§10.3-15,ELEVATION,§10.3:L1772-L1773,requirement,Tone Forge is revived as a featured tone game.,P1,agent,,Open
+EP-§10.4-01,ELEVATION,§10.4:L1775,requirement,"Weekly Village Festival themes (food, family, travel)",P1,agent,,Open
+EP-§10.4-02,ELEVATION,§10.4:L1775,requirement,rotate content across all games,P1,agent,,Open
+EP-§10.4-03,ELEVATION,§10.4:L1775-L1776,requirement,a Mastery Map showing which skills each game improved,P1,agent,,Open
+EP-§10.4-04,ELEVATION,§10.4:L1776-L1777,requirement,co-op goals with circles,P1,agent,,Open
+EP-§10.4-05,ELEVATION,§10.4:L1776-L1777,metric,our circle learned 300 words this week,P1,agent,,Open
+EP-§10.4-06,ELEVATION,§10.4:L1777,constraint,rather than pure competition,P1,agent,,Open

@@ -54,7 +54,7 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Content Validation'),
+        title: const Text('Content Validation'),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -62,7 +62,7 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : LinearGradient(
+              : const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -72,7 +72,7 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
                 ),
         ),
         child: isLoading.value
-            ? Center(child: CircularProgressIndicator())
+            ? const Center(child: CircularProgressIndicator())
             : validationResult.value == null
                 ? Center(
                     child: Text(
@@ -173,7 +173,7 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
                       strokeWidth: 12,
                       backgroundColor: PanAfricanColors.neutralLight,
                       valueColor: AlwaysStoppedAnimation<Color>(
-                        _getScoreColor(score),
+                        _getScoreColor(context, score),
                       ),
                     ),
                   ),
@@ -183,7 +183,7 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
                       Text(
                         '${score.toInt()}',
                         style: PanAfricanTypography.displayMedium(context)
-                            .copyWith(color: _getScoreColor(score)),
+                            .copyWith(color: _getScoreColor(context, score)),
                       ),
                       Text(
                         '/ 100',
@@ -197,12 +197,12 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
             SizedBox(height: PanAfricanSpacing.md),
             Chip(
               label: Text(status.toUpperCase()),
-              backgroundColor: _getStatusColor(status).withOpacity(0.2),
+              backgroundColor: _getStatusColor(context, status).withValues(alpha: 0.2),
             ),
           ],
         ),
       ),
-    ).animate().fadeIn(duration: 300.ms).scale(begin: Offset(0.9, 0.9));
+    ).animate().fadeIn(duration: 300.ms).scale(begin: const Offset(0.9, 0.9));
   }
 
   Widget _buildCheckSection(
@@ -221,7 +221,7 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
       child: ExpansionTile(
         leading: Icon(
           passed ? Icons.check_circle : Icons.error,
-          color: passed ? PanAfricanColors.success : PanAfricanColors.error,
+          color: passed ? context.panSuccess : context.panError,
         ),
         title: Text(title),
         subtitle: Text(passed ? 'All checks passed' : '${issues.length} issues found'),
@@ -240,9 +240,9 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
                   ...issues.map((issue) {
                     return Card(
                       margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
-                      color: PanAfricanColors.error.withOpacity(0.1),
+                      color: context.panError.withValues(alpha: 0.1),
                       child: ListTile(
-                        leading: Icon(Icons.warning, color: PanAfricanColors.error),
+                        leading: Icon(Icons.warning, color: context.panError),
                         title: Text(issue['message'] ?? ''),
                         subtitle: issue['location'] != null
                             ? Text('Location: ${issue['location']}')
@@ -268,9 +268,9 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
                   ...suggestions.map((suggestion) {
                     return Card(
                       margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
-                      color: PanAfricanColors.info.withOpacity(0.1),
+                      color: context.panInfo.withValues(alpha: 0.1),
                       child: ListTile(
-                        leading: Icon(Icons.lightbulb, color: PanAfricanColors.info),
+                        leading: Icon(Icons.lightbulb, color: context.panInfo),
                         title: Text(suggestion),
                       ),
                     );
@@ -290,7 +290,7 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
     bool isDark,
   ) {
     return Card(
-      color: PanAfricanColors.primaryContainer.withOpacity(0.3),
+      color: PanAfricanColors.primaryContainer.withValues(alpha: 0.3),
       child: Padding(
         padding: EdgeInsets.all(PanAfricanSpacing.lg),
         child: Column(
@@ -298,7 +298,7 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.recommend, color: PanAfricanColors.primary),
+                const Icon(Icons.recommend, color: PanAfricanColors.primary),
                 SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   'Recommendations',
@@ -313,7 +313,7 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.check_circle_outline, color: PanAfricanColors.primary),
+                    const Icon(Icons.check_circle_outline, color: PanAfricanColors.primary),
                     SizedBox(width: PanAfricanSpacing.sm),
                     Expanded(
                       child: Text(
@@ -331,21 +331,21 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
     );
   }
 
-  Color _getScoreColor(double score) {
-    if (score >= 80) return PanAfricanColors.success;
-    if (score >= 60) return PanAfricanColors.secondary;
-    if (score >= 40) return PanAfricanColors.warning;
-    return PanAfricanColors.error;
+  Color _getScoreColor(BuildContext context, double score) {
+    if (score >= 80) return context.panSuccess;
+    if (score >= 60) return context.panSecondary;
+    if (score >= 40) return context.panWarning;
+    return context.panError;
   }
 
-  Color _getStatusColor(String status) {
+  Color _getStatusColor(BuildContext context, String status) {
     switch (status.toLowerCase()) {
       case 'approved':
-        return PanAfricanColors.success;
+        return context.panSuccess;
       case 'needs_revision':
-        return PanAfricanColors.warning;
+        return context.panWarning;
       case 'rejected':
-        return PanAfricanColors.error;
+        return context.panError;
       default:
         return PanAfricanColors.neutralMedium;
     }

@@ -1,0 +1,96 @@
+charter: v2
+id: P9-946
+kind: build
+title: Offer opt-in transcription of voice notes with gloss
+phase: P9
+epic: E-P9-VILLAGE
+req_ids:
+- EP-§9.2-15
+depends_on:
+- E-P9-SAFETY
+- P9-944
+- P9-940
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 80000
+file_allowlist:
+- node-backend/src/services/voiceNoteTranscribe.service.ts
+- lib/widgets/chat/voice_note_transcript.dart
+context_anchors:
+- ELEVATION.md#§9.2:L1588-L1589
+acceptance_criteria:
+- id: AC1
+  text: Given a voice note, when the recipient chooses transcribe, then the transcript appears with per-word gloss and a 'machine
+    transcript' label
+- id: AC2
+  text: Given an E2EE voice note, when transcription is requested, then it runs on device or asks per-message consent to send
+    audio to a server model
+- id: AC3
+  text: Given low-confidence audio, when transcribed, then uncertain words are marked and the UI never presents the transcript
+    as exact
+- id: AC4
+  text: Given the account is under 18 or age-unknown, when this surface is opened, then it is hidden or guardian-gated until
+    E-P9-SAFETY is Done, and the restriction is enforced server-side.
+test_plan:
+  unit:
+  - confidence marking
+  integration:
+  - consent path
+  security:
+  - audio retention
+  e2e: []
+  perf: []
+  a11y:
+  - transcript view
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - idle
+  - transcribing
+  - done
+  - low-confidence
+  - error
+  copy_keys:
+  - transcript.label
+  - transcript.uncertain
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - transcript_default
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

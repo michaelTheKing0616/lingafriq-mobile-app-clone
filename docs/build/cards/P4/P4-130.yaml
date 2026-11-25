@@ -1,0 +1,68 @@
+charter: v2
+id: P4-130
+kind: build
+title: Build per-language syllabus spec and corpora licence check
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.6-01
+- EP-§6.6-07
+depends_on:
+- P4-120
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- tools/content_pipeline/syllabus_spec.py
+- schemas/v2/syllabus.schema.json
+- test/content/test_syllabus_spec.py
+context_anchors:
+- ELEVATION.md#§6.6:L1321-L1337
+acceptance_criteria:
+- id: AC1
+  text: Given a language, when a syllabus is submitted, then it records the applied linguist author and maps units to can_do_ids
+- id: AC2
+  text: Given listed corpora, when checked, then each has a clear licence from the register and JW300 alternatives or Masakhane
+    datasets are accepted only with an explicit licence field
+- id: AC3
+  text: Given a corpus without a clear licence, when referenced, then SOURCE_UNLICENSED blocks the syllabus
+test_plan:
+  unit:
+  - test_syllabus_spec
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- uses_source
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-11
+- EXT-03
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,127 @@
+charter: v2
+id: P0-INT-10
+kind: build
+title: Create containment evidence index for G1
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- EP-§0-04
+- EP-§0-05
+- EP-§0-06
+- EP-§0-07
+- EP-§0-08
+- EP-§0-09
+- EP-§0-10
+- EP-§0-11
+- EP-§0-12
+- EP-§0-13
+- EP-§0-14
+- EP-§0-15
+- EP-§0-16
+- EP-§0-17
+- EP-§0-18
+- EP-§0-19
+- EP-§0-20
+- EP-§0-21
+- EP-§0-22
+- EP-§0-23
+- EP-§0-24
+- EP-§0-25
+- EP-§0-26
+- EP-§0-27
+- EP-§0-28
+- EP-§0-29
+- EP-§0-30
+- EP-§0-31
+- EP-§0-32
+- EP-§0-33
+- EP-§0-34
+- EP-§0-35
+- EP-§0-36
+- EP-§0-37
+- EP-§0-38
+- EP-§0-39
+- EP-§0-40
+- EP-§0-41
+- EP-§0-42
+- EP-§0-43
+- EP-§0-44
+- CP-§1-12
+- CP-§1-01
+- CP-§1-02
+- CP-§1-11
+- CP-§1-03
+- CP-§1-04
+- CP-§1-08
+- CP-§1-05
+- CP-§1-09
+- CP-§1-06
+- CP-§1-07
+- CP-§1-10
+- CP-§pre-12
+depends_on:
+- E-P0-INTAKE
+- P0-INT-08
+size: S
+difficulty:
+  score: 2
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: index generator over RTM; evidence links filled at G1
+token_budget: 25000
+file_allowlist:
+- scripts/plan/containment_index.py
+- docs/build/CONTAINMENT_EVIDENCE.md
+context_anchors:
+- ELEVATION.md#§0:L25-L66
+- CURRICULUM.md#§1:L59-L102
+acceptance_criteria:
+- id: AC1
+  text: Given RTM rows EP-§0-04…44 and P0-1…27, when `python3 scripts/plan/containment_index.py` runs, then docs/build/CONTAINMENT_EVIDENCE.md
+    has one row per defect with req_id, owning card id, evidence link or the literal PENDING
+- id: AC2
+  text: Given the index, when `python3 scripts/plan/containment_index.py --gate G1` runs, then it exits 1 listing every row
+    still PENDING
+- id: AC3
+  text: Given a row cites an owning card id, when the card file is missing, then the script exits 1 naming the id
+- id: AC4
+  text: Given the CP-§1 audit rows, when indexed, then each appears under an Informational section with its implementing phase
+    (P4 or P5) and no evidence requirement
+- id: AC5
+  text: Given the numeric claims in EP-§0 (24,234 of 48,847 placeholder entries, 126 of 126 dialogues, 1,546 lessons), when
+    the index is built, then each is stored as a source claim with a re-measure command column left PENDING until measured
+test_plan:
+  unit:
+  - 'fixture RTM: pending, missing card, informational rows'
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- docs/build/CONTAINMENT_EVIDENCE.md
+- unit test output
+risks: []
+gate: G1
+external_blockers:
+- EXT-01
+harvest_list:
+- CP-§1-01…11 are implemented by P4/P5 content-engine cards; this card records audit rows only
+- CP-§pre-12 companion AI model stack awaits EXT-01 / D9
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,106 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P10
+epic: E-P10-ME
+hub: Me
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T4
+  justification: 'Me hub screen revive or consolidation; no real-time audio; gate-critical (security / child safety / legal
+    / design direction): Fable reviews'
+token_budget: 80000
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f_145.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+p0_area: true
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+test_plan:
+  unit:
+  - guardian-child link model
+  integration:
+  - family dashboard with E-P9-SAFETY
+  e2e:
+  - guardian views child progress
+  a11y:
+  - child card semantics
+  content: []
+tags:
+- under18_social
+id: F-145
+title: Elevate Family / Guardian Dashboard
+req_ids:
+- F-145
+- F-145.D
+- F-145.E
+- F-145.U
+- F-145.L
+- P0-10
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P9-SAFETY
+- E-P1-MINORS
+file_allowlist:
+- screens/subscription/family_dashboard_screen.dart
+context_anchors:
+- ELEVATION.md#§18.7:L5546-L5556
+delta:
+  current_state: Family dashboard screen exists but is unrouted.
+  defects_to_fix:
+  - No guardian controls though onboarding collects child accounts
+  elevation_to_build:
+  - Guardian hub to link child profiles and view progress
+  - Safe-social rules, screen time, and weekly report
+  - Required for kids mode
+  ux_and_render:
+  - Child cards with progress and controls
+  hub_placement: Me → Family (guardians)
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given a guardian account, when Family opens, then linking flow is routable and child cards show server progress.
+- id: AC2
+  text: Given safe-social rules, when guardian sets circles-only, then child DM surfaces honor server policy via safety epic.
+- id: AC3
+  text: Given no linked children, when dashboard loads, then empty state explains linking steps honestly.
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux
+  - adaptive/14-safety-and-high-stakes

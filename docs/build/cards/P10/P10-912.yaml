@@ -1,0 +1,74 @@
+charter: v2
+id: P10-912
+kind: build
+title: Enforce monetisation guardrails in code
+phase: P10
+epic: E-P10-GAMIFICATION
+req_ids:
+- EP-§12.3-01
+- EP-§12.3-02
+- EP-§12.3-03
+depends_on:
+- ADR-020
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 5; blast 2; p0 area
+token_budget: 60000
+file_allowlist:
+- node-backend/src/services/purchase-guard.service.ts
+- node-backend/src/services/sinks.service.ts
+- test/guardrails/monetisation_guard_test.dart
+context_anchors:
+- ELEVATION.md#§12.3:L1837-L1837
+acceptance_criteria:
+- id: AC1
+  text: Given any purchasable item, when its reward is chosen, then the outcome is fixed and shown before purchase and no
+    random-outcome reward exists (no loot box).
+- id: AC2
+  text: Given a learner under 18, when a real-money purchase is attempted, then the server rejects it with typed error MINOR_PURCHASE_BLOCKED.
+- id: AC3
+  text: Given a sale or offer, when a countdown shows, then its end time is stored server-side and a repeat visit shows the
+    same end time (no fake scarcity).
+- id: AC4
+  text: Given a CI check, when it scans for random-reward and countdown patterns, then it fails the build on any unlabelled
+    match.
+test_plan:
+  unit:
+  - fixed outcome
+  - minor block
+  integration:
+  - countdown stable across visits
+  security:
+  - minor purchase bypass attempts
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

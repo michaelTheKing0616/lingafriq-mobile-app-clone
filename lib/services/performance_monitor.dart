@@ -119,3 +119,6 @@ final performanceMonitorProvider = Provider<PerformanceMonitor>((ref) {
   return PerformanceMonitor();
 });
 
+/// Cold-start samples recorded before the first frame. A device run reads these.
+final startupPerformance = PerformanceMonitor();
+

@@ -1,0 +1,63 @@
+charter: v2
+id: P5-043
+kind: build
+title: Grade leniently on missing tone marks in early levels
+phase: P5
+epic: E-P5-A1
+req_ids:
+- EP-§6.7-08
+- EP-§6.7-09
+depends_on:
+- P5-042
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/learning/grading/diacritic_grader.dart
+- test/learning/diacritic_grader_test.dart
+context_anchors:
+- ELEVATION.md#§6.7:L1343-L1344
+acceptance_criteria:
+- id: AC1
+  text: Given an early-level answer missing tone marks, when graded, then it is accepted
+- id: AC2
+  text: Given any such answer, when shown, then the correct form is displayed
+- id: AC3
+  text: Given a higher level, when graded, then the tolerance tightens (level thresholds in config)
+test_plan:
+  unit:
+  - grader
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

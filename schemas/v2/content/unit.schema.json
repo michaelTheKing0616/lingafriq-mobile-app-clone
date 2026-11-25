@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.lingafriq.com/v2/content/unit.schema.json",
+  "title": "LingAfriq curriculum unit (v2)",
+  "description": "Unit bundle referencing patterns, lexemes, items and checkpoint (P4-102).",
+  "allOf": [
+    { "$ref": "common.schema.json" },
+    {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "id",
+        "can_do_ids",
+        "input",
+        "patterns",
+        "lexemes",
+        "items",
+        "speaking_tasks",
+        "culture_card",
+        "checkpoint"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z]{2,3}\\.unit\\.[a-z0-9._-]+$"
+        },
+        "can_do_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "input": { "$ref": "#/$defs/unitInput" },
+        "patterns": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "lexemes": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "items": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "speaking_tasks": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/speakingTask" }
+        },
+        "culture_card": { "type": "string", "minLength": 1 },
+        "checkpoint": { "$ref": "#/$defs/checkpoint" }
+      }
+    }
+  ],
+  "$defs": {
+    "unitInput": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["kind", "ref"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["dialogue", "story"] },
+        "ref": { "type": "string", "minLength": 1 }
+      }
+    },
+    "speakingTask": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["task_id", "prompt_en", "can_do_id"],
+      "properties": {
+        "task_id": { "type": "string", "minLength": 1 },
+        "prompt_en": { "type": "string", "minLength": 1 },
+        "can_do_id": { "type": "string", "minLength": 1 }
+      }
+    },
+    "checkpoint": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["item_ids", "pass_threshold"],
+      "properties": {
+        "item_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "pass_threshold": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    }
+  }
+}

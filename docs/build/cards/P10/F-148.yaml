@@ -1,0 +1,115 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P10
+epic: E-P10-ME
+hub: Me
+size: L
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: Multi-variant onboarding consolidation and placement scoring hooks
+token_budget: 200000
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f_148.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+p0_area: true
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+test_plan:
+  unit:
+  - answer serialization
+  - placement timer
+  integration:
+  - onboarding to home with avatar
+  e2e:
+  - first run through placement
+  a11y:
+  - skip control semantics
+  content: []
+tags:
+- enables_persona
+id: F-148
+title: Elevate Onboarding & Placement
+req_ids:
+- F-148
+- F-148.D
+- F-148.E
+- F-148.U
+- F-148.L
+- P0-21
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P11-PERSONAS-AVATARS
+- E-P6-SCORER
+file_allowlist:
+- screens/onboarding/unified_onboarding_screen.dart
+- screens/onboarding/placement_test_screen.dart
+- screens/onboarding/kijiji_onboarding_screen.dart
+- screens/onboarding/enhanced_onboarding_flow_screen.dart
+- screens/onboarding/modern_onboarding_screen.dart
+- screens/onboarding/onboarding_screen.dart
+context_anchors:
+- ELEVATION.md#§18.7:L5584-L5603
+delta:
+  current_state: Unified onboarding works but stores answers as Map.toString; five variants unrouted.
+  defects_to_fix:
+  - P0-21 unsafe answer storage
+  - Long forms before value
+  elevation_to_build:
+  - Ninety seconds to first spoken word per §5
+  - Language and motivation, one greeting, meet avatar, three-minute adaptive placement
+  - Kijiji village-arrival story as narrative frame
+  ux_and_render:
+  - Full-screen illustrated steps with skip always available
+  hub_placement: First run
+  unlock_stage: per §17.4
+  harvest_list:
+  - Retire parallel onboarding_screen variants except unified flow
+  - Harvest Kijiji village story assets into unified narrative
+acceptance_criteria:
+- id: AC1
+  text: Given first launch, when onboarding runs, then user speaks a greeting within about ninety seconds.
+- id: AC2
+  text: Given placement answers, when submission completes, then answers persist in structured schema not Map.toString per
+    P0-21.
+- id: AC3
+  text: Given skip tapped, when user continues, then app proceeds without blocking on optional steps.
+skills:
+  worker:
+  - prime/onboarding-ux
+  - prime/mobile-app-ui-design

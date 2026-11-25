@@ -9,10 +9,6 @@ class Api {
     return envUrl.endsWith('/') ? envUrl : '$envUrl/';
   }
   
-  // Legacy commented URLs for reference
-  // static const String baseurl = "http://34.121.156.251:8000/";
-  // static const String baseurl = "http://34.67.162.25:8000/";
-  // static const String baseurl = "http://64.227.113.179:8000/";
   // Auth endpoints
   //
   // IMPORTANT:
@@ -25,6 +21,17 @@ class Api {
   static const String register = "accounts/auth/users/";
   static const String login = "auth/jwt/create/";
   static const String refreshToken = "auth/jwt/refresh/";
+  static const String logout = "auth/logout";
+  static const String passkeyRegisterOptions = "auth/passkey/register/options";
+  static const String passkeyRegisterVerify = "auth/passkey/register/verify";
+  static const String passkeyCredentials = "auth/passkey/credentials";
+  static const String passkeyLoginOptions = "auth/passkey/login/options";
+  static const String passkeyLoginVerify = "auth/passkey/login/verify";
+  static String passkeyCredential(String id) => "auth/passkey/credentials/$id";
+  static const String googleSignIn = "auth/oauth/google";
+  static const String appleSignIn = "auth/oauth/apple";
+  static const String magicLink = "auth/magic-link";
+  static const String magicLinkVerify = "auth/magic-link/verify";
   static const String userInfo = "accounts/auth/users/me/";
   static const String userPreferences = "api/user/preferences";
   static const String registerFcmDevice = "devices/";

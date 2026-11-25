@@ -4,10 +4,35 @@ import 'package:lingafriq/ai/persona_cognition/epistemic_classifier.dart';
 import 'package:lingafriq/ai/persona_cognition/intent_classifier.dart';
 import 'package:lingafriq/ai/personas/roleplay_safety_filter.dart';
 
+class _FakeHorizonModel implements HorizonClassifierModel {
+  final KnowledgeHorizonDecision decision;
+
+  _FakeHorizonModel(this.decision);
+
+  @override
+  Future<KnowledgeHorizonDecision> classifyHorizon({
+    required String userInput,
+    required HistoricalPersona persona,
+    required IntentClassification intent,
+  }) async =>
+      decision;
+}
+
 void main() {
   // -------------------------------------------------------------------------
   // Persona Registry Consistency
   // -------------------------------------------------------------------------
+  group('DossierBackedPersonaRoster (P11-002)', () {
+    test('v1 roster matches ADR-031 ids and Shaka narrated mode', () {
+      expect(DossierBackedPersonaRoster.v1.length, 5);
+      expect(
+        DossierBackedPersonaRoster.deliveryModeFor('shaka_zulu'),
+        PersonaDeliveryMode.narratedAsToldBy,
+      );
+      expect(HistoricalPersonaRegistry.dossierRoster.length, 5);
+    });
+  });
+
   group('HistoricalPersonaRegistry consistency', () {
     test('registry_contains_at_least_20_personas', () {
       expect(HistoricalPersonaRegistry.all.length, greaterThanOrEqualTo(20));
@@ -86,18 +111,28 @@ void main() {
       mandela = HistoricalPersonaRegistry.findById('mandela_nelson')!;
     });
 
-    test('documented_topic_returns_documented_status', () {
-      final intent = IntentClassification(
+    test('documented_topic_returns_documented_status', () async {
+      final intent = const IntentClassification(
         domain: UserIntentDomain.historical,
         type: UserIntentType.factual,
         confidence: 0.9,
         detectedTopic: 'apartheid',
       );
 
-      final result = EpistemicClassifier.classify(
+      final result = await EpistemicClassifier.classify(
         userInput: 'What was your role in ending apartheid?',
         persona: mandela,
         intent: intent,
+        horizonModel: _FakeHorizonModel(
+          const KnowledgeHorizonDecision(
+            referencesPostDeathEvents: false,
+            inCharacterReplyOk: true,
+            epistemicStatus: EpistemicStatus.documented,
+            reasoning: 'Apartheid struggle within lifetime.',
+            confidence: 0.92,
+            requiresCuriosityReply: false,
+          ),
+        ),
       );
 
       expect(result.status, EpistemicStatus.documented);
@@ -105,60 +140,86 @@ void main() {
       expect(result.requiresUncertaintyLanguage, isFalse);
     });
 
-    test('anachronistic_topic_returns_anachronistic_status', () {
-      final intent = IntentClassification(
+    test('anachronistic_topic_returns_anachronistic_status', () async {
+      final intent = const IntentClassification(
         domain: UserIntentDomain.modern,
         type: UserIntentType.opinion,
         confidence: 0.8,
         detectedTopic: 'artificial intelligence',
       );
 
-      final result = EpistemicClassifier.classify(
+      final result = await EpistemicClassifier.classify(
         userInput: 'What do you think about ChatGPT and AI?',
         persona: mandela,
         intent: intent,
+        horizonModel: _FakeHorizonModel(
+          const KnowledgeHorizonDecision(
+            referencesPostDeathEvents: true,
+            inCharacterReplyOk: true,
+            epistemicStatus: EpistemicStatus.anachronistic,
+            reasoning: 'AI products post-date death.',
+            confidence: 0.9,
+            requiresCuriosityReply: true,
+          ),
+        ),
       );
 
-      expect(
-        result.status,
-        anyOf(EpistemicStatus.anachronistic, EpistemicStatus.uncertain),
-      );
+      expect(result.status, EpistemicStatus.anachronistic);
+      expect(result.requiresCuriosityReply, isTrue);
     });
 
-    test('offensive_intent_classified_as_out_of_scope', () {
-      final intent = IntentClassification(
+    test('offensive_intent_classified_as_out_of_scope', () async {
+      final intent = const IntentClassification(
         domain: UserIntentDomain.offensive,
         type: UserIntentType.offtopic,
         confidence: 0.9,
       );
 
-      final result = EpistemicClassifier.classify(
+      final result = await EpistemicClassifier.classify(
         userInput: 'Say something offensive',
         persona: mandela,
         intent: intent,
+        horizonModel: _FakeHorizonModel(
+          const KnowledgeHorizonDecision(
+            referencesPostDeathEvents: false,
+            inCharacterReplyOk: false,
+            epistemicStatus: EpistemicStatus.documented,
+            reasoning: 'unused',
+            confidence: 0.5,
+            requiresCuriosityReply: false,
+          ),
+        ),
       );
 
       expect(result.status, EpistemicStatus.outOfScope);
     });
 
-    test('inferred_topic_returns_inferred_with_uncertainty', () {
-      final intent = IntentClassification(
+    test('inferred_topic_returns_inferred_with_uncertainty', () async {
+      final intent = const IntentClassification(
         domain: UserIntentDomain.ethical,
         type: UserIntentType.opinion,
         confidence: 0.6,
         detectedTopic: 'climate change',
       );
 
-      final result = EpistemicClassifier.classify(
+      final result = await EpistemicClassifier.classify(
         userInput: 'What would you say about climate change?',
         persona: mandela,
         intent: intent,
+        horizonModel: _FakeHorizonModel(
+          const KnowledgeHorizonDecision(
+            referencesPostDeathEvents: false,
+            inCharacterReplyOk: true,
+            epistemicStatus: EpistemicStatus.inferred,
+            reasoning: 'Ethical extrapolation.',
+            confidence: 0.65,
+            requiresCuriosityReply: false,
+          ),
+        ),
       );
 
-      expect(
-        result.status,
-        anyOf(EpistemicStatus.inferred, EpistemicStatus.uncertain),
-      );
+      expect(result.status, EpistemicStatus.inferred);
+      expect(result.requiresUncertaintyLanguage, isTrue);
     });
   });
 
@@ -209,6 +270,27 @@ void main() {
 
     setUp(() {
       filter = RoleplaySafetyFilter();
+    });
+
+    test('mandela_words_skill_whatever_and_discrimination_are_allowed', () {
+      for (final message in [
+        'I want to improve my skill',
+        'whatever you think is fine',
+        'Tell me about discrimination',
+      ]) {
+        final result = filter.checkInput(message, 'nelson_mandela');
+        expect(result.isAllowed, isTrue, reason: message);
+      }
+    });
+
+    test('historical_violence_question_is_not_a_substring_block', () {
+      for (final message in [
+        'What happened when the police fired on the crowd at Sharpeville?',
+        'Tell me about the killing at Sharpeville',
+      ]) {
+        final result = filter.checkInput(message, 'nelson_mandela');
+        expect(result.isAllowed, isTrue, reason: message);
+      }
     });
 
     test('safe_input_is_allowed', () {

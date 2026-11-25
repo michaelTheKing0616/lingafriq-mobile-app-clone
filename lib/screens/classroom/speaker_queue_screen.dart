@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'dart:ui' show FontFeature;
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -583,7 +581,7 @@ class _SpeakingCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              GriotAvatar(size: 52, status: GriotAvatarStatus.online),
+              const GriotAvatar(size: 52, status: GriotAvatarStatus.online),
               SizedBox(width: 14.w),
               Expanded(
                 child: Column(
@@ -677,7 +675,7 @@ class _ElapsedBadgeState extends State<_ElapsedBadge> {
     final m = d.inMinutes.remainder(60).toString().padLeft(2, '0');
     final s = d.inSeconds.remainder(60).toString().padLeft(2, '0');
     final h = d.inHours;
-    final label = h > 0 ? '${h}:$m:$s' : '$m:$s';
+    final label = h > 0 ? '$h:$m:$s' : '$m:$s';
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
       decoration: BoxDecoration(

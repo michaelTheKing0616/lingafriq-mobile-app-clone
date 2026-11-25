@@ -1,0 +1,67 @@
+charter: v2
+id: P5-006
+kind: build
+title: Complete Yoruba ARB with tone marks to 103 keys
+phase: P5
+epic: E-P5-A1
+req_ids:
+- EP-§6.1-29
+- EP-§6.1-30
+- EP-§6.1-31
+depends_on:
+- E-P4-CONTENT-ENGINE
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 3: blast 1, ambiguity 1, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist:
+- lib/l10n/app_yo.arb
+- test/l10n/arb_parity_test.dart
+context_anchors:
+- ELEVATION.md#§6.1:L1131-L1136
+acceptance_criteria:
+- id: AC1
+  text: Given app_yo.arb, when key parity runs, then it has 103 of 103 keys (legacy 62)
+- id: AC2
+  text: Given Yoruba strings, when linted, then every word carries required tone marks and subdots per the lexicon, and Omo,
+    Eniyan, Okunrin style bare forms fail lint
+- id: AC3
+  text: Given any string not lexicon-anchored, when added, then it is held for linguist review and cannot ship as Beta
+test_plan:
+  unit:
+  - arb parity
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - diacritic lint on all 103 keys
+user_facing: false
+ux_spec: null
+tags:
+- content_real
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

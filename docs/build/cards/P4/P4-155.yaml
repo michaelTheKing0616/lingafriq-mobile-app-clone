@@ -1,0 +1,84 @@
+charter: v2
+id: P4-155
+kind: build
+title: Build audio waveform alignment view and dialogue editor
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§14.2-26
+- EP-§14.2-28
+depends_on:
+- P4-123
+- P4-150
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- lingafriq-admin/src/components/AlignmentView.tsx
+- lingafriq-admin/src/pages/DialogueEditor.tsx
+- test/admin/AlignmentView.test.tsx
+context_anchors:
+- ELEVATION.md#§14.2:L1970-L1989
+acceptance_criteria:
+- id: AC1
+  text: Given an audio take with alignment, when opened, then the waveform shows word and phone boundaries and a click seeks
+    audio to that boundary
+- id: AC2
+  text: Given a dialogue, when edited, then each turn has its own audio slot, tone_pattern and gloss and a missing audio turn
+    is flagged
+- id: AC3
+  text: Given a failed alignment, when displayed, then the ALIGN_FAILED state is shown and manual boundary adjustment is saved
+    as a reviewed edit
+test_plan:
+  unit:
+  - AlignmentView.test
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - keyboard seek
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - aligned
+  - align_failed
+  - editing
+  copy_keys:
+  - studio.align.failed
+  tokens:
+  - admin.waveform
+  motion_tier: product
+  a11y:
+  - keyboard seek
+  - labels
+  goldens: []
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

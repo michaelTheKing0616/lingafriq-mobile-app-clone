@@ -1,0 +1,135 @@
+charter: v2
+id: P8-929
+kind: build
+title: 'Flagship: Echo Karaoke with live pitch line'
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.3-10
+- EP-§10.3-10a
+- EP-§10.3-10b
+- EP-§10.3-10c
+depends_on:
+- P8-900
+- P8-901
+- P8-909
+- P8-910
+- P8-912
+- P8-916
+- E-P6-SCORER
+- E-P4-CONTENT-ENGINE
+- E-P3-DESIGN-SYSTEM
+size: L
+difficulty:
+  score: 9
+  blast: 2
+  ambiguity: 2
+  coupling: 2
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 9: blast 2, coupling 2'
+token_budget: 150000
+file_allowlist:
+- lib/games/echo_karaoke/echo_karaoke_game.dart
+- lib/games/echo_karaoke/echo_karaoke_screen.dart
+- lib/games/echo_karaoke/pitch_line_view.dart
+- lib/games/echo_karaoke/song_catalog.dart
+- lib/screens/games/pronunciation_karaoke_screen.dart
+- lib/games/gamekit/all_games_registry.dart
+context_anchors:
+- ELEVATION.md#§10.3:L1761-L1768
+- ELEVATION.md#§10.3:L1771-L1772
+acceptance_criteria:
+- id: AC1
+  text: Given a short song, rhyme or praise phrase, when a round starts, then the lyric scrolls with the target pitch line
+    and the learner sings or chants along
+- id: AC2
+  text: Given the microphone input, when the learner sings, then a live line from real F0 tracking is drawn against the target
+    line
+- id: AC3
+  text: Given the score is shown, when the round ends, then rhythm, tone and fluency scores come from the E-P6-SCORER contract
+    only; unsure or unavailable shows practice mode
+- id: AC4
+  text: Given a song in the catalogue, when it is listed, then it carries a licence record (licensed or commissioned) and
+    unlicensed songs are not shown
+- id: AC5
+  text: Given no licensed music is delivered yet, when the game opens, then it shows 'songs coming' and uses only licence-cleared
+    content
+- id: AC6
+  text: Given Pronunciation Karaoke, when this card completes, then every item in its harvest list is carried or waived
+test_plan:
+  unit:
+  - pitch alignment
+  - licence filter
+  integration:
+  - F0 stream fake
+  - scorer fake
+  security: []
+  e2e: []
+  perf:
+  - live line ≥ 30 fps
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - ready
+  - playing
+  - correct
+  - wrong
+  - why_wrong
+  - results
+  - error
+  - offline
+  - practice_mode
+  - scorer_unsure
+  - songs_pending
+  copy_keys:
+  - games.echo_karaoke.title
+  - games.echo_karaoke.instructions
+  - games.echo_karaoke.why_wrong
+  - games.echo_karaoke.practice_label
+  - games.echo_karaoke.error
+  tokens:
+  - color.surface.game
+  - color.feedback.correct
+  - color.feedback.wrong
+  - space.4
+  - radius.card
+  - type.title
+  motion_tier: product
+  a11y:
+  - screen-reader labels on every answer control
+  - reduced-motion variant
+  - correctness shown by icon and text not colour alone
+  - touch targets ≥48dp
+  goldens:
+  - echo_karaoke_playing
+  - echo_karaoke_why_wrong
+  - echo_karaoke_results
+tags:
+- shows_score
+- uses_source
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers:
+- EXT-16
+status: Draft
+harvest_list:
+- 'Pronunciation Karaoke: lib/screens/games/pronunciation_karaoke_screen.dart'
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

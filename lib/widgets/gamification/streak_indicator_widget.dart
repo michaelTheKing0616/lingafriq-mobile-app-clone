@@ -31,15 +31,15 @@ class StreakIndicatorWidget extends ConsumerWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            PanAfricanColors.tertiary.withOpacity(0.3),
-            PanAfricanColors.secondary.withOpacity(0.3),
+            context.panTertiary.withValues(alpha: 0.3),
+            context.panSecondary.withValues(alpha: 0.3),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
         border: Border.all(
-          color: PanAfricanColors.tertiary.withOpacity(0.5),
+          color: context.panTertiary.withValues(alpha: 0.5),
           width: 1,
         ),
       ),
@@ -56,7 +56,7 @@ class StreakIndicatorWidget extends ConsumerWidget {
                 scale: value,
                 child: Icon(
                   Icons.local_fire_department_rounded,
-                  color: PanAfricanColors.tertiary,
+                  color: context.panTertiary,
                   size: 32.sp,
                 ),
               );
@@ -77,7 +77,7 @@ class StreakIndicatorWidget extends ConsumerWidget {
               Text(
                 '$streak day${streak != 1 ? 's' : ''}',
                 style: PanAfricanTypography.titleMedium(context).copyWith(
-                  color: PanAfricanColors.tertiary,
+                  color: context.panTertiary,
                 ),
               ),
             ],
@@ -94,7 +94,7 @@ class StreakIndicatorWidget extends ConsumerWidget {
         vertical: PanAfricanSpacing.xxs,
       ),
       decoration: BoxDecoration(
-        color: PanAfricanColors.tertiary.withOpacity(0.2),
+        color: context.panTertiary.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(PanAfricanRadius.round),
       ),
       child: Row(
@@ -102,14 +102,14 @@ class StreakIndicatorWidget extends ConsumerWidget {
         children: [
           Icon(
             Icons.local_fire_department_rounded,
-            color: PanAfricanColors.tertiary,
+            color: context.panTertiary,
             size: 18.sp,
           ),
           SizedBox(width: PanAfricanSpacing.xxxs),
           Text(
             '$streak',
             style: PanAfricanTypography.labelLarge(context).copyWith(
-              color: PanAfricanColors.tertiary,
+              color: context.panTertiary,
             ),
           ),
         ],
@@ -164,7 +164,7 @@ class StreakMilestoneWidget extends ConsumerWidget {
                 '$nextMilestone days',
                 style: PanAfricanTypography.bodyMedium(context).copyWith(
                   fontWeight: FontWeight.w700,
-                  color: PanAfricanColors.tertiary,
+                  color: context.panTertiary,
                 ),
               ),
             ],
@@ -175,8 +175,8 @@ class StreakMilestoneWidget extends ConsumerWidget {
             child: LinearProgressIndicator(
               value: progress.clamp(0.0, 1.0),
               minHeight: 8.h,
-              backgroundColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
-              valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.tertiary),
+              backgroundColor: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
+              valueColor: AlwaysStoppedAnimation<Color>(context.panTertiary),
             ),
           ),
           SizedBox(height: PanAfricanSpacing.xxxs),

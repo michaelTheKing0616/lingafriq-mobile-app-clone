@@ -1,0 +1,91 @@
+charter: v2
+id: P4-075
+kind: build
+title: Build keyboard-first review queues
+phase: P4
+epic: E-P4-STUDIO
+req_ids:
+- CP-§9.1-06
+depends_on:
+- P4-067
+- P4-074
+- P4-065
+size: M
+difficulty:
+  score: 6
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 1, ambiguity 1, coupling 2, depth 1, size 1'
+token_budget: 60000
+file_allowlist:
+- lingafriq-admin/src/pages/CurriculumStudio/reviewQueues.tsx
+- node-backend/src/routes/reviewQueues.routes.ts
+- tools/content_engine/tests/studio_reviewQueues.test.ts
+context_anchors:
+- CURRICULUM.md#§9.1:L784-L785
+acceptance_criteria:
+- id: AC1
+  text: Given the queues for high-risk, sample and flagged items, when a reviewer is active, then approve, fix and reject
+    each work in one key press with no mouse
+- id: AC2
+  text: Given approve, when pressed, then the item publishes with a label and reviewer id or shows REVIEW_REQUIRED errors
+- id: AC3
+  text: Given an action fails, when the request errors, then the item stays in queue and an error toast shows
+test_plan:
+  unit:
+  - shortcut map
+  integration:
+  - queue API
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - keyboard only run
+  - screen reader announcements
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - empty
+  - error
+  - ready
+  copy_keys:
+  - review.title
+  - review.shortcuts
+  - review.error
+  tokens:
+  - admin.surface
+  - admin.text
+  - admin.status
+  motion_tier: product
+  a11y:
+  - keyboard operable
+  - focus visible
+  - labelled controls
+  goldens:
+  - reviewQueues-ready
+  - reviewQueues-empty
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

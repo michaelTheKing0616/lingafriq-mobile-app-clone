@@ -42,7 +42,7 @@ class AchievementCelebrationModal extends StatefulWidget {
       context: context,
       barrierDismissible: true,
       barrierLabel: 'Achievement',
-      barrierColor: Theme.of(context).colorScheme.scrim.withOpacity(0.54),
+      barrierColor: Theme.of(context).colorScheme.scrim.withValues(alpha: 0.54),
       transitionDuration: const Duration(milliseconds: 400),
       pageBuilder: (context, animation, secondaryAnimation) {
         return AchievementCelebrationModal(
@@ -122,8 +122,8 @@ class _AchievementCelebrationModalState
 
   Color _getConfettiColor() {
     final colors = [
-      PanAfricanColors.secondary,
-      PanAfricanColors.tertiary,
+      context.panSecondary,
+      context.panTertiary,
       PanAfricanColors.primary,
       Colors.red,
       Colors.blue,
@@ -142,7 +142,7 @@ class _AchievementCelebrationModalState
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final accentColor = widget.accentColor ?? PanAfricanColors.secondary;
+    final accentColor = widget.accentColor ?? context.panSecondary;
 
     return Stack(
       children: [
@@ -183,13 +183,13 @@ class _AchievementCelebrationModalState
                 borderRadius: BorderRadius.circular(24),
                 boxShadow: [
                   BoxShadow(
-                    color: accentColor.withOpacity(0.3),
+                    color: accentColor.withValues(alpha: 0.3),
                     blurRadius: 30,
                     spreadRadius: 5,
                   ),
                 ],
                 border: Border.all(
-                  color: accentColor.withOpacity(0.5),
+                  color: accentColor.withValues(alpha: 0.5),
                   width: 2,
                 ),
               ),
@@ -203,8 +203,8 @@ class _AchievementCelebrationModalState
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                          accentColor.withOpacity(0.2),
-                          accentColor.withOpacity(0.1),
+                          accentColor.withValues(alpha: 0.2),
+                          accentColor.withValues(alpha: 0.1),
                         ],
                       ),
                       borderRadius: const BorderRadius.vertical(
@@ -228,12 +228,12 @@ class _AchievementCelebrationModalState
                                     end: Alignment.bottomRight,
                                     colors: [
                                       accentColor,
-                                      accentColor.withOpacity(0.7),
+                                      accentColor.withValues(alpha: 0.7),
                                     ],
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: accentColor.withOpacity(0.5),
+                                      color: accentColor.withValues(alpha: 0.5),
                                       blurRadius: 20,
                                       spreadRadius: 2,
                                     ),
@@ -274,8 +274,8 @@ class _AchievementCelebrationModalState
                           style: TextStyle(
                             fontSize: 14.sp,
                             color: isDark
-                                ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7)
-                                : Theme.of(context).colorScheme.onSurface.withOpacity(0.54),
+                                ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7)
+                                : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.54),
                             height: 1.5,
                           ),
                           textAlign: TextAlign.center,
@@ -290,10 +290,10 @@ class _AchievementCelebrationModalState
                               vertical: 12.h,
                             ),
                             decoration: BoxDecoration(
-                              color: accentColor.withOpacity(0.1),
+                              color: accentColor.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: accentColor.withOpacity(0.3),
+                                color: accentColor.withValues(alpha: 0.3),
                               ),
                             ),
                             child: Row(
@@ -303,7 +303,7 @@ class _AchievementCelebrationModalState
                                 if (widget.xpReward > 0) ...[
                                   Icon(
                                     Icons.star_rounded,
-                                    color: PanAfricanColors.secondary,
+                                    color: context.panSecondary,
                                     size: 24.sp,
                                   ),
                                   SizedBox(width: 6.w),
@@ -312,7 +312,7 @@ class _AchievementCelebrationModalState
                                     style: TextStyle(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.bold,
-                                      color: PanAfricanColors.secondary,
+                                      color: context.panSecondary,
                                     ),
                                   ),
                                 ],
@@ -329,7 +329,7 @@ class _AchievementCelebrationModalState
                                     style: TextStyle(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.bold,
-                                      color: PanAfricanColors.tertiary,
+                                      color: context.panTertiary,
                                     ),
                                   ),
                                 ],
@@ -402,7 +402,7 @@ class _ConfettiPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     for (final particle in confetti) {
-      final paint = Paint()..color = particle.color.withOpacity(1 - progress);
+      final paint = Paint()..color = particle.color.withValues(alpha: 1 - progress);
 
       final x = particle.startX * size.width;
       final y =
@@ -443,7 +443,7 @@ void showBadgeUnlockCelebration(
     iconEmoji: badgeEmoji,
     xpReward: xpReward,
     currencyReward: currencyReward,
-    accentColor: PanAfricanColors.secondary,
+    accentColor: context.panSecondary,
   );
 }
 
@@ -480,7 +480,7 @@ void showStreakMilestoneCelebration(
     iconEmoji: '🔥',
     xpReward: bonusXP,
     currencyReward: bonusCurrency,
-    accentColor: PanAfricanColors.tertiary,
+    accentColor: context.panTertiary,
   );
 }
 

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.lingafriq.com/v2/pattern.schema.json",
+  "title": "LingAfriq grammar pattern library entry (P5)",
+  "description": "Pattern Library entry: examples, contrasts, learner errors, citations (P5-020; CURRICULUM §4).",
+  "allOf": [
+    { "$ref": "content/common.schema.json" },
+    {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "id",
+        "description_l1",
+        "form",
+        "examples",
+        "contrasts",
+        "common_errors",
+        "cefr"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z]{2,3}\\.pat\\.[a-z0-9._-]+$"
+        },
+        "description_l1": { "type": "string", "minLength": 1 },
+        "form": { "type": "string", "minLength": 1 },
+        "examples": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "contrasts": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "common_errors": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "cefr": {
+          "type": "string",
+          "enum": ["A1", "A2", "B1", "B2", "C1", "C2"]
+        }
+      }
+    }
+  ]
+}

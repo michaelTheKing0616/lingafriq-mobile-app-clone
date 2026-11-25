@@ -1,0 +1,147 @@
+charter: v2
+id: P3-070
+kind: build
+title: Fold enhanced variants into live counterparts
+phase: P3
+epic: E-P3-REVIVE
+req_ids:
+- CON-06
+depends_on:
+- P3-037
+size: M
+difficulty:
+  score: 6
+  blast: 1
+  ambiguity: 2
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: ambiguity from merge choices, coupling across variants'
+token_budget: 60000
+file_allowlist:
+- lib/screens/ai_chat/enhanced_translation_screen.dart
+- lib/screens/live_translate/
+- lib/screens/practice/
+- lib/screens/ugc/
+context_anchors:
+- ELEVATION.md#§17.5:L2333-L2338
+acceptance_criteria:
+- id: AC1
+  text: Given the variants, when compared, then each is audited and harvest_list items are moved into the surviving feature
+    or listed as dropped with a reason
+- id: AC2
+  text: Given the surviving feature, when tested, then it passes the golden and behaviour tests of the replaced variants
+- id: AC3
+  text: Given the old variant files, when consolidation ends, then they are deleted or moved under legacy/ and no route points
+    to them
+- id: AC4
+  text: Given any harvested item is missing at review, when checked, then the card fails (No-Cut rule)
+- id: AC5
+  text: Given the per-feature Code lines in the spec, when each pair is checked, then the survivor is named in the harvest
+    report
+test_plan:
+  unit:
+  - parity tests
+  integration:
+  - route check
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+harvest_list:
+- enhanced_translation_screen.dart
+- enhanced chat variant
+- enhanced feed variant
+- enhanced profile variant
+- enhanced settings variant
+- enhanced curriculum variant
+- enhanced practice variant
+- enhanced UGC variant
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks:
+- harvest drift; keep list authoritative
+gate: G3
+external_blockers: []
+status: Done
+harvest_note: |
+  Survivors, from the section 18 Code lines and a filename search for enhanced:
+  enhanced_translation_screen.dart -> LiveTranslateScreen
+  (lib/screens/live_translate/live_translate_screen.dart). Section 18 also
+  names tutor_translation_mode_screen.dart as the translation-mode code and
+  says to merge this file. This card's survivor is the live translate screen.
+  The navigation helper still constructs EnhancedTranslationScreen, and that
+  file is outside the edit list (the Polie host imports the helper). The class
+  now builds LiveTranslateScreen with the same source language, target
+  language, and initial text. No my_app route named the old screen.
+  Harvested onto the live screen: primary, alternatives, grammar, and cultural
+  notes parsed from the caption; the 5000 character guard; a history entry and
+  star toggle on mt.final; the structured prompt text kept beside the parser.
+  Dropped: the client Groq sendMessage call, its retry loop (bound still 2),
+  and the network, timeout, and generic failure snackbars. The live screen
+  already translates on the session socket and already reconnects. Dropped
+  the fade and slide around the result cards, and the three hide chips. A
+  section is shown only when the parse found it. Source-word grammar fallback
+  rows (part of speech "word", no explanation) are still parsed and tested,
+  and the live screen hides them so a plain caption does not list every word.
+  enhanced chat variant -> Polie workspace
+  (lib/screens/ai_chat/polie_workspace_screen.dart). P3-065 already folded
+  conversation_enhanced_screen.dart. That file is still absent. Polie files
+  were not edited and the old chat screen was not recreated.
+  enhanced feed variant: no file under lib/screens/feed has enhanced in the
+  name. Survivor is XFeedHomeScreen (route x-feed-home). Section 18 names
+  older post-detail screens, not an enhanced feed file. Nothing moved.
+  enhanced profile variant: no file under lib/screens/profile has enhanced in
+  the name. Survivor is ProfileScreenMaterial3. Section 18 names
+  user_profile_screen.dart as an unrouted profile, not an enhanced file.
+  Nothing moved.
+  enhanced settings variant: no file under lib/screens/settings has enhanced
+  in the name. Survivor is SettingsScreenMaterial3 (route settings). Section
+  18 names settings_screen.dart as the older unrouted screen, not an enhanced
+  file. Nothing moved.
+  enhanced curriculum variant: no file under lib/screens/curriculum has
+  enhanced in the name. Survivor is LessonsMapEntryScreen (route curriculum).
+  Section 18 names curriculum_screen.dart and curriculum_viewer_screen.dart
+  as unrouted variants, not enhanced files. Nothing moved.
+  enhanced practice variant: no file under lib/screens/practice has enhanced
+  in the name. Survivors are pronunciation_practice_screen.dart,
+  conversation_practice_screen.dart, and tone_drill_screen.dart. Section 18
+  says tutor pronunciation mode merges pronunciation_practice_screen.dart.
+  That file is not named enhanced, and tutor files are outside this card.
+  Nothing moved.
+  enhanced UGC variant -> the live create screens. Section 18 names
+  create_lesson_screen.dart, create_quiz_screen.dart, and
+  create_story_screen.dart, with the enhanced files unrouted except the
+  drawer, which still opens CreateLessonScreenEnhanced. That class now
+  extends CreateLessonScreen, because the drawer files are outside this card.
+  Quiz and story enhanced files are deleted. Harvested: lesson badge ids from
+  grammar, cultural, and canonical checks, the validate POST
+  /user-content/validate, the score line, and the validation details screen;
+  quiz title, question, option, and answer checks plus badges; story title
+  and content checks plus badges. The live lesson submit still uses
+  UserGeneratedContentService.createLesson, including tags. Dropped the
+  enhanced lesson POST /user-content/lessons with qualityBadges, because the
+  live service has no qualityBadges field and that service is outside this
+  card. Badges are still shown. Dropped the lesson loading overlay sentence,
+  because the live create button already shows a spinner. Dropped the
+  enhanced quiz's second question editor, because the live screen already
+  edits four options and a correct answer. Live story theme and vocabulary
+  stay. The live submit sentences for an empty lesson stay, because that
+  gate was already on the survivor. my_app route ugc already builds
+  UGCHubScreen, which opens the live create screens. No route retarget was
+  required.
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,87 @@
+charter: v2
+id: P4-078
+kind: build
+title: Build quality dashboard
+phase: P4
+epic: E-P4-STUDIO
+req_ids:
+- CP-§9.1-08
+depends_on:
+- P4-075
+size: S
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1, depth 1, size 0'
+token_budget: 25000
+file_allowlist:
+- lingafriq-admin/src/pages/CurriculumStudio/qualityDashboard.tsx
+- node-backend/src/routes/qualityDashboard.routes.ts
+- tools/content_engine/tests/studio_qualityDashboard.test.ts
+context_anchors:
+- CURRICULUM.md#§9.1:L786-L787
+acceptance_criteria:
+- id: AC1
+  text: Given reviewed samples, when the dashboard loads, then it shows sample error rate per language and per label, flags
+    and item statistics
+- id: AC2
+  text: Given a language with fewer samples than the configured minimum, when shown, then it displays insufficient data rather
+    than a rate
+test_plan:
+  unit:
+  - component states
+  integration:
+  - admin route contract
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - keyboard navigation
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - empty
+  - error
+  - ready
+  copy_keys:
+  - quality.title
+  - quality.insufficient
+  - quality.error
+  tokens:
+  - admin.surface
+  - admin.text
+  - admin.status
+  motion_tier: product
+  a11y:
+  - keyboard operable
+  - focus visible
+  - labelled controls
+  goldens:
+  - qualityDashboard-ready
+  - qualityDashboard-empty
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

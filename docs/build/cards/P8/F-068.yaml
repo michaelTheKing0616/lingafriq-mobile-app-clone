@@ -1,0 +1,116 @@
+id: F-068
+kind: feature
+title: Elevate Market Bargaining
+phase: P8
+epic: E-P8-PLAY
+hub: Play
+req_ids:
+- F-068
+- F-068.D
+- F-068.E
+- F-068.U
+- F-068.L
+depends_on:
+- P8-900
+- P8-912
+- E-P8-PLAY
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P6-SCORER
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: 2 blast, coupling 2'
+token_budget: 80000
+file_allowlist:
+- lib/screens/games/market_bargaining_screen.dart
+context_anchors:
+- ELEVATION.md#§18.5:L4492-L4505
+delta:
+  current_state: Routed from Arcade via game_router; content still uses the legacy 85–118 word pool without audio.
+  defects_to_fix:
+  - Thin static word pool without reliable audio.
+  - No learner-model writeback after play.
+  - Legacy per-game results instead of GameKit mastery.
+  - Hard-coded UI strings bypass l10n.
+  elevation_to_build:
+  - Market Haggle voice roleplay with distinct trader personalities.
+  - Numbers practice plus politeness scoring from real speech analysis.
+  ux_and_render:
+  - GameKit frame with unified illustration style and audio on every target-language item.
+  - Reduced-motion variant respects system setting.
+  hub_placement: Play → Speaking shelf.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given haggle turn, when the learner speaks an offer, then mic capture runs and no random price acceptance occurs without
+    recognized speech.
+- id: AC2
+  text: Given scorer unavailable, when politeness would be scored, then UI shows practice mode without fabricated politeness
+    percent.
+- id: AC3
+  text: Given scorer available, when a bargain completes, then politeness and numeric accuracy scores come from verified scorer
+    output.
+test_plan:
+  unit:
+  - game rules
+  - content binding
+  integration:
+  - GameKit session
+  - learner model writeback
+  e2e:
+  - Play shelf launch to results
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content:
+  - lexicon pool has audio for target language
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - 068.*
+tags:
+- shows_score
+p0_area: false
+charter: v2
+inherits: FEATURE_BASE
+gate: HUB
+status: Draft
+user_facing: true
+risks: []
+external_blockers: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

@@ -2,6 +2,7 @@ enum GameContentFailureType {
   none,
   serviceUnavailable,
   noContent,
+  insufficientPool,
   parseFailure,
   authFailure,
 }

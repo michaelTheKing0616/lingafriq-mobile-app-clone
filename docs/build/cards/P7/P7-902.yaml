@@ -1,0 +1,112 @@
+charter: v2
+id: P7-902
+kind: build
+title: Build Lens full-screen camera with breathing boxes
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§17.6-01
+- EP-§17.6-02
+- EP-§17.6-09
+- EP-§17.6-31
+- EP-§17.6-36
+- EP-§17.6-39
+depends_on:
+- P7-900
+- E-P3-DESIGN-SYSTEM
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, coupling 1, depth 1'
+token_budget: 60000
+file_allowlist:
+- lib/screens/ar/point_and_say_screen.dart
+- lib/screens/lens/lens_screen.dart
+- lib/screens/lens/lens_language_chip.dart
+- test/screens/lens/lens_screen_test.dart
+context_anchors:
+- ELEVATION.md#§17.6:L2344-L2347
+- ELEVATION.md#§17.6:L2358-L2361
+- ELEVATION.md#§17.6:L2386-L2389
+acceptance_criteria:
+- id: AC1
+  text: Given a learner with a target language in their profile, when Lens opens, then it uses that language and shows no
+    free-text language field
+- id: AC2
+  text: Given Lens is open, when the learner taps the language chip, then they can switch among their profile languages only
+    and the choice persists for the session
+- id: AC3
+  text: Given the camera is live, when detection boxes are drawn, then they render as soft rounded boxes with a breathing
+    animation
+- id: AC4
+  text: Given reduced motion is enabled, when boxes render, then they are static with no breathing animation
+- id: AC5
+  text: Given camera permission is denied, when Lens opens, then a typed visible permission state with a Settings action is
+    shown and no blank screen appears
+- id: AC6
+  text: Given the legacy route point-and-say, when it is opened, then it resolves to the Lens screen and the 982-line screen
+    is replaced without a dead route
+test_plan:
+  unit:
+  - language-from-profile resolver
+  - route alias
+  integration:
+  - camera permission states
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - box labels read by screen reader
+  - reduced-motion golden
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - live
+  - permission_denied
+  - no_camera
+  - reduced_motion
+  - loading
+  copy_keys:
+  - lens.permission.denied
+  - lens.language.chip
+  tokens:
+  - color.surface.scrim
+  - radius.box
+  - motion.breathe
+  motion_tier: product
+  a11y:
+  - detected boxes exposed as labelled buttons
+  - touch targets >=48dp
+  - reduced-motion variant
+  goldens:
+  - default
+  - loading
+  - error
+  - offline
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- replaces a 982-line screen; keep route alias until Lens parity
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

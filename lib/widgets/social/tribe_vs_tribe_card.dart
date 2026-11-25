@@ -45,14 +45,14 @@ class TribeVsTribeCard extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                PanAfricanColors.primary.withOpacity(0.15),
-                PanAfricanColors.secondary.withOpacity(0.1),
+                PanAfricanColors.primary.withValues(alpha: 0.15),
+                context.panSecondary.withValues(alpha: 0.1),
               ],
             ),
             border: Border.all(
               color: isActive 
-                  ? PanAfricanColors.primary.withOpacity(0.5)
-                  : Colors.grey.withOpacity(0.3),
+                  ? PanAfricanColors.primary.withValues(alpha: 0.5)
+                  : Colors.grey.withValues(alpha: 0.3),
               width: 2,
             ),
           ),
@@ -68,7 +68,7 @@ class TribeVsTribeCard extends StatelessWidget {
                       gradient: LinearGradient(
                         colors: [
                           PanAfricanColors.primary,
-                          PanAfricanColors.secondary,
+                          context.panSecondary,
                         ],
                       ),
                       borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
@@ -132,7 +132,7 @@ class TribeVsTribeCard extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                       decoration: BoxDecoration(
-                        color: PanAfricanColors.primary.withOpacity(0.1),
+                        color: PanAfricanColors.primary.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                         border: Border.all(
                           color: PanAfricanColors.primary,
@@ -166,13 +166,13 @@ class TribeVsTribeCard extends StatelessWidget {
                   padding: EdgeInsets.all(16.w),
                   decoration: BoxDecoration(
                     color: isWinning
-                        ? PanAfricanColors.secondary.withOpacity(0.1)
-                        : Colors.grey.withOpacity(0.05),
+                        ? context.panSecondary.withValues(alpha: 0.1)
+                        : Colors.grey.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
                     border: Border.all(
                       color: isWinning
-                          ? PanAfricanColors.secondary
-                          : Colors.grey.withOpacity(0.2),
+                          ? context.panSecondary
+                          : Colors.grey.withValues(alpha: 0.2),
                       width: isWinning ? 2 : 1,
                     ),
                   ),
@@ -184,7 +184,7 @@ class TribeVsTribeCard extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: isWinning
-                              ? PanAfricanColors.secondary
+                              ? context.panSecondary
                               : Colors.grey[300],
                         ),
                         child: Center(
@@ -221,7 +221,7 @@ class TribeVsTribeCard extends StatelessWidget {
                                 backgroundColor: Colors.grey[200],
                                 valueColor: AlwaysStoppedAnimation<Color>(
                                   isWinning
-                                  ? PanAfricanColors.secondary
+                                  ? context.panSecondary
                                   : PanAfricanColors.primary,
                                 ),
                                 minHeight: 6.h,
@@ -235,7 +235,7 @@ class TribeVsTribeCard extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                         decoration: BoxDecoration(
                           color: isWinning
-                            ? PanAfricanColors.secondary
+                            ? context.panSecondary
                             : PanAfricanColors.primary,
                         borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                         ),
@@ -266,13 +266,13 @@ class TribeVsTribeCard extends StatelessWidget {
                     gradient: LinearGradient(
                       colors: [
                         PanAfricanColors.primary,
-                        PanAfricanColors.secondary,
+                        context.panSecondary,
                       ],
                     ),
                     borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                     boxShadow: [
                       BoxShadow(
-                        color: PanAfricanColors.primary.withOpacity(0.3),
+                        color: PanAfricanColors.primary.withValues(alpha: 0.3),
                         blurRadius: 8,
                         offset: const Offset(0, 4),
                       ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
-import '../../../models/game/game_content_models.dart';
 import '../../../services/polie_content_generator.dart';
 import '../game_scenario_loader.dart';
 import '../../../widgets/error_boundary.dart';
@@ -250,7 +249,7 @@ class _FoodQuestGameState extends BaseGameScreenState<FoodQuestGame>
   Widget buildGameContent(BuildContext context) {
     try {
       if (isLoading || _isLoadingFood) {
-        return DynamicLoadingScreen();
+        return const DynamicLoadingScreen();
       }
 
       if (error != null) {
@@ -323,12 +322,12 @@ class _FoodQuestGameState extends BaseGameScreenState<FoodQuestGame>
               Color? backgroundColor;
               if (_showResult) {
                 if (isCorrectOption) {
-                  backgroundColor = Colors.green.withOpacity(0.3);
+                  backgroundColor = Colors.green.withValues(alpha: 0.3);
                 } else if (isSelected && !isCorrectOption) {
-                  backgroundColor = Colors.red.withOpacity(0.3);
+                  backgroundColor = Colors.red.withValues(alpha: 0.3);
                 }
               } else if (isSelected) {
-                backgroundColor = Colors.blue.withOpacity(0.3);
+                backgroundColor = Colors.blue.withValues(alpha: 0.3);
               }
 
               return Padding(
@@ -336,7 +335,7 @@ class _FoodQuestGameState extends BaseGameScreenState<FoodQuestGame>
                 child: Card(
                   color: backgroundColor,
                   child: ListTile(
-                    leading: Icon(Icons.restaurant_menu, color: Colors.orange),
+                    leading: const Icon(Icons.restaurant_menu, color: Colors.orange),
                     title: Text(food),
                     trailing: _showResult && isCorrectOption
                         ? const Icon(Icons.check_circle, color: Colors.green)
@@ -351,7 +350,7 @@ class _FoodQuestGameState extends BaseGameScreenState<FoodQuestGame>
             if (_showResult) ...[
               SizedBox(height: 2.h),
               Card(
-                color: _isCorrect ? Colors.green.withOpacity(0.2) : Colors.red.withOpacity(0.2),
+                color: _isCorrect ? Colors.green.withValues(alpha: 0.2) : Colors.red.withValues(alpha: 0.2),
                 child: Padding(
                   padding: EdgeInsets.all(4.w),
                   child: Column(

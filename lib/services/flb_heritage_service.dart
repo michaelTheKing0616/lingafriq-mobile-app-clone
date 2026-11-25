@@ -43,12 +43,12 @@ class FlbHeritageService {
             : (data is Map<String, dynamic>
                 ? (data['docs'] ?? data['data'] ?? [])
                 : []);
-        if (rawList is! List) return _loadBundled();
+        if (rawList is! List) return await _loadBundled();
         final out = rawList
             .map((e) =>
                 CultureContent.fromBackendMap(Map<String, dynamic>.from(e as Map)))
             .toList();
-        if (out.isEmpty) return _loadBundled();
+        if (out.isEmpty) return await _loadBundled();
         return out;
       }
     } catch (e, st) {

@@ -217,7 +217,7 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
             ),
           title: Text('Speed Challenge - ${widget.language.name}'),
           flexibleSpace: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [_accentColor, PanAfricanColors.primary],
               ),
@@ -285,7 +285,7 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
     
     return Scaffold(
       appBar: AppBar(
-        title: Text('Speed Challenge'),
+        title: const Text('Speed Challenge'),
         leading: Semantics(
           label: 'Back',
           button: true,
@@ -295,7 +295,7 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
           ),
         ),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [_accentColor, PanAfricanColors.primary],
             ),
@@ -320,15 +320,15 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                   ),
                   Expanded(
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       decoration: BoxDecoration(
                         color: _timeRemaining <= 10
-                            ? PanAfricanColors.error.withOpacity(0.2)
-                          : _accentColor.withOpacity(0.2),
+                            ? context.panError.withValues(alpha: 0.2)
+                          : _accentColor.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
                           color: _timeRemaining <= 10
-                              ? PanAfricanColors.error
+                              ? context.panError
                             : _accentColor,
                           width: 2,
                         ),
@@ -339,12 +339,12 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                           Icon(
                             Icons.timer,
                             color: _timeRemaining <= 10
-                                ? PanAfricanColors.error
+                                ? context.panError
                                 : _accentColor,
                             size: 20.sp,
                             semanticLabel: 'Timer',
                           ),
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           Semantics(
                             label: 'Time remaining: $_timeRemaining seconds',
                             child: Text(
@@ -353,7 +353,7 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                                 fontSize: 20.sp,
                                 fontWeight: FontWeight.bold,
                                 color: _timeRemaining <= 10
-                                    ? PanAfricanColors.error
+                                    ? context.panError
                                     : _accentColor,
                               ),
                             ),
@@ -362,18 +362,18 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 12),
+                  const SizedBox(width: 12),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
-                      color: PanAfricanColors.primary.withOpacity(0.2),
+                      color: PanAfricanColors.primary.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(color: PanAfricanColors.primary, width: 2),
                     ),
                     child: Row(
                       children: [
-                        Icon(Icons.star, color: PanAfricanColors.secondary, size: 20.sp, semanticLabel: 'Score'),
-                        SizedBox(width: 8),
+                        Icon(Icons.star, color: context.panSecondary, size: 20.sp, semanticLabel: 'Score'),
+                        const SizedBox(width: 8),
                         Semantics(
                           label: 'Score: $_correctAnswers correct answers',
                           child: Text(
@@ -424,7 +424,7 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                               padding: EdgeInsets.all(16.sp),
                               decoration: BoxDecoration(
                                 color: isSelected
-                                    ? _accentColor.withOpacity(0.2)
+                                    ? _accentColor.withValues(alpha: 0.2)
                                     : null,
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
@@ -463,9 +463,9 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Game Complete'),
+        title: const Text('Game Complete'),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [_accentColor, PanAfricanColors.primary],
             ),
@@ -480,7 +480,7 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
             children: [
               Container(
                 padding: EdgeInsets.all(32.sp),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     colors: [_accentColor, PanAfricanColors.primary],
                   ),
@@ -508,17 +508,17 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
               ),
               SizedBox(height: 8.sp),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 decoration: BoxDecoration(
-                  color: _accentColor.withOpacity(0.1),
+                  color: _accentColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(color: _accentColor, width: 2),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.star, color: PanAfricanColors.secondary, size: 24.sp),
-                    SizedBox(width: 8),
+                    Icon(Icons.star, color: context.panSecondary, size: 24.sp),
+                    const SizedBox(width: 8),
                     Text(
                       '+$_score Points Earned!',
                       style: TextStyle(
@@ -565,7 +565,7 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                         Navigator.pop(context);
                       },
                       label: 'Return to Games',
-                      backgroundColor: _accentColor.withOpacity(0.7),
+                      backgroundColor: _accentColor.withValues(alpha: 0.7),
                       foregroundColor: colorScheme.onPrimary,
                     ),
                   ),

@@ -1,0 +1,71 @@
+charter: v2
+id: P4-161
+kind: build
+title: Build law-enforcement escalation with restricted CSAM handling
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§14.2-41
+- EP-§14.2-42
+depends_on:
+- P4-160
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T4
+  justification: 'score 7: safety-critical handling; gate-critical (security / child safety / legal / design direction): Fable
+    reviews'
+token_budget: 60000
+file_allowlist:
+- node-backend/src/services/escalation.service.ts
+- node-backend/src/middleware/csam_access.middleware.ts
+- lingafriq-admin/src/pages/Escalation.tsx
+- test/backend/escalation.test.ts
+context_anchors:
+- ELEVATION.md#§14.2:L1970-L1989
+acceptance_criteria:
+- id: AC1
+  text: Given a flagged case, when escalated, then a workflow records reviewer, evidence package hash, legal contact and status
+- id: AC2
+  text: Given CSAM-class evidence, when accessed, then only staff with the trained-staff flag can open it, others get 403
+    and each access is audit-logged
+- id: AC3
+  text: Given evidence storage, when written, then it is encrypted at rest and never exposed in logs or exports
+test_plan:
+  unit: []
+  integration: []
+  security:
+  - trained-staff flag
+  - no evidence in logs
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- guardian_moderation
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- legal process needs counsel input
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

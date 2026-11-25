@@ -11,6 +11,7 @@ import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'country_tab.dart';
 import 'global_tab.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 class StandingsTabIndexNotifier extends Notifier<int> {
   @override
@@ -42,18 +43,18 @@ class StandingsTabMaterial3 extends HookConsumerWidget {
             children: [
               // Header with Pan-African App Bar
               PanAfricanAppBar(
-                title: 'Leaderboard',
+                title: l10nOf(context).shellLeaderboard,
                 showBackButton: false,
                 actions: [
                   Semantics(
-                    label: 'Open menu',
+                    label: l10nOf(context).shellOpenMenu,
                     button: true,
                     child: IconButton(
                       icon: const Icon(Icons.menu_rounded),
                       onPressed: () {
                         ref.read(scaffoldKeyProvider).currentState?.openDrawer();
                       },
-                      tooltip: 'Menu',
+                      tooltip: l10nOf(context).shellMenu,
                     ),
                   ),
                   Semantics(
@@ -86,16 +87,16 @@ class StandingsTabMaterial3 extends HookConsumerWidget {
                           vertical: PanAfricanSpacing.md,
                         ),
                         child: Semantics(
-                          label: 'Leaderboard view: ${index == 0 ? 'Global' : 'Country'}. Switch between Global and Country.',
+                          label: l10nOf(context).shellLeaderboardViewValueSwitchBetweenGlobal(index == 0 ? 'Global' : 'Country'),
                           child: SegmentedButton<int>(
-                          segments: const [
+                          segments: [
                             ButtonSegment<int>(
                               value: 0,
-                              label: Text('Global'),
+                              label: Text(l10nOf(context).shellGlobal),
                             ),
                             ButtonSegment<int>(
                               value: 1,
-                              label: Text('Country'),
+                              label: Text(l10nOf(context).shellCountry),
                             ),
                           ],
                           selected: {index},
@@ -117,8 +118,8 @@ class StandingsTabMaterial3 extends HookConsumerWidget {
                         ),
                         ),
                       ),
-                      Expanded(
-                        child: const _StandingsBuilder(),
+                      const Expanded(
+                        child: _StandingsBuilder(),
                       ),
                     ],
                   ),
@@ -167,8 +168,8 @@ class _StandingsBuilder extends HookConsumerWidget {
           ),
         );
       },
-      loading: () => const AdaptiveProgressIndicator(
-        message: "Loading Leaderboard...",
+      loading: () => AdaptiveProgressIndicator(
+        message: l10nOf(context).shellLoadingLeaderboard,
       ),
     );
   }

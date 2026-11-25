@@ -1,0 +1,27 @@
+{
+  "persona_id": "nkrumah_kwame",
+  "display_name": "Kwame Nkrumah",
+  "death_date": "1972-04-27",
+  "delivery_mode": "first_person",
+  "primary_sources": [
+    {
+      "source_id": "src-nk-independence-1957",
+      "type": "speech",
+      "title": "Ghana independence address",
+      "year": 1957,
+      "licence_status": "approved"
+    }
+  ],
+  "secondary_sources": [],
+  "contested_points": [],
+  "known_myths": [],
+  "review": { "historian_id": "historian-seed-nk", "signed_at": "2026-10-27T12:00:00Z" },
+  "retrieval_cards": [
+    {
+      "card_id": "nk.card.independence",
+      "source_id": "src-nk-independence-1957",
+      "text": "Ghana became independent in 1957; Nkrumah spoke on self-government and African unity themes.",
+      "terms": ["ghana", "independence", "1957", "unity"]
+    }
+  ]
+}

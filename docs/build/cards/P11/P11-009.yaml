@@ -1,0 +1,71 @@
+charter: v2
+id: P11-009
+kind: build
+title: Add per-persona and global persona kill switch
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- RM-P1-07
+- EP-§7.2-08
+- EP-§14.2-46
+depends_on:
+- E-P1-CONTAINMENT
+- P11-008
+size: S
+difficulty:
+  score: 4
+  blast: 3
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 4: blast 3, ambiguity 0, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist:
+- node-backend/src/services/persona/killSwitch.ts
+- node-backend/src/routes/persona.routes.ts
+- lib/providers/persona_providers.dart
+context_anchors:
+- ELEVATION.md#§8.3:L1517-L1533
+acceptance_criteria:
+- id: AC1
+  text: Given an operator disables one persona, when a client requests it, then within 60 seconds the server returns PersonaDisabled
+    and the client shows a visible unavailable state.
+- id: AC2
+  text: Given the global switch is off, when any persona request arrives, then all personas return PersonaDisabled.
+- id: AC3
+  text: Given a switch change, when saved, then an audit row records actor, persona_id, time and reason.
+test_plan:
+  unit:
+  - switch state resolution
+  integration:
+  - 60 s propagation
+  security:
+  - admin-only toggle
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- enables_persona
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

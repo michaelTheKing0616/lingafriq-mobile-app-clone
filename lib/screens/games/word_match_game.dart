@@ -180,7 +180,7 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
             gradient: LinearGradient(
               colors: [
                 PanAfricanColors.primary,
-                PanAfricanColors.secondary,
+                context.panSecondary,
               ],
             ),
           ),
@@ -226,7 +226,7 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
         color: context.adaptive12,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -296,14 +296,14 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: card.isMatched
-                      ? PanAfricanColors.success.withOpacity(0.2)
+                      ? context.panSuccess.withValues(alpha: 0.2)
                       : isSelected
-                          ? PanAfricanColors.primary.withOpacity(0.2)
+                          ? PanAfricanColors.primary.withValues(alpha: 0.2)
                           : null,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: card.isMatched
-                        ? PanAfricanColors.success
+                        ? context.panSuccess
                         : isSelected
                             ? PanAfricanColors.primary
                             : Colors.transparent,
@@ -316,7 +316,7 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
                     if (card.isMatched)
                       Icon(
                         Icons.check_circle,
-                        color: PanAfricanColors.success,
+                        color: context.panSuccess,
                         size: 20.sp,
                         semanticLabel: 'Matched',
                       ),
@@ -357,7 +357,7 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
                 gradient: LinearGradient(
                   colors: [
                     PanAfricanColors.primary,
-                    PanAfricanColors.secondary,
+                    context.panSecondary,
                   ],
                 ),
                 shape: BoxShape.circle,
@@ -390,7 +390,7 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: PanAfricanColors.primary.withOpacity(0.1),
+                color: PanAfricanColors.primary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(

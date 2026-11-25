@@ -134,7 +134,7 @@ class LessonsMapEntryScreen extends ConsumerWidget {
                                     width: 56.w,
                                     height: 56.w,
                                     color: PanAfricanColors.neutralLight,
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.public_rounded,
                                       color: PanAfricanColors.neutralMedium,
                                     ),
@@ -143,7 +143,7 @@ class LessonsMapEntryScreen extends ConsumerWidget {
                                     width: 56.w,
                                     height: 56.w,
                                     color: PanAfricanColors.neutralLight,
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.public_rounded,
                                       color: PanAfricanColors.neutralMedium,
                                     ),
@@ -160,7 +160,7 @@ class LessonsMapEntryScreen extends ConsumerWidget {
                                 'Lessons, mannerisms, history & quiz',
                                 style: PanAfricanTypography.bodySmall(context),
                               ),
-                              trailing: Icon(
+                              trailing: const Icon(
                                 Icons.chevron_right_rounded,
                                 color: PanAfricanColors.neutralMedium,
                               ),

@@ -1,0 +1,77 @@
+charter: v2
+id: P9-908
+kind: build
+title: Build durable message log with per-device cursors and idempotent ids
+phase: P9
+epic: E-P9-REALTIME
+req_ids:
+- EP-§9.3-11
+- EP-§9.3-12
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+- P9-905
+size: L
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 200000
+file_allowlist:
+- node-backend/src/models/messageLog.ts
+- node-backend/src/guards/messageIdempotency.guard.ts
+- node-backend/src/services/messageSync.service.ts
+- lib/services/chat/wa_private_chat_service.dart
+context_anchors:
+- ELEVATION.md#§9.3:L1635-L1636
+acceptance_criteria:
+- id: AC1
+  text: Given a client resending a message with the same client message id, when received twice, then exactly one log entry
+    exists and both calls return the same server id
+- id: AC2
+  text: Given a device offline for 24 h, when it reconnects with its cursor, then it receives every missed message exactly
+    once in order
+- id: AC3
+  text: Given two devices of one user, when one reads a message, then each device keeps its own cursor and the read state
+    syncs without regressing either cursor
+- id: AC4
+  text: Given a write to the log fails, when the sender emits, then the sender sees a failed state and never a delivered tick
+test_plan:
+  unit:
+  - idempotency guard
+  - cursor math
+  integration:
+  - multi-device sync
+  - retry storm
+  security:
+  - cross-account cursor access
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

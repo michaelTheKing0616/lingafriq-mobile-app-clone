@@ -1,0 +1,111 @@
+id: F-058
+kind: feature
+title: Elevate Word Match (audio)
+phase: P8
+epic: E-P8-PLAY
+hub: Play
+req_ids:
+- F-058
+- F-058.D
+- F-058.E
+- F-058.U
+- F-058.L
+depends_on:
+- P8-900
+- P8-912
+- E-P8-PLAY
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: 1 blast, coupling 2'
+token_budget: 80000
+file_allowlist:
+- lib/screens/games/word_match_audio_game.dart
+context_anchors:
+- ELEVATION.md#§18.5:L4337-L4350
+delta:
+  current_state: Routed from Arcade via game_router; content still uses the legacy 85–118 word pool without audio.
+  defects_to_fix:
+  - Thin static word pool without reliable audio.
+  - No learner-model writeback after play.
+  - Legacy per-game results instead of GameKit mastery.
+  - Hard-coded UI strings bypass l10n.
+  elevation_to_build:
+  - 'Listening-first flow: hear prompt, then match meaning.'
+  - Speaker voices rotate regions to build accent tolerance.
+  ux_and_render:
+  - GameKit frame with unified illustration style and audio on every target-language item.
+  - Reduced-motion variant respects system setting.
+  hub_placement: Play → Tone & Sound shelf.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given a round start, when any target-language prompt appears, then audio plays automatically before choices unlock.
+- id: AC2
+  text: Given multiple sessions, when audio plays, then speaker region rotates across turns per session policy.
+- id: AC3
+  text: Given completion, when results render, then they use the shared GameKit mastery screen.
+test_plan:
+  unit:
+  - game rules
+  - content binding
+  integration:
+  - GameKit session
+  - learner model writeback
+  e2e:
+  - Play shelf launch to results
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content:
+  - lexicon pool has audio for target language
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - 058.*
+tags: []
+p0_area: false
+charter: v2
+inherits: FEATURE_BASE
+gate: HUB
+status: Draft
+user_facing: true
+risks: []
+external_blockers: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

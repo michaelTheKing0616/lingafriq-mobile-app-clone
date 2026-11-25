@@ -1,399 +1,899 @@
-import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:record/record.dart';
-import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'dart:io';
-import 'dart:typed_data';
-import '../../screens/games/base_game_screen.dart';
-import '../../screens/games/shell_labels.dart';
-import '../../models/game/game_session_model.dart';
-import '../../services/polie_game_client.dart';
-import '../gamekit/game_session.dart' as gamekit_session;
-import '../gamekit/game_animation_bridge.dart';
-import '../gamekit/game_result.dart';
-import '../animation/rive_game_guide.dart';
-import 'tone_forge_game.dart';
-import 'tone_forge_models.dart';
-import 'tone_forge_audio.dart';
-import 'package:path_provider/path_provider.dart';
+import 'dart:math';
 
-/// ToneForge game screen - Flagship implementation
-class ToneForgeScreen extends BaseGameScreen {
-  const ToneForgeScreen({
-    super.key,
-    required super.language,
-    super.level,
-    super.onBack,
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../design/components/ling_button.dart';
+import '../../design/components/ling_state.dart';
+import '../../design/states/empty_state.dart';
+import '../../design/states/error_state.dart';
+import '../../design/states/offline_state.dart';
+import '../../design/tokens.g.dart';
+import '../../games/gamekit/all_games_registry.dart';
+import '../../games/gamekit/game_difficulty.dart';
+import '../../games/gamekit/game_feedback.dart';
+import '../../games/gamekit/game_result.dart';
+import '../../games/gamekit/game_scoring.dart';
+import '../../games/gamekit/game_session.dart' as gamekit_session;
+import '../../games/gamekit/game_turn_context.dart';
+import '../../l10n/generated/app_localizations.dart';
+import '../../l10n/l10n_of.dart';
+import '../../learning/pronunciation/tone_models.dart';
+import '../../services/feature_flag_service.dart';
+import '../../services/lens/lens_scoring_client.dart';
+import '../../services/offline/tone_trainer_queue_service.dart';
+import '../../utils/pan_african_design_system.dart';
+import 'tone_forge_feedback.dart';
+import 'tone_forge_models.dart';
+import 'tone_forge_scoring.dart';
+
+/// One word the learner can try. An empty [word] is no round.
+class ToneForgeRound {
+  const ToneForgeRound({
+    required this.word,
+    required this.audioPath,
+    required this.language,
   });
 
-  @override
-  GameType getGameType() => GameType.toneTrainer;
-
-  @override
-  ConsumerState<ToneForgeScreen> createState() => _ToneForgeScreenState();
+  final String word;
+  final String audioPath;
+  final String language;
 }
 
-class _ToneForgeScreenState extends BaseGameScreenState<ToneForgeScreen> {
-  late ToneForgeGame _game;
-  late PolieGameClient _polieClient;
-  late GameAnimationBridge _animationBridge;
-  late RiveGameGuideController _guideController;
-  
-  ToneForgeContent? _currentContent;
-  bool _isRecording = false;
-  bool _isPlaying = false;
-  bool _showResult = false;
-  GameTurnResult? _lastResult;
-  
-  final AudioRecorder _recorder = AudioRecorder();
-  final AudioPlayer _player = AudioPlayer();
-  final ToneForgeAudioAnalyzer _audioAnalyzer = ToneForgeAudioAnalyzer();
+/// A load that failed because the phone is offline, or for another reason.
+class ToneForgeUnavailable implements Exception {
+  const ToneForgeUnavailable({this.offline = false});
+
+  final bool offline;
+}
+
+/// What the Play route is showing.
+enum ToneForgePageStatus { loading, empty, error, offline, scored, unsure }
+
+/// Featured tone game. Lexicon inventory plus GameKit graph writes.
+///
+/// [ToneForgeScreen.play] is the Play route. With no loader the page is empty.
+/// A failed load clears the previous word and any score. A percent is painted
+/// only when [toneForgeShownPercent] has one.
+class ToneForgeScreen extends StatefulWidget {
+  const ToneForgeScreen({
+    super.key,
+    required this.language,
+    this.level,
+    this.onBack,
+  }) : loadRound = null,
+       scoreAttempt = null,
+       post = null,
+       routeEntry = false;
+
+  const ToneForgeScreen.play({
+    super.key,
+    this.loadRound,
+    this.scoreAttempt,
+    this.post,
+    this.onBack,
+  }) : language = 'yo',
+       level = null,
+       routeEntry = true;
+
+  /// App route `/play/tone-forge`. The map key drops the leading slash.
+  static const String routePath = '/play/tone-forge';
+
+  static const String routeKey = 'play/tone-forge';
+
+  static const Key emptyKey = ValueKey<String>('play-tone-forge-empty');
+
+  static const Key errorKey = ValueKey<String>('play-tone-forge-error');
+
+  static const Key offlineKey = ValueKey<String>('play-tone-forge-offline');
+
+  static const Key scoreKey = ValueKey<String>('play-tone-forge-score');
+
+  static const Key unsureKey = ValueKey<String>('play-tone-forge-unsure');
+
+  static const Key wordKey = ValueKey<String>('play-tone-forge-word');
+
+  final String language;
+  final String? level;
+  final VoidCallback? onBack;
+  final bool routeEntry;
+
+  /// Loads a round. Null on the route means this open has no word.
+  final Future<ToneForgeRound?> Function()? loadRound;
+
+  /// Scores one round. Null uses [post] or an unsure result.
+  final Future<GameScore> Function(ToneForgeRound round)? scoreAttempt;
+
+  /// Real scorer post. Used when [scoreAttempt] is null.
+  final LensScorePost? post;
+
+  @override
+  State<ToneForgeScreen> createState() => _ToneForgeScreenState();
+}
+
+class _ToneForgeScreenState extends State<ToneForgeScreen> {
+  final List<_ForgeQuestion> _questions = [];
+  int _currentIndex = 0;
+  int? _selectedTone;
+  bool _answered = false;
+  int? _shownPercent;
+  ToneLanguageModel? _inventory;
+  _ForgeLoad _load = _ForgeLoad.loading;
+  bool _practiceNotScored = true;
+  late gamekit_session.GameSession _kitSession;
+  final GameKitLearnerGraphWriter _graphWriter = GameKitLearnerGraphWriter();
+  int _turnCounter = 0;
+
+  ToneForgePageStatus _routeStatus = ToneForgePageStatus.loading;
+  String? _routeWord;
+  bool _scoreFault = false;
+
+  static const int _cardCount = 10;
 
   @override
   void initState() {
     super.initState();
-    _guideController = RiveGameGuideController();
-    _animationBridge = GameAnimationBridge(guideController: _guideController);
-    _polieClient = PolieGameClient();
-    _game = ToneForgeGameFactory.create(
-      polieClient: _polieClient,
-      animationBridge: _animationBridge,
+    _kitSession = gamekit_session.GameSession(
+      sessionId: 'tone_forge_${DateTime.now().millisecondsSinceEpoch}',
+      userId: 'local',
+      gameId: AllGamesRegistry.toneForgeGameId,
+      language: widget.language,
+      startTime: DateTime.now(),
+    );
+    if (widget.routeEntry) {
+      if (widget.loadRound == null) {
+        _routeStatus = ToneForgePageStatus.empty;
+        return;
+      }
+      _routeStatus = ToneForgePageStatus.loading;
+      _loadRoute(initial: true);
+      return;
+    }
+    _resolvePracticeMode();
+    _bootstrap(initial: true);
+  }
+
+  @override
+  void didUpdateWidget(ToneForgeScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!widget.routeEntry) return;
+    if (identical(oldWidget.loadRound, widget.loadRound) &&
+        identical(oldWidget.scoreAttempt, widget.scoreAttempt) &&
+        identical(oldWidget.post, widget.post)) {
+      return;
+    }
+    _shownPercent = null;
+    _routeWord = null;
+    _scoreFault = false;
+    if (widget.loadRound == null) {
+      _routeStatus = ToneForgePageStatus.empty;
+      return;
+    }
+    _routeStatus = ToneForgePageStatus.loading;
+    _loadRoute();
+  }
+
+  void _resolvePracticeMode() {
+    final flagOn = FeatureFlagService(
+      safeDefault: false,
+    ).isOn(gameKitRealSpeakingScorerFlagKey, DateTime.now());
+    final live = gameKitRealScorerLiveForGame(
+      featureFlagOn: flagOn,
+      gameId: AllGamesRegistry.toneForgeGameId,
+      isSpeakingGame: true,
+    );
+    _practiceNotScored = gameKitPracticeNotScoredMode(
+      isSpeakingGame: true,
+      realScorerLive: live,
     );
   }
 
-  @override
-  void dispose() {
-    _recorder.dispose();
-    _player.dispose();
-    super.dispose();
-  }
-
-  @override
-  String? get shellProgressLabel {
-    if (isLoading) return null;
-    final s = session;
-    if (s == null) return null;
-    return sessionTurnProgressLabel(
-      completedTurns: s.totalTurns,
-      maxTurns: getCardCount(),
-    );
-  }
-
-  @override
-  String? get shellScoreLabel {
-    if (isLoading) return null;
-    final s = session;
-    if (s == null) return null;
-    return shellScorePointsLabel(s.correctCount);
-  }
-
-  @override
-  Future<void> onGameInitialized() async {
-    await _loadNewContent();
-  }
-
-  Future<void> _loadNewContent() async {
-    if (session == null) return;
-
-    setState(() {
-      _showResult = false;
-      _lastResult = null;
-    });
-
-    try {
-      final gameSession = gamekit_session.GameSession(
-        sessionId: session!.sessionId,
-        userId: session!.userId,
-        gameId: _game.config.gameId,
-        language: widget.language,
-        level: widget.level,
-        startTime: session!.startTime,
-        turns: [],
-      );
-
-      _currentContent = await _game.loadContent(gameSession);
-      setState(() {});
-    } catch (e) {
-      debugPrint('Error loading content: $e');
-    }
-  }
-
-  Future<void> _playAudio() async {
-    if (_currentContent?.audioUrl == null) return;
-
-    setState(() => _isPlaying = true);
-    try {
-      await _player.play(UrlSource(_currentContent!.audioUrl!));
-      await _player.onPlayerComplete.first;
-    } catch (e) {
-      debugPrint('Error playing audio: $e');
-    } finally {
-      setState(() => _isPlaying = false);
-    }
-  }
-
-  Future<void> _startRecording() async {
-    try {
-      if (await _recorder.hasPermission()) {
-        final tmp = await getTemporaryDirectory();
-        final recordPath =
-            '${tmp.path}${Platform.pathSeparator}tone_forge_${DateTime.now().millisecondsSinceEpoch}.wav';
-        await _recorder.start(
-          const RecordConfig(
-            encoder: AudioEncoder.pcm16bits,
-            sampleRate: 44100,
-          ),
-          path: recordPath,
-        );
-        setState(() => _isRecording = true);
-        _guideController.setListening(true);
-      }
-    } catch (e) {
-      debugPrint('Error starting recording: $e');
-    }
-  }
-
-  Future<void> _stopRecording() async {
-    try {
-      final path = await _recorder.stop();
-      setState(() => _isRecording = false);
-      _guideController.setListening(false);
-
-      if (path != null && _currentContent != null) {
-        await _processRecording(path);
-      }
-    } catch (e) {
-      debugPrint('Error stopping recording: $e');
-    }
-  }
-
-  Future<void> _processRecording(String audioPath) async {
-    if (session == null || _currentContent == null) return;
-
-    try {
-      // Read audio file and extract pitch contour
-      // For now, we'll use a simplified approach
-      // In production, you'd use a proper audio library to read the file
-      final audioSamples = await _readAudioSamples(audioPath);
-      final pitchContour = _audioAnalyzer.extractPitchContour(audioSamples);
-
-      final input = ToneForgeInput(
-        userPitchContour: pitchContour,
-        audioSamples: audioSamples,
-        durationMs: 0, // Calculate from audio length
-      );
-
-      final gameSession = gamekit_session.GameSession(
-        sessionId: session!.sessionId,
-        userId: session!.userId,
-        gameId: _game.config.gameId,
-        language: widget.language,
-        level: widget.level,
-        startTime: session!.startTime,
-        turns: [],
-      );
-
-      final result = await _game.playTurn(_currentContent!, input, gameSession);
-
+  Future<void> _bootstrap({bool initial = false}) async {
+    if (!initial) {
       setState(() {
-        _lastResult = result;
-        _showResult = true;
+        _load = _ForgeLoad.loading;
+        _clearGameResult();
       });
-
-      // Record turn
-      await completeTurn(
-        cardId: _currentContent!.contentId,
-        result: result.score.isCorrect ? GameResult.correct : GameResult.incorrect,
-        durationMs: 5000,
-        confidence: result.score.accuracy,
-        feedback: {
-          'accuracy': result.score.accuracy,
-          'feedback': result.feedback.message,
-          'is_perfect': result.score.isPerfect,
-        },
-      );
-
-      // Auto-advance after 3 seconds
-      Future.delayed(const Duration(seconds: 3), () {
-        if (mounted) {
-          _loadNewContent();
-        }
-      });
-    } catch (e) {
-      debugPrint('Error processing recording: $e');
+    } else {
+      _clearGameResult();
     }
-  }
-
-  Future<List<double>> _readAudioSamples(String path) async {
-    final file = File(path);
-    if (!await file.exists()) {
-      throw Exception('Recorded audio file not found');
-    }
-    final bytes = await file.readAsBytes();
-    if (bytes.isEmpty) {
-      throw Exception('Recorded audio is empty');
-    }
-
-    // Basic WAV/PCM16 parser (little-endian). If header not present, treat as raw PCM16.
-    int dataOffset = 0;
-    int dataLength = bytes.length;
-    if (bytes.length >= 44 &&
-        bytes[0] == 0x52 && // R
-        bytes[1] == 0x49 && // I
-        bytes[2] == 0x46 && // F
-        bytes[3] == 0x46 && // F
-        bytes[8] == 0x57 && // W
-        bytes[9] == 0x41 && // A
-        bytes[10] == 0x56 && // V
-        bytes[11] == 0x45 // E
-        ) {
-      // Find "data" chunk
-      int i = 12;
-      while (i + 8 <= bytes.length) {
-        final chunkId = String.fromCharCodes(bytes.sublist(i, i + 4));
-        final chunkSize = ByteData.sublistView(Uint8List.fromList(bytes), i + 4, i + 8)
-            .getUint32(0, Endian.little);
-        if (chunkId == 'data') {
-          dataOffset = i + 8;
-          dataLength = chunkSize;
-          break;
-        }
-        i += 8 + chunkSize;
+    try {
+      final lang = widget.language.toLowerCase();
+      final catalog = await loadToneModelsCatalogFromAsset();
+      if (!mounted) return;
+      if (!isToneTrainerAvailable(catalog, lang)) {
+        setState(() {
+          _clearGameResult();
+          _load = _ForgeLoad.empty;
+        });
+        return;
       }
-    }
 
-    final end = (dataOffset + dataLength).clamp(0, bytes.length);
-    final pcm = Uint8List.fromList(bytes.sublist(dataOffset, end));
-    final bd = ByteData.sublistView(pcm);
+      final pool = await buildToneGamePool(
+        catalog: catalog,
+        languageCode: lang,
+        fetchLimit: 48,
+      );
+      if (!mounted) return;
+      ToneTrainerQueueService.instance.recordPoolDiagnostics(
+        pool.diagnostics.formatLine(),
+      );
+      _inventory = pool.inventory;
 
-    final samples = <double>[];
-    for (int i = 0; i + 1 < pcm.length; i += 2) {
-      final v = bd.getInt16(i, Endian.little);
-      samples.add(v / 32768.0);
+      if (pool.lexemes.isEmpty ||
+          pool.options.isEmpty ||
+          pool.inventory == null) {
+        setState(() {
+          _clearGameResult();
+          _load = _ForgeLoad.empty;
+        });
+        return;
+      }
+
+      final rng = Random();
+      final shuffled = List<ToneGameLexeme>.from(pool.lexemes)..shuffle(rng);
+      for (final lexeme in shuffled.take(_cardCount)) {
+        final syllableIndex = lexeme.tonePattern.length == 1
+            ? 0
+            : rng.nextInt(lexeme.tonePattern.length);
+        final spec = toneTrainerQuestionFromLexeme(
+          lexeme: lexeme,
+          options: pool.options,
+          inventory: pool.inventory!,
+          syllableIndex: syllableIndex,
+        );
+        if (spec == null) continue;
+        _questions.add(_ForgeQuestion.fromSpec(spec));
+      }
+      setState(() {
+        _load = _questions.isEmpty ? _ForgeLoad.empty : _ForgeLoad.ready;
+        if (_load == _ForgeLoad.empty) _clearGameResult();
+      });
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _clearGameResult();
+        _load = _ForgeLoad.error;
+      });
     }
-    return samples;
   }
 
-  @override
-  Widget buildGameContent(BuildContext context) {
-    if (isLoading || _currentContent == null) {
-      return const Center(child: CircularProgressIndicator());
-    }
+  void _clearGameResult() {
+    _questions.clear();
+    _currentIndex = 0;
+    _selectedTone = null;
+    _answered = false;
+    _shownPercent = null;
+    _inventory = null;
+  }
 
-    if (error != null) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(error!),
-            SizedBox(height: 2.h),
-            FilledButton(
-              onPressed: () => _loadNewContent(),
-              child: const Text('Retry'),
-            ),
-          ],
+  Future<void> _loadRoute({bool initial = false}) async {
+    final Future<ToneForgeRound?> Function()? load = widget.loadRound;
+    if (load == null) {
+      if (!mounted) return;
+      setState(_clearRoute(ToneForgePageStatus.empty));
+      return;
+    }
+    if (!initial) {
+      setState(() {
+        _routeStatus = ToneForgePageStatus.loading;
+        _shownPercent = null;
+        _routeWord = null;
+        _scoreFault = false;
+      });
+    }
+    try {
+      final ToneForgeRound? round = await load();
+      if (!mounted) return;
+      if (round == null || round.word.trim().isEmpty) {
+        setState(_clearRoute(ToneForgePageStatus.empty));
+        return;
+      }
+      await _applyRoundScore(round);
+    } on ToneForgeUnavailable catch (error) {
+      if (!mounted) return;
+      setState(
+        _clearRoute(
+          error.offline
+              ? ToneForgePageStatus.offline
+              : ToneForgePageStatus.error,
         ),
       );
+    } catch (_) {
+      if (!mounted) return;
+      setState(_clearRoute(ToneForgePageStatus.error));
     }
+  }
 
-    return SingleChildScrollView(
-      padding: EdgeInsets.all(4.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SizedBox(height: 4.h),
-          // Rive Guide Character
-          Center(
-            child: RiveGameGuide(
-              controller: _guideController,
-              width: 150.w,
-              height: 150.h,
+  Future<void> _applyRoundScore(ToneForgeRound round) async {
+    try {
+      final GameScore score = await _scoreRound(round);
+      if (!mounted) return;
+      final GameFeedback feedback = await const ToneForgeFeedbackEngine()
+          .generate(_feedbackContext(round.word), score);
+      if (!mounted) return;
+      final int? percent = toneForgeShownPercent(score);
+      final bool measured =
+          percent != null && RegExp(r'\d').hasMatch(feedback.message);
+      setState(() {
+        _scoreFault = false;
+        if (measured &&
+            toneForgeScoreView(score) == ToneForgeScoreView.scored) {
+          _routeStatus = ToneForgePageStatus.scored;
+          _shownPercent = percent;
+          _routeWord = round.word;
+          return;
+        }
+        _shownPercent = null;
+        _routeWord = round.word;
+        _routeStatus = ToneForgePageStatus.unsure;
+      });
+    } catch (_) {
+      if (!mounted) return;
+      setState(_clearRoute(ToneForgePageStatus.error, scoreFault: true));
+    }
+  }
+
+  Future<GameScore> _scoreRound(ToneForgeRound round) {
+    final Future<GameScore> Function(ToneForgeRound)? custom =
+        widget.scoreAttempt;
+    if (custom != null) return custom(round);
+    final LensScorePost? post = widget.post;
+    if (post == null) {
+      return Future<GameScore>.value(GameScore.unsure(message: 'unsure'));
+    }
+    return scoreToneForgeAttempt(
+      word: round.word,
+      audioPath: round.audioPath,
+      language: round.language,
+      post: post,
+    );
+  }
+
+  GameTurnContext _feedbackContext(String word) {
+    return GameTurnContext(content: word, input: word, session: _kitSession);
+  }
+
+  VoidCallback _clearRoute(
+    ToneForgePageStatus status, {
+    bool scoreFault = false,
+  }) {
+    return () {
+      _routeStatus = status;
+      _routeWord = null;
+      _shownPercent = null;
+      _scoreFault = scoreFault;
+    };
+  }
+
+  _ForgeQuestion? get _current =>
+      _currentIndex < _questions.length ? _questions[_currentIndex] : null;
+
+  Future<void> _selectTone(int index) async {
+    if (_answered || _inventory == null) return;
+    HapticFeedback.selectionClick();
+    setState(() => _selectedTone = index);
+  }
+
+  Future<void> _submit() async {
+    if (_selectedTone == null || _answered || _inventory == null) return;
+    final q = _current!;
+    HapticFeedback.mediumImpact();
+
+    final GameScore gameScore = scoreToneInventoryChoice(
+      inventory: _inventory!,
+      lexiconTonePattern: q.lexeme.tonePattern,
+      syllableIndex: q.syllableIndex,
+      selectedInventoryIndex: _selectedTone!,
+    );
+    final GameFeedback feedback = await const ToneForgeFeedbackEngine()
+        .generate(_feedbackContext(q.lexeme.toneMarkedForm), gameScore);
+    final int? percent = toneForgeShownPercent(gameScore);
+    final bool measured =
+        percent != null && RegExp(r'\d').hasMatch(feedback.message);
+
+    final turnId = 'tf_${_turnCounter++}';
+    final context = GameTurnContext(
+      content: q,
+      input: _selectedTone,
+      session: _kitSession,
+      metadata: {
+        'itemId': q.lexeme.lexemeId,
+        'skillId': 'tone:${q.lexeme.language}',
+        'gameCategory': 'pronunciation',
+      },
+    );
+    final result = GameTurnResult(
+      score: gameScore,
+      feedback: feedback,
+      difficultyUpdate: GameDifficultyUpdate.maintain(),
+      timestamp: DateTime.now(),
+    );
+
+    _kitSession = await _graphWriter.recordTurn(
+      session: _kitSession,
+      context: context,
+      result: result,
+      turnId: turnId,
+      queueOnly: true,
+    );
+
+    if (!mounted) return;
+    setState(() {
+      _answered = true;
+      _shownPercent = measured ? percent : null;
+    });
+  }
+
+  void _next() {
+    if (_currentIndex < _questions.length - 1) {
+      setState(() {
+        _currentIndex++;
+        _selectedTone = null;
+        _answered = false;
+        _shownPercent = null;
+      });
+    } else {
+      _back();
+    }
+  }
+
+  void _back() {
+    final VoidCallback? onBack = widget.onBack;
+    if (onBack != null) {
+      onBack();
+      return;
+    }
+    final NavigatorState? navigator = Navigator.maybeOf(context);
+    if (navigator != null && navigator.canPop()) navigator.pop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.routeEntry) return _routeScaffold(context);
+    return _gameScaffold(context);
+  }
+
+  Widget _routeScaffold(BuildContext context) {
+    final AppLocalizations l10n = l10nOf(context);
+    final LingPalette palette = LingPalette.of(Theme.of(context).brightness);
+    final bool wordVisible =
+        _routeWord != null &&
+        (_routeStatus == ToneForgePageStatus.scored ||
+            _routeStatus == ToneForgePageStatus.unsure);
+    final bool backInEmpty = _routeStatus == ToneForgePageStatus.empty;
+    return Scaffold(
+      backgroundColor: palette.surface,
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(LingAfriqTokens.spacing16),
+          children: <Widget>[
+            Text(
+              l10n.hubHPlayToneForge,
+              style: lingBody(palette.onSurface),
+              softWrap: true,
+              overflow: TextOverflow.visible,
             ),
-          ),
-          SizedBox(height: 4.h),
-          // Content Display
-          Card(
-            elevation: 4,
-            child: Padding(
-              padding: EdgeInsets.all(4.w),
-              child: Column(
-                children: [
-                  Text(
-                    _currentContent!.text,
-                    style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                  if (_currentContent!.ipa != null) ...[
-                    SizedBox(height: 1.h),
-                    Text(
-                      _currentContent!.ipa!,
-                      style: TextStyle(fontSize: 16.sp, fontStyle: FontStyle.italic),
-                    ),
-                  ],
-                  if (_currentContent!.culturalContext != null) ...[
-                    SizedBox(height: 2.h),
-                    Text(
-                      _currentContent!.culturalContext!,
-                      style: TextStyle(fontSize: 14.sp),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ],
+            const SizedBox(height: LingAfriqTokens.spacing16),
+            if (wordVisible) ...<Widget>[
+              Text(
+                _routeWord!,
+                key: ToneForgeScreen.wordKey,
+                style: lingBody(palette.onSurface),
+                softWrap: true,
+                overflow: TextOverflow.visible,
+              ),
+              const SizedBox(height: LingAfriqTokens.spacing16),
+            ],
+            _routeBody(l10n, palette),
+            if (!backInEmpty) ...<Widget>[
+              const SizedBox(height: LingAfriqTokens.spacing16),
+              LingButton(
+                label: l10n.hubHPlayBack,
+                unavailableLabel: l10n.commonStateUnavailable,
+                onPressed: _back,
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _routeBody(AppLocalizations l10n, LingPalette palette) {
+    switch (_routeStatus) {
+      case ToneForgePageStatus.loading:
+        return Text(
+          l10n.loading,
+          style: lingBody(palette.onSurface),
+          softWrap: true,
+          overflow: TextOverflow.visible,
+        );
+      case ToneForgePageStatus.empty:
+        return LingEmptyState(
+          key: ToneForgeScreen.emptyKey,
+          title: l10n.hubHPlayToneForge,
+          whatHappened: l10n.revRvPlayEmptyWhat,
+          why: l10n.revRvPlayEmptyWhy,
+          whatToDo: l10n.revRvPlayEmptyNext,
+          actionLabel: l10n.hubHPlayBack,
+          unavailableLabel: l10n.commonStateUnavailable,
+          onAction: _back,
+        );
+      case ToneForgePageStatus.error:
+        return LingErrorState(
+          key: ToneForgeScreen.errorKey,
+          whatHappened: _scoreFault
+              ? l10n.revRvPlayScoreErrorWhat
+              : l10n.revRvPlayErrorWhat,
+          why: _scoreFault
+              ? l10n.revRvPlayScoreErrorWhy
+              : l10n.revRvPlayErrorWhy,
+          whatToDo: l10n.revRvPlayErrorNext,
+          actionLabel: l10n.commonActionTryAgain,
+          unavailableLabel: l10n.commonStateUnavailable,
+          onAction: _loadRoute,
+        );
+      case ToneForgePageStatus.offline:
+        return LingOfflineState(
+          key: ToneForgeScreen.offlineKey,
+          whatHappened: l10n.shellOfflineWhat,
+          why: l10n.revRvPlayOfflineWhy,
+          whatToDo: l10n.shellOfflineNext,
+          queuedActions: 0,
+          actionLabel: l10n.commonActionTryAgain,
+          unavailableLabel: l10n.commonStateUnavailable,
+          onAction: _loadRoute,
+        );
+      case ToneForgePageStatus.scored:
+        final int? percent = _shownPercent;
+        if (percent == null) return _unsure(l10n, palette);
+        final String value = l10n.revRvPlayScoreValue(percent);
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Text(
+              l10n.revRvPlayScoreLabel,
+              style: lingBody(palette.onSurface),
+              softWrap: true,
+              overflow: TextOverflow.visible,
+            ),
+            const SizedBox(height: LingAfriqTokens.spacing16),
+            Semantics(
+              container: true,
+              label: value,
+              child: Text(
+                value,
+                key: ToneForgeScreen.scoreKey,
+                style: lingBody(palette.onSurface),
+                softWrap: true,
+                overflow: TextOverflow.visible,
               ),
             ),
+          ],
+        );
+      case ToneForgePageStatus.unsure:
+        return _unsure(l10n, palette);
+    }
+  }
+
+  Widget _unsure(AppLocalizations l10n, LingPalette palette) {
+    return Text(
+      l10n.revRvPlayUnsure,
+      key: ToneForgeScreen.unsureKey,
+      style: lingBody(palette.onSurface),
+      softWrap: true,
+      overflow: TextOverflow.visible,
+    );
+  }
+
+  Widget _gameScaffold(BuildContext context) {
+    final AppLocalizations l10n = l10nOf(context);
+    final cs = Theme.of(context).colorScheme;
+    final LingPalette palette = LingPalette.of(Theme.of(context).brightness);
+    return Scaffold(
+      backgroundColor: palette.surface,
+      appBar: AppBar(
+        title: Text(l10n.hubHPlayToneForge),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: _back,
+        ),
+      ),
+      body: switch (_load) {
+        _ForgeLoad.loading => const Center(child: CircularProgressIndicator()),
+        _ForgeLoad.error => _gameError(l10n),
+        _ForgeLoad.empty => _gameEmpty(l10n),
+        _ForgeLoad.ready => Padding(
+          padding: EdgeInsets.all(PanAfricanSpacing.lg),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (_practiceNotScored) const _PracticeBanner(),
+              Text(
+                'Which tone is on the highlighted syllable?',
+                style: PanAfricanTypography.titleMedium(context),
+              ),
+              SizedBox(height: PanAfricanSpacing.sm),
+              Text(
+                '${_currentIndex + 1} / ${_questions.length}',
+                style: PanAfricanTypography.labelMedium(context),
+              ),
+              SizedBox(height: PanAfricanSpacing.md),
+              Expanded(child: _buildQuestion(context, cs)),
+              if (_answered) ...[
+                SizedBox(height: PanAfricanSpacing.md),
+                _shownPercent == null
+                    ? _unsure(l10n, palette)
+                    : Text(
+                        l10n.revRvPlayScoreValue(_shownPercent!),
+                        key: ToneForgeScreen.scoreKey,
+                        style: lingBody(palette.onSurface),
+                        softWrap: true,
+                        overflow: TextOverflow.visible,
+                      ),
+              ],
+              SizedBox(height: PanAfricanSpacing.md),
+              if (!_answered)
+                FilledButton(
+                  onPressed: _selectedTone == null ? null : _submit,
+                  child: const Text('Check tone'),
+                )
+              else
+                FilledButton(
+                  onPressed: _next,
+                  child: Text(
+                    _currentIndex < _questions.length - 1
+                        ? 'Next word'
+                        : 'Finish',
+                  ),
+                ),
+            ],
           ),
-          SizedBox(height: 4.h),
-          // Audio Playback Button
-          FilledButton.icon(
-            onPressed: _isPlaying ? null : _playAudio,
-            icon: Icon(_isPlaying ? Icons.volume_up : Icons.play_arrow),
-            label: Text(_isPlaying ? 'Playing...' : 'Play Audio'),
+        ),
+      },
+    );
+  }
+
+  Widget _gameEmpty(AppLocalizations l10n) {
+    return ListView(
+      padding: const EdgeInsets.all(LingAfriqTokens.spacing16),
+      children: <Widget>[
+        LingEmptyState(
+          key: ToneForgeScreen.emptyKey,
+          title: l10n.hubHPlayToneForge,
+          whatHappened: l10n.revRvPlayEmptyWhat,
+          why: l10n.revRvPlayEmptyWhy,
+          whatToDo: l10n.revRvPlayEmptyNext,
+          actionLabel: l10n.hubHPlayBack,
+          unavailableLabel: l10n.commonStateUnavailable,
+          onAction: _back,
+        ),
+      ],
+    );
+  }
+
+  Widget _gameError(AppLocalizations l10n) {
+    return ListView(
+      padding: const EdgeInsets.all(LingAfriqTokens.spacing16),
+      children: <Widget>[
+        LingErrorState(
+          key: ToneForgeScreen.errorKey,
+          whatHappened: l10n.revRvPlayErrorWhat,
+          why: l10n.revRvPlayErrorWhy,
+          whatToDo: l10n.revRvPlayErrorNext,
+          actionLabel: l10n.commonActionTryAgain,
+          unavailableLabel: l10n.commonStateUnavailable,
+          onAction: () {
+            _bootstrap();
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildQuestion(BuildContext context, ColorScheme cs) {
+    final q = _current!;
+    final options = q.options;
+    return Column(
+      children: [
+        Text(
+          q.lexeme.toneMarkedForm,
+          style: PanAfricanTypography.displaySmall(context),
+          textAlign: TextAlign.center,
+        ),
+        if (q.lexeme.englishGloss != null) ...[
+          SizedBox(height: PanAfricanSpacing.xs),
+          Text(
+            q.lexeme.englishGloss!,
+            style: PanAfricanTypography.bodyMedium(context),
+            textAlign: TextAlign.center,
           ),
-          SizedBox(height: 2.h),
-          // Recording Button
-          FilledButton.icon(
-            onPressed: _isRecording ? _stopRecording : _startRecording,
-            icon: Icon(_isRecording ? Icons.stop : Icons.mic),
-            label: Text(_isRecording ? 'Stop Recording' : 'Start Recording'),
-            style: FilledButton.styleFrom(
-              backgroundColor: _isRecording ? Colors.red : Colors.blue,
-            ),
-          ),
-          if (_showResult && _lastResult != null) ...[
-            SizedBox(height: 4.h),
-            Card(
-              color: _lastResult!.score.isCorrect
-                  ? Colors.green.withOpacity(0.2)
-                  : Colors.red.withOpacity(0.2),
-              child: Padding(
-                padding: EdgeInsets.all(4.w),
-                child: Column(
-                  children: [
-                    Icon(
-                      _lastResult!.score.isCorrect ? Icons.check_circle : Icons.cancel,
-                      color: _lastResult!.score.isCorrect ? Colors.green : Colors.red,
-                      size: 48.sp,
+        ],
+        SizedBox(height: PanAfricanSpacing.lg),
+        ...List.generate(options.length, (i) {
+          final opt = options[i];
+          final selected = _selectedTone == i;
+          return Padding(
+            padding: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
+            child: Semantics(
+              button: true,
+              label: 'Tone ${opt.label}',
+              child: Material(
+                color: selected
+                    ? cs.primaryContainer
+                    : cs.surfaceContainerHighest,
+                borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                child: InkWell(
+                  onTap: _answered ? null : () => _selectTone(i),
+                  borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                  child: SizedBox(
+                    height: 48.h,
+                    child: Center(
+                      child: Text(
+                        '${opt.symbol} ${opt.label}',
+                        style: PanAfricanTypography.titleSmall(context),
+                      ),
                     ),
-                    SizedBox(height: 1.h),
-                    Text(
-                      _lastResult!.feedback.message,
-                      style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 1.h),
-                    Text(
-                      'Accuracy: ${(_lastResult!.score.accuracy * 100).toStringAsFixed(0)}%',
-                      style: TextStyle(fontSize: 16.sp),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
-          ],
-        ],
+          );
+        }),
+      ],
+    );
+  }
+}
+
+enum _ForgeLoad { loading, ready, empty, error }
+
+class _ForgeQuestion {
+  _ForgeQuestion({
+    required this.lexeme,
+    required this.syllableIndex,
+    required this.correctInventoryIndex,
+    required this.options,
+  });
+
+  final ToneGameLexeme lexeme;
+  final int syllableIndex;
+  final int correctInventoryIndex;
+  final List<ToneInventoryOption> options;
+
+  factory _ForgeQuestion.fromSpec(ToneTrainerQuestionSpec spec) {
+    return _ForgeQuestion(
+      lexeme: spec.lexeme,
+      syllableIndex: spec.syllableIndex,
+      correctInventoryIndex: spec.correctInventoryIndex,
+      options: spec.options,
+    );
+  }
+}
+
+class _PracticeBanner extends StatelessWidget {
+  const _PracticeBanner();
+
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations l10n = l10nOf(context);
+    return Padding(
+      padding: EdgeInsets.only(bottom: PanAfricanSpacing.md),
+      child: Material(
+        color: PanAfricanColors.secondaryContainer.withValues(alpha: 0.35),
+        borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+        child: Padding(
+          padding: EdgeInsets.all(PanAfricanSpacing.sm),
+          child: Row(
+            children: [
+              Icon(Icons.school_outlined, size: 20.sp),
+              SizedBox(width: PanAfricanSpacing.sm),
+              Expanded(
+                child: Text(
+                  l10n.revRvPlayPractice,
+                  style: PanAfricanTypography.bodySmall(context),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
 }
 
+/// Tone shelf strip for the Arcade hub.
+class ToneForgeArcadeShelfStrip extends StatelessWidget {
+  const ToneForgeArcadeShelfStrip({
+    super.key,
+    required this.language,
+    required this.onOpenToneForge,
+  });
+
+  final String language;
+  final VoidCallback onOpenToneForge;
+
+  @override
+  Widget build(BuildContext context) {
+    final featured = AllGamesRegistry.featuredOnShelf(ArcadeSkillShelf.tone);
+    if (featured == null) return const SizedBox.shrink();
+
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+        PanAfricanSpacing.md,
+        PanAfricanSpacing.sm,
+        PanAfricanSpacing.md,
+        PanAfricanSpacing.xs,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            ArcadeSkillShelf.tone.title,
+            style: PanAfricanTypography.titleSmall(context),
+          ),
+          SizedBox(height: PanAfricanSpacing.sm),
+          Semantics(
+            button: true,
+            label: 'Featured game Tone Forge',
+            child: Material(
+              elevation: 2,
+              borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+              color: PanAfricanColors.primaryContainer,
+              child: InkWell(
+                onTap: onOpenToneForge,
+                borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Padding(
+                    padding: EdgeInsets.all(PanAfricanSpacing.md),
+                    child: Row(
+                      children: [
+                        Icon(Icons.graphic_eq, size: 32.sp),
+                        SizedBox(width: PanAfricanSpacing.md),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    'Tone Forge',
+                                    style: PanAfricanTypography.titleMedium(
+                                      context,
+                                    ),
+                                  ),
+                                  SizedBox(width: PanAfricanSpacing.xs),
+                                  Chip(
+                                    label: Text(
+                                      'Featured',
+                                      style: PanAfricanTypography.labelSmall(
+                                        context,
+                                      ),
+                                    ),
+                                    visualDensity: VisualDensity.compact,
+                                    padding: EdgeInsets.zero,
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                'Hear the word, pick the tone on the syllable.',
+                                style: PanAfricanTypography.bodySmall(context),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Icon(Icons.chevron_right),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

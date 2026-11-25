@@ -1,0 +1,70 @@
+{
+  "charter": "v2",
+  "card_id": "P5-092",
+  "sources": [
+    "docs/source/CURRICULUM.md#§9.4:L841-L843",
+    "assets/content/phase0_foundations_ledger.json",
+    "CP-§9.4-10",
+    "CP-§9.4-11",
+    "CP-§9.4-12"
+  ],
+  "line_items": [
+    {
+      "blocker": "EXT-04",
+      "vendor": "Oxford Languages",
+      "required": true,
+      "optional": false,
+      "status": "pending",
+      "usd_amount": null,
+      "eur_amount": null,
+      "cadence": "one_off_or_annual",
+      "note": "Quote not on file; EXT-04 Blocked-External."
+    },
+    {
+      "blocker": "EXT-05",
+      "vendor": "IgboAPI (Nkọwa okwu)",
+      "required": true,
+      "optional": false,
+      "status": "pending",
+      "usd_amount": null,
+      "eur_amount": null,
+      "cadence": "one_off_or_annual",
+      "note": "Quote not on file; EXT-05 Blocked-External."
+    },
+    {
+      "blocker": "EXT-06",
+      "vendor": "isiZulu dictionary (Doke–Vilakazi / isiZulu NLU)",
+      "required": true,
+      "optional": false,
+      "status": "pending",
+      "usd_amount": null,
+      "eur_amount": null,
+      "cadence": "one_off_or_annual",
+      "note": "Quote not on file; EXT-06 Blocked-External."
+    },
+    {
+      "blocker": "EXT-08",
+      "vendor": "NaijaVoices commercial waiver",
+      "required": false,
+      "optional": true,
+      "status": "pending",
+      "usd_amount": null,
+      "eur_amount": null,
+      "cadence": "annual",
+      "planning_floor_usd": 5000,
+      "note": "Optional; CURRICULUM cites $5k+/yr when pursued."
+    },
+    {
+      "blocker": "EXT-09",
+      "vendor": "Helsinki Corpus of Swahili 2.0 (ELRA)",
+      "required": false,
+      "optional": true,
+      "status": "pending",
+      "usd_amount": null,
+      "eur_amount": null,
+      "cadence": "one_off",
+      "planning_reference_eur": 15000,
+      "note": "Optional; CURRICULUM cites €15k ELRA tier [quote]."
+    }
+  ]
+}

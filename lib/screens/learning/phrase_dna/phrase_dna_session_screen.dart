@@ -198,7 +198,7 @@ class _PhraseDnaSessionScreenState extends State<PhraseDnaSessionScreen> {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.5),
+            color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.5),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -217,10 +217,19 @@ class _PhraseDnaSessionScreenState extends State<PhraseDnaSessionScreen> {
           ),
         ),
         const SizedBox(height: 14),
-        for (final s in slotList) ...[
-          if (s is Map) _slotField(context, s, suggestions),
-          const SizedBox(height: 12),
-        ],
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: slotList.length,
+          itemBuilder: (context, index) {
+            final s = slotList[index];
+            if (s is! Map) return const SizedBox.shrink();
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: _slotField(context, s, suggestions),
+            );
+          },
+        ),
         const SizedBox(height: 8),
         Container(
           padding: const EdgeInsets.all(14),

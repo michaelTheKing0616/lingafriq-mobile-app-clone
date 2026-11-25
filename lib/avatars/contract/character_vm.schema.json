@@ -1,0 +1,405 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CharacterVM",
+  "description": "ADR-030 + lingafriq_cast.riv data-binding contract (P11-035 codegen source)",
+  "viewModel": "CharacterVM",
+  "rivFile": "lingafriq_cast.riv",
+  "triggers": {
+    "appToRive": [
+      "correct",
+      "incorrect",
+      "celebrate",
+      "levelUp",
+      "wave",
+      "nod",
+      "shrug"
+    ],
+    "riveToApp": [
+      "tapped"
+    ],
+    "lessonTriggers": [
+      "celebrate",
+      "levelUp",
+      "wave",
+      "nod",
+      "shrug",
+      "tapped"
+    ]
+  },
+  "enums": {
+    "activity": [
+      "idle",
+      "listening",
+      "thinking",
+      "speaking",
+      "celebrating",
+      "encouraging",
+      "hinting",
+      "sleeping"
+    ],
+    "expression": [
+      "neutral",
+      "happy",
+      "proud",
+      "curious",
+      "concerned",
+      "surprised",
+      "playful",
+      "focused"
+    ],
+    "viseme": [
+      "sil",
+      "PP",
+      "FF",
+      "TH",
+      "DD",
+      "kk",
+      "CH",
+      "SS",
+      "nn",
+      "RR",
+      "aa",
+      "E",
+      "I",
+      "O",
+      "U",
+      "KP",
+      "GB",
+      "C",
+      "Q",
+      "X",
+      "Nnasal"
+    ],
+    "bodyType": [
+      "average",
+      "child",
+      "teen",
+      "slim",
+      "tall",
+      "broad",
+      "curvy",
+      "elder"
+    ],
+    "faceShape": [
+      "oval",
+      "round",
+      "long",
+      "square",
+      "heart",
+      "diamond"
+    ]
+  },
+  "adr030": {
+    "expressionPersona": [
+      "neutral",
+      "happy",
+      "proud",
+      "curious",
+      "concerned",
+      "surprised",
+      "thinking",
+      "encouraging",
+      "playful",
+      "focused"
+    ],
+    "activityCore": [
+      "idle",
+      "speaking",
+      "listening",
+      "thinking"
+    ],
+    "intensityDefault": 0.6,
+    "gazeMin": -1,
+    "gazeMax": 1
+  },
+  "properties": [
+    {
+      "name": "activity",
+      "type": "Enum",
+      "runtimeType": "enumType",
+      "direction": "app_to_rive",
+      "enum": "activity",
+      "default": "idle"
+    },
+    {
+      "name": "expression",
+      "type": "Enum",
+      "runtimeType": "enumType",
+      "direction": "app_to_rive",
+      "enum": "expression",
+      "default": "neutral"
+    },
+    {
+      "name": "intensity",
+      "type": "Number",
+      "runtimeType": "number",
+      "direction": "app_to_rive",
+      "min": 0,
+      "max": 1,
+      "default": 0.6
+    },
+    {
+      "name": "energy",
+      "type": "Number",
+      "runtimeType": "number",
+      "direction": "app_to_rive",
+      "min": 0,
+      "max": 1,
+      "default": 0.5
+    },
+    {
+      "name": "gazeX",
+      "type": "Number",
+      "runtimeType": "number",
+      "direction": "app_to_rive",
+      "min": -1,
+      "max": 1,
+      "default": 0
+    },
+    {
+      "name": "gazeY",
+      "type": "Number",
+      "runtimeType": "number",
+      "direction": "app_to_rive",
+      "min": -1,
+      "max": 1,
+      "default": 0
+    },
+    {
+      "name": "headTilt",
+      "type": "Number",
+      "runtimeType": "number",
+      "direction": "app_to_rive",
+      "min": -1,
+      "max": 1,
+      "default": 0
+    },
+    {
+      "name": "viseme",
+      "type": "Enum",
+      "runtimeType": "enumType",
+      "direction": "app_to_rive",
+      "enum": "viseme",
+      "default": "sil"
+    },
+    {
+      "name": "jawOpen",
+      "type": "Number",
+      "runtimeType": "number",
+      "direction": "app_to_rive",
+      "min": 0,
+      "max": 1,
+      "default": 0
+    },
+    {
+      "name": "blinkRate",
+      "type": "Number",
+      "runtimeType": "number",
+      "direction": "app_to_rive",
+      "min": 0,
+      "max": 1,
+      "default": 0.5,
+      "note": "Named in the L4 layer spec but absent from the \u00a74 property list; added (default 0.5). Flagged for approval."
+    },
+    {
+      "name": "correct",
+      "type": "Trigger",
+      "runtimeType": "trigger",
+      "direction": "app_to_rive"
+    },
+    {
+      "name": "incorrect",
+      "type": "Trigger",
+      "runtimeType": "trigger",
+      "direction": "app_to_rive"
+    },
+    {
+      "name": "celebrate",
+      "type": "Trigger",
+      "runtimeType": "trigger",
+      "direction": "app_to_rive"
+    },
+    {
+      "name": "levelUp",
+      "type": "Trigger",
+      "runtimeType": "trigger",
+      "direction": "app_to_rive"
+    },
+    {
+      "name": "wave",
+      "type": "Trigger",
+      "runtimeType": "trigger",
+      "direction": "app_to_rive"
+    },
+    {
+      "name": "nod",
+      "type": "Trigger",
+      "runtimeType": "trigger",
+      "direction": "app_to_rive"
+    },
+    {
+      "name": "shrug",
+      "type": "Trigger",
+      "runtimeType": "trigger",
+      "direction": "app_to_rive"
+    },
+    {
+      "name": "tapped",
+      "type": "Trigger",
+      "runtimeType": "trigger",
+      "direction": "rive_to_app"
+    },
+    {
+      "name": "skinTone",
+      "type": "Color",
+      "runtimeType": "color",
+      "direction": "app_to_rive"
+    },
+    {
+      "name": "hairColor",
+      "type": "Color",
+      "runtimeType": "color",
+      "direction": "app_to_rive"
+    },
+    {
+      "name": "outfitPrimary",
+      "type": "Color",
+      "runtimeType": "color",
+      "direction": "app_to_rive"
+    },
+    {
+      "name": "outfitSecondary",
+      "type": "Color",
+      "runtimeType": "color",
+      "direction": "app_to_rive"
+    },
+    {
+      "name": "hair",
+      "type": "Artboard",
+      "runtimeType": "artboard",
+      "direction": "app_to_rive",
+      "category": "Hair",
+      "options": [
+        "Hair/None",
+        "Hair/ShortCoils",
+        "Hair/Shuku",
+        "Hair/FulaniBraids",
+        "Hair/BantuKnots",
+        "Hair/IrunKiko",
+        "Hair/Locs",
+        "Hair/Albaso",
+        "Hair/Afro"
+      ]
+    },
+    {
+      "name": "headwear",
+      "type": "Artboard",
+      "runtimeType": "artboard",
+      "direction": "app_to_rive",
+      "category": "Headwear",
+      "options": [
+        "Headwear/None",
+        "Headwear/Gele",
+        "Headwear/Fila",
+        "Headwear/Kufi",
+        "Headwear/Duku",
+        "Headwear/Headband",
+        "Headwear/Isicholo",
+        "Headwear/PolieCrest"
+      ]
+    },
+    {
+      "name": "top",
+      "type": "Artboard",
+      "runtimeType": "artboard",
+      "direction": "app_to_rive",
+      "category": "Top",
+      "options": [
+        "Top/Tee",
+        "Top/Kaftan",
+        "Top/WovenWrap",
+        "Top/Utility",
+        "Top/ElderRobe",
+        "Top/Fugu",
+        "Top/PolieSuit"
+      ]
+    },
+    {
+      "name": "bottom",
+      "type": "Artboard",
+      "runtimeType": "artboard",
+      "direction": "app_to_rive",
+      "category": "Bottom",
+      "options": [
+        "Bottom/Trousers",
+        "Bottom/Wrapper",
+        "Bottom/Shorts",
+        "Bottom/PolieHover"
+      ]
+    },
+    {
+      "name": "accessory",
+      "type": "Artboard",
+      "runtimeType": "artboard",
+      "direction": "app_to_rive",
+      "category": "Accessory",
+      "options": [
+        "Accessory/None",
+        "Accessory/Glasses",
+        "Accessory/HearingAids",
+        "Accessory/Beard",
+        "Accessory/Vitiligo",
+        "Accessory/PolieOrbit"
+      ]
+    },
+    {
+      "name": "prop",
+      "type": "Artboard",
+      "runtimeType": "artboard",
+      "direction": "app_to_rive",
+      "category": "Prop",
+      "options": [
+        "Prop/None",
+        "Prop/Staff",
+        "Prop/Shuttle",
+        "Prop/Kora",
+        "Prop/Hourglass",
+        "Prop/TalkingDrum",
+        "Prop/MapScroll",
+        "Prop/Udu",
+        "Prop/Nyatiti"
+      ]
+    },
+    {
+      "name": "reducedMotion",
+      "type": "Boolean",
+      "runtimeType": "boolean",
+      "direction": "app_to_rive",
+      "default": false
+    },
+    {
+      "name": "bodyType",
+      "type": "Enum",
+      "runtimeType": "enumType",
+      "direction": "app_to_rive",
+      "enum": "bodyType",
+      "default": "average"
+    },
+    {
+      "name": "faceShape",
+      "type": "Enum",
+      "runtimeType": "enumType",
+      "direction": "app_to_rive",
+      "enum": "faceShape",
+      "default": "oval"
+    },
+    {
+      "name": "wheelchair",
+      "type": "Boolean",
+      "runtimeType": "boolean",
+      "direction": "app_to_rive",
+      "default": false,
+      "note": "Seated wheelchair pose; L8 Seated layer + Bottom PartSM 'Seated' layer. Appended last (v-additive)."
+    }
+  ]
+}

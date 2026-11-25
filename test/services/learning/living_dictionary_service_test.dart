@@ -1,9 +1,47 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lingafriq/services/learning/living_dictionary_list_cache.dart';
 import 'package:lingafriq/services/learning/living_dictionary_list_result.dart';
+import 'package:lingafriq/services/learning/living_dictionary_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  group('LivingDictionaryEntryLink', () {
+    test('reads verified_lexeme_id and camelCase alias', () {
+      expect(
+        LivingDictionaryEntryLink.verifiedLexemeIdFromEntry({
+          'lemma': 'ọkọ',
+          'verified_lexeme_id': 'yo.lex.oko.vehicle',
+        }),
+        'yo.lex.oko.vehicle',
+      );
+      expect(
+        LivingDictionaryEntryLink.verifiedLexemeIdFromEntry({
+          'verifiedLexemeId': 'ig.lex.ala',
+        }),
+        'ig.lex.ala',
+      );
+    });
+
+    test('link status is personal when id missing or blank', () {
+      expect(
+        LivingDictionaryEntryLink.linkStatusForEntry({'lemma': 'a'}),
+        LivingDictionaryVerifiedLink.personalUnverified,
+      );
+      expect(
+        LivingDictionaryEntryLink.linkStatusForEntry({
+          'verified_lexeme_id': '  ',
+        }),
+        LivingDictionaryVerifiedLink.personalUnverified,
+      );
+      expect(
+        LivingDictionaryEntryLink.linkStatusForEntry({
+          'verified_lexeme_id': 'yo.lex.a',
+        }),
+        LivingDictionaryVerifiedLink.linked,
+      );
+    });
+  });
+
   group('LivingDictionaryListParse.parsePageNextBefore', () {
     test('reads page.nextBefore when present', () {
       expect(

@@ -1,0 +1,42 @@
+{
+  "@@locale": "ig",
+  "guidelines.title": "Community guidelines",
+  "@guidelines.title": {
+    "description": "Screen title for village safety rules"
+  },
+  "guidelines.intro": "These rules keep LingAfriq kind and safe while you learn. Each rule includes a short example.",
+  "@guidelines.intro": {
+    "description": "Intro paragraph on guidelines screen"
+  },
+  "guidelines.rule.1.title": "Be kind",
+  "guidelines.rule.1.body": "Do not bully, threaten, or pile on someone who is learning.",
+  "guidelines.rule.1.example": "Example: Do not mock a learner because they spelled ọkọ̀ wrong in a circle chat.",
+  "guidelines.rule.2.title": "No hate",
+  "guidelines.rule.2.body": "Do not attack people for who they are, where they are from, or what they believe.",
+  "guidelines.rule.2.example": "Example: Do not use slurs in chat.",
+  "guidelines.rule.3.title": "No spam",
+  "guidelines.rule.3.body": "Do not flood chats with ads, scams, or the same link over and over.",
+  "guidelines.rule.3.example": "Example: Do not paste the same ad in every chat.",
+  "guidelines.rule.4.title": "Help others learn",
+  "guidelines.rule.4.body": "Share tips that match our lessons. Do not derail practice with noise.",
+  "guidelines.rule.4.example": "Example: Share the lesson link when tone comes up.",
+  "guidelines.rule.5.title": "Keep everyone safe",
+  "guidelines.rule.5.body": "Do not share violent, sexual, or self-harm content. Report anything that feels unsafe.",
+  "guidelines.rule.5.example": "Example: Do not post nude photos in Village clips.",
+  "guidelines.rule.6.title": "Play fair",
+  "guidelines.rule.6.body": "Use your real learner profile. Do not pretend to be staff or another person.",
+  "guidelines.rule.6.example": "Example: Do not say you work for LingAfriq staff.",
+  "guidelines.linkLabel": "Read the matching community rule",
+  "@guidelines.linkLabel": {
+    "description": "Link from report flows to a guideline clause"
+  },
+  "guidelines.loadError": "We could not load the guidelines offline.",
+  "guidelines.retry": "Try again",
+  "guidelines.versionLine": "Version {version} · {date}",
+  "@guidelines.versionLine": {
+    "placeholders": {
+      "version": {"type": "String"},
+      "date": {"type": "String"}
+    }
+  }
+}

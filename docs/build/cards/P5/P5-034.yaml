@@ -1,0 +1,68 @@
+charter: v2
+id: P5-034
+kind: build
+title: Author cited culture cards with no Beta label
+phase: P5
+epic: E-P5-A1
+req_ids:
+- CP-§4-18
+- CP-§6-22
+- CP-§6-23
+depends_on:
+- P5-008
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 2, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- assets/data/culture/
+- tools/content/culture_linter.py
+- test/content/culture_test.py
+context_anchors:
+- CURRICULUM.md#§4:L568-L568
+- CURRICULUM.md#§6:L684-L689
+acceptance_criteria:
+- id: AC1
+  text: Given a culture card (greetings, kinship, food, festivals), when published, then it carries claim-level citations
+    to reputable sources
+- id: AC2
+  text: Given a culture card, when labelled, then it has a cultural reviewer and is never Beta
+- id: AC3
+  text: Given a claim without citation, when linted, then it fails CU-001
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - citation coverage 100%
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

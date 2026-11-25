@@ -176,7 +176,7 @@ class _EventCard extends StatelessWidget {
           borderRadius: PanAfricanRadius.lgBR,
           border: Border.all(
             color: isActive
-                ? PanAfricanColors.success
+                ? context.panSuccess
                 : (isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight),
             width: isActive ? 2 : 1,
           ),
@@ -193,7 +193,7 @@ class _EventCard extends StatelessWidget {
                       begin: Alignment.topRight,
                       end: Alignment.bottomLeft,
                       colors: [
-                        PanAfricanColors.success.withOpacity(0.1),
+                        context.panSuccess.withValues(alpha: 0.1),
                         Colors.transparent,
                       ],
                     ),
@@ -212,7 +212,7 @@ class _EventCard extends StatelessWidget {
                         width: 48.w,
                         height: 48.w,
                         decoration: BoxDecoration(
-                          color: PanAfricanColors.secondary.withOpacity(0.15),
+                          color: context.panSecondary.withValues(alpha: 0.15),
                           borderRadius: PanAfricanRadius.mdBR,
                         ),
                         child: Center(
@@ -239,7 +239,7 @@ class _EventCard extends StatelessWidget {
                                       vertical: PanAfricanSpacing.xxxs,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: PanAfricanColors.success,
+                                      color: context.panSuccess,
                                       borderRadius: PanAfricanRadius.roundBR,
                                     ),
                                     child: Text(
@@ -273,7 +273,7 @@ class _EventCard extends StatelessWidget {
                           vertical: PanAfricanSpacing.xxxs,
                         ),
                         decoration: BoxDecoration(
-                          color: PanAfricanColors.tertiary.withOpacity(0.15),
+                          color: context.panTertiary.withValues(alpha: 0.15),
                           borderRadius: PanAfricanRadius.roundBR,
                         ),
                         child: Row(
@@ -282,14 +282,14 @@ class _EventCard extends StatelessWidget {
                             Icon(
                               Icons.local_fire_department_rounded,
                               size: 14.sp,
-                              color: PanAfricanColors.tertiary,
+                              color: context.panTertiary,
                             ),
                             SizedBox(width: PanAfricanSpacing.xxxs),
                             Text(
                               '${event.xpMultiplier}× XP',
                               style: PanAfricanTypography.labelSmall(
                                 context,
-                                color: PanAfricanColors.tertiary,
+                                color: context.panTertiary,
                               ),
                             ),
                           ],
@@ -319,7 +319,7 @@ class _EventCard extends StatelessWidget {
                       Icon(
                         isActive ? Icons.hourglass_bottom_rounded : Icons.calendar_today_rounded,
                         size: 14.sp,
-                        color: isActive ? PanAfricanColors.success : PanAfricanColors.neutralMedium,
+                        color: isActive ? context.panSuccess : PanAfricanColors.neutralMedium,
                       ),
                       SizedBox(width: PanAfricanSpacing.xxxs),
                       Text(
@@ -328,7 +328,7 @@ class _EventCard extends StatelessWidget {
                             : 'Starts: ${DateFormat('MMM d, y').format(event.startDate)}',
                         style: PanAfricanTypography.labelSmall(
                           context,
-                          color: isActive ? PanAfricanColors.success : null,
+                          color: isActive ? context.panSuccess : null,
                         ),
                       ),
                     ],
@@ -407,7 +407,7 @@ class _EventDetailScreen extends StatelessWidget {
                       vertical: PanAfricanSpacing.xs,
                     ),
                     decoration: BoxDecoration(
-                      color: colorScheme.onPrimary.withOpacity(0.2),
+                      color: colorScheme.onPrimary.withValues(alpha: 0.2),
                       borderRadius: PanAfricanRadius.roundBR,
                     ),
                     child: Row(
@@ -502,13 +502,13 @@ class _EventDetailScreen extends StatelessWidget {
                                 width: 40.w,
                                 height: 40.w,
                                 decoration: BoxDecoration(
-                                  color: PanAfricanColors.secondary.withOpacity(0.15),
+                                  color: context.panSecondary.withValues(alpha: 0.15),
                                   shape: BoxShape.circle,
                                 ),
                                 child: Center(
                                   child: Icon(
                                     Icons.star_rounded,
-                                    color: PanAfricanColors.secondary,
+                                    color: context.panSecondary,
                                     size: 20.sp,
                                   ),
                                 ),
@@ -524,7 +524,7 @@ class _EventDetailScreen extends StatelessWidget {
                                 entry.value.toString(),
                                 style: PanAfricanTypography.titleSmall(
                                   context,
-                                  color: PanAfricanColors.secondary,
+                                  color: context.panSecondary,
                                 ),
                               ),
                             ],

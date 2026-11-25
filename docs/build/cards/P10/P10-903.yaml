@@ -1,0 +1,102 @@
+charter: v2
+id: P10-903
+kind: build
+title: 'Add Cowries sinks: cosmetics, repair, persona access'
+phase: P10
+epic: E-P10-GAMIFICATION
+req_ids:
+- EP-§12.2-08
+- EP-§12.2-09
+- EP-§12.2-10
+- EP-§12.3-09
+depends_on:
+- ADR-020
+- E-P1-CONTAINMENT
+- P10-902
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 5; blast 2; p0 area
+token_budget: 60000
+file_allowlist:
+- node-backend/src/services/sinks.service.ts
+- lib/screens/village/cowries_shop_screen.dart
+- lib/providers/gamification_provider.dart
+context_anchors:
+- ELEVATION.md#§12.2:L1820-L1821
+- ELEVATION.md#§12.3:L1840-L1840
+acceptance_criteria:
+- id: AC1
+  text: Given a learner has enough Cowries, when they buy a cosmetic avatar item, then the server debits the ledger once and
+    the item appears in their inventory.
+- id: AC2
+  text: Given a broken streak inside the repair window, when the learner spends Cowries to repair it, then the streak is restored
+    and the debit is one ledger row.
+- id: AC3
+  text: Given a persona chapter is reviewed and enabled, when the learner buys early access, then access is granted only for
+    chapters whose persona flag is enabled.
+- id: AC4
+  text: Given any item in the shop, when it is displayed, then it states in plain words exactly what it does and its Cowries
+    cost.
+- id: AC5
+  text: Given a balance too low, when the learner tries to buy, then purchase is blocked with a visible not-enough-Cowries
+    state and no debit.
+test_plan:
+  unit:
+  - debit once
+  - blocked when low
+  integration:
+  - repair restores streak
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - shop item labels
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - browse
+  - confirm
+  - insufficient
+  - owned
+  copy_keys:
+  - shop_buy_item
+  - shop_item_does
+  tokens:
+  - color.semantic
+  - type.scale
+  - space.scale
+  motion_tier: product
+  a11y:
+  - screen reader labels
+  - 48dp touch targets
+  - reduced motion honoured
+  goldens:
+  - shop_buy_item_golden
+tags:
+- enables_persona
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

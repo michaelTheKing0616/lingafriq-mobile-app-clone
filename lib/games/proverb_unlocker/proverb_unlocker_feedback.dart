@@ -3,6 +3,18 @@ import '../gamekit/game_turn_context.dart';
 import '../gamekit/game_scoring.dart';
 import 'proverb_unlocker_models.dart';
 
+/// Copy for a meaning choice. Strings stay the GameKit feedback lines.
+String proverbChoiceFeedback({
+  required bool correct,
+  required String meaning,
+}) {
+  if (correct) {
+    return 'Excellent! You understand the wisdom of this proverb.';
+  }
+  // The call keeps this the existing feedback line for the string inventory.
+  return 'Not quite right. This proverb means: ${meaning.toString()}';
+}
+
 /// ProverbUnlocker feedback engine
 class ProverbUnlockerFeedbackEngine implements GameFeedbackEngine {
   @override
@@ -12,7 +24,7 @@ class ProverbUnlockerFeedbackEngine implements GameFeedbackEngine {
 
     if (score.isPerfect) {
       return GameFeedback.success(
-        message: 'Excellent! You understand the wisdom of this proverb.',
+        message: proverbChoiceFeedback(correct: true, meaning: content.meaning),
         animationEvent: AnimationEvent.proud,
         metadata: {
           'proverb': content.proverb,
@@ -25,7 +37,8 @@ class ProverbUnlockerFeedbackEngine implements GameFeedbackEngine {
     if (score.isFail) {
       final feedback = details['feedback'] as String?;
       return GameFeedback.failure(
-        message: feedback ?? 'Not quite right. This proverb means: ${content.meaning}',
+        message: feedback ??
+            proverbChoiceFeedback(correct: false, meaning: content.meaning),
         animationEvent: AnimationEvent.encouraging,
         metadata: {
           'correct_answer': content.correctAnswer,
@@ -47,4 +60,3 @@ class ProverbUnlockerFeedbackEngine implements GameFeedbackEngine {
     );
   }
 }
-

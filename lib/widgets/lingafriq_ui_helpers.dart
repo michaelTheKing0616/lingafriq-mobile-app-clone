@@ -16,7 +16,7 @@ void showLingAfriqSuccess(BuildContext context, String message, {VoidCallback? o
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(message, style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 14.sp)),
-      backgroundColor: PanAfricanColors.success,
+      backgroundColor: context.panSuccess,
       behavior: SnackBarBehavior.floating,
       action: (onAction != null && actionLabel != null)
           ? SnackBarAction(label: actionLabel, textColor: Theme.of(context).colorScheme.onPrimary, onPressed: onAction)
@@ -31,7 +31,7 @@ void showLingAfriqError(BuildContext context, String message, {VoidCallback? onR
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(message, style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 14.sp)),
-      backgroundColor: PanAfricanColors.error,
+      backgroundColor: context.panError,
       behavior: SnackBarBehavior.floating,
       action: onRetry != null
           ? SnackBarAction(label: 'Try again', textColor: Theme.of(context).colorScheme.onPrimary, onPressed: onRetry)
@@ -45,7 +45,7 @@ void showLingAfriqInfo(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(message, style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 14.sp)),
-      backgroundColor: PanAfricanColors.info,
+      backgroundColor: context.panInfo,
       behavior: SnackBarBehavior.floating,
     ),
   );
@@ -74,7 +74,7 @@ class LingAfriqEmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final textColor = isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7) : PanAfricanColors.textSecondary;
+    final textColor = isDark ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7) : PanAfricanColors.textSecondary;
     return Center(
       child: Padding(
         padding: EdgeInsets.all(PanAfricanSpacing.xl),

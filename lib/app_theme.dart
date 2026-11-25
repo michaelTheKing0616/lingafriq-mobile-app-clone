@@ -1,40 +1,32 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lingafriq/theme/lingafriq_fonts.dart';
 import 'package:lingafriq/theme/stitch_theme_extensions.dart';
 import 'package:lingafriq/utils/modern_griot_design_system.dart';
 
-const _globalFontFallback = <String>[
-  'Plus Jakarta Sans',
-  'Noto Sans',
-  'NotoSans',
-  'Roboto',
-  'Segoe UI',
-  'Arial Unicode MS',
-  'Apple Color Emoji',
-  'Segoe UI Emoji',
-  'Segoe UI Symbol',
-  'Noto Color Emoji',
-];
+const _globalFontFallback = LingAfriqFonts.fallback;
 
 final lightTheme = ThemeData(
   useMaterial3: true,
-  fontFamily: 'Plus Jakarta Sans',
+  fontFamily: LingAfriqFonts.text,
   fontFamilyFallback: _globalFontFallback,
+  textTheme: LingAfriqFonts.textTheme(),
   brightness: Brightness.light,
   colorScheme: ModernGriotColorScheme.light,
   canvasColor: ModernGriotColors.surface,
   scaffoldBackgroundColor: ModernGriotColors.surface,
   cardColor: ModernGriotColors.surfaceContainerLowest,
   dividerColor: ModernGriotColors.onSurface.withValues(alpha: 0.08),
-  appBarTheme: AppBarTheme(
+  appBarTheme: const AppBarTheme(
     backgroundColor: Colors.transparent,
     elevation: 0,
     scrolledUnderElevation: 0,
-    iconTheme: const IconThemeData(color: ModernGriotColors.onSurface),
-    titleTextStyle: const TextStyle(
+    iconTheme: IconThemeData(color: ModernGriotColors.onSurface),
+    titleTextStyle: TextStyle(
       color: ModernGriotColors.onSurface,
       fontSize: 20,
       fontWeight: FontWeight.w600,
-      fontFamily: 'Plus Jakarta Sans',
+      fontFamily: LingAfriqFonts.display,
     ),
     centerTitle: true,
   ),
@@ -56,7 +48,7 @@ final lightTheme = ThemeData(
         borderRadius: BorderRadius.circular(ModernGriotRadius.full),
       ),
       textStyle: const TextStyle(
-        fontFamily: 'Plus Jakarta Sans',
+        fontFamily: LingAfriqFonts.display,
         fontWeight: FontWeight.w600,
         fontSize: 16,
       ),
@@ -73,7 +65,7 @@ final lightTheme = ThemeData(
         color: ModernGriotColors.outlineVariant.withValues(alpha: 0.15),
       ),
       textStyle: const TextStyle(
-        fontFamily: 'Plus Jakarta Sans',
+        fontFamily: LingAfriqFonts.display,
         fontWeight: FontWeight.w600,
         fontSize: 16,
       ),
@@ -83,7 +75,7 @@ final lightTheme = ThemeData(
     style: TextButton.styleFrom(
       foregroundColor: ModernGriotColors.primary,
       textStyle: const TextStyle(
-        fontFamily: 'Plus Jakarta Sans',
+        fontFamily: LingAfriqFonts.display,
         fontWeight: FontWeight.w700,
         fontSize: 16,
       ),
@@ -105,10 +97,7 @@ final lightTheme = ThemeData(
     ),
     focusedBorder: UnderlineInputBorder(
       borderRadius: BorderRadius.circular(ModernGriotRadius.md),
-      borderSide: const BorderSide(
-        color: ModernGriotColors.primary,
-        width: 2,
-      ),
+      borderSide: const BorderSide(color: ModernGriotColors.primary, width: 2),
     ),
     errorBorder: UnderlineInputBorder(
       borderRadius: BorderRadius.circular(ModernGriotRadius.md),
@@ -120,11 +109,11 @@ final lightTheme = ThemeData(
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
     hintStyle: const TextStyle(
       color: ModernGriotColors.onSurfaceVariant,
-      fontFamily: 'Plus Jakarta Sans',
+      fontFamily: LingAfriqFonts.text,
     ),
     labelStyle: const TextStyle(
       color: ModernGriotColors.onSurfaceVariant,
-      fontFamily: 'Plus Jakarta Sans',
+      fontFamily: LingAfriqFonts.text,
     ),
   ),
   pageTransitionsTheme: const PageTransitionsTheme(
@@ -143,15 +132,15 @@ final lightTheme = ThemeData(
       color: ModernGriotColors.onSurface,
       fontSize: 20,
       fontWeight: FontWeight.w600,
-      fontFamily: 'Plus Jakarta Sans',
+      fontFamily: LingAfriqFonts.display,
     ),
     contentTextStyle: const TextStyle(
       color: ModernGriotColors.onSurfaceVariant,
       fontSize: 16,
-      fontFamily: 'Plus Jakarta Sans',
+      fontFamily: LingAfriqFonts.text,
     ),
   ),
-  bottomSheetTheme: BottomSheetThemeData(
+  bottomSheetTheme: const BottomSheetThemeData(
     backgroundColor: ModernGriotColors.surfaceContainerLow,
     elevation: 0,
     shape: RoundedRectangleBorder(
@@ -169,7 +158,7 @@ final lightTheme = ThemeData(
       fontSize: 12,
       fontWeight: FontWeight.w600,
       letterSpacing: 0.5,
-      fontFamily: 'Plus Jakarta Sans',
+      fontFamily: LingAfriqFonts.text,
     ),
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     shape: RoundedRectangleBorder(
@@ -186,12 +175,12 @@ final lightTheme = ThemeData(
       color: ModernGriotColors.onSurface,
       fontSize: 16,
       fontWeight: FontWeight.w500,
-      fontFamily: 'Plus Jakarta Sans',
+      fontFamily: LingAfriqFonts.display,
     ),
     subtitleTextStyle: const TextStyle(
       color: ModernGriotColors.onSurfaceVariant,
       fontSize: 14,
-      fontFamily: 'Plus Jakarta Sans',
+      fontFamily: LingAfriqFonts.display,
     ),
   ),
   floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -211,18 +200,18 @@ final lightTheme = ThemeData(
           color: ModernGriotColors.primary,
           fontSize: 12,
           fontWeight: FontWeight.w600,
-          fontFamily: 'Plus Jakarta Sans',
+          fontFamily: LingAfriqFonts.text,
         );
       }
       return const TextStyle(
         color: ModernGriotColors.onSurfaceVariant,
         fontSize: 12,
         fontWeight: FontWeight.w500,
-        fontFamily: 'Plus Jakarta Sans',
+        fontFamily: LingAfriqFonts.text,
       );
     }),
   ),
-  extensions: <ThemeExtension>[
+  extensions: const <ThemeExtension>[
     ModernGriotThemeExtension.light,
     FlbEditorialTheme.light,
     StitchArcadeTheme.light,
@@ -232,15 +221,16 @@ final lightTheme = ThemeData(
 
 final darkTheme = ThemeData(
   useMaterial3: true,
-  fontFamily: 'Plus Jakarta Sans',
+  fontFamily: LingAfriqFonts.text,
   fontFamilyFallback: _globalFontFallback,
+  textTheme: LingAfriqFonts.textTheme(),
   brightness: Brightness.dark,
   colorScheme: ModernGriotColorScheme.dark,
   canvasColor: ModernGriotColorsDark.surface,
   scaffoldBackgroundColor: ModernGriotColorsDark.surface,
   cardColor: ModernGriotColorsDark.surfaceContainerLowest,
   dividerColor: ModernGriotColorsDark.onSurface.withValues(alpha: 0.08),
-  appBarTheme: AppBarTheme(
+  appBarTheme: const AppBarTheme(
     backgroundColor: Colors.transparent,
     elevation: 0,
     scrolledUnderElevation: 0,
@@ -249,7 +239,7 @@ final darkTheme = ThemeData(
       color: ModernGriotColorsDark.onSurface,
       fontSize: 20,
       fontWeight: FontWeight.w600,
-      fontFamily: 'Plus Jakarta Sans',
+      fontFamily: LingAfriqFonts.display,
     ),
     centerTitle: true,
   ),
@@ -271,7 +261,7 @@ final darkTheme = ThemeData(
         borderRadius: BorderRadius.circular(ModernGriotRadius.full),
       ),
       textStyle: const TextStyle(
-        fontFamily: 'Plus Jakarta Sans',
+        fontFamily: LingAfriqFonts.display,
         fontWeight: FontWeight.w600,
         fontSize: 16,
       ),
@@ -293,7 +283,7 @@ final darkTheme = ThemeData(
     style: TextButton.styleFrom(
       foregroundColor: ModernGriotColorsDark.primary,
       textStyle: const TextStyle(
-        fontFamily: 'Plus Jakarta Sans',
+        fontFamily: LingAfriqFonts.display,
         fontWeight: FontWeight.w700,
         fontSize: 16,
       ),
@@ -315,7 +305,7 @@ final darkTheme = ThemeData(
     ),
     focusedBorder: UnderlineInputBorder(
       borderRadius: BorderRadius.circular(ModernGriotRadius.md),
-      borderSide: BorderSide(
+      borderSide: const BorderSide(
         color: ModernGriotColorsDark.primary,
         width: 2,
       ),
@@ -328,9 +318,9 @@ final darkTheme = ThemeData(
       ),
     ),
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-    hintStyle: TextStyle(
+    hintStyle: const TextStyle(
       color: ModernGriotColorsDark.onSurfaceVariant,
-      fontFamily: 'Plus Jakarta Sans',
+      fontFamily: LingAfriqFonts.text,
     ),
   ),
   pageTransitionsTheme: const PageTransitionsTheme(
@@ -345,19 +335,19 @@ final darkTheme = ThemeData(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
     ),
-    titleTextStyle: TextStyle(
+    titleTextStyle: const TextStyle(
       color: ModernGriotColorsDark.onSurface,
       fontSize: 20,
       fontWeight: FontWeight.w600,
-      fontFamily: 'Plus Jakarta Sans',
+      fontFamily: LingAfriqFonts.display,
     ),
-    contentTextStyle: TextStyle(
+    contentTextStyle: const TextStyle(
       color: ModernGriotColorsDark.onSurfaceVariant,
       fontSize: 16,
-      fontFamily: 'Plus Jakarta Sans',
+      fontFamily: LingAfriqFonts.text,
     ),
   ),
-  bottomSheetTheme: BottomSheetThemeData(
+  bottomSheetTheme: const BottomSheetThemeData(
     backgroundColor: ModernGriotColorsDark.surfaceContainerLow,
     elevation: 0,
     shape: RoundedRectangleBorder(
@@ -370,12 +360,12 @@ final darkTheme = ThemeData(
   chipTheme: ChipThemeData(
     backgroundColor: ModernGriotColorsDark.surfaceVariant,
     selectedColor: ModernGriotColorsDark.primaryContainer,
-    labelStyle: TextStyle(
+    labelStyle: const TextStyle(
       color: ModernGriotColorsDark.onSurface,
       fontSize: 12,
       fontWeight: FontWeight.w600,
       letterSpacing: 0.5,
-      fontFamily: 'Plus Jakarta Sans',
+      fontFamily: LingAfriqFonts.text,
     ),
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     shape: RoundedRectangleBorder(
@@ -388,16 +378,16 @@ final darkTheme = ThemeData(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
     ),
-    titleTextStyle: TextStyle(
+    titleTextStyle: const TextStyle(
       color: ModernGriotColorsDark.onSurface,
       fontSize: 16,
       fontWeight: FontWeight.w500,
-      fontFamily: 'Plus Jakarta Sans',
+      fontFamily: LingAfriqFonts.display,
     ),
-    subtitleTextStyle: TextStyle(
+    subtitleTextStyle: const TextStyle(
       color: ModernGriotColorsDark.onSurfaceVariant,
       fontSize: 14,
-      fontFamily: 'Plus Jakarta Sans',
+      fontFamily: LingAfriqFonts.display,
     ),
   ),
   floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -410,25 +400,27 @@ final darkTheme = ThemeData(
   ),
   navigationBarTheme: NavigationBarThemeData(
     backgroundColor: ModernGriotColorsDark.surface.withValues(alpha: 0.8),
-    indicatorColor: ModernGriotColorsDark.primaryContainer.withValues(alpha: 0.2),
+    indicatorColor: ModernGriotColorsDark.primaryContainer.withValues(
+      alpha: 0.2,
+    ),
     labelTextStyle: WidgetStateProperty.resolveWith((states) {
       if (states.contains(WidgetState.selected)) {
-        return TextStyle(
+        return const TextStyle(
           color: ModernGriotColorsDark.primary,
           fontSize: 12,
           fontWeight: FontWeight.w600,
-          fontFamily: 'Plus Jakarta Sans',
+          fontFamily: LingAfriqFonts.text,
         );
       }
-      return TextStyle(
+      return const TextStyle(
         color: ModernGriotColorsDark.onSurfaceVariant,
         fontSize: 12,
         fontWeight: FontWeight.w500,
-        fontFamily: 'Plus Jakarta Sans',
+        fontFamily: LingAfriqFonts.text,
       );
     }),
   ),
-  extensions: <ThemeExtension>[
+  extensions: const <ThemeExtension>[
     ModernGriotThemeExtension.dark,
     FlbEditorialTheme.dark,
     StitchArcadeTheme.dark,

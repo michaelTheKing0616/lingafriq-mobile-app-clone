@@ -14,6 +14,8 @@ import 'package:flutter/foundation.dart'
 ///   options: DefaultFirebaseOptions.currentPlatform,
 /// );
 /// ```
+// API keys come from --dart-define (Doppler/CI secrets); none are committed.
+// See .env.example for the names.
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
@@ -40,7 +42,7 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCmrruENewwglxkBOwgFEULiriFXXrjcxo',
+    apiKey: String.fromEnvironment('FIREBASE_API_KEY_ANDROID'),
     appId: '1:202890241823:android:bb7801cf2cc6e5b878722a',
     messagingSenderId: '202890241823',
     projectId: 'lingafriq-mobile-app',
@@ -48,7 +50,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCZVxzwn2sOmkdBcMMXGsmhuscp1w5CGCA',
+    apiKey: String.fromEnvironment('FIREBASE_API_KEY_IOS'),
     appId: '1:202890241823:ios:ae2190c00d638d7e78722a',
     messagingSenderId: '202890241823',
     projectId: 'lingafriq-mobile-app',

@@ -1,5 +1,3 @@
-import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -9,6 +7,7 @@ import 'package:lingafriq/navigation/village_navigation.dart';
 import '../../providers/tab_scaffold_provider.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 class LanguageVillagesScreen extends HookConsumerWidget {
   const LanguageVillagesScreen({super.key});
@@ -27,10 +26,10 @@ class LanguageVillagesScreen extends HookConsumerWidget {
   ];
 
   static const _avatars = [
-    _WanderingAvatar('AK', Offset(0.3, 0.2), Color(0xFF9E3D00)),
-    _WanderingAvatar('OT', Offset(0.6, 0.38), Color(0xFF526124)),
-    _WanderingAvatar('BI', Offset(0.45, 0.6), Color(0xFF7B5733)),
-    _WanderingAvatar('ZN', Offset(0.8, 0.15), Color(0xFFFF7A35)),
+    _WanderingAvatar('AK', Offset(0.3, 0.2), LingAfriqTokens.hexFF9E3D00),
+    _WanderingAvatar('OT', Offset(0.6, 0.38), LingAfriqTokens.hexFF526124),
+    _WanderingAvatar('BI', Offset(0.45, 0.6), LingAfriqTokens.hexFF7B5733),
+    _WanderingAvatar('ZN', Offset(0.8, 0.15), LingAfriqTokens.hexFFFF7A35),
   ];
 
   @override
@@ -165,7 +164,7 @@ class LanguageVillagesScreen extends HookConsumerWidget {
                       Text(villageTitle,
                           style: ModernGriotTypography.labelMedium()),
                       SizedBox(width: 4.w),
-                      Text('•',
+                      const Text('•',
                           style: TextStyle(
                               color: ModernGriotColors.onSurfaceVariant)),
                       SizedBox(width: 4.w),

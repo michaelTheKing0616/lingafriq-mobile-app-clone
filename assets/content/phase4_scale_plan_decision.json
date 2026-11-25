@@ -1,0 +1,75 @@
+{
+  "charter": "v2",
+  "card_id": "P5-080",
+  "decision_date": "2026-10-27",
+  "owner": "Tope",
+  "approved_by": "Tope",
+  "sources": [
+    "CURRICULUM.md#§9.2:L815-L817",
+    "CURRICULUM.md#§7:L749-L752",
+    "assets/content/wave_roster_decision.json",
+    "tools/audio/exposure_rank.py"
+  ],
+  "planning_note": "Planning targets from CURRICULUM §9.2 phase 4; calendar dates assume month 0 = 2026-01 (Phase 0 start). Revisit when Phase 3 exit (P5-079) is green.",
+  "window": {
+    "label": "Phase 4 Scale",
+    "start_month": 9,
+    "end_month": 24,
+    "start_date": "2026-10-01",
+    "end_date": "2027-12-31"
+  },
+  "milestones": [
+    {
+      "id": "wave2_a1_beta",
+      "summary": "All fourteen Wave 2 languages reach A1 Beta (600–800 anchored lexicon, A1 units, Beta labels, blind sampling live).",
+      "owner": "Content Ops",
+      "target_date": "2027-06-30",
+      "depends_on": ["P5-079", "P4-120", "EXT-13"],
+      "success_criteria": [
+        "wave_roster_decision.wave_2 language_id each has published A1 Beta pack",
+        "G5-style Beta error gates measured per language"
+      ]
+    },
+    {
+      "id": "wave3_l0_taste",
+      "summary": "All twenty-five Wave 3 languages at L0 Taste (Expert-reviewed starter kits once kits and lexicon sources exist).",
+      "owner": "Content Ops",
+      "target_date": "2027-12-31",
+      "depends_on": ["wave2_a1_beta", "P4-120"],
+      "success_criteria": [
+        "wave_roster_decision.wave_3 language_id each has L0 Taste expert_reviewed catalogue row",
+        "language kit skeleton and licence register entry per language"
+      ]
+    },
+    {
+      "id": "living_archive_kits",
+      "summary": "Wave 4 Living Archive L0 community starter kits proceed under P4-111 wave_4_start_rule (Wave 1 L1 on all seven; Wave 2 L0 started for full roster).",
+      "owner": "Community + Content Ops",
+      "target_date": "2027-12-31",
+      "depends_on": ["P4-111", "wave3_l0_taste"],
+      "success_criteria": [
+        "wave_4_start_rule preconditions recorded in language_registry",
+        "L0 kits only; no Beta without reviewer panel (P4-122)"
+      ]
+    },
+    {
+      "id": "native_audio_by_exposure",
+      "summary": "Native recordings replace interim TTS in CURRICULUM §7 order: top 2000 exposed items per Stage-1 language first, then exposure_rank queue (P5-072); version bump via P5-074 removes Synthetic voice tag.",
+      "owner": "Voice + Content Ops",
+      "target_date": "2027-12-31",
+      "depends_on": ["P5-072", "P5-074", "EXT-13"],
+      "success_criteria": {
+        "initial_top_set_size": 2000,
+        "ranking_tool": "tools/audio/exposure_rank.py",
+        "dynamic_polie_tts_permanent_labeled": true
+      }
+    }
+  ],
+  "parallel_tracks": {
+    "stage_1_b1": {
+      "owner": "Content Ops",
+      "note": "Stage-1 seven languages continue B1 publish and expert promotion in parallel; not gated on Wave 2 completion."
+    }
+  },
+  "revisit_trigger": "Quarterly content steering or Phase 3 exit ledger green (P5-079)."
+}

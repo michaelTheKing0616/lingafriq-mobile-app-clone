@@ -1,0 +1,100 @@
+charter: v2
+id: P1-020
+kind: build
+title: Add age gate before account creation
+phase: P1
+epic: E-P1-MINORS
+req_ids:
+- P0-10
+- RM-P0-05
+depends_on:
+- E-P0-INTAKE
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T4
+  justification: 'score 7; blast 3; gate-critical (security / child safety / legal / design direction): Fable reviews'
+token_budget: 70000
+file_allowlist:
+- lib/screens/unified_onboarding_screen.dart
+- lib/providers/onboarding_provider.dart
+- node-backend/src/controllers/auth.controller.ts
+- node-backend/src/models/user.model.ts
+context_anchors:
+- ELEVATION.md#§1:L195-L206
+- ELEVATION.md#§16.1:L2033-L2035
+acceptance_criteria:
+- id: AC1
+  text: Given a new user in onboarding, when they have not provided a birth year, then account creation waits and the age
+    gate asks for the year only
+- id: AC2
+  text: Given a birth year under the country child threshold, when consent is missing, then no account data is stored, and
+    after verifiable parental consent the account is child mode with social, chat, marketplace, and ads gated off, moderated
+    AI only, and Historical Personas free chat still available under child-safe moderation
+- id: AC3
+  text: Given a birth year in the teen band for that country, when the account is created, then the profile is private and
+    direct messages from adults are gated off, and no feature is removed
+- id: AC4
+  text: Given a client posting an age band or a date of birth, when the server validates it, then the server computes the
+    band from the birth year and the per-country config and rejects a band that does not match
+- id: AC5
+  text: Given a child without consent, when the same device sends another birth year or band, then no account data is stored
+    before consent and the second request cannot widen access
+test_plan:
+  unit:
+  - age band computation
+  integration:
+  - sign-up API band tests
+  security:
+  - client-supplied band tamper
+  e2e:
+  - sign-up under-13 blocked
+  perf: []
+  a11y:
+  - date input labelled
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - age-entry
+  - blocked-under-13
+  - teen-restricted
+  - error
+  copy_keys:
+  - age.gate.title
+  - age.blocked.guardian
+  tokens:
+  - design-system form tokens
+  motion_tier: product
+  a11y:
+  - labelled inputs
+  - error announced
+  goldens:
+  - age_gate
+  - age_blocked
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "D11, signed 2026-10-23: birth year only. Child mode waits for verifiable parental consent before any account data is stored. Features are gated, not removed. Historical Personas free chat stays under child-safe moderation."
+- Existing users have unknown age (handled by P1-021)
+gate: G1
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

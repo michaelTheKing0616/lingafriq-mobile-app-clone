@@ -1,0 +1,107 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P10
+epic: E-P10-ME
+hub: Me
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: Me hub screen revive or consolidation; no real-time audio
+token_budget: 80000
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f_141.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+p0_area: true
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+test_plan:
+  unit:
+  - league bucket logic
+  - opt-out flag
+  integration:
+  - standings tab vs league screen parity
+  e2e:
+  - league view from Me
+  a11y:
+  - pinned row announcement
+  content: []
+tags: []
+id: F-141
+title: Elevate Leaderboards
+req_ids:
+- F-141
+- F-141.D
+- F-141.E
+- F-141.U
+- F-141.L
+- P0-8
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P6-SCORER
+- E-P1-ECONOMY
+file_allowlist:
+- screens/gamification/leaderboard_screen.dart
+- screens/tabs_view/standings/standings_tab_material3.dart
+context_anchors:
+- ELEVATION.md#§18.7:L5492-L5504
+delta:
+  current_state: Leaderboard route and standings tab work.
+  defects_to_fix:
+  - Board is cheatable
+  - Demotivating for beginners
+  elevation_to_build:
+  - Leagues of 30 similar learners with weekly promotion
+  - Opt-out and circle or country boards
+  - Points only from verified learning events
+  ux_and_render:
+  - League ladder with pinned user row
+  hub_placement: Me → Leagues; Village → Circles
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given league assignment, when standings load, then points match server totals from verified events only.
+- id: AC2
+  text: Given opt-out enabled, when user toggles off, then they leave public leagues with honest confirmation.
+- id: AC3
+  text: Given beginner cohort, when ladder renders, then user row is pinned without exposing global top-only ranking.
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

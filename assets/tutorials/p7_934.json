@@ -1,0 +1,103 @@
+{
+  "card": "P7-934",
+  "built": "2026-10-27",
+  "language_code": "yo",
+  "pack_citation": "register:fsi-yoruba; CURRICULUM.md#§4:L522-L523; ELEVATION.md#§11.2:L1788-L1789; assets/data/tone/minimal_pairs.json",
+  "publish_status": "draft",
+  "native_reviewer_sign_offs": [],
+  "tutorials": [
+    {
+      "id": "yo-sound-tones-subdot",
+      "title": "Tones and subdot vowels",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 22,
+          "body_en": "Dot-below vowels ẹ and ọ and the letter ṣ are part of standard Yoruba spelling (assets/data/keyboard/layouts.json, yo). Written tone uses high ´ and low `; mid is often left unmarked (CURRICULUM.md#§4:L522-L523).",
+          "source_ids": [
+            "assets/data/keyboard/layouts.json",
+            "CURRICULUM.md#§4:L522-L523"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 24,
+          "body_en": "Watch the mouth shape while you hear the contrast between ọkọ́ (hoe) and ọkọ̀ (vehicle) — tone changes meaning (assets/data/tone/minimal_pairs.json, yo.tone.oko_hoe_vehicle).",
+          "source_ids": [
+            "assets/data/tone/minimal_pairs.json#yo.tone.oko_hoe_vehicle",
+            "register:fsi-yoruba; CURRICULUM.md#§7:L710-L713"
+          ],
+          "mouth_video_uri": null,
+          "audio_uri": "audio/yo/a1b2c3d4e5f67890.ogg",
+          "contrast_forms": [
+            {
+              "form": "ọkọ́",
+              "gloss_en": "hoe",
+              "lexicon_ref": "yo.lex.ọkọ.hoe"
+            },
+            {
+              "form": "ọkọ̀",
+              "gloss_en": "vehicle",
+              "lexicon_ref": "yo.lex.ọkọ.vehicle"
+            }
+          ]
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 24,
+          "body_en": "Which form means vehicle: ọkọ́ or ọkọ̀? Use the tone you heard in the see step.",
+          "source_ids": ["assets/data/tone/minimal_pairs.json#yo.tone.oko_hoe_vehicle"],
+          "drill_id": "yo.tone.oko_hoe_vehicle",
+          "correct_lexicon_ref": "yo.lex.ọkọ.vehicle"
+        }
+      ]
+    },
+    {
+      "id": "yo-sound-gb-kp",
+      "title": "gb and kp",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 20,
+          "body_en": "Yoruba has labio-velar consonants written gb and kp (ELEVATION.md#§11.2:L1789). This tutorial pairs each sound with a cited example word and native mouth video when capture is available (P7-933; EXT-13).",
+          "source_ids": ["ELEVATION.md#§11.2:L1789"]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 26,
+          "body_en": "Compare mouth placement for gb in gbe and for kp once a lexicon-anchored example word is approved.",
+          "source_ids": ["assets/data/lexicon/a1/yo.json"],
+          "labiovelar_examples": [
+            {
+              "phoneme": "gb",
+              "lemma": "gbe",
+              "lexicon_id": "yo.lex.b3bd8a61fd66",
+              "frequency_source_id": "leipzig",
+              "licence_id": "leipzig",
+              "audio_uri": null,
+              "mouth_video_uri": null,
+              "media_gate": "EXT-13_native_capture"
+            },
+            {
+              "phoneme": "kp",
+              "lemma": null,
+              "lexicon_id": null,
+              "gate": "KP_LEXICON_ANCHOR_PENDING",
+              "audio_uri": null,
+              "mouth_video_uri": null,
+              "media_gate": "KP_LEXICON_ANCHOR_PENDING"
+            }
+          ]
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 24,
+          "body_en": "Repeat gbe after the gb clip. The kp repeat step stays locked until a native reviewer supplies a cited kp example word.",
+          "source_ids": ["assets/data/lexicon/a1/yo.json#yo.lex.b3bd8a61fd66"],
+          "repeat_lemma": "gbe",
+          "kp_repeat_gate": "KP_LEXICON_ANCHOR_PENDING"
+        }
+      ]
+    }
+  ]
+}

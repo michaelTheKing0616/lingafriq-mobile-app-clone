@@ -1,0 +1,64 @@
+charter: v2
+id: P12-020
+kind: verification
+title: Rehearse schema-versioned local migrations drill
+phase: P12
+epic: E-P12-RELEASE
+req_ids:
+- P0-20
+- RM-P0-09
+depends_on:
+- P12-019
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: 'score 3: blast 1, ambiguity 1, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§1:L315-L320
+acceptance_criteria:
+- id: AC1
+  text: Given a device on the previous release with real-shaped local data, when it upgrades to the candidate build, then
+    all local data migrates with 0 loss and no forced logout
+- id: AC2
+  text: Given local data has an unknown newer schema version, when the app opens, then it shows a typed error state and does
+    not overwrite the data
+- id: AC3
+  text: Given the drill ends, when the report is written, then it lists every schema version tested and the pass/fail per
+    version
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks:
+- Run before every release that changes a local schema
+gate: G12
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

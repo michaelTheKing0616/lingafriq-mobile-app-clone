@@ -171,6 +171,7 @@ class _PronunciationPracticeScreenState extends ConsumerState<PronunciationPract
   }
 
   Widget _buildLessonItemCard() {
+    final ColorScheme scheme = Theme.of(context).colorScheme;
     return Card(
       elevation: 4,
       child: Padding(
@@ -196,7 +197,11 @@ class _PronunciationPracticeScreenState extends ConsumerState<PronunciationPract
               const SizedBox(height: 8),
               Text(
                 '/${widget.lessonItem.ipa}/',
-                style: TextStyle(fontSize: 20, color: Colors.grey[600], fontStyle: FontStyle.italic),
+                style: TextStyle(
+                  fontSize: 20,
+                  color: scheme.onSurfaceVariant,
+                  fontStyle: FontStyle.italic,
+                ),
               ),
             ],
             const SizedBox(height: 8),
@@ -210,7 +215,7 @@ class _PronunciationPracticeScreenState extends ConsumerState<PronunciationPract
                 spacing: 8,
                 children: widget.lessonItem.tonePattern!.map((tone) => Chip(
                   label: Text(tone),
-                  color: WidgetStateProperty.all(Colors.blue[100]),
+                  color: WidgetStateProperty.all(scheme.primaryContainer),
                 )).toList(),
               ),
             ],
@@ -230,7 +235,9 @@ class _PronunciationPracticeScreenState extends ConsumerState<PronunciationPract
               iconSize: 80,
               icon: Icon(
                 _isRecording ? Icons.stop_circle : Icons.mic,
-                color: _isRecording ? Colors.red : Theme.of(context).primaryColor,
+                color: _isRecording
+                    ? Theme.of(context).colorScheme.error
+                    : Theme.of(context).colorScheme.primary,
               ),
               onPressed: _isRecording ? _stopRecording : _startRecording,
             ),
@@ -253,11 +260,10 @@ class _PronunciationPracticeScreenState extends ConsumerState<PronunciationPract
     if (_lastResult == null) return const SizedBox.shrink();
 
     final result = _lastResult!;
+    final ColorScheme scheme = Theme.of(context).colorScheme;
     final scoreColor = result.overallScore > 0.8
-        ? Colors.green
-        : result.overallScore > 0.6
-            ? Colors.orange
-            : Colors.red;
+        ? scheme.primary
+        : scheme.error;
 
     return Card(
       child: Padding(
@@ -274,9 +280,9 @@ class _PronunciationPracticeScreenState extends ConsumerState<PronunciationPract
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _buildScoreCircle('Overall', result.overallScore, scoreColor),
-                _buildScoreCircle('Phoneme', result.phonemeAccuracy, Colors.blue),
-                _buildScoreCircle('Tone', result.toneAccuracy, Colors.purple),
-                _buildScoreCircle('Fluency', result.fluencyScore, Colors.teal),
+                _buildScoreCircle('Phoneme', result.phonemeAccuracy, scheme.primary),
+                _buildScoreCircle('Tone', result.toneAccuracy, scheme.tertiary),
+                _buildScoreCircle('Fluency', result.fluencyScore, scheme.secondary),
               ],
             ),
             const SizedBox(height: 24),
@@ -297,7 +303,7 @@ class _PronunciationPracticeScreenState extends ConsumerState<PronunciationPract
                 padding: const EdgeInsets.only(bottom: 4.0),
                 child: Row(
                   children: [
-                    const Icon(Icons.lightbulb_outline, size: 16, color: Colors.amber),
+                    Icon(Icons.lightbulb_outline, size: 16, color: scheme.tertiary),
                     const SizedBox(width: 8),
                     Expanded(child: Text(suggestion)),
                   ],
@@ -345,7 +351,7 @@ class _PronunciationPracticeScreenState extends ConsumerState<PronunciationPract
           child: CircularProgressIndicator(
             value: score,
             strokeWidth: 6,
-            backgroundColor: color.withOpacity(0.2),
+            backgroundColor: color.withValues(alpha: 0.2),
             valueColor: AlwaysStoppedAnimation<Color>(color),
           ),
         ),

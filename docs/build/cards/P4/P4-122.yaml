@@ -1,0 +1,81 @@
+charter: v2
+id: P4-122
+kind: build
+title: Enforce two-native plus linguist validation stage
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.4-46
+- EP-§6.4-58
+- EP-§6.4-59
+- EP-§6.4-71
+- EP-§6.4-72
+depends_on:
+- P4-121
+- P4-100
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 2, ambiguity 2, coupling 1'
+token_budget: 60000
+file_allowlist:
+- tools/content_pipeline/native_validation.py
+- schemas/v2/review_record.schema.json
+- test/content/test_native_validation.py
+context_anchors:
+- ELEVATION.md#§6.4.1:L1264-L1292
+- DECISIONS.md#D1
+acceptance_criteria:
+- id: AC1
+  text: Given a learner-facing string, when promoted to native_verified, then two independent native approvals and one linguist
+    adjudication are recorded, else PROMOTION_REJECTED listing the missing approvals
+- id: AC2
+  text: Given tone marks, diacritics, cultural claims, persona facts or audio, when a review record has only AI provenance,
+    then approval is rejected AI_ONLY_FORBIDDEN
+- id: AC3
+  text: Given two reviewers who disagree, when adjudicated, then the disagreement is stored as a dialect note and the object
+    is never silently edited
+- id: AC4
+  text: Given interim Beta content, when published before native review, then it carries label beta, appears with the Beta
+    label and is excluded from checkpoints, placement, credentials and children's mode (D1)
+- id: AC5
+  text: Given the same reviewer on both slots, when submitted, then it counts as one native and fails the two-native check
+test_plan:
+  unit:
+  - test_native_validation
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - approval matrix
+user_facing: false
+ux_spec: null
+tags:
+- native_verified_rule
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-11
+- EXT-13
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

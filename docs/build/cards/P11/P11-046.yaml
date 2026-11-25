@@ -1,0 +1,67 @@
+charter: v2
+id: P11-046
+kind: build
+title: Build skin-tone and colour properties across ≥10 tones
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§4.2-35
+- EP-§4.2-36
+- EP-§4.3-21
+- EP-§4.6-19
+depends_on:
+- P11-045
+- P11-034
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 3: blast 1, ambiguity 1, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist:
+- lib/avatars/customisation/palette.dart
+- test/avatars/skin_tone_golden_test.dart
+context_anchors:
+- ELEVATION.md#§4.2:L902
+- ELEVATION.md#§4.6:L1013-L1014
+acceptance_criteria:
+- id: AC1
+  text: Given the skin-tone set, when bound, then ≥10 tones with correct undertones render on the face, chip and Bust.
+- id: AC2
+  text: Given hairColor and outfit colours, when changed, then they apply without re-export.
+test_plan:
+  unit:
+  - tone set count ≥10
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - consultant review
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers:
+- EXT-14
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

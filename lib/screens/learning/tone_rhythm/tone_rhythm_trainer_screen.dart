@@ -263,15 +263,15 @@ class _ToneRhythmTrainerScreenState extends State<ToneRhythmTrainerScreen> {
                     hintText: 'Type the phrase (with tone marks if applicable)',
                     filled: true,
                     fillColor: isDark
-                        ? Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.35)
-                        : Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.6),
+                        ? Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.35)
+                        : Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.6),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide(color: Theme.of(context).dividerColor.withOpacity(0.2)),
+                      borderSide: BorderSide(color: Theme.of(context).dividerColor.withValues(alpha: 0.2)),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide(color: Theme.of(context).dividerColor.withOpacity(0.2)),
+                      borderSide: BorderSide(color: Theme.of(context).dividerColor.withValues(alpha: 0.2)),
                     ),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                   ),
@@ -375,7 +375,7 @@ class _ResultCard extends StatelessWidget {
           ),
           if (meaningRisk) ...[
             const SizedBox(height: 8),
-            _Notice(
+            const _Notice(
               tone: _NoticeTone.warn,
               title: 'Meaning risk: high',
               message: 'Tone errors on a short phrase can change meaning. Slow down and exaggerate contour first, then speed up.',
@@ -440,7 +440,7 @@ class _Card extends StatelessWidget {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(18),
         boxShadow: PanAfricanShadows.sm,
-        border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.12)),
+        border: Border.all(color: Theme.of(context).dividerColor.withValues(alpha: 0.12)),
       ),
       child: child,
     );
@@ -470,7 +470,7 @@ class _StatusPill extends StatelessWidget {
         fg = scheme.onErrorContainer;
         break;
       case _PillTone.neutral:
-        bg = scheme.surfaceContainerHighest.withOpacity(0.7);
+        bg = scheme.surfaceContainerHighest.withValues(alpha: 0.7);
         fg = scheme.onSurface;
         break;
     }
@@ -504,7 +504,7 @@ class _MetricChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    Color bg = scheme.surfaceContainerHighest.withOpacity(0.65);
+    Color bg = scheme.surfaceContainerHighest.withValues(alpha: 0.65);
     Color fg = scheme.onSurface;
     if (tone == _ChipTone.success) {
       bg = scheme.primaryContainer;
@@ -525,7 +525,7 @@ class _MetricChip extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: PanAfricanTypography.bodySmall(context).copyWith(color: fg.withOpacity(0.9))),
+          Text(label, style: PanAfricanTypography.bodySmall(context).copyWith(color: fg.withValues(alpha: 0.9))),
           Text(value, style: PanAfricanTypography.titleSmall(context).copyWith(color: fg)),
         ],
       ),

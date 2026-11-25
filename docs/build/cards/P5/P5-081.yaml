@@ -1,0 +1,64 @@
+charter: v2
+id: P5-081
+kind: build
+title: Select A2 lexicon to about 1,500 cumulative lexemes
+phase: P5
+epic: E-P5-A2
+req_ids:
+- CP-§4-06
+depends_on:
+- P5-016
+size: L
+difficulty:
+  score: 8
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T1
+  reviewer: T3
+  justification: 'score 8: blast 2, ambiguity 1, coupling 2, depth 2'
+token_budget: 150000
+file_allowlist:
+- tools/content/lexicon_select.py
+- assets/data/lexicon/a2/
+- test/content/lexicon_a2_test.py
+context_anchors:
+- CURRICULUM.md#§4:L559-L559
+acceptance_criteria:
+- id: AC1
+  text: Given a Stage-1 language, when A2 is built, then cumulative lexemes reach about 1,500 with each lexeme source-licensed
+- id: AC2
+  text: Given tonal languages, when a lexeme lacks an anchor, then it goes to linguist review and is not Beta
+- id: AC3
+  text: Given the build, when counting, then a language outside the target range fails the gate
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - count per language
+user_facing: false
+ux_spec: null
+tags:
+- uses_source
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G6
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

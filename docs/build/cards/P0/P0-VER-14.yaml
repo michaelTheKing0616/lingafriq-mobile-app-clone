@@ -1,0 +1,54 @@
+charter: v2
+id: P0-VER-14
+kind: verification
+title: Verify Igbo Ọnwụ orthography citation
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- UNV-C01
+depends_on:
+- E-P0-INTAKE
+- EXT-11
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: verification only; result recorded, never inferred
+token_budget: 20000
+file_allowlist:
+- docs/build/verification/P0-VER-14.md
+- docs/build/UNVERIFIED.md
+context_anchors:
+- CURRICULUM.md#§2.4:L312
+acceptance_criteria:
+- id: AC1
+  text: Given the cited orthography source, when a linguist checks it, then the citation text, edition and page are confirmed
+    or corrected in the licence and source register
+- id: AC2
+  text: Given no linguist response, when the gate nears, then the citation stays marked [verify] in the register
+user_facing: false
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- docs/build/verification/P0-VER-14.md
+- UNVERIFIED.md row updated
+risks: []
+gate: G4
+external_blockers:
+- EXT-11
+owner: external
+status: Blocked-External
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

@@ -14,8 +14,11 @@ class HeartsState {
   final int currentHearts;
   final int maxHearts;
   final DateTime? nextHeartAt;
-  final bool isUnlimited; // For premium users or challenge mode off
+  final bool isUnlimited; // For premium users
+  /// Learner opted in to Challenge Mode (off by default).
   final bool challengeModeEnabled;
+  /// Hearts apply only while a run started from Challenge Mode is active.
+  final bool challengeRunActive;
 
   HeartsState({
     this.currentHearts = HeartsConfig.maxHearts,
@@ -23,10 +26,17 @@ class HeartsState {
     this.nextHeartAt,
     this.isUnlimited = false,
     this.challengeModeEnabled = false,
+    this.challengeRunActive = false,
   });
 
-  /// Check if user has hearts to continue
-  bool get hasHearts => isUnlimited || currentHearts > 0;
+  /// Hearts gate gameplay only during an active Challenge Mode run.
+  bool get heartsApply =>
+      challengeModeEnabled && challengeRunActive && !isUnlimited;
+
+  /// Check if user has hearts to continue (always true outside Challenge runs).
+  bool get hasHearts => !heartsApply || isUnlimited || currentHearts > 0;
+
+  bool get showHeartsUi => heartsApply;
 
   /// Check if hearts are regenerating
   bool get isRegenerating => 
@@ -69,6 +79,7 @@ class HeartsState {
     DateTime? nextHeartAt,
     bool? isUnlimited,
     bool? challengeModeEnabled,
+    bool? challengeRunActive,
   }) {
     return HeartsState(
       currentHearts: currentHearts ?? this.currentHearts,
@@ -76,6 +87,7 @@ class HeartsState {
       nextHeartAt: nextHeartAt ?? this.nextHeartAt,
       isUnlimited: isUnlimited ?? this.isUnlimited,
       challengeModeEnabled: challengeModeEnabled ?? this.challengeModeEnabled,
+      challengeRunActive: challengeRunActive ?? this.challengeRunActive,
     );
   }
 
@@ -85,6 +97,7 @@ class HeartsState {
     'nextHeartAt': nextHeartAt?.toIso8601String(),
     'isUnlimited': isUnlimited,
     'challengeModeEnabled': challengeModeEnabled,
+    'challengeRunActive': challengeRunActive,
   };
 
   factory HeartsState.fromJson(Map<String, dynamic> json) {
@@ -96,6 +109,7 @@ class HeartsState {
           : null,
       isUnlimited: json['isUnlimited'] as bool? ?? false,
       challengeModeEnabled: json['challengeModeEnabled'] as bool? ?? false,
+      challengeRunActive: json['challengeRunActive'] as bool? ?? false,
     );
   }
 }
@@ -125,5 +139,21 @@ class HeartDisplayData {
       timeRemaining: state.timeUntilNextHeartFormatted,
     );
   }
+}
+
+class ChallengeRunResult {
+  final bool won;
+  final int heartsRemaining;
+  final List<String> badges;
+  final bool braggingRecorded;
+  final bool serverSyncFailed;
+
+  const ChallengeRunResult({
+    required this.won,
+    required this.heartsRemaining,
+    required this.badges,
+    this.braggingRecorded = false,
+    this.serverSyncFailed = false,
+  });
 }
 

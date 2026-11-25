@@ -1,0 +1,77 @@
+charter: v2
+id: P9-926
+kind: build
+title: Classify images and video and compute perceptual hashes
+phase: P9
+epic: E-P9-MODERATION
+req_ids:
+- EP-§9.4-14
+- EP-§9.4-15
+- EP-§9.3-21
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+- P9-910
+- P9-921
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, ambiguity 1, coupling 2, depth 1'
+token_budget: 80000
+file_allowlist:
+- node-backend/src/services/moderation/imageClassifier.ts
+- node-backend/src/services/moderation/perceptualHash.ts
+context_anchors:
+- ELEVATION.md#§9.4:L1646-L1647
+- ELEVATION.md#§9.3:L1639
+acceptance_criteria:
+- id: AC1
+  text: Given an uploaded image or sampled video frames, when processed, then a classifier verdict and a perceptual hash are
+    stored with the media record before the media becomes visible to other users
+- id: AC2
+  text: Given a hash matching the internal banned-content list, when uploaded again, then it is blocked with MEDIA_BANNED
+    and the uploader is flagged
+- id: AC3
+  text: Given the classifier returns 'unsure', when the upload is from a minor or to a minor-visible surface, then it is held
+    for human review
+- id: AC4
+  text: Given video longer than the sampling window, when processed, then frames are sampled at the configured interval and
+    the card documents the coverage
+test_plan:
+  unit:
+  - hash compare
+  integration:
+  - upload to visibility gate
+  security:
+  - hash evasion tests
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,71 @@
+charter: v2
+id: P7-917
+kind: build
+title: Attach 2-3 native recordings per lexicon entry
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§17.7-15
+depends_on:
+- P7-916
+- E-P5-CONTENT-REAL
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, coupling 1, depth 1'
+token_budget: 60000
+file_allowlist:
+- node-backend/src/services/lexiconAudio.service.ts
+- node-backend/src/models/lexiconAudio.model.ts
+- lib/services/lexicon_audio_client.dart
+- test/services/lexicon_audio_client_test.dart
+context_anchors:
+- ELEVATION.md#§17.7:L2413-L2416
+acceptance_criteria:
+- id: AC1
+  text: Given an entry, when audio is attached, then it holds 2 to 3 native recordings with speaker age band and gender metadata
+- id: AC2
+  text: Given fewer than 2 recordings, when the entry is read, then it is flagged Needs more voices and still plays what exists
+- id: AC3
+  text: Given a recording, when it is stored, then consent and licence metadata are required and missing metadata fails loudly
+- id: AC4
+  text: Given more than 3 recordings are supplied, when saved, then the extras are rejected with a typed error
+test_plan:
+  unit:
+  - recording count rules
+  - metadata required
+  integration:
+  - upload and fetch
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- recordings depend on native voice talent (EXT-13)
+gate: HUB
+external_blockers:
+- EXT-13
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

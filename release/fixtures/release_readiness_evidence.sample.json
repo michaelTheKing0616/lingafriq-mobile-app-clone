@@ -1,0 +1,12 @@
+{
+  "apk_size_gate": {"passed": true, "card": "P12-004"},
+  "cold_start_trace": {"passed": true, "card": "P12-012"},
+  "frame_cost": {"passed": true, "card": "P12-013"},
+  "api_read_p95": {"passed": true, "card": "P12-014"},
+  "chat_delivery_p95": {"passed": true, "card": "P12-015"},
+  "rollout_gate": {"passed": true, "card": "P12-016"},
+  "rollback_drill": {"passed": true, "card": "P12-017"},
+  "mongo_pit_restore": {"passed": true, "card": "P12-018"},
+  "chaos_offline": {"passed": true, "card": "P12-019"},
+  "local_migration_drill": {"passed": true, "card": "P12-020"}
+}

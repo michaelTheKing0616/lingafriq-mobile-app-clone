@@ -1,0 +1,101 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P10
+epic: E-P10-ME
+hub: Me
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: Me hub screen revive or consolidation; no real-time audio
+token_budget: 80000
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f_151.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+p0_area: true
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+test_plan:
+  unit:
+  - role gate from token claims
+  integration:
+  - staff route with auth epic
+  e2e:
+  - staff user opens queue
+  a11y:
+  - queue list semantics
+  content: []
+tags: []
+id: F-151
+title: Elevate Staff & Micro-mentor Reports
+req_ids:
+- F-151
+- F-151.D
+- F-151.E
+- F-151.U
+- F-151.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P1-AUTH
+file_allowlist:
+- screens/staff/micro_mentor_reports_screen.dart
+context_anchors:
+- ELEVATION.md#§18.7:L5631-L5647
+delta:
+  current_state: Staff reports route works from drawer; role checks unverified.
+  defects_to_fix:
+  - Consumer app exposes staff tooling without verified gating
+  elevation_to_build:
+  - Keep mobile queue for verified staff roles
+  - Server-checked roles with fuller admin console counterpart
+  ux_and_render:
+  - Role-gated compact queue
+  hub_placement: Me → Staff (role-gated)
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given a non-staff user, when Me loads, then Staff entry is hidden and direct route returns forbidden.
+- id: AC2
+  text: Given server grants staff role, when queue opens, then reports list loads from API not static placeholders.
+- id: AC3
+  text: Given role revoked mid-session, when user refreshes, then access removes without client-side bypass.
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

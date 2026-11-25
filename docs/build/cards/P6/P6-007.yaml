@@ -1,0 +1,70 @@
+charter: v2
+id: P6-007
+kind: build
+title: Add kill switches and feature flags per mode
+phase: P6
+epic: E-P6-GATEWAY
+req_ids:
+- EP-§7.2-08
+- EP-§7.2-09
+depends_on:
+- P6-002
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 3, ambiguity 1, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/flags.ts
+- node-backend/src/ai-gateway/killSwitch.ts
+- node-backend/src/routes/admin-ai.route.ts
+context_anchors:
+- ELEVATION.md#§7.2:L1367-L1387
+acceptance_criteria:
+- id: AC1
+  text: Given an admin sets a mode kill switch, when a request arrives within 5 seconds, then it returns typed error mode_disabled
+    and no model call is made
+- id: AC2
+  text: Given a global kill switch, when set, then all 8 modes and speech routes refuse with mode_disabled
+- id: AC3
+  text: Given a feature flag scoped to language and tier, when evaluated, then only matching users see the mode
+- id: AC4
+  text: Given a non-admin token, when it calls the switch endpoint, then HTTP 403 is returned
+test_plan:
+  unit:
+  - flag evaluation
+  integration:
+  - kill propagates
+  security:
+  - admin route authZ
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.lingafriq.com/v2/language_kit.schema.json",
+  "title": "LingAfriq Language Kit (week 0–1)",
+  "description": "Orthography, phonology, seed lexicon and reviewer panel before AI bootstrap (ELEVATION §6.4.1).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "charter",
+    "card_id",
+    "language_id",
+    "entry_id",
+    "status",
+    "week_target_days",
+    "started_at",
+    "is_tonal",
+    "open_tasks",
+    "reviewer_panel",
+    "seed_lexicon"
+  ],
+  "properties": {
+    "charter": { "type": "string", "const": "v2" },
+    "card_id": { "type": "string", "const": "P4-120" },
+    "language_id": { "type": "string", "minLength": 1 },
+    "entry_id": { "type": "string", "minLength": 1 },
+    "status": { "type": "string", "enum": ["open", "complete"] },
+    "week_target_days": { "type": "integer", "const": 7 },
+    "started_at": { "type": "string", "minLength": 10 },
+    "is_tonal": { "type": "boolean" },
+    "overdue": { "type": "boolean" },
+    "days_elapsed": { "type": "integer", "minimum": 0 },
+    "orthography": { "$ref": "#/$defs/orthography_spec" },
+    "dialect_standard": { "type": ["string", "null"] },
+    "phone_inventory": {
+      "type": ["array", "null"],
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "tone_system": { "$ref": "#/$defs/tone_system" },
+    "phoneme_viseme_table": {
+      "type": ["array", "null"],
+      "items": { "$ref": "#/$defs/viseme_row" }
+    },
+    "seed_lexicon": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/seed_entry" }
+    },
+    "reviewer_panel": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/reviewer" }
+    },
+    "open_tasks": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "orthography_spec": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["unicode_normalization", "script", "diacritics_policy", "keyboard_layout"],
+      "properties": {
+        "unicode_normalization": { "type": "string", "const": "NFC" },
+        "script": { "type": "string", "minLength": 1 },
+        "diacritics_policy": { "type": "string", "minLength": 1 },
+        "keyboard_layout": { "type": "string", "minLength": 1 }
+      }
+    },
+    "tone_system": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["register_levels", "marking_convention_ref"],
+      "properties": {
+        "register_levels": { "type": "integer", "minimum": 1 },
+        "marking_convention_ref": { "type": "string", "minLength": 1 }
+      }
+    },
+    "viseme_row": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["phoneme", "viseme"],
+      "properties": {
+        "phoneme": { "type": "string", "minLength": 1 },
+        "viseme": { "type": "string", "minLength": 1 }
+      }
+    },
+    "provenance_source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "name", "licence", "uri_or_citation", "retrieved_at"],
+      "properties": {
+        "source_id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "licence": { "type": "string", "minLength": 1 },
+        "uri_or_citation": { "type": "string", "minLength": 1 },
+        "retrieved_at": { "type": "string", "minLength": 1 }
+      }
+    },
+    "seed_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lemma", "provenance"],
+      "properties": {
+        "lemma": { "type": "string", "minLength": 1 },
+        "gloss": { "type": "string" },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["author", "created_at", "sources"],
+          "properties": {
+            "author": { "type": "string", "minLength": 1 },
+            "created_at": { "type": "string", "minLength": 1 },
+            "ai_assisted": { "type": "boolean" },
+            "sources": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "$ref": "#/$defs/provenance_source" }
+            }
+          }
+        }
+      }
+    },
+    "reviewer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reviewer_id",
+        "paid_native",
+        "consent_signed",
+        "licence_terms_signed"
+      ],
+      "properties": {
+        "reviewer_id": { "type": "string", "minLength": 1 },
+        "paid_native": { "type": "boolean" },
+        "consent_signed": { "type": "boolean" },
+        "licence_terms_signed": { "type": "boolean" }
+      }
+    }
+  }
+}

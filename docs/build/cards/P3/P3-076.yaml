@@ -1,0 +1,93 @@
+charter: v2
+id: P3-076
+kind: build
+title: 'Build onboarding step 2: first spoken word screen'
+phase: P3
+epic: E-P3-ONBOARDING
+req_ids:
+- OB-step2
+- OB-step2-b
+depends_on:
+- P3-075
+- P3-034
+- P3-018
+size: L
+difficulty:
+  score: 5
+  blast: 0
+  ambiguity: 2
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 0, ambiguity 2, coupling 2'
+token_budget: 150000
+file_allowlist:
+- lib/screens/onboarding/steps/first_word_step.dart
+- lib/services/onboarding_metrics.dart
+context_anchors:
+- ELEVATION.md#§5.2:L1042-L1045
+acceptance_criteria:
+- id: AC1
+  text: Given the learner picks a language, when step 2 opens, then Polie greets in that language with the Tone Lens visible
+- id: AC2
+  text: Given a new install on the reference low-end device, when measured from launch, then the first spoken word completes
+    in <=60 s at the median of 10 runs
+- id: AC3
+  text: Given microphone permission is denied, when step 2 opens, then a state explains and offers listen-and-repeat without
+    recording
+- id: AC4
+  text: Given the learner skips, when Skip is tapped, then the flow continues to step 3 and the skip is logged as an event
+test_plan:
+  unit:
+  - skip event
+  integration:
+  - permission denied
+  security: []
+  e2e:
+  - first word under 60 s
+  perf:
+  - 60 s median
+  a11y:
+  - captions for greeting
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - greeting
+  - recording
+  - permission_denied
+  - skipped
+  copy_keys:
+  - onboarding.firstword.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/onboarding-ux
+  - prime/form-design

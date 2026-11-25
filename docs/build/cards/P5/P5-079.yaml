@@ -1,0 +1,50 @@
+charter: v2
+id: P5-079
+kind: verification
+title: Verify Phase 3 B1 and Wave 2 L0 exit
+phase: P5
+epic: E-P5-B1
+req_ids:
+- CP-§9.2-04
+depends_on:
+- P5-082
+- P5-055
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T0
+  tester: T0
+  reviewer: T1
+  justification: verification only; no code
+token_budget: 20000
+file_allowlist: []
+context_anchors:
+- CURRICULUM.md#§9.2:L809-L812
+acceptance_criteria:
+- id: AC1
+  text: Given Months 6-9, when closed, then B1 units are published
+- id: AC2
+  text: Given Wave 2 (14 languages), when checked, then L0 Taste is Expert-reviewed and kits and lexicon sources exist
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G7
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

@@ -1,0 +1,110 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P9
+epic: E-P9-SAFETY
+hub: Village
+gate: G9
+status: Draft
+size: M
+token_budget: 80000
+user_facing: true
+p0_area: false
+tags:
+- under18_social
+external_blockers: []
+risks: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+id: F-132
+title: Elevate Explore, Search and Community Profile
+req_ids:
+- F-132
+- F-132.D
+- F-132.E
+- F-132.U
+- F-132.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P9-SAFETY
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: Square discover unification'
+file_allowlist:
+- lib/screens/feed/explore_community_screen.dart
+- lib/screens/feed/search_community_screen.dart
+- lib/screens/feed/community_profile_screen.dart
+context_anchors:
+- ELEVATION.md#§18.6:L5369-L5380
+delta:
+  current_state: Explore, search, and profile routes work with overlap to X explore.
+  defects_to_fix:
+  - Duplicate discover experience vs X explore screen.
+  elevation_to_build:
+  - Discover page for trending phrases, events, and top correctors.
+  - Global Search integration; profiles show languages, contributions, badges.
+  ux_and_render:
+  - Discover grid layout.
+  hub_placement: Village → Square → Discover; global Search.
+  unlock_stage: per §17.4
+  harvest_list:
+  - Retire redundant x_explore discover paths in favor of explore_community_screen.
+acceptance_criteria:
+- id: AC1
+  text: Given Square Discover, when opened, then trending phrases, events, and correctors load from one API.
+- id: AC2
+  text: Given global Search, when querying a user, then community profile opens with languages and badges.
+- id: AC3
+  text: Given navigation from feed, when Discover is tapped, then users land on explore_community not duplicate X explore.
+- id: AC4
+  text: Given the account is under 18 or age-unknown, when this surface is opened, then it is hidden or guardian-gated until
+    E-P9-SAFETY is Done, and the restriction is enforced server-side.
+test_plan:
+  unit:
+  - domain helpers
+  integration:
+  - API and navigation
+  e2e:
+  - happy path
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content: []
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - square_discover.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux
+  - adaptive/14-safety-and-high-stakes

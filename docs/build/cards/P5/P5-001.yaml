@@ -1,0 +1,60 @@
+charter: v2
+id: P5-001
+kind: verification
+title: Reproduce legacy curriculum audit counts by script
+phase: P5
+epic: E-P5-A1
+req_ids:
+- EP-§6.1-05
+- EP-§6.1-06
+- EP-§6.1-07
+- EP-§6.1-08
+- EP-§6.1-09
+- EP-§6.1-25
+depends_on:
+- E-P4-CONTENT-ENGINE
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T0
+  tester: T0
+  reviewer: T1
+  justification: verification only; no code
+token_budget: 20000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§6.1:L1108-L1128
+acceptance_criteria:
+- id: AC1
+  text: Given the legacy curriculum files, when scripts/plan audit runs, then it prints lessons per language (expected 126)
+    and unique vocabulary per language (expected 85 Lingala to 111 Yoruba) or a typed MismatchReport
+- id: AC2
+  text: Given the legacy word-card file, when counted, then total words and per-language range (expected 1,409 over 14 languages,
+    about 85-118 each) are printed or a MismatchReport lists deltas
+- id: AC3
+  text: Given the audit output, when compared with reference sizing, then it states A1 needs about 500-800 items, B2 about
+    4,000 and C2 more than 10,000 word families as the reason legacy data is quarantined, not as a build target
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks:
+- Counts come from a prior audit; deltas are recorded, not hidden
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

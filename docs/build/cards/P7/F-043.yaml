@@ -1,0 +1,108 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P7
+epic: E-P7-HUBS
+hub: Speak
+gate: HUB
+status: Draft
+user_facing: true
+p0_area: true
+external_blockers:
+- EXT-13
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+tags:
+- shows_score
+token_budget: 80000
+size: M
+difficulty:
+  score: 6
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: shadowing revival with alignment scoring'
+id: F-043
+title: Elevate Shadowing (revived)
+req_ids:
+- F-043
+- F-043.D
+- F-043.E
+- F-043.U
+- F-043.L
+- P0-3
+depends_on:
+- E-P2-PLATFORM
+- E-P3-DESIGN-SYSTEM
+- E-P1-CONTAINMENT
+- E-P6-SCORER
+file_allowlist:
+- lib/screens/tutor/shadowing_exercise_screen.dart
+context_anchors:
+- ELEVATION.md#§18.4:L4108-L4121
+delta:
+  current_state: Unrouted shadowing screen with client Groq usage.
+  defects_to_fix:
+  - Feature unreachable from Speak/Today.
+  - Client key dependency on AI paths.
+  elevation_to_build:
+  - 'Shadow Me: native clip with karaoke highlighting from forced alignment.'
+  - Tone contour comparison and two-minute Today slot.
+  ux_and_render:
+  - Lyrics-style transcript, dual waveform, and slow toggle beyond shared bar.
+  hub_placement: Speak → Practice → Shadowing; Today slot.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given Speak → Practice, when Shadowing is chosen, then the revived route loads native clip and mic capture.
+- id: AC2
+  text: Given the learner shadows audio, when alignment completes, then word highlight and tone contour scores use E-P6-SCORER
+    not client mocks.
+- id: AC3
+  text: Given Today daily slot, when shadowing is due, then a two-minute session entry appears and completes honestly offline-capable.
+test_plan:
+  unit:
+  - alignment highlight timing
+  integration:
+  - scoring overlay
+  e2e:
+  - Speak → Shadowing
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content: []
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - f-043.*
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

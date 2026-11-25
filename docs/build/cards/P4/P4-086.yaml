@@ -1,0 +1,63 @@
+charter: v2
+id: P4-086
+kind: build
+title: Rebuild units against CEFR map as signed packs
+phase: P4
+epic: E-P4-LEGACY-REBUILD
+req_ids:
+- CP-§8-06
+depends_on:
+- P4-085
+- P4-076
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- tools/content_engine/legacy/structure.py
+- tools/content_engine/tests/test_legacy_structure.py
+context_anchors:
+- CURRICULUM.md#§8:L770-L771
+acceptance_criteria:
+- id: AC1
+  text: Given the CEFR map, when units are rebuilt, then each unit lists the can-do targets it covers and a missing target
+    fails with CEFR_TARGET_MISSING
+- id: AC2
+  text: Given a rebuilt unit, when packed, then there is one signed content pack per unit
+test_plan:
+  unit:
+  - dry run lists changes
+  integration:
+  - re-run is idempotent
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

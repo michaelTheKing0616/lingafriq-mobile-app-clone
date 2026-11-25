@@ -1,0 +1,73 @@
+charter: v2
+id: P4-132
+kind: build
+title: Implement two-reviewer native review with agreement tracking
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.6-03
+- EP-§6.6-10
+- EP-§6.6-11
+- EP-§6.6-12
+depends_on:
+- P4-122
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 2, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- tools/content_pipeline/review_assignment.py
+- tools/content_pipeline/review_agreement.py
+- test/content/test_review_agreement.py
+context_anchors:
+- ELEVATION.md#§6.6:L1321-L1337
+- ELEVATION.md#§6.4.1:L1264-L1292
+acceptance_criteria:
+- id: AC1
+  text: Given an item, when assigned, then two independent reviewers are chosen from different regions where the language
+    has dialect differences
+- id: AC2
+  text: Given a review, when saved, then it records checks for orthography and tone, naturalness, register and cultural appropriateness
+- id: AC3
+  text: Given completed reviews, when aggregated, then inter-reviewer agreement (Cohen's kappa) is computed per language and
+    stored
+- id: AC4
+  text: Given a disagreement, when resolved, then the result is a dialect note and no silent edit is applied
+test_plan:
+  unit:
+  - test_review_agreement
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- native_verified_rule
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-13
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

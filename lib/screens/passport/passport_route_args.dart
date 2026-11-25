@@ -37,10 +37,10 @@ final class PassportRouteArgs {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.errorOccurred)),
-      body: SafeArea(
+      body: const SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(24),
             child: Text(
               'Missing verifyToken.\n\n'
               'Use: Navigator.pushNamed(context, "/passport-credential", '

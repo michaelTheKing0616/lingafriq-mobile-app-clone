@@ -1,0 +1,205 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+EP-§0-01,ELEVATION,§0:L21-L22,informational,LingAfriq has enormous surface area and very little load-bearing substance.,P1,agent,,Open
+EP-§0-02,ELEVATION,§0:L22,informational,319 status Markdown files in the app root alone,P1,agent,,Open
+EP-§0-03,ELEVATION,§0:L23-L24,informational,and roughly 150 more in the backend.,P1,agent,,Open
+EP-§0-04,ELEVATION,§0:L25,informational,"The curriculum, the product's core, is mostly placeholder or template output.",P1,agent,,Open
+EP-§0-05,ELEVATION,§0:L26-L27,informational,Three of the four curriculum bundles contain literal placeholders,P1,agent,,Open
+EP-§0-06,ELEVATION,§0:L27-L28,informational,"24,234 of 48,847 vocabulary entries (49.6%) across the bundles are placeholders",P1,agent,,Open
+EP-§0-07,ELEVATION,§0:L28-L29,informational,has only 85 to 111 unique vocabulary items per language,P1,agent,,Open
+EP-§0-08,ELEVATION,§0:L29-L30,informational,recycled across 126 lessons per language,P1,agent,,Open
+EP-§0-09,ELEVATION,§0:L30,informational,126 of 126 dialogues per language repeat lines.,P1,agent,,Open
+EP-§0-10,ELEVATION,§0:L30-L31,informational,"The same two grammar sentences appear in 1,546 lessons",P1,agent,,Open
+EP-§0-11,ELEVATION,§0:L31,informational,one of them is false for most of the languages,P1,agent,,Open
+EP-§0-12,ELEVATION,§0:L32,informational,No curriculum file references a single audio file.,P1,agent,,Open
+EP-§0-13,ELEVATION,§0:L33-L34,informational,"phrasebook, is mostly fake.",P1,agent,,Open
+EP-§0-14,ELEVATION,§0:L34-L35,informational,Pronunciation Duel never opens the microphone and returns a random 75–95%,P1,agent,,Open
+EP-§0-15,ELEVATION,§0:L35-L36,informational,Karaoke's pitch score is 60 + rng.nextInt(35),P1,agent,,Open
+EP-§0-16,ELEVATION,§0:L36-L37,informational,"The tutor's ""Rhythm"" score is score * 0.9",P1,agent,,Open
+EP-§0-17,ELEVATION,§0:L37-L38,informational,The voice service's tone endpoint is labelled # Placeholder and reuses text,P1,agent,,Open
+EP-§0-18,ELEVATION,§0:L39,informational,Private conversations are not private.,P1,agent,,Open
+EP-§0-19,ELEVATION,§0:L39-L40,informational,Any signed-in user can join any socket room,P1,agent,,Open
+EP-§0-20,ELEVATION,§0:L40-L41,informational,"private rooms are named private_<smallerId>_<largerId> (:106-109), so they can be guessed",P1,agent,,Open
+EP-§0-21,ELEVATION,§0:L41-L42,informational,A client can also claim to be any user id,P1,agent,,Open
+EP-§0-22,ELEVATION,§0:L42,informational,then receive that user's snaps and streak events,P1,agent,,Open
+EP-§0-23,ELEVATION,§0:L42-L43,informational,"Read receipts, presence and reactions go to every connected user through io.emit",P1,agent,,Open
+EP-§0-24,ELEVATION,§0:L45,informational,"Children are in scope, but child safety is not.",P1,agent,,Open
+EP-§0-25,ELEVATION,§0:L45-L46,informational,Onboarding collects 'child' as an age category,P1,agent,,Open
+EP-§0-26,ELEVATION,§0:L46-L47,informational,"The app ships private DMs, voice/video calls, Snapchat-style disappearing media",P1,agent,,Open
+EP-§0-27,ELEVATION,§0:L47-L48,informational,"There is no age gate, no parental consent and no guardian controls",P1,agent,,Open
+EP-§0-28,ELEVATION,§0:L49-L50,informational,"Chat ""moderation"" is a 4-word English list plus 7 African words",P1,agent,,Open
+EP-§0-29,ELEVATION,§0:L50,informational,"It flags the Yoruba word ode inside ""code"" and ""mode""",P1,agent,,Open
+EP-§0-30,ELEVATION,§0:L50-L51,informational,"flags the English word ""were""",P1,agent,,Open
+EP-§0-31,ELEVATION,§0:L51,informational,it only records a score; nothing is blocked.,P1,agent,,Open
+EP-§0-32,ELEVATION,§0:L52,informational,Secrets are committed.,P1,agent,,Open
+EP-§0-33,ELEVATION,§0:L52-L53,informational,A live-format Firebase Admin SDK service-account private key for project lingafriq-15d2a,P1,agent,,Open
+EP-§0-34,ELEVATION,§0:L53,informational,.gitignore does not cover it.,P1,agent,,Open
+EP-§0-35,ELEVATION,§0:L53-L54,informational,An Apple .p8 private key (AuthKey_QWGCD23R6B.p8) is in the mobile repo root,P1,agent,,Open
+EP-§0-36,ELEVATION,§0:L54-L55,informational,The parent reported Admin SDK JSONs inside node-backend/dist/services on the Mac.,P1,agent,,Open
+EP-§0-37,ELEVATION,§0:L55-L57,informational,build.yml compiles five paid AI provider keys into the app binary,P1,agent,,Open
+EP-§0-38,ELEVATION,§0:L58,informational,The economy and leaderboards can be cheated with one HTTP call.,P1,agent,,Open
+EP-§0-39,ELEVATION,§0:L58-L60,informational,"POST /api/gamification/currency/award (""admin/system use"") lets any signed-in user mint",P1,agent,,Open
+EP-§0-40,ELEVATION,§0:L60-L62,informational,POST /accounts/update_points/ adds any positive number of points,P1,agent,,Open
+EP-§0-41,ELEVATION,§0:L62-L63,informational,"POST /api/gamification/xp/award allows 10 × 1,000 XP per minute",P1,agent,,Open
+EP-§0-42,ELEVATION,§0:L64,informational,Updates log every user out and repeat onboarding.,P1,agent,,Open
+EP-§0-43,ELEVATION,§0:L64-L65,informational,"Any semver change, even 1.6.1 → 1.6.2, clears tokens, credentials and onboarding",P1,agent,,Open
+EP-§0-44,ELEVATION,§0:L66,informational,Retention resets with every release.,P1,agent,,Open
+EP-§0-45,ELEVATION,§0:L67,informational,"A huge, ambitious feature set with no spine connecting it to",P1,agent,,Open
+EP-§0-46,ELEVATION,§0:L67-L68,informational,"WhatsApp-style (wa-*), Snapchat-style (snap-*) and X-style (x-*) surfaces",P1,agent,,Open
+EP-§0-47,ELEVATION,§0:L68-L69,informational,"a Clubhouse-style audio room, villages, tribes, classrooms, micro-mentors and a culture",P1,agent,,Open
+EP-§0-48,ELEVATION,§0:L70,informational,none is yet tied into the learning loop.,P1,agent,,Open
+EP-§0-49,ELEVATION,§0:L70-L71,informational,88 finished screens are unreachable from main.dart,P1,agent,,Open
+EP-§0-50,ELEVATION,§0:L71,informational,330 files by reachability; 183 files that no file imports at all,P1,agent,,Open
+EP-§0-51,ELEVATION,§0:L71-L73,informational,"including the moderation tools, native-speaker verification, offline downloads, lesson recap, the guardian",P1,agent,,Open
+EP-§0-52,ELEVATION,§0:L73-L74,informational,§17.5 revives 25 of them.,P1,agent,,Open
+EP-§0-53,ELEVATION,§0:L75,informational,The opportunity is real and unclaimed.,P1,agent,,Open
+EP-§0-54,ELEVATION,§0:L75-L76,informational,"No app in 2026 teaches African languages with tone-accurate audio, native-validated content",P1,agent,,Open
+EP-§0-55,ELEVATION,§0:L77,informational,"LingAfriq already has the right instincts: the Intron proxy, tone service scaffolding",P1,agent,,Open
+EP-§0-56,ELEVATION,§0:L77-L78,informational,"persona registries with primary-source fields, CEFR framing and a village metaphor.",P1,agent,,Open
+EP-§0-57,ELEVATION,§0:L78-L79,informational,"The plan below is to harden, connect and deepen every feature",P1,agent,,Open
+EP-§0-58,ELEVATION,§0:L79,informational,one coherent learning loop that every feature plugs into,P1,agent,,Open
+EP-§0-59,ELEVATION,§0:L79-L80,informational,"one trustworthy social layer, one design system, and content that can survive",P1,agent,,Open
+EP-§0-60,ELEVATION,§0:L81,informational,Nothing is cut; every feature gets a home in the new IA,P1,agent,,Open
+EP-§2-01,ELEVATION,§2:L416-L424,informational,Partial About 15 sequential awaited inits,P1,agent,,Open
+EP-§2-02,ELEVATION,§2:L425-L434,informational,Partial 9 question screens before any,P1,agent,,Open
+EP-§2-03,ELEVATION,§2:L435-L440,informational,Partial Offered in an AlertDialog after,P1,agent,,Open
+EP-§2-04,ELEVATION,§2:L443-L453,informational,Partial Enumeration (P0-25); 7-day HS256 token,P1,agent,,Open
+EP-§2-05,ELEVATION,§2:L454-L460,informational,Partial Feature dump IA; two dashboards,P1,agent,,Open
+EP-§2-06,ELEVATION,§2:L461-L474,informational,Partial Master index is loaded first,P1,agent,,Open
+EP-§2-07,ELEVATION,§2:L477-L478,informational,"Partial 10 declared stages, but content is",P1,agent,,Open
+EP-§2-08,ELEVATION,§2:L479-L482,informational,Partial Grammar copy is generic (§6),P1,agent,,Open
+EP-§2-09,ELEVATION,§2:L483-L494,informational,Partial Four separate memory models: SM-2,P1,agent,,Open
+EP-§2-10,ELEVATION,§2:L495-L499,informational,Partial No audio corpus ships (§6),P1,agent,,Open
+EP-§2-11,ELEVATION,§2:L500-L505,informational,Partial Feature tours rather than skill,P1,agent,,Open
+EP-§2-12,ELEVATION,§2:L506-L514,informational,Partial Unit quizzes in placeholder bundles,P1,agent,,Open
+EP-§2-13,ELEVATION,§2:L515-L525,informational,Partial/Fake Random pronunciation scores; tone trainer,P1,agent,,Open
+EP-§2-14,ELEVATION,§2:L526-L538,informational,Fake/Broken P0-18/19; tone service falls,P1,agent,,Open
+EP-§2-15,ELEVATION,§2:L541-L547,informational,Partial Direct Groq calls with a client,P1,agent,,Open
+EP-§2-16,ELEVATION,§2:L553-L554,informational,"Partial Prompt-only, with no grounding in curriculum",P1,agent,,Open
+EP-§2-17,ELEVATION,§2:L556-L560,informational,Partial Same client-key issue,P1,agent,,Open
+EP-§2-18,ELEVATION,§2:L561-L578,informational,Partial/Broken Two persona systems (27 client,P1,agent,,Open
+EP-§2-19,ELEVATION,§2:L579-L583,informational,Partial Built on the unofficial Google,P1,agent,,Open
+UNV-E01,ELEVATION,§2:L583,external,[Unverified which path is live] (P0-26) [Unverified which path is live],P1,external,,Open
+EP-§2-20,ELEVATION,§2:L584-L587,informational,Partial ML Kit labels are English; the,P1,agent,,Open
+EP-§2-21,ELEVATION,§2:L588-L598,informational,Partial culture_magazine_screen.dart is an unreachable,P1,agent,,Open
+EP-§2-22,ELEVATION,§2:L603-L604,informational,"Partial Duplicate routes (tribe, tribe-hub, tribe-",P1,agent,,Open
+EP-§2-23,ELEVATION,§2:L612-L616,informational,Partial/Fake flashcard_focus_screen.dart:26-34 shows mock,P1,agent,,Open
+EP-§2-24,ELEVATION,§2:L617-L625,informational,Partial live_classroom_screen.dart and classroom_chat_livekit_screen.dart,P1,agent,,Open
+EP-§2-25,ELEVATION,§2:L626-L629,informational,Partial No moderation (P0-11); rooms by,P1,agent,,Open
+EP-§2-26,ELEVATION,§2:L632-L640,informational,Broken (privacy) P0-4/5/6; no E2EE;,P1,agent,,Open
+EP-§2-27,ELEVATION,§2:L641-L646,informational,Broken (safety) P0-12; streak counts are,P1,agent,,Open
+EP-§2-28,ELEVATION,§2:L647-L648,informational,Partial Public by default (feed.route.ts:23); no,P1,agent,,Open
+EP-§2-29,ELEVATION,§2:L649-L652,informational,Partial No recording consent or moderation,P1,agent,,Open
+UNV-E02,ELEVATION,§2:L652,external,[Unverified] [Unverified],P1,external,,Open
+EP-§2-30,ELEVATION,§2:L653-L659,informational,Partial friendQuest.controller.ts:325 takes amount from,P1,agent,,Open
+EP-§2-31,ELEVATION,§2:L660-L663,informational,Partial Paid/peer tutoring without safeguarding,P1,agent,,Open
+EP-§2-32,ELEVATION,§2:L664-L671,informational,Partial native_speaker_contribution_screen.dart and lesson_item_verification_screen.dart,P1,agent,,Open
+EP-§2-33,ELEVATION,§2:L672-L683,informational,Broken (integrity) P0-7/8; 3 currencies (ngwenya,P1,agent,,Open
+EP-§2-34,ELEVATION,§2:L684-L690,informational,"Partial A ""credential"" built on template",P1,agent,,Open
+EP-§2-35,ELEVATION,§2:L691-L702,informational,Not built yet The Rive avatars have,P1,agent,,Open
+EP-§2-36,ELEVATION,§2:L703-L705,informational,Partial Not audited line by line,P1,agent,,Open
+EP-§2-37,ELEVATION,§2:L706-L710,informational,"Broken P0-23; streak-loss copy (""Your N-day",P1,agent,,Open
+EP-§2-38,ELEVATION,§2:L711-L714,informational,Partial P0-27,P1,agent,,Open
+EP-§2-39,ELEVATION,§2:L715-L725,informational,Broken P0-22; AES via the encrypt,P1,agent,,Open
+EP-§2-40,ELEVATION,§2:L728-L729,informational,"Partial Only 103 keys exist; 1,104 hard-coded",P1,agent,,Open
+EP-§2-41,ELEVATION,§2:L733-L735,informational,Partial 471 Semantics( uses (good start); no,P1,agent,,Open
+EP-§2-42,ELEVATION,§2:L738-L739,informational,"Partial No native-review workflow, no content versioning,",P1,agent,,Open
+EP-§2-43,ELEVATION,§2:L742-L752,informational,Partial No auth on the voice service,P1,agent,,Open
+EP-§2-44,ELEVATION,§2:L753-L760,informational,Partial flutter analyze --no-fatal-warnings; 64 Flutter,P1,agent,,Open
+EP-§2-45,ELEVATION,§2:L758,metric,64 Flutter test files for 306k,P1,agent,,Open
+EP-§2-46,ELEVATION,§2:L758,metric,52 backend tests,P1,agent,,Open
+EP-§2-47,ELEVATION,§2:L761,metric,Feature areas audited: 44 (this table),P1,agent,,Open
+EP-§2-48,ELEVATION,§2:L762,informational,151 user-facing features each with its,P1,agent,,Open
+EP-§2-49,ELEVATION,§2:L762-L763,metric,"183 Dart files / 49,074 lines are",P1,agent,,Open
+EP-§2-50,ELEVATION,§2:L762-L763,metric,"49,074 lines are never imported by",P1,agent,,Open
+EP-§2-51,ELEVATION,§2:L763,metric,330 unreachable files,P1,agent,,Open
+EP-§2-52,ELEVATION,§2:L763,metric,88 of them screens,P1,agent,,Open
+EP-§2-53,ELEVATION,§2:L764-L765,informational,§17.5 revives 25 screen-level features,P1,agent,,Open
+EP-§2-54,ELEVATION,§2:L765,metric,moves 3 developer examples out of,P1,agent,,Open
+UNV-E03,ELEVATION,§3.2:L786,external,"[Unverified on device] Yoruba diacritics (ọ̀, ẹ́) can mis-render in fallback fonts",P1,external,,Open
+UNV-E04,ELEVATION,§6.1:L1124,external,[Unverified: media was stripped from the copy] assets/audio is not in pubspec.yaml,P1,external,,Open
+UNV-E05,ELEVATION,§7.4:L1447,external,[Unverified on-device performance] 300M Omnilingual variant is a candidate for offline use,P1,external,,Open
+UNV-E06,ELEVATION,§13.2:L1881,external,[verify thresholds with counsel] [verify thresholds with counsel]; DPIA for voice data,P1,external,,Open
+RM-STOP-01,ELEVATION,§16.5:L2154-L2155,constraint,Stop starting new features until the existing 151 are finished and connected.,P1,Tope,,Open
+RM-STOP-07,ELEVATION,§16.5:L2154-L2155,metric,until the existing 151 are finished and connected,P1,Tope,,Open
+RM-STOP-08,ELEVATION,§16.5:L2155,metric,the next 9 months are about taking each,P1,Tope,,Open
+RM-STOP-02,ELEVATION,§16.5:L2156,constraint,Put new breadth into languages.,P1,Tope,,Open
+RM-STOP-03,ELEVATION,§16.5:L2157,constraint,Stop writing status Markdown files that claim completion; let tests and flags,P1,Tope,,Open
+RM-STOP-04,ELEVATION,§16.5:L2158,constraint,Stop shipping AI-generated language content without native review.,P1,Tope,,Open
+RM-STOP-05,ELEVATION,§16.5:L2159-L2161,constraint,"Stop treating the WhatsApp-, Snapchat- and X-style screens as copies",P1,Tope,,Open
+RM-STOP-06,ELEVATION,§16.5:L2159-L2160,constraint,"keep their familiar patterns and make each one learning-native (Language Status,",P1,agent,,Open
+UNV-E07,ELEVATION,§17.6:L2366,external,[Unverified on device] 6. Latin-only OCR mangles stacked diacritics [Unverified on device],P1,external,,Open
+UNV-E08,ELEVATION,§18.4:L4270,external,[verify on device] Defects. ML Kit Latin OCR mangles stacked tone marks,P1,external,,Open
+UNV-E09,ELEVATION,§18.5:L4573,external,[Unverified whether it records] Defects. No verified scoring path [Unverified whether it,P1,external,,Open
+UNV-E10,ELEVATION,§18.6:L5260,external,"[verify] Defects. No verification, safeguarding or payment flow visible [verify].",P1,external,,Open
+UNV-E11,ELEVATION,§18.6:L5402,external,[verify] Defects. Consent and licensing of recordings unclear [verify].,P1,external,,Open
+UNV-E12,ELEVATION,§18.7:L5608,external,[verify content] Defects. Plain wait screen [verify content].,P1,external,,Open
+UNV-E13,ELEVATION,§18.7:L5637,external,[verify] Defects. Staff tooling in the consumer app; role checks need verification,P1,external,,Open
+CP-§pre-11,CURRICULUM,§pre:L4,external,companion: LINGAFRIQ_ELEVATION_PLAN.md,P1,agent,,Open
+CP-§pre-12,CURRICULUM,§pre:L5,external,"companion: LINGAFRIQ_AI_MODEL_STACK.md (models, costs)",P1,agent,,Open
+CP-§pre-01,CURRICULUM,§pre:L6-L7,requirement,"Build highly accurate, premium curricula for the Stage-1 seven",P1,agent,,Open
+CP-§pre-02,CURRICULUM,§pre:L7,requirement,and then as many African languages as possible,P1,agent,,Open
+CP-§pre-03,CURRICULUM,§pre:L7-L8,constraint,without native speakers writing them,P1,agent,,Open
+CP-§pre-04,CURRICULUM,§pre:L8,constraint,Native speakers come later as final validators.,P1,agent,,Open
+CP-§pre-05,CURRICULUM,§pre:L9,constraint,the app must never present an unverified item as certain,P1,agent,,Open
+CP-§pre-06,CURRICULUM,§pre:L10,informational,Licences and availability were checked on the live web,P1,agent,,Open
+CP-§pre-07,CURRICULUM,§pre:L10-L11,risk,"Legal points are a product manager's reading, not legal advice",P1,Tope,,Open
+CP-§pre-08,CURRICULUM,§pre:L11,external,get counsel to sign off the licence register (§2.4),P1,external,,Open
+CP-§pre-09,CURRICULUM,§pre:L11-L12,informational,Costs and accuracy figures are planning estimates,P1,agent,,Open
+CP-§pre-10,CURRICULUM,§pre:L12-L13,requirement,to be replaced by measured numbers from the pilot,P1,agent,,Open
+CP-§0-01,CURRICULUM,§0:L15-L18,requirement,"Ground every item in a source, never in the model's memory.",P1,agent,,Open
+CP-§0-07,CURRICULUM,§0:L17-L18,requirement,must cite it claim by claim,P1,agent,,Open
+CP-§0-02,CURRICULUM,§0:L19-L22,requirement,Verify with machines that disagree with each other.,P1,agent,,Open
+CP-§0-08,CURRICULUM,§0:L19,requirement,A second model family cross-checks,P1,agent,,Open
+CP-§0-09,CURRICULUM,§0:L20,requirement,independent MT back-translates,P1,agent,,Open
+CP-§0-10,CURRICULUM,§0:L20-L21,requirement,"deterministic linters check orthography, tone marks and Bantu concords",P1,agent,,Open
+CP-§0-11,CURRICULUM,§0:L21,requirement,morphological analysers parse Zulu,P1,agent,,Open
+CP-§0-12,CURRICULUM,§0:L21,requirement,Every item gets a confidence score,P1,agent,,Open
+CP-§0-13,CURRICULUM,§0:L21-L22,requirement,high scores publish as Beta,P1,agent,,Open
+CP-§0-14,CURRICULUM,§0:L22,requirement,mid scores go to a human queue,P1,agent,,Open
+CP-§0-15,CURRICULUM,§0:L22,requirement,low scores are rejected and regenerated,P1,agent,,Open
+CP-§0-03,CURRICULUM,§0:L23-L25,external,Buy expert spot-checks instead of authors.,P1,external,,Open
+CP-§0-16,CURRICULUM,§0:L23-L24,metric,review 100% of high-risk items,P1,external,,Open
+CP-§0-18,CURRICULUM,§0:L24,external,tone marks with no lexicon match,P1,external,,Open
+CP-§0-19,CURRICULUM,§0:L24,external,idioms,P1,external,,Open
+CP-§0-20,CURRICULUM,§0:L24,external,culture and history,P1,external,,Open
+CP-§0-21,CURRICULUM,§0:L24,external,honorifics,P1,external,,Open
+CP-§0-22,CURRICULUM,§0:L24-L25,external,grammar explanations,P1,external,,Open
+CP-§0-17,CURRICULUM,§0:L25,external,a statistical sample of the rest,P1,external,,Open
+CP-§0-04,CURRICULUM,§0:L26-L28,requirement,Label honestly.,P1,agent,,Open
+CP-§0-23,CURRICULUM,§0:L26,requirement,"Items show Beta, Expert-reviewed or Native-verified",P1,agent,,Open
+CP-§0-24,CURRICULUM,§0:L26-L27,requirement,"synthetic audio says ""Synthetic voice""",P1,agent,,Open
+CP-§0-25,CURRICULUM,§0:L27,requirement,"Learners can tap ""Report a mistake"" on every item",P1,agent,,Open
+CP-§0-26,CURRICULUM,§0:L27-L28,requirement,errors flow back into the pipeline,P1,agent,,Open
+CP-§0-05,CURRICULUM,§0:L29-L31,requirement,Rebuild today's broken data through the same pipeline.,P1,agent,,Open
+CP-§0-06,CURRICULUM,§0:L32-L34,decision,Realistic outcome: Beta A1 for all seven languages in about 12 weeks,P1,Tope,,Open
+CP-§0-27,CURRICULUM,§0:L32,metric,about 12 weeks,P1,agent,,Open
+CP-§0-28,CURRICULUM,§0:L32,metric,A2 in about 24 weeks,P1,agent,,Open
+CP-§0-29,CURRICULUM,§0:L32-L33,metric,B1 Expert-reviewed by about month 9,P1,agent,,Open
+CP-§0-30,CURRICULUM,§0:L33,metric,roughly $4k–15k in content cost,P1,agent,,Open
+CP-§1-12,CURRICULUM,§1:L59,external,companion: evidence in elevation plan §6.1,P0,agent,,Open
+CP-§1-01,CURRICULUM,§1:L60-L66,requirement,CI placeholder linter blocks the build,P0,agent,,Open
+CP-§1-02,CURRICULUM,§1:L67-L73,requirement,Real phrases are salvaged as seeds and re-verified,P0,agent,,Open
+CP-§1-11,CURRICULUM,§1:L72-L73,metric,"targets 2,500–3,500 lexemes for A1–B1",P0,agent,,Open
+CP-§1-03,CURRICULUM,§1:L74-L78,requirement,"One source of truth; versioned, signed content packs downloaded per language",P0,agent,,Open
+CP-§1-04,CURRICULUM,§1:L79-L85,requirement,A per-language Pattern Library written from cited reference grammars,P0,agent,,Open
+CP-§1-08,CURRICULUM,§1:L84-L85,requirement,a claim linter rejects generic grammar text,P0,agent,,Open
+CP-§1-05,CURRICULUM,§1:L86-L92,requirement,The tone-claim linter requires a lexicon source for every tone statement,P0,agent,,Open
+CP-§1-09,CURRICULUM,§1:L90-L92,requirement,IPA is generated by a deterministic grapheme-to-phoneme converter (G2P),P0,agent,,Open
+CP-§1-06,CURRICULUM,§1:L93-L98,requirement,The same orthography linters run on UI strings and phrase packs,P0,agent,,Open
+CP-§1-07,CURRICULUM,§1:L99-L102,requirement,Content-hash filenames,P0,agent,,Open
+CP-§1-10,CURRICULUM,§1:L101-L102,requirement,every item carries an audio record (TTS-interim or human),P0,agent,,Open
+UNV-C01,CURRICULUM,§2.4:L312,external,[verify] orthography) [verify];,P1,external,,Open
+UNV-C02,CURRICULUM,§2.4:L349,external,[purchase] [purchase],P1,external,,Open
+UNV-C03,CURRICULUM,§2.4:L380,external,[purchase] [purchase] and corpora,P1,external,,Open
+UNV-C04,CURRICULUM,§2.4:L392,external,[verify citation] [verify citation] +,P1,external,,Open
+UNV-C05,CURRICULUM,§2.4:L401,external,[purchase] [purchase],P1,external,,Open
+UNV-C06,CURRICULUM,§2.4:L425,external,[purchase] [purchase]; SADiLaR,P1,external,,Open
+UNV-C07,CURRICULUM,§2.4:L461,external,[verify] [verify],P1,external,,Open
+UNV-C08,CURRICULUM,§9.1:L789,external,[estimate] weeks [estimate].,P1,external,,Open
+UNV-C09,CURRICULUM,§9.4:L840,external,"[quote] isiXhosa custom voice (2 actors, buy-out, training) n/a $10k–25k [quote]",P1,external,,Open
+UNV-C10,CURRICULUM,§9.4:L844,external,[quotes] off/annual [quotes],P1,external,,Open
+D1,CURRICULUM,§10:L852,decision,Approve the three-label policy (Beta / Expert-reviewed / Native-verified) and the rule,G0,Tope,,Open
+D2,CURRICULUM,§10:L857,decision,"Approve licence purchases: Oxford datasets (top priority), IgboAPI, a Zulu dictionary licence,",G0,Tope,,Open
+D3,CURRICULUM,§10:L859,decision,"Commission the isiXhosa custom voice now, or ship Xhosa with matched corpus",G0,Tope,,Open
+D4,CURRICULUM,§10:L861,decision,"Contract 2 part-time linguists per Stage-1 language (universities in elevation plan §6.4),",G0,Tope,,Open
+D5,CURRICULUM,§10:L863,decision,Approve the Curriculum Studio build in lingafriq-admin.,G0,Tope,,Open

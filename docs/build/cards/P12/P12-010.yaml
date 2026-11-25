@@ -1,0 +1,68 @@
+charter: v2
+id: P12-010
+kind: build
+title: Enforce const widgets and list virtualisation lints
+phase: P12
+epic: E-P12-RELEASE
+req_ids:
+- EP-§13.6-14
+- EP-§13.6-15
+depends_on:
+- E-P10-ME
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 60000
+file_allowlist:
+- analysis_options.yaml
+- scripts/ci/list_virtualisation_check.py
+- lib/screens
+context_anchors:
+- ELEVATION.md#§13.6:L1932
+acceptance_criteria:
+- id: AC1
+  text: Given analysis_options.yaml, when flutter analyze runs, then prefer_const_constructors and prefer_const_literals_to_create_immutables
+    are errors
+- id: AC2
+  text: Given a scrollable that builds unbounded children eagerly (ListView(children:) over a data list), when the virtualisation
+    check runs, then it fails with the file and line
+- id: AC3
+  text: Given the existing codebase, when the lints are enabled, then violations are fixed or baselined in a tracked file
+    that shrinks per release, not ignored globally
+test_plan:
+  unit:
+  - list_virtualisation_check rule
+  integration:
+  - flutter analyze clean
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G12
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

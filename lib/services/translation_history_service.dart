@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/translation_history_model.dart';
 import '../providers/user_provider.dart';
-import '../providers/backend_sync_provider.dart';
+import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
 
 final translationHistoryServiceProvider = Provider<TranslationHistoryService>((ref) {
   return TranslationHistoryService(ref);
@@ -123,16 +123,15 @@ class TranslationHistoryService {
       final user = _ref.read(userProvider);
       if (user == null) return;
 
-      final syncProvider = _ref.read(backendSyncProvider.notifier);
-      await syncProvider.queueSync(SyncTask(
-        type: SyncType.progress, // SyncType.progress exists in backend_sync_provider
+      await PersistedOutboxService.instance.enqueue(
+        type: 'progress_sync',
         data: {
           'user_id': user.id.toString(),
           'type': 'translation_history',
           'history': history.toJson(),
           'timestamp': DateTime.now().toIso8601String(),
         },
-      ));
+      );
     } catch (e) {
       debugPrint('Error syncing translation history: $e');
     }

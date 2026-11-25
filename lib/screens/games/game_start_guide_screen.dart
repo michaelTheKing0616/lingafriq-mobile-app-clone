@@ -1,11 +1,9 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
-import '../../widgets/game/game_widgets.dart';
 
 class GameStartGuideScreen extends ConsumerWidget {
   const GameStartGuideScreen({
@@ -225,7 +223,7 @@ class GameStartGuideScreen extends ConsumerWidget {
                 Container(
                   width: 28.r,
                   height: 28.r,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     gradient: ModernGriotGradients.signatureGradient,
                     shape: BoxShape.circle,
                   ),
@@ -264,7 +262,7 @@ class GameStartGuideScreen extends ConsumerWidget {
           Container(
             width: 5.w,
             height: 72.h,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: ModernGriotGradients.sunsetWarm,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(ModernGriotRadius.lg),

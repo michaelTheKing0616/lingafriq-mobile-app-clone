@@ -1,0 +1,25 @@
+linguist_signoff: false
+character_set:
+  - Latin
+character_set_note: code points not enumerated in §3.3
+nfc: NFC
+tone_marking: marked only in scientific use
+phone_inventory:
+  - status: not enumerated in §3.3
+g2p:
+  status: not enumerated in §3.3
+  output: IPA
+  citation: CURRICULUM.md#§3.1:L474
+noun_class:
+  applies: false
+  reason: §3.3 assigns noun-class tables to sw, zu and xh
+concord:
+  applies: false
+  reason: §3.3 assigns concord tables to sw, zu and xh
+dialect: Naija Langwej Akademi
+honorifics:
+  status: not enumerated in §3.3
+nla_normalisation:
+  reference: Naija Langwej Akademi spelling normalisation table
+  table_included: false
+  source: CURRICULUM.md#§3.3:L534

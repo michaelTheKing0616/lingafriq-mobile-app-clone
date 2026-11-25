@@ -1,0 +1,91 @@
+charter: v2
+id: P3-078
+kind: build
+title: 'Build onboarding step 3: disguised micro-placement'
+phase: P3
+epic: E-P3-ONBOARDING
+req_ids:
+- OB-step3
+- OB-step3-b
+- OB-step3-c
+- OB-step3-d
+depends_on:
+- P3-076
+size: L
+difficulty:
+  score: 6
+  blast: 0
+  ambiguity: 2
+  coupling: 1
+  depth: 2
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: IRT depth'
+token_budget: 150000
+file_allowlist:
+- lib/services/placement_test_service.dart
+- lib/screens/onboarding/steps/placement_step.dart
+- test/services/irt_selector_test.dart
+context_anchors:
+- ELEVATION.md#§5.2:L1047-L1050
+acceptance_criteria:
+- id: AC1
+  text: Given step 3, when run, then it presents 3 or 4 items chosen by item response theory and takes 2 to 3 minutes
+- id: AC2
+  text: Given listening and speaking items, when scored, then they are estimated separately
+- id: AC3
+  text: Given Skip, when tapped, then the learner starts at A1 and the skip is saved
+- id: AC4
+  text: Given an item pool below the IRT minimum, when the step runs, then it falls back to a fixed ladder and logs the fallback
+- id: AC5
+  text: Given the result, when saved, then it sets the starting unit and is editable later in Me
+test_plan:
+  unit:
+  - IRT selection
+  - split skills
+  integration:
+  - fallback ladder
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - item
+  - skip
+  - fallback
+  copy_keys:
+  - onboarding.placement.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/onboarding-ux
+  - prime/form-design

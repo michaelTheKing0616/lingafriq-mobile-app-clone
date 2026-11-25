@@ -1,0 +1,62 @@
+charter: v2
+id: P9-900
+kind: adr
+title: 'Decide realtime stack: self-hosted Socket.IO+Redis vs managed'
+phase: P9
+epic: E-P9-REALTIME
+req_ids:
+- EP-§9.5-02
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 2
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T4
+  tester: T1
+  reviewer: T4
+  justification: 'score 3: blast 1, ambiguity 2, coupling 0, depth 0'
+token_budget: 30000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§9.5:L1655-L1656
+acceptance_criteria:
+- id: AC1
+  text: Given the options self-hosted Socket.IO with Redis adapter, Ably, Pusher and Stream Chat, when the ADR is written,
+    then it compares cost at 10k and 100k concurrent connections, data residency, E2EE compatibility and minor-moderation
+    hooks
+- id: AC2
+  text: Given the decision, when recorded in DECISIONS.md, then it states the chosen stack, the rejected options and the reversal
+    trigger
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - prime/diagram-design

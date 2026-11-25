@@ -1,0 +1,52 @@
+charter: v2
+id: P0-VER-08
+kind: verification
+title: Confirm Point and Say OCR mangles tone marks
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- UNV-E08
+depends_on:
+- E-P0-INTAKE
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: verification only; result recorded, never inferred
+token_budget: 20000
+file_allowlist:
+- docs/build/verification/P0-VER-08.md
+- docs/build/UNVERIFIED.md
+context_anchors:
+- ELEVATION.md#§18.4:L4270
+acceptance_criteria:
+- id: AC1
+  text: Given the Point and Say screen on a reference device, when shown the E07 sample set, then the app output is recorded
+    per sample
+- id: AC2
+  text: Given E07 results exist, when this card runs, then it reuses them and only records the Point and Say specific differences
+user_facing: false
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- docs/build/verification/P0-VER-08.md
+- UNVERIFIED.md row updated
+risks: []
+gate: G8
+external_blockers: []
+owner: agent
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

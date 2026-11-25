@@ -103,6 +103,7 @@ class EditProfileScreen extends HookConsumerWidget {
 
         if (success && context.mounted) {
           await ref.read(userProvider.notifier).refreshUser();
+          if (!context.mounted) return;
           showLingAfriqSuccess(context, 'Profile updated successfully!');
           Navigator.pop(context);
         }
@@ -218,7 +219,7 @@ class EditProfileScreen extends HookConsumerWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    PanAfricanColors.primary.withOpacity(0.05),
+                    PanAfricanColors.primary.withValues(alpha: 0.05),
                     PanAfricanColors.surfaceLight,
                   ],
                 ),
@@ -272,7 +273,7 @@ class EditProfileScreen extends HookConsumerWidget {
                             child: Container(
                               padding: EdgeInsets.all(PanAfricanSpacing.sm),
                               decoration: BoxDecoration(
-                                color: PanAfricanColors.secondary,
+                                color: context.panSecondary,
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                   color: isDark
@@ -421,7 +422,7 @@ class _ProfileTextField extends StatelessWidget {
           margin: EdgeInsets.all(PanAfricanSpacing.sm),
           padding: EdgeInsets.all(PanAfricanSpacing.sm),
           decoration: BoxDecoration(
-            color: PanAfricanColors.primary.withOpacity(0.1),
+            color: PanAfricanColors.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(PanAfricanRadius.sm),
           ),
           child: Icon(
@@ -450,7 +451,7 @@ class _ProfileTextField extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: PanAfricanColors.primary,
             width: 2,
           ),
@@ -458,13 +459,13 @@ class _ProfileTextField extends StatelessWidget {
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
           borderSide: BorderSide(
-            color: PanAfricanColors.error,
+            color: context.panError,
           ),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
           borderSide: BorderSide(
-            color: PanAfricanColors.error,
+            color: context.panError,
             width: 2,
           ),
         ),
@@ -501,13 +502,13 @@ class _ImagePickerOption extends StatelessWidget {
           padding: EdgeInsets.all(PanAfricanSpacing.sm),
           decoration: BoxDecoration(
             color: isDestructive
-                ? PanAfricanColors.error.withOpacity(0.1)
-                : PanAfricanColors.primary.withOpacity(0.1),
+                ? context.panError.withValues(alpha: 0.1)
+                : PanAfricanColors.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(PanAfricanRadius.md),
           ),
           child: Icon(
             icon,
-            color: isDestructive ? PanAfricanColors.error : PanAfricanColors.primary,
+            color: isDestructive ? context.panError : PanAfricanColors.primary,
             size: 24.sp,
           ),
         ),
@@ -515,7 +516,7 @@ class _ImagePickerOption extends StatelessWidget {
         title: Text(
         title,
         style: PanAfricanTypography.bodyLarge(context).copyWith(
-          color: isDestructive ? PanAfricanColors.error : null,
+          color: isDestructive ? context.panError : null,
         ),
       ),
         onTap: () {

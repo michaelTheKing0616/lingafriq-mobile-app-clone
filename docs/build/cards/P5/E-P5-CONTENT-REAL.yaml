@@ -1,0 +1,47 @@
+charter: v2
+id: E-P5-CONTENT-REAL
+kind: epic
+title: Stage-1 content waves A1→A2→B1 with honest labels
+phase: P5
+epic: E-P5-CONTENT-REAL
+req_ids:
+- RM-P1-13
+- RM-P1-14
+- RM-P1-15
+- RM-P2-01
+depends_on:
+- E-P4-CONTENT-ENGINE
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T4
+  tester: T0
+  reviewer: T4
+  justification: epic gate owned by the Orchestrator; no implementation
+token_budget: 10000
+file_allowlist: []
+context_anchors: []
+acceptance_criteria:
+- id: AC1
+  text: Every member card of this epic is Done with Tester evidence and Reviewer PASS
+- id: AC2
+  text: The epic integration test(s) are green in CI
+- id: AC3
+  text: All RTM rows owned by member cards are Verified-Done, Blocked-External or Waived-by-Tope
+- id: AC4
+  text: LEDGER.csv shows the epic within budget; routing notes written to 04_ROUTING.md
+tags:
+- content_real
+- native_verified_rule
+gate: G5
+status: Draft
+skills:
+  worker:
+  - adaptive/13-agent-teams
+  - adaptive/06-execution-and-verification

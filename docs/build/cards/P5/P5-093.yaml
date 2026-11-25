@@ -1,0 +1,51 @@
+charter: v2
+id: P5-093
+kind: verification
+title: Verify reference books and engineering estimates
+phase: P5
+epic: E-P5-A1
+req_ids:
+- CP-§9.4-13
+- CP-§9.4-14
+depends_on:
+- P5-076
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T0
+  tester: T0
+  reviewer: T1
+  justification: verification only; no code
+token_budget: 20000
+file_allowlist: []
+context_anchors:
+- CURRICULUM.md#§9.4:L843-L844
+acceptance_criteria:
+- id: AC1
+  text: Given the purchase list, when priced, then $200-600 per language and $2k-4k for Stage 1 are confirmed or deltas recorded
+- id: AC2
+  text: Given Studio and pipeline work, when tracked, then actual engineer-weeks are compared with 14-20 [estimate]
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G5
+external_blockers:
+- EXT-22
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

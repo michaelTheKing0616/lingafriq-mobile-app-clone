@@ -1,0 +1,62 @@
+charter: v2
+id: P6-065
+kind: build
+title: Add diacritic completeness metric
+phase: P6
+epic: E-P6-EVALS
+req_ids:
+- EP-§7.6-17
+depends_on:
+- P6-056
+size: S
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist:
+- evals/metrics/diacritics.ts
+context_anchors:
+- ELEVATION.md#§7.6:L1471
+acceptance_criteria:
+- id: AC1
+  text: Given model outputs for tonal languages, when scored, then the metric is the share of required diacritics present
+    and correct against the set
+- id: AC2
+  text: Given a missing diacritic, when scored, then it is counted as an error and listed in the report
+test_plan:
+  unit:
+  - metric math
+  integration:
+  - harness wiring
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/11-data-and-quantitative-work
+  - adaptive/07-research-and-fact-checking

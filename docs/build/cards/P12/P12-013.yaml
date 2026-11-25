@@ -1,0 +1,71 @@
+charter: v2
+id: P12-013
+kind: build
+title: Enforce frame-cost budget on the reference device
+phase: P12
+epic: E-P12-RELEASE
+req_ids:
+- EP-§4.5-12
+- EP-§4.5-13
+- EP-§4.5-14
+depends_on:
+- P12-011
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 60000
+file_allowlist:
+- integration_test/frame_cost_test.dart
+- scripts/perf/frame_budget.sh
+- lib/avatars
+context_anchors:
+- ELEVATION.md#§4.5:L981-L983
+acceptance_criteria:
+- id: AC1
+  text: Given the reference 2020 mid-range Android and an avatar on screen, when the frame-cost harness runs, then added raster
+    plus UI cost per frame is 2 ms or less
+- id: AC2
+  text: Given the primary scroll and avatar paths, when profiled, then they hold 60 fps, and a run that holds only 30 fps
+    is reported as degraded, not passed
+- id: AC3
+  text: Given a frame budget is exceeded, when CI evaluates, then the build fails and names the screen and the worst 5 frames
+- id: AC4
+  text: Given reduced-motion is enabled, when profiled, then the static fallback shows 0 dropped frames
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf:
+  - frame timing on reference device, 60 fps target, 30 fps floor
+  a11y:
+  - reduced-motion path
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Needs a physical reference device
+gate: G12
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

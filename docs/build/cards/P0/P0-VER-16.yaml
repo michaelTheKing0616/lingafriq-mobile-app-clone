@@ -1,0 +1,54 @@
+charter: v2
+id: P0-VER-16
+kind: verification
+title: Purchase and confirm grammar and corpora set
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- UNV-C03
+depends_on:
+- E-P0-INTAKE
+- EXT-22
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: verification only; result recorded, never inferred
+token_budget: 20000
+file_allowlist:
+- docs/build/verification/P0-VER-16.md
+- docs/build/UNVERIFIED.md
+context_anchors:
+- CURRICULUM.md#§2.4:L380
+acceptance_criteria:
+- id: AC1
+  text: Given the purchase list from EXT-22, when the titles and corpora access are obtained, then each is recorded with edition
+    and licence terms
+- id: AC2
+  text: Given the sources are in hand, when the cited claims are checked, then each is marked verified or corrected
+user_facing: false
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- docs/build/verification/P0-VER-16.md
+- UNVERIFIED.md row updated
+risks: []
+gate: G4
+external_blockers:
+- EXT-22
+owner: external
+status: Blocked-External
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

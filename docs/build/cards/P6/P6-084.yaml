@@ -1,0 +1,67 @@
+charter: v2
+id: P6-084
+kind: build
+title: Use Opus at 16-24 kbps with text fallback on 2G/3G
+phase: P6
+epic: E-P6-REALTIME
+req_ids:
+- EP-§7.7-11
+- EP-§7.7-12
+depends_on:
+- P6-075
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/realtime/codec.ts
+- lib/services/realtime_voice_client.dart
+context_anchors:
+- ELEVATION.md#§7.7:L1481-L1482
+acceptance_criteria:
+- id: AC1
+  text: Given a voice session, when codec negotiated, then Opus is used at 16 to 24 kbps
+- id: AC2
+  text: Given a 2G or 3G connection, when detected, then the session falls back to text with a visible notice and voice resumes
+    when bandwidth recovers
+- id: AC3
+  text: Given packet loss at 10 percent in a network emulator, when the session runs, then the turn completes or ends with
+    a typed error and never silently drops
+test_plan:
+  unit:
+  - fallback decision
+  integration:
+  - codec negotiation
+  security: []
+  e2e: []
+  perf:
+  - emulated 3G profile
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

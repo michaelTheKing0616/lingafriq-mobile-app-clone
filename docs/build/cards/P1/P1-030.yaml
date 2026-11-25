@@ -1,0 +1,76 @@
+charter: v2
+id: P1-030
+kind: build
+title: Pull false tone and grammar teaching from game content
+phase: P1
+epic: E-P1-CONTENT-HONESTY
+req_ids:
+- P0-17
+- RM-P0-08
+depends_on:
+- E-P0-INTAKE
+size: S
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: score 4; blast 2
+token_budget: 25000
+file_allowlist:
+- assets/data/game_content.json
+- assets/data/lingafriq_authentic_curriculum_a1_c2.json
+- scripts/ci/check_tone_claims.py
+- assets/data/quarantine/game_content_false_claims.jsonl
+- pubspec.yaml
+context_anchors:
+- ELEVATION.md#§1:L278-L288
+- ELEVATION.md#§16.1:L2042-L2047
+acceptance_criteria:
+- id: AC1
+  text: Given game_content.json, when scanned, then the false tone note on word 1, the 1409 identical phonetic-guide-equals-tonal-note
+    entries and the wrong affixes and SVO notes for Yoruba, Pidgin, Twi, Somali and Amharic are removed from the shipped asset
+- id: AC2
+  text: Given an entry where phonetic guide equals tonal note, when check_tone_claims runs in CI, then it fails
+- id: AC3
+  text: Given the removed entries, when archived, then they are saved under a quarantine path excluded from the build with
+    a reason code per entry
+- id: AC4
+  text: Given a shipped replacement for a removed tone or grammar claim, when scanned, then it cites the elevation audit or a public-domain source, is not labelled native-verified, and is not model-written Beta grammar. Entries with no such citation have the false field removed rather than rewritten
+test_plan:
+  unit:
+  - scanner
+  integration:
+  - asset diff test
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - quarantine report
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Tone accuracy gate is E-P5; this card only removes false claims
+- "D22 signed 2026-10-21: cited replacements only. Grammar is not shipped as Beta. CC BY-SA and NC text is not copied into the shipped file."
+gate: G1
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

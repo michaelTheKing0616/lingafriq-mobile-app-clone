@@ -1,0 +1,148 @@
+charter: v2
+id: F-007
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Lessons map / Courses
+phase: P7
+epic: E-P7-HUBS
+hub: Learn
+req_ids:
+- F-007
+- F-007.D
+- F-007.E
+- F-007.U
+- F-007.L
+- P0-16
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P5-CONTENT-REAL
+- P7-951
+- P7-952
+- P7-953
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: hub feature delta spec'
+token_budget: 80000
+file_allowlist:
+- lib/screens/lessons/lessons_map_entry_screen.dart
+- lib/screens/tabs_view/courses/courses_tab.dart
+- lib/lessons/screens/lessons_list_screen.dart
+- lib/screens/curriculum/curriculum_screen_material3.dart
+- lib/screens/curriculum/curriculum_screen.dart
+- lib/screens/tutor/curriculum_viewer_screen.dart
+context_anchors:
+- ELEVATION.md#§18.3:L3593-L3613
+delta:
+  current_state: Routed course map works but pulls template curriculum and duplicates entry points.
+  defects_to_fix:
+  - Placeholder or template curriculum (P0-16) with four redundant entry points.
+  - No can-do framing on units.
+  elevation_to_build:
+  - One Path map per language with CEFR regions, unit stops, can-dos, downloads, and border checkpoints.
+  - Keep list and teacher outline as modes of the same map.
+  - The main Path is the R3 winding trail (P7-951, P7-952, P7-953). My plan (F-011), tone units (F-021), and village maps (F-103, F-104) link to it and do not keep a second lesson-progress store.
+  - Path Rive is v3 only, at ~/LingAfriq/lingafriq/design/path_rive/path/v3/. v1 and v2 are not used. Copy path_node.riv, polie_path.riv, unit_banner.riv, and path_scenery.riv into assets/rive/path/ when this card is built, and add path_contract_test.dart to the tests. Follow each *.INTEGRATION.md and contract.json.
+  ux_and_render:
+  - Vertical scrolling zig-zag of large numbered nodes on dotted trails, first lesson at the bottom. Done, current, locked, and review-due states. Unit banners, current-node scroll, and a tap preview.
+  - Per-language parchment and licensed scene art, dimmed ahead of the current node, Polie in Rive when a licensed file exists.
+  hub_placement: Learn tab (root).
+  unlock_stage: per §17.4
+  harvest_list:
+  - lib/screens/curriculum/curriculum_screen.dart
+  - lib/screens/tutor/curriculum_viewer_screen.dart
+acceptance_criteria:
+- id: AC1
+  text: Given template curriculum is retired, when the learner opens Path, then units show native-verified can-do labels only.
+- id: AC2
+  text: Given unrouted curriculum variants, when the map loads, then a single routed map exposes list and outline modes.
+- id: AC3
+  text: Given an offline pack exists, when viewing a unit, then an offline badge reflects download state.
+- id: AC4
+  text: Given the Path for a language, when the learner opens it, then lessons are a vertical scrolling zig-zag of large numbered nodes joined by dotted trails, with the first lesson at the bottom and later lessons above it.
+- id: AC5
+  text: Given lesson progress and FSRS review dates, when a node renders, then a done node is green with a tick, the current node is highlighted with the learner avatar, a Play now pill and the lesson title, a locked node is grey with a lock, and a review-due node is marked from FSRS.
+- id: AC6
+  text: Given adaptive pacing from P7-949, when a fast learner may open or skip a node, then the path shows that node open or skipped and does not hide a lesson the learner is allowed to reach.
+- id: AC7
+  text: Given a unit boundary, when the path renders, then a banner shows the unit name, the CEFR level, and the can-do statement, and the page scrolls to the current node.
+- id: AC8
+  text: Given a tap on a node, when the preview opens, then it shows the lesson goal, the time, the XP, and start or review.
+- id: AC9
+  text: Given a long path, when it scrolls, then sections lazy-load, a low-end Android frame log at or above 60 fps passes, a slower log fails, and the path renders offline from Drift.
+- id: AC10
+  text: Given a screen reader, reduced motion, or a node control, when the path is presented, then every node exposes its label and state, the tap target is at least 48 dp, non-essential motion is still, and each illustration has alt text.
+- id: AC11
+  text: Given path art or the Polie file, when it is bundled, then the licence register names an original or commercial licence, the scene matches the language and unit, locked areas ahead are dimmed, and an unlicensed file is absent.
+- id: AC12
+  text: Given My plan, a tone unit, or a village map, when that screen opens, then it links to this path or reuses its licensed scene props and does not keep a second lesson-progress store.
+- id: AC13
+  text: Given the path is built, when Rive files are bundled, then they are the v3 files from design/path_rive/path/v3 copied to assets/rive/path, v1 and v2 are absent, and path_contract_test.dart passes.
+- id: AC14
+  text: Given a node or banner unlock, when it animates, then the state and the unlock trigger are set in the same frame, scenery loads by artboard name, reducedMotion is honoured, and label, title, subtitle, and ctaText come from unit data rather than BEGIN, UNIT TITLE, or UNIT 1.
+test_plan:
+  unit:
+  - domain rules for feature delta
+  integration:
+  - navigation and data wiring from hub placement
+  e2e:
+  - primary happy path from Lives in entry
+  a11y:
+  - goldens at 100%/200% text
+  - semantics order
+  content:
+  - honest labels on shown curriculum or media
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  - done
+  - current
+  - locked
+  - review-due
+  - preview
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - learn.f_007.*
+  - learn.f_007.play_now
+  - learn.f_007.review_due
+tags: []
+p0_area: true
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

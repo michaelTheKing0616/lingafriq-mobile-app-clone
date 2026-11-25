@@ -1,0 +1,62 @@
+charter: v2
+id: P11-040
+kind: build
+title: Add golden chip render tests at 32/48/64 px
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§4.5-15
+- EP-§4.2-41
+depends_on:
+- P11-037
+- P11-039
+size: S
+difficulty:
+  score: 2
+  blast: 0
+  ambiguity: 0
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 0, ambiguity 0, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist:
+- test/avatars/goldens/chip_golden_test.dart
+context_anchors:
+- ELEVATION.md#§4.5:L984
+- ELEVATION.md#§4.2:L907
+acceptance_criteria:
+- id: AC1
+  text: Given the chip artboard, when rendered at 32, 48 and 64 px, then golden images match for each state.
+- id: AC2
+  text: Given a changed render, when goldens differ, then CI fails with the size and state name.
+test_plan:
+  unit:
+  - goldens at 3 sizes
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

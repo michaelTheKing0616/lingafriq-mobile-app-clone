@@ -59,13 +59,16 @@ class SentryService {
           options.environment = _environment;
           options.release = _release;
           options.tracesSampleRate = enablePerformanceMonitoring ? 1.0 : 0.0;
+          // sentry_flutter still marks profile sampling experimental.
+          // ignore: experimental_member_use
           options.profilesSampleRate = enablePerformanceMonitoring ? 1.0 : 0.0;
           
           // Enable additional features
           options.enableAutoSessionTracking = true;
-          options.attachScreenshot = true;
-          options.attachViewHierarchy = true;
-          
+          options.attachScreenshot = false;
+          // ignore: experimental_member_use
+          options.attachViewHierarchy = false;
+
           options.beforeSend = (event, hint) {
             final app = event.contexts.app;
             event.contexts.app = SentryApp(
@@ -74,6 +77,8 @@ class SentryService {
               build: packageInfo.buildNumber,
               identifier: app?.identifier,
             );
+            final userId = event.user?.id;
+            event.user = userId == null ? null : SentryUser(id: userId);
             return event;
           };
         },

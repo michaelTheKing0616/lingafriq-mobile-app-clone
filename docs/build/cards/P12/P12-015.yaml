@@ -1,0 +1,68 @@
+charter: v2
+id: P12-015
+kind: build
+title: Add chat delivery load test with p95 under 500 ms
+phase: P12
+epic: E-P12-RELEASE
+req_ids:
+- EP-§13.4-20
+depends_on:
+- P12-014
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 60000
+file_allowlist:
+- scripts/loadtest/chat_delivery_p95.js
+- scripts/loadtest/profiles/chat.json
+- .github/workflows/loadtest.yml
+context_anchors:
+- ELEVATION.md#§13.4:L1907
+acceptance_criteria:
+- id: AC1
+  text: Given staging with simulated concurrent chat clients, when messages are sent, then send-to-receive delivery p95 is
+    under 500 ms
+- id: AC2
+  text: Given the run, when it finishes, then results report p50, p95, drops and out-of-order counts
+- id: AC3
+  text: Given any message is lost or p95 is 500 ms or more, when the test evaluates, then it fails
+- id: AC4
+  text: Given the target host is production, when the script starts, then it refuses to run
+test_plan:
+  unit: []
+  integration: []
+  security:
+  - prod-host refusal
+  e2e: []
+  perf:
+  - chat delivery on staging
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Socket concurrency ceiling belongs to P9; reuse its harness if present
+gate: G12
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

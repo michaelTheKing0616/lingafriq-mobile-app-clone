@@ -1,0 +1,88 @@
+charter: v2
+id: P9-915
+kind: build
+title: Offer guardian time limits and child progress view
+phase: P9
+epic: E-P9-GUARDIAN
+req_ids:
+- EP-§13.3-04
+depends_on:
+- E-P9-GUARDIAN
+- P9-913
+size: M
+difficulty:
+  score: 3
+  blast: 2
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 3: blast 2, ambiguity 0, coupling 1, depth 0'
+token_budget: 80000
+file_allowlist:
+- node-backend/src/services/guardianLimits.service.ts
+- lib/screens/guardian/limits_progress_screen.dart
+context_anchors:
+- ELEVATION.md#§13.3:L1893
+acceptance_criteria:
+- id: AC1
+  text: Given a daily limit set by the guardian, when the child reaches it, then the app shows a calm end-of-session state
+    and blocks further sessions until the next local day
+- id: AC2
+  text: Given the guardian view, when opened, then it shows minutes learned, can-do progress and approved groups for each
+    child using only data the child already generates
+- id: AC3
+  text: Given a limit change, when saved, then it applies to the child device within 60 s even if offline-first state exists
+test_plan:
+  unit:
+  - limit rollover
+  integration:
+  - limit enforcement
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - limits screen
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - default
+  - limit-reached
+  - offline
+  - loading
+  copy_keys:
+  - guardian.limits.title
+  - guardian.limits.reached
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - guardian_default
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

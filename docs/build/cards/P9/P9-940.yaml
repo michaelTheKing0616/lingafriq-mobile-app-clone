@@ -1,0 +1,93 @@
+charter: v2
+id: P9-940
+kind: build
+title: Run learning overlays on device and gate server models per message
+phase: P9
+epic: E-P9-E2EE
+req_ids:
+- EP-§9.3-04
+- EP-§9.3-05
+depends_on:
+- E-P9-SAFETY
+- P9-939
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T3
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 80000
+file_allowlist:
+- lib/services/chat/on_device_overlay_service.dart
+- lib/widgets/chat/server_assist_consent_sheet.dart
+context_anchors:
+- ELEVATION.md#§9.3:L1630-L1631
+acceptance_criteria:
+- id: AC1
+  text: Given an E2EE message, when the user taps a word for a gloss or opens Tone Lens, then processing runs on the device
+    and no network call carries the message text
+- id: AC2
+  text: Given a feature that needs a server model, when requested on an E2EE message, then the user must opt in for that single
+    message and the sheet states what is sent
+- id: AC3
+  text: Given the user declines, when closing the sheet, then nothing is sent and the overlay shows an unavailable state
+- id: AC4
+  text: Given the account is under 18 or age-unknown, when this surface is opened, then it is hidden or guardian-gated until
+    E-P9-SAFETY is Done, and the restriction is enforced server-side.
+test_plan:
+  unit:
+  - consent gate
+  integration:
+  - network capture shows no text without opt-in
+  security:
+  - telemetry leak
+  e2e: []
+  perf: []
+  a11y:
+  - consent sheet
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - consent
+  - declined
+  - on-device
+  copy_keys:
+  - overlay.serverassist.title
+  - overlay.serverassist.body
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - overlay_default
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

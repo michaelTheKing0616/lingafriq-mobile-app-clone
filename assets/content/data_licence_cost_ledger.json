@@ -1,0 +1,24 @@
+{
+  "charter": "v2",
+  "card_id": "P5-092",
+  "gate": "G5",
+  "depends_on": ["P5-076"],
+  "sources": [
+    "docs/source/CURRICULUM.md#§9.4:L841-L843",
+    "assets/content/data_licence_quotes.json",
+    "CP-§9.4-10",
+    "CP-§9.4-11",
+    "CP-§9.4-12"
+  ],
+  "planning_band": {
+    "usd_stage1_min": 15000,
+    "usd_stage1_max": 60000,
+    "source": "docs/source/CURRICULUM.md#§9.4:L841-L843",
+    "estimate": true,
+    "note": "one-off/annual mix per vendor quotes"
+  },
+  "eur_usd_rate_for_optional_hcs": 1.08,
+  "eur_usd_rate_source": "frozen planning rate; replace when FX quote recorded",
+  "quotes_ref": "assets/content/data_licence_quotes.json",
+  "data_licence_cost_verifications": []
+}

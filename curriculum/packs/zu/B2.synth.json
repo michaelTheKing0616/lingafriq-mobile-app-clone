@@ -1,0 +1,3724 @@
+{
+"lang": "zu",
+"level": "B2",
+"built": "2026-10-21",
+"source_type": "synthesized",
+"items": [
+{
+"id": "zu.syn.de66a0a4096d",
+"lang": "zu",
+"type": "pattern",
+"category": "relative_clause",
+"cefr": "B2",
+"can_do": [
+"B2.GRAM: Use complex grammar (relative clause)"
+],
+"text": "Indoda engiyibone izolo ngumfundisi wethu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The man I saw yesterday is our minister.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Relative e- + object concord -yi- (class 9).",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Indoda",
+"count": 777,
+"locator": "leipzig:zul_community_2017#s86"
+},
+{
+"token": "engiyibone",
+"count": 1,
+"locator": "leipzig:zul_community_2017#s35343"
+},
+{
+"token": "izolo",
+"count": 1134,
+"locator": "leipzig:zul_community_2017#s4667"
+},
+{
+"token": "ngumfundisi",
+"count": 17,
+"locator": "leipzig:zul_community_2017#s17524"
+},
+{
+"token": "wethu",
+"count": 1652,
+"locator": "leipzig:zul_community_2017#s211"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:zul_community_2017#s86",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Indoda' attested 777x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s86"
+},
+{
+"text": "token 'engiyibone' attested 1x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s35343"
+},
+{
+"text": "token 'izolo' attested 1134x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s4667"
+},
+{
+"text": "token 'ngumfundisi' attested 17x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s17524"
+},
+{
+"text": "token 'wethu' attested 1652x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s211"
+}
+],
+"confidence": 0.45,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.relative_clause"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": false,
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.16f42589d5f9",
+"lang": "zu",
+"type": "pattern",
+"category": "verbal_extension",
+"cefr": "B2",
+"can_do": [
+"B2.GRAM: Use complex grammar (verbal extension)"
+],
+"text": "Umama uphekela abantwana ukudla.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Mother cooks food for the children.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Applicative -el- (pheka → phekela).",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Umama",
+"count": 845,
+"locator": "leipzig:zul_community_2017#s5361"
+},
+{
+"token": "uphekela",
+"count": 2,
+"locator": "leipzig:zul_community_2017#s110230"
+},
+{
+"token": "abantwana",
+"count": 951,
+"locator": "leipzig:zul_community_2017#s46"
+},
+{
+"token": "ukudla",
+"count": 2289,
+"locator": "leipzig:zul_community_2017#s77"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:zul_community_2017#s5361",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Umama' attested 845x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s5361"
+},
+{
+"text": "token 'uphekela' attested 2x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s110230"
+},
+{
+"text": "token 'abantwana' attested 951x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s46"
+},
+{
+"text": "token 'ukudla' attested 2289x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s77"
+}
+],
+"confidence": 0.45,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.verbal_extension"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": false,
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.639a47c399e3",
+"lang": "zu",
+"type": "pattern",
+"category": "verbal_extension",
+"cefr": "B2",
+"can_do": [
+"B2.GRAM: Use complex grammar (verbal extension)"
+],
+"text": "Incwadi yabhalwa ngumqondisi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The letter was written by the director.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Passive -w- with agent ngu-.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Incwadi",
+"count": 856,
+"locator": "leipzig:zul_community_2017#s242"
+},
+{
+"token": "yabhalwa",
+"count": 7,
+"locator": "leipzig:zul_community_2017#s91897"
+},
+{
+"token": "ngumqondisi",
+"count": 34,
+"locator": "leipzig:zul_community_2017#s12741"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:zul_community_2017#s242",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Incwadi' attested 856x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s242"
+},
+{
+"text": "token 'yabhalwa' attested 7x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s91897"
+},
+{
+"text": "token 'ngumqondisi' attested 34x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s12741"
+}
+],
+"confidence": 0.7,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.verbal_extension"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": false,
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.33ea9d6c2cb3",
+"lang": "zu",
+"type": "pattern",
+"category": "verbal_extension",
+"cefr": "B2",
+"can_do": [
+"B2.GRAM: Use complex grammar (verbal extension)"
+],
+"text": "Bayathandana kakhulu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "They love each other very much.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Reciprocal -an-.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Bayathandana",
+"count": 7,
+"locator": "leipzig:zul_community_2017#s64018"
+},
+{
+"token": "kakhulu",
+"count": 10914,
+"locator": "leipzig:zul_community_2017#s19"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:zul_community_2017#s64018",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Bayathandana' attested 7x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s64018"
+},
+{
+"text": "token 'kakhulu' attested 10914x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s19"
+}
+],
+"confidence": 0.7,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.verbal_extension"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": false,
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.f5725ef6ba2f",
+"lang": "zu",
+"type": "pattern",
+"category": "politeness",
+"cefr": "B2",
+"can_do": [
+"B2.GRAM: Use complex grammar (politeness)"
+],
+"text": "Ngicela ungisize.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Please help me.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Ngicela + subjunctive = polite request.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Ngicela",
+"count": 443,
+"locator": "leipzig:zul_community_2017#s2530"
+},
+{
+"token": "ungisize",
+"count": 31,
+"locator": "leipzig:zul_community_2017#s1768"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:zul_community_2017#s2530",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Ngicela' attested 443x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s2530"
+},
+{
+"text": "token 'ungisize' attested 31x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s1768"
+}
+],
+"confidence": 0.7,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.politeness"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": true,
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.f9706f1db197",
+"lang": "zu",
+"type": "pattern",
+"category": "discourse_marker",
+"cefr": "B2",
+"can_do": [
+"B2.GRAM: Use complex grammar (discourse marker)"
+],
+"text": "Noma kunjalo, uhulumeni uthe uzoqhubeka nalolu hlelo.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Even so, the government said it will continue with this programme.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Noma kunjalo = nevertheless.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Noma",
+"count": 23838,
+"locator": "leipzig:zul_community_2017#s2"
+},
+{
+"token": "kunjalo",
+"count": 705,
+"locator": "leipzig:zul_community_2017#s1201"
+},
+{
+"token": "uhulumeni",
+"count": 2049,
+"locator": "leipzig:zul_community_2017#s8617"
+},
+{
+"token": "uthe",
+"count": 9571,
+"locator": "leipzig:zul_community_2017#s1008"
+},
+{
+"token": "uzoqhubeka",
+"count": 102,
+"locator": "leipzig:zul_community_2017#s18333"
+},
+{
+"token": "nalolu",
+"count": 121,
+"locator": "leipzig:zul_community_2017#s1610"
+},
+{
+"token": "hlelo",
+"count": 1132,
+"locator": "leipzig:zul_community_2017#s3210"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:zul_community_2017#s2",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Noma' attested 23838x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s2"
+},
+{
+"text": "token 'kunjalo' attested 705x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s1201"
+},
+{
+"text": "token 'uhulumeni' attested 2049x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s8617"
+},
+{
+"text": "token 'uthe' attested 9571x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s1008"
+},
+{
+"text": "token 'uzoqhubeka' attested 102x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s18333"
+},
+{
+"text": "token 'nalolu' attested 121x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s1610"
+},
+{
+"text": "token 'hlelo' attested 1132x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s3210"
+}
+],
+"confidence": 0.7,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.discourse_marker"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": false,
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.prv.98e34a1d4173",
+"lang": "zu",
+"type": "proverb",
+"category": "proverb",
+"cefr": "B2",
+"can_do": [
+"B2.IDIOM: Understand and use proverbs in context"
+],
+"text": "Izandla ziyagezana",
+"source_type": "attested",
+"translation_en": {
+"text": "Hands wash each other.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"token_evidence": [
+{
+"token": "Izandla",
+"count": 573,
+"locator": "leipzig:zul_community_2017#s46"
+},
+{
+"token": "ziyagezana",
+"count": 6,
+"locator": "leipzig:zul_community_2017#s28355"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:zul_community_2017#s45660 :: Isinqumo esithathwe ngonyaka ka 2007/08 sokusabalalisa Uhlelo Olunwetshiwe Lwemisebenzi Yomphakathi (EPWP) ukuba lufake Nezokuphathwa Komhlaba Nezakhiwo siholel",
+"role": "shipped_text"
+},
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:zul_community_2017#s46",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Izandla' attested 573x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s46"
+},
+{
+"text": "token 'ziyagezana' attested 6x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s28355"
+}
+],
+"confidence": 0.7,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"idiom_or_formula",
+"meaning_gloss_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"register_model": false,
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.9a9291df3b82",
+"lang": "zu",
+"type": "sentence",
+"category": "opinion",
+"cefr": "B2",
+"can_do": [
+"B2.OPINION"
+],
+"text": "Ngokubona kwami, imfundo yamahhala isize izingane eziningi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "In my view, free education has helped many children.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.opinion"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.2ef21c11d2f3",
+"lang": "zu",
+"type": "sentence",
+"category": "opinion",
+"cefr": "B2",
+"can_do": [
+"B2.OPINION"
+],
+"text": "Angicabangi ukuthi lolu hlelo luzophumelela ngaphandle kokwesekwa ngumphakathi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "I don't think this plan will succeed without community support.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.opinion"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.4ed1e548a27a",
+"lang": "zu",
+"type": "sentence",
+"category": "opinion",
+"cefr": "B2",
+"can_do": [
+"B2.OPINION"
+],
+"text": "Ngiyavumelana nawe kancane, kodwa hhayi ngokuphelele.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "I agree with you a little, but not completely.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.opinion"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.fad5dc79d14e",
+"lang": "zu",
+"type": "sentence",
+"category": "opinion",
+"cefr": "B2",
+"can_do": [
+"B2.OPINION"
+],
+"text": "Kubukeka sengathi amanani okudla azoqhubeka nokukhuphuka kulo nyaka.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It looks as if food prices will keep rising this year.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.opinion"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.24d648323144",
+"lang": "zu",
+"type": "sentence",
+"category": "opinion",
+"cefr": "B2",
+"can_do": [
+"B2.OPINION"
+],
+"text": "Kubalulekile ukulalela izinhlangothi zombili ngaphambi kokuthatha isinqumo.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It is important to listen to both sides before deciding.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.opinion"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.0c41f315b8de",
+"lang": "zu",
+"type": "pattern",
+"category": "relative_clause",
+"cefr": "B2",
+"can_do": [
+"B2.RELATIVE_CLAUSE"
+],
+"text": "Umfundi owawina umklomelo ngudadewethu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The student who won the prize is my sister.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.relative_clause"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.0f97f14afb08",
+"lang": "zu",
+"type": "pattern",
+"category": "relative_clause",
+"cefr": "B2",
+"can_do": [
+"B2.RELATIVE_CLAUSE"
+],
+"text": "Indlu esayakha ngonyaka odlule isithengisiwe.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The house we built last year has been sold.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.relative_clause"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 4,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.f567b140f2c7",
+"lang": "zu",
+"type": "pattern",
+"category": "relative_clause",
+"cefr": "B2",
+"can_do": [
+"B2.RELATIVE_CLAUSE"
+],
+"text": "Abantu abahlala edolobheni bakhokha irenti ephezulu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "People who live in town pay high rent.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.relative_clause"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.70d70969cc7d",
+"lang": "zu",
+"type": "pattern",
+"category": "relative_clause",
+"cefr": "B2",
+"can_do": [
+"B2.RELATIVE_CLAUSE"
+],
+"text": "Incwadi ongiboleke yona iyathakazelisa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The book you lent me is interesting.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.relative_clause"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.3bf10107189c",
+"lang": "zu",
+"type": "pattern",
+"category": "relative_clause",
+"cefr": "B2",
+"can_do": [
+"B2.RELATIVE_CLAUSE"
+],
+"text": "Uthisha osifundisa izibalo unzima kancane.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The teacher who teaches us maths is a bit strict.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.relative_clause"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.4c3d820bd34f",
+"lang": "zu",
+"type": "pattern",
+"category": "conditional",
+"cefr": "B2",
+"can_do": [
+"B2.CONDITIONAL"
+],
+"text": "Uma ufika ekuseni, sizohamba sonke.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "If you arrive early, we will go together.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.conditional"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.02efd21bb66c",
+"lang": "zu",
+"type": "pattern",
+"category": "conditional",
+"cefr": "B2",
+"can_do": [
+"B2.CONDITIONAL"
+],
+"text": "Ukube benginemali, ngabe ngithenge ipulazi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "If I had money, I would have bought a farm.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.conditional"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.db1faa0b3143",
+"lang": "zu",
+"type": "pattern",
+"category": "conditional",
+"cefr": "B2",
+"can_do": [
+"B2.CONDITIONAL"
+],
+"text": "Uma lina namuhla, umhlangano uzohlehliswa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "If it rains today, the meeting will be postponed.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.conditional"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.53974f165578",
+"lang": "zu",
+"type": "pattern",
+"category": "conditional",
+"cefr": "B2",
+"can_do": [
+"B2.CONDITIONAL"
+],
+"text": "Uma ungadli kahle, uzoba buthakathaka.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "If you don't eat well, you will become weak.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.conditional"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.49fad9f17ae9",
+"lang": "zu",
+"type": "pattern",
+"category": "verbal_extension",
+"cefr": "B2",
+"can_do": [
+"B2.VERBAL_EXTENSION"
+],
+"text": "Umama uphekele izivakashi irayisi nenhlanzi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Mother cooked rice and fish for the guests.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.verbal_extension"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.0f458c6e5c4e",
+"lang": "zu",
+"type": "pattern",
+"category": "verbal_extension",
+"cefr": "B2",
+"can_do": [
+"B2.VERBAL_EXTENSION"
+],
+"text": "Ngizokubhalela incwadi ngesonto elizayo.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "I will write you a letter next week.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.verbal_extension"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.97d810ef8901",
+"lang": "zu",
+"type": "pattern",
+"category": "verbal_extension",
+"cefr": "B2",
+"can_do": [
+"B2.VERBAL_EXTENSION"
+],
+"text": "Umnyango uvulwe ngunogada.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The door was opened by the guard.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.verbal_extension"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.e660c27c2e11",
+"lang": "zu",
+"type": "pattern",
+"category": "verbal_extension",
+"cefr": "B2",
+"can_do": [
+"B2.VERBAL_EXTENSION"
+],
+"text": "Amasela aboshwe ngamaphoyisa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The thieves were arrested by the police.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.verbal_extension"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.a87d93b4f115",
+"lang": "zu",
+"type": "pattern",
+"category": "verbal_extension",
+"cefr": "B2",
+"can_do": [
+"B2.VERBAL_EXTENSION"
+],
+"text": "Izingane zalwa enkundleni.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The children fought in the field.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.verbal_extension"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.ca003bb47b25",
+"lang": "zu",
+"type": "pattern",
+"category": "verbal_extension",
+"cefr": "B2",
+"can_do": [
+"B2.VERBAL_EXTENSION"
+],
+"text": "Sisizane ukuqeda lowo msebenzi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "We helped each other finish that work.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.verbal_extension"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.27a806600e1f",
+"lang": "zu",
+"type": "pattern",
+"category": "verbal_extension",
+"cefr": "B2",
+"can_do": [
+"B2.VERBAL_EXTENSION"
+],
+"text": "Uthisha wabavusa bonke abafundi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The teacher made all the students stand up.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.verbal_extension"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.2bcfbcc1dc9b",
+"lang": "zu",
+"type": "pattern",
+"category": "verbal_extension",
+"cefr": "B2",
+"can_do": [
+"B2.VERBAL_EXTENSION"
+],
+"text": "Leyo ndaba yamdabukisa kakhulu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "That news saddened him greatly.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.verbal_extension"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.a0df00fa2479",
+"lang": "zu",
+"type": "pattern",
+"category": "verbal_extension",
+"cefr": "B2",
+"can_do": [
+"B2.VERBAL_EXTENSION"
+],
+"text": "Inkomishi iphukile.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The cup has broken.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.verbal_extension"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.ebf7731decaf",
+"lang": "zu",
+"type": "pattern",
+"category": "verbal_extension",
+"cefr": "B2",
+"can_do": [
+"B2.VERBAL_EXTENSION"
+],
+"text": "Le nkinga iyaxazululeka.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "This problem is solvable.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.verbal_extension"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.7b743927f6fb",
+"lang": "zu",
+"type": "pattern",
+"category": "tense_aspect",
+"cefr": "B2",
+"can_do": [
+"B2.TENSE_ASPECT"
+],
+"text": "Lapho ngifika, base behambile.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "When I arrived, they had already left.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.tense_aspect"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.b48efd54227c",
+"lang": "zu",
+"type": "pattern",
+"category": "tense_aspect",
+"cefr": "B2",
+"can_do": [
+"B2.TENSE_ASPECT"
+],
+"text": "Wayefunda ngesikhathi kucisha ugesi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He was reading when the electricity went off.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.tense_aspect"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.43530e25b030",
+"lang": "zu",
+"type": "pattern",
+"category": "tense_aspect",
+"cefr": "B2",
+"can_do": [
+"B2.TENSE_ASPECT"
+],
+"text": "Akakafiki ekhaya.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He hasn't arrived home yet.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.tense_aspect"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.b38bd0d6b7c1",
+"lang": "zu",
+"type": "pattern",
+"category": "tense_aspect",
+"cefr": "B2",
+"can_do": [
+"B2.TENSE_ASPECT"
+],
+"text": "Angikaze ngiye eThekwini.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "I have never been to Durban.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.tense_aspect"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.2753b0accb14",
+"lang": "zu",
+"type": "pattern",
+"category": "tense_aspect",
+"cefr": "B2",
+"can_do": [
+"B2.TENSE_ASPECT"
+],
+"text": "Sisalindile amahora amabili.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "We are still waiting, two hours now.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.tense_aspect"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.000e8a9f821f",
+"lang": "zu",
+"type": "pattern",
+"category": "discourse_marker",
+"cefr": "B2",
+"can_do": [
+"B2.DISCOURSE_MARKER"
+],
+"text": "Okokuqala, ake sibheke inkinga uqobo.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "First, let's look at the problem itself.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.discourse_marker"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.013c3d581403",
+"lang": "zu",
+"type": "pattern",
+"category": "discourse_marker",
+"cefr": "B2",
+"can_do": [
+"B2.DISCOURSE_MARKER"
+],
+"text": "Ngaphezu kwalokho, izindleko zokuhamba zikhuphukile.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Moreover, transport costs have risen.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.discourse_marker"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.073f6897d217",
+"lang": "zu",
+"type": "pattern",
+"category": "discourse_marker",
+"cefr": "B2",
+"can_do": [
+"B2.DISCOURSE_MARKER"
+],
+"text": "Ngakho-ke, sidinga uhlelo olusha.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Therefore, we need a new plan.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.discourse_marker"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.15b176a04c08",
+"lang": "zu",
+"type": "pattern",
+"category": "discourse_marker",
+"cefr": "B2",
+"can_do": [
+"B2.DISCOURSE_MARKER"
+],
+"text": "Isibonelo, izikole eziningi azinawo umtapo wolwazi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "For example, many schools have no library.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.discourse_marker"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.c779ddf2abad",
+"lang": "zu",
+"type": "pattern",
+"category": "discourse_marker",
+"cefr": "B2",
+"can_do": [
+"B2.DISCOURSE_MARKER"
+],
+"text": "Ekugcineni, umhlangano uphele ngokuthula.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Finally, the meeting ended peacefully.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.discourse_marker"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.a4b629e0a6f6",
+"lang": "zu",
+"type": "pattern",
+"category": "politeness",
+"cefr": "B2",
+"can_do": [
+"B2.POLITENESS"
+],
+"text": "Ngiyaxolisa ngokuphuza.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "I apologise for being late.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.politeness"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.11ba7d1595c1",
+"lang": "zu",
+"type": "pattern",
+"category": "politeness",
+"cefr": "B2",
+"can_do": [
+"B2.POLITENESS"
+],
+"text": "Ungangisiza ngiphathe lo mthwalo?",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Could you help me carry this load?",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.politeness"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.37ec0bc5a8cd",
+"lang": "zu",
+"type": "pattern",
+"category": "politeness",
+"cefr": "B2",
+"can_do": [
+"B2.POLITENESS"
+],
+"text": "Wamukelekile, zizwe usekhaya.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Welcome, feel at home.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.politeness"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.a6cb1943d19a",
+"lang": "zu",
+"type": "pattern",
+"category": "politeness",
+"cefr": "B2",
+"can_do": [
+"B2.POLITENESS"
+],
+"text": "Ngiyabonga ngomusa wakho.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Thank you for your kindness.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.politeness"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.2e0555533afc",
+"lang": "zu",
+"type": "pattern",
+"category": "politeness",
+"cefr": "B2",
+"can_do": [
+"B2.POLITENESS"
+],
+"text": "Ngiyakududuza ngokulahlekelwa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "My condolences on your loss.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.politeness"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 2,
+"crosscheck_ok": false,
+"text_original": "Ngiyakudumisa ngokulahlekelwa.",
+"fix_source": "sonnet"
+},
+{
+"id": "zu.syn.9b118cd1b471",
+"lang": "zu",
+"type": "sentence",
+"category": "work",
+"cefr": "B2",
+"can_do": [
+"B2.WORK"
+],
+"text": "Ngifaka isicelo somsebenzi okhangiswe ephephandabeni.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "I am applying for the job advertised in the newspaper.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.work"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.44a5bbfec6aa",
+"lang": "zu",
+"type": "sentence",
+"category": "work",
+"cefr": "B2",
+"can_do": [
+"B2.WORK"
+],
+"text": "Iholo lami alanele ukukhokha zonke izindleko.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "My salary is not enough to pay all the costs.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.work"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.40475ef5e6a0",
+"lang": "zu",
+"type": "sentence",
+"category": "health",
+"cefr": "B2",
+"can_do": [
+"B2.HEALTH"
+],
+"text": "Nginomkhuhlane kusukela izolo ebusuku.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "I have had flu since last night.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.health"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.b3237c4c80a7",
+"lang": "zu",
+"type": "sentence",
+"category": "health",
+"cefr": "B2",
+"can_do": [
+"B2.HEALTH"
+],
+"text": "Kuhle ukuphuza amanzi amaningi nsuku zonke.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It is good to drink a lot of water every day.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.health"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.0d905d3a93c8",
+"lang": "zu",
+"type": "sentence",
+"category": "environment",
+"cefr": "B2",
+"can_do": [
+"B2.ENVIRONMENT"
+],
+"text": "Ukugawulwa kwezihlahla kubangele isomiso kule ndawo.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Tree felling has caused drought in this area.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.environment"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.e9c4855ee3e5",
+"lang": "zu",
+"type": "sentence",
+"category": "narrative",
+"cefr": "B2",
+"can_do": [
+"B2.NARRATIVE"
+],
+"text": "Ngolunye usuku, umzingeli wahamba yedwa ehlathini.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "One day, a hunter went into the forest alone.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.0fa140d1fe66",
+"lang": "zu",
+"type": "sentence",
+"category": "narrative",
+"cefr": "B2",
+"can_do": [
+"B2.NARRATIVE"
+],
+"text": "Ngokungazelele, wezwa izwi elingajwayelekile.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Suddenly, he heard an unusual voice.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.06788b861ef0",
+"lang": "zu",
+"type": "sentence",
+"category": "narrative",
+"cefr": "B2",
+"can_do": [
+"B2.NARRATIVE"
+],
+"text": "Ekugcineni, abantu basemzini bamthola.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "In the end, the villagers found him.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 4,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.8b4700995bf1",
+"lang": "zu",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "B2",
+"can_do": [
+"B2.CULTURE_NOTE"
+],
+"text": "Abantu abasha bahlonipha abadala ngokungababizi ngamagama.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Young people respect elders by not calling them by name.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.003c59e0aeaa",
+"lang": "zu",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "B2",
+"can_do": [
+"B2.CULTURE_NOTE"
+],
+"text": "Ukuhlonipha kubalulekile emasikweni amaZulu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Respect (hlonipha) is important in Zulu custom.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.deee465461a0",
+"lang": "zu",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "B2",
+"can_do": [
+"B2.CULTURE_NOTE"
+],
+"text": "Ilobolo likhokhwa ngumyeni emndenini womakoti.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Lobola is paid by the groom to the bride's family.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.d7dc7bf0bc82",
+"lang": "zu",
+"type": "sentence",
+"category": "idiom",
+"cefr": "B2",
+"can_do": [
+"B2.IDIOM"
+],
+"text": "Ushaye utshani.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He ran away (lit. struck the grass).",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.idiom"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.736f5f3e0e11",
+"lang": "zu",
+"type": "sentence",
+"category": "idiom",
+"cefr": "B2",
+"can_do": [
+"B2.IDIOM"
+],
+"text": "Unenhliziyo emhlophe.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He is kind-hearted (lit. has a white heart).",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.B2.idiom"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+}
+]
+}

@@ -1,0 +1,64 @@
+charter: v2
+id: P4-052
+kind: build
+title: Check honorific register and respect-sensitive units
+phase: P4
+epic: E-P4-LINTERS
+req_ids:
+- CP-§3.2-07
+- CP-§3.2-11
+depends_on:
+- P4-039
+- P4-036
+size: S
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1, depth 1, size 0'
+token_budget: 25000
+file_allowlist:
+- tools/content_engine/linters/honorifics.py
+- tools/content_engine/tests/test_honorifics.py
+context_anchors:
+- CURRICULUM.md#§3.2:L514-L516
+acceptance_criteria:
+- id: AC1
+  text: Given Yoruba ẹ/ọ or Zulu hlonipha forms, when text uses a form not allowed by the honorifics register list in the
+    kit, then it fails with HONORIFIC_MISMATCH
+- id: AC2
+  text: Given a respect-sensitive unit, when processed, then 100% of its items route to a linguist and none auto-publish
+test_plan:
+  unit:
+  - mismatch fixture
+  - respect unit routes 100%
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

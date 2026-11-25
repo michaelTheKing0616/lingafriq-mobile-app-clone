@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "chunkBytes": 262144,
+  "coreLanguageIds": ["1"],
+  "languages": [
+    {
+      "id": "1",
+      "languageKey": "yoruba",
+      "displayName": "Yoruba",
+      "bundled": true
+    },
+    {
+      "id": "2",
+      "languageKey": "hausa",
+      "displayName": "Hausa",
+      "bundled": false,
+      "packUrl": "https://cdn.lingafriq.com/content/v1/cms/2/manifest.json",
+      "sha256": "30d782972e594cb43eda8bcdbb0d9c40c369daa70d5ad823ca9e2977e484255f",
+      "sizeBytes": 629858
+    },
+    {
+      "id": "3",
+      "languageKey": "igbo",
+      "displayName": "Igbo",
+      "bundled": false,
+      "packUrl": "https://cdn.lingafriq.com/content/v1/cms/3/manifest.json",
+      "sha256": "ec5c0d5e25882d0187cfe0fc5d3786bb5625f0ca9efd56da0986182959990f49",
+      "sizeBytes": 632969
+    },
+    {
+      "id": "4",
+      "languageKey": "swahili",
+      "displayName": "Swahili",
+      "bundled": false,
+      "packUrl": "https://cdn.lingafriq.com/content/v1/cms/4/manifest.json",
+      "sha256": "f13de828424ad08e84ebe545a70ba2603917ad6ab72f4c15496bd017cf60d3be",
+      "sizeBytes": 631678
+    },
+    {
+      "id": "5",
+      "languageKey": "zulu",
+      "displayName": "Zulu",
+      "bundled": false,
+      "packUrl": "https://cdn.lingafriq.com/content/v1/cms/5/manifest.json",
+      "sha256": "c5ef5ec8eacbe87f6b36fa8b67cb7bd251648b7648719d42f23c96fa3cd7b3cc",
+      "sizeBytes": 629791
+    },
+    {
+      "id": "6",
+      "languageKey": "xhosa",
+      "displayName": "Xhosa",
+      "bundled": false,
+      "packUrl": "https://cdn.lingafriq.com/content/v1/cms/6/manifest.json",
+      "sha256": "92eb32c0809014ea77a3a28e95d059e728b625f99dc9c4038fcd823ad512cace",
+      "sizeBytes": 629867
+    },
+    {
+      "id": "7",
+      "languageKey": "wolof",
+      "displayName": "Wolof",
+      "bundled": false,
+      "packUrl": "https://cdn.lingafriq.com/content/v1/cms/7/manifest.json",
+      "sha256": "26262473ea5eab9b6550e8c2b5a7d81d41a37d38b046a9bdc04b059185e38b38",
+      "sizeBytes": 626128
+    },
+    {
+      "id": "8",
+      "languageKey": "nigerian_pidgin",
+      "displayName": "Nigerian Pidgin",
+      "bundled": false,
+      "packUrl": "https://cdn.lingafriq.com/content/v1/cms/8/manifest.json",
+      "sha256": "33a282d4c08ab27b31ad4a4bed270f353f6b0c77bbfe39173495e3df67b3e065",
+      "sizeBytes": 638295
+    },
+    {
+      "id": "9",
+      "languageKey": "afrikaans",
+      "displayName": "Afrikaans",
+      "bundled": false,
+      "packUrl": "https://cdn.lingafriq.com/content/v1/cms/9/manifest.json",
+      "sha256": "ec625080440c5144b64d78bec170889ed7229cb6c876eddc9cf083c79dc72d7c",
+      "sizeBytes": 637459
+    },
+    {
+      "id": "10",
+      "languageKey": "amharic",
+      "displayName": "Amharic",
+      "bundled": false,
+      "packUrl": "https://cdn.lingafriq.com/content/v1/cms/10/manifest.json",
+      "sha256": "de0487678eb24c5c04c335615d22a115afc81603f318712e66ef04c4d529d9c0",
+      "sizeBytes": 652443
+    },
+    {
+      "id": "11",
+      "languageKey": "twi",
+      "displayName": "Twi",
+      "bundled": false,
+      "packUrl": "https://cdn.lingafriq.com/content/v1/cms/11/manifest.json",
+      "sha256": "99d0c6025a85e04923141f17fec2448e532efaa2bab5de27860eba72417dc64d",
+      "sizeBytes": 619638
+    },
+    {
+      "id": "12",
+      "languageKey": "somali",
+      "displayName": "Somali",
+      "bundled": false,
+      "packUrl": "https://cdn.lingafriq.com/content/v1/cms/12/manifest.json",
+      "sha256": "747e45bb5306cecadeda165df259e2958f17d9c22d299f7b5347dd4d4d2854e6",
+      "sizeBytes": 635363
+    },
+    {
+      "id": "13",
+      "languageKey": "lingala",
+      "displayName": "Lingala",
+      "bundled": false,
+      "packUrl": "https://cdn.lingafriq.com/content/v1/cms/13/manifest.json",
+      "sha256": "708fe96c5afd940fd3d2904facdba4f48d0ebe6c7dbae261b943d46d7c03b60c",
+      "sizeBytes": 629428
+    },
+    {
+      "id": "14",
+      "languageKey": "shona",
+      "displayName": "Shona",
+      "bundled": false,
+      "packUrl": "https://cdn.lingafriq.com/content/v1/cms/14/manifest.json",
+      "sha256": "9a1cc0eea5317158712aae96a3ce821aa3cfc8ebd15c82fb2620b8bfc9b966f5",
+      "sizeBytes": 630418
+    }
+  ]
+}

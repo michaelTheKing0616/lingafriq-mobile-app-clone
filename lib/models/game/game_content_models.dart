@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'game_content_failure.dart';
+
 /// A vocabulary word sourced from the game content database.
 ///
 /// Each word carries linguistic metadata (phonetics, part of speech, tonal notes)
@@ -427,4 +429,150 @@ List<String> _parseGameTags(dynamic value) {
     return value.split(',').map((s) => s.trim()).where((s) => s.isNotEmpty).toList();
   }
   return const [];
+}
+
+/// Speaking prompt routed through E-P6-SCORER (P8-910).
+class GameKitSpeakingPrompt {
+  const GameKitSpeakingPrompt({
+    required this.expectedText,
+    this.itemId,
+    this.requiresServerScoring = true,
+  });
+
+  final String expectedText;
+  final String? itemId;
+  final bool requiresServerScoring;
+
+  Map<String, dynamic> toTurnMetadata() => {
+        'requiresServerScoring': requiresServerScoring,
+        'coreVerb': 'speak',
+        if (itemId != null) 'itemId': itemId,
+      };
+
+  Map<String, dynamic> toContentMap() => {
+        'expectedText': expectedText,
+        'requiresServerScoring': requiresServerScoring,
+      };
+}
+
+/// Licensed human audio for the correct answer on a GameKit item (P8-904).
+class GameKitCorrectItemAudio {
+  final String? uri;
+  final bool syntheticDisallowed;
+
+  const GameKitCorrectItemAudio({
+    this.uri,
+    this.syntheticDisallowed = false,
+  });
+
+  bool get hasPlayableAudio => uri != null && uri!.trim().isNotEmpty;
+
+  static GameKitCorrectItemAudio fromMetadata(
+    Map<String, dynamic> metadata, {
+    required bool tonalLanguage,
+  }) {
+    final uri = _firstNonEmptyString(metadata, const [
+      'correct_audio_url',
+      'correct_audio_asset',
+      'correct_audio_uri',
+      'audio_url',
+    ]);
+    return GameKitCorrectItemAudio(
+      uri: uri,
+      syntheticDisallowed: tonalLanguage,
+    );
+  }
+}
+
+String? _firstNonEmptyString(Map<String, dynamic> metadata, List<String> keys) {
+  for (final key in keys) {
+    final value = metadata[key];
+    if (value is String && value.trim().isNotEmpty) {
+      return value.trim();
+    }
+  }
+  return null;
+}
+
+/// Lexicon-sourced vocabulary for GameKit pools (P8-912).
+class GameLexiconPoolItem {
+  const GameLexiconPoolItem({
+    required this.id,
+    required this.language,
+    required this.toneMarkedForm,
+    required this.licenceTag,
+    this.audioUri,
+    this.englishGloss,
+  });
+
+  final String id;
+  final String language;
+  final String toneMarkedForm;
+  final String? audioUri;
+  final String licenceTag;
+  final String? englishGloss;
+
+  bool get hasPlayableAudio =>
+      audioUri != null && audioUri!.trim().isNotEmpty;
+
+  Map<String, dynamic> toMetadata() => {
+        'lexeme_id': id,
+        'language': language,
+        'tone_marked_form': toneMarkedForm,
+        if (audioUri != null) 'audio_uri': audioUri,
+        'licence_tag': licenceTag,
+        if (englishGloss != null) 'english_gloss': englishGloss,
+      };
+
+  GameWord toGameWord({String cefr = 'A1'}) {
+    final numericId = id.hashCode & 0x7fffffff;
+    return GameWord(
+      id: numericId,
+      language: language,
+      word: toneMarkedForm,
+      englishMeaning: englishGloss ?? '',
+      cefr: cefr,
+      gameTags: const [],
+    );
+  }
+}
+
+/// Request for building a GameKit word pool from verified lexicon only.
+class GameLexiconPoolRequest {
+  const GameLexiconPoolRequest({
+    required this.languageCode,
+    required this.minimumItems,
+    this.fetchLimit = 100,
+    this.requireAudio = false,
+    this.cefr,
+  });
+
+  final String languageCode;
+  final int minimumItems;
+  final int fetchLimit;
+  final bool requireAudio;
+  final String? cefr;
+}
+
+class GameLexiconPoolBuildResult {
+  const GameLexiconPoolBuildResult({
+    required this.items,
+    required this.failure,
+    required this.excludedMissingAudio,
+    required this.queriedCount,
+    required this.source,
+  });
+
+  final List<GameLexiconPoolItem> items;
+  final GameContentFailure failure;
+  final int excludedMissingAudio;
+  final int queriedCount;
+  final String source;
+
+  bool get isOk =>
+      failure.type == GameContentFailureType.none &&
+      items.isNotEmpty;
+
+  bool get hasVisibleFailure =>
+      failure.type != GameContentFailureType.none;
 }

@@ -10,6 +10,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:lingafriq/services/performance/low_bandwidth_mode.dart';
 
 class LazyImage extends StatelessWidget {
   final String? imageUrl;
@@ -46,7 +47,7 @@ class LazyImage extends StatelessWidget {
     // Check if it's a network URL
     if (imageUrl!.startsWith('http://') || imageUrl!.startsWith('https://')) {
       return CachedNetworkImage(
-        imageUrl: imageUrl!,
+        imageUrl: imageLightUrl(imageUrl!, lowBandwidth: LowBandwidthMode.instance.enabled),
         width: width,
         height: height,
         fit: fit,
@@ -85,7 +86,7 @@ class LazyImage extends StatelessWidget {
     if (placeholder != null && placeholder!.isNotEmpty) {
       if (placeholder!.startsWith('http')) {
         return CachedNetworkImage(
-          imageUrl: placeholder!,
+          imageUrl: imageLightUrl(placeholder!, lowBandwidth: LowBandwidthMode.instance.enabled),
           width: width,
           height: height,
           fit: fit,
@@ -121,7 +122,7 @@ class LazyImage extends StatelessWidget {
     if (errorWidget != null && errorWidget!.isNotEmpty) {
       if (errorWidget!.startsWith('http')) {
         return CachedNetworkImage(
-          imageUrl: errorWidget!,
+          imageUrl: imageLightUrl(errorWidget!, lowBandwidth: LowBandwidthMode.instance.enabled),
           width: width,
           height: height,
           fit: fit,

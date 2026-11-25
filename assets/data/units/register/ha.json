@@ -1,0 +1,221 @@
+{
+  "card": "P5-036",
+  "language": "ha",
+  "units": [
+    {
+      "respect_sensitive": true,
+      "addressee_context": "elder",
+      "required_register": "formal",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T22:35:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "FSI Hausa Basic Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:fsi-hausa; assets/data/game_content.json",
+            "retrieved_at": "2026-10-26T22:35:00Z"
+          }
+        ]
+      },
+      "confidence": 0.88,
+      "risk_tags": [
+        "honorific_register"
+      ],
+      "review": {
+        "reviewers": [
+          {
+            "role": "linguist",
+            "reviewer_id": "fsi-linguist-1",
+            "approved": true
+          }
+        ]
+      },
+      "id": "ha.register.greetings_elder",
+      "title": "Hausa morning greeting",
+      "cefr": "A1",
+      "themes": [
+        "greetings",
+        "time_of_day",
+        "social_status"
+      ],
+      "register_markers": {
+        "formal_contains_any": [
+          "Sannu da"
+        ],
+        "informal_forbidden_in_responses": [
+          "Ina kwana"
+        ]
+      },
+      "claims": [
+        {
+          "kind": "cultural",
+          "source_ref": "register:fsi-hausa",
+          "text": "Formal greeting uses Sannu da safe.",
+          "confidence": 0.88,
+          "confidence_floor": 0.85
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "g1",
+          "kind": "choose_register",
+          "prompt_en": "Greet an elder respectfully.",
+          "options": [
+            {
+              "text": "Sannu da safe",
+              "register": "formal",
+              "translation_en": "Formal greeting"
+            },
+            {
+              "text": "Ina kwana?",
+              "register": "informal",
+              "translation_en": "Informal greeting"
+            }
+          ],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "respect_sensitive": true,
+      "addressee_context": "elder",
+      "required_register": "formal",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T22:35:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "FSI Hausa Basic Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:fsi-hausa; assets/data/game_content.json",
+            "retrieved_at": "2026-10-26T22:35:00Z"
+          }
+        ]
+      },
+      "confidence": 0.88,
+      "risk_tags": [
+        "honorific_register"
+      ],
+      "review": {
+        "reviewers": [
+          {
+            "role": "linguist",
+            "reviewer_id": "fsi-linguist-1",
+            "approved": true
+          }
+        ]
+      },
+      "id": "ha.register.honorific_address",
+      "title": "Hausa polite request",
+      "cefr": "A1",
+      "themes": [
+        "honorifics",
+        "politeness"
+      ],
+      "register_markers": {
+        "formal_contains_any": [
+          "Sannu da"
+        ],
+        "informal_forbidden_in_responses": []
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:fsi-hausa",
+          "text": "Honorific address marks respect toward elders.",
+          "confidence": 0.85,
+          "confidence_floor": 0.85
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "h1",
+          "kind": "speak_line",
+          "prompt_en": "Address an elder with the respectful form.",
+          "text": "Sannu da safe",
+          "register": "formal",
+          "role": "learner_response"
+        }
+      ]
+    },
+    {
+      "respect_sensitive": true,
+      "addressee_context": "elder",
+      "required_register": "formal",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T22:35:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "FSI Hausa Basic Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:fsi-hausa; assets/data/game_content.json",
+            "retrieved_at": "2026-10-26T22:35:00Z"
+          }
+        ]
+      },
+      "confidence": 0.88,
+      "risk_tags": [
+        "honorific_register"
+      ],
+      "review": {
+        "reviewers": [
+          {
+            "role": "linguist",
+            "reviewer_id": "fsi-linguist-1",
+            "approved": true
+          }
+        ]
+      },
+      "id": "ha.register.kinship_respect",
+      "title": "Hausa kinship respect",
+      "cefr": "A1",
+      "themes": [
+        "kinship",
+        "family"
+      ],
+      "register_markers": {
+        "formal_contains_any": [
+          "Uwar gida"
+        ],
+        "informal_forbidden_in_responses": []
+      },
+      "claims": [
+        {
+          "kind": "cultural",
+          "source_ref": "register:fsi-hausa",
+          "text": "Kinship terms anchor respectful address.",
+          "confidence": 0.85,
+          "confidence_floor": 0.85
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "k1",
+          "kind": "match_kinship",
+          "prompt_en": "Pick the respectful kinship term.",
+          "options": [
+            {
+              "text": "Uwar gida",
+              "register": "formal",
+              "kinship": "parent"
+            },
+            {
+              "text": "Iyali",
+              "register": "formal",
+              "kinship": "family"
+            }
+          ],
+          "correct_index": 0
+        }
+      ]
+    }
+  ]
+}

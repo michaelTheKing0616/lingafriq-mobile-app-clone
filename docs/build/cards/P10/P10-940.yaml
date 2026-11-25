@@ -1,0 +1,66 @@
+charter: v2
+id: P10-940
+kind: build
+title: Standardise error copy and village voice scope
+phase: P10
+epic: E-P10-ANALYTICS
+req_ids:
+- EP-§15-31
+- EP-§15-32
+depends_on:
+- P10-938
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 0
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: score 3; blast 1
+token_budget: 25000
+file_allowlist:
+- lib/l10n/app_en.arb
+- scripts/copy/error_copy_check.py
+- docs/analytics/COPY_RULES.md
+context_anchors:
+- ELEVATION.md#§15:L2005-L2007
+acceptance_criteria:
+- id: AC1
+  text: Given any error string, when the checker runs, then it must have what happened, why and what next, or the build fails
+    with the key.
+- id: AC2
+  text: Given labels, buttons and system messages, when they are reviewed, then none uses village-voice phrasing.
+- id: AC3
+  text: Given character dialogue, when it is reviewed, then village voice is allowed there and only there.
+test_plan:
+  unit:
+  - three-part error
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - voice scope sample
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

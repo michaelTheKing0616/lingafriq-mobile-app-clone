@@ -1,0 +1,73 @@
+charter: v2
+id: P5-009
+kind: build
+title: Enforce label state machine with two-native rule
+phase: P5
+epic: E-P5-QUALITY
+req_ids:
+- CP-§5-19
+- CP-§5-20
+- CP-§5-21
+depends_on:
+- P5-008
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/content/label_state.dart
+- node-backend/src/services/label.service.ts
+- test/content/label_state_test.dart
+context_anchors:
+- CURRICULUM.md#§5:L626-L629
+acceptance_criteria:
+- id: AC1
+  text: Given an item, when promoted to Native-verified, then it requires approvals from at least 2 distinct native validators
+    or the call fails with InsufficientNativeApprovals
+- id: AC2
+  text: Given an item, when promoted to Expert-reviewed, then it requires one linguist approval recorded with reviewer id
+    and date
+- id: AC3
+  text: Given an item with no human check, when published, then it is Beta only after all machine checks and sampling pass
+- id: AC4
+  text: Given any label change, when saved, then an audit row records actor, from, to and item version
+test_plan:
+  unit:
+  - transitions
+  - two-native rule
+  integration:
+  - audit trail
+  security:
+  - non-validator cannot promote
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- native_verified_rule
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

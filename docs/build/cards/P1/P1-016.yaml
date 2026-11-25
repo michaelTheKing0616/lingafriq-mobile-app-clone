@@ -1,0 +1,78 @@
+charter: v2
+id: P1-016
+kind: build
+title: Build socket authorisation test suite
+phase: P1
+epic: E-P1-SOCKETS
+req_ids:
+- P0-4
+- P0-5
+- P0-6
+- RM-P0-03
+depends_on:
+- E-P0-INTAKE
+- P1-013
+- P1-014
+- P1-015
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 0
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T3
+  reviewer: T4
+  justification: 'score 5; blast 2; security/crypto tester; gate-critical (security / child safety / legal / design direction):
+    Fable reviews'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/__test__/socket/authz.test.ts
+- node-backend/src/__test__/socket/helpers.ts
+context_anchors:
+- ELEVATION.md#§1:L131-L140
+- ELEVATION.md#§1:L142-L149
+- ELEVATION.md#§1:L151-L160
+- ELEVATION.md#§16.1:L2026-L2029
+acceptance_criteria:
+- id: AC1
+  text: Given the suite, when run in CI, then it covers join_room non-member (403), spoofed user_connected (ignored), query-string
+    token (rejected) and global emit leaks (0 events to bystanders)
+- id: AC2
+  text: Given a regression re-adding io.emit for a scoped event, when the suite runs, then it fails
+- id: AC3
+  text: Given the suite, when run, then it passes against P1-013/014/015 and the report lists each P0-4/5/6 evidence case
+test_plan:
+  unit: []
+  integration:
+  - socket authz suite
+  security:
+  - bystander leak assertions
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "Allowlist corrected to src/__test__/socket/*.test.ts. jest.config.cjs testMatch is **/*.test.ts, so the drafted authz.spec.ts path would not run."
+- "Mode A is skipped. P1-013, P1-014, and P1-015 already implement the behavior, and AC3 requires this suite to pass against them."
+- "The suite locks socket.userId only. A later write of the client payload into onlineUsers would still pass."
+gate: G1
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

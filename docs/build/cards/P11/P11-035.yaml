@@ -1,0 +1,83 @@
+charter: v2
+id: P11-035
+kind: build
+title: Generate CharacterVM bindings and CI contract test
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§4.5-16
+- EP-§4.6-30
+- EP-§4.6-07
+- EP-§4.6-08
+- EP-§4.3-11
+- EP-§4.3-14
+- EP-§4.3-16
+- EP-§4.3-17
+- EP-§4.3-20
+- EP-§4.3-24
+- EP-§4.1-05
+- EP-§4.2-09
+- EP-§4.2-10
+depends_on:
+- P11-029
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/avatars/contract/character_vm.dart
+- lib/avatars/contract/character_vm.schema.json
+- test/avatars/character_vm_contract_test.dart
+context_anchors:
+- ELEVATION.md#§4.3:L927-L951
+- ELEVATION.md#§4.5:L984-L986
+acceptance_criteria:
+- id: AC1
+  text: Given the ADR-030 schema, when codegen runs, then Dart types exist for activity, expression, intensity (default 0.6),
+    energy, gazeX/Y (−1..1), headTilt, viseme, jawOpen, skinTone and colour props.
+- id: AC2
+  text: Given the contract, when listed, then triggers are correct, celebrate, levelUp, wave, nod, shrug and tapped, and activity
+    is one enum rather than isListening/isSpeaking booleans.
+- id: AC3
+  text: Given a View Model property named in Dart but missing from the loaded .riv, when the contract test runs, then CI fails
+    naming the property.
+- id: AC4
+  text: Given a numeric write outside range, when set, then it is clamped and a typed OutOfRange event is logged.
+test_plan:
+  unit:
+  - range clamp
+  - enum parity
+  integration:
+  - load .riv and enumerate properties
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

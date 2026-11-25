@@ -1,0 +1,603 @@
+{
+"lang": "zu",
+"level": "C2",
+"built": "2026-10-21",
+"source_type": "synthesized",
+"items": [
+{
+"id": "zu.syn.7d756b819bc6",
+"lang": "zu",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C2",
+"can_do": [
+"C2.PROD: Produce argumentative text"
+],
+"text": "Kusobala ukuthi lolu daba ludinga ingxoxo ejulile.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It is evident that this matter needs a deep discussion.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Formal: Kusobala ukuthi.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Kusobala",
+"count": 186,
+"locator": "leipzig:zul_community_2017#s21356"
+},
+{
+"token": "ukuthi",
+"count": 55452,
+"locator": "leipzig:zul_community_2017#s7"
+},
+{
+"token": "lolu",
+"count": 1943,
+"locator": "leipzig:zul_community_2017#s557"
+},
+{
+"token": "daba",
+"count": 764,
+"locator": "leipzig:zul_community_2017#s8051"
+},
+{
+"token": "ludinga",
+"count": 36,
+"locator": "leipzig:zul_community_2017#s42982"
+},
+{
+"token": "ingxoxo",
+"count": 92,
+"locator": "leipzig:zul_community_2017#s3392"
+},
+{
+"token": "ejulile",
+"count": 16,
+"locator": "leipzig:zul_community_2017#s24732"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:zul_community_2017#s21356",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Kusobala' attested 186x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s21356"
+},
+{
+"text": "token 'ukuthi' attested 55452x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s7"
+},
+{
+"text": "token 'lolu' attested 1943x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s557"
+},
+{
+"text": "token 'daba' attested 764x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s8051"
+},
+{
+"text": "token 'ludinga' attested 36x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s42982"
+},
+{
+"text": "token 'ingxoxo' attested 92x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s3392"
+},
+{
+"text": "token 'ejulile' attested 16x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s24732"
+}
+],
+"confidence": 0.7,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C2.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": true,
+"level": "C2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.prv.befc18954ab2",
+"lang": "zu",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C2",
+"can_do": [
+"C2.IDIOM: Understand and use proverbs in context"
+],
+"text": "Induku enhle igawulwa ezizweni",
+"source_type": "attested",
+"translation_en": {
+"text": "A good stick is cut in foreign lands.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"token_evidence": [
+{
+"token": "Induku",
+"count": 165,
+"locator": "leipzig:zul_community_2017#s239"
+},
+{
+"token": "enhle",
+"count": 662,
+"locator": "leipzig:zul_community_2017#s402"
+},
+{
+"token": "igawulwa",
+"count": 5,
+"locator": "leipzig:zul_community_2017#s33406"
+},
+{
+"token": "ezizweni",
+"count": 76,
+"locator": "leipzig:zul_community_2017#s145"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:zul_community_2017#s51167 :: \"Kahle ngamawala baba, kumbe njalo konke kuhambe kahle, phela kuthiwa ngesiZulu: Induku enhle igawulwa ezizweni.\"",
+"role": "shipped_text"
+},
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:zul_community_2017#s239",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Induku' attested 165x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s239"
+},
+{
+"text": "token 'enhle' attested 662x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s402"
+},
+{
+"text": "token 'igawulwa' attested 5x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s33406"
+},
+{
+"text": "token 'ezizweni' attested 76x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s145"
+}
+],
+"confidence": 0.7,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"idiom_or_formula",
+"meaning_gloss_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C2.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"register_model": false,
+"level": "C2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.59b023bac0ba",
+"lang": "zu",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C2",
+"can_do": [
+"C2.ARGUMENTATIVE"
+],
+"text": "Akungabazeki ukuthi ikusasa lezwe lincike ekhwalithini yemfundo enikezwa namuhla.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "There is no doubt that the country's future depends on the quality of education given today.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C2.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 3,
+"crosscheck_ok": false,
+"text_original": "Akungabazeki ukuthi ikusasa lezwe lincike kwikhwalithi yemfundo enikezwa namuhla.",
+"fix_source": "sonnet"
+},
+{
+"id": "zu.syn.432785aef306",
+"lang": "zu",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C2",
+"can_do": [
+"C2.ARGUMENTATIVE"
+],
+"text": "Uma singafundi emlandweni, sizophinda amaphutha afanayo.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "If we don't learn from history, we will repeat the same mistakes.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C2.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.5c3b265aef07",
+"lang": "zu",
+"type": "sentence",
+"category": "literary",
+"cefr": "C2",
+"can_do": [
+"C2.LITERARY"
+],
+"text": "Imbongi isebenzisa umfula njengophawu lokuphila okuguqukayo.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The poet uses the river as a symbol of changing life.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C2.literary"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.6b17dd78cc8b",
+"lang": "zu",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C2",
+"can_do": [
+"C2.CULTURE_NOTE"
+],
+"text": "Amathuluzi omculo wendabuko agcina umlando womphakathi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Traditional instruments and music preserve community history.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C2.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 2,
+"crosscheck_ok": false,
+"text_original": "Izinsimbi zomdabu nomculo kugcina umlando womphakathi.",
+"fix_source": "sonnet"
+},
+{
+"id": "zu.prv.0266f204c1fc",
+"lang": "zu",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C2",
+"can_do": [
+"C2.PROVERB"
+],
+"text": "Induku enhle igawulwa ezizweni.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "A good stick is cut in foreign lands.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C2.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.prv.22f6b9498ac2",
+"lang": "zu",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C2",
+"can_do": [
+"C2.PROVERB"
+],
+"text": "Inkunzi isematholeni.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The bull is among the calves.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C2.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+}
+]
+}

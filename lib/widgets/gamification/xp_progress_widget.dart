@@ -39,7 +39,7 @@ class XPProgressWidget extends ConsumerWidget {
         : 1.0;
 
     final effectiveProgressColor = progressColor ?? 
-        (isDark ? PanAfricanColors.secondary : PanAfricanColors.primary);
+        (isDark ? context.panSecondary : PanAfricanColors.primary);
     final effectiveBackgroundColor = backgroundColor ?? 
         (isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight);
 
@@ -77,7 +77,7 @@ class XPProgressWidget extends ConsumerWidget {
                     vertical: PanAfricanSpacing.xxxs,
                   ),
                   decoration: BoxDecoration(
-                    color: effectiveProgressColor.withOpacity(0.2),
+                    color: effectiveProgressColor.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                   ),
                   child: Text(
@@ -106,7 +106,7 @@ class XPProgressWidget extends ConsumerWidget {
             child: LinearProgressIndicator(
               value: progress,
               minHeight: 8.h,
-              backgroundColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+              backgroundColor: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
               valueColor: AlwaysStoppedAnimation<Color>(effectiveProgressColor),
             ),
           ),
@@ -156,7 +156,7 @@ class XPProgressWidget extends ConsumerWidget {
           Container(
             padding: EdgeInsets.all(2.w),
             decoration: BoxDecoration(
-              color: progressColor.withOpacity(0.2),
+              color: progressColor.withValues(alpha: 0.2),
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -183,7 +183,7 @@ class XPProgressWidget extends ConsumerWidget {
                   child: LinearProgressIndicator(
                     value: progress,
                     minHeight: 4.h,
-                    backgroundColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+                    backgroundColor: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
                     valueColor: AlwaysStoppedAnimation<Color>(progressColor),
                   ),
                 ),
@@ -278,7 +278,7 @@ class _XPGainAnimationState extends State<XPGainAnimation>
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
             decoration: BoxDecoration(
-              color: PanAfricanColors.secondary,
+              color: context.panSecondary,
               borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
               boxShadow: PanAfricanShadows.lg,
             ),

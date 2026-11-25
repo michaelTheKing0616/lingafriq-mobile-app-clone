@@ -1,0 +1,65 @@
+charter: v2
+id: P10-933
+kind: build
+title: Send on-device aggregates where possible
+phase: P10
+epic: E-P10-ANALYTICS
+req_ids:
+- EP-§15-14
+depends_on:
+- P10-931
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: score 4; blast 1
+token_budget: 60000
+file_allowlist:
+- lib/services/analytics_aggregator.dart
+- lib/services/analytics_service.dart
+context_anchors:
+- ELEVATION.md#§15:L1996-L1997
+acceptance_criteria:
+- id: AC1
+  text: Given a metric can be computed on the device (counts, sums, durations), when the day ends, then one aggregate is sent
+    instead of raw events.
+- id: AC2
+  text: Given a metric needs raw events, when it is listed, then the schema documents why an aggregate is not enough.
+- id: AC3
+  text: Given an aggregate is sent, when it is inspected, then it holds no item text, audio or identifiers beyond the pseudonymous
+    id.
+test_plan:
+  unit:
+  - aggregate math
+  integration: []
+  security:
+  - payload inspection
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,129 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P7
+epic: E-P7-HUBS
+hub: Speak
+gate: HUB
+status: Draft
+user_facing: true
+p0_area: true
+external_blockers:
+- EXT-13
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+tags:
+- shows_score
+token_budget: 200000
+size: L
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: Lens vision, OCR, and real pronunciation scoring'
+id: F-052
+title: Elevate Point and Say Lens
+req_ids:
+- F-052
+- F-052.D
+- F-052.E
+- F-052.U
+- F-052.L
+- P0-18
+- P0-24
+depends_on:
+- E-P2-PLATFORM
+- E-P3-DESIGN-SYSTEM
+- E-P1-CONTAINMENT
+- E-P6-SCORER
+- P7-908
+- P7-912
+file_allowlist:
+- lib/screens/ar/point_and_say_screen.dart
+- lib/services/offline/point_and_say_queue_service.dart
+- lib/services/media/media_import_service.dart
+- lib/services/hybrid_polie/translation_service.dart
+context_anchors:
+- ELEVATION.md#§18.4:L4236-L4245
+- ELEVATION.md#§17.6:L2343-L2391
+delta:
+  current_state: Routed point-and-say with ML Kit labels, unsafe translation chain, and placeholder tone scoring.
+  defects_to_fix:
+  - Free-text language entry causes typos.
+  - Coarse English ML labels and non-commercial or anonymous translation.
+  - No native audio; placeholder tone endpoint (P0-18).
+  - Latin OCR mangling diacritics.
+  elevation_to_build:
+  - 'Lens pipeline: on-device boxes plus server vision for culturally grounded labels with confidence.'
+  - Word Cards with lexicon audio, Say step with GOP+tone overlay, FSRS collection and Home Safari quests.
+  - OCR mode with diacritic restore; offline top-300 pack; privacy and minor photo rules.
+  ux_and_render:
+  - Full-screen camera with breathing boxes flipping to Word Card, profile language chip, haptics and avatar celebration.
+  - Reduced-motion variant beyond shared bar.
+  hub_placement: Global Lens button; Learn/Speak contextual.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given camera capture, when labels render, then learner profile language is used without free-text language field and
+    grounded labels show confidence.
+- id: AC2
+  text: Given hold-to-speak on a Word Card, when scoring completes, then P7-908 Lens GOP+tone scores display and queue syncs
+    via P7-912 offline path.
+- id: AC3
+  text: Given OCR on a sign, when text is recognized, then diacritic-aware pass runs and read-aloud uses verified lexicon
+    or labelled synthetic audio.
+- id: AC4
+  text: Given non-commercial translation providers, when Lens translate runs, then only licensed commercial MT/TTS paths remain.
+- id: AC5
+  text: Given the scorer is unavailable or its confidence is below the gate threshold, when a score would be shown, then the
+    UI shows the 'unsure' state, stores no number and never shows a fabricated score.
+test_plan:
+  unit:
+  - label confidence UI
+  - queue sync
+  integration:
+  - P7-908 scoring client
+  - P7-912 exists gate
+  e2e:
+  - Lens → Point and Say → speak feedback
+  a11y:
+  - goldens at 100%/200% text
+  - reduced_motion variant
+  content:
+  - Living Dictionary grounding
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - f-052.*
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

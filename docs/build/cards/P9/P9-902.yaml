@@ -1,0 +1,75 @@
+charter: v2
+id: P9-902
+kind: build
+title: Move presence to Redis TTL with scoped delivery
+phase: P9
+epic: E-P9-REALTIME
+req_ids:
+- EP-§9.5-04
+- EP-§9.1-17
+- EP-§9.1-18
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+- P9-901
+size: M
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 0
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 4: blast 2, ambiguity 0, coupling 1, depth 1'
+token_budget: 80000
+file_allowlist:
+- node-backend/src/services/socket.service.ts
+- node-backend/src/services/presence.service.ts
+context_anchors:
+- ELEVATION.md#§9.1:L1565
+- ELEVATION.md#§9.5:L1656
+acceptance_criteria:
+- id: AC1
+  text: Given a connected socket, when it stops heartbeating, then its presence key expires from Redis within the configured
+    TTL (default 45 s) and subscribers receive one offline event
+- id: AC2
+  text: Given 1,000 simultaneous connects, when each connects, then the server emits no global online-list broadcast and the
+    number of presence events per connect is bounded by that user's contacts and rooms, not by N
+- id: AC3
+  text: Given a minor account, when presence is requested by a non-approved user, then the response reveals nothing and returns
+    the same shape as an unknown user
+test_plan:
+  unit:
+  - TTL expiry
+  - scoped fan-out
+  integration:
+  - multi-node presence
+  security:
+  - presence enumeration
+  e2e: []
+  perf:
+  - O(N) vs O(N^2) connect storm
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 
 import '../../../models/language_response.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 /// Pan-African styled search delegate for languages
 class SearchLanguageDelegate extends SearchDelegate<Language?> {
@@ -12,7 +13,7 @@ class SearchLanguageDelegate extends SearchDelegate<Language?> {
 
   SearchLanguageDelegate(this.languages)
       : super(
-          searchFieldLabel: 'Search languages...',
+          searchFieldLabel: l10nEn().shellSearchLanguages2580,
           searchFieldStyle: TextStyle(
             fontSize: 16.sp,
             fontWeight: FontWeight.w400,
@@ -53,7 +54,7 @@ class SearchLanguageDelegate extends SearchDelegate<Language?> {
             HapticFeedback.lightImpact();
             query = '';
           },
-          tooltip: 'Clear search',
+          tooltip: l10nOf(context).shellClearSearch,
         ),
     ];
   }
@@ -66,7 +67,7 @@ class SearchLanguageDelegate extends SearchDelegate<Language?> {
         HapticFeedback.lightImpact();
         close(context, null);
       },
-      tooltip: 'Back',
+      tooltip: l10nOf(context).shellBack,
     );
   }
 
@@ -106,12 +107,12 @@ class SearchLanguageDelegate extends SearchDelegate<Language?> {
               ),
               SizedBox(height: PanAfricanSpacing.md),
               Text(
-                'No languages found',
+                l10nOf(context).shellNoLanguagesFound,
                 style: PanAfricanTypography.titleMedium(context),
               ),
               SizedBox(height: PanAfricanSpacing.xs),
               Text(
-                'Try a different search term',
+                l10nOf(context).shellTryADifferentSearchTerm,
                 style: PanAfricanTypography.bodyMedium(context).copyWith(
                   color: PanAfricanColors.neutralMedium,
                 ),
@@ -232,11 +233,11 @@ class _SearchLanguageCard extends StatelessWidget {
                       vertical: PanAfricanSpacing.xxs,
                     ),
                     decoration: BoxDecoration(
-                      color: PanAfricanColors.primary.withOpacity(0.1),
+                      color: PanAfricanColors.primary.withValues(alpha: 0.1),
                       borderRadius: PanAfricanRadius.roundBR,
                     ),
                     child: Text(
-                      '${language.total_score} pts',
+                      l10nOf(context).shellValuePts('${language.total_score}'),
                       style: PanAfricanTypography.labelMedium(context).copyWith(
                         color: PanAfricanColors.primary,
                       ),
@@ -244,7 +245,7 @@ class _SearchLanguageCard extends StatelessWidget {
                   )
                 else
                   Text(
-                    'Start learning',
+                    l10nOf(context).shellStartLearning,
                     style: PanAfricanTypography.labelMedium(context).copyWith(
                       color: PanAfricanColors.neutralMedium,
                     ),

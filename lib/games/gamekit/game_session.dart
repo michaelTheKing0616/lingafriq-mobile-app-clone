@@ -9,8 +9,22 @@ class GameSession {
   final String language;
   final String? level;
   final DateTime startTime;
+  final int plannedDurationSeconds;
   final List<GameTurnResult> turns;
+  final List<String> turnQueue;
+  final bool queueLoadFailed;
   final Map<String, dynamic> metadata;
+
+  /// P8-906 duel matchmaking (server-authoritative levels; never trust client level).
+  String? get duelMatchId => metadata['duel_match_id'] as String?;
+  String? get duelOpponentHandle => metadata['duel_opponent_handle'] as String?;
+  String? get duelOpponentLevelLabel =>
+      metadata['duel_opponent_level_label'] as String?;
+  String? get duelSelfLevelLabel =>
+      metadata['duel_self_level_label'] as String?;
+  bool get duelOpponentIsBot => metadata['duel_opponent_is_bot'] == true;
+  String? get duelMatchmakingStatus =>
+      metadata['duel_matchmaking_status'] as String?;
 
   GameSession({
     required this.sessionId,
@@ -19,12 +33,33 @@ class GameSession {
     required this.language,
     this.level,
     required this.startTime,
+    int? plannedDurationSeconds,
     this.turns = const [],
+    this.turnQueue = const [],
+    this.queueLoadFailed = false,
     this.metadata = const {},
-  });
+  }) : plannedDurationSeconds =
+           plannedDurationSeconds ??
+           (metadata['planned_duration_seconds'] as int?) ??
+           120;
+
+  DateTime get plannedEndTime =>
+      startTime.add(Duration(seconds: plannedDurationSeconds));
+
+  int elapsedSeconds(DateTime now) => now.difference(startTime).inSeconds;
+
+  /// Visible retry state when due-item query failed (never serves a hardcoded list).
+  bool get needsQueueRetry => queueLoadFailed;
+
+  String? get queueSource => metadata['queue_source'] as String?;
+
+  /// P8-911: speaking games without live scorer — no XP, streak, or league credit.
+  bool get practiceNotScored => metadata['practice_not_scored'] == true;
 
   int get correctCount => turns.where((t) => t.score.isCorrect).length;
   int get totalTurns => turns.length;
+  int get learnerEventsRecorded =>
+      (metadata['learner_events_recorded'] as int?) ?? turns.length;
   double get accuracy => totalTurns > 0 ? correctCount / totalTurns : 0.0;
   int get streak => _calculateStreak();
   double get averageConfidence => _calculateAverageConfidence();
@@ -44,20 +79,27 @@ class GameSession {
 
   double _calculateAverageConfidence() {
     if (turns.isEmpty) return 0.0;
-    final sum = turns.fold<double>(0.0, (acc, turn) => acc + turn.score.accuracy);
+    final sum = turns.fold<double>(
+      0.0,
+      (acc, turn) => acc + turn.score.accuracy,
+    );
     return sum / turns.length;
   }
 
   /// Performance profile for Polie backend
   Map<String, dynamic> get performanceProfile => {
-        'accuracy': accuracy,
-        'streak': streak,
-        'average_confidence': averageConfidence,
-        'total_turns': totalTurns,
-        'recent_accuracy': turns.length >= 3
-            ? turns.sublist(turns.length - 3).where((t) => t.score.isCorrect).length / 3
-            : accuracy,
-      };
+    'accuracy': accuracy,
+    'streak': streak,
+    'average_confidence': averageConfidence,
+    'total_turns': totalTurns,
+    'recent_accuracy': turns.length >= 3
+        ? turns
+                  .sublist(turns.length - 3)
+                  .where((t) => t.score.isCorrect)
+                  .length /
+              3
+        : accuracy,
+  };
 
   GameSession copyWith({
     String? sessionId,
@@ -66,7 +108,10 @@ class GameSession {
     String? language,
     String? level,
     DateTime? startTime,
+    int? plannedDurationSeconds,
     List<GameTurnResult>? turns,
+    List<String>? turnQueue,
+    bool? queueLoadFailed,
     Map<String, dynamic>? metadata,
   }) {
     return GameSession(
@@ -76,7 +121,11 @@ class GameSession {
       language: language ?? this.language,
       level: level ?? this.level,
       startTime: startTime ?? this.startTime,
+      plannedDurationSeconds:
+          plannedDurationSeconds ?? this.plannedDurationSeconds,
       turns: turns ?? this.turns,
+      turnQueue: turnQueue ?? this.turnQueue,
+      queueLoadFailed: queueLoadFailed ?? this.queueLoadFailed,
       metadata: metadata ?? this.metadata,
     );
   }
@@ -90,9 +139,10 @@ class GameSession {
       language: language,
       level: level,
       startTime: startTime,
-      turns: turns.map((t) => t.toGameTurn(cardId: '')).toList(), // cardId should be provided by caller
+      turns: turns
+          .map((t) => t.toGameTurn(cardId: ''))
+          .toList(), // cardId should be provided by caller
       metadata: metadata,
     );
   }
 }
-

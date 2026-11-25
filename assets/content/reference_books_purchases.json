@@ -1,0 +1,81 @@
+{
+  "charter": "v2",
+  "card_id": "P5-093",
+  "sources": [
+    "docs/source/CURRICULUM.md#§9.4:L843",
+    "EXT-22",
+    "CP-§9.4-13"
+  ],
+  "line_items": [
+    {
+      "language_code": "yo",
+      "title": "Bámgbóṣé (Yoruba grammar)",
+      "blocker": "EXT-22",
+      "required": true,
+      "optional": false,
+      "status": "not_purchased",
+      "usd_amount": null,
+      "note": "Not purchased per P4-022/P4-023; EXT-22 Blocked-External."
+    },
+    {
+      "language_code": "ig",
+      "title": "Emenanjo (Igbo grammar)",
+      "blocker": "EXT-22",
+      "required": true,
+      "optional": false,
+      "status": "not_purchased",
+      "usd_amount": null,
+      "note": "Not purchased per P4-024/P4-025; EXT-22 Blocked-External."
+    },
+    {
+      "language_code": "ha",
+      "title": "Newman (Hausa grammar)",
+      "blocker": "EXT-22",
+      "required": true,
+      "optional": false,
+      "status": "not_purchased",
+      "usd_amount": null,
+      "note": "Not purchased per P4-026/P4-027; EXT-22 Blocked-External."
+    },
+    {
+      "language_code": "pcm",
+      "title": "Faraclas (Nigerian Pidgin grammar)",
+      "blocker": "EXT-22",
+      "required": true,
+      "optional": false,
+      "status": "not_purchased",
+      "usd_amount": null,
+      "note": "Not purchased per P4-028/P4-029; EXT-22 Blocked-External."
+    },
+    {
+      "language_code": "sw",
+      "title": "Ashton (Swahili grammar)",
+      "blocker": "EXT-22",
+      "required": true,
+      "optional": false,
+      "status": "not_purchased",
+      "usd_amount": null,
+      "note": "Not purchased per P4-030/P4-031; EXT-22 Blocked-External."
+    },
+    {
+      "language_code": "zu",
+      "title": "Poulos & Msimang (isiZulu grammar)",
+      "blocker": "EXT-22",
+      "required": true,
+      "optional": false,
+      "status": "not_purchased",
+      "usd_amount": null,
+      "note": "Not purchased per P4-032/P4-033; EXT-22 Blocked-External."
+    },
+    {
+      "language_code": "xh",
+      "title": null,
+      "blocker": "EXT-22",
+      "required": false,
+      "optional": true,
+      "status": "not_applicable",
+      "usd_amount": null,
+      "note": "No named Xhosa grammar in EXT-22; linguist must choose per P4 stack decisions."
+    }
+  ]
+}

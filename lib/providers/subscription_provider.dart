@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,7 +12,7 @@ import '../utils/structured_logger.dart';
 
 /// Subscription tier provider with backend integration
 class SubscriptionNotifier extends Notifier<SubscriptionState> {
-  static const bool _overrideAllAccess = true;
+  static const bool _overrideAllAccess = false;
   static const SubscriptionTier _overrideTier = SubscriptionTier.premium;
 
   bool get isOverrideActive => _overrideAllAccess;
@@ -78,8 +79,16 @@ class SubscriptionNotifier extends Notifier<SubscriptionState> {
       // Fallback to local storage
       await _loadFromLocalStorage();
     } catch (e) {
+      if (e is DioException &&
+          isPremiumRequired(statusCode: e.response?.statusCode, body: e.response?.data)) {
+        state = SubscriptionState(
+          tier: SubscriptionTier.free,
+          isActive: false,
+          showUpgrade: true,
+        );
+        return;
+      }
       logger.error('Error loading subscription status', tag: 'subscription', error: e);
-      // Fallback to local storage on error
       await _loadFromLocalStorage();
     }
   }
@@ -422,11 +431,13 @@ class SubscriptionState {
   final SubscriptionTier tier;
   final bool isActive;
   final DateTime? expiresAt;
+  final bool showUpgrade;
 
   SubscriptionState({
     required this.tier,
     required this.isActive,
     this.expiresAt,
+    this.showUpgrade = false,
   });
 
   bool get isExpired {

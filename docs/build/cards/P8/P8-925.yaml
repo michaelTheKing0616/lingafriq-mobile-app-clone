@@ -1,0 +1,133 @@
+charter: v2
+id: P8-925
+kind: build
+title: 'Flagship: Griot''s Story Chain'
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.3-06
+- EP-§10.3-06a
+- EP-§10.3-06b
+- EP-§10.3-06c
+depends_on:
+- P8-900
+- P8-901
+- P8-909
+- P8-912
+- E-P4-CONTENT-ENGINE
+- E-P9-SAFETY
+- E-P3-DESIGN-SYSTEM
+size: L
+difficulty:
+  score: 10
+  blast: 3
+  ambiguity: 2
+  coupling: 2
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 10: blast 3, coupling 2; P0 area'
+token_budget: 150000
+file_allowlist:
+- lib/games/griot_story_chain/story_chain_game.dart
+- lib/games/griot_story_chain/story_chain_screen.dart
+- lib/games/griot_story_chain/story_playback.dart
+- node-backend/src/services/story_chain.service.ts
+- lib/screens/games/story_builder_game.dart
+- lib/games/gamekit/all_games_registry.dart
+context_anchors:
+- ELEVATION.md#§10.3:L1727-L1735
+acceptance_criteria:
+- id: AC1
+  text: Given a story circle, when it is a player's turn, then the player records one sentence continuing the story and it
+    is stored under that story id
+- id: AC2
+  text: Given a recorded sentence, when checked, then the AI returns a grammar check with a suggested fix and the learner
+    chooses to accept or keep it
+- id: AC3
+  text: Given a completed chain, when it ends, then it plays as an illustrated audio story assembled from the recorded sentences
+    and approved illustrations
+- id: AC4
+  text: Given a classroom or circle, when a teacher or host creates a story, then members join by invite only
+- id: AC5
+  text: Given players under 18, when recordings are shared, then E-P9-SAFETY retention, moderation and consent rules apply
+    before any sharing
+- id: AC6
+  text: Given the AI gateway fails, when a check is due, then a visible 'check unavailable' state shows and the sentence can
+    still be kept
+- id: AC7
+  text: Given a sentence flagged by moderation, when the chain is assembled, then it is excluded from playback and the author
+    is notified
+test_plan:
+  unit:
+  - turn order
+  - playback assembly
+  integration:
+  - AI gateway fake
+  - moderation hook
+  security:
+  - audio access control
+  - invite-only join
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - ready
+  - playing
+  - correct
+  - wrong
+  - why_wrong
+  - results
+  - error
+  - offline
+  - practice_mode
+  - waiting_for_player
+  - grammar_suggestion
+  copy_keys:
+  - games.griot_story_chain.title
+  - games.griot_story_chain.instructions
+  - games.griot_story_chain.why_wrong
+  - games.griot_story_chain.practice_label
+  - games.griot_story_chain.error
+  tokens:
+  - color.surface.game
+  - color.feedback.correct
+  - color.feedback.wrong
+  - space.4
+  - radius.card
+  - type.title
+  motion_tier: product
+  a11y:
+  - screen-reader labels on every answer control
+  - reduced-motion variant
+  - correctness shown by icon and text not colour alone
+  - touch targets ≥48dp
+  goldens:
+  - griot_story_chain_playing
+  - griot_story_chain_why_wrong
+  - griot_story_chain_results
+tags:
+- uses_source
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

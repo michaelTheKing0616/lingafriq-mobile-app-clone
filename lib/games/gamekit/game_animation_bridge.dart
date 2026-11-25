@@ -9,6 +9,20 @@ class GameAnimationBridge {
 
   GameAnimationBridge({this.guideController});
 
+  /// Brief celebration on streak milestone; static path when [reduceMotion].
+  void playStreakCelebration({
+    required GameScore score,
+    required bool reduceMotion,
+  }) {
+    if (reduceMotion) {
+      guideController?.setEmotion(GuideEmotion.encouraging);
+      guideController?.setConfidence(score.accuracy);
+      return;
+    }
+    guideController?.celebrate();
+    guideController?.setConfidence(score.accuracy);
+  }
+
   /// Emit an animation event
   void emit(AnimationEvent event, GameScore score) {
     if (guideController == null) return;

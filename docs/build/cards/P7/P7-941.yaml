@@ -1,0 +1,85 @@
+charter: v2
+id: P7-941
+kind: build
+title: Build minimal-pair demo on why tone marks matter
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§11.2-16
+depends_on:
+- P7-930
+- P7-933
+size: S
+difficulty:
+  score: 2
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 0, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist:
+- lib/screens/tutorials/minimal_pair_demo.dart
+- assets/tutorials/minimal_pairs.json
+- test/content/minimal_pairs_test.dart
+context_anchors:
+- ELEVATION.md#§11.2:L1793-L1794
+acceptance_criteria:
+- id: AC1
+  text: Given the demo, when it runs, then it plays at least one minimal pair per tonal language where meaning changes with
+    the mark
+- id: AC2
+  text: Given a pair, when shown, then both words have native audio and the meaning of each
+- id: AC3
+  text: Given the pair data, when validated, then a native reviewer sign-off is recorded before publication
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - native review sign-off
+user_facing: true
+ux_spec:
+  states:
+  - pair
+  - compare
+  - error
+  copy_keys:
+  - tutorial.pair.title
+  tokens:
+  - type.pair
+  - color.surface
+  motion_tier: product
+  a11y:
+  - audio controls labelled
+  - reduced-motion variant
+  - touch targets >=48dp
+  goldens:
+  - default
+  - loading
+  - error
+  - offline
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

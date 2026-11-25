@@ -2,28 +2,17 @@
 // Each game follows the BaseGameScreen pattern.
 
 import 'dart:async';
-import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:record/record.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
 import '../../models/game/game_session_model.dart';
 import '../../models/game/phrase_card_model.dart';
 import '../../providers/game_provider.dart';
-import '../../providers/dio_provider.dart';
-import '../../providers/api_provider.dart';
-import '../../services/polie_content_generator.dart';
-import '../../services/voice/pronunciation_analysis_service.dart';
-import '../../models/lesson_item_model.dart';
 import '../../services/games/game_image_service.dart';
-import '../../utils/pan_african_design_system.dart';
 import '../../utils/media_url_resolver.dart';
 import 'base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter/services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 const bool _allowSyntheticGameContent = bool.fromEnvironment(
@@ -234,6 +223,80 @@ Map<String, dynamic> _buildQuizChefFallbackRecipe({
   };
 }
 
+PhraseCard _syntheticPhraseCard({
+  required String id,
+  required String language,
+  required String level,
+  required String text,
+}) {
+  return PhraseCard(
+    cardId: id,
+    language: language,
+    text: text,
+    ascii: text,
+    gloss: text,
+    level: level,
+  );
+}
+
+/// Builds playable cards from grammar / karaoke / recipe fallbacks.
+/// Callers must invoke this only when real content is missing and
+/// [_allowSyntheticGameContent] is true.
+List<PhraseCard> _syntheticCardsFromFallbacks({
+  required WidgetRef ref,
+  required String language,
+  required String level,
+}) {
+  final cards = <PhraseCard>[];
+
+  void addCard(String id, String? raw) {
+    final text = raw?.trim() ?? '';
+    if (text.isEmpty) return;
+    cards.add(
+      _syntheticPhraseCard(
+        id: id,
+        language: language,
+        level: level,
+        text: text,
+      ),
+    );
+  }
+
+  final sentences = _buildGrammarFallbackSentences(
+    ref: ref,
+    language: language,
+  );
+  for (var i = 0; i < sentences.length; i++) {
+    addCard('synthetic_grammar_$i', sentences[i]['sentence']?.toString());
+  }
+
+  final song = _buildKaraokeFallbackSong(
+    ref: ref,
+    language: language,
+  );
+  final lyrics = song['lyrics'];
+  if (lyrics is List) {
+    for (var i = 0; i < lyrics.length; i++) {
+      addCard('synthetic_karaoke_$i', lyrics[i]?.toString());
+    }
+  }
+
+  final recipe = _buildQuizChefFallbackRecipe(
+    ref: ref,
+    language: language,
+  );
+  final steps = recipe['steps'];
+  if (steps is List) {
+    for (var i = 0; i < steps.length; i++) {
+      final step = steps[i];
+      final text = step is Map ? step['step']?.toString() : step?.toString();
+      addCard('synthetic_recipe_$i', text);
+    }
+  }
+
+  return cards;
+}
+
 // ========== GAME IMPLEMENTATIONS ==========
 
 /// Listen & Sketch Game
@@ -270,6 +333,15 @@ class _ListenSketchGameState extends BaseGameScreenState<ListenSketchGame> {
   Future<void> onGameInitialized() async {
     final gameProv = ref.read(gameProvider.notifier);
     _cards.addAll(gameProv.availableCards);
+    if (_cards.isEmpty && _allowSyntheticGameContent) {
+      _cards.addAll(
+        _syntheticCardsFromFallbacks(
+          ref: ref,
+          language: widget.language,
+          level: widget.level ?? 'A0',
+        ),
+      );
+    }
     if (_cards.isNotEmpty) {
       _prepareRound();
     }
@@ -439,7 +511,7 @@ class _ListenSketchGameState extends BaseGameScreenState<ListenSketchGame> {
                                         gloss: option.gloss,
                                         seed: option.cardId.hashCode,
                                       ),
-                                    SizedBox(height: 8),
+                                    const SizedBox(height: 8),
                                     Text(
                                       option.gloss,
                                       textAlign: TextAlign.center,

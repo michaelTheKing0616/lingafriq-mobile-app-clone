@@ -1,0 +1,22 @@
+name: lingafriq_widgetbook
+description: Isolated Widgetbook catalogue for the LingAfriq design widgets.
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ">=3.12.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  lingafriq:
+    path: ..
+  widgetbook: 3.25.0
+
+# The app package needs these overrides to solve. They match the root app.
+dependency_overrides:
+  record_platform_interface: ^1.4.0
+  flutter_webrtc: 0.12.12+hotfix.1
+
+flutter:
+  uses-material-design: true

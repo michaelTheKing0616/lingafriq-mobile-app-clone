@@ -6,8 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:lingafriq/providers/dio_provider.dart';
+import 'package:lingafriq/screens/live_translate/enhanced_translation_parse.dart';
+import 'package:lingafriq/screens/live_translate/enhanced_translation_sections.dart';
+import 'package:lingafriq/screens/translate/live_translate_screen.dart'
+    show LiveTranslateWithConfidenceScreen;
 import 'package:lingafriq/services/live_translate/live_translate_client.dart';
 import 'package:lingafriq/services/live_translate/live_translate_phase.dart';
+import 'package:lingafriq/services/translation_history_service.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:path_provider/path_provider.dart';
@@ -18,7 +23,16 @@ import 'package:uuid/uuid.dart';
 /// Hybrid live translation: on-device speech recognition streams text to the
 /// backend over Socket.IO; cloud translates and returns optional TTS audio.
 class LiveTranslateScreen extends ConsumerStatefulWidget {
-  const LiveTranslateScreen({super.key});
+  const LiveTranslateScreen({
+    super.key,
+    this.sourceLanguage,
+    this.targetLanguage,
+    this.initialText,
+  });
+
+  final String? sourceLanguage;
+  final String? targetLanguage;
+  final String? initialText;
 
   @override
   ConsumerState<LiveTranslateScreen> createState() =>
@@ -44,10 +58,29 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
   String _activeSegmentId = '';
   String _sourceCaption = '';
   String _translationCaption = '';
+  EnhancedTranslationView? _parsed;
+  String? _historyEntryId;
+  bool _historyFavorite = false;
+  String? _savedFinalText;
 
   @override
   void initState() {
     super.initState();
+    final source = widget.sourceLanguage?.trim();
+    if (source != null && source.isNotEmpty) {
+      _sourceLang.text = source.toLowerCase();
+    }
+    final target = widget.targetLanguage?.trim();
+    if (target != null && target.isNotEmpty) {
+      _targetLang.text = target.toLowerCase();
+    }
+    final initial = widget.initialText?.trim();
+    if (initial != null && initial.isNotEmpty) {
+      _sourceCaption = initial;
+      if (enhancedTranslationTooLong(initial)) {
+        _error = enhancedTranslationTooLongMessage();
+      }
+    }
     _initSpeech();
     _ttsPlayer.playerStateStream.listen((state) {
       if (!mounted) return;
@@ -128,6 +161,7 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
       _error = null;
       _sourceCaption = '';
       _translationCaption = '';
+      _parsed = null;
     });
 
     try {
@@ -257,8 +291,11 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
     final type = e['type']?.toString() ?? '';
     if (type == 'session.error') {
       setState(() {
-        _error = e['message']?.toString() ??
-            AppLocalizations.of(context)!.liveTranslateSessionError;
+        final code = e['code']?.toString();
+        _error = code == 'translation_unavailable'
+            ? 'Translation is unavailable'
+            : (e['message']?.toString() ??
+                AppLocalizations.of(context)!.liveTranslateSessionError);
         _phase = LiveTranslatePhase.error;
       });
       return;
@@ -266,7 +303,14 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
     if (type == 'mt.partial' || type == 'mt.final') {
       final text = e['text']?.toString() ?? '';
       if (text.isEmpty) return;
-      setState(() => _translationCaption = text);
+      final parsed = parseEnhancedTranslation(text, _sourceCaption);
+      setState(() {
+        _translationCaption = text;
+        _parsed = parsed;
+      });
+      if (type == 'mt.final') {
+        _rememberFinal(text, parsed);
+      }
       return;
     }
     if (type == 'tts.audio') {
@@ -318,6 +362,12 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
       onResult: (result) {
         final text = result.recognizedWords.trim();
         if (text.isEmpty) return;
+        if (enhancedTranslationTooLong(text)) {
+          if (mounted) {
+            setState(() => _error = enhancedTranslationTooLongMessage());
+          }
+          return;
+        }
         try {
           _rt.emitClientEvent({
             'type': 'stt.segment',
@@ -359,8 +409,44 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
       _phase = LiveTranslatePhase.idle;
       _sourceCaption = '';
       _translationCaption = '';
+      _parsed = null;
       _error = null;
     });
+  }
+
+  Future<void> _rememberFinal(String text, EnhancedTranslationView parsed) async {
+    if (_savedFinalText == text) return;
+    _savedFinalText = text;
+    final id = _uuid.v4();
+    final entry = enhancedTranslationEntry(
+      id: id,
+      sourceText: _sourceCaption,
+      sourceLanguage: _sourceLang.text.trim().toLowerCase(),
+      targetLanguage: _targetLang.text.trim().toLowerCase(),
+      view: parsed,
+    );
+    try {
+      await ref.read(translationHistoryServiceProvider).addTranslation(entry);
+      if (!mounted) return;
+      setState(() {
+        _historyEntryId = id;
+        _historyFavorite = false;
+      });
+    } catch (e) {
+      debugPrint('Failed to save translation to history: $e');
+    }
+  }
+
+  Future<void> _toggleFavorite() async {
+    final id = _historyEntryId;
+    if (id == null) return;
+    try {
+      await ref.read(translationHistoryServiceProvider).toggleFavorite(id);
+      if (!mounted) return;
+      setState(() => _historyFavorite = !_historyFavorite);
+    } catch (e) {
+      debugPrint('Failed to save translation to history: $e');
+    }
   }
 
   @override
@@ -378,6 +464,11 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
       appBar: AppBar(
         title: Text(l10n.liveTranslateTitle),
         actions: [
+          if (_historyEntryId != null)
+            IconButton(
+              onPressed: _toggleFavorite,
+              icon: Icon(_historyFavorite ? Icons.star : Icons.star_border),
+            ),
           if (sessionActive)
             TextButton(
               onPressed: _endSession,
@@ -487,15 +578,19 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
                       child: Padding(
                         padding: const EdgeInsets.all(12),
                         child: Text(
-                          _translationCaption.isEmpty
-                              ? l10n.liveTranslatePlaceholderDash
-                              : _translationCaption,
+                          (_parsed != null && _parsed!.primary.isNotEmpty)
+                              ? _parsed!.primary
+                              : (_translationCaption.isEmpty
+                                  ? l10n.liveTranslatePlaceholderDash
+                                  : _translationCaption),
                           style: theme.textTheme.bodyLarge?.copyWith(
                             color: theme.colorScheme.primary,
                           ),
                         ),
                       ),
                     ),
+                    if (_parsed != null)
+                      EnhancedTranslationSections(view: _parsed!),
                   ],
                 ),
               ),
@@ -510,6 +605,6 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
 /// Push helper for drawer / navigation.
 Route<void> liveTranslateRoute() {
   return SmoothPageRoute.platform<void>(
-    child: const LiveTranslateScreen(),
+    child: const LiveTranslateWithConfidenceScreen(),
   );
 }

@@ -67,7 +67,7 @@ class EditorialHero extends StatelessWidget {
         child: Icon(
           Icons.article_rounded,
           size: 48.sp,
-          color: colors.onPrimaryContainer.withOpacity(0.3),
+          color: colors.onPrimaryContainer.withValues(alpha: 0.3),
         ),
       ),
     );
@@ -81,9 +81,9 @@ class EditorialHero extends StatelessWidget {
           end: Alignment.bottomCenter,
           colors: [
             Colors.transparent,
-            colors.surface.withOpacity(0.05),
-            colors.surface.withOpacity(0.6),
-            colors.surface.withOpacity(0.95),
+            colors.surface.withValues(alpha: 0.05),
+            colors.surface.withValues(alpha: 0.6),
+            colors.surface.withValues(alpha: 0.95),
           ],
           stops: const [0.0, 0.35, 0.65, 1.0],
         ),
@@ -141,7 +141,7 @@ class EditorialHero extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w500,
-                        color: colors.onSurface.withOpacity(0.7),
+                        color: colors.onSurface.withValues(alpha: 0.7),
                       ),
                     ),
                 ],
@@ -168,7 +168,7 @@ class EditorialHero extends StatelessWidget {
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w400,
                   height: 1.4,
-                  color: colors.onSurface.withOpacity(0.75),
+                  color: colors.onSurface.withValues(alpha: 0.75),
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,

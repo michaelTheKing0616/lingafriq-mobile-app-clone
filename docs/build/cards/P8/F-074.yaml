@@ -1,0 +1,116 @@
+id: F-074
+kind: feature
+title: Elevate Pronunciation Game
+phase: P8
+epic: E-P8-PLAY
+hub: Play
+req_ids:
+- F-074
+- F-074.D
+- F-074.E
+- F-074.U
+- F-074.L
+depends_on:
+- P8-900
+- P8-912
+- E-P8-PLAY
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P6-SCORER
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: 2 blast, coupling 2'
+token_budget: 80000
+file_allowlist:
+- lib/screens/games/pronunciation_game.dart
+context_anchors:
+- ELEVATION.md#§18.5:L4581-L4596
+delta:
+  current_state: Routed from Arcade via game_router; content still uses the legacy 85–118 word pool without audio.
+  defects_to_fix:
+  - Thin static word pool without reliable audio.
+  - No learner-model writeback after play.
+  - Legacy per-game results instead of GameKit mastery.
+  - Hard-coded UI strings bypass l10n.
+  elevation_to_build:
+  - Merge rounds into Tone Gym ladder as a dedicated mode.
+  - All scoring paths use verified pronunciation analysis.
+  ux_and_render:
+  - GameKit frame with unified illustration style and audio on every target-language item.
+  - Reduced-motion variant respects system setting.
+  hub_placement: Play → Speaking shelf.
+  unlock_stage: per §17.4
+  harvest_list:
+  - Fold pronunciation_game rounds into Tone Gym ladder as a game mode.
+acceptance_criteria:
+- id: AC1
+  text: Given Tone Gym entry, when the learner selects pronunciation mode, then rounds formerly in pronunciation_game run
+    inside the ladder.
+- id: AC2
+  text: Given unscored recording path, when a round ends, then UI shows honest unavailable scoring not fabricated percentages.
+- id: AC3
+  text: Given verified scoring, when results show, then ladder tier progress updates from server events.
+test_plan:
+  unit:
+  - game rules
+  - content binding
+  integration:
+  - GameKit session
+  - learner model writeback
+  e2e:
+  - Play shelf launch to results
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content:
+  - lexicon pool has audio for target language
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - 074.*
+tags:
+- shows_score
+p0_area: false
+charter: v2
+inherits: FEATURE_BASE
+gate: HUB
+status: Draft
+user_facing: true
+risks: []
+external_blockers: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/microinteractions
+  - prime/feedback-patterns

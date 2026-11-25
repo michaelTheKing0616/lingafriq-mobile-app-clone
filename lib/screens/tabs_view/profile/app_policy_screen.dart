@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
 
 class AppPolicyScreen extends StatelessWidget {
   const AppPolicyScreen({super.key});
@@ -17,14 +18,14 @@ class AppPolicyScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Semantics(
-                    label: 'Back',
+                    label: l10nOf(context).shellBack,
                     button: true,
                     child: BackButton(color: Theme.of(context).colorScheme.onPrimary),
                   ),
                   const Spacer(),
                   Semantics(
                     header: true,
-                    child: "App Policy".text.xl4.medium.white.make().p16(),
+                    child: l10nOf(context).shellAppPolicy.text.xl4.medium.white.make().p16(),
                   ),
                 ],
               ),

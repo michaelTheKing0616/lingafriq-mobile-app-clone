@@ -1,0 +1,77 @@
+charter: v2
+id: P10-934
+kind: build
+title: Build the north-star and guardrail metrics dashboard
+phase: P10
+epic: E-P10-ANALYTICS
+req_ids:
+- EP-§15-02
+- EP-§15-03
+- EP-§15-04
+- EP-§15-05
+- EP-§15-06
+depends_on:
+- ADR-021
+- P10-931
+- P10-932
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: score 4; blast 1
+token_budget: 60000
+file_allowlist:
+- admin_dashboard/metrics/northstar.ts
+- node-backend/src/services/metrics.service.ts
+context_anchors:
+- ELEVATION.md#§15:L1992-L1993
+acceptance_criteria:
+- id: AC1
+  text: Given weekly events, when the dashboard loads, then it shows weekly learners with a new can-do as defined in ADR-021.
+- id: AC2
+  text: Given cohorts, when the dashboard loads, then it shows D1, D7 and D30 retention per cohort.
+- id: AC3
+  text: Given practice data, when the dashboard loads, then it shows minutes practised and speaking minutes per learner per
+    week.
+- id: AC4
+  text: Given session data, when the dashboard loads, then it shows crash-free sessions as a percentage.
+- id: AC5
+  text: Given a guardrail metric drops past its ADR-021 threshold, when a week closes, then an alert is raised.
+- id: AC6
+  text: Given streak length, when any experiment is judged, then it is never the sole success metric.
+test_plan:
+  unit:
+  - retention calc
+  integration:
+  - alert on drop
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/11-data-and-quantitative-work
+  - adaptive/07-research-and-fact-checking

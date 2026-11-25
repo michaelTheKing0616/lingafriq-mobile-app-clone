@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod/misc.dart' show ProviderListenable;
 
 import '../providers/chat_socket_provider.dart';
 import '../providers/onboarding_provider.dart';
@@ -13,10 +14,7 @@ const _polieDisplayName = 'Polie';
 /// - [localAppend]: merge into UI when the socket is offline or unavailable.
 /// - [rateLimited]: user hit the client rate limit; show a short snackbar.
 class PolieSocialDelivery {
-  const PolieSocialDelivery({
-    this.localAppend,
-    this.rateLimited = false,
-  });
+  const PolieSocialDelivery({this.localAppend, this.rateLimited = false});
 
   final List<Map<String, dynamic>>? localAppend;
   final bool rateLimited;
@@ -34,7 +32,8 @@ Map<String, dynamic> _localPolieMessage(String text, String idSuffix) {
     'username': _polieDisplayName,
     'global_id': _polieSocketUserId,
     'createdAt': ts,
-    'clientMessageId': 'polie_${idSuffix}_${DateTime.now().millisecondsSinceEpoch}',
+    'clientMessageId':
+        'polie_${idSuffix}_${DateTime.now().millisecondsSinceEpoch}',
   };
 }
 
@@ -54,19 +53,37 @@ Future<PolieSocialDelivery?> deliverPolieAfterSend({
   required String rateLimitScope,
   String? chatContext,
   bool useSocket = true,
+}) => deliverPolieAfterSendWith(
+  read: ref.read,
+  userMessage: userMessage,
+  socketRoom: socketRoom,
+  rateLimitScope: rateLimitScope,
+  chatContext: chatContext,
+  useSocket: useSocket,
+);
+
+/// Same as [deliverPolieAfterSend] for callers holding a provider `Ref`
+/// (repositories) rather than a widget ref.
+Future<PolieSocialDelivery?> deliverPolieAfterSendWith({
+  required T Function<T>(ProviderListenable<T>) read,
+  required String userMessage,
+  required String socketRoom,
+  required String rateLimitScope,
+  String? chatContext,
+  bool useSocket = true,
 }) async {
-  final handler = ref.read(polieMentionHandlerProvider);
+  final handler = read(polieMentionHandlerProvider);
   if (!handler.hasMention(userMessage)) return null;
 
   if (!await PolieRateLimiter.allow(rateLimitScope)) {
     return const PolieSocialDelivery(rateLimited: true);
   }
 
-  final onboarding = ref.read(onboardingProvider);
+  final onboarding = read(onboardingProvider);
   final lang = onboarding.selectedLanguage ?? 'english';
 
-  final connected = useSocket && ref.read(chatSocketProvider).isConnected;
-  final socket = ref.read(chatSocketProvider.notifier);
+  final connected = useSocket && read(chatSocketProvider).isConnected;
+  final socket = read(chatSocketProvider.notifier);
 
   if (connected) {
     socket.sendMessage(

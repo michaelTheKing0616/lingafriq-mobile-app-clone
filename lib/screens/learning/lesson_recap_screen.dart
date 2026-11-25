@@ -1,328 +1,275 @@
-import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../utils/modern_griot_design_system.dart';
-import '../../widgets/griot/griot_widgets.dart';
+import 'package:lingafriq/design/components/ling_button.dart';
+import 'package:lingafriq/design/components/ling_state.dart';
+import 'package:lingafriq/design/states/empty_state.dart';
+import 'package:lingafriq/design/states/error_state.dart';
+import 'package:lingafriq/design/states/offline_state.dart';
+import 'package:lingafriq/design/tokens.g.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
+import 'package:lingafriq/l10n/l10n_of.dart';
+import 'package:lingafriq/navigation/hub_learn.dart';
 
+/// What a recap load returned. [ready] is the only status that carries a lesson.
+enum LessonRecapStatus { loading, ready, empty, error, offline }
+
+/// A finished lesson. Fields are only the values the loader supplied.
+class LessonRecapData {
+  const LessonRecapData({required this.title, this.words = const <String>[]});
+
+  final String title;
+  final List<String> words;
+}
+
+class LessonRecapView {
+  const LessonRecapView._(this.status, this.data);
+
+  const LessonRecapView.ready(LessonRecapData data)
+    : this._(LessonRecapStatus.ready, data);
+
+  const LessonRecapView.empty() : this._(LessonRecapStatus.empty, null);
+
+  const LessonRecapView.error() : this._(LessonRecapStatus.error, null);
+
+  const LessonRecapView.offline() : this._(LessonRecapStatus.offline, null);
+
+  final LessonRecapStatus status;
+  final LessonRecapData? data;
+}
+
+/// Lesson recap. With no loader, the page is empty.
+/// A failed load clears the lesson title and the word list.
 class LessonRecapScreen extends StatefulWidget {
-  const LessonRecapScreen({super.key});
+  const LessonRecapScreen({super.key, this.load});
+
+  /// App route `/learn/recap`. The map key drops the leading slash.
+  static const String routePath = '/learn/recap';
+
+  static const String routeKey = 'learn/recap';
+
+  static const Key emptyKey = ValueKey<String>('learn-recap-empty');
+
+  static const Key errorKey = ValueKey<String>('learn-recap-error');
+
+  static const Key offlineKey = ValueKey<String>('learn-recap-offline');
+
+  static const Key contentKey = ValueKey<String>('learn-recap-content');
+
+  /// Loads the recap. Null means there is no lesson to recap.
+  final Future<LessonRecapView> Function()? load;
 
   @override
   State<LessonRecapScreen> createState() => _LessonRecapScreenState();
 }
 
-class _LessonRecapScreenState extends State<LessonRecapScreen>
-    with TickerProviderStateMixin {
-  late AnimationController _trophyCtrl;
-  late Animation<double> _trophyBounce;
-  late AnimationController _glowCtrl;
-  late Animation<double> _glowAnim;
-  late AnimationController _particleCtrl;
+class _LessonRecapScreenState extends State<LessonRecapScreen> {
+  LessonRecapStatus _status = LessonRecapStatus.loading;
+  LessonRecapData? _data;
+  int _generation = 0;
 
   @override
   void initState() {
     super.initState();
-    _trophyCtrl = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1400),
-    )..repeat(reverse: true);
-    _trophyBounce = Tween<double>(begin: 0, end: -12).animate(
-      CurvedAnimation(parent: _trophyCtrl, curve: Curves.easeInOut),
-    );
-    _glowCtrl = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 2000),
-    )..repeat(reverse: true);
-    _glowAnim = Tween<double>(begin: 0.4, end: 1.0).animate(
-      CurvedAnimation(parent: _glowCtrl, curve: Curves.easeInOut),
-    );
-    _particleCtrl = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 6),
-    )..repeat();
+    if (widget.load == null) {
+      _status = LessonRecapStatus.empty;
+      _data = null;
+      return;
+    }
+    _run(_generation);
   }
 
   @override
-  void dispose() {
-    _trophyCtrl.dispose();
-    _glowCtrl.dispose();
-    _particleCtrl.dispose();
-    super.dispose();
+  void didUpdateWidget(LessonRecapScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (identical(oldWidget.load, widget.load)) return;
+    _data = null;
+    _generation += 1;
+    if (widget.load == null) {
+      _status = LessonRecapStatus.empty;
+      return;
+    }
+    _status = LessonRecapStatus.loading;
+    _run(_generation);
+  }
+
+  Future<void> _run(int generation) async {
+    final Future<LessonRecapView> Function()? load = widget.load;
+    if (load == null) {
+      if (!mounted) return;
+      setState(() {
+        _status = LessonRecapStatus.empty;
+        _data = null;
+      });
+      return;
+    }
+    try {
+      final LessonRecapView view = await load();
+      if (!mounted || generation != _generation) return;
+      setState(() => _apply(view));
+    } catch (_) {
+      if (!mounted || generation != _generation) return;
+      setState(() {
+        _status = LessonRecapStatus.error;
+        _data = null;
+      });
+    }
+  }
+
+  void _apply(LessonRecapView view) {
+    final String title = (view.data?.title ?? '').trim();
+    final List<String> words = <String>[
+      for (final String word in view.data?.words ?? const <String>[])
+        if (word.trim().isNotEmpty) word.trim(),
+    ];
+    if (view.status == LessonRecapStatus.ready &&
+        (title.isNotEmpty || words.isNotEmpty)) {
+      _status = LessonRecapStatus.ready;
+      _data = LessonRecapData(title: title, words: words);
+      return;
+    }
+    _data = null;
+    if (view.status == LessonRecapStatus.offline) {
+      _status = LessonRecapStatus.offline;
+    } else if (view.status == LessonRecapStatus.error ||
+        view.status == LessonRecapStatus.loading) {
+      _status = LessonRecapStatus.error;
+    } else {
+      _status = LessonRecapStatus.empty;
+    }
+  }
+
+  void _retry() {
+    setState(() {
+      _data = null;
+      _status = LessonRecapStatus.loading;
+      _generation += 1;
+    });
+    _run(_generation);
+  }
+
+  void _back() {
+    final NavigatorState? navigator = Navigator.maybeOf(context);
+    if (navigator != null && navigator.canPop()) navigator.pop();
+  }
+
+  void _openPath() {
+    Navigator.of(context).pushNamed(LearnRoutes.path);
   }
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-
-    return GriotScaffold(
-      body: Stack(
-        children: [
-          AnimatedBuilder(
-            animation: _particleCtrl,
-            builder: (context, _) => CustomPaint(
-              size: Size.infinite,
-              painter: _ConfettiPainter(progress: _particleCtrl.value),
+    final AppLocalizations l10n = l10nOf(context);
+    final LingPalette palette = LingPalette.of(Theme.of(context).brightness);
+    return Scaffold(
+      backgroundColor: palette.surface,
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(LingAfriqTokens.spacing16),
+          children: <Widget>[
+            Text(
+              l10n.hubLearnLessonRecap,
+              style: lingBody(palette.onSurface),
+              softWrap: true,
+              overflow: TextOverflow.visible,
             ),
-          ),
-          SafeArea(
-            child: ListView(
-              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
-              children: [
-                SizedBox(height: 16.h),
-                Center(child: _buildTrophy(cs)),
-                SizedBox(height: 20.h),
-                Center(
-                  child: Text(
-                    'Lesson Mastery!',
-                    style: ModernGriotTypography.displaySmall(
-                      color: cs.onSurface,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 8.h),
-                Center(
-                  child: Text(
-                    'Greetings & Introductions complete',
-                    style: ModernGriotTypography.bodyLarge(),
-                  ),
-                ),
-                SizedBox(height: 32.h),
-                _buildStatsBento(),
-                SizedBox(height: 32.h),
-                _buildTotemReward(cs),
-                SizedBox(height: 32.h),
-                GriotGradientButton(
-                  label: 'Claim Rewards',
-                  icon: Icons.card_giftcard_rounded,
-                  onPressed: () => HapticFeedback.mediumImpact(),
-                ),
-                SizedBox(height: 16.h),
-                Center(
-                  child: TextButton(
-                    onPressed: () => Navigator.maybePop(context),
-                    child: Text(
-                      'Back to Path',
-                      style: ModernGriotTypography.labelLarge(
-                        color: cs.primary,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 24.h),
-              ],
+            const SizedBox(height: LingAfriqTokens.spacing16),
+            _body(l10n, palette),
+            const SizedBox(height: LingAfriqTokens.spacing16),
+            LingButton(
+              label: l10n.hubLearnBack,
+              unavailableLabel: l10n.commonStateUnavailable,
+              onPressed: _back,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildTrophy(ColorScheme cs) {
-    return AnimatedBuilder(
-      animation: Listenable.merge([_trophyBounce, _glowAnim]),
-      builder: (context, child) {
-        return Transform.translate(
-          offset: Offset(0, _trophyBounce.value),
-          child: Container(
-            width: 100.r,
-            height: 100.r,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFFFCD116).withAlpha(
-                    (100 * _glowAnim.value).round(),
-                  ),
-                  blurRadius: 40,
-                  spreadRadius: 8,
-                ),
-              ],
-            ),
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [Color(0xFFFCD116), Color(0xFFFF9800)],
-                ),
-                shape: BoxShape.circle,
-                boxShadow: ModernGriotShadows.lg,
-              ),
-              child: Icon(
-                Icons.emoji_events_rounded,
-                size: 48.sp,
-                color: Colors.white,
-              ),
-            ),
-          ),
+  Widget _body(AppLocalizations l10n, LingPalette palette) {
+    switch (_status) {
+      case LessonRecapStatus.loading:
+        return Text(
+          l10n.loading,
+          style: lingBody(palette.onSurface),
+          softWrap: true,
+          overflow: TextOverflow.visible,
         );
-      },
-    );
-  }
-
-  Widget _buildStatsBento() {
-    return Row(
-      children: [
-        Expanded(
-          child: GriotStatCard(
-            icon: Icons.bolt_rounded,
-            value: '+85',
-            label: 'XP Earned',
-            iconColor: ModernGriotColors.primaryContainer,
-          ),
-        ),
-        SizedBox(width: 12.w),
-        Expanded(
-          child: GriotStatCard(
-            icon: Icons.timer_rounded,
-            value: '4:32',
-            label: 'Focus Time',
-            iconColor: ModernGriotColors.secondary,
-          ),
-        ),
-        SizedBox(width: 12.w),
-        Expanded(
-          child: GriotStatCard(
-            icon: Icons.check_circle_rounded,
-            value: '92%',
-            label: 'Accuracy',
-            iconColor: const Color(0xFF4CAF50),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTotemReward(ColorScheme cs) {
-    return GriotCard(
-      surfaceLevel: 1,
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Icon(Icons.auto_awesome_rounded,
-                  size: 18.sp, color: ModernGriotColors.primaryContainer),
-              SizedBox(width: 8.w),
-              Text(
-                'New Totem Discovered',
-                style: ModernGriotTypography.titleMedium(
-                  color: ModernGriotColors.primary,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 16.h),
-          AnimatedBuilder(
-            animation: _glowAnim,
-            builder: (context, child) {
-              return Container(
-                width: double.infinity,
-                height: 140.h,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      ModernGriotColors.primary.withAlpha(15),
-                      ModernGriotColors.primaryContainer.withAlpha(20),
-                    ],
-                  ),
-                  borderRadius: ModernGriotRadius.borderXl,
-                  border: Border.all(
-                    color: ModernGriotColors.primaryContainer.withAlpha(
-                      (60 * _glowAnim.value).round(),
-                    ),
-                    width: 2,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: ModernGriotColors.primaryContainer.withAlpha(
-                        (30 * _glowAnim.value).round(),
-                      ),
-                      blurRadius: 20,
-                      spreadRadius: 2,
-                    ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.account_balance_rounded,
-                      size: 48.sp,
-                      color: ModernGriotColors.primary.withAlpha(180),
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      'Greetings Totem',
-                      style: ModernGriotTypography.titleSmall(
-                        color: ModernGriotColors.primary,
-                      ),
-                    ),
-                    Text(
-                      'Symbol of first words spoken',
-                      style: ModernGriotTypography.bodySmall(),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ConfettiPainter extends CustomPainter {
-  _ConfettiPainter({required this.progress});
-  final double progress;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final rng = Random(42);
-    final paint = Paint()..style = PaintingStyle.fill;
-
-    const particleCount = 30;
-    const colors = [
-      Color(0xFFFCD116),
-      Color(0xFFFF7A35),
-      Color(0xFF9E3D00),
-      Color(0xFF526124),
-      Color(0xFFD6ED79),
-    ];
-
-    for (int i = 0; i < particleCount; i++) {
-      final x = rng.nextDouble() * size.width;
-      final baseY = rng.nextDouble() * size.height;
-      final speed = 0.3 + rng.nextDouble() * 0.7;
-      final y = (baseY + progress * size.height * speed) % size.height;
-      final particleSize = 3.0 + rng.nextDouble() * 4.0;
-      final alpha = (0.15 + rng.nextDouble() * 0.25);
-
-      paint.color = colors[i % colors.length].withAlpha((alpha * 255).round());
-
-      if (i % 3 == 0) {
-        canvas.drawCircle(Offset(x, y), particleSize / 2, paint);
-      } else {
-        canvas.save();
-        canvas.translate(x, y);
-        canvas.rotate(progress * pi * 2 + i);
-        canvas.drawRect(
-          Rect.fromCenter(
-              center: Offset.zero,
-              width: particleSize,
-              height: particleSize * 0.6),
-          paint,
+      case LessonRecapStatus.empty:
+        return LingEmptyState(
+          key: LessonRecapScreen.emptyKey,
+          title: l10n.revRvLearnRecapEmptyTitle,
+          whatHappened: l10n.revRvLearnRecapEmptyWhat,
+          why: l10n.revRvLearnRecapEmptyWhy,
+          whatToDo: l10n.revRvLearnRecapEmptyNext,
+          actionLabel: l10n.hubLearnOpenPath,
+          unavailableLabel: l10n.commonStateUnavailable,
+          onAction: _openPath,
         );
-        canvas.restore();
-      }
+      case LessonRecapStatus.error:
+        return LingErrorState(
+          key: LessonRecapScreen.errorKey,
+          whatHappened: l10n.revRvLearnRecapFailWhat,
+          why: l10n.revRvLearnRecapFailWhy,
+          whatToDo: l10n.revRvLearnRecapFailNext,
+          actionLabel: l10n.commonActionTryAgain,
+          unavailableLabel: l10n.commonStateUnavailable,
+          onAction: _retry,
+        );
+      case LessonRecapStatus.offline:
+        return LingOfflineState(
+          key: LessonRecapScreen.offlineKey,
+          whatHappened: l10n.shellOfflineWhat,
+          why: l10n.revRvLearnRecapOfflineWhy,
+          whatToDo: l10n.shellOfflineNext,
+          queuedActions: 0,
+          actionLabel: l10n.commonActionTryAgain,
+          unavailableLabel: l10n.commonStateUnavailable,
+          onAction: _retry,
+        );
+      case LessonRecapStatus.ready:
+        return _ready(l10n, palette, _data!);
     }
   }
 
-  @override
-  bool shouldRepaint(_ConfettiPainter old) => old.progress != progress;
+  /// Trophy and the words the loader returned. No score is added here.
+  Widget _ready(AppLocalizations l10n, LingPalette palette, LessonRecapData data) {
+    return Column(
+      key: LessonRecapScreen.contentKey,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Icon(
+          Icons.emoji_events_rounded,
+          size: LingAfriqTokens.spacing48,
+          color: palette.accent,
+        ),
+        if (data.title.isNotEmpty) ...<Widget>[
+          const SizedBox(height: LingAfriqTokens.spacing16),
+          Text(
+            data.title,
+            style: lingBody(palette.onSurface),
+            softWrap: true,
+            overflow: TextOverflow.visible,
+          ),
+        ],
+        if (data.words.isNotEmpty) ...<Widget>[
+          const SizedBox(height: LingAfriqTokens.spacing16),
+          Text(
+            l10n.revRvLearnRecapWords,
+            style: lingBody(palette.onSurface),
+            softWrap: true,
+            overflow: TextOverflow.visible,
+          ),
+          for (final String word in data.words) ...<Widget>[
+            const SizedBox(height: LingAfriqTokens.spacing16),
+            Text(
+              word,
+              style: lingBody(palette.onSurfaceVariant),
+              softWrap: true,
+              overflow: TextOverflow.visible,
+            ),
+          ],
+        ],
+      ],
+    );
+  }
 }
