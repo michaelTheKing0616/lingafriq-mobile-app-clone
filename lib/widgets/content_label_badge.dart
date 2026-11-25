@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/content/label_state.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Design tokens: color.label.beta | expert | native (P5-010).
 abstract final class ContentLabelColors {
   static const beta = Color(0xFFB45309);
-  static const betaOn = Color(0xFFFFFFFF);
+  static const betaOn = LingAfriqTokens.hexFFFFFFFF;
   static const expert = Color(0xFF1565C0);
-  static const expertOn = Color(0xFFFFFFFF);
-  static const native = Color(0xFF1B7340);
-  static const nativeOn = Color(0xFFFFFFFF);
+  static const expertOn = LingAfriqTokens.hexFFFFFFFF;
+  static const native = LingAfriqTokens.hexFF1B7340;
+  static const nativeOn = LingAfriqTokens.hexFFFFFFFF;
   static const synthetic = Color(0xFF5C5C5C);
-  static const syntheticOn = Color(0xFFFFFFFF);
+  static const syntheticOn = LingAfriqTokens.hexFFFFFFFF;
 }
 
 /// Whether curriculum audio should show the synthetic-voice tag (AC3).

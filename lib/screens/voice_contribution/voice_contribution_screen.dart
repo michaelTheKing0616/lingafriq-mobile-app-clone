@@ -138,9 +138,9 @@ class VoiceContributionScreen extends HookConsumerWidget {
 
         if (response.statusCode == 201) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Thank you for your contribution! 🎉'),
-              backgroundColor: PanAfricanColors.success,
+            SnackBar(
+              content: const Text('Thank you for your contribution! 🎉'),
+              backgroundColor: context.panSuccess,
             ),
           );
           
@@ -203,13 +203,13 @@ class VoiceContributionScreen extends HookConsumerWidget {
                 // Info Card
                 PanAfricanCard(
                   hasGlow: true,
-                  glowColor: PanAfricanColors.secondary,
+                  glowColor: context.panSecondary,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
-                          Icon(Icons.mic, color: PanAfricanColors.secondary, size: 32.sp),
+                          Icon(Icons.mic, color: context.panSecondary, size: 32.sp),
                           SizedBox(width: PanAfricanSpacing.sm),
                           Expanded(
                             child: Text(
@@ -227,10 +227,10 @@ class VoiceContributionScreen extends HookConsumerWidget {
                       SizedBox(height: PanAfricanSpacing.sm),
                       Row(
                         children: [
-                          const PanAfricanBadge(
+                          PanAfricanBadge(
                             label: 'Earn Rewards',
                             icon: Icons.stars,
-                            color: PanAfricanColors.secondary,
+                            color: context.panSecondary,
                           ),
                           SizedBox(width: PanAfricanSpacing.sm),
                           const PanAfricanBadge(
@@ -374,12 +374,12 @@ class VoiceContributionScreen extends HookConsumerWidget {
                                       Container(
                                         padding: EdgeInsets.all(PanAfricanSpacing.xs),
                                         decoration: BoxDecoration(
-                                          color: PanAfricanColors.info.withValues(alpha: 0.1),
+                                          color: context.panInfo.withValues(alpha: 0.1),
                                           borderRadius: BorderRadius.circular(PanAfricanRadius.sm),
                                         ),
                                         child: Row(
                                           children: [
-                                            Icon(Icons.info_outline, size: 14.sp, color: PanAfricanColors.info),
+                                            Icon(Icons.info_outline, size: 14.sp, color: context.panInfo),
                                             SizedBox(width: PanAfricanSpacing.xxs),
                                             Expanded(
                                               child: Text(
@@ -409,7 +409,7 @@ class VoiceContributionScreen extends HookConsumerWidget {
                 if (selectedPrompt.value != null) ...[
                   PanAfricanCard(
                     backgroundColor: audioFile.value != null
-                        ? PanAfricanColors.success.withValues(alpha: 0.1)
+                        ? context.panSuccess.withValues(alpha: 0.1)
                         : null,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

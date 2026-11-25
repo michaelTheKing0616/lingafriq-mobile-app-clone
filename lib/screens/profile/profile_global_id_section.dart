@@ -62,9 +62,9 @@ class ProfileGlobalIdSection extends HookConsumerWidget {
           isEditing.value = false;
           HapticFeedback.mediumImpact();
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Handle updated successfully!'),
-              backgroundColor: PanAfricanColors.success,
+            SnackBar(
+              content: const Text('Handle updated successfully!'),
+              backgroundColor: context.panSuccess,
             ),
           );
         }
@@ -85,7 +85,7 @@ class ProfileGlobalIdSection extends HookConsumerWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(message),
-            backgroundColor: PanAfricanColors.error,
+            backgroundColor: context.panError,
           ),
         );
       } finally {

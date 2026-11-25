@@ -12,7 +12,7 @@ import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 
 /// Gold used for active days and bars (text-safe dark variant for labels).
-const kProgressGold = Color(0xFFFFC53D);
+const kProgressGold = LingAfriqTokens.hexFFFFC53D;
 const kProgressGoldText = Color(0xFF8C5A00);
 
 /// Progress (profile-progress pack 01 stats grid, 02 streak calendar,

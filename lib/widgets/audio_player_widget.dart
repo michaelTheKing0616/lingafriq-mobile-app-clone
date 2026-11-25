@@ -130,7 +130,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindi
       return Text(
         _errorMessage!,
         style: PanAfricanTypography.bodySmall(context).copyWith(
-          color: PanAfricanColors.error,
+          color: context.panError,
         ),
       );
     }

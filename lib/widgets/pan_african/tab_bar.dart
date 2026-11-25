@@ -92,7 +92,7 @@ class PanAfricanTabBar extends StatelessWidget {
                 vertical: 2.h,
               ),
               decoration: BoxDecoration(
-                color: tab.badgeColor ?? PanAfricanColors.secondary,
+                color: tab.badgeColor ?? context.panSecondary,
                 borderRadius: PanAfricanRadius.roundBR,
               ),
               child: Text(

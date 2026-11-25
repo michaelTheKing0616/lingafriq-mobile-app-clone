@@ -23,13 +23,13 @@ final leaderboardOnlineProvider = FutureProvider.autoDispose<bool>(
 
 const _navy = LingAfriqTokens.navy;
 const _navyDeep = Color(0xFF1F2766);
-const _gold = Color(0xFFFFC53D);
+const _gold = LingAfriqTokens.hexFFFFC53D;
 const _ink = Color(0xFF1F2340);
 const _muted = Color(0xFF5B607A);
 const _line = Color(0xFFE3E5EF);
 const _up = Color(0xFF1B7F4B);
 const _down = Color(0xFFB3261E);
-const _medals = [Color(0xFFFFC53D), Color(0xFFB8C0CC), Color(0xFFD08A4E)];
+const _medals = [LingAfriqTokens.hexFFFFC53D, Color(0xFFB8C0CC), Color(0xFFD08A4E)];
 const _discs = [
   Color(0xFF1B7F4B),
   Color(0xFF8C3B9E),

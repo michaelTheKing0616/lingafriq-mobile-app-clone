@@ -324,7 +324,7 @@ class QuizScreen extends HookConsumerWidget {
   }
 
   Widget singleQuizIndicatorBuilder(BuildContext context, bool isCorrect) {
-    final accent = isCorrect ? PanAfricanColors.success : PanAfricanColors.error;
+    final accent = isCorrect ? context.panSuccess : context.panError;
     return Column(
       children: [
         PanAfricanCard(
@@ -426,7 +426,7 @@ class _DotIndicator extends ConsumerWidget {
           height: 8,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: selected ? PanAfricanColors.tertiary : context.adaptive26,
+            color: selected ? context.panTertiary : context.adaptive26,
           ),
         );
       }).toList(),
@@ -458,9 +458,9 @@ class QuizItem extends HookWidget {
         isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight;
 
     Color optionBorder(String option) {
-      if (isReview && option == quiz.answer) return PanAfricanColors.success;
+      if (isReview && option == quiz.answer) return context.panSuccess;
       if (isReview && selectedValue == option && option != quiz.answer) {
-        return PanAfricanColors.error;
+        return context.panError;
       }
       if (!isReview && selectedValue == option) return PanAfricanColors.primary;
       return isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight;
@@ -468,10 +468,10 @@ class QuizItem extends HookWidget {
 
     Color optionBackground(String option) {
       if (isReview && option == quiz.answer) {
-        return PanAfricanColors.success.withValues(alpha: 0.12);
+        return context.panSuccess.withValues(alpha: 0.12);
       }
       if (isReview && selectedValue == option && option != quiz.answer) {
-        return PanAfricanColors.error.withValues(alpha: 0.12);
+        return context.panError.withValues(alpha: 0.12);
       }
       if (!isReview && selectedValue == option) {
         return PanAfricanColors.primary.withValues(alpha: 0.12);
@@ -485,8 +485,8 @@ class QuizItem extends HookWidget {
           padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
           child: PanAfricanCard(
             hasGradientBorder: true,
-            gradientStart: PanAfricanColors.secondary,
-            gradientEnd: PanAfricanColors.tertiary,
+            gradientStart: context.panSecondary,
+            gradientEnd: context.panTertiary,
             padding: EdgeInsets.all(PanAfricanSpacing.lg),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -555,18 +555,18 @@ class QuizItem extends HookWidget {
                       option,
                       style: PanAfricanTypography.bodyLarge(context).copyWith(
                         color: isReview && isCorrect
-                            ? PanAfricanColors.success
+                            ? context.panSuccess
                             : isReview && isSelected && !isCorrect
-                                ? PanAfricanColors.error
+                                ? context.panError
                                 : null,
                         fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
                       ),
                     ),
                   ),
                   if (isReview && isCorrect)
-                    const PanAfricanBadge(
+                    PanAfricanBadge(
                       label: 'Correct',
-                      color: PanAfricanColors.success,
+                      color: context.panSuccess,
                       icon: Icons.check_circle_rounded,
                     ),
                 ],

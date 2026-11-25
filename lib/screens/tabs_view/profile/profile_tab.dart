@@ -1493,7 +1493,7 @@ class ProfileImageBuilder extends ConsumerWidget {
                   ),
                   child: Icon(
                     Icons.edit_outlined,
-                    color: PanAfricanColors.tertiary,
+                    color: context.panTertiary,
                     size: 24.sp,
                   ),
                 ),
@@ -1511,9 +1511,9 @@ Widget _initial(BuildContext context, ProfileModel? user) {
   return Container(
     key: const Key('avatar-initial'),
     alignment: Alignment.center,
-    decoration: const BoxDecoration(
+    decoration: BoxDecoration(
       shape: BoxShape.circle,
-      color: PanAfricanColors.secondary,
+      color: context.panSecondary,
     ),
     child: FittedBox(
       child: Padding(

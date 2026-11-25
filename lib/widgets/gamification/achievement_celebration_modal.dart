@@ -122,8 +122,8 @@ class _AchievementCelebrationModalState
 
   Color _getConfettiColor() {
     final colors = [
-      PanAfricanColors.secondary,
-      PanAfricanColors.tertiary,
+      context.panSecondary,
+      context.panTertiary,
       PanAfricanColors.primary,
       Colors.red,
       Colors.blue,
@@ -142,7 +142,7 @@ class _AchievementCelebrationModalState
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final accentColor = widget.accentColor ?? PanAfricanColors.secondary;
+    final accentColor = widget.accentColor ?? context.panSecondary;
 
     return Stack(
       children: [
@@ -303,7 +303,7 @@ class _AchievementCelebrationModalState
                                 if (widget.xpReward > 0) ...[
                                   Icon(
                                     Icons.star_rounded,
-                                    color: PanAfricanColors.secondary,
+                                    color: context.panSecondary,
                                     size: 24.sp,
                                   ),
                                   SizedBox(width: 6.w),
@@ -312,7 +312,7 @@ class _AchievementCelebrationModalState
                                     style: TextStyle(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.bold,
-                                      color: PanAfricanColors.secondary,
+                                      color: context.panSecondary,
                                     ),
                                   ),
                                 ],
@@ -329,7 +329,7 @@ class _AchievementCelebrationModalState
                                     style: TextStyle(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.bold,
-                                      color: PanAfricanColors.tertiary,
+                                      color: context.panTertiary,
                                     ),
                                   ),
                                 ],
@@ -443,7 +443,7 @@ void showBadgeUnlockCelebration(
     iconEmoji: badgeEmoji,
     xpReward: xpReward,
     currencyReward: currencyReward,
-    accentColor: PanAfricanColors.secondary,
+    accentColor: context.panSecondary,
   );
 }
 
@@ -480,7 +480,7 @@ void showStreakMilestoneCelebration(
     iconEmoji: '🔥',
     xpReward: bonusXP,
     currencyReward: bonusCurrency,
-    accentColor: PanAfricanColors.tertiary,
+    accentColor: context.panTertiary,
   );
 }
 

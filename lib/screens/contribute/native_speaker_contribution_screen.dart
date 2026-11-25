@@ -271,7 +271,7 @@ class _NativeSpeakerContributionScreenState
     return Scaffold(
       appBar: AppBar(
         title: const Text('Contribute Your Voice'),
-        backgroundColor: isDark ? const Color(0xFF1F3527) : Theme.of(context).colorScheme.surface,
+        backgroundColor: isDark ? LingAfriqTokens.hexFF1F3527 : Theme.of(context).colorScheme.surface,
         foregroundColor: isDark ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface,
         elevation: 0,
         actions: [
@@ -576,7 +576,7 @@ class _NativeSpeakerContributionScreenState
         Container(
           padding: EdgeInsets.all(16.sp),
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1F3527) : Theme.of(context).colorScheme.surface,
+            color: isDark ? LingAfriqTokens.hexFF1F3527 : Theme.of(context).colorScheme.surface,
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.05),

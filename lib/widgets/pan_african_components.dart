@@ -253,7 +253,7 @@ class PanAfricanSecondaryButton extends StatelessWidget {
       label: label,
       onPressed: onPressed,
       icon: icon,
-      backgroundColor: PanAfricanColors.secondary,
+      backgroundColor: context.panSecondary,
       foregroundColor: PanAfricanColors.neutralDarkest,
     );
   }
@@ -361,7 +361,7 @@ class _PanAfricanCardState extends State<PanAfricanCard>
           gradient: LinearGradient(
             colors: [
               widget.gradientStart ?? PanAfricanColors.primary,
-              widget.gradientEnd ?? PanAfricanColors.secondary,
+              widget.gradientEnd ?? context.panSecondary,
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -826,7 +826,7 @@ class PanAfricanAvatar extends StatelessWidget {
                   width: badgeSize,
                   height: badgeSize,
                   decoration: BoxDecoration(
-                    color: badgeColor ?? PanAfricanColors.secondary,
+                    color: badgeColor ?? context.panSecondary,
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
@@ -1004,7 +1004,7 @@ class PanAfricanLoadingState extends StatelessWidget {
             child: CircularProgressIndicator(
               strokeWidth: 3,
               valueColor: AlwaysStoppedAnimation<Color>(
-                isDark ? PanAfricanColors.secondary : PanAfricanColors.primary,
+                isDark ? context.panSecondary : PanAfricanColors.primary,
               ),
             ),
           ),
@@ -1168,8 +1168,8 @@ class PanAfricanTextField extends StatelessWidget {
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-          borderSide: const BorderSide(
-            color: PanAfricanColors.error,
+          borderSide: BorderSide(
+            color: context.panError,
           ),
         ),
       ),

@@ -12,6 +12,7 @@ import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 class CultureMagazineScreen extends ConsumerStatefulWidget {
   const CultureMagazineScreen({super.key});
@@ -399,7 +400,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen> {
                           name: 'Stories',
                           icon: Icons.menu_book_rounded,
                           gradient: const LinearGradient(
-                            colors: [Color(0xFF007A3D), Color(0xFF00A8E8)],
+                            colors: [Color(0xFF007A3D), LingAfriqTokens.hexFF00A8E8],
                           ),
                           articles: _allArticles.where((a) => a.type == ContentType.story || a.type == ContentType.lore).length,
                           onTap: () {
@@ -455,7 +456,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen> {
                           name: 'Recipes',
                           icon: Icons.restaurant_rounded,
                           gradient: const LinearGradient(
-                            colors: [Color(0xFF00A8E8), Color(0xFF007A3D)],
+                            colors: [LingAfriqTokens.hexFF00A8E8, Color(0xFF007A3D)],
                           ),
                           articles: _allArticles.where((a) => a.type == ContentType.recipe).length,
                           onTap: () {

@@ -30,12 +30,12 @@ class GameCard extends StatelessWidget {
         bg = PanAfricanColors.primary.withValues(alpha: 0.08);
         break;
       case GameCardState.correct:
-        borderColor = PanAfricanColors.success;
-        bg = PanAfricanColors.success.withValues(alpha: 0.12);
+        borderColor = context.panSuccess;
+        bg = context.panSuccess.withValues(alpha: 0.12);
         break;
       case GameCardState.incorrect:
-        borderColor = PanAfricanColors.error;
-        bg = PanAfricanColors.error.withValues(alpha: 0.12);
+        borderColor = context.panError;
+        bg = context.panError.withValues(alpha: 0.12);
         break;
       case GameCardState.disabled:
         bg = baseBg.withValues(alpha: 0.5);

@@ -133,7 +133,7 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
                 preferredSize: const Size.fromHeight(4),
                 child: LinearProgressIndicator(
                   key: const Key('dg-syncing'),
-                  color: PanAfricanColors.secondary,
+                  color: context.panSecondary,
                   backgroundColor: Colors.white24,
                   semanticsLabel: l.dgSyncing,
                 ),
@@ -291,8 +291,8 @@ class _Hero extends StatelessWidget {
                       value: total == 0 ? 0 : done / total,
                       strokeWidth: 8,
                       backgroundColor: on.withValues(alpha: 0.25),
-                      valueColor: const AlwaysStoppedAnimation(
-                        PanAfricanColors.secondary,
+                      valueColor: AlwaysStoppedAnimation(
+                        context.panSecondary,
                       ),
                     ),
                   ),
@@ -317,9 +317,9 @@ class _Hero extends StatelessWidget {
       children: [
         Row(
           children: [
-            const Icon(
+            Icon(
               Icons.local_fire_department_rounded,
-              color: PanAfricanColors.secondary,
+              color: context.panSecondary,
               size: 28,
             ),
             const SizedBox(width: 6),

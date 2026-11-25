@@ -282,14 +282,14 @@ class TribeChatScreen extends HookConsumerWidget {
                             child: PanAfricanCard(
                               padding: EdgeInsets.all(PanAfricanSpacing.lg),
                               hasGlow: true,
-                              glowColor: PanAfricanColors.secondary,
+                              glowColor: context.panSecondary,
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Icon(
                                     Icons.forum_outlined,
                                     size: 56.sp,
-                                    color: PanAfricanColors.secondary,
+                                    color: context.panSecondary,
                                   ),
                                   SizedBox(height: PanAfricanSpacing.md),
                                   Text(
@@ -308,7 +308,7 @@ class TribeChatScreen extends HookConsumerWidget {
                                   PanAfricanButton(
                                     label: 'Introduce yourself',
                                     icon: Icons.waving_hand_rounded,
-                                    backgroundColor: PanAfricanColors.secondary,
+                                    backgroundColor: context.panSecondary,
                                     foregroundColor: PanAfricanColors.neutralDarkest,
                                     onPressed: () {
                                       messageController.text =
@@ -394,7 +394,7 @@ class TribeChatScreen extends HookConsumerWidget {
                                     HapticFeedback.lightImpact();
                                     sendMessage();
                                   },
-                            backgroundColor: PanAfricanColors.secondary,
+                            backgroundColor: context.panSecondary,
                             foregroundColor: PanAfricanColors.neutralDarkest,
                           ),
                         ),
@@ -530,7 +530,7 @@ class _TribeMessageBubble extends StatelessWidget {
                               child: Text(
                                 senderName,
                                 style: PanAfricanTypography.labelMedium(context)
-                                    .copyWith(color: PanAfricanColors.secondary),
+                                    .copyWith(color: context.panSecondary),
                               ),
                             ),
                             if (globalId != null) ...[

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../utils/pan_african_design_system.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// League tiers (promotion/demotion system like Duolingo)
 enum LeagueTier {
@@ -75,8 +75,8 @@ class LeagueTiers {
       tier: LeagueTier.gold,
       name: 'Gold',
       emoji: '🥇',
-      color: Color(0xFFFFD700),
-      gradientStart: Color(0xFFFFD700),
+      color: LingAfriqTokens.hexFFFFD700,
+      gradientStart: LingAfriqTokens.hexFFFFD700,
       gradientEnd: Color(0xFFB8860B),
       promoteCount: 5,
       demoteCount: 5,
@@ -111,8 +111,8 @@ class LeagueTiers {
       tier: LeagueTier.legendary,
       name: 'Legendary',
       emoji: '👑',
-      color: PanAfricanColors.secondary,
-      gradientStart: Color(0xFFFFD700),
+      color: LingAfriqTokens.hexFF735C00,
+      gradientStart: LingAfriqTokens.hexFFFFD700,
       gradientEnd: Color(0xFFFF6B00),
       promoteCount: 0, // Can't promote further
       demoteCount: 0, // Can't demote from Legendary

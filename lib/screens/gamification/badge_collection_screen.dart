@@ -56,12 +56,12 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
               vertical: PanAfricanSpacing.xs,
             ),
             decoration: BoxDecoration(
-              color: PanAfricanColors.secondary.withValues(alpha: 0.2),
+              color: context.panSecondary.withValues(alpha: 0.2),
               borderRadius: PanAfricanRadius.roundBR,
             ),
             child: Text(
               '${unlockedBadges.length}/${allBadges.length}',
-              style: PanAfricanTypography.titleMedium(context, color: PanAfricanColors.secondary),
+              style: PanAfricanTypography.titleMedium(context, color: context.panSecondary),
             ),
           ),
           SizedBox(width: PanAfricanSpacing.md),
@@ -185,7 +185,7 @@ class _BadgeCard extends StatelessWidget {
     required this.isDark,
   });
 
-  Color _getRarityColor(BadgeRarity rarity) {
+  Color _getRarityColor(BuildContext context, BadgeRarity rarity) {
     switch (rarity) {
       case BadgeRarity.common:
         return PanAfricanColors.neutralMedium;
@@ -196,13 +196,13 @@ class _BadgeCard extends StatelessWidget {
       case BadgeRarity.epic:
         return PanAfricanColors.ankaraPurple;
       case BadgeRarity.legendary:
-        return PanAfricanColors.secondary;
+        return context.panSecondary;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final rarityColor = _getRarityColor(badge.rarity);
+    final rarityColor = _getRarityColor(context, badge.rarity);
     final colorScheme = Theme.of(context).colorScheme;
 
     return GestureDetector(
@@ -231,7 +231,7 @@ class _BadgeCard extends StatelessWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        PanAfricanColors.secondary.withValues(alpha: 0.1),
+                        context.panSecondary.withValues(alpha: 0.1),
                         Colors.transparent,
                       ],
                     ),

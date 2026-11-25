@@ -174,7 +174,7 @@ class _CircleGoalScreenState extends State<CircleGoalScreen> {
             padding: EdgeInsets.only(top: PanAfricanSpacing.md),
             child: Row(
               children: [
-                Icon(Icons.celebration_outlined, color: PanAfricanColors.secondary, size: 28.sp),
+                Icon(Icons.celebration_outlined, color: context.panSecondary, size: 28.sp),
                 SizedBox(width: PanAfricanSpacing.sm),
                 Expanded(
                   child: Text(

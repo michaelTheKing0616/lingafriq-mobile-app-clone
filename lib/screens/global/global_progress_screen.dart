@@ -72,9 +72,9 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
       languageCounts[code] = (languageCounts[code] ?? 0) + 1;
     }
 
-    const palette = <Color>[
+    final palette = <Color>[
       PanAfricanColors.primary,
-      PanAfricanColors.tertiary,
+      context.panTertiary,
       Colors.blue,
       Colors.purple,
       Colors.pink,
@@ -280,7 +280,7 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
         gradient: LinearGradient(
           colors: [
             PanAfricanColors.primary.withValues(alpha: 0.8),
-            PanAfricanColors.tertiary.withValues(alpha: 0.6),
+            context.panTertiary.withValues(alpha: 0.6),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,

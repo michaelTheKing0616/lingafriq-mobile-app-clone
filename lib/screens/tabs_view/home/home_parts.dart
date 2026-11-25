@@ -488,12 +488,12 @@ class HomeStatePanel extends StatelessWidget {
                   PositionedDirectional(
                     top: 8.w,
                     end: 10.w,
-                    child: const _Dot(PanAfricanColors.secondary, 12),
+                    child: _Dot(context.panSecondary, 12),
                   ),
                   PositionedDirectional(
                     bottom: 14.w,
                     start: 6.w,
-                    child: const _Dot(PanAfricanColors.tertiary, 8),
+                    child: _Dot(context.panTertiary, 8),
                   ),
                 ],
               ),

@@ -13,6 +13,7 @@ import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
 import 'package:lingafriq/widgets/ai/ai_disclosure.dart';
 import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 Widget polieWorkspaceBuildHostScaffold(
   PolieWorkspaceHostRuntime host,
@@ -99,7 +100,7 @@ Widget polieWorkspaceBuildHostScaffold(
                                   trailing: o.displayName == host.targetLanguage
                                       ? const Icon(
                                           Icons.check_rounded,
-                                          color: Color(0xFFD4822A),
+                                          color: LingAfriqTokens.hexFFD4822A,
                                         )
                                       : null,
                                   onTap: () => Navigator.of(sheetCtx)

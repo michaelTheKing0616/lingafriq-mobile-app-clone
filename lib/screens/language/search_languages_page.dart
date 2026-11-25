@@ -187,7 +187,7 @@ class _Header extends StatelessWidget {
                       ),
                       child: const Icon(
                         Icons.public_rounded,
-                        color: Color(0xFFFFC53D),
+                        color: LingAfriqTokens.hexFFFFC53D,
                         size: 32,
                       ),
                     ),

@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 class VillageCafeScreen extends ConsumerStatefulWidget {
   const VillageCafeScreen({super.key});
@@ -202,11 +203,11 @@ class _VillageCafeScreenState extends ConsumerState<VillageCafeScreen> {
 
   Widget _buildWhoBrewing(BuildContext context) {
     final avatars = [
-      ('AM', const Color(0xFF9E3D00)),
-      ('JM', const Color(0xFF526124)),
-      ('LS', const Color(0xFF7B5733)),
-      ('NK', const Color(0xFFFF7A35)),
-      ('BW', const Color(0xFF3A1500)),
+      ('AM', LingAfriqTokens.hexFF9E3D00),
+      ('JM', LingAfriqTokens.hexFF526124),
+      ('LS', LingAfriqTokens.hexFF7B5733),
+      ('NK', LingAfriqTokens.hexFFFF7A35),
+      ('BW', LingAfriqTokens.hexFF3A1500),
     ];
 
     return Row(

@@ -76,8 +76,8 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                   ),
                   child: PanAfricanCard(
                     hasGradientBorder: true,
-                    gradientStart: PanAfricanColors.secondary,
-                    gradientEnd: PanAfricanColors.tertiary,
+                    gradientStart: context.panSecondary,
+                    gradientEnd: context.panTertiary,
                     padding: EdgeInsets.all(PanAfricanSpacing.md),
                     child: Row(
                       children: [
@@ -128,7 +128,7 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                                     ),
                                     PanAfricanBadge(
                                       label: l10nOf(context).shellStreakValue('${user?.streak ?? 0}'),
-                                      color: PanAfricanColors.tertiary,
+                                      color: context.panTertiary,
                                       icon: Icons.local_fire_department_rounded,
                                     ),
                                   ],
@@ -168,15 +168,15 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                           PanAfricanCard(
                             hasGradientBorder: true,
                             gradientStart: PanAfricanColors.primary,
-                            gradientEnd: PanAfricanColors.secondary,
+                            gradientEnd: context.panSecondary,
                             padding: EdgeInsets.all(PanAfricanSpacing.lg),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
                                   children: [
-                                    const Icon(Icons.workspace_premium_rounded,
-                                        color: PanAfricanColors.secondary),
+                                    Icon(Icons.workspace_premium_rounded,
+                                        color: context.panSecondary),
                                     SizedBox(width: PanAfricanSpacing.sm),
                                     Text(
                                       l10nOf(context).shellAchievements,
@@ -197,7 +197,7 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                                   value: '${(badgeProgress * 100).toInt()}%',
                                   child: PanAfricanProgressBar(
                                     progress: badgeProgress,
-                                    color: PanAfricanColors.secondary,
+                                    color: context.panSecondary,
                                     height: 8.h,
                                   ),
                                 ),
@@ -213,7 +213,7 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                                     ),
                                     PanAfricanBadge(
                                       label: gamification.levelTitle,
-                                      color: PanAfricanColors.tertiary,
+                                      color: context.panTertiary,
                                       icon: Icons.emoji_events_rounded,
                                     ),
                                     PanAfricanBadge(
@@ -234,9 +234,9 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                               isDark: isDark,
                               child: Row(
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.emoji_events_rounded,
-                                    color: PanAfricanColors.secondary,
+                                    color: context.panSecondary,
                                   ),
                                   SizedBox(width: PanAfricanSpacing.sm),
                                   Text(
@@ -351,9 +351,9 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                             child: PanAfricanListTile(
                               title: l10nOf(context).shellDeleteYourAccount,
                               subtitle: l10nOf(context).shellThisActionIsPermanent,
-                              leading: const Icon(
+                              leading: Icon(
                                 Icons.delete_outline,
-                                color: PanAfricanColors.error,
+                                color: context.panError,
                               ),
                               trailing: const Icon(
                                 Icons.chevron_right,

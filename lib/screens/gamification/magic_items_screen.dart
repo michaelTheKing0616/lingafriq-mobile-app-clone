@@ -214,7 +214,7 @@ class _MagicItemsScreenState extends ConsumerState<MagicItemsScreen> {
             'Not enough Ancestral Beads',
             style: PanAfricanTypography.bodyMedium(context, color: colorScheme.onPrimary),
           ),
-          backgroundColor: PanAfricanColors.error,
+          backgroundColor: context.panError,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
         ),
@@ -230,7 +230,7 @@ class _MagicItemsScreenState extends ConsumerState<MagicItemsScreen> {
             'Not enough Cowries',
             style: PanAfricanTypography.bodyMedium(context, color: colorScheme.onPrimary),
           ),
-          backgroundColor: PanAfricanColors.error,
+          backgroundColor: context.panError,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
         ),
@@ -254,7 +254,7 @@ class _MagicItemsScreenState extends ConsumerState<MagicItemsScreen> {
               width: 64.w,
               height: 64.w,
               decoration: BoxDecoration(
-                color: PanAfricanColors.secondary.withValues(alpha: 0.15),
+                color: context.panSecondary.withValues(alpha: 0.15),
                 shape: BoxShape.circle,
               ),
               child: Center(
@@ -333,7 +333,7 @@ class _MagicItemsScreenState extends ConsumerState<MagicItemsScreen> {
           ),
           FilledButton(
             style: FilledButton.styleFrom(
-              backgroundColor: PanAfricanColors.secondary,
+              backgroundColor: context.panSecondary,
               foregroundColor: PanAfricanColors.neutralDarkest,
             ),
             onPressed: () async {
@@ -357,7 +357,7 @@ class _MagicItemsScreenState extends ConsumerState<MagicItemsScreen> {
                       '${item.name} activated!',
                       style: PanAfricanTypography.bodyMedium(context, color: colorScheme.onPrimary),
                     ),
-                    backgroundColor: PanAfricanColors.success,
+                    backgroundColor: context.panSuccess,
                     behavior: SnackBarBehavior.floating,
                     shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
                   ),
@@ -406,7 +406,7 @@ class _MagicItemCard extends StatelessWidget {
               width: 48.w,
               height: 48.w,
               decoration: BoxDecoration(
-                color: PanAfricanColors.secondary.withValues(alpha: 0.15),
+                color: context.panSecondary.withValues(alpha: 0.15),
                 borderRadius: PanAfricanRadius.mdBR,
               ),
               child: Center(
@@ -469,7 +469,7 @@ class _MagicItemCard extends StatelessWidget {
             SizedBox(width: PanAfricanSpacing.sm),
             FilledButton(
               style: FilledButton.styleFrom(
-                backgroundColor: PanAfricanColors.secondary,
+                backgroundColor: context.panSecondary,
                 foregroundColor: PanAfricanColors.neutralDarkest,
                 padding: EdgeInsets.symmetric(
                   horizontal: PanAfricanSpacing.md,

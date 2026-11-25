@@ -443,7 +443,7 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
           IconButton(
             icon: Icon(
               isFavorite.value ? Icons.favorite : Icons.favorite_border,
-              color: isFavorite.value ? PanAfricanColors.error : null,
+              color: isFavorite.value ? context.panError : null,
             ),
             onPressed: () async {
               final success = await MagazineEnhancedFeatures.toggleFavorite(
@@ -556,7 +556,7 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
                       icon: const Icon(Icons.book),
                       label: const Text('Vocabulary'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: PanAfricanColors.secondary,
+                        backgroundColor: context.panSecondary,
                         foregroundColor: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),

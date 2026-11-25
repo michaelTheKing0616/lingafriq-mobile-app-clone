@@ -386,7 +386,7 @@ class _EditLessonDialogState extends State<EditLessonDialog> {
                                 tooltip: 'Edit',
                               ),
                               IconButton(
-                                icon: Icon(Icons.delete, size: 20.sp, color: PanAfricanColors.error),
+                                icon: Icon(Icons.delete, size: 20.sp, color: context.panError),
                                 onPressed: () {
                                   setState(() {
                                     _sections.removeAt(index);

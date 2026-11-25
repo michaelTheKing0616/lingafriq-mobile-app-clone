@@ -186,7 +186,7 @@ class _CefrProgressCard extends StatelessWidget {
                         color: isCurrent
                             ? PanAfricanColors.primary
                             : isCompleted
-                                ? PanAfricanColors.success
+                                ? context.panSuccess
                                 : isNext
                                     ? PanAfricanColors.accent
                                     : PanAfricanColors.neutralLight,
@@ -275,9 +275,9 @@ class _SkillLevelsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final skills = [
       {'name': 'Grammar', 'score': progress.skillLevels['grammar'] ?? 0.0, 'icon': Icons.menu_book, 'color': PanAfricanColors.primary},
-      {'name': 'Pronunciation', 'score': progress.skillLevels['pronunciation'] ?? 0.0, 'icon': Icons.record_voice_over, 'color': PanAfricanColors.secondary},
+      {'name': 'Pronunciation', 'score': progress.skillLevels['pronunciation'] ?? 0.0, 'icon': Icons.record_voice_over, 'color': context.panSecondary},
       {'name': 'Vocabulary', 'score': progress.skillLevels['vocabulary'] ?? 0.0, 'icon': Icons.book, 'color': PanAfricanColors.accent},
-      {'name': 'Comprehension', 'score': progress.skillLevels['comprehension'] ?? 0.0, 'icon': Icons.hearing, 'color': PanAfricanColors.tertiary},
+      {'name': 'Comprehension', 'score': progress.skillLevels['comprehension'] ?? 0.0, 'icon': Icons.hearing, 'color': context.panTertiary},
     ];
 
     return Card(
@@ -318,13 +318,13 @@ class _SkillLevelsCard extends StatelessWidget {
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.sm, vertical: 2),
                             decoration: BoxDecoration(
-                              color: PanAfricanColors.error.withValues(alpha: 0.1),
+                              color: context.panError.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(PanAfricanRadius.xs),
                             ),
                             child: Text(
                               'Needs Practice',
                               style: PanAfricanTypography.labelSmall(context).copyWith(
-                                color: PanAfricanColors.error,
+                                color: context.panError,
                               ),
                             ),
                           ),
@@ -406,9 +406,9 @@ class _AdaptiveRecommendationsCard extends StatelessWidget {
                 children: weakAreas.map((area) {
                   return Chip(
                     label: Text(area),
-                    backgroundColor: PanAfricanColors.error.withValues(alpha: 0.1),
+                    backgroundColor: context.panError.withValues(alpha: 0.1),
                     labelStyle: PanAfricanTypography.labelSmall(context).copyWith(
-                      color: PanAfricanColors.error,
+                      color: context.panError,
                     ),
                   );
                 }).toList(),
@@ -488,7 +488,7 @@ class _StatisticsCard extends StatelessWidget {
                   label: 'Time',
                   value: '${(progress.totalTimeSpent / 3600).toStringAsFixed(1)}h',
                   icon: Icons.timer,
-                  color: PanAfricanColors.secondary,
+                  color: context.panSecondary,
                 ),
               ],
             ),
@@ -502,7 +502,7 @@ class _StatisticsCard extends StatelessWidget {
                   label: 'Vocab',
                   value: '${progress.vocabularyMastered.length}',
                   icon: Icons.book,
-                  color: PanAfricanColors.tertiary,
+                  color: context.panTertiary,
                 ),
                 _StatItem(
                   label: 'Grammar',

@@ -242,8 +242,8 @@ class _XPGainAnimationState extends State<_XPGainAnimation>
 
   Color _getParticleColor(int index) {
     final colors = [
-      PanAfricanColors.secondary,
-      PanAfricanColors.tertiary,
+      context.panSecondary,
+      context.panTertiary,
       PanAfricanColors.primaryLight,
       PanAfricanColors.kenteBlue,
     ];
@@ -331,7 +331,7 @@ class _XPGainAnimationState extends State<_XPGainAnimation>
         borderRadius: PanAfricanRadius.xlBR,
         boxShadow: [
           BoxShadow(
-            color: (isLevelUp ? PanAfricanColors.primaryLight : PanAfricanColors.secondary)
+            color: (isLevelUp ? PanAfricanColors.primaryLight : context.panSecondary)
                 .withValues(alpha: 0.4),
             blurRadius: 20,
             spreadRadius: 5,

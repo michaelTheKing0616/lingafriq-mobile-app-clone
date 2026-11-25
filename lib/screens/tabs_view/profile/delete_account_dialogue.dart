@@ -24,7 +24,7 @@ class DeleteAccountDialog extends StatelessWidget {
               shape: BoxShape.circle,
               color: Theme.of(context).colorScheme.surface,
             ),
-            child: Icon(Icons.close, color: PanAfricanColors.error, size: 0.2.sw),
+            child: Icon(Icons.close, color: context.panError, size: 0.2.sw),
           ),
           l10nOf(context).shellAreYouSureYouWantToecc5
               .text
@@ -47,7 +47,7 @@ class DeleteAccountDialog extends StatelessWidget {
           PanAfricanButton(
             width: 0.5.sw,
             label: l10nOf(context).shellYes,
-            backgroundColor: PanAfricanColors.error,
+            backgroundColor: context.panError,
             foregroundColor: Theme.of(context).colorScheme.onPrimary,
             onPressed: () {
               Navigator.of(context).pop(true);

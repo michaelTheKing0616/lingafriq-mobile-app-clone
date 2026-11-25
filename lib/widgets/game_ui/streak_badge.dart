@@ -13,7 +13,7 @@ class StreakBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = broken ? PanAfricanColors.warning : PanAfricanColors.secondary;
+    final color = broken ? context.panWarning : context.panSecondary;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(

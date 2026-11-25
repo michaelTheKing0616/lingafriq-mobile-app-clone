@@ -8,6 +8,7 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/images.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Minimum time to show loading screen so users can read facts
 /// Intelligently configured to allow users to read facts comfortably
@@ -220,7 +221,7 @@ class _DynamicLoadingScreenState
                           const Color(0xFF0A0A0A),
                         ]
                       : [
-                          const Color(0xFF1A1A1A),
+                          LingAfriqTokens.hexFF1A1A1A,
                           const Color(0xFF0A0A0A),
                         ],
                 ),
@@ -293,14 +294,14 @@ class _DynamicLoadingScreenState
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  PanAfricanColors.secondary.withValues(alpha: 0.8),
-                  PanAfricanColors.tertiary.withValues(alpha: 0.6),
+                  context.panSecondary.withValues(alpha: 0.8),
+                  context.panTertiary.withValues(alpha: 0.6),
                   PanAfricanColors.primary.withValues(alpha: 0.4),
                 ],
               ),
               boxShadow: [
                 BoxShadow(
-                  color: PanAfricanColors.secondary.withValues(alpha: 0.4),
+                  color: context.panSecondary.withValues(alpha: 0.4),
                   blurRadius: 30,
                   spreadRadius: 5,
                 ),
@@ -367,7 +368,7 @@ class _DynamicLoadingScreenState
           end: Alignment.bottomCenter,
           colors: [
             PanAfricanColors.primary.withValues(alpha: 0.3),
-            PanAfricanColors.secondary.withValues(alpha: 0.2),
+            context.panSecondary.withValues(alpha: 0.2),
           ],
         ),
       ),
@@ -442,7 +443,7 @@ class _DynamicLoadingScreenState
           ),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: PanAfricanColors.secondary.withValues(alpha: 0.3),
+            color: context.panSecondary.withValues(alpha: 0.3),
             width: 1,
           ),
         ),
@@ -454,12 +455,12 @@ class _DynamicLoadingScreenState
                 Container(
                   padding: EdgeInsets.all(6.sp),
                   decoration: BoxDecoration(
-                    color: PanAfricanColors.secondary.withValues(alpha: 0.2),
+                    color: context.panSecondary.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     Icons.auto_awesome,
-                    color: PanAfricanColors.secondary,
+                    color: context.panSecondary,
                     size: 16.sp,
                   ),
                 ),
@@ -469,7 +470,7 @@ class _DynamicLoadingScreenState
                   style: TextStyle(
                     fontSize: 15.sp,
                     fontWeight: FontWeight.bold,
-                    color: PanAfricanColors.secondary,
+                    color: context.panSecondary,
                     letterSpacing: 0.5,
                   ),
                 ),
@@ -517,17 +518,17 @@ class _DynamicLoadingScreenState
                 widthFactor: _progress,
                 child: Container(
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(
+                    gradient: LinearGradient(
                       colors: [
-                        PanAfricanColors.secondary,
-                        PanAfricanColors.tertiary,
+                        context.panSecondary,
+                        context.panTertiary,
                         PanAfricanColors.primary,
                       ],
                     ),
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
-                        color: PanAfricanColors.secondary.withValues(alpha: 0.5),
+                        color: context.panSecondary.withValues(alpha: 0.5),
                         blurRadius: 8,
                         spreadRadius: 1,
                       ),
@@ -543,7 +544,7 @@ class _DynamicLoadingScreenState
           '${(_progress * 100).toInt()}%',
           style: TextStyle(
             fontSize: 11.sp,
-            color: PanAfricanColors.secondary.withValues(alpha: 0.8),
+            color: context.panSecondary.withValues(alpha: 0.8),
             fontWeight: FontWeight.w600,
           ),
         ),

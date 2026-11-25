@@ -24,7 +24,7 @@ final subscriptionOnlineProvider = FutureProvider.autoDispose<bool>(
 String _ltr(String s) => '\u2066$s\u2069';
 
 const _navy = LingAfriqTokens.navy;
-const _gold = Color(0xFFFFC53D);
+const _gold = LingAfriqTokens.hexFFFFC53D;
 const _goldText = Color(0xFF8C5A00);
 
 /// LingAfriq Plus (paywall pack recipe): visible close, value first with a

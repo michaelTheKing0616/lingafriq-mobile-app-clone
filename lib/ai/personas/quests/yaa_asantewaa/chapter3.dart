@@ -352,7 +352,7 @@ class _YaaQuestChapter3SceneState extends State<YaaQuestChapter3Scene> {
                     Text(
                       QuestChapter3Copy.checkpointFail,
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: PanAfricanColors.error,
+                        color: context.panError,
                       ),
                     ),
                     SizedBox(height: 8.h),
@@ -419,7 +419,7 @@ class _YaaQuestChapter3SceneState extends State<YaaQuestChapter3Scene> {
                 child: Text(
                   'Try a position that defends the Stool, not negotiation.',
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: PanAfricanColors.error,
+                    color: context.panError,
                   ),
                 ),
               ),

@@ -5,19 +5,20 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/navigation/village_navigation.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 class TribeDiscoveryScreen extends ConsumerWidget {
   const TribeDiscoveryScreen({super.key});
 
   static const _tribes = [
     _DiscoverTribe('Warriors', '⚔️', 'Strength through mastery', 1284,
-        Color(0xFFB91C1C)),
+        LingAfriqTokens.hexFFB91C1C),
     _DiscoverTribe('Scholars', '📚', 'Knowledge is eternal', 968,
         Color(0xFF1D4ED8)),
     _DiscoverTribe('Traders', '🤝', 'Exchange builds bridges', 756,
-        Color(0xFF526124)),
+        LingAfriqTokens.hexFF526124),
     _DiscoverTribe('Voices', '🎙️', 'Speak to be heard', 642,
-        Color(0xFF7B5733)),
+        LingAfriqTokens.hexFF7B5733),
   ];
 
   @override
@@ -118,7 +119,7 @@ class TribeDiscoveryScreen extends ConsumerWidget {
                   emoji: '⚔️',
                   xp: 56800,
                   height: 200.h,
-                  color: const Color(0xFFFFD700),
+                  color: LingAfriqTokens.hexFFFFD700,
                 ),
               ),
               SizedBox(width: 8.w),
@@ -200,7 +201,7 @@ class TribeDiscoveryScreen extends ConsumerWidget {
                 if (rank == 1) ...[
                   SizedBox(height: 4.h),
                   Icon(Icons.emoji_events_rounded,
-                      size: 20.sp, color: const Color(0xFFFFD700)),
+                      size: 20.sp, color: LingAfriqTokens.hexFFFFD700),
                 ],
               ],
             ),

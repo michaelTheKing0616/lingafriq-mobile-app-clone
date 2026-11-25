@@ -218,7 +218,7 @@ class UserProfileScreen extends ConsumerWidget {
                         ),
                         _InfoRow(
                           icon: Icons.calendar_today_rounded,
-                          iconColor: PanAfricanColors.secondary,
+                          iconColor: context.panSecondary,
                           label: 'Member since',
                           value: memberSinceFormatted,
                           isDark: isDark,
@@ -337,7 +337,7 @@ class _AvatarPlaceholder extends StatelessWidget {
       child: Text(
         initial,
         style: PanAfricanTypography.headlineLarge(context).copyWith(
-          color: PanAfricanColors.tertiary,
+          color: context.panTertiary,
         ),
       ),
     );
@@ -443,7 +443,7 @@ class _ActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: isDestructive
-          ? PanAfricanColors.error.withValues(alpha: 0.1)
+          ? context.panError.withValues(alpha: 0.1)
           : (isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight),
       borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
       child: InkWell(
@@ -459,7 +459,7 @@ class _ActionButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
             border: Border.all(
               color: isDestructive
-                  ? PanAfricanColors.error.withValues(alpha: 0.3)
+                  ? context.panError.withValues(alpha: 0.3)
                   : (isDark
                       ? PanAfricanColors.borderDark
                       : PanAfricanColors.borderLight),
@@ -471,14 +471,14 @@ class _ActionButton extends StatelessWidget {
                 padding: EdgeInsets.all(PanAfricanSpacing.sm),
                 decoration: BoxDecoration(
                   color: isDestructive
-                      ? PanAfricanColors.error.withValues(alpha: 0.1)
+                      ? context.panError.withValues(alpha: 0.1)
                       : PanAfricanColors.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                 ),
                 child: Icon(
                   icon,
                   color: isDestructive
-                      ? PanAfricanColors.error
+                      ? context.panError
                       : PanAfricanColors.primary,
                   size: 24.sp,
                 ),
@@ -488,14 +488,14 @@ class _ActionButton extends StatelessWidget {
                 label,
                 style: PanAfricanTypography.bodyLarge(context).copyWith(
                   fontWeight: FontWeight.w600,
-                  color: isDestructive ? PanAfricanColors.error : null,
+                  color: isDestructive ? context.panError : null,
                 ),
               ),
               const Spacer(),
               Icon(
                 Icons.chevron_right_rounded,
                 color: isDestructive
-                    ? PanAfricanColors.error
+                    ? context.panError
                     : PanAfricanColors.neutralMedium,
                 size: 24.sp,
               ),

@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 class VillageMarketScreen extends ConsumerWidget {
   const VillageMarketScreen({super.key});
@@ -415,8 +416,8 @@ class VillageMarketScreen extends ConsumerWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Color(0xFF526124),
-                  Color(0xFF7A8C3A),
+                  LingAfriqTokens.hexFF526124,
+                  LingAfriqTokens.hexFF7A8C3A,
                 ],
               ),
               borderRadius: ModernGriotRadius.borderXl,
@@ -428,7 +429,7 @@ class VillageMarketScreen extends ConsumerWidget {
                   label: 'LIMITED',
                   icon: Icons.local_fire_department_rounded,
                   color: Color(0xFFFFC107),
-                  textColor: Color(0xFF3A1500),
+                  textColor: LingAfriqTokens.hexFF3A1500,
                 ),
                 SizedBox(height: 12.h),
                 Text('Weekend Culture Bundle',
@@ -452,7 +453,7 @@ class VillageMarketScreen extends ConsumerWidget {
                       style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w700,
-                        color: const Color(0xFF526124),
+                        color: LingAfriqTokens.hexFF526124,
                       )),
                 ),
               ],

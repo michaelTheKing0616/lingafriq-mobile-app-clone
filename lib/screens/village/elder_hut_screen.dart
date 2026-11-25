@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/modern_griot_design_system.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 class ElderHutScreen extends ConsumerStatefulWidget {
   const ElderHutScreen({super.key});
@@ -17,13 +18,13 @@ class _ElderHutScreenState extends ConsumerState<ElderHutScreen>
   late Animation<double> _glowAnim;
   int _selectedProverb = 0;
 
-  static const _darkBg = Color(0xFF1C1A15);
-  static const _darkSurface = Color(0xFF252219);
-  static const _darkSurfaceHigh = Color(0xFF2E2A22);
-  static const _gold = Color(0xFFFFD700);
+  static const _darkBg = LingAfriqTokens.hexFF1C1A15;
+  static const _darkSurface = LingAfriqTokens.hexFF252219;
+  static const _darkSurfaceHigh = LingAfriqTokens.hexFF2E2A22;
+  static const _gold = LingAfriqTokens.hexFFFFD700;
   static const _goldMuted = Color(0xFFB8960C);
-  static const _warmText = Color(0xFFEDE0D0);
-  static const _warmTextDim = Color(0xFFCFC5B4);
+  static const _warmText = LingAfriqTokens.hexFFEDE0D0;
+  static const _warmTextDim = LingAfriqTokens.hexFFCFC5B4;
 
   static const _proverbs = [
     _Proverb(

@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 // ---------------------------------------------------------------------------
 // Screen
@@ -231,9 +232,9 @@ class _PortraitColumn extends StatelessWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        Color(0xFFFFDBC9),
-                        Color(0xFFFFF0EA),
-                        Color(0xFFD6ED79),
+                        LingAfriqTokens.hexFFFFDBC9,
+                        LingAfriqTokens.hexFFFFF0EA,
+                        LingAfriqTokens.hexFFD6ED79,
                       ],
                     ),
                     boxShadow: ModernGriotShadows.lg,

@@ -94,7 +94,7 @@ class GameQuestionCard extends StatelessWidget {
                   Icon(
                     Icons.lightbulb_outline_rounded,
                     size: 14.sp,
-                    color: PanAfricanColors.secondary,
+                    color: context.panSecondary,
                   ),
                   SizedBox(width: PanAfricanSpacing.xxs),
                   Flexible(

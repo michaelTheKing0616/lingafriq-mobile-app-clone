@@ -706,7 +706,7 @@ class _ArticleCard extends StatelessWidget {
                                   ? Icons.favorite
                                   : Icons.favorite_border,
                               color: isFavorite
-                                  ? PanAfricanColors.error
+                                  ? context.panError
                                   : Theme.of(context).colorScheme.onPrimary,
                               size: 20.sp,
                             ),

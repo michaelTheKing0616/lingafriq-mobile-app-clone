@@ -687,13 +687,13 @@ extension PanAfricanContext on BuildContext {
       : LingAfriqTokens.hexFF9E3D00;
   Color get panSuccess => isDark
       ? LingAfriqTokens.roleDarkSuccess
-      : LingAfriqTokens.hexFF2A7A4C;
+      : LingAfriqTokens.hexFF1B7340;
   Color get panWarning => isDark
       ? LingAfriqTokens.roleDarkWarning
       : LingAfriqTokens.hexFF735C00;
   Color get panError => isDark
       ? LingAfriqTokens.roleDarkDanger
-      : LingAfriqTokens.hexFFC4413A;
+      : LingAfriqTokens.hexFFBA1A1A;
   Color get panInfo => isDark
       ? LingAfriqTokens.roleDarkInfo
       : LingAfriqTokens.roleLightInfo;

@@ -65,9 +65,9 @@ class QuizAnswersScreen extends ConsumerWidget {
                   child: PanAfricanCard(
                     hasGradientBorder: true,
                     gradientStart: allCorrect
-                        ? PanAfricanColors.success
-                        : PanAfricanColors.secondary,
-                    gradientEnd: PanAfricanColors.tertiary,
+                        ? context.panSuccess
+                        : context.panSecondary,
+                    gradientEnd: context.panTertiary,
                     padding: EdgeInsets.all(PanAfricanSpacing.lg),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,8 +89,8 @@ class QuizAnswersScreen extends ConsumerWidget {
                         PanAfricanBadge(
                           label: '${correctAnswers.length}/${quiz.length} correct',
                           color: allCorrect
-                              ? PanAfricanColors.success
-                              : PanAfricanColors.secondary,
+                              ? context.panSuccess
+                              : context.panSecondary,
                           icon: allCorrect
                               ? Icons.celebration_rounded
                               : Icons.analytics_rounded,
@@ -128,7 +128,7 @@ class QuizAnswersScreen extends ConsumerWidget {
                         },
                         label: allCorrect ? "Continue" : "Try Again",
                         backgroundColor: allCorrect
-                            ? PanAfricanColors.success
+                            ? context.panSuccess
                             : PanAfricanColors.primary,
                         foregroundColor: Theme.of(context).colorScheme.onPrimary,
                       ).pOnly(bottom: 24, top: 16),

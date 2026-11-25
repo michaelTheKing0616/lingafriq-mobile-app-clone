@@ -283,7 +283,7 @@ class _BrowseTabState extends ConsumerState<_BrowseTab> {
             _error!,
             style: PanAfricanTypography.bodySmall(
               context,
-            ).copyWith(color: PanAfricanColors.error),
+            ).copyWith(color: context.panError),
           ),
         ],
         SizedBox(height: PanAfricanSpacing.md),

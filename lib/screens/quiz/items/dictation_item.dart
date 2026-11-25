@@ -97,10 +97,10 @@ class _DictationItemState extends State<DictationItem> {
               hint,
               style: TextStyle(
                 color: _grade!.full
-                    ? PanAfricanColors.success
+                    ? context.panSuccess
                     : _grade!.phase == 'wrong'
-                        ? PanAfricanColors.error
-                        : PanAfricanColors.warning,
+                        ? context.panError
+                        : context.panWarning,
               ),
             ),
         ],

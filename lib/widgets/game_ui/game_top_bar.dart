@@ -52,7 +52,7 @@ class GameTopBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
           if (languageLabel != null) _Chip(label: languageLabel!, color: PanAfricanColors.primary),
-          if (progressLabel != null) _Chip(label: progressLabel!, color: warningState ? PanAfricanColors.warning : PanAfricanColors.kenteBlue),
+          if (progressLabel != null) _Chip(label: progressLabel!, color: warningState ? context.panWarning : PanAfricanColors.kenteBlue),
           if (scoreLabel != null) _Chip(label: scoreLabel!, color: GameUiTokens.score(context)),
         ],
       ),

@@ -288,7 +288,7 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
                           ),
                           decoration: BoxDecoration(
                             color: displayEvent['isActive'] == true
-                                ? PanAfricanColors.success.withValues(alpha: 0.2)
+                                ? context.panSuccess.withValues(alpha: 0.2)
                                 : colorScheme.onPrimary.withValues(alpha: 0.2),
                             borderRadius: PanAfricanRadius.roundBR,
                           ),

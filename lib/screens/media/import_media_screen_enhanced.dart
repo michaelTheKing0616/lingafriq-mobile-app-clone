@@ -484,7 +484,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                   PrimaryButton(
                     text: isGeneratingLesson.value ? 'Generating Lesson...' : 'Generate Lesson',
                     enabled: !isGeneratingLesson.value,
-                    color: PanAfricanColors.secondary,
+                    color: context.panSecondary,
                     textColor: Theme.of(context).colorScheme.onSecondary,
                     onTap: generateLesson,
                     child: isGeneratingLesson.value

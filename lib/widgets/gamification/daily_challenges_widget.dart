@@ -366,7 +366,7 @@ class _DailyChallengesWidgetState extends ConsumerState<DailyChallengesWidget> {
               _buildRewardChip(
                 Icons.star_rounded,
                 '+${challenge.xpReward}',
-                PanAfricanColors.secondary,
+                context.panSecondary,
               ),
               SizedBox(width: PanAfricanSpacing.xs),
               // Cowries reward
@@ -523,7 +523,7 @@ class _DailyChallengesWidgetState extends ConsumerState<DailyChallengesWidget> {
               Text(
                 'Weekend Warrior Bonus (2x XP!)',
                 style: PanAfricanTypography.titleSmall(context).copyWith(
-                  color: PanAfricanColors.tertiary,
+                  color: context.panTertiary,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -557,9 +557,9 @@ class _DailyChallengesWidgetState extends ConsumerState<DailyChallengesWidget> {
       case ChallengeDifficulty.easy:
         return PanAfricanColors.primary;
       case ChallengeDifficulty.medium:
-        return PanAfricanColors.secondary;
+        return context.panSecondary;
       case ChallengeDifficulty.hard:
-        return PanAfricanColors.tertiary;
+        return context.panTertiary;
       case ChallengeDifficulty.expert:
         return const Color(0xFF9C27B0); // Purple for expert
     }

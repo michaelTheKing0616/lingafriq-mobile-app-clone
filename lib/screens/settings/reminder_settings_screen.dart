@@ -29,7 +29,7 @@ final reminderOpenSettingsProvider = Provider<Future<bool> Function()>(
 );
 
 const _navy = LingAfriqTokens.navy;
-const _gold = Color(0xFFFFC53D);
+const _gold = LingAfriqTokens.hexFFFFC53D;
 const _ink = Color(0xFF1F2340);
 const _muted = Color(0xFF5B607A);
 const _line = Color(0xFFE3E5EF);

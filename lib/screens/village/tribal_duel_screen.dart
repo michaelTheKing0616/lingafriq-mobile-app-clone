@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 class TribalDuelScreen extends ConsumerStatefulWidget {
   const TribalDuelScreen({super.key});
@@ -357,7 +358,7 @@ class _TribalDuelScreenState extends ConsumerState<TribalDuelScreen>
             SizedBox(width: 10.w),
             Expanded(
               child: _buildChatStream(
-                  'Dragons 🐉', _rightChat, const Color(0xFF7B5733)),
+                  'Dragons 🐉', _rightChat, LingAfriqTokens.hexFF7B5733),
             ),
           ],
         ),
@@ -415,12 +416,12 @@ class _TribalDuelScreenState extends ConsumerState<TribalDuelScreen>
         height: 56.r,
         decoration: BoxDecoration(
           gradient: const LinearGradient(
-            colors: [Color(0xFFFFD700), Color(0xFFFFA500)],
+            colors: [LingAfriqTokens.hexFFFFD700, Color(0xFFFFA500)],
           ),
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFFFFD700).withAlpha(60),
+              color: LingAfriqTokens.hexFFFFD700.withAlpha(60),
               blurRadius: 20,
               offset: const Offset(0, 6),
             ),
@@ -430,12 +431,12 @@ class _TribalDuelScreenState extends ConsumerState<TribalDuelScreen>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.auto_awesome_rounded,
-                size: 22.sp, color: const Color(0xFF3A1500)),
+                size: 22.sp, color: LingAfriqTokens.hexFF3A1500),
             Text('TOTEM',
                 style: TextStyle(
                   fontSize: 7.sp,
                   fontWeight: FontWeight.w900,
-                  color: const Color(0xFF3A1500),
+                  color: LingAfriqTokens.hexFF3A1500,
                   letterSpacing: 0.8,
                 )),
           ],

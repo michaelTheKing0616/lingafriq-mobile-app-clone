@@ -5,6 +5,7 @@ import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_layout.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_args.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 
 Widget buildPolieConversationComposer(PolieModeSurfaceArgs a, PolieModeSurfaceLayout layout) {
@@ -34,7 +35,7 @@ Widget buildPolieConversationComposer(PolieModeSurfaceArgs a, PolieModeSurfaceLa
                         Text(
                           'Style:',
                           style: layout.bodyStyle.copyWith(
-                            color: const Color(0xFF2D1B0E),
+                            color: LingAfriqTokens.hexFF2D1B0E,
                             fontWeight: FontWeight.w800,
                           ),
                         ),
@@ -68,7 +69,7 @@ Widget buildPolieConversationComposer(PolieModeSurfaceArgs a, PolieModeSurfaceLa
                         child: Text(
                           l10n.polieConversationIncludeEnglishTranslations,
                           style: layout.bodyStyle.copyWith(
-                            color: const Color(0xFF2D1B0E),
+                            color: LingAfriqTokens.hexFF2D1B0E,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -117,7 +118,7 @@ Widget buildPolieConversationComposer(PolieModeSurfaceArgs a, PolieModeSurfaceLa
                             : () => a.onToggleConversationVoiceInput(),
                         style: IconButton.styleFrom(
                           backgroundColor: a.conversationVoiceListening
-                              ? const Color(0xFFD4822A)
+                              ? LingAfriqTokens.hexFFD4822A
                               : Colors.white,
                           foregroundColor: a.conversationVoiceListening
                               ? Colors.white

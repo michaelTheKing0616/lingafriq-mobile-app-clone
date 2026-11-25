@@ -173,7 +173,7 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
                       strokeWidth: 12,
                       backgroundColor: PanAfricanColors.neutralLight,
                       valueColor: AlwaysStoppedAnimation<Color>(
-                        _getScoreColor(score),
+                        _getScoreColor(context, score),
                       ),
                     ),
                   ),
@@ -183,7 +183,7 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
                       Text(
                         '${score.toInt()}',
                         style: PanAfricanTypography.displayMedium(context)
-                            .copyWith(color: _getScoreColor(score)),
+                            .copyWith(color: _getScoreColor(context, score)),
                       ),
                       Text(
                         '/ 100',
@@ -197,7 +197,7 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
             SizedBox(height: PanAfricanSpacing.md),
             Chip(
               label: Text(status.toUpperCase()),
-              backgroundColor: _getStatusColor(status).withValues(alpha: 0.2),
+              backgroundColor: _getStatusColor(context, status).withValues(alpha: 0.2),
             ),
           ],
         ),
@@ -221,7 +221,7 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
       child: ExpansionTile(
         leading: Icon(
           passed ? Icons.check_circle : Icons.error,
-          color: passed ? PanAfricanColors.success : PanAfricanColors.error,
+          color: passed ? context.panSuccess : context.panError,
         ),
         title: Text(title),
         subtitle: Text(passed ? 'All checks passed' : '${issues.length} issues found'),
@@ -240,9 +240,9 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
                   ...issues.map((issue) {
                     return Card(
                       margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
-                      color: PanAfricanColors.error.withValues(alpha: 0.1),
+                      color: context.panError.withValues(alpha: 0.1),
                       child: ListTile(
-                        leading: const Icon(Icons.warning, color: PanAfricanColors.error),
+                        leading: Icon(Icons.warning, color: context.panError),
                         title: Text(issue['message'] ?? ''),
                         subtitle: issue['location'] != null
                             ? Text('Location: ${issue['location']}')
@@ -268,9 +268,9 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
                   ...suggestions.map((suggestion) {
                     return Card(
                       margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
-                      color: PanAfricanColors.info.withValues(alpha: 0.1),
+                      color: context.panInfo.withValues(alpha: 0.1),
                       child: ListTile(
-                        leading: const Icon(Icons.lightbulb, color: PanAfricanColors.info),
+                        leading: Icon(Icons.lightbulb, color: context.panInfo),
                         title: Text(suggestion),
                       ),
                     );
@@ -331,21 +331,21 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
     );
   }
 
-  Color _getScoreColor(double score) {
-    if (score >= 80) return PanAfricanColors.success;
-    if (score >= 60) return PanAfricanColors.secondary;
-    if (score >= 40) return PanAfricanColors.warning;
-    return PanAfricanColors.error;
+  Color _getScoreColor(BuildContext context, double score) {
+    if (score >= 80) return context.panSuccess;
+    if (score >= 60) return context.panSecondary;
+    if (score >= 40) return context.panWarning;
+    return context.panError;
   }
 
-  Color _getStatusColor(String status) {
+  Color _getStatusColor(BuildContext context, String status) {
     switch (status.toLowerCase()) {
       case 'approved':
-        return PanAfricanColors.success;
+        return context.panSuccess;
       case 'needs_revision':
-        return PanAfricanColors.warning;
+        return context.panWarning;
       case 'rejected':
-        return PanAfricanColors.error;
+        return context.panError;
       default:
         return PanAfricanColors.neutralMedium;
     }

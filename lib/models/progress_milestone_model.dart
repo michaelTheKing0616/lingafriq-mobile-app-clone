@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../utils/pan_african_design_system.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Types of progress milestones
 enum MilestoneType {
@@ -91,7 +91,7 @@ class Milestone {
     required this.emoji,
     required this.xpReward,
     required this.cowriesReward,
-    this.color = PanAfricanColors.secondary, // Use design system color instead of hardcoded value
+    this.color = LingAfriqTokens.hexFF735C00, // Use design system color instead of hardcoded value
     this.isSecret = false,
   });
 }

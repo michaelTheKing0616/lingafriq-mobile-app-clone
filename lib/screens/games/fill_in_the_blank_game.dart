@@ -204,11 +204,11 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
         appBar: AppBar(
           title: Text('Fill in the Blank - ${widget.language.name}'),
           flexibleSpace: Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
                   PanAfricanColors.primary,
-                  PanAfricanColors.secondary,
+                  context.panSecondary,
                 ],
               ),
             ),
@@ -230,7 +230,7 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                     end: Alignment.bottomCenter,
                     colors: [
                       PanAfricanColors.primary.withValues(alpha: 0.1),
-                      PanAfricanColors.secondary.withValues(alpha: 0.1),
+                      context.panSecondary.withValues(alpha: 0.1),
                     ],
                   ),
           ),
@@ -247,7 +247,7 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                       child: Icon(
                         _score >= 70 ? Icons.celebration : Icons.check_circle,
                         size: 80.sp,
-                        color: _score >= 70 ? PanAfricanColors.secondary : PanAfricanColors.primary,
+                        color: _score >= 70 ? context.panSecondary : PanAfricanColors.primary,
                       ),
                     ),
                     SizedBox(height: 16.h),
@@ -327,11 +327,11 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
       appBar: AppBar(
         title: Text('Fill in the Blank - ${widget.language.name}'),
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
                 PanAfricanColors.primary,
-                PanAfricanColors.secondary,
+                context.panSecondary,
               ],
             ),
           ),
@@ -353,7 +353,7 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                   end: Alignment.bottomCenter,
                   colors: [
                     PanAfricanColors.primary.withValues(alpha: 0.1),
-                    PanAfricanColors.secondary.withValues(alpha: 0.1),
+                    context.panSecondary.withValues(alpha: 0.1),
                   ],
                 ),
         ),

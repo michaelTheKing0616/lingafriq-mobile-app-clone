@@ -100,7 +100,7 @@ class SplashProgressCue extends StatelessWidget {
         key: SplashReadyGate.progressKey,
         semanticsLabel: l10nOf(context).loading,
         strokeWidth: 3,
-        color: PanAfricanColors.secondary,
+        color: context.panSecondary,
       ),
     );
   }

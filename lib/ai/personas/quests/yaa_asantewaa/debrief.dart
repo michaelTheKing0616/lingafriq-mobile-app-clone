@@ -548,7 +548,7 @@ class _MiniQuizSection extends StatelessWidget {
           Text(
             QuestDebriefCopy.quizFail,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: PanAfricanColors.error,
+              color: context.panError,
             ),
           ),
       ],

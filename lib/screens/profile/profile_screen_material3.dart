@@ -270,7 +270,7 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
             label: 'Streak',
             value: '$streak',
             icon: Icons.local_fire_department_rounded,
-            color: PanAfricanColors.tertiary,
+            color: context.panTertiary,
             isDark: isDark,
           )
               .animate(delay: 100.ms)
@@ -283,7 +283,7 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
             label: 'XP',
             value: _formatCompactNumber(totalXp),
             icon: Icons.star_rounded,
-            color: PanAfricanColors.secondary,
+            color: context.panSecondary,
             isDark: isDark,
           ).animate(delay: 200.ms).fadeIn(duration: 300.ms),
         ),

@@ -215,7 +215,7 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
                     _ActionButton(
                       icon: Icons.close,
                       label: 'Incorrect',
-                      color: PanAfricanColors.error,
+                      color: context.panError,
                       onPressed: () {
                         _handleAnswer(vocabService, currentWord, false);
                         _nextCard(currentIndex, words.value.length, isFlipped, showAnswer);
@@ -236,7 +236,7 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
                     _ActionButton(
                       icon: Icons.check,
                       label: 'Correct',
-                      color: PanAfricanColors.success,
+                      color: context.panSuccess,
                       onPressed: () {
                         _handleAnswer(vocabService, currentWord, true);
                         _nextCard(currentIndex, words.value.length, isFlipped, showAnswer);
@@ -514,7 +514,7 @@ class _Flashcard extends StatelessWidget {
                   _getWordMeaning(word),
                   style: PanAfricanTypography.displaySmall(context).copyWith(
                     fontWeight: FontWeight.bold,
-                    color: PanAfricanColors.secondary,
+                    color: context.panSecondary,
                   ),
                   textAlign: TextAlign.center,
                 ),

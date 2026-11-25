@@ -156,11 +156,11 @@ class _PolieReactionWidgetState extends State<PolieReactionWidget>
   Color _getBackgroundColor(bool isDark) {
     switch (_currentState) {
       case PolieReactionState.happy:
-        return PanAfricanColors.success;
+        return context.panSuccess;
       case PolieReactionState.sad:
-        return PanAfricanColors.error;
+        return context.panError;
       case PolieReactionState.excited:
-        return PanAfricanColors.secondary;
+        return context.panSecondary;
       case PolieReactionState.sleeping:
         return PanAfricanColors.neutralMedium;
       case PolieReactionState.idle:

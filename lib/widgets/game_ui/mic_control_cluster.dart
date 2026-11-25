@@ -35,7 +35,7 @@ class MicControlCluster extends StatelessWidget {
         Text(
           isRecording ? 'Recording... ${_format(duration)}' : 'Ready to record',
           style: PanAfricanTypography.labelMedium(context).copyWith(
-            color: isRecording ? PanAfricanColors.error : PanAfricanColors.textSecondaryLight,
+            color: isRecording ? context.panError : PanAfricanColors.textSecondaryLight,
           ),
         ),
         const SizedBox(height: 8),
@@ -49,7 +49,7 @@ class MicControlCluster extends StatelessWidget {
                   : Icon(isRecording ? Icons.stop_rounded : Icons.mic_rounded),
               label: Text(isRecording ? 'Stop' : 'Record'),
               style: FilledButton.styleFrom(
-                backgroundColor: isRecording ? PanAfricanColors.error : PanAfricanColors.primary,
+                backgroundColor: isRecording ? context.panError : PanAfricanColors.primary,
                 foregroundColor: Colors.white,
               ),
             ),

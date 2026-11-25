@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_ui_helpers.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_args.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 Widget buildPolieVocabModeSurface(PolieModeSurfaceArgs a) {
   final layout = a.layout();
 return Container(
         key: a.key,
-        color: const Color(0xFF0F0A04),
+        color: LingAfriqTokens.hexFF0F0A04,
         child: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.only(bottom: 16),
@@ -32,14 +33,14 @@ return Container(
                               Text(
                                 a.vocabSetName.value,
                                 style: layout.bodyStyle.copyWith(
-                                  color: const Color(0xFFFAF3E0),
+                                  color: LingAfriqTokens.hexFFFAF3E0,
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
                               Text(
                                 '${(10 - a.vocabDeckCount).clamp(0, 10)}/10 • $a.vocabDeckCount remaining',
                                 style: layout.bodyStyle.copyWith(
-                                  color: const Color(0xFFFAF3E0),
+                                  color: LingAfriqTokens.hexFFFAF3E0,
                                   fontSize: layout.isTinyPhone ? 12 : 14,
                                 ),
                               ),
@@ -51,7 +52,7 @@ return Container(
                             minHeight: 6,
                             backgroundColor: Colors.white12,
                             valueColor: const AlwaysStoppedAnimation<Color>(
-                              Color(0xFFD4822A),
+                              LingAfriqTokens.hexFFD4822A,
                             ),
                           ),
                           const SizedBox(height: 10),
@@ -91,9 +92,9 @@ return Container(
                                 child: DropdownButtonHideUnderline(
                                   child: DropdownButton<String>(
                                     value: a.vocabDifficultyTarget.value,
-                                    dropdownColor: const Color(0xFF1A130C),
+                                    dropdownColor: LingAfriqTokens.hexFF1A130C,
                                     style: layout.bodyStyle.copyWith(
-                                      color: const Color(0xFFFAF3E0),
+                                      color: LingAfriqTokens.hexFFFAF3E0,
                                     ),
                                     items: const [
                                       DropdownMenuItem(
@@ -141,11 +142,11 @@ return Container(
                             : 330,
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF1A130C),
+                          color: LingAfriqTokens.hexFF1A130C,
                           borderRadius: BorderRadius.circular(18),
                           boxShadow: [
                             BoxShadow(
-                              color: const Color(0xFFD4822A).withValues(alpha: 0.35),
+                              color: LingAfriqTokens.hexFFD4822A.withValues(alpha: 0.35),
                               blurRadius: 24,
                             ),
                           ],
@@ -154,7 +155,7 @@ return Container(
                             ? Text(
                                 'Tap "Next Word"',
                                 style: layout.bodyStyle.copyWith(
-                                  color: const Color(0xFFFAF3E0),
+                                  color: LingAfriqTokens.hexFFFAF3E0,
                                 ),
                               )
                             : Column(
@@ -165,7 +166,7 @@ return Container(
                                     Text(
                                       '${a.vocabCard!.partOfSpeech.toUpperCase()} · ${a.vocabCard!.difficulty.toUpperCase()}',
                                       style: layout.bodyStyle.copyWith(
-                                        color: const Color(0xFFF2C14E),
+                                        color: LingAfriqTokens.hexFFF2C14E,
                                         fontWeight: FontWeight.w800,
                                       ),
                                     )
@@ -173,7 +174,7 @@ return Container(
                                     const Center(
                                       child: Icon(
                                         Icons.auto_awesome_rounded,
-                                        color: Color(0xFFF2C14E),
+                                        color: LingAfriqTokens.hexFFF2C14E,
                                         size: 26,
                                       ),
                                     ),
@@ -186,7 +187,7 @@ return Container(
                                         child: Text(
                                           a.vocabCard!.word,
                                           style: GoogleFonts.jetBrainsMono(
-                                            color: const Color(0xFFFAF3E0),
+                                            color: LingAfriqTokens.hexFFFAF3E0,
                                             fontSize: layout.isTinyPhone ? 44 : 56,
                                             letterSpacing:
                                                 layout.isTinyPhone ? 1.0 : 1.5,
@@ -201,7 +202,7 @@ return Container(
                                             a.onSpeakText(a.vocabCard!.word),
                                         icon: const Icon(
                                           Icons.volume_up_outlined,
-                                          color: Color(0xFFF2C14E),
+                                          color: LingAfriqTokens.hexFFF2C14E,
                                         ),
                                       ),
                                     ],
@@ -210,7 +211,7 @@ return Container(
                                   Text(
                                     a.vocabCard!.pronunciation,
                                     style: layout.bodyStyle.copyWith(
-                                      color: const Color(0xFFF2C14E),
+                                      color: LingAfriqTokens.hexFFF2C14E,
                                     ),
                                   ),
                                   const SizedBox(height: 6),
@@ -275,7 +276,7 @@ return Container(
                                               ),
                                               icon: const Icon(
                                                 Icons.volume_up_outlined,
-                                                color: Color(0xFFF2C14E),
+                                                color: LingAfriqTokens.hexFFF2C14E,
                                               ),
                                             ),
                                           ],
@@ -290,7 +291,7 @@ return Container(
                                         child: Text(
                                           '💡 Memory Peg\n${a.vocabCard!.memoryPeg}',
                                           style: layout.bodyStyle.copyWith(
-                                            color: const Color(0xFFF2C14E),
+                                            color: LingAfriqTokens.hexFFF2C14E,
                                           ),
                                         ),
                                       ),
@@ -305,7 +306,7 @@ return Container(
                                           child: Text(
                                             '🟢 Cultural Note\n${a.vocabCard!.culturalNote}',
                                             style: layout.bodyStyle.copyWith(
-                                              color: const Color(0xFFFAF3E0),
+                                              color: LingAfriqTokens.hexFFFAF3E0,
                                             ),
                                           ),
                                         ),
@@ -369,7 +370,7 @@ return Container(
                       Text(
                         'Last SRS choice: ${a.vocabSrsChoice ?? '-'}',
                         style: layout.bodyStyle.copyWith(
-                          color: const Color(0xFFFAF3E0),
+                          color: LingAfriqTokens.hexFFFAF3E0,
                         ),
                       ),
                       const SizedBox(height: 8),

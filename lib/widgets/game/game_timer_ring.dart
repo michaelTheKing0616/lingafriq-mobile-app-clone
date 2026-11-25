@@ -104,7 +104,7 @@ class _GameTimerRingState extends State<GameTimerRing>
         ? '$displayMinutes:${displaySeconds.toString().padLeft(2, '0')}'
         : '${widget.remainingSeconds}';
 
-    final ringColor = isLow ? PanAfricanColors.error : null;
+    final ringColor = isLow ? context.panError : null;
 
     Widget ring = SizedBox(
       width: widget.size.w,
@@ -115,14 +115,14 @@ class _GameTimerRingState extends State<GameTimerRing>
           trackColor: cs.surfaceContainerHighest,
           ringGradientColors: ringColor != null
               ? [ringColor, ringColor.withValues(alpha: 0.7)]
-              : [PanAfricanColors.primary, PanAfricanColors.tertiary],
+              : [PanAfricanColors.primary, context.panTertiary],
           strokeWidth: 5.w,
         ),
         child: Center(
           child: Text(
             timeText,
             style: PanAfricanTypography.titleLarge(context).copyWith(
-              color: isLow ? PanAfricanColors.error : cs.onSurface,
+              color: isLow ? context.panError : cs.onSurface,
               fontWeight: FontWeight.w800,
               fontSize: widget.size > 60 ? 22.sp : 16.sp,
             ),

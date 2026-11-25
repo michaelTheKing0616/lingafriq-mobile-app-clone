@@ -293,10 +293,10 @@ class _AuthenticPathChip extends StatelessWidget {
             vertical: PanAfricanSpacing.xs,
           ),
           decoration: BoxDecoration(
-            gradient: const LinearGradient(
+            gradient: LinearGradient(
               colors: [
-                PanAfricanColors.secondary,
-                PanAfricanColors.tertiary,
+                context.panSecondary,
+                context.panTertiary,
               ],
             ),
             borderRadius: PanAfricanRadius.smBR,

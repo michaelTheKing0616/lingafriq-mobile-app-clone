@@ -14,6 +14,7 @@ import 'package:lingafriq/screens/gamification/tribe_selection_screen.dart';
 import 'package:lingafriq/screens/chat/tribe_chat_screen.dart';
 import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 class SocialHubScreen extends HookConsumerWidget {
   const SocialHubScreen({super.key});
@@ -248,7 +249,7 @@ class _FeedTab extends HookConsumerWidget {
         break;
       case 'streak_milestone':
         icon = Icons.local_fire_department;
-        iconColor = PanAfricanColors.error;
+        iconColor = context.panError;
         title = '${item.userName} reached a streak milestone';
         subtitle = item.details ?? 'Keep it up!';
         break;
@@ -496,7 +497,7 @@ class _FriendsTab extends HookConsumerWidget {
                         width: 14.w,
                         height: 14.w,
                         decoration: BoxDecoration(
-                          color: PanAfricanColors.success,
+                          color: context.panSuccess,
                           shape: BoxShape.circle,
                           border: Border.all(
                             color: PanAfricanColors.surfaceDark,
@@ -522,7 +523,7 @@ class _FriendsTab extends HookConsumerWidget {
                     SizedBox(height: PanAfricanSpacing.xs),
                     Row(
                       children: [
-                        Icon(Icons.local_fire_department, size: 14.sp, color: PanAfricanColors.error),
+                        Icon(Icons.local_fire_department, size: 14.sp, color: context.panError),
                         SizedBox(width: PanAfricanSpacing.xs),
                         Text(
                           '$streak',
@@ -714,13 +715,13 @@ class _ChallengesTab extends HookConsumerWidget {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.sm, vertical: 4),
                     decoration: BoxDecoration(
-                      color: won ? PanAfricanColors.success.withValues(alpha: 0.2) : PanAfricanColors.error.withValues(alpha: 0.2),
+                      color: won ? context.panSuccess.withValues(alpha: 0.2) : LingAfriqTokens.hexFFBA1A1A.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(PanAfricanRadius.sm),
                     ),
                     child: Text(
                       won ? 'Won' : 'Lost',
                       style: PanAfricanTypography.labelMedium(context).copyWith(
-                        color: won ? PanAfricanColors.success : PanAfricanColors.error,
+                        color: won ? context.panSuccess : LingAfriqTokens.hexFFBA1A1A,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

@@ -405,12 +405,12 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
         return PanAfricanColors.neutralMedium;
       case 1:
       case 2:
-        return PanAfricanColors.tertiary;
+        return context.panTertiary;
       case 3:
         return PanAfricanColors.kenteBlue;
       case 4:
       case 5:
-        return PanAfricanColors.success;
+        return context.panSuccess;
       default:
         return PanAfricanColors.neutralMedium;
     }

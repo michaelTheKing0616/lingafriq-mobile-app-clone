@@ -67,7 +67,7 @@ class PlacementQuizScreen extends HookConsumerWidget {
                     Icon(
                       Icons.quiz_outlined,
                       size: 64.sp,
-                      color: PanAfricanColors.warning,
+                      color: context.panWarning,
                     ),
                     SizedBox(height: PanAfricanSpacing.lg),
                     Text(

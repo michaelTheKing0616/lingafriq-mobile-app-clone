@@ -15,6 +15,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:lingafriq/services/deep_link_service.dart';
 import 'package:lingafriq/providers/offline_download_provider.dart';
 import 'package:lingafriq/widgets/performance/optimized_list_view.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Detailed lesson screen with AI-generated content
 class LessonDetailScreen extends ConsumerStatefulWidget {
@@ -320,15 +321,15 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
                     height: 100.sp,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      gradient: const LinearGradient(
+                      gradient: LinearGradient(
                         colors: [
-                          PanAfricanColors.secondary,
-                          PanAfricanColors.tertiary,
+                          context.panSecondary,
+                          context.panTertiary,
                         ],
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: PanAfricanColors.secondary.withValues(alpha: 0.3),
+                          color: context.panSecondary.withValues(alpha: 0.3),
                           blurRadius: 30,
                           spreadRadius: 5,
                         ),
@@ -366,7 +367,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
               width: 200.sp,
               child: LinearProgressIndicator(
                 backgroundColor: isDark ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.12) : Colors.grey[300],
-                valueColor: const AlwaysStoppedAnimation<Color>(PanAfricanColors.secondary),
+                valueColor: AlwaysStoppedAnimation<Color>(context.panSecondary),
               ),
             ),
             SizedBox(height: 48.sp),
@@ -375,10 +376,10 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
               margin: EdgeInsets.symmetric(horizontal: 32.sp),
               padding: EdgeInsets.all(16.sp),
               decoration: BoxDecoration(
-                color: PanAfricanColors.secondary.withValues(alpha: 0.1),
+                color: context.panSecondary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: PanAfricanColors.secondary.withValues(alpha: 0.3),
+                  color: context.panSecondary.withValues(alpha: 0.3),
                 ),
               ),
               child: Row(
@@ -386,7 +387,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
                 children: [
                   Icon(
                     Icons.lightbulb_outline,
-                    color: PanAfricanColors.secondary,
+                    color: context.panSecondary,
                     size: 24.sp,
                   ),
                   SizedBox(width: 12.sp),
@@ -443,8 +444,8 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
       ),
       child: PanAfricanCard(
         hasGradientBorder: true,
-        gradientStart: PanAfricanColors.secondary,
-        gradientEnd: PanAfricanColors.tertiary,
+        gradientStart: context.panSecondary,
+        gradientEnd: context.panTertiary,
         padding: EdgeInsets.all(PanAfricanSpacing.lg),
         child: Row(
           children: [
@@ -489,7 +490,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
                       SizedBox(width: PanAfricanSpacing.sm),
                       PanAfricanBadge(
                         label: '$grammarCount grammar',
-                        color: PanAfricanColors.secondary,
+                        color: context.panSecondary,
                         icon: Icons.menu_book_rounded,
                       ),
                     ],
@@ -514,7 +515,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
             Icon(
               Icons.error_outline,
               size: 64.sp,
-              color: PanAfricanColors.error,
+              color: context.panError,
             ),
             SizedBox(height: 24.sp),
             Text(
@@ -577,7 +578,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
           label: 'Vocabulary word: ${word.word}, meaning: ${word.meaning}',
           child: Card(
             margin: EdgeInsets.only(bottom: 12.sp),
-            color: isDark ? const Color(0xFF1F3527) : Theme.of(context).colorScheme.surface,
+            color: isDark ? LingAfriqTokens.hexFF1F3527 : Theme.of(context).colorScheme.surface,
             child: ListTile(
               trailing: VocabAudioControls(
                 language: widget.language,
@@ -647,7 +648,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
           label: 'Grammar point: $grammarPoint',
           child: Card(
             margin: EdgeInsets.only(bottom: 12.sp),
-            color: isDark ? const Color(0xFF1F3527) : Theme.of(context).colorScheme.surface,
+            color: isDark ? LingAfriqTokens.hexFF1F3527 : Theme.of(context).colorScheme.surface,
             child: ExpansionTile(
               title: Text(
                 grammarPoint,
@@ -698,7 +699,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
           decoration: BoxDecoration(
             color: speaker == 'A'
                 ? PanAfricanColors.primary.withValues(alpha: 0.2)
-                : (isDark ? const Color(0xFF2A4A35) : Colors.grey[100]),
+                : (isDark ? LingAfriqTokens.hexFF2A4A35 : Colors.grey[100]),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Row(
@@ -747,7 +748,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
           button: true,
           child: Card(
             margin: EdgeInsets.only(bottom: 12.sp),
-            color: isDark ? const Color(0xFF1F3527) : Theme.of(context).colorScheme.surface,
+            color: isDark ? LingAfriqTokens.hexFF1F3527 : Theme.of(context).colorScheme.surface,
             child: Padding(
               padding: EdgeInsets.all(16.sp),
               child: Column(
@@ -817,14 +818,14 @@ class _GrammarTipsCardState extends State<_GrammarTipsCard> {
       child: ExpansionTile(
         leading: Icon(
           Icons.lightbulb_outline,
-          color: PanAfricanColors.secondary,
+          color: context.panSecondary,
           size: 28.sp,
         ),
         title: Text(
           'Grammar Tips',
           style: PanAfricanTypography.titleMedium(context).copyWith(
             fontWeight: FontWeight.bold,
-            color: PanAfricanColors.secondary,
+            color: context.panSecondary,
           ),
         ),
         subtitle: Text(
@@ -837,7 +838,7 @@ class _GrammarTipsCardState extends State<_GrammarTipsCard> {
         ),
         trailing: Icon(
           _isExpanded ? Icons.expand_less : Icons.expand_more,
-          color: PanAfricanColors.secondary,
+          color: context.panSecondary,
         ),
         onExpansionChanged: (expanded) {
           setState(() {
@@ -875,8 +876,8 @@ class _GrammarTipsCardState extends State<_GrammarTipsCard> {
                             margin: EdgeInsets.only(top: 4.sp, right: PanAfricanSpacing.sm),
                             width: 6.w,
                             height: 6.w,
-                            decoration: const BoxDecoration(
-                              color: PanAfricanColors.secondary,
+                            decoration: BoxDecoration(
+                              color: context.panSecondary,
                               shape: BoxShape.circle,
                             ),
                           ),

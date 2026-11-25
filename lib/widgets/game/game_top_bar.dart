@@ -126,7 +126,7 @@ class GameTopBar extends StatelessWidget implements PreferredSizeWidget {
           _StatChip(
             icon: Icons.local_fire_department_rounded,
             value: '$streak',
-            iconColor: PanAfricanColors.tertiary,
+            iconColor: context.panTertiary,
             backgroundColor: PanAfricanColors.tertiaryContainer,
           ),
           SizedBox(width: PanAfricanSpacing.xxs),
@@ -134,7 +134,7 @@ class GameTopBar extends StatelessWidget implements PreferredSizeWidget {
         _StatChip(
           icon: Icons.star_rounded,
           value: '$xp',
-          iconColor: PanAfricanColors.secondary,
+          iconColor: context.panSecondary,
           backgroundColor: PanAfricanColors.secondaryContainer,
         ),
       ],

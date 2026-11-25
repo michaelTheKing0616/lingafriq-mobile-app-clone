@@ -376,7 +376,7 @@ class ClassSessionLiveView extends StatelessWidget {
                 label: sessionRecordingIndicatorCopy,
                 liveRegion: true,
                 child: Container(
-                  color: PanAfricanColors.error.withValues(alpha: 0.92),
+                  color: context.panError.withValues(alpha: 0.92),
                   padding: EdgeInsets.symmetric(
                     horizontal: PanAfricanSpacing.md,
                     vertical: PanAfricanSpacing.sm,
@@ -2284,7 +2284,7 @@ class _SessionRow extends StatelessWidget {
                 ? Icons.radio_button_checked_rounded
                 : Icons.history_rounded,
             color: status == 'active'
-                ? PanAfricanColors.success
+                ? context.panSuccess
                 : PanAfricanColors.neutralMedium,
           ),
           SizedBox(width: PanAfricanSpacing.sm),

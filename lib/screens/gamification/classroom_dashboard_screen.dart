@@ -311,7 +311,7 @@ class _ClassroomDashboardScreenState
                       'Class code copied',
                       style: PanAfricanTypography.bodyMedium(context, color: colorScheme.onPrimary),
                     ),
-                    backgroundColor: PanAfricanColors.success,
+                    backgroundColor: context.panSuccess,
                     behavior: SnackBarBehavior.floating,
                     shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
                   ),
@@ -336,7 +336,7 @@ class _ClassroomDashboardScreenState
                         Icon(
                           Icons.error_outline_rounded,
                           size: 64.sp,
-                          color: PanAfricanColors.error,
+                          color: context.panError,
                         ),
                         SizedBox(height: PanAfricanSpacing.md),
                         Text(

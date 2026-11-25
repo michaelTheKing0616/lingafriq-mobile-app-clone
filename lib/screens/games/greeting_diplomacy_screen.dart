@@ -10,6 +10,7 @@ import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
 import 'base_game_screen.dart';
 import '../../games/greeting_gauntlet/greeting_gauntlet_screen.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 class GreetingDiplomacyGame extends BaseGameScreen {
   const GreetingDiplomacyGame({
@@ -39,9 +40,9 @@ class _GreetingDiplomacyGameState
   }
 
   static const _characters = [
-    _CharacterType(name: 'Chief', formality: 'Very Formal', icon: Icons.account_balance_rounded, color: Color(0xFF9E3D00)),
-    _CharacterType(name: 'Trader', formality: 'Semi-Formal', icon: Icons.store_rounded, color: Color(0xFF526124)),
-    _CharacterType(name: 'Peer', formality: 'Casual', icon: Icons.people_rounded, color: Color(0xFF7B5733)),
+    _CharacterType(name: 'Chief', formality: 'Very Formal', icon: Icons.account_balance_rounded, color: LingAfriqTokens.hexFF9E3D00),
+    _CharacterType(name: 'Trader', formality: 'Semi-Formal', icon: Icons.store_rounded, color: LingAfriqTokens.hexFF526124),
+    _CharacterType(name: 'Peer', formality: 'Casual', icon: Icons.people_rounded, color: LingAfriqTokens.hexFF7B5733),
     _CharacterType(name: 'In-law', formality: 'Respectful', icon: Icons.family_restroom_rounded, color: Color(0xFF4A6741)),
   ];
 

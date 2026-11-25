@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lingafriq/theme/lingafriq_fonts.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_ui_helpers.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_args.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 Widget buildPolieReviewModeSurface(PolieModeSurfaceArgs a) {
   final layout = a.layout();
@@ -82,14 +83,14 @@ Widget buildPolieReviewModeSurface(PolieModeSurfaceArgs a) {
               a.context,
               'Words Learned',
               '${a.reviewPayload!.wordsSeen}',
-              const Color(0xFFD4822A),
+              LingAfriqTokens.hexFFD4822A,
             ),
             const SizedBox(height: 8),
             polieStatCard(
               a.context,
               'Accuracy',
               '${a.reviewPayload!.accuracy.toStringAsFixed(1)}%',
-              const Color(0xFF4A7C59),
+              LingAfriqTokens.hexFF4A7C59,
             ),
             const SizedBox(height: 8),
             polieStatCard(
@@ -103,7 +104,7 @@ Widget buildPolieReviewModeSurface(PolieModeSurfaceArgs a) {
               a.context,
               'Lessons Done',
               '${a.reviewPayload!.lessonsDone}',
-              const Color(0xFFC4663A),
+              LingAfriqTokens.hexFFC4663A,
             ),
           ] else ...[
             Row(
@@ -113,7 +114,7 @@ Widget buildPolieReviewModeSurface(PolieModeSurfaceArgs a) {
                     a.context,
                     'Words Learned',
                     '${a.reviewPayload!.wordsSeen}',
-                    const Color(0xFFD4822A),
+                    LingAfriqTokens.hexFFD4822A,
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -122,7 +123,7 @@ Widget buildPolieReviewModeSurface(PolieModeSurfaceArgs a) {
                     a.context,
                     'Accuracy',
                     '${a.reviewPayload!.accuracy.toStringAsFixed(1)}%',
-                    const Color(0xFF4A7C59),
+                    LingAfriqTokens.hexFF4A7C59,
                   ),
                 ),
               ],
@@ -144,7 +145,7 @@ Widget buildPolieReviewModeSurface(PolieModeSurfaceArgs a) {
                     a.context,
                     'Lessons Done',
                     '${a.reviewPayload!.lessonsDone}',
-                    const Color(0xFFC4663A),
+                    LingAfriqTokens.hexFFC4663A,
                   ),
                 ),
               ],
@@ -195,7 +196,7 @@ Widget buildPolieReviewModeSurface(PolieModeSurfaceArgs a) {
           ),
           const SizedBox(height: 10),
           layout.card(
-            color: const Color(0xFFD4822A),
+            color: LingAfriqTokens.hexFFD4822A,
             Padding(
               padding: const EdgeInsets.all(12),
               child: Column(

@@ -30,7 +30,7 @@ class HomeSafariCard extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final accent = isDark
         ? PanAfricanColors.secondaryLight
-        : PanAfricanColors.secondary;
+        : context.panSecondary;
 
     final title = _titleForPhase(snapshot.phase);
     final subtitle = _subtitle(snapshot);

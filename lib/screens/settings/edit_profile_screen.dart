@@ -273,7 +273,7 @@ class EditProfileScreen extends HookConsumerWidget {
                             child: Container(
                               padding: EdgeInsets.all(PanAfricanSpacing.sm),
                               decoration: BoxDecoration(
-                                color: PanAfricanColors.secondary,
+                                color: context.panSecondary,
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                   color: isDark
@@ -458,14 +458,14 @@ class _ProfileTextField extends StatelessWidget {
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-          borderSide: const BorderSide(
-            color: PanAfricanColors.error,
+          borderSide: BorderSide(
+            color: context.panError,
           ),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-          borderSide: const BorderSide(
-            color: PanAfricanColors.error,
+          borderSide: BorderSide(
+            color: context.panError,
             width: 2,
           ),
         ),
@@ -502,13 +502,13 @@ class _ImagePickerOption extends StatelessWidget {
           padding: EdgeInsets.all(PanAfricanSpacing.sm),
           decoration: BoxDecoration(
             color: isDestructive
-                ? PanAfricanColors.error.withValues(alpha: 0.1)
+                ? context.panError.withValues(alpha: 0.1)
                 : PanAfricanColors.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(PanAfricanRadius.md),
           ),
           child: Icon(
             icon,
-            color: isDestructive ? PanAfricanColors.error : PanAfricanColors.primary,
+            color: isDestructive ? context.panError : PanAfricanColors.primary,
             size: 24.sp,
           ),
         ),
@@ -516,7 +516,7 @@ class _ImagePickerOption extends StatelessWidget {
         title: Text(
         title,
         style: PanAfricanTypography.bodyLarge(context).copyWith(
-          color: isDestructive ? PanAfricanColors.error : null,
+          color: isDestructive ? context.panError : null,
         ),
       ),
         onTap: () {

@@ -173,7 +173,7 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
                   width: 8.w,
                   height: 8.w,
                   decoration: BoxDecoration(
-                    color: isConnected ? PanAfricanColors.success : PanAfricanColors.error,
+                    color: isConnected ? context.panSuccess : context.panError,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -310,7 +310,7 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
                   width: 12.w,
                   height: 12.w,
                   decoration: BoxDecoration(
-                    color: PanAfricanColors.success,
+                    color: context.panSuccess,
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
@@ -330,7 +330,7 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
         subtitle: Text(
           isOnline ? 'Online' : 'Offline',
           style: PanAfricanTypography.labelLarge(context).copyWith(
-            color: isOnline ? PanAfricanColors.success : PanAfricanColors.textSecondary,
+            color: isOnline ? context.panSuccess : PanAfricanColors.textSecondary,
           ),
         ),
         trailing: Semantics(

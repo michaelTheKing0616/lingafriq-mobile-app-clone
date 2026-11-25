@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lingafriq/theme/lingafriq_fonts.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_ui_helpers.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_args.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 Widget buildPolieRoleplayModeSurface(PolieModeSurfaceArgs a) {
   final layout = a.layout();
@@ -20,7 +21,7 @@ Widget buildPolieRoleplayModeSurface(PolieModeSurfaceArgs a) {
       gradient: LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
-        colors: [Color(0xFF0F0A04), Color(0xFF1A130C)],
+        colors: [LingAfriqTokens.hexFF0F0A04, LingAfriqTokens.hexFF1A130C],
       ),
     ),
     child: Column(
@@ -101,7 +102,7 @@ Widget buildPolieRoleplayModeSurface(PolieModeSurfaceArgs a) {
                 children: [
                   const CircleAvatar(
                     radius: 18,
-                    backgroundColor: Color(0xFFD4822A),
+                    backgroundColor: LingAfriqTokens.hexFFD4822A,
                     child: Text(
                       'MB',
                       style: TextStyle(
@@ -193,7 +194,7 @@ Widget buildPolieRoleplayModeSurface(PolieModeSurfaceArgs a) {
                       margin: const EdgeInsets.only(bottom: 8),
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFC4663A),
+                        color: LingAfriqTokens.hexFFC4663A,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
@@ -211,7 +212,7 @@ Widget buildPolieRoleplayModeSurface(PolieModeSurfaceArgs a) {
                     color: const Color(0xFF15110D),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: const Color(0xFFD4822A).withValues(alpha: 0.4),
+                      color: LingAfriqTokens.hexFFD4822A.withValues(alpha: 0.4),
                     ),
                   ),
                   child: Column(
@@ -224,7 +225,7 @@ Widget buildPolieRoleplayModeSurface(PolieModeSurfaceArgs a) {
                             child: Text(
                               ai.characterResponse.targetLang,
                               style: layout.bodyStyle.copyWith(
-                                color: const Color(0xFFFAF3E0),
+                                color: LingAfriqTokens.hexFFFAF3E0,
                               ),
                             ),
                           ),
@@ -240,7 +241,7 @@ Widget buildPolieRoleplayModeSurface(PolieModeSurfaceArgs a) {
                                 a.onSpeakText(ai.characterResponse.targetLang),
                             icon: const Icon(
                               Icons.volume_up_outlined,
-                              color: Color(0xFFF2C14E),
+                              color: LingAfriqTokens.hexFFF2C14E,
                               size: 20,
                             ),
                           ),
@@ -257,7 +258,7 @@ Widget buildPolieRoleplayModeSurface(PolieModeSurfaceArgs a) {
                       Text(
                         '${ai.coaching.feedbackType.toUpperCase()} • ${ai.coaching.userAccuracy}',
                         style: layout.bodyStyle.copyWith(
-                          color: const Color(0xFFF2C14E),
+                          color: LingAfriqTokens.hexFFF2C14E,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -271,7 +272,7 @@ Widget buildPolieRoleplayModeSurface(PolieModeSurfaceArgs a) {
                         Text(
                           'Try: ${ai.coaching.betterPhrasing}',
                           style: layout.monoStyle.copyWith(
-                            color: const Color(0xFFFAF3E0),
+                            color: LingAfriqTokens.hexFFFAF3E0,
                           ),
                         ),
                     ],
@@ -297,7 +298,7 @@ Widget buildPolieRoleplayModeSurface(PolieModeSurfaceArgs a) {
             Expanded(
               child: TextField(
                 controller: a.roleplayInput,
-                style: const TextStyle(color: Color(0xFFFAF3E0)),
+                style: const TextStyle(color: LingAfriqTokens.hexFFFAF3E0),
                 decoration: polieInputDecoration(a.theme, 'Speak your line...')
                     .copyWith(
                       hintStyle: const TextStyle(color: Color(0xFFD8C9B7)),

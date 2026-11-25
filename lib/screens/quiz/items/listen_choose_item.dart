@@ -108,7 +108,7 @@ class _ListenChooseItemState extends State<ListenChooseItem> {
           if (_grade != null)
             Text(
               _grade!.correct ? ItemCopy.correct : ItemCopy.wrong,
-              style: TextStyle(color: _grade!.correct ? PanAfricanColors.success : PanAfricanColors.error),
+              style: TextStyle(color: _grade!.correct ? context.panSuccess : context.panError),
             ),
           for (final option in widget.options)
             Padding(

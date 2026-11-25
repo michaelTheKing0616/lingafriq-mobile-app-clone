@@ -204,7 +204,7 @@ class _LockedBody extends StatelessWidget {
               shaderCallback: (r) => LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: const [Color(0xFF000000), Color(0x00000000)],
+                colors: const [LingAfriqTokens.hexFF000000, Color(0x00000000)],
                 stops: [
                   r.height <= 0 ? 1 : (1 - 40 / r.height).clamp(0.0, 1.0),
                   1,
@@ -755,7 +755,7 @@ class _ChatViewState extends ConsumerState<_ChatView> {
           shaderCallback: (r) => LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: const [Color(0x00000000), Color(0xFF000000)],
+            colors: const [Color(0x00000000), LingAfriqTokens.hexFF000000],
             stops: [0, r.height <= 0 ? 0 : (24 / r.height).clamp(0.0, 1.0)],
           ).createShader(r),
           blendMode: BlendMode.dstIn,
