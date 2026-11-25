@@ -4,9 +4,15 @@ import 'package:lingafriq/design/tokens.g.dart';
 /// Brand navy from the guarded-screen reference packs
 /// (docs/design/references/*/REFERENCE.md, "Type & colour"): primary actions
 /// and the selected state use navy; Deny/Stop stay outlined.
+///
+/// The container pair is the reference-pack surface, not the generic role
+/// surface ramp. Those ramps are different hexes (#E5E8F0 / #1D1F25 versus
+/// #E2E5F6 / #151C4F). The reference pair already clears WCAG AA (navy on
+/// white, and #151C4F on #E2E5F6), and the guarded goldens were captured
+/// against it.
 const Color kBrandNavy = LingAfriqTokens.navy;
-const Color kBrandNavyContainer = LingAfriqTokens.roleLightSurfaceContainer;
-const Color kBrandOnNavyContainer = LingAfriqTokens.roleLightOnSurface;
+const Color kBrandNavyContainer = Color(0xFFE2E5F6);
+const Color kBrandOnNavyContainer = Color(0xFF151C4F);
 
 /// Headlines on guarded screens grow with the user's text size up to 160%,
 /// so a 200% Arabic title at 320dp still fits; body text is not capped.
@@ -18,14 +24,10 @@ ThemeData guardedTheme(ThemeData base) {
   final cs = base.colorScheme;
   final dark = cs.brightness == Brightness.dark;
   final scheme = cs.copyWith(
-    primary: dark ? LingAfriqTokens.roleDarkAccent : kBrandNavy,
-    onPrimary: dark ? LingAfriqTokens.roleDarkOnAccent : LingAfriqTokens.onNavy,
-    primaryContainer: dark
-        ? LingAfriqTokens.roleDarkSurfaceContainer
-        : kBrandNavyContainer,
-    onPrimaryContainer: dark
-        ? LingAfriqTokens.roleDarkOnSurface
-        : kBrandOnNavyContainer,
+    primary: dark ? const Color(0xFFB9C1F2) : kBrandNavy,
+    onPrimary: dark ? kBrandOnNavyContainer : LingAfriqTokens.onNavy,
+    primaryContainer: dark ? const Color(0xFF2A3370) : kBrandNavyContainer,
+    onPrimaryContainer: dark ? kBrandNavyContainer : kBrandOnNavyContainer,
   );
   return base.copyWith(
     colorScheme: scheme,
