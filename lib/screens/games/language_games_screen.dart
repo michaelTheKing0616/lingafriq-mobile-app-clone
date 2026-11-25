@@ -137,15 +137,15 @@ class LanguageGamesScreen extends HookConsumerWidget {
                           spacing: PanAfricanSpacing.xs,
                           runSpacing: PanAfricanSpacing.xs,
                           alignment: WrapAlignment.center,
-                          children: const [
+                          children: [
                             PanAfricanBadge(
                               label: '37 games',
-                              color: PanAfricanColors.secondary,
+                              color: context.panSecondary,
                               icon: Icons.extension_rounded,
                             ),
                             PanAfricanBadge(
                               label: 'Daily XP',
-                              color: PanAfricanColors.tertiary,
+                              color: context.panTertiary,
                               icon: Icons.local_fire_department_rounded,
                             ),
                           ],

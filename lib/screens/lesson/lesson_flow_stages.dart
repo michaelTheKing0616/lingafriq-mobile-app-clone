@@ -184,9 +184,9 @@ class _LessonGuidedPracticeStageState extends State<LessonGuidedPracticeStage> {
           final isCorrect = opt == item.correct;
           Color? border;
           if (showResult && isCorrect) {
-            border = PanAfricanColors.success;
+            border = context.panSuccess;
           } else if (showResult && selected && !isCorrect) {
-            border = PanAfricanColors.error;
+            border = context.panError;
           }
           return Padding(
             padding: EdgeInsets.only(bottom: 8.h),

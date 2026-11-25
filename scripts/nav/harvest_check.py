@@ -54,9 +54,6 @@ REMOVED_BASENAMES = {
     "onboarding_screen_material3.dart": (
         "File is under legacy/onboarding/. P3-067 does not say moved to legacy."
     ),
-    "placement_quiz_screen.dart": (
-        "File is under legacy/onboarding/. P3-067 does not say moved to legacy."
-    ),
     "create_quiz_screen_enhanced.dart": "P3-070: quiz enhanced file is deleted.",
     "create_story_screen_enhanced.dart": "P3-070: story enhanced file is deleted.",
 }
@@ -877,7 +874,6 @@ def render_report(
             "- modern_onboarding_screen.dart",
             "- onboarding_screen.dart",
             "- onboarding_screen_material3.dart",
-            "- placement_quiz_screen.dart",
             "",
             "Not in the failure set:",
             "",

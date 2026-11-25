@@ -123,7 +123,7 @@ class ModerationToolsScreen extends HookConsumerWidget {
                         Icon(
                           Icons.check_circle_outline,
                           size: 64.sp,
-                          color: PanAfricanColors.success,
+                          color: context.panSuccess,
                         ),
                         SizedBox(height: PanAfricanSpacing.md),
                         Text(
@@ -200,7 +200,7 @@ class _FlaggedMessageCard extends StatelessWidget {
       child: ExpansionTile(
         leading: Icon(
           Icons.flag,
-          color: _getSeverityColor(severity),
+          color: _getSeverityColor(context, severity),
         ),
         title: Text(
           message['sender']?['username'] ?? 'Unknown User',
@@ -248,7 +248,7 @@ class _FlaggedMessageCard extends StatelessWidget {
                       icon: const Icon(Icons.check),
                       label: const Text('Approve'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: PanAfricanColors.success,
+                        backgroundColor: context.panSuccess,
                     foregroundColor: colorScheme.onPrimary,
                       ),
                     ),
@@ -257,7 +257,7 @@ class _FlaggedMessageCard extends StatelessWidget {
                       icon: const Icon(Icons.warning),
                       label: const Text('Warn'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: PanAfricanColors.warning,
+                        backgroundColor: context.panWarning,
                         foregroundColor: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
@@ -266,7 +266,7 @@ class _FlaggedMessageCard extends StatelessWidget {
                       icon: const Icon(Icons.delete),
                       label: const Text('Delete'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: PanAfricanColors.error,
+                        backgroundColor: context.panError,
                     foregroundColor: colorScheme.onPrimary,
                       ),
                     ),
@@ -280,14 +280,14 @@ class _FlaggedMessageCard extends StatelessWidget {
     );
   }
 
-  Color _getSeverityColor(String severity) {
+  Color _getSeverityColor(BuildContext context, String severity) {
     switch (severity.toLowerCase()) {
       case 'high':
-        return PanAfricanColors.error;
+        return context.panError;
       case 'medium':
-        return PanAfricanColors.warning;
+        return context.panWarning;
       case 'low':
-        return PanAfricanColors.info;
+        return context.panInfo;
       default:
         return PanAfricanColors.neutralMedium;
     }

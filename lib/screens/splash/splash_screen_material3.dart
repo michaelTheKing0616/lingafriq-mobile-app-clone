@@ -102,7 +102,7 @@ class SplashArtwork extends StatelessWidget {
                     .then()
                     .shimmer(
                       duration: 1000.ms,
-                      color: PanAfricanColors.secondary.withValues(alpha: 0.3),
+                      color: context.panSecondary.withValues(alpha: 0.3),
                     ),
                 SizedBox(height: 32.h),
                 showProgress ? const SplashProgressCue() : SizedBox(width: 36.w, height: 36.w),

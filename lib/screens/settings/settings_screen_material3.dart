@@ -1021,7 +1021,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                 'Clear Cache',
                 style: PanAfricanTypography.labelLarge(
                   context,
-                ).copyWith(color: PanAfricanColors.error),
+                ).copyWith(color: context.panError),
               ),
             ),
           ],
@@ -1251,7 +1251,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                 l.logout,
                 style: PanAfricanTypography.labelLarge(
                   dialogContext,
-                ).copyWith(color: PanAfricanColors.error),
+                ).copyWith(color: context.panError),
               ),
             ),
           ],
@@ -1387,7 +1387,7 @@ class _LogoutButton extends StatelessWidget {
       label: 'Log out',
       button: true,
       child: Material(
-        color: PanAfricanColors.error.withValues(alpha: 0.1),
+        color: context.panError.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
         child: InkWell(
           onTap: () {
@@ -1404,14 +1404,14 @@ class _LogoutButton extends StatelessWidget {
                 Icon(
                   Icons.logout_rounded,
                   size: 20.sp,
-                  color: PanAfricanColors.error,
+                  color: context.panError,
                 ),
                 SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   AppLocalizations.of(context)!.logout,
                   style: PanAfricanTypography.titleMedium(
                     context,
-                  ).copyWith(color: PanAfricanColors.error),
+                  ).copyWith(color: context.panError),
                 ),
               ],
             ),

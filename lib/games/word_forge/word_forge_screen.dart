@@ -486,7 +486,7 @@ class _FeedbackPane extends StatelessWidget {
                   size: 48.sp,
                   color: isCorrect
                       ? PanAfricanColors.primary
-                      : PanAfricanColors.error,
+                      : context.panError,
                   semanticLabel: isCorrect ? 'Correct' : 'Incorrect',
                 ),
                 SizedBox(height: PanAfricanSpacing.md),

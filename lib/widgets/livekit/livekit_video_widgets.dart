@@ -124,8 +124,8 @@ class LiveKitVideoTile extends StatelessWidget {
                     Container(
                       width: 8,
                       height: 8,
-                      decoration: const BoxDecoration(
-                        color: PanAfricanColors.secondary,
+                      decoration: BoxDecoration(
+                        color: context.panSecondary,
                         shape: BoxShape.circle,
                       ),
                     ),

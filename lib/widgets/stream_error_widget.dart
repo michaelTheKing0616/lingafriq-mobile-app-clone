@@ -23,7 +23,7 @@ class StreamErrorWidget extends StatelessWidget {
           children: <Widget>[
             Icon(
               PanAfricanIcons.error,
-              color: PanAfricanColors.error,
+              color: context.panError,
               size: 75.sp,
             ),
             const SizedBox(height: 12),

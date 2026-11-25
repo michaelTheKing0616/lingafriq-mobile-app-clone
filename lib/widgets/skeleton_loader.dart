@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../utils/pan_african_design_system.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Shimmer animation for skeleton loading states.
 /// Replaces spinners with content-shaped placeholders for better perceived performance.
@@ -36,10 +37,10 @@ class _SkeletonLoaderState extends State<SkeletonLoader>
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final baseColor =
-        isDark ? PanAfricanColors.surfaceContainerDark : const Color(0xFFE8EBE8);
+        isDark ? PanAfricanColors.surfaceContainerDark : LingAfriqTokens.hexFFE8EBE8;
     final highlightColor = isDark
         ? PanAfricanColors.surfaceContainerHighDark
-        : const Color(0xFFF4F6F5);
+        : LingAfriqTokens.hexFFF4F6F5;
 
     return AnimatedBuilder(
       animation: _controller,
@@ -87,7 +88,7 @@ class SkeletonBox extends StatelessWidget {
       decoration: BoxDecoration(
         color: isDark
             ? PanAfricanColors.surfaceContainerDark
-            : const Color(0xFFE8EBE8),
+            : LingAfriqTokens.hexFFE8EBE8,
         borderRadius: BorderRadius.circular(
             borderRadius ?? PanAfricanRadius.sm),
       ),
@@ -110,7 +111,7 @@ class SkeletonCircle extends StatelessWidget {
       decoration: BoxDecoration(
         color: isDark
             ? PanAfricanColors.surfaceContainerDark
-            : const Color(0xFFE8EBE8),
+            : LingAfriqTokens.hexFFE8EBE8,
         shape: BoxShape.circle,
       ),
     );

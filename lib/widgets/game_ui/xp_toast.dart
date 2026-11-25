@@ -15,7 +15,7 @@ class XpToast extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tint = color ?? PanAfricanColors.secondary;
+    final tint = color ?? context.panSecondary;
     return Material(
       color: Colors.transparent,
       child: Container(

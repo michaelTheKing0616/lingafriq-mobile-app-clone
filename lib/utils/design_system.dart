@@ -58,7 +58,7 @@ class DesignSystem {
   static const LinearGradient accentGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [PanAfricanColors.primary, PanAfricanColors.secondary],
+    colors: [PanAfricanColors.primary, LingAfriqTokens.hexFF735C00],
   );
 
   // Pan-African Design Gradients
@@ -71,7 +71,7 @@ class DesignSystem {
   static const LinearGradient successGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [PanAfricanColors.success, LingAfriqTokens.hexFF66BB6A],
+    colors: [LingAfriqTokens.hexFF1B7340, LingAfriqTokens.hexFF66BB6A],
   );
 
   // Card Styles

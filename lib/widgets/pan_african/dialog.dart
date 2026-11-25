@@ -89,7 +89,7 @@ class PanAfricanDialog extends StatelessWidget {
       title: title,
       message: message,
       icon: isDestructive ? Icons.warning_rounded : Icons.help_outline_rounded,
-      iconColor: isDestructive ? PanAfricanColors.error : PanAfricanColors.primary,
+      iconColor: isDestructive ? context.panError : PanAfricanColors.primary,
       primaryButtonText: confirmText,
       secondaryButtonText: cancelText,
       isDestructive: isDestructive,
@@ -258,7 +258,7 @@ class PanAfricanDialog extends StatelessWidget {
             child: ElevatedButton(
               onPressed: onPrimaryPressed ?? () => Navigator.of(context).pop(),
               style: ElevatedButton.styleFrom(
-                backgroundColor: isDestructive ? PanAfricanColors.error : PanAfricanColors.primary,
+                backgroundColor: isDestructive ? context.panError : PanAfricanColors.primary,
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
                 shape: RoundedRectangleBorder(

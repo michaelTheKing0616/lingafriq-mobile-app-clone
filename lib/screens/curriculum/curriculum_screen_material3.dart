@@ -238,7 +238,7 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
                                     l10n.content_coming_soon_badge,
                                     style: TextStyle(
                                       fontSize: 10.sp,
-                                      color: PanAfricanColors.warning,
+                                      color: context.panWarning,
                                     ),
                                   ),
                                 ],
@@ -281,12 +281,12 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
                                   Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
                                     decoration: BoxDecoration(
-                                      color: PanAfricanColors.warning.withValues(alpha: 0.15),
+                                      color: context.panWarning.withValues(alpha: 0.15),
                                       borderRadius: BorderRadius.circular(4),
                                     ),
                                     child: Text(
                                       l10n.content_coming_soon_badge,
-                                      style: TextStyle(fontSize: 9.sp, color: PanAfricanColors.warning),
+                                      style: TextStyle(fontSize: 9.sp, color: context.panWarning),
                                     ),
                                   ),
                                 ],
@@ -563,7 +563,7 @@ class _LessonTile extends StatelessWidget {
             children: [
               Icon(
                 isCompleted ? Icons.check_circle_rounded : Icons.circle_outlined,
-                color: isCompleted ? PanAfricanColors.success : (isDark ? Colors.grey[500] : Colors.grey[400]),
+                color: isCompleted ? context.panSuccess : (isDark ? Colors.grey[500] : Colors.grey[400]),
                 size: 22.sp,
               ),
               SizedBox(width: PanAfricanSpacing.sm),

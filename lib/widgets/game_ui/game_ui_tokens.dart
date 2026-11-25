@@ -10,9 +10,9 @@ class GameUiTokens {
   static const Duration normal = Duration(milliseconds: 220);
   static const Duration slow = Duration(milliseconds: 320);
 
-  static Color success(BuildContext context) => PanAfricanColors.success;
-  static Color warning(BuildContext context) => PanAfricanColors.warning;
-  static Color danger(BuildContext context) => PanAfricanColors.error;
-  static Color score(BuildContext context) => PanAfricanColors.secondary;
+  static Color success(BuildContext context) => context.panSuccess;
+  static Color warning(BuildContext context) => context.panWarning;
+  static Color danger(BuildContext context) => context.panError;
+  static Color score(BuildContext context) => context.panSecondary;
   static Color timer(BuildContext context) => PanAfricanColors.primary;
 }

@@ -362,7 +362,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                     Icon(
                       Icons.wifi_off,
                       size: 64.sp,
-                      color: PanAfricanColors.warning,
+                      color: context.panWarning,
                     ),
                     SizedBox(height: PanAfricanSpacing.xl),
                     Text(
@@ -683,7 +683,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                     context,
                     'Strengths',
                     result['strengths'] as List,
-                    PanAfricanColors.success,
+                    context.panSuccess,
                     isDark,
                   ),
 
@@ -693,7 +693,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                     context,
                     l10nOf(context).onboardingAreasForImprovement,
                     result['weaknesses'] as List,
-                    PanAfricanColors.warning,
+                    context.panWarning,
                     isDark,
                   ),
 

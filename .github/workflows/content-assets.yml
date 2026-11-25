@@ -59,6 +59,11 @@ jobs:
       - name: Flutter pub get
         run: flutter pub get
 
+      - name: Prepare Rive native runtime
+        run: |
+          dart run rive_native:setup --platform linux
+          echo "LD_LIBRARY_PATH=$PWD/build/rive_native/native/build/linux/bin/lib/debug_shared" >> $GITHUB_ENV
+
       - name: Content schema gate
         run: dart run tool/validate_content_schemas.dart
 

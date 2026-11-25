@@ -584,7 +584,7 @@ class _FeedbackPane extends StatelessWidget {
         Icon(
           isCorrect ? Icons.check_circle_rounded : Icons.refresh_rounded,
           size: 56.sp,
-          color: isCorrect ? PanAfricanColors.success : PanAfricanColors.warning,
+          color: isCorrect ? context.panSuccess : context.panWarning,
           semanticLabel: isCorrect ? 'Correct' : 'Try again',
         ),
         SizedBox(height: PanAfricanSpacing.md),

@@ -26,6 +26,7 @@ import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/widgets/adaptive_progress_indicator.dart';
 import 'package:lingafriq/widgets/error_widet.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Beautiful Material 3 Dashboard with Pan-African Design
 class DashboardScreenMaterial3 extends HookConsumerWidget {
@@ -271,7 +272,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
               label: 'Streak',
               value: '$streak',
               icon: Icons.local_fire_department,
-              color: PanAfricanColors.tertiary,
+              color: context.panTertiary,
               isDark: isDark,
             ),
           ).animate(delay: 100.ms).fadeIn(duration: 300.ms).slideX(begin: -0.2),
@@ -289,7 +290,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                   label: 'XP',
                   value: _formatCompactNumber(value),
                   icon: Icons.star,
-                  color: PanAfricanColors.secondary,
+                  color: context.panSecondary,
                   isDark: isDark,
                 ),
               );
@@ -838,7 +839,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                     children: [
                       PanAfricanBadge(
                         label: '$streak day streak',
-                        color: PanAfricanColors.tertiary,
+                        color: context.panTertiary,
                         icon: Icons.local_fire_department,
                       ),
                       PanAfricanBadge(
@@ -963,7 +964,7 @@ class _ProgressRing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ringColor = isDark
-        ? PanAfricanColors.secondary
+        ? context.panSecondary
         : PanAfricanColors.primary;
     final bgColor = isDark
         ? PanAfricanColors.surfaceContainerDark
@@ -1097,13 +1098,13 @@ class _GoalMeta {
         return const _GoalMeta(
           label: 'Quizzes',
           icon: Icons.quiz_rounded,
-          color: PanAfricanColors.secondary,
+          color: LingAfriqTokens.hexFF735C00,
         );
       case 'games':
         return const _GoalMeta(
           label: 'Games',
           icon: Icons.sports_esports_rounded,
-          color: PanAfricanColors.tertiary,
+          color: LingAfriqTokens.hexFF9E3D00,
         );
       case 'chat_minutes':
         return const _GoalMeta(

@@ -126,6 +126,10 @@ import 'screens/content/listening_practice_screen.dart';
 import 'screens/content/writing_practice_screen.dart';
 import 'screens/learning/learning_path_screen.dart';
 import 'screens/learning/tone_rhythm/tone_rhythm_trainer_screen.dart';
+import 'screens/onboarding/placement_quiz_screen.dart';
+import 'screens/practice/practice_lesson.dart';
+import 'screens/practice/pronunciation_practice_screen.dart';
+import 'screens/practice/tone_drill_screen.dart';
 import 'screens/learning/phrase_dna/phrase_dna_templates_screen.dart';
 import 'screens/learning/speak_engine_lab_screen.dart';
 import 'screens/ai_chat/conversation_analytics_screen.dart';
@@ -682,6 +686,17 @@ Route<dynamic>? generateAppRoute(RouteSettings settings) {
     // /speak/roleplay-progress
     RoleplayProgressDashboardScreen.routeKey: (_) =>
         const RoleplayProgressDashboardScreen(),
+    'pronunciation-practice': (_) => PronunciationPracticeScreen(
+      lessonItem: practiceLessonFromRoute(settings.arguments),
+    ),
+    'tone-drill': (_) => ToneDrillScreen(
+      lessonItem: practiceLessonFromRoute(settings.arguments),
+    ),
+    'placement-quiz': (ctx) => PlacementQuizScreen(
+      onComplete: () {
+        Navigator.of(ctx).maybePop();
+      },
+    ),
     'tone-rhythm-trainer': (_) {
       final raw = settings.arguments;
       final map = raw is Map

@@ -133,7 +133,7 @@ class _FamilyDashboardScreenState
               ? Center(
                   child: Text(
                     _error!,
-                    style: PanAfricanTypography.bodyMedium(context, color: PanAfricanColors.error),
+                    style: PanAfricanTypography.bodyMedium(context, color: context.panError),
                   ),
                 )
               : _buildContent(context, isDark),

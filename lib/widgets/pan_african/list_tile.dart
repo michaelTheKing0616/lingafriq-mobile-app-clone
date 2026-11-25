@@ -199,7 +199,7 @@ class PanAfricanListTile extends StatelessWidget {
         vertical: 2.h,
       ),
       decoration: BoxDecoration(
-        color: badgeColor ?? PanAfricanColors.secondary,
+        color: badgeColor ?? context.panSecondary,
         borderRadius: PanAfricanRadius.roundBR,
       ),
       child: Text(

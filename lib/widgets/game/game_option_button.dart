@@ -216,19 +216,19 @@ class _GameOptionButtonState extends State<GameOptionButton>
         );
       case GameOptionState.correct:
         return _OptionStyle(
-          background: PanAfricanColors.success.withValues(alpha: 0.12),
-          borderColor: PanAfricanColors.success,
+          background: context.panSuccess.withValues(alpha: 0.12),
+          borderColor: context.panSuccess,
           borderWidth: 2.0,
-          foreground: PanAfricanColors.success,
-          trailingColor: PanAfricanColors.success,
+          foreground: context.panSuccess,
+          trailingColor: context.panSuccess,
         );
       case GameOptionState.wrong:
         return _OptionStyle(
-          background: PanAfricanColors.error.withValues(alpha: 0.12),
-          borderColor: PanAfricanColors.error,
+          background: context.panError.withValues(alpha: 0.12),
+          borderColor: context.panError,
           borderWidth: 2.0,
-          foreground: PanAfricanColors.error,
-          trailingColor: PanAfricanColors.error,
+          foreground: context.panError,
+          trailingColor: context.panError,
         );
     }
   }

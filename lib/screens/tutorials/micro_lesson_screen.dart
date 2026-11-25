@@ -259,7 +259,7 @@ class _MediaErrorPanel extends StatelessWidget {
         children: [
           Text(
             'Media error: ${error.code}',
-            style: const TextStyle(color: PanAfricanColors.error),
+            style: TextStyle(color: context.panError),
           ),
           if (error.detail != null) Text(error.detail!),
           SizedBox(height: 8.h),

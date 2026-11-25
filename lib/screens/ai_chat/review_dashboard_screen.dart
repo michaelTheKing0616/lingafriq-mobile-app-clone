@@ -394,7 +394,7 @@ class _OverallStatsCard extends StatelessWidget {
                     label: 'Items',
                     value: '${statistics.totalItemsReviewed}',
                     icon: Icons.quiz,
-                    color: PanAfricanColors.secondary,
+                    color: context.panSecondary,
                   ),
                 ),
                 Expanded(
@@ -402,7 +402,7 @@ class _OverallStatsCard extends StatelessWidget {
                     label: 'Streak',
                     value: '${statistics.currentStreak}',
                     icon: Icons.local_fire_department,
-                    color: PanAfricanColors.error,
+                    color: context.panError,
                   ),
                 ),
               ],
@@ -571,7 +571,7 @@ class _AccuracyByTypeCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                const Icon(Icons.bar_chart, color: PanAfricanColors.secondary),
+                Icon(Icons.bar_chart, color: context.panSecondary),
                 SizedBox(width: PanAfricanSpacing.sm),
                 Expanded(
                   child: Text(
@@ -632,10 +632,10 @@ class _AccuracyByTypeCard extends StatelessWidget {
                           style: PanAfricanTypography.bodyMedium(context).copyWith(
                             fontWeight: FontWeight.bold,
                             color: percentage >= 80 
-                                ? PanAfricanColors.success 
+                                ? context.panSuccess 
                                 : percentage >= 60 
                                     ? PanAfricanColors.accent 
-                                    : PanAfricanColors.error,
+                                    : context.panError,
                           ),
                         ),
                       ],
@@ -646,10 +646,10 @@ class _AccuracyByTypeCard extends StatelessWidget {
                       backgroundColor: PanAfricanColors.neutralLight,
                       valueColor: AlwaysStoppedAnimation<Color>(
                         percentage >= 80 
-                            ? PanAfricanColors.success 
+                            ? context.panSuccess 
                             : percentage >= 60 
                                 ? PanAfricanColors.accent 
-                                : PanAfricanColors.error,
+                                : context.panError,
                       ),
                       minHeight: 6.h,
                     ),
@@ -684,7 +684,7 @@ class _RecentSessionsCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                const Icon(Icons.history, color: PanAfricanColors.tertiary),
+                Icon(Icons.history, color: context.panTertiary),
                 SizedBox(width: PanAfricanSpacing.sm),
                 Expanded(
                   child: Text(
@@ -707,8 +707,8 @@ class _RecentSessionsCard extends StatelessWidget {
                     Icon(
                       session.accuracy >= 80 ? Icons.check_circle : Icons.error,
                       color: session.accuracy >= 80
-                          ? PanAfricanColors.success
-                          : PanAfricanColors.error,
+                          ? context.panSuccess
+                          : context.panError,
                       size: 20.sp,
                     ),
                     SizedBox(width: PanAfricanSpacing.sm),

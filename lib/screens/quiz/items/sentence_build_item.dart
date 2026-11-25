@@ -90,7 +90,7 @@ class _SentenceBuildItemState extends State<SentenceBuildItem> {
           if (_passed != null)
             Text(
               _passed! ? ItemBuildCopy.correct : ItemBuildCopy.wrong,
-              style: TextStyle(color: _passed! ? PanAfricanColors.success : PanAfricanColors.error),
+              style: TextStyle(color: _passed! ? context.panSuccess : context.panError),
             ),
         ],
       ),

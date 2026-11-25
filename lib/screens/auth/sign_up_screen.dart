@@ -161,9 +161,9 @@ class SignupScreen extends HookConsumerWidget {
                       if (selectedCountry.value == null) {
                         HapticFeedback.mediumImpact();
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Please select your country of residence'),
-                            backgroundColor: PanAfricanColors.error,
+                          SnackBar(
+                            content: const Text('Please select your country of residence'),
+                            backgroundColor: context.panError,
                           ),
                         );
                         return;
@@ -345,7 +345,7 @@ class SignupScreen extends HookConsumerWidget {
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: PanAfricanRadius.lgBR,
-        borderSide: const BorderSide(color: PanAfricanColors.error, width: 2),
+        borderSide: BorderSide(color: context.panError, width: 2),
       ),
       contentPadding: EdgeInsets.symmetric(
         horizontal: PanAfricanSpacing.md,

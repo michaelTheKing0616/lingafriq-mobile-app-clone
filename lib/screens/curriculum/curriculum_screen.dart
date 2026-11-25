@@ -14,6 +14,7 @@ import 'package:lingafriq/widgets/error_state_widget.dart';
 import 'package:lingafriq/widgets/skeleton_loader.dart';
 import 'package:lingafriq/screens/curriculum/lesson_detail_screen.dart';
 import 'package:lingafriq/services/deep_link_service.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 class CurriculumScreen extends ConsumerStatefulWidget {
   const CurriculumScreen({super.key});
@@ -72,7 +73,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
       backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
       appBar: AppBar(
         title: const Text('Comprehensive Curriculum'),
-        backgroundColor: isDark ? const Color(0xFF1F3527) : Theme.of(context).colorScheme.surface,
+        backgroundColor: isDark ? LingAfriqTokens.hexFF1F3527 : Theme.of(context).colorScheme.surface,
         foregroundColor: isDark ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface,
         elevation: 0,
         leading: IconButton(
@@ -180,7 +181,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
         // Language Selection
         Container(
           padding: EdgeInsets.all(16.sp),
-          color: isDark ? const Color(0xFF1F3527) : Theme.of(context).colorScheme.surface,
+          color: isDark ? LingAfriqTokens.hexFF1F3527 : Theme.of(context).colorScheme.surface,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -214,7 +215,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
                         color: isSelected ? Theme.of(context).colorScheme.onPrimary : (isDark ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface),
                         fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                       ),
-                      backgroundColor: isDark ? const Color(0xFF2A4A35) : Colors.grey[200],
+                      backgroundColor: isDark ? LingAfriqTokens.hexFF2A4A35 : Colors.grey[200],
                     ),
                   );
                 }).toList(),
@@ -266,10 +267,10 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
     return Container(
       margin: EdgeInsets.only(bottom: 16.sp),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1F3527) : Theme.of(context).colorScheme.surface,
+        color: isDark ? LingAfriqTokens.hexFF1F3527 : Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: isDark ? const Color(0xFF2A4A35) : const Color(0xFFE5E5E5),
+          color: isDark ? LingAfriqTokens.hexFF2A4A35 : const Color(0xFFE5E5E5),
         ),
       ),
       child: ExpansionTile(
@@ -310,7 +311,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
                 child: LinearProgressIndicator(
                   value: level.calculatedProgress,
                   minHeight: 8,
-                  backgroundColor: isDark ? const Color(0xFF2A4A35) : Colors.grey[200],
+                  backgroundColor: isDark ? LingAfriqTokens.hexFF2A4A35 : Colors.grey[200],
                   valueColor: const AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
                 ),
               ),
@@ -346,7 +347,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
       margin: EdgeInsets.only(bottom: 12.sp),
       padding: EdgeInsets.all(16.sp),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF2A4A35) : Colors.grey[50],
+        color: isDark ? LingAfriqTokens.hexFF2A4A35 : Colors.grey[50],
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: isDark ? const Color(0xFF3A5A45) : Colors.grey[200]!,
@@ -453,10 +454,10 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
               margin: EdgeInsets.only(left: 8.sp),
               padding: EdgeInsets.symmetric(horizontal: 6.sp, vertical: 2.sp),
               decoration: BoxDecoration(
-                color: PanAfricanColors.secondary.withValues(alpha: 0.2),
+                color: context.panSecondary.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
-                  color: PanAfricanColors.secondary.withValues(alpha: 0.5),
+                  color: context.panSecondary.withValues(alpha: 0.5),
                   width: 1,
                 ),
               ),
@@ -466,7 +467,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
                   Icon(
                     Icons.lightbulb_outline,
                     size: 12.sp,
-                    color: PanAfricanColors.secondary,
+                    color: context.panSecondary,
                   ),
                   SizedBox(width: 4.sp),
                   Text(
@@ -474,7 +475,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
                     style: TextStyle(
                       fontSize: 10.sp,
                       fontWeight: FontWeight.bold,
-                      color: PanAfricanColors.secondary,
+                      color: context.panSecondary,
                     ),
                   ),
                 ],

@@ -9,6 +9,7 @@ import 'package:lingafriq/providers/subscription_provider.dart';
 import 'package:lingafriq/screens/subscription/subscription_terms_disclosure.dart';
 import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart'
     show ageTierStatusProvider;
+import 'package:lingafriq/design/tokens.g.dart';
 import 'package:lingafriq/services/connectivity_service.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
@@ -22,8 +23,8 @@ final subscriptionOnlineProvider = FutureProvider.autoDispose<bool>(
 /// Keeps Latin prices like "\$4.99" in one LTR run inside RTL sentences.
 String _ltr(String s) => '\u2066$s\u2069';
 
-const _navy = Color(0xFF2E3A87);
-const _gold = Color(0xFFFFC53D);
+const _navy = LingAfriqTokens.navy;
+const _gold = LingAfriqTokens.hexFFFFC53D;
 const _goldText = Color(0xFF8C5A00);
 
 /// LingAfriq Plus (paywall pack recipe): visible close, value first with a

@@ -831,7 +831,7 @@ class _StateBar extends ConsumerWidget {
 }
 
 /// Brand navy used behind the profile header in loading/default states.
-const kProfileNavy = Color(0xFF2E3A87);
+const kProfileNavy = LingAfriqTokens.navy;
 
 BoxDecoration _cardDeco(ColorScheme scheme) => BoxDecoration(
   color: scheme.surface,
@@ -1493,7 +1493,7 @@ class ProfileImageBuilder extends ConsumerWidget {
                   ),
                   child: Icon(
                     Icons.edit_outlined,
-                    color: PanAfricanColors.tertiary,
+                    color: context.panTertiary,
                     size: 24.sp,
                   ),
                 ),
@@ -1511,9 +1511,9 @@ Widget _initial(BuildContext context, ProfileModel? user) {
   return Container(
     key: const Key('avatar-initial'),
     alignment: Alignment.center,
-    decoration: const BoxDecoration(
+    decoration: BoxDecoration(
       shape: BoxShape.circle,
-      color: PanAfricanColors.secondary,
+      color: context.panSecondary,
     ),
     child: FittedBox(
       child: Padding(

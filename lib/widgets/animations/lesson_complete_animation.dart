@@ -125,8 +125,8 @@ class _LessonCompleteAnimationState extends State<LessonCompleteAnimation>
 
   Color _getRandomColor() {
     final colors = [
-      PanAfricanColors.secondary,
-      PanAfricanColors.tertiary,
+      context.panSecondary,
+      context.panTertiary,
       PanAfricanColors.primaryLight,
       PanAfricanColors.kenteBlue,
       Colors.orange,
@@ -180,7 +180,7 @@ class _LessonCompleteAnimationState extends State<LessonCompleteAnimation>
                             gradient: PanAfricanGradients.kenteVibrant,
                             boxShadow: [
                               BoxShadow(
-                                color: PanAfricanColors.secondary.withValues(alpha: 0.5),
+                                color: context.panSecondary.withValues(alpha: 0.5),
                                 blurRadius: 30,
                                 spreadRadius: 10,
                               ),
@@ -224,7 +224,7 @@ class _LessonCompleteAnimationState extends State<LessonCompleteAnimation>
                               borderRadius: PanAfricanRadius.xlBR,
                               boxShadow: [
                                 BoxShadow(
-                                  color: PanAfricanColors.secondary.withValues(alpha: 0.4),
+                                  color: context.panSecondary.withValues(alpha: 0.4),
                                   blurRadius: 20,
                                   spreadRadius: 5,
                                 ),

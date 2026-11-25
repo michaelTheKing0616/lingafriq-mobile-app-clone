@@ -338,12 +338,12 @@ class _ProgressCard extends StatelessWidget {
                   icon: Icon(
                     Icons.auto_awesome_rounded,
                     size: 18.sp,
-                    color: PanAfricanColors.secondary,
+                    color: context.panSecondary,
                   ),
                   label: Text(
                     l10nOf(context).shellAuthenticPathA1C1,
                     style: PanAfricanTypography.labelLarge(context).copyWith(
-                      color: PanAfricanColors.secondary,
+                      color: context.panSecondary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

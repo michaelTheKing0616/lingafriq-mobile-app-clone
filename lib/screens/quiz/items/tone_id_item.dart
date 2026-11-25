@@ -53,7 +53,7 @@ class _ToneIdItemState extends State<ToneIdItem> {
           if (_grade != null)
             Text(
               _grade!.correct ? ItemCopy.correct : ItemCopy.wrong,
-              style: TextStyle(color: _grade!.correct ? PanAfricanColors.success : PanAfricanColors.error),
+              style: TextStyle(color: _grade!.correct ? context.panSuccess : context.panError),
             ),
           for (final choice in widget.choices)
             Padding(

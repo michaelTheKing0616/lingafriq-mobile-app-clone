@@ -15,6 +15,7 @@ import 'package:lingafriq/screens/pronunciation/tone_overlay_view.dart';
 import 'package:lingafriq/services/tutorials/speaking_try_client.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// copy_keys: quest.scene.alt, quest.tonelens.unsure
 abstract final class QuestChapter1Copy {
@@ -440,7 +441,7 @@ class _KumasiCourtyardPainter extends CustomPainter {
       porch,
     );
 
-    final stall = Paint()..color = PanAfricanColors.secondary;
+    final stall = Paint()..color = LingAfriqTokens.hexFF735C00;
     for (var i = 0; i < 3; i++) {
       canvas.drawRect(
         Rect.fromLTWH(

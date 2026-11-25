@@ -827,7 +827,7 @@ class AppDrawer extends HookConsumerWidget {
                         ElevatedButton(
                           onPressed: () => Navigator.pop(context, true),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: PanAfricanColors.error,
+                            backgroundColor: context.panError,
                             foregroundColor: Theme.of(
                               context,
                             ).colorScheme.onPrimary,
@@ -843,7 +843,7 @@ class AppDrawer extends HookConsumerWidget {
                     ref.read(authProvider.notifier).signOut();
                   }
                 },
-                backgroundColor: PanAfricanColors.error,
+                backgroundColor: context.panError,
               ),
             ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.2),
           ],

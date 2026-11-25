@@ -478,10 +478,10 @@ class _ErrorState extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
+            Icon(
               Icons.error_outline,
               size: 72,
-              color: PanAfricanColors.error,
+              color: context.panError,
             ),
             SizedBox(height: PanAfricanSpacing.md),
             Text(

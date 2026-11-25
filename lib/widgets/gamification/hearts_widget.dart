@@ -6,6 +6,7 @@ import '../../models/hearts_system_model.dart';
 import '../../providers/hearts_provider.dart';
 import '../../services/sound_effects_service.dart';
 import '../../utils/pan_african_design_system.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Hearts/Lives Display Widget
 /// 
@@ -110,11 +111,11 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
               decoration: BoxDecoration(
                 color: isLow 
-                    ? PanAfricanColors.tertiary.withValues(alpha: 0.15)
+                    ? context.panTertiary.withValues(alpha: 0.15)
                     : (isDark ? Theme.of(context).colorScheme.surface.withValues(alpha: 0.1) : PanAfricanColors.surface),
                 borderRadius: PanAfricanRadius.roundBR,
                 border: Border.all(
-                  color: isLow ? PanAfricanColors.tertiary : Colors.transparent,
+                  color: isLow ? context.panTertiary : Colors.transparent,
                   width: isLow ? 1.5 : 0,
                 ),
               ),
@@ -123,7 +124,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
                 children: [
                   Icon(
                     Icons.favorite_rounded,
-                    color: isLow ? PanAfricanColors.tertiary : PanAfricanColors.tertiary.withValues(alpha: 0.8),
+                    color: isLow ? context.panTertiary : LingAfriqTokens.hexFF9E3D00.withValues(alpha: 0.8),
                     size: 18.sp,
                   ),
                   SizedBox(width: 4.w),
@@ -132,7 +133,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
-                      color: isLow ? PanAfricanColors.tertiary : (isDark ? Theme.of(context).colorScheme.onSurface : PanAfricanColors.textPrimary),
+                      color: isLow ? context.panTertiary : (isDark ? Theme.of(context).colorScheme.onSurface : PanAfricanColors.textPrimary),
                     ),
                   ),
                   if (state.isRegenerating) ...[
@@ -143,8 +144,8 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
                       child: CircularProgressIndicator(
                         value: state.regenerationProgress,
                         strokeWidth: 2,
-                        color: PanAfricanColors.tertiary,
-                        backgroundColor: PanAfricanColors.tertiary.withValues(alpha: 0.2),
+                        color: context.panTertiary,
+                        backgroundColor: context.panTertiary.withValues(alpha: 0.2),
                       ),
                     ),
                   ],
@@ -183,8 +184,8 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
                     Icon(
                       isFilled ? Icons.favorite_rounded : Icons.favorite_border_rounded,
                       color: isFilled 
-                          ? PanAfricanColors.tertiary 
-                          : PanAfricanColors.tertiary.withValues(alpha: 0.3),
+                          ? context.panTertiary 
+                          : context.panTertiary.withValues(alpha: 0.3),
                       size: 36.sp,
                     ),
                     if (isRegenerating)
@@ -194,7 +195,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
                         child: CircularProgressIndicator(
                           value: state.regenerationProgress,
                           strokeWidth: 3,
-                          color: PanAfricanColors.tertiary,
+                          color: context.panTertiary,
                           backgroundColor: Colors.transparent,
                         ),
                       ),
@@ -220,7 +221,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
               child: Text(
                 'Out of hearts! Wait or refill.',
                 style: PanAfricanTypography.bodyMedium(context).copyWith(
-                  color: PanAfricanColors.tertiary,
+                  color: context.panTertiary,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -312,9 +313,9 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
     final success = await ref.read(heartsProvider.notifier).refillHearts();
     if (!success && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Not enough cowries!'),
-          backgroundColor: PanAfricanColors.tertiary,
+        SnackBar(
+          content: const Text('Not enough cowries!'),
+          backgroundColor: context.panTertiary,
         ),
       );
     } else if (mounted) {

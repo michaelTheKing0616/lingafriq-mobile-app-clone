@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../utils/polie_design_tokens.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Core Polie card container.
 /// Previously glassmorphism; now a clearer elevated surface for readability.
@@ -456,8 +457,8 @@ class PolieModeSwitcherRail<T> extends StatelessWidget {
     required this.selected,
     required this.items,
     required this.onChanged,
-    this.accent = const Color(0xFFD4822A),
-    this.activeTextColor = const Color(0xFFFAF3E0),
+    this.accent = LingAfriqTokens.hexFFD4822A,
+    this.activeTextColor = LingAfriqTokens.hexFFFAF3E0,
   });
 
   @override

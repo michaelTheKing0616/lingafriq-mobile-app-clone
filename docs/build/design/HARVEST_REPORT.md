@@ -190,7 +190,6 @@ Also scanned, because the files are under legacy/onboarding/. P3-067's harvest_a
 - modern_onboarding_screen.dart
 - onboarding_screen.dart
 - onboarding_screen_material3.dart
-- placement_quiz_screen.dart
 
 Not in the failure set:
 

@@ -568,10 +568,10 @@ class WorldClassSignupScreen extends HookConsumerWidget {
     if (password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) strength++;
 
     final colors = [
-      PanAfricanColors.error,
-      PanAfricanColors.warning,
-      PanAfricanColors.secondary,
-      PanAfricanColors.success,
+      context.panError,
+      context.panWarning,
+      context.panSecondary,
+      context.panSuccess,
       PanAfricanColors.primary,
     ];
 
@@ -675,7 +675,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: PanAfricanRadius.lgBR,
-              borderSide: const BorderSide(color: PanAfricanColors.error, width: 2),
+              borderSide: BorderSide(color: context.panError, width: 2),
             ),
             contentPadding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md, vertical: PanAfricanSpacing.md),
           ),

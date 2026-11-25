@@ -118,9 +118,9 @@ class CircleStoriesScreen extends HookConsumerWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.info_outline,
-                        color: PanAfricanColors.warning,
+                        color: context.panWarning,
                         semanticLabel: 'Story privacy notice',
                       ),
                       SizedBox(width: PanAfricanSpacing.sm),

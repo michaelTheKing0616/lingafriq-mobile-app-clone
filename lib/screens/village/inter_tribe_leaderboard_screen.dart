@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 class InterTribeLeaderboardScreen extends ConsumerStatefulWidget {
   const InterTribeLeaderboardScreen({super.key});
@@ -111,7 +112,7 @@ class _InterTribeLeaderboardScreenState
   Widget _buildPodium(BuildContext context) {
     final top3 = _rankedTribes.take(3).toList();
     final medals = [
-      const Color(0xFFFFD700),
+      LingAfriqTokens.hexFFFFD700,
       const Color(0xFFC0C0C0),
       const Color(0xFFCD7F32),
     ];
@@ -198,7 +199,7 @@ class _InterTribeLeaderboardScreenState
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFF9E3D00), Color(0xFFFF7A35)],
+          colors: [LingAfriqTokens.hexFF9E3D00, LingAfriqTokens.hexFFFF7A35],
         ),
         borderRadius: ModernGriotRadius.borderXl,
         boxShadow: ModernGriotShadows.lg,

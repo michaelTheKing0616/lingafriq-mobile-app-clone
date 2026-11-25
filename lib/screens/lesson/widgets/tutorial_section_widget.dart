@@ -310,7 +310,7 @@ class _Stage extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            PanAfricanColors.secondary.withValues(alpha: dark ? 0.08 : 0.16),
+            context.panSecondary.withValues(alpha: dark ? 0.08 : 0.16),
             PanAfricanColors.primary.withValues(alpha: dark ? 0.10 : 0.08),
           ],
         ),

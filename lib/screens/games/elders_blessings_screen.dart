@@ -9,6 +9,7 @@ import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
 import 'base_game_screen.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 class EldersBlessingsGame extends BaseGameScreen {
   const EldersBlessingsGame({
@@ -85,9 +86,9 @@ class _EldersBlessingsGameState
     final rng = Random();
 
     final responses = [
-      _EtiquetteResponse(label: 'Formal Yoruba', text: scenario.correctResponse, color: const Color(0xFF9E3D00), isCorrect: true),
-      const _EtiquetteResponse(label: 'Royal Igbo', text: 'Nod quietly', color: Color(0xFF526124), isCorrect: false),
-      const _EtiquetteResponse(label: 'Casual Pidgin', text: 'Just wave and move on', color: Color(0xFF7B5733), isCorrect: false),
+      _EtiquetteResponse(label: 'Formal Yoruba', text: scenario.correctResponse, color: LingAfriqTokens.hexFF9E3D00, isCorrect: true),
+      const _EtiquetteResponse(label: 'Royal Igbo', text: 'Nod quietly', color: LingAfriqTokens.hexFF526124, isCorrect: false),
+      const _EtiquetteResponse(label: 'Casual Pidgin', text: 'Just wave and move on', color: LingAfriqTokens.hexFF7B5733, isCorrect: false),
     ]..shuffle(rng);
 
     setState(() {
@@ -233,7 +234,7 @@ class _EldersBlessingsGameState
           gradient: const LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0xFFFDE8D0), Color(0xFFFF7A35)],
+            colors: [LingAfriqTokens.hexFFFDE8D0, LingAfriqTokens.hexFFFF7A35],
           ),
           borderRadius: ModernGriotRadius.borderXl,
           boxShadow: ModernGriotShadows.lg,

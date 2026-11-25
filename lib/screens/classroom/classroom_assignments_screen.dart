@@ -286,7 +286,7 @@ class _AssignmentCard extends StatelessWidget {
             children: [
               Icon(
                 submitted ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
-                color: submitted ? PanAfricanColors.success : PanAfricanColors.neutralMedium,
+                color: submitted ? context.panSuccess : PanAfricanColors.neutralMedium,
                 size: 18,
               ),
               SizedBox(width: PanAfricanSpacing.xs),
@@ -301,7 +301,7 @@ class _AssignmentCard extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(Icons.help_outline_rounded, color: PanAfricanColors.warning, size: 20),
+                Icon(Icons.help_outline_rounded, color: context.panWarning, size: 20),
                 SizedBox(width: PanAfricanSpacing.xs),
                 Expanded(
                   child: Text(l10nUnsure, style: PanAfricanTypography.bodySmall(context)),

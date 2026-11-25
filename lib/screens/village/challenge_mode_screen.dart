@@ -136,7 +136,7 @@ class _ChallengeModeScreenState extends ConsumerState<ChallengeModeScreen> {
                     ? Icons.favorite_border_rounded
                     : Icons.emoji_events_rounded,
                 size: 56.sp,
-                color: _ranOutOfHearts ? PanAfricanColors.tertiary : PanAfricanColors.primary,
+                color: _ranOutOfHearts ? context.panTertiary : PanAfricanColors.primary,
               ),
               SizedBox(height: PanAfricanSpacing.md),
               Text(

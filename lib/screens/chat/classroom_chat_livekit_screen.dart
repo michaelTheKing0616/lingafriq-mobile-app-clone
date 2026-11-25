@@ -296,7 +296,7 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
               }
               HapticFeedback.mediumImpact();
             },
-            color: isVideoEnabled ? PanAfricanColors.primary : PanAfricanColors.error,
+            color: isVideoEnabled ? PanAfricanColors.primary : context.panError,
             iconSize: 32.sp,
           ),
           IconButton(
@@ -309,7 +309,7 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
               }
               HapticFeedback.mediumImpact();
             },
-            color: isAudioEnabled ? PanAfricanColors.primary : PanAfricanColors.error,
+            color: isAudioEnabled ? PanAfricanColors.primary : context.panError,
             iconSize: 32.sp,
           ),
           IconButton(
@@ -333,7 +333,7 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
             icon: const Icon(Icons.call_end),
             label: const Text('Leave'),
             style: ElevatedButton.styleFrom(
-              backgroundColor: PanAfricanColors.error,
+              backgroundColor: context.panError,
               foregroundColor: colorScheme.onPrimary,
             ),
           ),

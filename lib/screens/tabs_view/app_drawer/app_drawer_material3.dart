@@ -98,7 +98,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                         excludeSemantics: true,
                         child: CircleAvatar(
                           radius: 30.r,
-                          backgroundColor: PanAfricanColors.secondary,
+                          backgroundColor: context.panSecondary,
                           child: Text(
                             currentUser?.username[0].toUpperCase() ?? 'U',
                             style: PanAfricanTypography.headlineSmall(
@@ -694,7 +694,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           ElevatedButton(
                             onPressed: () => Navigator.pop(context, true),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: PanAfricanColors.error,
+                              backgroundColor: context.panError,
                               foregroundColor: Theme.of(
                                 context,
                               ).colorScheme.onPrimary,
@@ -710,7 +710,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       ref.read(authProvider.notifier).signOut();
                     }
                   },
-                  backgroundColor: PanAfricanColors.error,
+                  backgroundColor: context.panError,
                 ),
               ),
             ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.2),

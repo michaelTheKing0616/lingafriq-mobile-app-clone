@@ -5,6 +5,7 @@ import 'package:lingafriq/features/polie_workspace/polie_workspace_ui_helpers.da
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_args.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_tutor_practice.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 Widget buildPolieTutorModeSurface(PolieModeSurfaceArgs a) {
   final layout = a.layout();
@@ -49,7 +50,7 @@ Widget buildPolieTutorModeSurface(PolieModeSurfaceArgs a) {
                 DropdownButtonFormField<String>(
                   initialValue: a.tutorDifficulty.value,
                   dropdownColor: const Color(0xFF2A1F14),
-                  style: const TextStyle(color: Color(0xFFFAF3E0)),
+                  style: const TextStyle(color: LingAfriqTokens.hexFFFAF3E0),
                   decoration: polieInputDecoration(
                     a.theme,
                     'Difficulty',
@@ -71,7 +72,7 @@ Widget buildPolieTutorModeSurface(PolieModeSurfaceArgs a) {
                       ),
                       decoration: BoxDecoration(
                         color: topic == 'Greetings'
-                            ? const Color(0xFFD4822A)
+                            ? LingAfriqTokens.hexFFD4822A
                             : const Color(0xFF3A2A1C),
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -135,7 +136,7 @@ Widget buildPolieTutorModeSurface(PolieModeSurfaceArgs a) {
                         DropdownButtonFormField<String>(
                           initialValue: a.tutorDifficulty.value,
                           dropdownColor: const Color(0xFF2A1F14),
-                          style: const TextStyle(color: Color(0xFFFAF3E0)),
+                          style: const TextStyle(color: LingAfriqTokens.hexFFFAF3E0),
                           decoration: polieInputDecoration(
                             a.theme,
                             'Difficulty',
@@ -162,7 +163,7 @@ Widget buildPolieTutorModeSurface(PolieModeSurfaceArgs a) {
                                   ),
                                   decoration: BoxDecoration(
                                     color: topic == 'Greetings'
-                                        ? const Color(0xFFD4822A)
+                                        ? LingAfriqTokens.hexFFD4822A
                                         : const Color(0xFF3A2A1C),
                                     borderRadius: BorderRadius.circular(10),
                                   ),

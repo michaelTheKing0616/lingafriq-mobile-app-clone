@@ -126,6 +126,9 @@ void main() {
       isFalse,
     );
 
+    expect(directory.hasEntryPoint('pronunciation-practice'), isTrue);
+    expect(directory.hasEntryPoint('tone-drill'), isTrue);
+    expect(directory.hasEntryPoint('placement-quiz'), isTrue);
     expect(directory.hasEntryPoint('tribe-selection'), isTrue);
     expect(directory.hasEntryPoint('tribe_selection'), isTrue);
     final FeatureEntry point = directory.entries.singleWhere(

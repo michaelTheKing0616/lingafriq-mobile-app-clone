@@ -138,7 +138,7 @@ class CreateQuizScreen extends HookConsumerWidget {
                   title: Text(question['question'] ?? 'Question ${index + 1}', style: PanAfricanTypography.titleSmall(context)),
                   subtitle: Text('${question['options']?.length ?? 0} options', style: PanAfricanTypography.bodySmall(context)),
                   trailing: IconButton(
-                    icon: const Icon(Icons.delete, color: PanAfricanColors.error),
+                    icon: Icon(Icons.delete, color: context.panError),
                     onPressed: () {
                       HapticFeedback.lightImpact();
                       questions.value = List.from(questions.value)..removeAt(index);
@@ -192,7 +192,7 @@ class CreateQuizScreen extends HookConsumerWidget {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(notice, style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary)),
-                            backgroundColor: PanAfricanColors.error,
+                            backgroundColor: context.panError,
                           ),
                         );
                         return;
@@ -218,7 +218,7 @@ class CreateQuizScreen extends HookConsumerWidget {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text('Quiz created successfully!', style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary)),
-                                backgroundColor: PanAfricanColors.success,
+                                backgroundColor: context.panSuccess,
                               ),
                             );
                             Navigator.of(context).pop(true);

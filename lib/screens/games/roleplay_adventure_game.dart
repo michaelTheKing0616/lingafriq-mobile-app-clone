@@ -10,6 +10,7 @@ import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
 import 'base_game_screen.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 class RoleplayAdventureGame extends BaseGameScreen {
   const RoleplayAdventureGame({
@@ -193,7 +194,7 @@ class _RoleplayAdventureGameState
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFF9E3D00), Color(0xFFFF7A35), Color(0xFFFDE8D0)],
+          colors: [LingAfriqTokens.hexFF9E3D00, LingAfriqTokens.hexFFFF7A35, LingAfriqTokens.hexFFFDE8D0],
         ),
         borderRadius: ModernGriotRadius.borderXl,
         boxShadow: ModernGriotShadows.lg,
@@ -266,7 +267,7 @@ class _RoleplayAdventureGameState
             child: Container(
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [Color(0xFFE8FBAC), Color(0xFF526124)],
+                  colors: [LingAfriqTokens.hexFFE8FBAC, LingAfriqTokens.hexFF526124],
                 ),
                 borderRadius: ModernGriotRadius.borderPill,
               ),

@@ -747,14 +747,14 @@ class LingAfriqTextField extends StatelessWidget {
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: PanAfricanRadius.mdBR,
-              borderSide: const BorderSide(
-                color: PanAfricanColors.error,
+              borderSide: BorderSide(
+                color: context.panError,
               ),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: PanAfricanRadius.mdBR,
-              borderSide: const BorderSide(
-                color: PanAfricanColors.error,
+              borderSide: BorderSide(
+                color: context.panError,
                 width: 2,
               ),
             ),

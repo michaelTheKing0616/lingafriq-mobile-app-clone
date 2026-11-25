@@ -11,6 +11,7 @@ import '../../utils/media_url_resolver.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/portrait_video_player.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 class WaStatusViewScreen extends ConsumerStatefulWidget {
   const WaStatusViewScreen({super.key, required this.statusId});
@@ -165,9 +166,9 @@ class _WaStatusViewScreenState extends ConsumerState<WaStatusViewScreen> {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Color(0xFF9E3D00),
-            Color(0xFFFF7A35),
-            Color(0xFF526124),
+            LingAfriqTokens.hexFF9E3D00,
+            LingAfriqTokens.hexFFFF7A35,
+            LingAfriqTokens.hexFF526124,
           ],
         ),
       ),

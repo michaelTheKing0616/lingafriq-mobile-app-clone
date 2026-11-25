@@ -192,7 +192,7 @@ class LanguageCard extends StatelessWidget {
                             vertical: PanAfricanSpacing.xxs,
                           ),
                           decoration: BoxDecoration(
-                            color: PanAfricanColors.secondary,
+                            color: context.panSecondary,
                             borderRadius: PanAfricanRadius.smBR,
                           ),
                           child: Text(
@@ -211,7 +211,7 @@ class LanguageCard extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.check_circle_outline_rounded,
-                          color: PanAfricanColors.secondary,
+                          color: context.panSecondary,
                           size: 16.sp,
                         ),
                         SizedBox(width: PanAfricanSpacing.xxs),
@@ -225,13 +225,13 @@ class LanguageCard extends StatelessWidget {
                             children: [
                               Icon(
                                 Icons.star_rounded,
-                                color: PanAfricanColors.secondary,
+                                color: context.panSecondary,
                                 size: 16.sp,
                               ),
                               SizedBox(width: PanAfricanSpacing.xxs),
                               Text(
                                 '$totalScore',
-                                style: PanAfricanTypography.labelMedium(context, color: PanAfricanColors.secondary),
+                                style: PanAfricanTypography.labelMedium(context, color: context.panSecondary),
                               ),
                             ],
                           ),
@@ -246,8 +246,8 @@ class LanguageCard extends StatelessWidget {
                       child: LinearProgressIndicator(
                         value: progress,
                         backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
-                        valueColor: const AlwaysStoppedAnimation<Color>(
-                          PanAfricanColors.secondary,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          context.panSecondary,
                         ),
                         minHeight: 6,
                       ),

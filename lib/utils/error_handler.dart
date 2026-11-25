@@ -14,6 +14,7 @@ import 'package:dio/dio.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:lingafriq/utils/transport_error_policy.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Error category for analytics and handling
 enum ErrorCategory {
@@ -524,7 +525,7 @@ class _DefaultErrorWidget extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Material(
-      color: isDark ? const Color(0xFF1A1A1A) : Theme.of(context).colorScheme.surface,
+      color: isDark ? LingAfriqTokens.hexFF1A1A1A : Theme.of(context).colorScheme.surface,
       child: SafeArea(
         child: Center(
           child: Padding(

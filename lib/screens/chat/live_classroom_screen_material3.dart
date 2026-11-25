@@ -949,7 +949,7 @@ class _ClassroomControls extends StatelessWidget {
             button: true,
             child: PrimaryButton(
             text: 'Leave',
-            color: PanAfricanColors.error,
+            color: context.panError,
             textColor: colorScheme.onPrimary,
             onTap: onLeave,
             child: Row(
@@ -991,7 +991,7 @@ class _ControlButton extends StatelessWidget {
         IconButton(
           icon: Icon(icon),
           onPressed: onPressed,
-          color: isActive ? PanAfricanColors.primary : PanAfricanColors.error,
+          color: isActive ? PanAfricanColors.primary : context.panError,
           iconSize: 32.sp,
         ),
         Text(

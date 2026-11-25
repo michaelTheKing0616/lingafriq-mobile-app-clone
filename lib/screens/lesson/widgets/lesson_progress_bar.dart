@@ -61,10 +61,10 @@ class LessonProgressBar extends StatelessWidget {
                     // learners can spot "where I am" at a glance; completed
                     // segments are solid; upcoming segments are outlined only.
                     gradient: isCurrent
-                        ? const LinearGradient(
+                        ? LinearGradient(
                             colors: [
                               PanAfricanColors.primary,
-                              PanAfricanColors.secondary,
+                              context.panSecondary,
                             ],
                           )
                         : null,

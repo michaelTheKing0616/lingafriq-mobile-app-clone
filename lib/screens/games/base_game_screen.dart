@@ -28,6 +28,7 @@ import '../../widgets/error_state_widget.dart';
 import '../../widgets/skeleton_loader.dart';
 import '../../games/gamekit/harvested_frame.dart';
 import 'templates/game_template_shell.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Base class for all game screens - handles common functionality
 abstract class BaseGameScreen extends ConsumerStatefulWidget {
@@ -890,13 +891,13 @@ class _GameHud extends StatelessWidget {
             SizedBox(width: PanAfricanSpacing.sm),
             Semantics(label: '${_formatCompactNumber(xp)} experience points', child: PanAfricanBadge(
               label: '${_formatCompactNumber(xp)} XP',
-              color: PanAfricanColors.secondary,
+              color: context.panSecondary,
               icon: Icons.star_rounded,
             )),
             SizedBox(width: PanAfricanSpacing.sm),
             Semantics(label: '$streak day streak', child: PanAfricanBadge(
               label: '$streak',
-              color: PanAfricanColors.tertiary,
+              color: context.panTertiary,
               icon: Icons.local_fire_department_rounded,
             )),
             if (showHearts) ...[
@@ -923,10 +924,10 @@ class _ConfettiLayer extends StatelessWidget {
 
   const _ConfettiLayer({required this.duration});
 
-  static const List<Color> _confettiColors = [
+  static List<Color> _confettiColors = [
     PanAfricanColors.primary,
-    PanAfricanColors.secondary,
-    PanAfricanColors.tertiary,
+    LingAfriqTokens.hexFF735C00,
+    LingAfriqTokens.hexFF9E3D00,
     PanAfricanColors.kenteRed,
     PanAfricanColors.kenteBlue,
     PanAfricanColors.ankaraPurple,
@@ -995,13 +996,13 @@ class _CompletionOverlayContent extends StatelessWidget {
       padding: EdgeInsets.all(PanAfricanSpacing.xs),
       decoration: BoxDecoration(
         color: isPerfect
-            ? PanAfricanColors.secondary.withValues(alpha: 0.2)
+            ? context.panSecondary.withValues(alpha: 0.2)
             : PanAfricanColors.primary.withValues(alpha: 0.1),
         borderRadius: PanAfricanRadius.roundBR,
       ),
       child: Icon(
         isPerfect ? Icons.star_rounded : Icons.check_circle_rounded,
-        color: isPerfect ? PanAfricanColors.secondary : PanAfricanColors.primary,
+        color: isPerfect ? context.panSecondary : PanAfricanColors.primary,
         size: 24.sp,
       ),
     );
@@ -1013,7 +1014,7 @@ class _CompletionOverlayContent extends StatelessWidget {
                 .animate()
                 .scale(begin: const Offset(0.8, 0.8), end: const Offset(1, 1), duration: 400.ms)
                 .then()
-                .shimmer(duration: 1200.ms, color: PanAfricanColors.secondary.withValues(alpha: 0.4))
+                .shimmer(duration: 1200.ms, color: context.panSecondary.withValues(alpha: 0.4))
             : titleIcon,
         SizedBox(width: PanAfricanSpacing.sm),
         Expanded(

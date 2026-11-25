@@ -144,7 +144,7 @@ class _ChatSearchScreenState extends ConsumerState<ChatSearchScreen> {
               child: Text(
                 _error!,
                 style: PanAfricanTypography.bodyMedium(context).copyWith(
-                  color: PanAfricanColors.error,
+                  color: context.panError,
                 ),
               ),
             ),

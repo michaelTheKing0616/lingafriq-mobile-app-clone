@@ -13,9 +13,10 @@ import 'package:lingafriq/screens/tabs_view/home/take_quiz_screen.dart';
 import 'package:lingafriq/lessons/screens/lessons_list_screen.dart';
 import 'package:lingafriq/screens/vocabulary/vocabulary_screen.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Header colour shared with leaderboard, games hub and settings subscreens.
-const _navy = Color(0xFF2E3A87);
+const _navy = LingAfriqTokens.navy;
 
 /// Snapshot of today's goals. The notifier keeps goals in private fields, so
 /// this watches its state (bumped on refresh) and reads the getters.
@@ -132,7 +133,7 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
                 preferredSize: const Size.fromHeight(4),
                 child: LinearProgressIndicator(
                   key: const Key('dg-syncing'),
-                  color: PanAfricanColors.secondary,
+                  color: context.panSecondary,
                   backgroundColor: Colors.white24,
                   semanticsLabel: l.dgSyncing,
                 ),
@@ -290,8 +291,8 @@ class _Hero extends StatelessWidget {
                       value: total == 0 ? 0 : done / total,
                       strokeWidth: 8,
                       backgroundColor: on.withValues(alpha: 0.25),
-                      valueColor: const AlwaysStoppedAnimation(
-                        PanAfricanColors.secondary,
+                      valueColor: AlwaysStoppedAnimation(
+                        context.panSecondary,
                       ),
                     ),
                   ),
@@ -316,9 +317,9 @@ class _Hero extends StatelessWidget {
       children: [
         Row(
           children: [
-            const Icon(
+            Icon(
               Icons.local_fire_department_rounded,
-              color: PanAfricanColors.secondary,
+              color: context.panSecondary,
               size: 28,
             ),
             const SizedBox(width: 6),

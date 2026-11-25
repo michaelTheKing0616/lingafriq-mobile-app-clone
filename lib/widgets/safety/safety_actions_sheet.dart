@@ -289,7 +289,7 @@ class _SafetyActionsSheetState extends State<SafetyActionsSheet> {
           FilledButton(
             style: danger
                 ? FilledButton.styleFrom(
-                    backgroundColor: PanAfricanColors.error,
+                    backgroundColor: context.panError,
                   )
                 : null,
             onPressed: () {
@@ -354,7 +354,7 @@ class _SafetyActionsSheetState extends State<SafetyActionsSheet> {
             _actionTile(
               icon: Icons.block,
               label: SafetyCopy.block,
-              color: PanAfricanColors.error,
+              color: context.panError,
               onTap: _runBlock,
             ),
             _actionTile(

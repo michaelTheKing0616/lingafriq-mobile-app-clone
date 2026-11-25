@@ -6,6 +6,7 @@ import 'package:lingafriq/learning/reminders/reminder_policy.dart';
 import 'package:lingafriq/providers/notification_provider.dart';
 import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart'
     show ageTierStatusProvider;
+import 'package:lingafriq/design/tokens.g.dart';
 import 'package:lingafriq/services/connectivity_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -27,8 +28,8 @@ final reminderOpenSettingsProvider = Provider<Future<bool> Function()>(
   (ref) => openAppSettings,
 );
 
-const _navy = Color(0xFF2E3A87);
-const _gold = Color(0xFFFFC53D);
+const _navy = LingAfriqTokens.navy;
+const _gold = LingAfriqTokens.hexFFFFC53D;
 const _ink = Color(0xFF1F2340);
 const _muted = Color(0xFF5B607A);
 const _line = Color(0xFFE3E5EF);

@@ -6,6 +6,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_args.dart';
 import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_conversation_composer.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 Widget buildPolieConversationModeSurface(PolieModeSurfaceArgs a) {
   final layout = a.layout();
@@ -21,7 +22,7 @@ Widget buildPolieConversationModeSurface(PolieModeSurfaceArgs a) {
               child: Row(
                 children: [
                   const CircleAvatar(
-                    backgroundColor: Color(0xFFD4822A),
+                    backgroundColor: LingAfriqTokens.hexFFD4822A,
                     child: Icon(Icons.smart_toy_rounded, color: Colors.white),
                   ),
                   const SizedBox(width: 8),
@@ -35,7 +36,7 @@ Widget buildPolieConversationModeSurface(PolieModeSurfaceArgs a) {
                       Text(
                         'Online',
                         style: layout.bodyStyle.copyWith(
-                          color: const Color(0xFF4A7C59),
+                          color: LingAfriqTokens.hexFF4A7C59,
                           fontSize: 12,
                         ),
                       ),
@@ -54,7 +55,7 @@ Widget buildPolieConversationModeSurface(PolieModeSurfaceArgs a) {
                       widthFactor: a.languageRatio.clamp(0, 1),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: const Color(0xFF4A7C59),
+                          color: LingAfriqTokens.hexFF4A7C59,
                           borderRadius: BorderRadius.circular(100),
                         ),
                       ),
@@ -98,7 +99,7 @@ Widget buildPolieConversationModeSurface(PolieModeSurfaceArgs a) {
                                     ? 'Polie is typing…'
                                     : '$preview▎',
                                 style: layout.bodyStyle.copyWith(
-                                  color: const Color(0xFF2D1B0E),
+                                  color: LingAfriqTokens.hexFF2D1B0E,
                                   fontStyle: preview.isEmpty
                                       ? FontStyle.italic
                                       : FontStyle.normal,
@@ -118,7 +119,7 @@ Widget buildPolieConversationModeSurface(PolieModeSurfaceArgs a) {
                         margin: const EdgeInsets.only(bottom: 8),
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFD4822A),
+                          color: LingAfriqTokens.hexFFD4822A,
                           borderRadius: BorderRadius.circular(14),
                         ),
                         child: Text(
@@ -141,7 +142,7 @@ Widget buildPolieConversationModeSurface(PolieModeSurfaceArgs a) {
                           color: const Color(0xFFFFF4EC),
                           borderRadius: BorderRadius.circular(14),
                           border: Border.all(
-                            color: const Color(0xFFD4822A).withValues(alpha: 0.5),
+                            color: LingAfriqTokens.hexFFD4822A.withValues(alpha: 0.5),
                           ),
                         ),
                         child: Column(
@@ -152,7 +153,7 @@ Widget buildPolieConversationModeSurface(PolieModeSurfaceArgs a) {
                                 const Icon(
                                   Icons.error_outline,
                                   size: 18,
-                                  color: Color(0xFFD4822A),
+                                  color: LingAfriqTokens.hexFFD4822A,
                                 ),
                                 const SizedBox(width: 6),
                                 Expanded(
@@ -160,7 +161,7 @@ Widget buildPolieConversationModeSurface(PolieModeSurfaceArgs a) {
                                     ai.errorMessage ??
                                         'Something went wrong. Try again.',
                                     style: layout.bodyStyle.copyWith(
-                                      color: const Color(0xFF2D1B0E),
+                                      color: LingAfriqTokens.hexFF2D1B0E,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
@@ -215,18 +216,18 @@ Widget buildPolieConversationModeSurface(PolieModeSurfaceArgs a) {
                                   selectable: true,
                                   styleSheet: MarkdownStyleSheet(
                                     p: layout.bodyStyle.copyWith(
-                                      color: const Color(0xFF2D1B0E),
+                                      color: LingAfriqTokens.hexFF2D1B0E,
                                     ),
                                     strong: layout.bodyStyle.copyWith(
-                                      color: const Color(0xFF2D1B0E),
+                                      color: LingAfriqTokens.hexFF2D1B0E,
                                       fontWeight: FontWeight.w700,
                                     ),
                                     em: layout.bodyStyle.copyWith(
-                                      color: const Color(0xFF2D1B0E),
+                                      color: LingAfriqTokens.hexFF2D1B0E,
                                       fontStyle: FontStyle.italic,
                                     ),
                                     listBullet: layout.bodyStyle.copyWith(
-                                      color: const Color(0xFF2D1B0E),
+                                      color: LingAfriqTokens.hexFF2D1B0E,
                                     ),
                                     code: layout.bodyStyle.copyWith(
                                       color: const Color(0xFF7A4A20),
@@ -333,7 +334,7 @@ Widget buildPolieConversationModeSurface(PolieModeSurfaceArgs a) {
                                           ),
                                           backgroundColor: Colors.white,
                                           side: BorderSide(
-                                            color: const Color(0xFFD4822A)
+                                            color: LingAfriqTokens.hexFFD4822A
                                                 .withValues(alpha: 0.5),
                                           ),
                                           visualDensity: VisualDensity.compact,

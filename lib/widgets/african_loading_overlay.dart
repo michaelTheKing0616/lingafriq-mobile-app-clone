@@ -374,14 +374,14 @@ class _AfricanLoadingOverlayState extends ConsumerState<AfricanLoadingOverlay>
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  PanAfricanColors.secondary.withValues(alpha: 0.8),
-                  PanAfricanColors.tertiary.withValues(alpha: 0.6),
+                  context.panSecondary.withValues(alpha: 0.8),
+                  context.panTertiary.withValues(alpha: 0.6),
                   PanAfricanColors.primary.withValues(alpha: 0.4),
                 ],
               ),
               boxShadow: [
                 BoxShadow(
-                  color: PanAfricanColors.secondary.withValues(alpha: 0.4),
+                  color: context.panSecondary.withValues(alpha: 0.4),
                   blurRadius: 30,
                   spreadRadius: 5,
                 ),
@@ -439,9 +439,9 @@ class _AfricanLoadingOverlayState extends ConsumerState<AfricanLoadingOverlay>
         ShaderMask(
           shaderCallback: (bounds) => LinearGradient(
             colors: [
-              PanAfricanColors.secondary,
+              context.panSecondary,
               Theme.of(context).colorScheme.onSurface,
-              PanAfricanColors.secondary,
+              context.panSecondary,
             ],
           ).createShader(bounds),
           child: Text(
@@ -489,7 +489,7 @@ class _AfricanLoadingOverlayState extends ConsumerState<AfricanLoadingOverlay>
           ),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: PanAfricanColors.secondary.withValues(alpha: 0.3),
+            color: context.panSecondary.withValues(alpha: 0.3),
             width: 1,
           ),
         ),
@@ -501,12 +501,12 @@ class _AfricanLoadingOverlayState extends ConsumerState<AfricanLoadingOverlay>
                 Container(
                   padding: EdgeInsets.all(8.w),
                   decoration: BoxDecoration(
-                    color: PanAfricanColors.secondary.withValues(alpha: 0.2),
+                    color: context.panSecondary.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     Icons.auto_awesome,
-                    color: PanAfricanColors.secondary,
+                    color: context.panSecondary,
                     size: 18.sp,
                   ),
                 ),
@@ -516,7 +516,7 @@ class _AfricanLoadingOverlayState extends ConsumerState<AfricanLoadingOverlay>
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
-                    color: PanAfricanColors.secondary,
+                    color: context.panSecondary,
                     letterSpacing: 0.5,
                   ),
                 ),
@@ -580,17 +580,17 @@ class _AfricanLoadingOverlayState extends ConsumerState<AfricanLoadingOverlay>
                       widthFactor: progress,
                       child: Container(
                         decoration: BoxDecoration(
-                          gradient: const LinearGradient(
+                          gradient: LinearGradient(
                             colors: [
-                              PanAfricanColors.secondary,
-                              PanAfricanColors.tertiary,
+                              context.panSecondary,
+                              context.panTertiary,
                               PanAfricanColors.primary,
                             ],
                           ),
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: [
                             BoxShadow(
-                              color: PanAfricanColors.secondary.withValues(alpha: 0.5),
+                              color: context.panSecondary.withValues(alpha: 0.5),
                               blurRadius: 8,
                               spreadRadius: 1,
                             ),
@@ -606,7 +606,7 @@ class _AfricanLoadingOverlayState extends ConsumerState<AfricanLoadingOverlay>
                 width: 200.w,
                 child: LinearProgressIndicator(
                   minHeight: 4.h,
-                  color: PanAfricanColors.secondary,
+                  color: context.panSecondary,
                   backgroundColor: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.12),
                 ),
               ),
@@ -616,7 +616,7 @@ class _AfricanLoadingOverlayState extends ConsumerState<AfricanLoadingOverlay>
                 '${(progress * 100).toInt()}%',
                 style: TextStyle(
                   fontSize: 12.sp,
-                  color: PanAfricanColors.secondary.withValues(alpha: 0.8),
+                  color: context.panSecondary.withValues(alpha: 0.8),
                   fontWeight: FontWeight.w600,
                 ),
               )
@@ -625,7 +625,7 @@ class _AfricanLoadingOverlayState extends ConsumerState<AfricanLoadingOverlay>
                 'Finishing up...',
                 style: TextStyle(
                   fontSize: 12.sp,
-                  color: PanAfricanColors.secondary.withValues(alpha: 0.8),
+                  color: context.panSecondary.withValues(alpha: 0.8),
                   fontWeight: FontWeight.w600,
                 ),
               ),

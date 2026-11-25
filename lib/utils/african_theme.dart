@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Pan-African Theme Colors and Design Elements
 /// Inspired by African cultures, landscapes, and traditions
@@ -8,9 +9,9 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 class AfricanTheme {
   // Pan-African Color Palette
   static const Color primaryGreen = PanAfricanColors.primary; // Legacy alias
-  static const Color accentGold = PanAfricanColors.secondary;
+  static const Color accentGold = LingAfriqTokens.hexFF735C00;
   static const Color earthBrown = PanAfricanColors.neutralDark;
-  static const Color sunsetOrange = PanAfricanColors.tertiary;
+  static const Color sunsetOrange = LingAfriqTokens.hexFF9E3D00;
   static const Color skyBlue = PanAfricanColors.kenteBlue;
   static const Color deepRed = PanAfricanColors.kenteRed;
   static const Color vibrantPurple = PanAfricanColors.ankaraPurple;

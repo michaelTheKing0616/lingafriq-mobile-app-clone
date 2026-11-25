@@ -20,6 +20,7 @@ import 'package:lingafriq/screens/games/speed_challenge_game.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/games/gamekit/all_games_registry.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 final languagesForGamesProvider = FutureProvider.autoDispose((ref) {
   return ref.read(apiProvider.notifier).getLanguages();
@@ -233,12 +234,12 @@ class _GameLanguageCard extends StatelessWidget {
   });
 
   // Vibrant category colors for visual interest
-  static const List<Color> _categoryColors = [
+  static List<Color> _categoryColors = [
     PanAfricanColors.kenteRed,
     PanAfricanColors.kenteBlue,
     PanAfricanColors.ankaraPurple,
     PanAfricanColors.kitengeTeal,
-    PanAfricanColors.tertiary,
+    LingAfriqTokens.hexFF9E3D00,
     PanAfricanColors.primary,
   ];
 
@@ -410,7 +411,7 @@ class GameTypesScreen extends StatelessWidget {
                 icon: Icons.edit_rounded,
                 title: 'Fill in the Blank',
                 description: 'Complete sentences with missing words',
-                color: PanAfricanColors.secondary,
+                color: context.panSecondary,
                 onTap: () {
                   HapticFeedback.lightImpact();
                   Navigator.push(
@@ -426,7 +427,7 @@ class GameTypesScreen extends StatelessWidget {
                 icon: Icons.volume_up_rounded,
                 title: 'Pronunciation Practice',
                 description: 'Listen and repeat words correctly',
-                color: PanAfricanColors.tertiary,
+                color: context.panTertiary,
                 onTap: () {
                   HapticFeedback.lightImpact();
                   Navigator.push(

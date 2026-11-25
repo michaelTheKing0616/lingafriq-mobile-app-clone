@@ -34,9 +34,7 @@ class _ToneDrillScreenState extends State<ToneDrillScreen> {
   ToneErrorResult? _lastResult;
   bool _isRecording = false;
   bool _isAnalyzing = false;
-  // ignore: unused_field
   Uint8List? _recordedAudio;
-  // ignore: unused_field
   List<PitchPoint> _userPitchContour = [];
   int _currentDrillIndex = 0;
 
@@ -172,17 +170,25 @@ class _ToneDrillScreenState extends State<ToneDrillScreen> {
       });
 
       if (mounted && result.hasError) {
+        final ColorScheme scheme = Theme.of(context).colorScheme;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Tone accuracy: ${(result.overallAccuracy * 100).toStringAsFixed(1)}%'),
-            backgroundColor: Colors.orange,
+            content: Text(
+              'Tone accuracy: ${(result.overallAccuracy * 100).toStringAsFixed(1)}%',
+              style: TextStyle(color: scheme.onError),
+            ),
+            backgroundColor: scheme.error,
           ),
         );
       } else if (mounted) {
+        final ColorScheme scheme = Theme.of(context).colorScheme;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Excellent! Tones are correct'),
-            backgroundColor: Colors.green,
+          SnackBar(
+            content: Text(
+              'Excellent! Tones are correct',
+              style: TextStyle(color: scheme.onPrimary),
+            ),
+            backgroundColor: scheme.primary,
           ),
         );
       }
@@ -266,6 +272,7 @@ class _ToneDrillScreenState extends State<ToneDrillScreen> {
   }
 
   Widget _buildDrillItemCard(DrillItem item) {
+    final ColorScheme scheme = Theme.of(context).colorScheme;
     return Card(
       elevation: 4,
       child: Padding(
@@ -280,7 +287,11 @@ class _ToneDrillScreenState extends State<ToneDrillScreen> {
               const SizedBox(height: 8),
               Text(
                 '/${item.ipa}/',
-                style: TextStyle(fontSize: 20, color: Colors.grey[600], fontStyle: FontStyle.italic),
+                style: TextStyle(
+                  fontSize: 20,
+                  color: scheme.onSurfaceVariant,
+                  fontStyle: FontStyle.italic,
+                ),
               ),
             ],
             const SizedBox(height: 8),
@@ -288,7 +299,7 @@ class _ToneDrillScreenState extends State<ToneDrillScreen> {
               spacing: 8,
               children: item.tonePattern.map((tone) => Chip(
                 label: Text(tone),
-                color: WidgetStateProperty.all(Colors.blue[100]),
+                color: WidgetStateProperty.all(scheme.primaryContainer),
               )).toList(),
             ),
             const SizedBox(height: 8),
@@ -303,6 +314,7 @@ class _ToneDrillScreenState extends State<ToneDrillScreen> {
   }
 
   Widget _buildRecordingSection() {
+    final ColorScheme scheme = Theme.of(context).colorScheme;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -315,7 +327,7 @@ class _ToneDrillScreenState extends State<ToneDrillScreen> {
                 iconSize: 64,
                 icon: Icon(
                   _isRecording ? Icons.stop_circle : Icons.mic,
-                  color: _isRecording ? Colors.red : Colors.blue,
+                  color: _isRecording ? scheme.error : scheme.primary,
                 ),
                 onPressed: _isRecording ? _stopRecording : _startRecording,
               ),
@@ -331,7 +343,11 @@ class _ToneDrillScreenState extends State<ToneDrillScreen> {
   }
 
   Widget _buildResultsSection() {
-    if (_lastResult == null) return const SizedBox.shrink();
+    if (_lastResult == null && _userPitchContour.isEmpty && _recordedAudio == null) {
+      return const SizedBox.shrink();
+    }
+    final ColorScheme scheme = Theme.of(context).colorScheme;
+    final bool accurate = (_lastResult?.overallAccuracy ?? 0) > 0.8;
 
     return Card(
       child: Padding(
@@ -339,22 +355,25 @@ class _ToneDrillScreenState extends State<ToneDrillScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Tone Accuracy: ${(_lastResult!.overallAccuracy * 100).toStringAsFixed(1)}%',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: _lastResult!.overallAccuracy > 0.8 ? Colors.green : Colors.orange,
+            if (_recordedAudio != null && _lastResult == null)
+              const SizedBox.shrink(),
+            if (_lastResult != null)
+              Text(
+                'Tone Accuracy: ${(_lastResult!.overallAccuracy * 100).toStringAsFixed(1)}%',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: accurate ? scheme.primary : scheme.error,
+                ),
               ),
-            ),
-            if (_lastResult!.errors.isNotEmpty) ...[
+            if (_lastResult != null && _lastResult!.errors.isNotEmpty) ...[
               const SizedBox(height: 16),
               const Text('Errors:', style: TextStyle(fontWeight: FontWeight.bold)),
               ..._lastResult!.errors.map((error) => Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Row(
                   children: [
-                    const Icon(Icons.error, color: Colors.red, size: 16),
+                    Icon(Icons.error, color: scheme.error, size: 16),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
@@ -365,16 +384,34 @@ class _ToneDrillScreenState extends State<ToneDrillScreen> {
                 ),
               )),
             ],
-            if (_lastResult!.userPitchContour.isNotEmpty && _lastResult!.expectedPitchContour.isNotEmpty) ...[
+            if (_lastResult != null &&
+                _lastResult!.userPitchContour.isNotEmpty &&
+                _lastResult!.expectedPitchContour.isNotEmpty) ...[
               const SizedBox(height: 16),
               const Text('Pitch Comparison:', style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
               SizedBox(
                 height: 200,
                 child: VisualPitchFeedbackWidget(
-                  userPitch: _lastResult!.userPitchContour,
+                  userPitch: _userPitchContour.isNotEmpty
+                      ? _userPitchContour
+                      : _lastResult!.userPitchContour,
                   nativePitch: _lastResult!.expectedPitchContour,
-                  timePoints: _lastResult!.userPitchContour.map((p) => p.time).toList(),
+                  timePoints: (_userPitchContour.isNotEmpty
+                          ? _userPitchContour
+                          : _lastResult!.userPitchContour)
+                      .map((p) => p.time)
+                      .toList(),
+                ),
+              ),
+            ] else if (_userPitchContour.isNotEmpty) ...[
+              const SizedBox(height: 16),
+              SizedBox(
+                height: 200,
+                child: VisualPitchFeedbackWidget(
+                  userPitch: _userPitchContour,
+                  nativePitch: _userPitchContour,
+                  timePoints: _userPitchContour.map((p) => p.time).toList(),
                 ),
               ),
             ],

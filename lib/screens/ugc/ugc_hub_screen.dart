@@ -75,7 +75,7 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Lesson created!', style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary)),
-                      backgroundColor: PanAfricanColors.success,
+                      backgroundColor: context.panSuccess,
                     ),
                   );
                 }
@@ -103,7 +103,7 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Quiz created!', style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary)),
-                      backgroundColor: PanAfricanColors.success,
+                      backgroundColor: context.panSuccess,
                     ),
                   );
                 }
@@ -120,7 +120,7 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
               title: 'Create Story',
               description: 'Share cultural stories and narratives',
               icon: PanAfricanIcons.book,
-              color: PanAfricanColors.tertiary,
+              color: context.panTertiary,
               onTap: () async {
                 HapticFeedback.lightImpact();
                 final result = await safeNavigate(
@@ -131,7 +131,7 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Story created!', style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary)),
-                      backgroundColor: PanAfricanColors.success,
+                      backgroundColor: context.panSuccess,
                     ),
                   );
                 }
@@ -207,7 +207,7 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text('Content shared!', style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary)),
-                                  backgroundColor: PanAfricanColors.success,
+                                  backgroundColor: context.panSuccess,
                                 ),
                               );
                             }

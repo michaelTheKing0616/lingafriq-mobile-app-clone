@@ -12,6 +12,7 @@ import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/gamification/tribe_selection_screen.dart';
 import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart'
     show ageTierStatusProvider;
+import 'package:lingafriq/design/tokens.g.dart';
 import 'package:lingafriq/services/connectivity_service.dart';
 import 'package:lingafriq/widgets/bidi_text.dart';
 
@@ -20,22 +21,22 @@ final leaderboardOnlineProvider = FutureProvider.autoDispose<bool>(
   (ref) => ConnectivityService.hasInternet(),
 );
 
-const _navy = Color(0xFF2E3A87);
+const _navy = LingAfriqTokens.navy;
 const _navyDeep = Color(0xFF1F2766);
-const _gold = Color(0xFFFFC53D);
+const _gold = LingAfriqTokens.hexFFFFC53D;
 const _ink = Color(0xFF1F2340);
 const _muted = Color(0xFF5B607A);
 const _line = Color(0xFFE3E5EF);
 const _up = Color(0xFF1B7F4B);
 const _down = Color(0xFFB3261E);
-const _medals = [Color(0xFFFFC53D), Color(0xFFB8C0CC), Color(0xFFD08A4E)];
+const _medals = [LingAfriqTokens.hexFFFFC53D, Color(0xFFB8C0CC), Color(0xFFD08A4E)];
 const _discs = [
   Color(0xFF1B7F4B),
   Color(0xFF8C3B9E),
   Color(0xFF0B6E99),
   Color(0xFFB4462B),
   Color(0xFF6B5B00),
-  Color(0xFF2E3A87),
+  LingAfriqTokens.navy,
 ];
 
 /// Weekly leaderboard (social-circles 08/09/13, profile-progress 04):

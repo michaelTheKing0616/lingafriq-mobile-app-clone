@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Stunning card for leaderboard entries
 class LeaderboardCard extends StatelessWidget {
@@ -28,7 +29,7 @@ class LeaderboardCard extends StatelessWidget {
 
   Color get _rankColor {
     if (rankColor != null) return rankColor!;
-    if (rank == 1) return PanAfricanColors.secondary;
+    if (rank == 1) return LingAfriqTokens.hexFF735C00;
     if (rank == 2) return Colors.grey[400]!;
     if (rank == 3) return const Color(0xFFCD7F32); // Bronze
     return PanAfricanColors.primary;

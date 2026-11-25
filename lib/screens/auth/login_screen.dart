@@ -234,7 +234,7 @@ class LoginScreen extends HookConsumerWidget {
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: PanAfricanRadius.lgBR,
-        borderSide: const BorderSide(color: PanAfricanColors.error, width: 2),
+        borderSide: BorderSide(color: context.panError, width: 2),
       ),
       contentPadding: EdgeInsets.symmetric(
         horizontal: PanAfricanSpacing.md,

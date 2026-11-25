@@ -323,12 +323,12 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       decoration: BoxDecoration(
                         color: _timeRemaining <= 10
-                            ? PanAfricanColors.error.withValues(alpha: 0.2)
+                            ? context.panError.withValues(alpha: 0.2)
                           : _accentColor.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
                           color: _timeRemaining <= 10
-                              ? PanAfricanColors.error
+                              ? context.panError
                             : _accentColor,
                           width: 2,
                         ),
@@ -339,7 +339,7 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                           Icon(
                             Icons.timer,
                             color: _timeRemaining <= 10
-                                ? PanAfricanColors.error
+                                ? context.panError
                                 : _accentColor,
                             size: 20.sp,
                             semanticLabel: 'Timer',
@@ -353,7 +353,7 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                                 fontSize: 20.sp,
                                 fontWeight: FontWeight.bold,
                                 color: _timeRemaining <= 10
-                                    ? PanAfricanColors.error
+                                    ? context.panError
                                     : _accentColor,
                               ),
                             ),
@@ -372,7 +372,7 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                     ),
                     child: Row(
                       children: [
-                        Icon(Icons.star, color: PanAfricanColors.secondary, size: 20.sp, semanticLabel: 'Score'),
+                        Icon(Icons.star, color: context.panSecondary, size: 20.sp, semanticLabel: 'Score'),
                         const SizedBox(width: 8),
                         Semantics(
                           label: 'Score: $_correctAnswers correct answers',
@@ -517,7 +517,7 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.star, color: PanAfricanColors.secondary, size: 24.sp),
+                    Icon(Icons.star, color: context.panSecondary, size: 24.sp),
                     const SizedBox(width: 8),
                     Text(
                       '+$_score Points Earned!',

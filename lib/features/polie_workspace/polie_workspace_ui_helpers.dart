@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lingafriq/theme/lingafriq_fonts.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_providers.dart';
 import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 Widget polieBuildAnimatedWordFlow(String text, TextStyle style) {
   final words = text
@@ -64,14 +65,14 @@ Widget poliePeriodChip({
         vertical: compact ? 8 : 10,
       ),
       decoration: BoxDecoration(
-        color: selected ? const Color(0xFFD4822A) : Colors.white,
+        color: selected ? LingAfriqTokens.hexFFD4822A : Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: const Color(0xFFD9CBB6)),
       ),
       child: Text(
         label,
         style: LingAfriqFonts.roleStyle(
-          color: selected ? Colors.white : const Color(0xFF2D1B0E),
+          color: selected ? Colors.white : LingAfriqTokens.hexFF2D1B0E,
           fontWeight: FontWeight.w700,
           fontSize: compact ? 12 : 14,
         ),
@@ -84,59 +85,59 @@ ModeTheme polieThemeForMode(PolieMode mode) {
   switch (mode) {
     case PolieMode.translation:
       return const ModeTheme(
-        background: Color(0xFFFAF3E0),
+        background: LingAfriqTokens.hexFFFAF3E0,
         card: Colors.white,
-        title: Color(0xFF2D1B0E),
+        title: LingAfriqTokens.hexFF2D1B0E,
         body: Color(0xFF3F2A1A),
         border: Color(0xFFD9CBB6),
-        accent: Color(0xFFD4822A),
+        accent: LingAfriqTokens.hexFFD4822A,
       );
     case PolieMode.tutor:
       return const ModeTheme(
-        background: Color(0xFFFAF3E0),
+        background: LingAfriqTokens.hexFFFAF3E0,
         card: Colors.white,
-        title: Color(0xFF2D1B0E),
+        title: LingAfriqTokens.hexFF2D1B0E,
         body: Color(0xFF3F2A1A),
         border: Color(0xFFD9CBB6),
-        accent: Color(0xFFD4822A),
+        accent: LingAfriqTokens.hexFFD4822A,
       );
     case PolieMode.roleplay:
       return const ModeTheme(
-        background: Color(0xFF0F0A04),
-        card: Color(0xFF1A130C),
-        title: Color(0xFFFAF3E0),
+        background: LingAfriqTokens.hexFF0F0A04,
+        card: LingAfriqTokens.hexFF1A130C,
+        title: LingAfriqTokens.hexFFFAF3E0,
         body: Color(0xFFE8DAC5),
         border: Color(0xFF3A2A1C),
-        accent: Color(0xFFC4663A),
+        accent: LingAfriqTokens.hexFFC4663A,
       );
     case PolieMode.conversation:
       return const ModeTheme(
         background: Color(0xFFF5F0E8),
         card: Colors.white,
-        title: Color(0xFF2D1B0E),
+        title: LingAfriqTokens.hexFF2D1B0E,
         body: Color(0xFF3F2A1A),
         border: Color(0xFFE0D5C4),
-        accent: Color(0xFFD4822A),
+        accent: LingAfriqTokens.hexFFD4822A,
       );
     case PolieMode.vocab:
       return const ModeTheme(
-        background: Color(0xFF0F0A04),
-        card: Color(0xFF1A130C),
-        title: Color(0xFFFAF3E0),
+        background: LingAfriqTokens.hexFF0F0A04,
+        card: LingAfriqTokens.hexFF1A130C,
+        title: LingAfriqTokens.hexFFFAF3E0,
         body: Color(0xFFE8DAC5),
         border: Color(0xFF3A2A1C),
-        accent: Color(0xFFF2C14E),
+        accent: LingAfriqTokens.hexFFF2C14E,
       );
     case PolieMode.review:
     case PolieMode.pronunciation:
     case PolieMode.grammar:
       return const ModeTheme(
-        background: Color(0xFFFAF3E0),
+        background: LingAfriqTokens.hexFFFAF3E0,
         card: Colors.white,
-        title: Color(0xFF2D1B0E),
+        title: LingAfriqTokens.hexFF2D1B0E,
         body: Color(0xFF3F2A1A),
         border: Color(0xFFD9CBB6),
-        accent: Color(0xFFD4822A),
+        accent: LingAfriqTokens.hexFFD4822A,
       );
   }
 }
@@ -237,9 +238,9 @@ IconData polieStatIcon(String label) {
 
 Color polieSkillColor(String skill) {
   final s = skill.toLowerCase();
-  if (s.contains('vocab')) return const Color(0xFFD4822A);
-  if (s.contains('grammar')) return const Color(0xFF4A7C59);
+  if (s.contains('vocab')) return LingAfriqTokens.hexFFD4822A;
+  if (s.contains('grammar')) return LingAfriqTokens.hexFF4A7C59;
   if (s.contains('pronunciation')) return const Color(0xFFE2B93B);
-  if (s.contains('conversation')) return const Color(0xFFC4663A);
-  return const Color(0xFFD4822A);
+  if (s.contains('conversation')) return LingAfriqTokens.hexFFC4663A;
+  return LingAfriqTokens.hexFFD4822A;
 }

@@ -33,13 +33,13 @@ class AppErrorState extends StatelessWidget {
               width: 72.w,
               height: 72.w,
               decoration: BoxDecoration(
-                color: PanAfricanColors.error.withValues(alpha: 0.08),
+                color: context.panError.withValues(alpha: 0.08),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 icon ?? Icons.error_outline_rounded,
                 size: 32.sp,
-                color: PanAfricanColors.error,
+                color: context.panError,
               ),
             ),
             SizedBox(height: PanAfricanSpacing.lg),

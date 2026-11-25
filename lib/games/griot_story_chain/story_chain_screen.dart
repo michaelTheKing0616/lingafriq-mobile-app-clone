@@ -396,7 +396,7 @@ class _StoryChainScreenState extends ConsumerState<StoryChainScreen> {
                     Text(
                       'Held for review',
                       style: PanAfricanTypography.bodySmall(context).copyWith(
-                        color: PanAfricanColors.error,
+                        color: context.panError,
                       ),
                     ),
                 ],

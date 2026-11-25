@@ -10,6 +10,7 @@ import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/profile/global_handle_edit_screen.dart';
 import 'package:lingafriq/screens/tabs_view/profile/profile_tab.dart'
     show ProfileImageBuilder;
+import 'package:lingafriq/design/tokens.g.dart';
 import 'package:lingafriq/widgets/points_and_profile_image_builder.dart'
     show kHeaderAvatarDisc;
 import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart'
@@ -33,7 +34,7 @@ final profileDeleteProvider =
               AccountService(widgetRef).deleteAccount(password),
     );
 
-const _navy = Color(0xFF2E3A87);
+const _navy = LingAfriqTokens.navy;
 const _ink = Color(0xFF1F2340);
 const _muted = Color(0xFF5B607A);
 const _line = Color(0xFFE3E5EF);

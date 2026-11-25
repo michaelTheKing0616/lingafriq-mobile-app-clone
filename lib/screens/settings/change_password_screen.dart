@@ -309,14 +309,14 @@ class _PasswordTextField extends StatelessWidget {
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-          borderSide: const BorderSide(
-            color: PanAfricanColors.error,
+          borderSide: BorderSide(
+            color: context.panError,
           ),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-          borderSide: const BorderSide(
-            color: PanAfricanColors.error,
+          borderSide: BorderSide(
+            color: context.panError,
             width: 2,
           ),
         ),

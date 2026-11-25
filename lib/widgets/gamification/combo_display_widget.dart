@@ -76,16 +76,16 @@ class _ComboDisplayWidgetState extends State<ComboDisplayWidget> {
           vertical: 8.h,
         ),
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
+          gradient: LinearGradient(
             colors: [
-              PanAfricanColors.secondary,
-              PanAfricanColors.tertiary,
+              context.panSecondary,
+              context.panTertiary,
             ],
           ),
           borderRadius: BorderRadius.circular(20.r),
           boxShadow: [
             BoxShadow(
-              color: PanAfricanColors.secondary.withValues(alpha: 0.4),
+              color: context.panSecondary.withValues(alpha: 0.4),
               blurRadius: 12,
               spreadRadius: 2,
             ),
@@ -186,7 +186,7 @@ class _ComboDisplayWidgetState extends State<ComboDisplayWidget> {
               Positioned.fill(
                 child: IgnorePointer(
                   child: Container(
-                    color: PanAfricanColors.secondary.withValues(alpha: 0.15),
+                    color: context.panSecondary.withValues(alpha: 0.15),
                   )
                       .animate(key: const ValueKey('flash'))
                       .fadeIn(duration: 50.ms)

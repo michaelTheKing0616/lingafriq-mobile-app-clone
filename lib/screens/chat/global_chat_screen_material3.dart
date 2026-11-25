@@ -10,8 +10,9 @@ import 'package:lingafriq/l10n/l10n_of.dart';
 import 'package:lingafriq/screens/chat/user_search_global_id_screen.dart';
 import 'package:lingafriq/screens/feed/x_profile_screen.dart';
 import 'package:lingafriq/screens/safety/community_guidelines_screen.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
-const _navy = Color(0xFF2E3A87);
+const _navy = LingAfriqTokens.navy;
 const _bg = Color(0xFFF4F5FA);
 const _ink = Color(0xFF1B1F3B);
 const _muted = Color(0xFF555B78);
@@ -28,7 +29,7 @@ String channelLabel(AppLocalizations l, String id) => id == 'general'
 
 /// Channel identity: accent colour and a native greeting (content, not UI copy).
 const _channelLook = <String, (Color, String)>{
-  'general': (Color(0xFF2E3A87), 'Hello · Bonjour · مرحبا'),
+  'general': (LingAfriqTokens.navy, 'Hello · Bonjour · مرحبا'),
   'yoruba': (Color(0xFF1B7F5A), 'Ẹ n lẹ́ o'),
   'hausa': (Color(0xFF8A4B08), 'Sannu'),
   'igbo': (Color(0xFF7A2E8A), 'Ndewo'),
@@ -203,7 +204,7 @@ class _LockedBody extends StatelessWidget {
               shaderCallback: (r) => LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: const [Color(0xFF000000), Color(0x00000000)],
+                colors: const [LingAfriqTokens.hexFF000000, Color(0x00000000)],
                 stops: [
                   r.height <= 0 ? 1 : (1 - 40 / r.height).clamp(0.0, 1.0),
                   1,
@@ -754,7 +755,7 @@ class _ChatViewState extends ConsumerState<_ChatView> {
           shaderCallback: (r) => LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: const [Color(0x00000000), Color(0xFF000000)],
+            colors: const [Color(0x00000000), LingAfriqTokens.hexFF000000],
             stops: [0, r.height <= 0 ? 0 : (24 / r.height).clamp(0.0, 1.0)],
           ).createShader(r),
           blendMode: BlendMode.dstIn,

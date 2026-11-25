@@ -6,12 +6,13 @@ import 'package:lingafriq/l10n/l10n_of.dart';
 import 'package:lingafriq/screens/progress/progress_dashboard_data.dart';
 import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart'
     show ageTierStatusProvider;
+import 'package:lingafriq/design/tokens.g.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 
 /// Gold used for active days and bars (text-safe dark variant for labels).
-const kProgressGold = Color(0xFFFFC53D);
+const kProgressGold = LingAfriqTokens.hexFFFFC53D;
 const kProgressGoldText = Color(0xFF8C5A00);
 
 /// Progress (profile-progress pack 01 stats grid, 02 streak calendar,
@@ -693,7 +694,7 @@ class _StreakHeroState extends State<StreakHero>
         : hit != null
         ? l.pgMilestoneHit(hit)
         : l.pgNextGoal(goal - s.streak, goal);
-    const navy = Color(0xFF2E3A87);
+    const navy = LingAfriqTokens.navy;
     return Semantics(
       key: const Key('pg-streak'),
       container: true,
@@ -898,7 +899,7 @@ class _ErrorPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   ColoredBox(
-                    color: const Color(0xFF2E3A87),
+                    color: LingAfriqTokens.navy,
                     child: Padding(
                       padding: EdgeInsets.symmetric(
                         vertical: PanAfricanSpacing.lg,
@@ -1027,7 +1028,7 @@ class _SkeletonState extends State<_Skeleton>
           height: 120,
           padding: EdgeInsets.all(PanAfricanSpacing.md),
           decoration: BoxDecoration(
-            color: const Color(0xFF2E3A87),
+            color: LingAfriqTokens.navy,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Row(

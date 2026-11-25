@@ -176,11 +176,11 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
       appBar: AppBar(
         title: Text('Word Match - ${widget.language.name}'),
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
                 PanAfricanColors.primary,
-                PanAfricanColors.secondary,
+                context.panSecondary,
               ],
             ),
           ),
@@ -296,14 +296,14 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: card.isMatched
-                      ? PanAfricanColors.success.withValues(alpha: 0.2)
+                      ? context.panSuccess.withValues(alpha: 0.2)
                       : isSelected
                           ? PanAfricanColors.primary.withValues(alpha: 0.2)
                           : null,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: card.isMatched
-                        ? PanAfricanColors.success
+                        ? context.panSuccess
                         : isSelected
                             ? PanAfricanColors.primary
                             : Colors.transparent,
@@ -316,7 +316,7 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
                     if (card.isMatched)
                       Icon(
                         Icons.check_circle,
-                        color: PanAfricanColors.success,
+                        color: context.panSuccess,
                         size: 20.sp,
                         semanticLabel: 'Matched',
                       ),
@@ -353,11 +353,11 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
           children: [
             Container(
               padding: const EdgeInsets.all(32),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
                     PanAfricanColors.primary,
-                    PanAfricanColors.secondary,
+                    context.panSecondary,
                   ],
                 ),
                 shape: BoxShape.circle,

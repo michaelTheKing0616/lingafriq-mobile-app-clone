@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../utils/pan_african_design_system.dart' show PanAfricanSpacing;
 import '../../widgets/griot/griot_widgets.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 class WaStarredMessagesScreen extends StatelessWidget {
   const WaStarredMessagesScreen({super.key});
@@ -32,21 +33,21 @@ class WaStarredMessagesScreen extends StatelessWidget {
       text: '"Nanga def?" — How are you? The most common Wolof greeting '
           'used throughout Senegal and The Gambia.',
       timestamp: '3 days ago',
-      typeColor: Color(0xFF9E3D00),
+      typeColor: LingAfriqTokens.hexFF9E3D00,
     ),
     _StarredItem(
       type: 'Vocabulary',
       text: 'Jërejëf /jeh-reh-jef/ — Thank you. '
           'Used in both formal and informal contexts.',
       timestamp: 'Last week',
-      typeColor: Color(0xFF526124),
+      typeColor: LingAfriqTokens.hexFF526124,
     ),
     _StarredItem(
       type: 'Chat Fragment',
       text: 'Amina: "Great tip — pronounce the tone with breath control, '
           'not volume. That\'s the key to Wolof intonation."',
       timestamp: 'Last week',
-      typeColor: Color(0xFF7B5733),
+      typeColor: LingAfriqTokens.hexFF7B5733,
     ),
     _StarredItem(
       type: 'Literature',
@@ -67,14 +68,14 @@ class WaStarredMessagesScreen extends StatelessWidget {
       text: '"Baal ma" — Forgive me / Excuse me in Wolof. '
           'Essential for polite conversation.',
       timestamp: '3 weeks ago',
-      typeColor: Color(0xFF9E3D00),
+      typeColor: LingAfriqTokens.hexFF9E3D00,
     ),
     _StarredItem(
       type: 'Vocabulary',
       text: 'Asante /ah-SAHN-teh/ — Thank you in Swahili. '
           'Derived from Arabic, widely used across East Africa.',
       timestamp: '3 weeks ago',
-      typeColor: Color(0xFF526124),
+      typeColor: LingAfriqTokens.hexFF526124,
     ),
   ];
 

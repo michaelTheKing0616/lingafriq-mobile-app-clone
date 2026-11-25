@@ -46,7 +46,7 @@ class _FlashcardReviewScreenState extends ConsumerState<FlashcardReviewScreen> {
               Icon(
                 Icons.check_circle_outline,
                 size: 64.sp,
-                color: PanAfricanColors.success,
+                color: context.panSuccess,
               ),
               SizedBox(height: PanAfricanSpacing.lg),
               Text(
@@ -319,7 +319,7 @@ class _FlashcardReviewScreenState extends ConsumerState<FlashcardReviewScreen> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('Review complete! Correct: $_correctCount, Incorrect: $_incorrectCount'),
-                  backgroundColor: PanAfricanColors.success,
+                  backgroundColor: context.panSuccess,
                 ),
               );
             }

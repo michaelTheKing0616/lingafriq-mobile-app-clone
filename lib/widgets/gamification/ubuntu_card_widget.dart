@@ -29,7 +29,7 @@ class UbuntuCardWidget extends ConsumerWidget {
           end: Alignment.bottomRight,
           colors: [
             PanAfricanColors.primary.withValues(alpha: 0.25),
-            PanAfricanColors.secondary.withValues(alpha: 0.15),
+            context.panSecondary.withValues(alpha: 0.15),
           ],
         ),
         boxShadow: PanAfricanShadows.sm,

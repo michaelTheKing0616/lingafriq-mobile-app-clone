@@ -100,11 +100,11 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
   Future<void> _checkAnswers() async {
     if (_answers.values.any((a) => a == null)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
+        SnackBar(
+          content: const Text(
             'A few blanks are still empty — fill them in and try again.',
           ),
-          backgroundColor: PanAfricanColors.error,
+          backgroundColor: context.panError,
         ),
       );
       return;
@@ -211,15 +211,15 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: isCorrect
-                            ? PanAfricanColors.success.withValues(alpha: 0.15)
+                            ? context.panSuccess.withValues(alpha: 0.15)
                             : isIncorrect
-                            ? PanAfricanColors.error.withValues(alpha: 0.15)
+                            ? context.panError.withValues(alpha: 0.15)
                             : PanAfricanColors.cardDark,
                         border: Border.all(
                           color: isCorrect
-                              ? PanAfricanColors.success
+                              ? context.panSuccess
                               : isIncorrect
-                              ? PanAfricanColors.error
+                              ? context.panError
                               : PanAfricanColors.borderLight,
                           width: 2,
                         ),

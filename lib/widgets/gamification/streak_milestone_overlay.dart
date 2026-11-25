@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../utils/pan_african_design_system.dart';
 import '../../services/sound_effects_service.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Data class for a streak milestone celebration event.
 class StreakMilestoneEvent {
@@ -236,12 +237,12 @@ class _StreakMilestoneAnimationState extends State<_StreakMilestoneAnimation>
 
   Color _getParticleColor(int index) {
     final colors = [
-      PanAfricanColors.secondary,
-      PanAfricanColors.tertiary,
+      context.panSecondary,
+      context.panTertiary,
       PanAfricanColors.primaryLight,
       PanAfricanColors.kenteBlue,
       const Color(0xFFFF6B35), // Fire orange
-      const Color(0xFFFFD700), // Gold
+      LingAfriqTokens.hexFFFFD700, // Gold
     ];
     return colors[index % colors.length];
   }

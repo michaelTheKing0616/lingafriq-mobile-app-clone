@@ -39,7 +39,7 @@ class XPProgressWidget extends ConsumerWidget {
         : 1.0;
 
     final effectiveProgressColor = progressColor ?? 
-        (isDark ? PanAfricanColors.secondary : PanAfricanColors.primary);
+        (isDark ? context.panSecondary : PanAfricanColors.primary);
     final effectiveBackgroundColor = backgroundColor ?? 
         (isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight);
 
@@ -278,7 +278,7 @@ class _XPGainAnimationState extends State<XPGainAnimation>
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
             decoration: BoxDecoration(
-              color: PanAfricanColors.secondary,
+              color: context.panSecondary,
               borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
               boxShadow: PanAfricanShadows.lg,
             ),

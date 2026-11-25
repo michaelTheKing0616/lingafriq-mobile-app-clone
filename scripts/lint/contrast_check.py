@@ -83,6 +83,41 @@ def check_pairs(spec: dict) -> list[str]:
     return failures
 
 
+# Theme-aware Pan-African inks. Body text on the lightest and the darkest
+# containers the screens actually paint. Icons use the same inks, so a body
+# pass covers the 3:1 icon rule.
+PAN_INKS = (
+    ("light", "panSuccess", "1B7340"),
+    ("light", "panWarning", "735C00"),
+    ("light", "panError", "BA1A1A"),
+    ("light", "panInfo", "003A42"),
+    ("light", "panSecondary", "735C00"),
+    ("light", "panTertiary", "9E3D00"),
+    ("dark", "panSuccess", "6CCD83"),
+    ("dark", "panWarning", "E3A939"),
+    ("dark", "panError", "FF9088"),
+    ("dark", "panInfo", "3AC9DE"),
+    ("dark", "panSecondary", "F7CB46"),
+    ("dark", "panTertiary", "E3A939"),
+)
+PAN_SURFACES = {
+    "light": ("FFFFFF", "FAFAFA", "FEF6E7", "E0E4E0"),
+    "dark": ("0D1810", "1C1A15", "1F3527", "2A4A35"),
+}
+
+
+def check_pan_inks() -> list[str]:
+    failures = []
+    for mode, name, fg in PAN_INKS:
+        for bg in PAN_SURFACES[mode]:
+            ratio = contrast_ratio(fg, bg)
+            if ratio + 1e-9 < BODY:
+                failures.append(
+                    f"contrast: {mode} {name} on surface {ratio:.2f} < {BODY:.2f}"
+                )
+    return failures
+
+
 def scrim_samples(root: Path) -> list[str]:
     """Title text sits on the darkest stop of the photo scrim in ModernCard."""
     source = root / "lib/widgets/modern_card.dart"
@@ -148,8 +183,9 @@ def main(argv: list[str] | None = None) -> int:
         return self_test()
     root = Path(args.root)
     spec = json.loads((root / "design/tokens/tokens.json").read_text(encoding="utf-8"))
-    failures = check_pairs(spec) + scrim_samples(root)
-    checked = len(spec["colorRamps"]["pairs"]) + 1
+    pan = check_pan_inks()
+    failures = check_pairs(spec) + pan + scrim_samples(root)
+    checked = len(spec["colorRamps"]["pairs"]) + len(PAN_INKS) * 4 + 1
     sys.stdout.write(report(failures, checked))
     return 1 if failures else 0
 

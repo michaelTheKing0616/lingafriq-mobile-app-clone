@@ -37,11 +37,11 @@ class LessonSkeleton extends StatelessWidget {
                 16,
                 16,
               ),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    PanAfricanColors.tertiary,
-                    PanAfricanColors.secondary,
+                    context.panTertiary,
+                    context.panSecondary,
                   ],
                 ),
               ),

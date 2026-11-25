@@ -11,6 +11,7 @@ import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
 import 'base_game_screen.dart';
 import '../../games/market_haggle/market_haggle_screen.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 class MarketBargainingGame extends BaseGameScreen {
   const MarketBargainingGame({
@@ -93,9 +94,9 @@ class _MarketBargainingGameState
     _budget = (_askingPrice * 0.6).round();
 
     _options = [
-      const _BargainOption(text: 'Polite Greeting', icon: Icons.waving_hand_rounded, color: Color(0xFF526124), isCorrect: true),
-      const _BargainOption(text: 'Firm Counter', icon: Icons.gavel_rounded, color: Color(0xFF9E3D00), isCorrect: false),
-      const _BargainOption(text: 'Complement Quality', icon: Icons.thumb_up_rounded, color: Color(0xFF7B5733), isCorrect: false),
+      const _BargainOption(text: 'Polite Greeting', icon: Icons.waving_hand_rounded, color: LingAfriqTokens.hexFF526124, isCorrect: true),
+      const _BargainOption(text: 'Firm Counter', icon: Icons.gavel_rounded, color: LingAfriqTokens.hexFF9E3D00, isCorrect: false),
+      const _BargainOption(text: 'Complement Quality', icon: Icons.thumb_up_rounded, color: LingAfriqTokens.hexFF7B5733, isCorrect: false),
     ]..shuffle(rng);
 
     setState(() {
@@ -209,7 +210,7 @@ class _MarketBargainingGameState
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFFFF7A35), Color(0xFFFDE8D0)],
+          colors: [LingAfriqTokens.hexFFFF7A35, LingAfriqTokens.hexFFFDE8D0],
         ),
         borderRadius: ModernGriotRadius.borderXl,
         boxShadow: ModernGriotShadows.md,

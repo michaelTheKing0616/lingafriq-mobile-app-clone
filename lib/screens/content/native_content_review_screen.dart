@@ -244,10 +244,10 @@ class _StatusChip extends StatelessWidget {
     Color color;
     switch (status) {
       case 'certified':
-        color = PanAfricanColors.success;
+        color = context.panSuccess;
         break;
       case 'in_review':
-        color = PanAfricanColors.warning;
+        color = context.panWarning;
         break;
       default:
         color = PanAfricanColors.neutralMedium;

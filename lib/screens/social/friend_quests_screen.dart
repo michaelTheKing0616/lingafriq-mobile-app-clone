@@ -265,7 +265,7 @@ class FriendQuestsScreen extends HookConsumerWidget {
         borderRadius: PanAfricanRadius.lgBR,
         boxShadow: PanAfricanShadows.sm,
         border: isCompleted
-            ? Border.all(color: PanAfricanColors.success, width: 2)
+            ? Border.all(color: context.panSuccess, width: 2)
             : null,
       ),
       child: Column(
@@ -318,7 +318,7 @@ class FriendQuestsScreen extends HookConsumerWidget {
                           vertical: PanAfricanSpacing.xs,
                         ),
                         decoration: BoxDecoration(
-                          color: PanAfricanColors.success,
+                          color: context.panSuccess,
                           borderRadius: PanAfricanRadius.roundBR,
                         ),
                         child: Text(
@@ -351,7 +351,7 @@ class FriendQuestsScreen extends HookConsumerWidget {
                     value: progressPercent,
                     backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      isCompleted ? PanAfricanColors.success : PanAfricanColors.primary,
+                      isCompleted ? context.panSuccess : PanAfricanColors.primary,
                     ),
                     minHeight: 8.h,
                   ),
@@ -423,17 +423,17 @@ class FriendQuestsScreen extends HookConsumerWidget {
                   Container(
                     padding: EdgeInsets.all(PanAfricanSpacing.sm),
                     decoration: BoxDecoration(
-                      color: PanAfricanColors.success.withValues(alpha: 0.1),
+                      color: context.panSuccess.withValues(alpha: 0.1),
                       borderRadius: PanAfricanRadius.mdBR,
                     ),
                     child: Row(
                       children: [
-                        Icon(Icons.stars, color: PanAfricanColors.success, size: 20.sp),
+                        Icon(Icons.stars, color: context.panSuccess, size: 20.sp),
                         SizedBox(width: PanAfricanSpacing.sm),
                         Text(
                           'Reward: +$rewardXP XP',
                           style: PanAfricanTypography.bodyMedium(context).copyWith(
-                            color: PanAfricanColors.success,
+                            color: context.panSuccess,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

@@ -56,7 +56,7 @@ class CreateLessonScreen extends HookConsumerWidget {
                 color: Theme.of(context).colorScheme.onPrimary,
               ),
             ),
-            backgroundColor: PanAfricanColors.error,
+            backgroundColor: context.panError,
           ),
         );
         return;
@@ -252,7 +252,7 @@ class CreateLessonScreen extends HookConsumerWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Please fill in title and content', style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary)),
-                      backgroundColor: PanAfricanColors.error,
+                      backgroundColor: context.panError,
                     ),
                   );
                   return;
@@ -285,7 +285,7 @@ class CreateLessonScreen extends HookConsumerWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Lesson created successfully!', style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary)),
-                          backgroundColor: PanAfricanColors.success,
+                          backgroundColor: context.panSuccess,
                         ),
                       );
                       Navigator.of(context).pop(true);

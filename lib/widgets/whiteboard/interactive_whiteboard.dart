@@ -197,7 +197,7 @@ class _InteractiveWhiteboardState extends State<InteractiveWhiteboard> {
                 ),
                 // Clear
                 IconButton(
-                  icon: const Icon(Icons.clear_all, color: PanAfricanColors.error),
+                  icon: Icon(Icons.clear_all, color: context.panError),
                   onPressed: _clearBoard,
                   tooltip: 'Clear All',
                 ),

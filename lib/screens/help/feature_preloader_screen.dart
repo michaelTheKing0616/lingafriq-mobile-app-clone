@@ -312,7 +312,7 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen> {
                   children: [
                     Icon(
                       Icons.lightbulb_outline_rounded,
-                      color: PanAfricanColors.secondary,
+                      color: context.panSecondary,
                       size: 20.sp,
                     ),
                     SizedBox(width: 8.w),
@@ -367,12 +367,12 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen> {
             Container(
               padding: EdgeInsets.all(8.w),
               decoration: BoxDecoration(
-                color: PanAfricanColors.secondary.withValues(alpha: 0.1),
+                color: context.panSecondary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8.r),
               ),
               child: Icon(
                 tip.icon ?? Icons.tips_and_updates_rounded,
-                color: PanAfricanColors.secondary,
+                color: context.panSecondary,
                 size: 24.sp,
               ),
             ),

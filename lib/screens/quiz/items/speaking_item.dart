@@ -183,8 +183,8 @@ class _SpeakingItemState extends State<SpeakingItem> {
               SizedBox(height: PanAfricanSpacing.md),
               Text(
                 grade.score!.toString(),
-                style: const TextStyle(
-                  color: PanAfricanColors.success,
+                style: TextStyle(
+                  color: context.panSuccess,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -195,15 +195,15 @@ class _SpeakingItemState extends State<SpeakingItem> {
               ),
             ] else if (_phase == 'unsure') ...[
               SizedBox(height: PanAfricanSpacing.md),
-              const Text(
+              Text(
                 SpeakingCopy.unsure,
-                style: TextStyle(color: PanAfricanColors.warning),
+                style: TextStyle(color: context.panWarning),
               ),
             ] else if (_phase == 'unavailable') ...[
               SizedBox(height: PanAfricanSpacing.md),
-              const Text(
+              Text(
                 SpeakingCopy.unavailable,
-                style: TextStyle(color: PanAfricanColors.error),
+                style: TextStyle(color: context.panError),
               ),
             ],
           ],

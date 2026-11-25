@@ -47,11 +47,11 @@ class _ConversationTaskItemState extends State<ConversationTaskItem> {
   Color _statusColor(String status) {
     switch (status) {
       case 'met':
-        return PanAfricanColors.success;
+        return context.panSuccess;
       case 'not-met':
-        return PanAfricanColors.error;
+        return context.panError;
       default:
-        return PanAfricanColors.warning;
+        return context.panWarning;
     }
   }
 
@@ -130,9 +130,9 @@ class _ConversationTaskItemState extends State<ConversationTaskItem> {
                     ),
                   ),
                   if (result.status == 'unsure')
-                    const Text(
+                    Text(
                       ConversationCopy.unsure,
-                      style: TextStyle(color: PanAfricanColors.warning),
+                      style: TextStyle(color: context.panWarning),
                     ),
                   for (final id in result.evidenceTurnIds)
                     Text(
@@ -148,9 +148,9 @@ class _ConversationTaskItemState extends State<ConversationTaskItem> {
           if (grade != null && !grade.stored)
             Padding(
               padding: EdgeInsets.only(top: PanAfricanSpacing.sm),
-              child: const Text(
+              child: Text(
                 ConversationCopy.unavailable,
-                style: TextStyle(color: PanAfricanColors.warning),
+                style: TextStyle(color: context.panWarning),
               ),
             ),
           Padding(

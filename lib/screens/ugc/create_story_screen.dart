@@ -176,7 +176,7 @@ class CreateStoryScreen extends HookConsumerWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(notice, style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary)),
-                      backgroundColor: PanAfricanColors.error,
+                      backgroundColor: context.panError,
                     ),
                   );
                   return;
@@ -207,7 +207,7 @@ class CreateStoryScreen extends HookConsumerWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Story created successfully!', style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary)),
-                          backgroundColor: PanAfricanColors.success,
+                          backgroundColor: context.panSuccess,
                         ),
                       );
                       Navigator.of(context).pop(true);

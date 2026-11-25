@@ -182,7 +182,7 @@ class _ReportBlockSheetState extends State<ReportBlockSheet> {
                   padding: const EdgeInsets.only(top: 8),
                   child: Text(
                     _error!,
-                    style: const TextStyle(color: PanAfricanColors.error),
+                    style: TextStyle(color: context.panError),
                   ),
                 ),
               if (_blockNote != null)

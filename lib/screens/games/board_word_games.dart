@@ -413,8 +413,8 @@ class _ScrabbleSprintArenaGameState
   String? get shellProgressLabel => '$_round/$_maxRounds · ${_secondsLeft}s';
 
   Color _timerColor(BuildContext context) {
-    if (_secondsLeft <= 10) return PanAfricanColors.error;
-    if (_secondsLeft <= 20) return PanAfricanColors.warning;
+    if (_secondsLeft <= 10) return context.panError;
+    if (_secondsLeft <= 20) return context.panWarning;
     return PanAfricanColors.primary;
   }
 
@@ -487,13 +487,13 @@ class _ScrabbleSprintArenaGameState
                 Row(
                   children: [
                     Icon(Icons.lightbulb_outline_rounded,
-                        size: 16.sp, color: PanAfricanColors.secondary),
+                        size: 16.sp, color: context.panSecondary),
                     SizedBox(width: PanAfricanSpacing.xxs),
                     Expanded(
                       child: Text(
                         _hint,
                         style: PanAfricanTypography.bodyMedium(context,
-                            color: PanAfricanColors.secondary),
+                            color: context.panSecondary),
                       ),
                     ),
                   ],

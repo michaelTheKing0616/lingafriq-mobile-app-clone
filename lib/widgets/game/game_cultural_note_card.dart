@@ -41,7 +41,7 @@ class GameCulturalNoteCard extends StatelessWidget {
         color: cs.surfaceContainerLow,
         borderRadius: PanAfricanRadius.lgBR,
         border: Border.all(
-          color: PanAfricanColors.secondary.withValues(alpha: 0.3),
+          color: context.panSecondary.withValues(alpha: 0.3),
           width: 1,
         ),
         boxShadow: PanAfricanShadows.sm,
@@ -52,7 +52,7 @@ class GameCulturalNoteCard extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(PanAfricanSpacing.xs),
             decoration: BoxDecoration(
-              color: PanAfricanColors.secondary.withValues(alpha: 0.15),
+              color: context.panSecondary.withValues(alpha: 0.15),
               borderRadius: PanAfricanRadius.mdBR,
             ),
             child: Icon(

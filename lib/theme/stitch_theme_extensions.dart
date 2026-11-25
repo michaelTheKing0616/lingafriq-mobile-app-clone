@@ -47,7 +47,8 @@ class FlbEditorialTheme extends ThemeExtension<FlbEditorialTheme> {
     surfaceContainerHigh: LingAfriqTokens.hexFFEBE8E1,
     terracotta: LingAfriqTokens.hexFF9F3E07,
     terracottaContainer: LingAfriqTokens.hexFFC05621,
-    onTerracotta: LingAfriqTokens.hexFFFFF8F2,
+    // FFF8F2 on the gradient end (#C05621) is 4.34:1. White clears 4.5:1.
+    onTerracotta: LingAfriqTokens.hexFFFFFFFF,
     ochreTertiary: LingAfriqTokens.hexFF735C00,
     ambientShadow: LingAfriqTokens.hex281C1C18,
   );
