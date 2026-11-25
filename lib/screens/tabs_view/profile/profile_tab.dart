@@ -831,7 +831,7 @@ class _StateBar extends ConsumerWidget {
 }
 
 /// Brand navy used behind the profile header in loading/default states.
-const kProfileNavy = Color(0xFF2E3A87);
+const kProfileNavy = LingAfriqTokens.navy;
 
 BoxDecoration _cardDeco(ColorScheme scheme) => BoxDecoration(
   color: scheme.surface,

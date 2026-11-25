@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Brand navy from the guarded-screen reference packs
 /// (docs/design/references/*/REFERENCE.md, "Type & colour"): primary actions
 /// and the selected state use navy; Deny/Stop stay outlined.
-const Color kBrandNavy = Color(0xFF2E3A87);
-const Color kBrandNavyContainer = Color(0xFFE2E5F6);
-const Color kBrandOnNavyContainer = Color(0xFF151C4F);
+const Color kBrandNavy = LingAfriqTokens.navy;
+const Color kBrandNavyContainer = LingAfriqTokens.roleLightSurfaceContainer;
+const Color kBrandOnNavyContainer = LingAfriqTokens.roleLightOnSurface;
 
 /// Headlines on guarded screens grow with the user's text size up to 160%,
 /// so a 200% Arabic title at 320dp still fits; body text is not capped.
@@ -17,10 +18,14 @@ ThemeData guardedTheme(ThemeData base) {
   final cs = base.colorScheme;
   final dark = cs.brightness == Brightness.dark;
   final scheme = cs.copyWith(
-    primary: dark ? const Color(0xFFB9C1F2) : kBrandNavy,
-    onPrimary: dark ? kBrandOnNavyContainer : Colors.white,
-    primaryContainer: dark ? const Color(0xFF2A3370) : kBrandNavyContainer,
-    onPrimaryContainer: dark ? const Color(0xFFE2E5F6) : kBrandOnNavyContainer,
+    primary: dark ? LingAfriqTokens.roleDarkAccent : kBrandNavy,
+    onPrimary: dark ? LingAfriqTokens.roleDarkOnAccent : LingAfriqTokens.onNavy,
+    primaryContainer: dark
+        ? LingAfriqTokens.roleDarkSurfaceContainer
+        : kBrandNavyContainer,
+    onPrimaryContainer: dark
+        ? LingAfriqTokens.roleDarkOnSurface
+        : kBrandOnNavyContainer,
   );
   return base.copyWith(
     colorScheme: scheme,

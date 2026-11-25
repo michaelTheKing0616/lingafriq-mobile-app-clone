@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/l10n/l10n_of.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Bundled illustrations for languages that ship with their own art.
 const Map<String, String> kLanguageArtAssets = {
@@ -57,7 +58,7 @@ Map<String, LanguageIdentity> kLanguageIdentities() => {
     greeting: 'Habari',
   ),
   'yoruba': LanguageIdentity(
-    base: const Color(0xFF2E3A87),
+    base: LingAfriqTokens.navy,
     accent: const Color(0xFF9FB0FF),
     motif: LanguageMotif.circles,
     native: 'Yorùbá',

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/constants.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// ISO 3166 alpha-2 code decoded from a regional-indicator flag emoji
 /// ("🇳🇬" -> "NG"), or null.
@@ -71,7 +72,7 @@ class CountryFlag extends StatelessWidget {
           : Row(textDirection: TextDirection.ltr, children: cells);
     } else {
       body = ColoredBox(
-        color: const Color(0xFF2E3A87),
+        color: LingAfriqTokens.navy,
         child: Center(
           child: Text(
             code ?? '—',

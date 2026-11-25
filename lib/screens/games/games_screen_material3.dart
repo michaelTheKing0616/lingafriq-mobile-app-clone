@@ -16,6 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'game_catalog.dart';
 import 'game_catalog_l10n.dart';
 import 'game_onboarding_overlay.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Server catalog merged over the bundled one; throws when offline.
 final gamesRemoteCatalogProvider =
@@ -34,7 +35,7 @@ final gamesHubLanguageProvider = FutureProvider.autoDispose<String>(
 
 const _ink = Color(0xFF1F2340);
 const _muted = Color(0xFF5B607A);
-const _navy = Color(0xFF2E3A87);
+const _navy = LingAfriqTokens.navy;
 const _line = Color(0xFFE3E5EF);
 
 /// Tile colours (NYT Games hub pattern, recoloured to the LingAfriq

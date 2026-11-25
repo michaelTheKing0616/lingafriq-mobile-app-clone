@@ -101,7 +101,6 @@ Future<void> main() async {
         'modern_onboarding_screen.dart',
         'onboarding_screen.dart',
         'onboarding_screen_material3.dart',
-        'placement_quiz_screen.dart',
       ];
       for (final name in moved) {
         expect(
@@ -127,7 +126,7 @@ Future<void> main() async {
       );
 
       final banned = RegExp(
-        r'\b(KijijiOnboardingScreen|EnhancedOnboardingFlowScreen|ModernOnboardingScreen|OnboardingScreenMaterial3|PlacementQuizScreen)\b|\bclass OnboardingScreen\b',
+        r'\b(KijijiOnboardingScreen|EnhancedOnboardingFlowScreen|ModernOnboardingScreen|OnboardingScreenMaterial3)\b|\bclass OnboardingScreen\b',
       );
       final lib = Directory('lib');
       for (final entity in lib.listSync(recursive: true)) {

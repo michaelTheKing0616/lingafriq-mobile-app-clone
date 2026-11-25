@@ -13,9 +13,10 @@ import 'package:lingafriq/screens/tabs_view/home/take_quiz_screen.dart';
 import 'package:lingafriq/lessons/screens/lessons_list_screen.dart';
 import 'package:lingafriq/screens/vocabulary/vocabulary_screen.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/design/tokens.g.dart';
 
 /// Header colour shared with leaderboard, games hub and settings subscreens.
-const _navy = Color(0xFF2E3A87);
+const _navy = LingAfriqTokens.navy;
 
 /// Snapshot of today's goals. The notifier keeps goals in private fields, so
 /// this watches its state (bumped on refresh) and reads the getters.

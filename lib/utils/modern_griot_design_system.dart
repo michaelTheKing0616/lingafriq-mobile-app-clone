@@ -133,8 +133,9 @@ class ModernGriotColors {
   /// Text/icons on [brandGold].
   static const Color onBrandGold = LingAfriqTokens.hexFF322E25;
 
-  /// Selection border / check accent. Do not use as a text fill (fails AA).
-  static const Color brandCoral = LingAfriqTokens.hexFFE5603B;
+  /// Selection and text accent. Darkened from #E5603B so body text clears 4.5:1
+  /// on parchment and on white.
+  static const Color brandCoral = LingAfriqTokens.hexFFC4413A;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

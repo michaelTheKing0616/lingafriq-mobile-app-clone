@@ -573,6 +573,7 @@ route,passkey-sign-in,Passkey Sign In,Me,live it,Day 1,Account,,lib/my_app.dart
 route,passport-credential,Passport Credential,Learn,learn it,A2,Passport evidence,,lib/my_app.dart
 route,passport-proctored,Passport Proctored,Learn,learn it,A2,Passport evidence,,lib/my_app.dart
 route,phrase-dna-templates,Phrase DNA Templates,Learn,learn it,Day 1,Words and review,,lib/my_app.dart
+route,placement-quiz,Placement Quiz,Learn,learn it,Day 1,Placement quiz,,lib/my_app.dart
 route,point-and-say,Point And Say,Speak,say it,Day 1,"Point, hear, and say",,lib/my_app.dart
 route,policy,Policy,Me,live it,Day 1,Settings,,lib/my_app.dart
 route,polie_mode_selection,Polie Mode Selection,Speak,say it,Day 1,Polie conversation,,lib/my_app.dart
@@ -581,6 +582,7 @@ route,practice-room-setup,Practice Room Setup,Village,say it,B1,Host a practice 
 route,practice-session,Practice Session,Village,say it,Week 1 / A1 unit 3,Practice room,,lib/my_app.dart
 route,private-chat-inbox,Private Chat Inbox,Village,live it,Week 1 / A1 unit 3,Language-exchange DMs,chat,lib/my_app.dart
 route,progress,Progress,Me,live it,Account created,Can-do progress,,lib/my_app.dart
+route,pronunciation-practice,Pronunciation Practice,Speak,say it,Day 1,Pronunciation practice,,lib/my_app.dart
 route,quality-report,Quality Report,Village,live it,native speaker (any level),Native verification,,lib/my_app.dart
 route,quest,Quest,Today,learn it,Day 1,Village quest,,lib/my_app.dart
 route,script-track,Script Track,Learn,learn it,Day 1,Script practice,,lib/my_app.dart
@@ -604,6 +606,7 @@ route,suggest-fix,Suggest Fix,Village,live it,native speaker (any level),Native 
 route,swahili-village-map,Swahili Village Map,Village,live it,Account created,Village place,,lib/my_app.dart
 route,synthetic-voice-styles,Synthetic Voice Styles,Speak,say it,Day 1,Hear a voice and shadow it,,lib/my_app.dart
 route,tonal-lesson,Tonal Lesson,Learn,say it,Day 1,Tone practice,,lib/my_app.dart
+route,tone-drill,Tone Drill,Learn,say it,Day 1,Tone practice,,lib/my_app.dart
 route,tone-rhythm-trainer,Tone Rhythm Trainer,Learn,say it,Day 1,Tone practice,,lib/my_app.dart
 route,tribal-duel,Tribal Duel,Village,live it,Account created,Circle Clash,,lib/my_app.dart
 route,tribe,Tribe,Village,live it,Account created,Circle Clash,,lib/my_app.dart

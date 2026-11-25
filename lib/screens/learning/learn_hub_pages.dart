@@ -6,7 +6,12 @@ import 'package:lingafriq/design/states/offline_state.dart';
 import 'package:lingafriq/design/tokens.g.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/l10n/l10n_of.dart';
+import 'package:lingafriq/models/lesson_item_model.dart';
 import 'package:lingafriq/navigation/hub_learn.dart';
+import 'package:lingafriq/screens/onboarding/placement_quiz_screen.dart';
+import 'package:lingafriq/screens/practice/practice_lesson.dart';
+import 'package:lingafriq/screens/practice/pronunciation_practice_screen.dart';
+import 'package:lingafriq/screens/practice/tone_drill_screen.dart';
 
 /// Builds the page for a registered or unknown Learn route.
 Widget buildLearnPage({
@@ -30,6 +35,7 @@ Widget buildLearnPage({
     LearnScreenKind.path => LearnPathPage(units: units, onRetry: onRetry),
     LearnScreenKind.grammar => const LearnGrammarPage(),
     LearnScreenKind.culture => const LearnCulturePage(),
+    LearnScreenKind.toneDrill => const LearnToneDrillPage(),
     LearnScreenKind.notAvailable => LearnNotAvailablePage(
       route: route,
       place: place,
@@ -293,6 +299,62 @@ class LearnGrammarPage extends StatelessWidget {
             label: learnPlaceLabel(l10n, destination.place),
             onPressed: () => openLearnPlace(context, destination.place),
           ),
+      ],
+    );
+  }
+}
+
+/// Tone gym, pronunciation practice, and the placement quiz.
+class LearnToneDrillPage extends StatelessWidget {
+  const LearnToneDrillPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations l10n = l10nOf(context);
+    final LessonItem lesson = practiceLessonFromRoute(null);
+    return LearnPageBody(
+      route: LearnRoutes.toneGym,
+      children: <Widget>[
+        const LearnBackButton(),
+        LearnDestinationButton(
+          label: l10n.hubLearnToneGym,
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                settings: const RouteSettings(name: '/tone-drill'),
+                builder: (BuildContext context) =>
+                    ToneDrillScreen(lessonItem: lesson),
+              ),
+            );
+          },
+        ),
+        LearnDestinationButton(
+          label: l10n.onboardingPracticePronunciationDaily,
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                settings: const RouteSettings(name: '/pronunciation-practice'),
+                builder: (BuildContext context) =>
+                    PronunciationPracticeScreen(lessonItem: lesson),
+              ),
+            );
+          },
+        ),
+        LearnDestinationButton(
+          label: l10n.onboardingTakeAQuickPlacementTest,
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                settings: const RouteSettings(name: '/placement-quiz'),
+                builder: (BuildContext context) => PlacementQuizScreen(
+                  onComplete: () {
+                    Navigator.of(context).maybePop();
+                  },
+                ),
+              ),
+            );
+          },
+        ),
       ],
     );
   }

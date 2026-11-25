@@ -8,6 +8,7 @@ import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/screens/tabs_view/home/home_parts.dart';
 import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart'
     show ageTierStatusProvider, languagesProvider;
+import 'package:lingafriq/design/tokens.g.dart';
 import 'package:lingafriq/screens/tabs_view/home/language_detail_screen.dart';
 import 'package:lingafriq/services/connectivity_service.dart';
 import 'package:lingafriq/widgets/bidi_text.dart';
@@ -17,7 +18,7 @@ final languageSearchOnlineProvider = FutureProvider.autoDispose<bool>(
   (ref) => ConnectivityService.hasInternet(),
 );
 
-const _navy = Color(0xFF2E3A87);
+const _navy = LingAfriqTokens.navy;
 const _ink = Color(0xFF1F2340);
 const _muted = Color(0xFF5B607A);
 const _line = Color(0xFFE3E5EF);

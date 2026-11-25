@@ -12,6 +12,7 @@ import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/gamification/tribe_selection_screen.dart';
 import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart'
     show ageTierStatusProvider;
+import 'package:lingafriq/design/tokens.g.dart';
 import 'package:lingafriq/services/connectivity_service.dart';
 import 'package:lingafriq/widgets/bidi_text.dart';
 
@@ -20,7 +21,7 @@ final leaderboardOnlineProvider = FutureProvider.autoDispose<bool>(
   (ref) => ConnectivityService.hasInternet(),
 );
 
-const _navy = Color(0xFF2E3A87);
+const _navy = LingAfriqTokens.navy;
 const _navyDeep = Color(0xFF1F2766);
 const _gold = Color(0xFFFFC53D);
 const _ink = Color(0xFF1F2340);
@@ -35,7 +36,7 @@ const _discs = [
   Color(0xFF0B6E99),
   Color(0xFFB4462B),
   Color(0xFF6B5B00),
-  Color(0xFF2E3A87),
+  LingAfriqTokens.navy,
 ];
 
 /// Weekly leaderboard (social-circles 08/09/13, profile-progress 04):

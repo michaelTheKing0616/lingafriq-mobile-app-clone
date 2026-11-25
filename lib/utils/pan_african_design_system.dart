@@ -133,14 +133,17 @@ class PanAfricanColors {
   static const Color textDark = LingAfriqTokens.hexFF0D1B12;
   static const Color textPrimaryLight = LingAfriqTokens.hexFF0D1B12;
   static const Color textSecondaryLight = LingAfriqTokens.hexFF4A5D52;
-  static const Color textDisabledLight = LingAfriqTokens.hexFF9CA8A0;
+  /// Same ink as secondary text so disabled copy still meets 4.5:1.
+  static const Color textDisabledLight = LingAfriqTokens.hexFF4A5D52;
 
   static const Color textPrimaryDark = LingAfriqTokens.hexFFF4F6F5;
   static const Color textSecondaryDark = LingAfriqTokens.hexFFB8C4BD;
-  static const Color textTertiaryDark = LingAfriqTokens.hexFF8A9B91;
-  static const Color textDisabledDark = LingAfriqTokens.hexFF6B7D72;
+  /// Light enough for 4.5:1 on every dark container, including the highest.
+  static const Color textTertiaryDark = LingAfriqTokens.hexFFB8C4BD;
+  static const Color textDisabledDark = LingAfriqTokens.hexFFB8C4BD;
 
-  static const Color textTertiaryLight = LingAfriqTokens.hexFF7A8C82;
+  /// Dark enough for 4.5:1 on the lightest and the highest light containers.
+  static const Color textTertiaryLight = LingAfriqTokens.hexFF4A5D52;
 
   // ═══════════════════════════════════════════════════════════════════════════
   // BACKWARD-COMPATIBLE ALIASES
@@ -598,19 +601,21 @@ class PanAfricanColorScheme {
   static ColorScheme get light => const ColorScheme(
     brightness: Brightness.light,
     primary: PanAfricanColors.primary,
-    onPrimary: Colors.white,
+    onPrimary: LingAfriqTokens.hexFFFFFFFF,
     primaryContainer: PanAfricanColors.primaryContainer,
     onPrimaryContainer: PanAfricanColors.onPrimaryContainer,
-    secondary: PanAfricanColors.secondary,
-    onSecondary: PanAfricanColors.neutralDarkest,
+    // Gold on a light surface is 1.55:1. Ochre meets 4.5:1 as text and as a fill.
+    secondary: LingAfriqTokens.hexFF735C00,
+    onSecondary: LingAfriqTokens.hexFFFFFFFF,
     secondaryContainer: PanAfricanColors.secondaryContainer,
     onSecondaryContainer: PanAfricanColors.onSecondaryContainer,
-    tertiary: PanAfricanColors.tertiary,
-    onTertiary: Colors.white,
+    // Sunset orange on white is 2.57:1. Terracotta meets 4.5:1 with white text.
+    tertiary: LingAfriqTokens.hexFF9E3D00,
+    onTertiary: LingAfriqTokens.hexFFFFFFFF,
     tertiaryContainer: PanAfricanColors.tertiaryContainer,
     onTertiaryContainer: PanAfricanColors.onTertiaryContainer,
-    error: PanAfricanColors.error,
-    onError: Colors.white,
+    error: LingAfriqTokens.hexFFC4413A,
+    onError: LingAfriqTokens.hexFFFFFFFF,
     errorContainer: LingAfriqTokens.hexFFFFDAD6,
     onErrorContainer: LingAfriqTokens.hexFF410002,
     surface: PanAfricanColors.surfaceLight,
@@ -639,12 +644,12 @@ class PanAfricanColorScheme {
     onPrimaryContainer: PanAfricanColors.primaryContainer,
     secondary: PanAfricanColors.secondary,
     onSecondary: PanAfricanColors.neutralDarkest,
-    secondaryContainer: PanAfricanColors.secondaryDark,
-    onSecondaryContainer: PanAfricanColors.secondaryContainer,
-    tertiary: PanAfricanColors.tertiary,
-    onTertiary: PanAfricanColors.tertiaryDark,
-    tertiaryContainer: PanAfricanColors.tertiaryDark,
-    onTertiaryContainer: PanAfricanColors.tertiaryContainer,
+    secondaryContainer: LingAfriqTokens.hexFF735C00,
+    onSecondaryContainer: LingAfriqTokens.hexFFFFFFFF,
+    tertiary: LingAfriqTokens.roleDarkWarning,
+    onTertiary: LingAfriqTokens.roleDarkOnWarning,
+    tertiaryContainer: LingAfriqTokens.hexFF9E3D00,
+    onTertiaryContainer: LingAfriqTokens.hexFFFFFFFF,
     error: LingAfriqTokens.hexFFFFB4AB,
     onError: LingAfriqTokens.hexFF690005,
     errorContainer: LingAfriqTokens.hexFF93000A,
@@ -674,8 +679,24 @@ extension PanAfricanContext on BuildContext {
 
   Color get panPrimary =>
       isDark ? PanAfricanColors.primaryLight : PanAfricanColors.primary;
-  Color get panSecondary => PanAfricanColors.secondary;
-  Color get panTertiary => PanAfricanColors.tertiary;
+  Color get panSecondary => isDark
+      ? PanAfricanColors.secondary
+      : LingAfriqTokens.hexFF735C00;
+  Color get panTertiary => isDark
+      ? LingAfriqTokens.roleDarkWarning
+      : LingAfriqTokens.hexFF9E3D00;
+  Color get panSuccess => isDark
+      ? LingAfriqTokens.roleDarkSuccess
+      : LingAfriqTokens.hexFF2A7A4C;
+  Color get panWarning => isDark
+      ? LingAfriqTokens.roleDarkWarning
+      : LingAfriqTokens.hexFF735C00;
+  Color get panError => isDark
+      ? LingAfriqTokens.roleDarkDanger
+      : LingAfriqTokens.hexFFC4413A;
+  Color get panInfo => isDark
+      ? LingAfriqTokens.roleDarkInfo
+      : LingAfriqTokens.roleLightInfo;
 
   Color get panSurface =>
       isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight;

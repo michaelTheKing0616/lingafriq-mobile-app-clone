@@ -287,7 +287,7 @@ abstract final class LearnHubKeys {
 }
 
 /// Screens that render real structure. Every other place is not available.
-enum LearnScreenKind { hub, path, grammar, culture, notAvailable }
+enum LearnScreenKind { hub, path, grammar, culture, toneDrill, notAvailable }
 
 LearnScreenKind learnScreenKind(LearnPlace place) {
   return switch (place) {
@@ -295,6 +295,7 @@ LearnScreenKind learnScreenKind(LearnPlace place) {
     LearnPlace.path => LearnScreenKind.path,
     LearnPlace.grammar => LearnScreenKind.grammar,
     LearnPlace.culture => LearnScreenKind.culture,
+    LearnPlace.toneGym => LearnScreenKind.toneDrill,
     _ => LearnScreenKind.notAvailable,
   };
 }
