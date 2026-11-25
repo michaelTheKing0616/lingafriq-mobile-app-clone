@@ -355,11 +355,8 @@ class _ToneDrillScreenState extends State<ToneDrillScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (_recordedAudio != null)
-              Text(
-                'Recording saved (${_recordedAudio!.lengthInBytes} bytes)',
-                style: TextStyle(color: scheme.onSurfaceVariant),
-              ),
+            if (_recordedAudio != null && _lastResult == null)
+              const SizedBox.shrink(),
             if (_lastResult != null)
               Text(
                 'Tone Accuracy: ${(_lastResult!.overallAccuracy * 100).toStringAsFixed(1)}%',
@@ -409,8 +406,6 @@ class _ToneDrillScreenState extends State<ToneDrillScreen> {
               ),
             ] else if (_userPitchContour.isNotEmpty) ...[
               const SizedBox(height: 16),
-              const Text('Your pitch:', style: TextStyle(fontWeight: FontWeight.bold)),
-              const SizedBox(height: 8),
               SizedBox(
                 height: 200,
                 child: VisualPitchFeedbackWidget(

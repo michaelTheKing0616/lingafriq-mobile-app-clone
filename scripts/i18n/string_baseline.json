@@ -435,10 +435,7 @@
       "your turn",
       "now you try",
       "\n\n{tutorCue}",
-      "\n\n{tutorCue}",
-      "Request timed out. Please try again.",
-      "Invalid request format",
-      "Failed to send message: {value}"
+      "\n\n{tutorCue}"
     ],
     "lib/features/ai_chat/providers/groq_chat_provider_mixin_3.dart": [
       "Excellent pronunciation! 👏",
@@ -447,6 +444,9 @@
       "Let's practice pronunciation. Listen and repeat after me:"
     ],
     "lib/features/ai_chat/providers/groq_chat_stream_helpers.dart": [
+      "Request timed out. Please try again.",
+      "Invalid request format",
+      "Failed to send message: {value}",
       "Roleplay: {value}. {value2}",
       "Translate to {language}:",
       "Say this in {language}:",
