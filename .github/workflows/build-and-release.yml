@@ -26,34 +26,54 @@ jobs:
 
       - name: 🔢 Increment build number
         id: increment
+        env:
+          # Last CFBundleVersion App Store Connect already accepted. This job
+          # does not commit the bump, so "pubspec + 1" repeats 333 and
+          # TestFlight rejects the upload. github.run_number increases by 1 on
+          # every run of this workflow. Adding that offset keeps the number
+          # strictly above 333 even if the workflow counter is reset. Android
+          # versionCode and iOS CFBundleVersion both consume this output.
+          LAST_ACCEPTED_BUNDLE_VERSION: "333"
         run: |
-          # Extract current version from pubspec.yaml
-          # The part before + (marketing / CFBundleShortVersionString) must stay STRICTLY above the latest
-          # version ever approved on the App Store, or TestFlight upload fails with 409 (train closed / invalid version).
-          # The build number is an output for this run. It is not committed.
+          # Marketing version (CFBundleShortVersionString / versionName) stays in pubspec.
+          # It must stay strictly above the latest version approved on the App Store,
+          # or TestFlight upload fails with 409 (train closed / invalid version).
           current_version=$(grep '^version:' pubspec.yaml | sed 's/version: //')
-          version_name=$(echo $current_version | cut -d'+' -f1)
-          build_number=$(echo $current_version | cut -d'+' -f2)
-          
-          # Ensure build number is at least 91 (last prod was 90)
-          # If current build is less than 91, set to 91, otherwise increment
-          if [ "$build_number" -lt 91 ]; then
-            echo "⚠️ Build number $build_number is less than 91. Setting to 91."
-            build_number=91
-          elif [ "$build_number" -eq 90 ]; then
-            echo "📦 Current build is 90, incrementing to 91."
-            build_number=91
-          else
-            # Increment build number
-            build_number=$((build_number + 1))
+          version_name=$(echo "$current_version" | cut -d'+' -f1)
+          pubspec_build=$(echo "$current_version" | cut -d'+' -f2)
+          run_number="${{ github.run_number }}"
+
+          if ! [[ "$run_number" =~ ^[0-9]+$ ]] || [ "$run_number" -lt 1 ]; then
+            echo "::error::github.run_number must be a positive integer (got '$run_number')"
+            exit 1
           fi
-          
+          if ! [[ "$pubspec_build" =~ ^[0-9]+$ ]]; then
+            echo "::error::pubspec build number must be an integer (got '$pubspec_build')"
+            exit 1
+          fi
+          if ! [[ "${LAST_ACCEPTED_BUNDLE_VERSION}" =~ ^[0-9]+$ ]]; then
+            echo "::error::LAST_ACCEPTED_BUNDLE_VERSION must be an integer"
+            exit 1
+          fi
+
+          # Same integer for Android versionCode and iOS CFBundleVersion.
+          build_number=$((run_number + LAST_ACCEPTED_BUNDLE_VERSION))
+          # If pubspec is later set above that sum, step past it by run_number
+          # so an uncommitted pubspec value cannot be reused on the next run.
+          if [ "$pubspec_build" -ge "$build_number" ]; then
+            build_number=$((pubspec_build + run_number))
+          fi
+          if [ "$build_number" -le "$LAST_ACCEPTED_BUNDLE_VERSION" ]; then
+            echo "::error::Build number $build_number is not above ${LAST_ACCEPTED_BUNDLE_VERSION}"
+            exit 1
+          fi
+
           new_version="${version_name}+${build_number}"
 
-          echo "version=$new_version" >> $GITHUB_OUTPUT
-          echo "version_name=$version_name" >> $GITHUB_OUTPUT
-          echo "build_number=$build_number" >> $GITHUB_OUTPUT
-          echo "Build number for this run: $new_version"
+          echo "version=$new_version" >> "$GITHUB_OUTPUT"
+          echo "version_name=$version_name" >> "$GITHUB_OUTPUT"
+          echo "build_number=$build_number" >> "$GITHUB_OUTPUT"
+          echo "Build number for this run: $new_version (run_number=$run_number offset=$LAST_ACCEPTED_BUNDLE_VERSION pubspec_build=$pubspec_build)"
 
   build-android:
     name: Build Android App Bundle
